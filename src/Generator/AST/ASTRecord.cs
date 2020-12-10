@@ -17,10 +17,7 @@ namespace CppSharp.Generators.AST
         {
             @out = default(T);
 
-            if (Parent == null)
-                return false;
-
-            var v = Parent.Object;
+            var v = Parent?.Object;
             if (!(v is T))
                 return false;
 
@@ -45,8 +42,7 @@ namespace CppSharp.Generators.AST
         {
             ancestors.Push(this);
 
-            T value;
-            if (GetParent(out value))
+            if (GetParent(out T value))
             {
                 ancestors.Push(value);
                 return true;
@@ -59,10 +55,7 @@ namespace CppSharp.Generators.AST
 
     public class ASTRecord<T> : ASTRecord
     {
-        public T Value
-        {
-            get { return (T) Object; }
-        }
+        public T Value => (T) Object;
 
         public override string ToString()
         {
@@ -130,12 +123,10 @@ namespace CppSharp.Generators.AST
     {
         public static bool IsBaseClass(this ASTRecord record)
         {
-            Class decl;
-            if (!record.GetParent(out decl))
+            if (!record.GetParent(out Class decl))
                 return false;
 
-            var recordDecl = record.Object as Class;
-            return recordDecl != null && recordDecl == decl.BaseClass;
+            return record.Object is Class recordDecl && recordDecl == decl.BaseClass;
         }
 
         public static bool IsFieldValueType(this ASTRecord record)
@@ -145,25 +136,22 @@ namespace CppSharp.Generators.AST
                 return false;
 
             var field = (Field)ancestors.Pop();
-                
-            Class decl;
-            return field.Type.Desugar().TryGetClass(out decl) && decl.IsValueType;
+            return field.Type.Desugar().TryGetClass(out var decl) && decl.IsValueType;
         }
 
         public static bool IsEnumNestedInClass(this ASTRecord<Declaration> record)
         {
-            Enumeration @enum = record.Value as Enumeration;
+            var @enum = record.Value as Enumeration;
             var typedDecl = record.Value as ITypedDecl;
-            if (@enum != null 
-                || (typedDecl?.Type?.TryGetEnum(out @enum)).GetValueOrDefault())
+            if (@enum != null || (typedDecl?.Type?.TryGetEnum(out @enum)).GetValueOrDefault())
             {
-                return @enum.Namespace is Class;
+                return @enum?.Namespace is Class;
             }
 
             return false;
         }
 
-        public static bool IsClassReturn(this ASTRecord record)
+        public static bool FunctionReturnsClassByValue(this ASTRecord record)
         {
             var ancestors = new Stack<object>();
             if(!record.GetAncestors<Function>(ref ancestors))
@@ -177,8 +165,7 @@ namespace CppSharp.Generators.AST
 
         public static bool IsDelegate(this ASTRecord record)
         {
-            var typedef = record.Object as TypedefDecl;
-            return typedef != null && typedef.Type.GetPointee() is FunctionType;
+            return record.Object is TypedefDecl typedef && typedef.Type.GetPointee() is FunctionType;
         }
     }
 
@@ -223,7 +210,7 @@ namespace CppSharp.Generators.AST
             return false;
         }
 
-        public bool ShouldVisitChilds(Declaration decl)
+        private bool ShouldVisitChilds(Declaration decl)
         {
             if (decl == translationUnit)
                 return true;
