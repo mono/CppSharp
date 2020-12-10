@@ -184,8 +184,9 @@ namespace CppSharp.Generators.CLI
             if (@class.IsStatic)
                 return;
 
-            // Output a default constructor that takes the native pointer.
+            // Output the default constructors taking the native pointer and ownership info.
             GenerateClassConstructor(@class);
+            GenerateClassConstructor(@class, true);
 
             if (@class.IsRefType)
             {
@@ -630,7 +631,7 @@ namespace CppSharp.Generators.CLI
             Write("{0}::{1}(", qualifiedIdentifier, @class.Name);
 
             var nativeType = string.Format("::{0}*", @class.QualifiedOriginalName);
-            WriteLine(!withOwnNativeInstanceParam ? "{0} native)" : "{0} native, const bool ownNativeInstance)", nativeType);
+            WriteLine(!withOwnNativeInstanceParam ? "{0} native)" : "{0} native, bool ownNativeInstance)", nativeType);
 
             var hasBase = GenerateClassConstructorBase(@class, null, withOwnNativeInstanceParam);
 
@@ -677,11 +678,6 @@ namespace CppSharp.Generators.CLI
 
             UnindentAndWriteCloseBrace();
             NewLine();
-
-            if (!withOwnNativeInstanceParam)
-            {
-                GenerateClassConstructor(@class, true);
-            }
         }
 
         private void GenerateStructMarshaling(Class @class, string nativeVar)
@@ -719,29 +715,29 @@ namespace CppSharp.Generators.CLI
             }
         }
 
-        private bool GenerateClassConstructorBase(Class @class, Method method = null, bool withOwnNativeInstanceParam = false)
+        private bool GenerateClassConstructorBase(Class @class, Method method = null,
+            bool withOwnNativeInstanceParam = false)
         {
-            var hasBase = @class.HasBase && @class.Bases[0].IsClass && @class.Bases[0].Class.IsGenerated;
-            if (!hasBase)
+            if (!@class.NeedsBase)
                 return false;
 
-            if (!@class.IsValueType)
-            {
-                Indent();
+            if (@class.IsValueType)
+                return true;
 
-                var baseClass = @class.Bases[0].Class;
-                Write(": {0}(", QualifiedIdentifier(baseClass));
+            Indent();
 
-                // We cast the value to the base clas type since otherwise there
-                // could be ambiguous call to overloaded constructors.
-                var cppTypePrinter = new CppTypePrinter(Context);
-                var nativeTypeName = baseClass.Visit(cppTypePrinter);
-                Write("({0}*)", nativeTypeName);
+            Write($": {QualifiedIdentifier(@class.BaseClass)}(");
 
-                WriteLine("{0}{1})", method != null ? "nullptr" : "native", !withOwnNativeInstanceParam ? "" : ", ownNativeInstance");
+            // We cast the value to the base class type since otherwise there
+            // could be ambiguous call to overloaded constructors.
+            var cppTypePrinter = new CppTypePrinter(Context);
+            var nativeTypeName = @class.BaseClass.Visit(cppTypePrinter);
 
-                Unindent();
-            }
+            Write($"({nativeTypeName}*)");
+            WriteLine("{0}{1})", method != null ? "nullptr" : "native",
+                !withOwnNativeInstanceParam ? "" : ", ownNativeInstance");
+
+            Unindent();
 
             return true;
         }
