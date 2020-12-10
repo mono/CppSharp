@@ -367,7 +367,7 @@ namespace CppSharp.Generators
 
         public virtual bool VisitTypedefNameDecl(TypedefNameDecl typedef)
         {
-            throw new NotImplementedException();
+            return typedef.Type.Visit(this, typedef.QualifiedType.Qualifiers);
         }
 
         public virtual bool VisitTypedefDecl(TypedefDecl typedef)
@@ -499,7 +499,10 @@ namespace CppSharp.Generators
 
         public virtual bool VisitPointerType(PointerType pointer, TypeQualifiers quals)
         {
-            throw new NotImplementedException();
+            if (pointer.Pointee == null)
+                return false;
+
+            return pointer.QualifiedPointee.Visit(this);
         }
 
         public virtual bool VisitMemberPointerType(MemberPointerType member, TypeQualifiers quals)
@@ -509,12 +512,12 @@ namespace CppSharp.Generators
 
         public virtual bool VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
         {
-            throw new NotImplementedException();
+            return VisitPrimitiveType(builtin.Type, quals);
         }
 
         public virtual bool VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
         {
-            throw new NotImplementedException();
+            return typedef.Declaration.Visit(this);
         }
 
         public virtual bool VisitAttributedType(AttributedType attributed, TypeQualifiers quals)
@@ -599,7 +602,7 @@ namespace CppSharp.Generators
 
         public virtual bool VisitQualifiedType(QualifiedType type)
         {
-            throw new NotImplementedException();
+            return type.Type.Visit(this, type.Qualifiers);
         }
 
         public virtual bool VisitStmt(Stmt stmt)
