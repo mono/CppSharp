@@ -271,9 +271,9 @@ namespace CppSharp
             if (Options.IsCLIGenerator || Options.IsCSharpGenerator)
             {
                 TranslationUnitPasses.AddPass(new DelegatesPass());
+                TranslationUnitPasses.AddPass(new GetterSetterToPropertyPass());
             }
 
-            TranslationUnitPasses.AddPass(new GetterSetterToPropertyPass());
             TranslationUnitPasses.AddPass(new StripUnusedSystemTypesPass());
 
             if (Options.IsCSharpGenerator)
