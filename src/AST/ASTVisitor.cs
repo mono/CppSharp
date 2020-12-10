@@ -12,8 +12,7 @@ namespace CppSharp.AST
         bool AlreadyVisited(Type type);
     }
 
-    public interface IAstVisitor<out T> : ITypeVisitor<T>,
-        IDeclVisitor<T>, IStmtVisitor<T>
+    public interface IAstVisitor<out T> : ITypeVisitor<T>, IDeclVisitor<T>, IStmtVisitor<T>
     {
         AstVisitorOptions VisitOptions { get; }
     }
@@ -307,17 +306,17 @@ namespace CppSharp.AST
             return true;
         }
 
-        public bool VisitUnaryTransformType(UnaryTransformType unaryTransformType, TypeQualifiers quals)
+        public virtual bool VisitUnaryTransformType(UnaryTransformType unaryTransformType, TypeQualifiers quals)
         {
             return true;
         }
 
-        public bool VisitUnresolvedUsingType(UnresolvedUsingType unresolvedUsingType, TypeQualifiers quals)
+        public virtual bool VisitUnresolvedUsingType(UnresolvedUsingType unresolvedUsingType, TypeQualifiers quals)
         {
             return true;
         }
 
-        public bool VisitVectorType(VectorType vectorType, TypeQualifiers quals)
+        public virtual bool VisitVectorType(VectorType vectorType, TypeQualifiers quals)
         {
             return true;
         }
@@ -443,7 +442,7 @@ namespace CppSharp.AST
             return true;
         }
 
-        public bool VisitFriend(Friend friend)
+        public virtual bool VisitFriend(Friend friend)
         {
             if (!VisitDeclaration(friend))
                 return false;
@@ -480,7 +479,7 @@ namespace CppSharp.AST
             return parameter.Type.Visit(this, parameter.QualifiedType.Qualifiers);
         }
 
-        public bool VisitTypedefNameDecl(TypedefNameDecl typedef)
+        public virtual bool VisitTypedefNameDecl(TypedefNameDecl typedef)
         {
             if (!VisitDeclaration(typedef))
                 return false;
@@ -493,7 +492,7 @@ namespace CppSharp.AST
             return VisitTypedefNameDecl(typedef);
         }
 
-        public bool VisitTypeAliasDecl(TypeAlias typeAlias)
+        public virtual bool VisitTypeAliasDecl(TypeAlias typeAlias)
         {
             return VisitTypedefNameDecl(typeAlias);
         }
@@ -584,7 +583,7 @@ namespace CppSharp.AST
             return specialization.SpecializedFunction.Visit(this);
         }
 
-        public bool VisitVarTemplateDecl(VarTemplate template)
+        public virtual bool VisitVarTemplateDecl(VarTemplate template)
         {
             if (!VisitDeclaration(template))
                 return false;
@@ -600,7 +599,7 @@ namespace CppSharp.AST
             return true; 
         }
 
-        public bool VisitVarTemplateSpecializationDecl(VarTemplateSpecialization specialization)
+        public virtual bool VisitVarTemplateSpecializationDecl(VarTemplateSpecialization specialization)
         {
             return VisitVariableDecl(specialization);
         }
@@ -664,7 +663,7 @@ namespace CppSharp.AST
             return true;
         }
 
-        public bool VisitTemplateTemplateParameterDecl(TemplateTemplateParameter templateTemplateParameter)
+        public virtual bool VisitTemplateTemplateParameterDecl(TemplateTemplateParameter templateTemplateParameter)
         {
             if (!VisitDeclaration(templateTemplateParameter))
                 return false;
@@ -683,7 +682,7 @@ namespace CppSharp.AST
             return true;
         }
 
-        public bool VisitNonTypeTemplateParameterDecl(NonTypeTemplateParameter nonTypeTemplateParameter)
+        public virtual bool VisitNonTypeTemplateParameterDecl(NonTypeTemplateParameter nonTypeTemplateParameter)
         {
             if (!VisitDeclaration(nonTypeTemplateParameter))
                 return false;
@@ -691,7 +690,7 @@ namespace CppSharp.AST
             return true;
         }
 
-        public bool VisitUnresolvedUsingDecl(UnresolvedUsingTypename unresolvedUsingTypename)
+        public virtual bool VisitUnresolvedUsingDecl(UnresolvedUsingTypename unresolvedUsingTypename)
         {
             if (!VisitDeclaration(unresolvedUsingTypename))
                 return false;

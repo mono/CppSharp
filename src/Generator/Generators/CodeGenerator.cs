@@ -238,12 +238,12 @@ namespace CppSharp.Generators
 
         #region Visitor methods
 
-        public bool AlreadyVisited(CppSharp.AST.Type type)
+        public virtual bool AlreadyVisited(CppSharp.AST.Type type)
         {
             return !Visited.Add(type);
         }
 
-        public bool AlreadyVisited(Declaration decl)
+        public virtual bool AlreadyVisited(Declaration decl)
         {
             return !Visited.Add(decl);
         }
@@ -477,807 +477,807 @@ namespace CppSharp.Generators
             throw new NotImplementedException();
         }
 
-        public bool VisitTagType(TagType tag, TypeQualifiers quals)
+        public virtual bool VisitTagType(TagType tag, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitUnresolvedUsingDecl(UnresolvedUsingTypename unresolvedUsingTypename)
+        public virtual bool VisitUnresolvedUsingDecl(UnresolvedUsingTypename unresolvedUsingTypename)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitArrayType(ArrayType array, TypeQualifiers quals)
+        public virtual bool VisitArrayType(ArrayType array, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
+        public virtual bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitPointerType(PointerType pointer, TypeQualifiers quals)
+        public virtual bool VisitPointerType(PointerType pointer, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitMemberPointerType(MemberPointerType member, TypeQualifiers quals)
+        public virtual bool VisitMemberPointerType(MemberPointerType member, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
+        public virtual bool VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
+        public virtual bool VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitAttributedType(AttributedType attributed, TypeQualifiers quals)
+        public virtual bool VisitAttributedType(AttributedType attributed, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitDecayedType(DecayedType decayed, TypeQualifiers quals)
+        public virtual bool VisitDecayedType(DecayedType decayed, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitTemplateSpecializationType(TemplateSpecializationType template, TypeQualifiers quals)
+        public virtual bool VisitTemplateSpecializationType(TemplateSpecializationType template, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitDependentTemplateSpecializationType(DependentTemplateSpecializationType template, TypeQualifiers quals)
+        public virtual bool VisitDependentTemplateSpecializationType(DependentTemplateSpecializationType template, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
+        public virtual bool VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitDeclaration(Declaration decl, TypeQualifiers quals)
+        public virtual bool VisitDeclaration(Declaration decl, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals)
+        public virtual bool VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitTemplateParameterSubstitutionType(TemplateParameterSubstitutionType param, TypeQualifiers quals)
+        public virtual bool VisitTemplateParameterSubstitutionType(TemplateParameterSubstitutionType param, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitInjectedClassNameType(InjectedClassNameType injected, TypeQualifiers quals)
+        public virtual bool VisitInjectedClassNameType(InjectedClassNameType injected, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
+        public virtual bool VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals)
+        public virtual bool VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitUnaryTransformType(UnaryTransformType unaryTransformType, TypeQualifiers quals)
+        public virtual bool VisitUnaryTransformType(UnaryTransformType unaryTransformType, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitUnresolvedUsingType(UnresolvedUsingType unresolvedUsingType, TypeQualifiers quals)
+        public virtual bool VisitUnresolvedUsingType(UnresolvedUsingType unresolvedUsingType, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitVectorType(VectorType vectorType, TypeQualifiers quals)
+        public virtual bool VisitVectorType(VectorType vectorType, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCILType(CILType type, TypeQualifiers quals)
+        public virtual bool VisitCILType(CILType type, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals)
+        public virtual bool VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitQualifiedType(QualifiedType type)
+        public virtual bool VisitQualifiedType(QualifiedType type)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitStmt(Stmt stmt)
+        public virtual bool VisitStmt(Stmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitDeclStmt(DeclStmt stmt)
+        public virtual bool VisitDeclStmt(DeclStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitNullStmt(NullStmt stmt)
+        public virtual bool VisitNullStmt(NullStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCompoundStmt(CompoundStmt stmt)
+        public virtual bool VisitCompoundStmt(CompoundStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitSwitchCase(SwitchCase stmt)
+        public virtual bool VisitSwitchCase(SwitchCase stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCaseStmt(CaseStmt stmt)
+        public virtual bool VisitCaseStmt(CaseStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitDefaultStmt(DefaultStmt stmt)
+        public virtual bool VisitDefaultStmt(DefaultStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitLabelStmt(LabelStmt stmt)
+        public virtual bool VisitLabelStmt(LabelStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitAttributedStmt(AttributedStmt stmt)
+        public virtual bool VisitAttributedStmt(AttributedStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitIfStmt(IfStmt stmt)
+        public virtual bool VisitIfStmt(IfStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitSwitchStmt(SwitchStmt stmt)
+        public virtual bool VisitSwitchStmt(SwitchStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitWhileStmt(WhileStmt stmt)
+        public virtual bool VisitWhileStmt(WhileStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitDoStmt(DoStmt stmt)
+        public virtual bool VisitDoStmt(DoStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitForStmt(ForStmt stmt)
+        public virtual bool VisitForStmt(ForStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitGotoStmt(GotoStmt stmt)
+        public virtual bool VisitGotoStmt(GotoStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitIndirectGotoStmt(IndirectGotoStmt stmt)
+        public virtual bool VisitIndirectGotoStmt(IndirectGotoStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitContinueStmt(ContinueStmt stmt)
+        public virtual bool VisitContinueStmt(ContinueStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitBreakStmt(BreakStmt stmt)
+        public virtual bool VisitBreakStmt(BreakStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitReturnStmt(ReturnStmt stmt)
+        public virtual bool VisitReturnStmt(ReturnStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitAsmStmt(AsmStmt stmt)
+        public virtual bool VisitAsmStmt(AsmStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitGCCAsmStmt(GCCAsmStmt stmt)
+        public virtual bool VisitGCCAsmStmt(GCCAsmStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitMSAsmStmt(MSAsmStmt stmt)
+        public virtual bool VisitMSAsmStmt(MSAsmStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitSEHExceptStmt(SEHExceptStmt stmt)
+        public virtual bool VisitSEHExceptStmt(SEHExceptStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitSEHFinallyStmt(SEHFinallyStmt stmt)
+        public virtual bool VisitSEHFinallyStmt(SEHFinallyStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitSEHTryStmt(SEHTryStmt stmt)
+        public virtual bool VisitSEHTryStmt(SEHTryStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitSEHLeaveStmt(SEHLeaveStmt stmt)
+        public virtual bool VisitSEHLeaveStmt(SEHLeaveStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCapturedStmt(CapturedStmt stmt)
+        public virtual bool VisitCapturedStmt(CapturedStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXCatchStmt(CXXCatchStmt stmt)
+        public virtual bool VisitCXXCatchStmt(CXXCatchStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXTryStmt(CXXTryStmt stmt)
+        public virtual bool VisitCXXTryStmt(CXXTryStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXForRangeStmt(CXXForRangeStmt stmt)
+        public virtual bool VisitCXXForRangeStmt(CXXForRangeStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitMSDependentExistsStmt(MSDependentExistsStmt stmt)
+        public virtual bool VisitMSDependentExistsStmt(MSDependentExistsStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCoroutineBodyStmt(CoroutineBodyStmt stmt)
+        public virtual bool VisitCoroutineBodyStmt(CoroutineBodyStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCoreturnStmt(CoreturnStmt stmt)
+        public virtual bool VisitCoreturnStmt(CoreturnStmt stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitExpr(Expr stmt)
+        public virtual bool VisitExpr(Expr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitFullExpr(FullExpr stmt)
+        public virtual bool VisitFullExpr(FullExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitConstantExpr(ConstantExpr stmt)
+        public virtual bool VisitConstantExpr(ConstantExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitOpaqueValueExpr(OpaqueValueExpr stmt)
+        public virtual bool VisitOpaqueValueExpr(OpaqueValueExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitDeclRefExpr(DeclRefExpr stmt)
+        public virtual bool VisitDeclRefExpr(DeclRefExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitIntegerLiteral(IntegerLiteral stmt)
+        public virtual bool VisitIntegerLiteral(IntegerLiteral stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitFixedPointLiteral(FixedPointLiteral stmt)
+        public virtual bool VisitFixedPointLiteral(FixedPointLiteral stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCharacterLiteral(CharacterLiteral stmt)
+        public virtual bool VisitCharacterLiteral(CharacterLiteral stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitFloatingLiteral(FloatingLiteral stmt)
+        public virtual bool VisitFloatingLiteral(FloatingLiteral stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitImaginaryLiteral(ImaginaryLiteral stmt)
+        public virtual bool VisitImaginaryLiteral(ImaginaryLiteral stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitStringLiteral(StringLiteral stmt)
+        public virtual bool VisitStringLiteral(StringLiteral stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitPredefinedExpr(PredefinedExpr stmt)
+        public virtual bool VisitPredefinedExpr(PredefinedExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitParenExpr(ParenExpr stmt)
+        public virtual bool VisitParenExpr(ParenExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitUnaryOperator(UnaryOperator stmt)
+        public virtual bool VisitUnaryOperator(UnaryOperator stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitOffsetOfExpr(OffsetOfExpr stmt)
+        public virtual bool VisitOffsetOfExpr(OffsetOfExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitUnaryExprOrTypeTraitExpr(UnaryExprOrTypeTraitExpr stmt)
+        public virtual bool VisitUnaryExprOrTypeTraitExpr(UnaryExprOrTypeTraitExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitArraySubscriptExpr(ArraySubscriptExpr stmt)
+        public virtual bool VisitArraySubscriptExpr(ArraySubscriptExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCallExpr(CallExpr stmt)
+        public virtual bool VisitCallExpr(CallExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitMemberExpr(MemberExpr stmt)
+        public virtual bool VisitMemberExpr(MemberExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCompoundLiteralExpr(CompoundLiteralExpr stmt)
+        public virtual bool VisitCompoundLiteralExpr(CompoundLiteralExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCastExpr(CastExpr stmt)
+        public virtual bool VisitCastExpr(CastExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitImplicitCastExpr(ImplicitCastExpr stmt)
+        public virtual bool VisitImplicitCastExpr(ImplicitCastExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitExplicitCastExpr(ExplicitCastExpr stmt)
+        public virtual bool VisitExplicitCastExpr(ExplicitCastExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCStyleCastExpr(CStyleCastExpr stmt)
+        public virtual bool VisitCStyleCastExpr(CStyleCastExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitBinaryOperator(BinaryOperator stmt)
+        public virtual bool VisitBinaryOperator(BinaryOperator stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCompoundAssignOperator(CompoundAssignOperator stmt)
+        public virtual bool VisitCompoundAssignOperator(CompoundAssignOperator stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitAbstractConditionalOperator(AbstractConditionalOperator stmt)
+        public virtual bool VisitAbstractConditionalOperator(AbstractConditionalOperator stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitConditionalOperator(ConditionalOperator stmt)
+        public virtual bool VisitConditionalOperator(ConditionalOperator stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitBinaryConditionalOperator(BinaryConditionalOperator stmt)
+        public virtual bool VisitBinaryConditionalOperator(BinaryConditionalOperator stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitAddrLabelExpr(AddrLabelExpr stmt)
+        public virtual bool VisitAddrLabelExpr(AddrLabelExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitStmtExpr(StmtExpr stmt)
+        public virtual bool VisitStmtExpr(StmtExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitShuffleVectorExpr(ShuffleVectorExpr stmt)
+        public virtual bool VisitShuffleVectorExpr(ShuffleVectorExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitConvertVectorExpr(ConvertVectorExpr stmt)
+        public virtual bool VisitConvertVectorExpr(ConvertVectorExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitChooseExpr(ChooseExpr stmt)
+        public virtual bool VisitChooseExpr(ChooseExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitGNUNullExpr(GNUNullExpr stmt)
+        public virtual bool VisitGNUNullExpr(GNUNullExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitVAArgExpr(VAArgExpr stmt)
+        public virtual bool VisitVAArgExpr(VAArgExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitInitListExpr(InitListExpr stmt)
+        public virtual bool VisitInitListExpr(InitListExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitDesignatedInitExpr(DesignatedInitExpr stmt)
+        public virtual bool VisitDesignatedInitExpr(DesignatedInitExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitNoInitExpr(NoInitExpr stmt)
+        public virtual bool VisitNoInitExpr(NoInitExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitDesignatedInitUpdateExpr(DesignatedInitUpdateExpr stmt)
+        public virtual bool VisitDesignatedInitUpdateExpr(DesignatedInitUpdateExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitArrayInitLoopExpr(ArrayInitLoopExpr stmt)
+        public virtual bool VisitArrayInitLoopExpr(ArrayInitLoopExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitArrayInitIndexExpr(ArrayInitIndexExpr stmt)
+        public virtual bool VisitArrayInitIndexExpr(ArrayInitIndexExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitImplicitValueInitExpr(ImplicitValueInitExpr stmt)
+        public virtual bool VisitImplicitValueInitExpr(ImplicitValueInitExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitParenListExpr(ParenListExpr stmt)
+        public virtual bool VisitParenListExpr(ParenListExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitGenericSelectionExpr(GenericSelectionExpr stmt)
+        public virtual bool VisitGenericSelectionExpr(GenericSelectionExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitExtVectorElementExpr(ExtVectorElementExpr stmt)
+        public virtual bool VisitExtVectorElementExpr(ExtVectorElementExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitBlockExpr(BlockExpr stmt)
+        public virtual bool VisitBlockExpr(BlockExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitAsTypeExpr(AsTypeExpr stmt)
+        public virtual bool VisitAsTypeExpr(AsTypeExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitPseudoObjectExpr(PseudoObjectExpr stmt)
+        public virtual bool VisitPseudoObjectExpr(PseudoObjectExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitAtomicExpr(AtomicExpr stmt)
+        public virtual bool VisitAtomicExpr(AtomicExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitTypoExpr(TypoExpr stmt)
+        public virtual bool VisitTypoExpr(TypoExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXOperatorCallExpr(CXXOperatorCallExpr stmt)
+        public virtual bool VisitCXXOperatorCallExpr(CXXOperatorCallExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXMemberCallExpr(CXXMemberCallExpr stmt)
+        public virtual bool VisitCXXMemberCallExpr(CXXMemberCallExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCUDAKernelCallExpr(CUDAKernelCallExpr stmt)
+        public virtual bool VisitCUDAKernelCallExpr(CUDAKernelCallExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXNamedCastExpr(CXXNamedCastExpr stmt)
+        public virtual bool VisitCXXNamedCastExpr(CXXNamedCastExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXStaticCastExpr(CXXStaticCastExpr stmt)
+        public virtual bool VisitCXXStaticCastExpr(CXXStaticCastExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXDynamicCastExpr(CXXDynamicCastExpr stmt)
+        public virtual bool VisitCXXDynamicCastExpr(CXXDynamicCastExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXReinterpretCastExpr(CXXReinterpretCastExpr stmt)
+        public virtual bool VisitCXXReinterpretCastExpr(CXXReinterpretCastExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXConstCastExpr(CXXConstCastExpr stmt)
+        public virtual bool VisitCXXConstCastExpr(CXXConstCastExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitUserDefinedLiteral(UserDefinedLiteral stmt)
+        public virtual bool VisitUserDefinedLiteral(UserDefinedLiteral stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXBoolLiteralExpr(CXXBoolLiteralExpr stmt)
+        public virtual bool VisitCXXBoolLiteralExpr(CXXBoolLiteralExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXNullPtrLiteralExpr(CXXNullPtrLiteralExpr stmt)
+        public virtual bool VisitCXXNullPtrLiteralExpr(CXXNullPtrLiteralExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXStdInitializerListExpr(CXXStdInitializerListExpr stmt)
+        public virtual bool VisitCXXStdInitializerListExpr(CXXStdInitializerListExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXTypeidExpr(CXXTypeidExpr stmt)
+        public virtual bool VisitCXXTypeidExpr(CXXTypeidExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitMSPropertyRefExpr(MSPropertyRefExpr stmt)
+        public virtual bool VisitMSPropertyRefExpr(MSPropertyRefExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitMSPropertySubscriptExpr(MSPropertySubscriptExpr stmt)
+        public virtual bool VisitMSPropertySubscriptExpr(MSPropertySubscriptExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXUuidofExpr(CXXUuidofExpr stmt)
+        public virtual bool VisitCXXUuidofExpr(CXXUuidofExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXThisExpr(CXXThisExpr stmt)
+        public virtual bool VisitCXXThisExpr(CXXThisExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXThrowExpr(CXXThrowExpr stmt)
+        public virtual bool VisitCXXThrowExpr(CXXThrowExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXDefaultArgExpr(CXXDefaultArgExpr stmt)
+        public virtual bool VisitCXXDefaultArgExpr(CXXDefaultArgExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXDefaultInitExpr(CXXDefaultInitExpr stmt)
+        public virtual bool VisitCXXDefaultInitExpr(CXXDefaultInitExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXBindTemporaryExpr(CXXBindTemporaryExpr stmt)
+        public virtual bool VisitCXXBindTemporaryExpr(CXXBindTemporaryExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXConstructExpr(CXXConstructExpr stmt)
+        public virtual bool VisitCXXConstructExpr(CXXConstructExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXInheritedCtorInitExpr(CXXInheritedCtorInitExpr stmt)
+        public virtual bool VisitCXXInheritedCtorInitExpr(CXXInheritedCtorInitExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXFunctionalCastExpr(CXXFunctionalCastExpr stmt)
+        public virtual bool VisitCXXFunctionalCastExpr(CXXFunctionalCastExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXTemporaryObjectExpr(CXXTemporaryObjectExpr stmt)
+        public virtual bool VisitCXXTemporaryObjectExpr(CXXTemporaryObjectExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitLambdaExpr(LambdaExpr stmt)
+        public virtual bool VisitLambdaExpr(LambdaExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXScalarValueInitExpr(CXXScalarValueInitExpr stmt)
+        public virtual bool VisitCXXScalarValueInitExpr(CXXScalarValueInitExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXNewExpr(CXXNewExpr stmt)
+        public virtual bool VisitCXXNewExpr(CXXNewExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXDeleteExpr(CXXDeleteExpr stmt)
+        public virtual bool VisitCXXDeleteExpr(CXXDeleteExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXPseudoDestructorExpr(CXXPseudoDestructorExpr stmt)
+        public virtual bool VisitCXXPseudoDestructorExpr(CXXPseudoDestructorExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitTypeTraitExpr(TypeTraitExpr stmt)
+        public virtual bool VisitTypeTraitExpr(TypeTraitExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitArrayTypeTraitExpr(ArrayTypeTraitExpr stmt)
+        public virtual bool VisitArrayTypeTraitExpr(ArrayTypeTraitExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitExpressionTraitExpr(ExpressionTraitExpr stmt)
+        public virtual bool VisitExpressionTraitExpr(ExpressionTraitExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitOverloadExpr(OverloadExpr stmt)
+        public virtual bool VisitOverloadExpr(OverloadExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitUnresolvedLookupExpr(UnresolvedLookupExpr stmt)
+        public virtual bool VisitUnresolvedLookupExpr(UnresolvedLookupExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitDependentScopeDeclRefExpr(DependentScopeDeclRefExpr stmt)
+        public virtual bool VisitDependentScopeDeclRefExpr(DependentScopeDeclRefExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitExprWithCleanups(ExprWithCleanups stmt)
+        public virtual bool VisitExprWithCleanups(ExprWithCleanups stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXUnresolvedConstructExpr(CXXUnresolvedConstructExpr stmt)
+        public virtual bool VisitCXXUnresolvedConstructExpr(CXXUnresolvedConstructExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXDependentScopeMemberExpr(CXXDependentScopeMemberExpr stmt)
+        public virtual bool VisitCXXDependentScopeMemberExpr(CXXDependentScopeMemberExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitUnresolvedMemberExpr(UnresolvedMemberExpr stmt)
+        public virtual bool VisitUnresolvedMemberExpr(UnresolvedMemberExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXNoexceptExpr(CXXNoexceptExpr stmt)
+        public virtual bool VisitCXXNoexceptExpr(CXXNoexceptExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitPackExpansionExpr(PackExpansionExpr stmt)
+        public virtual bool VisitPackExpansionExpr(PackExpansionExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitSizeOfPackExpr(SizeOfPackExpr stmt)
+        public virtual bool VisitSizeOfPackExpr(SizeOfPackExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitSubstNonTypeTemplateParmExpr(SubstNonTypeTemplateParmExpr stmt)
+        public virtual bool VisitSubstNonTypeTemplateParmExpr(SubstNonTypeTemplateParmExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitSubstNonTypeTemplateParmPackExpr(SubstNonTypeTemplateParmPackExpr stmt)
+        public virtual bool VisitSubstNonTypeTemplateParmPackExpr(SubstNonTypeTemplateParmPackExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitFunctionParmPackExpr(FunctionParmPackExpr stmt)
+        public virtual bool VisitFunctionParmPackExpr(FunctionParmPackExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitMaterializeTemporaryExpr(MaterializeTemporaryExpr stmt)
+        public virtual bool VisitMaterializeTemporaryExpr(MaterializeTemporaryExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCXXFoldExpr(CXXFoldExpr stmt)
+        public virtual bool VisitCXXFoldExpr(CXXFoldExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCoroutineSuspendExpr(CoroutineSuspendExpr stmt)
+        public virtual bool VisitCoroutineSuspendExpr(CoroutineSuspendExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCoawaitExpr(CoawaitExpr stmt)
+        public virtual bool VisitCoawaitExpr(CoawaitExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitDependentCoawaitExpr(DependentCoawaitExpr stmt)
+        public virtual bool VisitDependentCoawaitExpr(DependentCoawaitExpr stmt)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitCoyieldExpr(CoyieldExpr stmt)
+        public virtual bool VisitCoyieldExpr(CoyieldExpr stmt)
         {
             throw new NotImplementedException();
         }
