@@ -9,6 +9,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="System.CodeDom" PrivateAssets="All"/>
+    <PackageReference Include="System.CodeDom" PrivateAssets="All" />
   </ItemGroup>
 </Project>
