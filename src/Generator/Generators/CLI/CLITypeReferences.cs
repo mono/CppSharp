@@ -164,7 +164,7 @@ namespace CppSharp.Generators.CLI
                 return false;
 
             return record.IsBaseClass() || record.IsFieldValueType() || record.IsDelegate()
-                || record.IsEnumNestedInClass();
+                || record.IsEnumNestedInClass() || record.IsClassReturn();
         }
 
         public override bool VisitDeclaration(Declaration decl)
