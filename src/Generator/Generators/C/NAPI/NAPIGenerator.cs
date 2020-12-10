@@ -14,6 +14,14 @@ namespace CppSharp.Generators.C
         {
         }
 
+        public override bool SetupPasses()
+        {
+            var typeCheck = new NAPITypeCheck();
+            Context.TranslationUnitPasses.AddPass(typeCheck);
+
+            return true;
+        }
+
         public override List<GeneratorOutput> Generate()
         {
             var outputs = base.Generate();

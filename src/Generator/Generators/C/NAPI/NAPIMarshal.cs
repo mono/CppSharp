@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators.C;
+using CppSharp.Generators.Cpp;
 using CppSharp.Types;
 using Delegate = CppSharp.AST.Delegate;
 using Type = CppSharp.AST.Type;
@@ -58,68 +60,10 @@ namespace CppSharp.Generators.NAPI
             if (!VisitType(pointer, quals))
                 return false;
 
+            if (pointer.IsConstCharString())
+                return VisitPrimitiveType(PrimitiveType.String);
+
             var pointee = pointer.Pointee.Desugar();
-
-            PrimitiveType primitive;
-            var param = Context.Parameter;
-            if (param != null && (param.IsOut || param.IsInOut) &&
-                pointee.IsPrimitiveType(out primitive))
-            {
-                Context.Return.Write(Context.ReturnVarName);
-                return true;
-            }
-
-            if (pointee.IsPrimitiveType(out primitive))
-            {
-                var returnVarName = Context.ReturnVarName;
-
-                if (pointer.GetFinalQualifiedPointee().Qualifiers.IsConst !=
-                    Context.ReturnType.Qualifiers.IsConst)
-                {
-                    var nativeTypePrinter = new CppTypePrinter(Context.Context)
-                        { PrintTypeQualifiers = false };
-                    var returnType = Context.ReturnType.Type.Desugar();
-                    var constlessPointer = new PointerType()
-                    {
-                        IsDependent = pointer.IsDependent,
-                        Modifier = pointer.Modifier,
-                        QualifiedPointee = new QualifiedType(returnType.GetPointee())
-                    };
-                    var nativeConstlessTypeName = constlessPointer.Visit(nativeTypePrinter, new TypeQualifiers());
-                    returnVarName = string.Format("const_cast<{0}>({1})",
-                        nativeConstlessTypeName, Context.ReturnVarName);
-                }
-
-                if (pointer.Pointee is TypedefType)
-                {
-                    var desugaredPointer = new PointerType()
-                    {
-                        IsDependent = pointer.IsDependent,
-                        Modifier = pointer.Modifier,
-                        QualifiedPointee = new QualifiedType(pointee)
-                    };
-                    var nativeTypePrinter = new CppTypePrinter(Context.Context);
-                    var nativeTypeName = desugaredPointer.Visit(nativeTypePrinter, quals);
-                    Context.Return.Write("reinterpret_cast<{0}>({1})", nativeTypeName,
-                        returnVarName);
-                }
-                else
-                    Context.Return.Write(returnVarName);
-
-                return true;
-            }
-
-            TypeMap typeMap = null;
-            Context.Context.TypeMaps.FindTypeMap(pointee, out typeMap);
-
-            Class @class;
-            if (pointee.TryGetClass(out @class) && typeMap == null)
-            {
-                var instance = (pointer.IsReference) ? "&" + Context.ReturnVarName
-                    : Context.ReturnVarName;
-                WriteClassInstance(@class, instance);
-                return true;
-            }
 
             return pointer.QualifiedPointee.Visit(this);
         }
@@ -220,6 +164,10 @@ namespace CppSharp.Generators.NAPI
                 return true;
 
             case PrimitiveType.String:
+                Context.Before.WriteLine($"napi_value {result};");
+                Context.Before.WriteLine($"status = {func}(env, {Context.ReturnVarName}, NAPI_AUTO_LENGTH, &{result});");
+                Context.Before.WriteLine("assert(status == napi_ok);");
+                Context.Return.Write(result);
                 return true;
 
             case PrimitiveType.Null:
@@ -298,26 +246,31 @@ namespace CppSharp.Generators.NAPI
             if (@class.CompleteDeclaration != null)
                 return VisitClassDecl(@class.CompleteDeclaration as Class);
 
-            var instance = string.Empty;
+            var ctor = @class.Constructors.FirstOrDefault();
+            var ctorRef = $"ctor_{NAPISources.GetCIdentifier(Context.Context, ctor)}";
+            var ctorId = $"__{Context.ReturnVarName}_ctor";
+            Context.Before.WriteLine($"napi_value {ctorId};");
+            Context.Before.WriteLine($"status = napi_get_reference_value(env, {ctorRef}, &{ctorId});");
+            Context.Before.WriteLine("assert(status == napi_ok);");
+            Context.Before.NewLine();
 
-            if (Context.Context.Options.GeneratorKind == GeneratorKind.CLI)
-            {
-                if (!Context.ReturnType.Type.IsPointer())
-                    instance += "&";
-            }
+            var instanceId = $"__{Context.ReturnVarName}_instance";
+            Context.Before.WriteLine($"napi_value {instanceId};");
+            Context.Before.WriteLine($"status = napi_new_instance(env, {ctorId}, 0, nullptr, &{instanceId});");
+            Context.Before.WriteLine("assert(status == napi_ok);");
+            Context.Before.NewLine();
 
-            instance += Context.ReturnVarName;
-            var needsCopy = Context.MarshalKind != MarshalKind.NativeField;
+/*
+            var refId = $"__{Context.ReturnVarName}_ref";
+            Context.Before.WriteLine($"napi_ref {refId};");
 
-            if (@class.IsRefType && needsCopy)
-            {
-                var name = Generator.GeneratedIdentifier(Context.ReturnVarName);
-                Context.Before.WriteLine($"auto {name} = {MemoryAllocOperator} ::{{0}}({{1}});",
-                    @class.QualifiedOriginalName, Context.ReturnVarName);
-                instance = name;
-            }
+            var dtorId = $"dtor_{NAPISources.GetCIdentifier(Context.Context, ctor)}";
+            Context.Before.WriteLine($"status = napi_wrap(env, _this, {instanceId}, {dtorId}" +
+                                     $", nullptr, &{refId});");
+            Context.Before.WriteLine("assert(status == napi_ok);");
+*/
+            Context.Return.Write($"{instanceId}");
 
-            WriteClassInstance(@class, instance);
             return true;
         }
 
@@ -327,28 +280,6 @@ namespace CppSharp.Generators.NAPI
                 return $"{decl.TranslationUnit.Module.OutputNamespace}::{decl.QualifiedName}";
 
             return decl.QualifiedName;
-        }
-
-        public void WriteClassInstance(Class @class, string instance)
-        {
-            if (@class.CompleteDeclaration != null)
-            {
-                WriteClassInstance(@class.CompleteDeclaration as Class, instance);
-                return;
-            }
-
-            if (!Context.ReturnType.Type.Desugar().IsPointer())
-            {
-                Context.Return.Write($"{instance}");
-                return;
-            }
-
-            if (@class.IsRefType)
-                Context.Return.Write($"({instance} == nullptr) ? nullptr : {MemoryAllocOperator} ");
-
-            Context.Return.Write($"{QualifiedIdentifier(@class)}(");
-            Context.Return.Write($"(::{@class.QualifiedOriginalName}*)");
-            Context.Return.Write($"{instance})");
         }
 
         public override bool VisitFieldDecl(Field field)
@@ -382,10 +313,8 @@ namespace CppSharp.Generators.NAPI
 
         public override bool VisitEnumDecl(Enumeration @enum)
         {
-            var typePrinter = new CppTypePrinter(Context.Context);
-            typePrinter.PushContext(TypePrinterContextKind.Managed);
-            var typeName = typePrinter.VisitDeclaration(@enum);
-            Context.Return.Write($"({typeName}){Context.ReturnVarName}");
+            Context.ReturnVarName = $"(int32_t) {Context.ReturnVarName}";
+            VisitPrimitiveType(PrimitiveType.Int);
 
             return true;
         }
@@ -471,6 +400,9 @@ namespace CppSharp.Generators.NAPI
         {
             if (!VisitType(pointer, quals))
                 return false;
+
+            if (pointer.IsConstCharString())
+                return VisitPrimitiveType(PrimitiveType.String);
 
             var pointee = pointer.Pointee.Desugar();
 
@@ -567,7 +499,7 @@ namespace CppSharp.Generators.NAPI
             case PrimitiveType.Float128:
                 return (null, null, null);
             case PrimitiveType.String:
-                return (null, null, null);
+                return ("napi_get_value_string_utf8", "char*", null);
             case PrimitiveType.Null:
                 return ("napi_get_null", null, null);
             case PrimitiveType.Void:
@@ -631,10 +563,23 @@ namespace CppSharp.Generators.NAPI
                 return true;
 
             case PrimitiveType.String:
+                var size = $"_{Context.Parameter.Name}_size";
+                Context.Before.WriteLine($"size_t {size};");
+                Context.Before.WriteLine($"status = {func}(env, args[{Context.ParameterIndex}], " +
+                                         $"nullptr, 0, &{size});");
+                Context.Before.NewLine();
+
+                var buf = $"{Context.Parameter.Name}";
+                Context.Before.WriteLine($"char* {buf} = (char*) malloc({size});");
+                Context.Before.WriteLine($"status = {func}(env, args[{Context.ParameterIndex}], " +
+                                         $"nullptr, 0, &{size});");
+                Context.Before.WriteLine("assert(status == napi_ok);");
+
+                Context.Cleanup.WriteLine($"free({buf};");
+                Context.Return.Write($"{buf}");
                 return true;
 
             case PrimitiveType.Null:
-
                 return true;
 
             case PrimitiveType.Void:
@@ -744,42 +689,27 @@ namespace CppSharp.Generators.NAPI
         private void MarshalRefClass(Class @class)
         {
             var type = Context.Parameter.Type.Desugar();
+
+/*
             TypeMap typeMap;
             if (Context.Context.TypeMaps.FindTypeMap(type, out typeMap) &&
                 typeMap.DoesMarshalling)
             {
-                typeMap.CppMarshalToNative(Context);
+                typeMap.NAPIMarshalToNative(Context);
                 return;
             }
+*/
+            var instance = $"{Context.Parameter.Name}_instance";
+            Context.Before.WriteLine($"{@class.QualifiedOriginalName}* {instance};");
+            Context.Before.WriteLine($"status = napi_unwrap(env, _this, (void**) &{instance});");
 
-            if (!type.SkipPointerRefs().IsPointer())
-            {
-                Context.Return.Write("*");
+            var isPointer = type.SkipPointerRefs().IsPointer();
+            var deref = isPointer ? "" : "*";
 
-                if (Context.Parameter.Type.IsReference())
-                    VarPrefix.Write("&");
-            }
+            if (!isPointer && Context.Parameter.Type.IsReference())
+                VarPrefix.Write("&");
 
-            var method = Context.Function as Method;
-            if (method != null
-                && method.Conversion == MethodConversionKind.FunctionToInstanceMethod
-                && Context.ParameterIndex == 0)
-            {
-                Context.Return.Write($"(::{@class.QualifiedOriginalName}*)");
-                Context.Return.Write(Helpers.InstanceIdentifier);
-                return;
-            }
-
-            var paramType = Context.Parameter.Type.Desugar();
-            var isPointer = paramType.SkipPointerRefs().IsPointer();
-            var deref = isPointer ? "->" : ".";
-            var instance = $"(::{@class.QualifiedOriginalName}*)" +
-                $"{Context.Parameter.Name}{deref}{Helpers.InstanceIdentifier}";
-
-            if (isPointer)
-                Context.Return.Write($"{Context.Parameter.Name} ? {instance} : nullptr");
-            else
-                Context.Return.Write($"{instance}");
+            Context.Return.Write($"{deref}{instance}");
         }
 
         private void MarshalValueClass(Class @class)
@@ -831,8 +761,11 @@ namespace CppSharp.Generators.NAPI
 
         public override bool VisitEnumDecl(Enumeration @enum)
         {
-            Context.Return.Write("(::{0}){1}", @enum.QualifiedOriginalName,
-                         Context.Parameter.Name);
+            VisitPrimitiveType(PrimitiveType.Int);
+
+            Context.Return.StringBuilder.Clear();
+            Context.Return.Write($"(::{@enum.QualifiedOriginalName}){Context.Parameter.Name}");
+
             return true;
         }
 

@@ -23,6 +23,8 @@ function builtins()
     eq(test.PassAndReturnsSChar(ascii('b')), ascii('b'));
     eq(test.PassAndReturnsUChar(ascii('c')), ascii('c'));
 
+    // TODO: add wchar_t tests
+
     eq(test.ReturnsFloat (), 5.0);
     eq(test.ReturnsDouble(), -5.0);
     //eq(test.ReturnsLongDouble(), -5.0);
@@ -78,15 +80,37 @@ function enums()
     eq(test.Enum0.Item0, 0);
     eq(test.Enum0.Item1, 1);
     eq(test.Enum0.Item2, 5);
+
+    eq(test.ReturnsEnum(), test.Enum0.Item0);
+    eq(test.PassAndReturnsEnum(test.Enum0.Item1), test.Enum0.Item1);
 }
 
 function overloads()
 {
-    eq(test.Overload(1, 2), 1)
+    eq(test.Overload0(), undefined);
+
+    eq(test.Overload1(),  1);
+    eq(test.Overload1(2), 2);
+
+    eq(test.Overload(1, 2),     1);
     eq(test.Overload(1, 2.032), 2);
-    eq(test.Overload(1.23, 2), 3);
+    eq(test.Overload(1.23, 2),  3);
+}
+
+function classes()
+{
+    var c = new test.Class();
+    eq(typeof(c), "object")
+    //eq(c.ReturnsVoid(), undefined)
+    eq(c.ReturnsInt(), 0)
+
+    var c1 = new test.ClassWithSingleInheritance();
+    ///eq(c1.ReturnsVoid(), undefined);
+    eq(c1.ReturnsInt(), 0);
+    eq(c1.ChildMethod(), 2);
 }
 
 builtins();
 enums();
 overloads();
+classes();

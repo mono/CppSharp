@@ -127,6 +127,9 @@ namespace CppSharp.Generators.Cpp
             WriteLine(@"#define NAPI_IS_UINT32(valuetype, value) (NAPI_IS_NUMBER(valuetype) && napi_is_uint32(env, value, nullptr))");
             WriteLine(@"#define NAPI_IS_INT64(valuetype, value) (NAPI_IS_BIGINT(valuetype))");
             WriteLine(@"#define NAPI_IS_UINT64(valuetype, value) (NAPI_IS_BIGINT(valuetype))");
+            WriteLine(@"#define NAPI_IS_ARRAY(valuetype) (valuetype == napi_object)");
+            WriteLine(@"#define NAPI_IS_OBJECT(valuetype) (valuetype == napi_object)");
+
             NewLine();
         }
     }

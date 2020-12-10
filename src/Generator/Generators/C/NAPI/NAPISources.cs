@@ -3,19 +3,51 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Extensions;
 using CppSharp.Generators.C;
 using CppSharp.Generators.NAPI;
-using CppSharp.Types.Std;
-using CppSharp.Utils;
+using CppSharp.Passes;
 using CppSharp.Utils.FSM;
 using static CppSharp.Generators.Cpp.NAPISources;
 
 namespace CppSharp.Generators.Cpp
 {
+    public class NAPIClassReturnCollector : TranslationUnitPass
+    {
+        public HashSet<Class> Classes = new HashSet<Class>();
+        public TranslationUnit TranslationUnit;
+
+        public override bool VisitFunctionDecl(Function function)
+        {
+            if (!NAPISources.ShouldGenerate(function))
+                return false;
+
+            var retType = function.ReturnType.Type.Desugar();
+            if (retType.IsPointer())
+                retType = retType.GetFinalPointee().Desugar();
+
+            if (!(retType is TagType tagType))
+                return base.VisitFunctionDecl(function);
+
+            if (!(tagType.Declaration is Class @class))
+                return base.VisitFunctionDecl(function);
+
+            if (@class.TranslationUnit == TranslationUnit)
+                return base.VisitFunctionDecl(function);
+
+            Classes.Add(@class);
+            return true;
+        }
+
+        public override bool VisitTranslationUnit(TranslationUnit unit)
+        {
+            TranslationUnit = unit;
+            return base.VisitTranslationUnit(unit);
+        }
+    }
+
     public class NAPICodeGenerator : CCodeGenerator
     {
         public override string FileExtension => "cpp";
@@ -49,17 +81,36 @@ namespace CppSharp.Generators.Cpp
 
         public override void VisitClassConstructors(Class @class)
         {
-            var constructors = @class.Constructors.Where(c => !ASTUtils.CheckIgnoreMethod(c)).ToList();
+            var constructors = @class.Constructors.Where(c => c.IsGenerated && !c.IsCopyConstructor)
+                .ToList();
             if (!constructors.Any())
                 return;
 
             GenerateMethodGroup(constructors);
         }
 
+        public static bool ShouldGenerate(Function function)
+        {
+            if (!function.IsGenerated)
+                return false;
+
+            if (function is Method method)
+            {
+                if (method.IsConstructor || method.IsDestructor)
+                    return false;
+
+                if (method.IsOperator)
+                    if (method.OperatorKind == CXXOperatorKind.Conversion ||
+                        method.OperatorKind == CXXOperatorKind.Equal)
+                        return false;
+            }
+
+            return true;
+        }
+
         public override void VisitClassMethods(Class @class)
         {
-            var methods = @class.Methods.Where(m => !ASTUtils.CheckIgnoreMethod(m) &&
-                !m.IsConstructor);
+            var methods = @class.Methods.Where(ShouldGenerate);
             var uniqueMethods = methods.GroupBy(m => m.Name);
             foreach (var group in uniqueMethods)
                 GenerateMethodGroup(group.ToList());
@@ -102,6 +153,18 @@ namespace CppSharp.Generators.Cpp
             WriteInclude("assert.h", CInclude.IncludeKind.Angled);
             WriteInclude("stdio.h", CInclude.IncludeKind.Angled);
             WriteInclude("NAPIHelpers.h", CInclude.IncludeKind.Quoted);
+            PopBlock(NewLineKind.BeforeNextBlock);
+
+            var collector = new NAPIClassReturnCollector();
+            TranslationUnit.Visit(collector);
+
+            PushBlock();
+            foreach (var @class in collector.Classes)
+            {
+                var ctor = @class.Methods.First(m => m.IsConstructor);
+                WriteLine($"extern napi_ref ctor_{GetCIdentifier(Context, @ctor)};");
+            }
+
             PopBlock(NewLineKind.BeforeNextBlock);
 
             var registerGen = new NAPIRegister(Context, TranslationUnits);
@@ -283,6 +346,7 @@ namespace CppSharp.Generators.Cpp
             GenerateNativeCall(group);
             NewLine();
 
+            // TODO:
             WriteLine("return nullptr;");
 
             UnindentAndWriteCloseBrace();
@@ -302,33 +366,13 @@ namespace CppSharp.Generators.Cpp
             }
 
             PushBlock(BlockKind.Method);
+
             GenerateFunctionCallback(@group.OfType<Function>().ToList());
+            GenerateNativeCall(@group);
 
-            if (method.IsConstructor)
-            {
-                WriteLine("napi_ref result;");
-                //WriteLine("napi_value result;");
-                //WriteLine("NAPI_CALL(env, napi_create_object(env, &result));");
-
-                var @class = method.Namespace as Class;
-                if (@group.Any(m => m.IsDefaultConstructor))
-                    WriteLine($"{@class.QualifiedOriginalName}* obj = new {@class.QualifiedOriginalName}();");
-                else
-                    WriteLine($"{@class.QualifiedOriginalName}* obj = nullptr;");
-
-                WriteLine($"status = napi_wrap(env, _this, obj, dtor_{GetCIdentifier(Context, method)}, nullptr, &result);");
-                WriteLine("assert(status == napi_ok);");
-                NewLine();
-            }
-            else
-            {
-                GenerateNativeCall(@group);
-            }
-
-            WriteLine($"printf(\"{method.QualifiedName}: %lu\\n\", argc);");
             WriteLine("return _this;");
-
             UnindentAndWriteCloseBrace();
+
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
@@ -337,48 +381,97 @@ namespace CppSharp.Generators.Cpp
 
         }
 
-        public virtual void GenerateFunctionCallback(IList<Function> @group)
+        public virtual void GenerateFunctionCallback(List<Function> @group)
         {
             var function = @group.First();
 
             WriteLine($"// {function.QualifiedName}");
 
             var type = function is Method ? "method" : "function";
-            Write($"static napi_value callback_{type}_{GetCIdentifier(Context, function)}");
+            var callbackId = $"callback_{type}_{GetCIdentifier(Context, function)}";
+
+            Write($"static napi_value {callbackId}");
             WriteLine("(napi_env env, napi_callback_info info)");
             WriteOpenBraceAndIndent();
 
             WriteLine("napi_status status;");
+            WriteLine("napi_value _this;");
             WriteLine("size_t argc;");
-            WriteLine("status = napi_get_cb_info(env, info, &argc, nullptr, nullptr, nullptr);");
+            WriteLine("status = napi_get_cb_info(env, info, &argc, nullptr, &_this, nullptr);");
             WriteLine("assert(status == napi_ok);");
             NewLine();
+
+            WriteLine("napi_value args[argc];");
+            WriteLine("napi_valuetype types[argc];");
+            NewLine();
+
+            // Handle the zero arguments case right away if one exists.
+            var zeroParamsOverload = @group.SingleOrDefault(f => f.Parameters.Count == 0);
+            if (zeroParamsOverload != null && @group.Count > 1)
+            {
+                var index = @group.FindIndex(f => f == zeroParamsOverload);
+
+                WriteLine($"if (argc == 0)");
+                WriteLineIndent($"goto overload{index};");
+                NewLine();
+            }
 
             // Check if the arguments are in the expected range.
             CheckArgumentsRange(@group);
             NewLine();
 
             var needsArguments = @group.Any(f => f.Parameters.Any(p => p.IsGenerated));
-            if (!needsArguments)
+            if (needsArguments)
             {
-                GenerateFunctionCall(function);
-                return;
+                //WriteLine("void* data;");
+                WriteLine("status = napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);");
+                WriteLine("assert(status == napi_ok);");
+                NewLine();
+
+                // Next we need to disambiguate which overload to call based on:
+                // 1. Number of arguments passed to the method
+                // 2. Type of arguments
+
+                CheckArgumentsTypes(@group);
+                NewLine();
             }
 
-            WriteLine("napi_value args[argc], _this;");
-            //WriteLine("void* data;");
-            WriteLine("status = napi_get_cb_info(env, info, &argc, args, &_this, nullptr);");
-            WriteLine("assert(status == napi_ok);");
-            NewLine();
+            var method = function as Method;
+            if (method != null)
+            {
+                var @class = method.Namespace as Class;
+                if (method.IsConstructor)
+                {
+                    WriteLine($"{@class.QualifiedOriginalName}* instance = nullptr;");
+                }
+                else
+                {
+                    WriteLine($"{@class.QualifiedOriginalName}* instance;");
+                    WriteLine("status = napi_unwrap(env, _this, (void**) &instance);");
+                }
 
-            // Next we need to disambiguate which overload to call based on:
-            // 1. Number of arguments passed to the method
-            // 2. Type of arguments
+                NewLine();
+            }
 
-            CheckArgumentsTypes(@group);
-            NewLine();
+            if (needsArguments)
+            {
+                var stateMachine = CalculateOverloadStates(@group);
+                CheckArgumentsOverload(@group, stateMachine);
+                GenerateOverloadCalls(@group, stateMachine);
+            }
+            else
+            {
+                GenerateFunctionCall(function);
+            }
 
-            CheckArgumentsOverload(@group);
+            if (method != null && method.IsConstructor)
+            {
+                WriteLine("napi_ref result;");
+                WriteLine($"status = napi_wrap(env, _this, instance, dtor_{GetCIdentifier(Context, method)}" +
+                          $", nullptr, &result);");
+                WriteLine("assert(status == napi_ok);");
+                NewLine();
+            }
         }
 
         private void CheckArgumentsRange(IEnumerable<Function> @group)
@@ -403,20 +496,15 @@ namespace CppSharp.Generators.Cpp
 
         private void CheckArgumentsTypes(IEnumerable<Function> @group)
         {
-            WriteLine("napi_valuetype types[argc];");
-            WriteLine("for (int i = 0; i < argc; i++)");
+            WriteLine("for (size_t i = 0; i < argc; i++)");
             WriteOpenBraceAndIndent();
             WriteLine("status = napi_typeof(env, args[i], &types[i]);");
             WriteLine("assert(status == napi_ok);");
             UnindentAndWriteCloseBrace();
         }
 
-        private void CheckArgumentsOverload(IList<Function> @group)
+        private void CheckArgumentsOverload(IList<Function> @group, DFSM stateMachine)
         {
-            // First handle the easy case of zero arguments.
-            //WriteLine("if (argc == 0)");
-
-            var stateMachine = CalculateOverloadStates(@group);
             var typeCheckStates = stateMachine.Q.Except(stateMachine.F).ToList();
             var finalStates = stateMachine.F;
 
@@ -429,9 +517,12 @@ namespace CppSharp.Generators.Cpp
             {
                 NewLineIfNeeded();
 
-                Unindent();
-                WriteLine($"typecheck{i}:");
-                Indent();
+                if (i > 0)
+                {
+                    Unindent();
+                    WriteLine($"typecheck{i}:");
+                    Indent();
+                }
 
                 var state = typeCheckStates[i];
                 var transitions = stateMachine.Delta.Where(t => t.StartState == state).ToArray();
@@ -445,7 +536,14 @@ namespace CppSharp.Generators.Cpp
                         int.Parse(transition.StartState.Split(' ').Last().Split('_').Last()) + 1;
 
                     var type = uniqueTypes[(int) transition.Symbol];
-                    var condition = GenerateTypeCheckCondition(paramIndex, type);
+
+                    var typeChecker = new NAPITypeCheckGen(paramIndex);
+                    type.Visit(typeChecker);
+
+                    var condition = typeChecker.Generate();
+                    if (string.IsNullOrWhiteSpace(condition))
+                        throw new NotSupportedException();
+
                     WriteLine($"if ({condition})");
 
                     var nextState = typeCheckStates.Contains(transition.EndState)
@@ -473,13 +571,16 @@ namespace CppSharp.Generators.Cpp
 
             WriteLine("return nullptr;");
             NewLine();
+        }
 
+        private void GenerateOverloadCalls(IList<Function> @group, DFSM stateMachine)
+        {
             // Final states.
-            for (var i = 0; i < finalStates.Count; i++)
+            for (var i = 0; i < stateMachine.F.Count; i++)
             {
                 NewLineIfNeeded();
 
-                var function = group[i];
+                var function = @group[i];
                 WriteLine($"// {function.Signature}");
 
                 Unindent();
@@ -487,9 +588,10 @@ namespace CppSharp.Generators.Cpp
                 Indent();
 
                 WriteOpenBraceAndIndent();
-                GenerateFunctionCall(function);
-                UnindentAndWriteCloseBrace();
 
+                GenerateFunctionCall(function);
+
+                UnindentAndWriteCloseBrace();
                 NeedNewLine();
             }
         }
@@ -515,8 +617,7 @@ namespace CppSharp.Generators.Cpp
             var field = property?.Field;
             if (field != null)
             {
-                Write($"((::{@class.QualifiedOriginalName}*){Helpers.InstanceIdentifier})->");
-                Write($"{field.OriginalName}");
+                Write($"instance->{field.OriginalName}");
 
                 var isGetter = property.GetMethod == method;
                 if (isGetter)
@@ -526,14 +627,18 @@ namespace CppSharp.Generators.Cpp
             }
             else
             {
-                if (IsNativeFunctionOrStaticMethod(function))
+                if (method != null && method.IsConstructor)
+                {
+                    Write($"instance = new {@class.QualifiedOriginalName}(");
+                }
+                else if (IsNativeFunctionOrStaticMethod(function))
                 {
                     Write($"::{function.QualifiedOriginalName}(");
                 }
                 else
                 {
                     if (function.IsNativeMethod())
-                        Write($"((::{@class.QualifiedOriginalName}*){Helpers.InstanceIdentifier})->");
+                        Write($"instance->");
 
                     Write($"{base.GetMethodIdentifier(function, TypePrinterContextKind.Native)}(");
                 }
@@ -569,6 +674,7 @@ namespace CppSharp.Generators.Cpp
 
             if (needsReturn)
             {
+                NewLine();
                 GenerateFunctionCallReturnMarshal(function);
             }
         }
@@ -592,36 +698,6 @@ namespace CppSharp.Generators.Cpp
             }
 
             WriteLine($"return {marshal.Context.Return};");
-        }
-
-        private string GenerateTypeCheckCondition(int paramIndex, CppSharp.AST.Type type)
-        {
-            if (type.IsPrimitiveType(out PrimitiveType primitive))
-            {
-                var condition = $"NAPI_IS_NUMBER(types[{paramIndex}])";
-
-                if (primitive == PrimitiveType.Bool)
-                    condition =$"NAPI_IS_BOOL(types[{paramIndex}])";
-
-                else if (primitive == PrimitiveType.UInt)
-                    condition =$"NAPI_IS_UINT32(types[{paramIndex}], args[{paramIndex}])";
-
-                else if (primitive == PrimitiveType.LongLong)
-                    condition =$"NAPI_IS_INT64(types[{paramIndex}], args[{paramIndex}])";
-
-                else if (primitive == PrimitiveType.ULongLong)
-                    condition =$"NAPI_IS_UINT64(types[{paramIndex}], args[{paramIndex}])";
-
-                else if (primitive.IsIntegerType())
-                    condition =$"NAPI_IS_INT32(types[{paramIndex}], args[{paramIndex}])";
-
-                else if (primitive == PrimitiveType.Null)
-                    condition =$"NAPI_IS_NULL(types[{paramIndex}])";
-
-                return condition;
-            }
-
-            throw new NotImplementedException();
         }
 
         public bool IsNativeFunctionOrStaticMethod(Function function)
@@ -732,7 +808,7 @@ namespace CppSharp.Generators.Cpp
 
         private static DFSM CalculateOverloadStates(IEnumerable<Function> group)
         {
-            var functionGroup = group.Where(m => m.Parameters.Count != 0).ToArray();
+            var functionGroup = group.ToList();
 
             // Create a set of unique parameter types.
             var uniqueTypes = functionGroup.SelectMany(method => method.Parameters)
@@ -743,14 +819,14 @@ namespace CppSharp.Generators.Cpp
 
             var Q = new List<string> {"S"};
 
-            var overloadStates = Enumerable.Range(0, functionGroup.Length).Select(i => $"F{i}")
+            var overloadStates = Enumerable.Range(0, functionGroup.Count).Select(i => $"F{i}")
                 .ToArray();
             Q.AddRange(overloadStates);
 
             var Delta = new List<Transition>();
 
             // Setup states and transitions.
-            for (var methodIndex = 0; methodIndex < functionGroup.Length; methodIndex++)
+            for (var methodIndex = 0; methodIndex < functionGroup.Count; methodIndex++)
             {
                 var method = functionGroup[methodIndex];
                 var curState = "S";
@@ -776,6 +852,14 @@ namespace CppSharp.Generators.Cpp
 
             var NDFSM = new NDFSM(Q, Sigma, Delta, Q0, F);
             var DFSM = Minimize.PowersetConstruction(NDFSM);
+
+            // Add the zero-parameters overload manually if one exists since it got optimized out.
+            var zeroParamsOverload = functionGroup.SingleOrDefault(f => f.Parameters.Count == 0);
+            if (zeroParamsOverload != null)
+            {
+                var index = functionGroup.FindIndex(f => f == zeroParamsOverload);
+                DFSM.F.Insert(index, $"F{index}");
+            }
 
 #if OPTIMIZE_STATES
             DFSM = Minimize.MinimizeDFSM(DFSM);
@@ -834,6 +918,11 @@ namespace CppSharp.Generators.Cpp
             WriteLine("// { utf8name, name, method, getter, setter, value, attributes, data }");
 
             VisitClassDeclContext(@class);
+            @class.FindHierarchy(c =>
+            {
+                WriteLine($"// {@class.QualifiedOriginalName}");
+                return VisitClassDeclContext(c);
+            });
             NewLine();
 
             Unindent();
