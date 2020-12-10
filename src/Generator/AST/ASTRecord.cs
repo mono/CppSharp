@@ -163,6 +163,18 @@ namespace CppSharp.Generators.AST
             return false;
         }
 
+        public static bool IsClassReturn(this ASTRecord record)
+        {
+            var ancestors = new Stack<object>();
+            if(!record.GetAncestors<Function>(ref ancestors))
+                return false;
+
+            var function = (Function)ancestors.Pop();
+            var tagType = function.ReturnType.Type.Desugar() as TagType;
+
+            return tagType?.Declaration is Class;
+        }
+
         public static bool IsDelegate(this ASTRecord record)
         {
             var typedef = record.Object as TypedefDecl;
