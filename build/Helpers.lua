@@ -74,7 +74,8 @@ end
 function SetupNativeProject()
   location (path.join(actionbuilddir, "projects"))
   files { "*.lua" }
-  
+  cppdialect "c++17"
+
   if os.getenv("CPPSHARP_RELEASE") == "true" then
     symbols "off"
   end
@@ -107,7 +108,6 @@ function SetupNativeProject()
     links { "c++" }
 
   filter { "toolset:not msc*", "language:C++" }
-    cppdialect "C++14"
     buildoptions { "-fpermissive" }
   
   -- OS-specific options
