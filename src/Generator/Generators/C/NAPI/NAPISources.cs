@@ -336,6 +336,11 @@ namespace CppSharp.Generators.Cpp
         {
         }
 
+        public NAPICallbacks(BindingContext context, IEnumerable<TranslationUnit> units)
+            : base(context, units)
+        {
+        }
+
         public override void GenerateFunctionGroup(List<Function> @group)
         {
             var function = @group.First();
@@ -596,7 +601,7 @@ namespace CppSharp.Generators.Cpp
             }
         }
 
-        public void GenerateFunctionCall(Function function)
+        public virtual void GenerateFunctionCall(Function function)
         {
             var @params = GenerateFunctionParamsMarshal(function.Parameters, function);
 

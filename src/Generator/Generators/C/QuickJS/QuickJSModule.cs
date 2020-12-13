@@ -8,15 +8,14 @@ namespace CppSharp.Generators.Cpp
     /// Generates QuickJS C/C++ module init files.
     /// QuickJS documentation: https://bellard.org/quickjs/
     /// </summary>
-    public class QuickJSModule : CCodeGenerator
+    public class QuickJSModule : NAPICodeGenerator
     {
-        readonly Module module;
+        private readonly Module module;
 
         public QuickJSModule(BindingContext context, Module module)
             : base(context, module.Units.GetGenerated())
         {
             this.module = module;
-            CTypePrinter.PushContext(TypePrinterContextKind.Managed);
         }
 
         public override string FileExtension { get; } = "cpp";
@@ -92,7 +91,7 @@ namespace CppSharp.Generators.Cpp
             WriteLine("JSModuleDef* m;");
             WriteLine($"m = JS_NewCModule(ctx, module_name, js_{moduleName}_init);");
             WriteLine("if (!m)");
-            WriteLineIndent("return NULL;");
+            WriteLineIndent("return nullptr;");
             NewLine();
 
             WriteLine($"JS_AddModuleExportList(ctx, m, js_{moduleName}_funcs," +
@@ -133,6 +132,9 @@ namespace CppSharp.Generators.Cpp
 
         public override bool VisitFunctionDecl(Function function)
         {
+            if (!function.IsGenerated)
+                return true;
+
             WriteLine($"JS_CFUNC_DEF(\"{function.Name}\"," +
                 $" {function.Parameters.Count}, js_{function.Name}),");
 
