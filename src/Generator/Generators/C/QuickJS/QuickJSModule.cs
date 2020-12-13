@@ -25,24 +25,39 @@ namespace CppSharp.Generators.Cpp
             GenerateFilePreamble(CommentKind.BCPL);
 
             PushBlock(BlockKind.Includes);
-
-            WriteInclude(new CInclude()
-            {
-                File = "quickjs.h",
-                Kind = CInclude.IncludeKind.Angled
-            });
-
-            foreach (var unit in TranslationUnits)
             {
                 WriteInclude(new CInclude()
                 {
-                    File = GetIncludeFileName(Context, unit),
-                    Kind = CInclude.IncludeKind.Quoted
+                    File = "quickjs.h",
+                    Kind = CInclude.IncludeKind.Angled
                 });
-            }
 
-            NewLine();
+                foreach (var unit in TranslationUnits)
+                {
+                    WriteInclude(new CInclude()
+                    {
+                        File = GetIncludeFileName(Context, unit),
+                        Kind = CInclude.IncludeKind.Quoted
+                    });
+                }
+
+                NewLine();
+            }
             PopBlock();
+
+            WriteLine("extern \"C\" {");
+            NewLine();
+
+            PushBlock();
+            {
+                foreach (var unit in TranslationUnits)
+                {
+                    var name = NAPISources.GetTranslationUnitName(unit);
+                    WriteLine($"extern void register_{name}(JSContext *ctx, JSModuleDef *m, bool set);");
+                }
+            }
+            PopBlock(NewLineKind.BeforeNextBlock);
+            NewLine();
 
             WriteLine("#define countof(x) (sizeof(x) / sizeof((x)[0]))");
             NewLine();
@@ -70,9 +85,19 @@ namespace CppSharp.Generators.Cpp
             // Generate init function.
             WriteLine($"static int js_{moduleName}_init(JSContext* ctx, JSModuleDef* m)");
             WriteOpenBraceAndIndent();
-
+/*
             WriteLine($"return JS_SetModuleExportList(ctx, m, js_{moduleName}_funcs," +
                 $" countof(js_{moduleName}_funcs));");
+*/
+
+            foreach (var unit in TranslationUnits)
+            {
+                var name = NAPISources.GetTranslationUnitName(unit);
+                WriteLine($"register_{name}(ctx, m, /*set=*/true);");
+            }
+            NewLine();
+
+            WriteLine("return 0;");
             UnindentAndWriteCloseBrace();
             NewLine();
 
@@ -94,11 +119,23 @@ namespace CppSharp.Generators.Cpp
             WriteLineIndent("return nullptr;");
             NewLine();
 
+            foreach (var unit in TranslationUnits)
+            {
+                var name = NAPISources.GetTranslationUnitName(unit);
+                WriteLine($"register_{name}(ctx, m, /*set=*/false);");
+            }
+            NewLine();
+/*
             WriteLine($"JS_AddModuleExportList(ctx, m, js_{moduleName}_funcs," +
                 $" countof(js_{moduleName}_funcs));");
+*/
+
             WriteLine("return m;");
 
             UnindentAndWriteCloseBrace();
+
+            NewLine();
+            WriteLine("}");
         }
 
         public static string GetIncludeFileName(BindingContext context,
@@ -135,8 +172,10 @@ namespace CppSharp.Generators.Cpp
             if (!function.IsGenerated)
                 return true;
 
+/*
             WriteLine($"JS_CFUNC_DEF(\"{function.Name}\"," +
                 $" {function.Parameters.Count}, js_{function.Name}),");
+*/
 
             return true;
         }
