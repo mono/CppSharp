@@ -145,26 +145,50 @@ namespace CppSharp.Generators.Cpp
             {
             case PrimitiveType.Void:
                 return true;
+
             case PrimitiveType.Bool:
+                Context.Before.WriteLine($"JS_NewBool(ctx, {Context.ArgName});");
+                break;
+
             case PrimitiveType.Char:
             case PrimitiveType.Char16:
+            case PrimitiveType.Char32:
             case PrimitiveType.WideChar:
             case PrimitiveType.SChar:
             case PrimitiveType.UChar:
             case PrimitiveType.Short:
             case PrimitiveType.UShort:
             case PrimitiveType.Int:
-            case PrimitiveType.UInt:
+            case PrimitiveType.Long:
                 Context.Before.WriteLine($"JS_NewInt32(ctx, {Context.ArgName});");
                 break;
-            case PrimitiveType.Long:
+
+            case PrimitiveType.UInt:
             case PrimitiveType.ULong:
+                Context.Before.WriteLine($"JS_NewUint32(ctx, {Context.ArgName});");
+                break;
+
             case PrimitiveType.LongLong:
+                Context.Before.WriteLine($"JS_NewBigInt64(ctx, {Context.ArgName});");
+                break;
+
             case PrimitiveType.ULongLong:
+                Context.Before.WriteLine($"JS_NewBigUint64(ctx, {Context.ArgName});");
+                break;
+
             case PrimitiveType.Float:
             case PrimitiveType.Double:
+                Context.Before.WriteLine($"JS_NewFloat64(ctx, {Context.ArgName});");
+                break;
+
             case PrimitiveType.LongDouble:
+                throw new NotImplementedException();
+
             case PrimitiveType.Null:
+                Context.Before.WriteLine($"JS_NULL;");
+                break;
+
+            default:
                 throw new NotImplementedException();
             }
 
@@ -474,23 +498,68 @@ namespace CppSharp.Generators.Cpp
             {
             case PrimitiveType.Void:
                 return true;
+
             case PrimitiveType.Bool:
-                //JS_ToBool
+                Context.Before.WriteLine($"{Context.ArgName} = JS_ToBool(ctx, argv[{Context.ParameterIndex}]);");
+                Context.Before.WriteLine($"if ({Context.ArgName} == -1)");
+                Context.Before.WriteLineIndent("return JS_EXCEPTION;");
+                return true;
+
             case PrimitiveType.Char:
+            case PrimitiveType.SChar:
             case PrimitiveType.UChar:
+                Context.Before.WriteLine($"int32_t _{Context.ArgName};");
+                Context.Before.WriteLine($"if (JS_ToInt32(ctx, &_{Context.ArgName}, argv[{Context.ParameterIndex}]))");
+                Context.Before.WriteLineIndent("return JS_EXCEPTION;");
+                Context.Before.WriteLine($"{Context.ArgName} = ({type})_{Context.ArgName};");
+                return true;
+
             case PrimitiveType.Short:
             case PrimitiveType.UShort:
+                Context.Before.WriteLine($"int32_t _{Context.ArgName};");
+                Context.Before.WriteLine($"if (JS_ToInt32(ctx, &_{Context.ArgName}, argv[{Context.ParameterIndex}]))");
+                Context.Before.WriteLineIndent("return JS_EXCEPTION;");
+                Context.Before.WriteLine($"{Context.ArgName} = ({type})_{Context.ArgName};");
+                return true;
+
             case PrimitiveType.Int:
+            case PrimitiveType.Long:
                 Context.Before.WriteLine($"if (JS_ToInt32(ctx, &{Context.ArgName}, argv[{Context.ParameterIndex}]))");
                 Context.Before.WriteLineIndent("return JS_EXCEPTION;");
                 return true;
+
             case PrimitiveType.UInt:
-            case PrimitiveType.Long:
             case PrimitiveType.ULong:
+                Context.Before.WriteLine($"if (JS_ToUint32(ctx, &{Context.ArgName}, argv[{Context.ParameterIndex}]))");
+                Context.Before.WriteLineIndent("return JS_EXCEPTION;");
+                return true;
+
             case PrimitiveType.LongLong:
+                Context.Before.WriteLine($"int64_t _{Context.ArgName};");
+                Context.Before.WriteLine($"if (JS_ToInt64Ext(ctx, &_{Context.ArgName}, argv[{Context.ParameterIndex}]))");
+                Context.Before.WriteLineIndent("return JS_EXCEPTION;");
+                Context.Before.WriteLine($"{Context.ArgName} = ({type})_{Context.ArgName};");
+                return true;
+
             case PrimitiveType.ULongLong:
+                Context.Before.WriteLine($"int64_t _{Context.ArgName};");
+                Context.Before.WriteLine($"if (JS_ToInt64Ext(ctx, &_{Context.ArgName}, argv[{Context.ParameterIndex}]))");
+                Context.Before.WriteLineIndent("return JS_EXCEPTION;");
+                Context.Before.WriteLine($"{Context.ArgName} = ({type})_{Context.ArgName};");
+                return true;
+
             case PrimitiveType.Float:
+                Context.Before.WriteLine($"double _{Context.ArgName};");
+                Context.Before.WriteLine($"if (JS_ToFloat64(ctx, &_{Context.ArgName}, argv[{Context.ParameterIndex}]))");
+                Context.Before.WriteLineIndent("return JS_EXCEPTION;");
+                Context.Before.WriteLine($"{Context.ArgName} = ({type})_{Context.ArgName};");
+                return true;
+
             case PrimitiveType.Double:
+                Context.Before.WriteLine($"if (JS_ToFloat64(ctx, &{Context.ArgName}, argv[{Context.ParameterIndex}]))");
+                Context.Before.WriteLineIndent("return JS_EXCEPTION;");
+                return true;
+
             case PrimitiveType.WideChar:
             default:
                 throw new NotImplementedException();

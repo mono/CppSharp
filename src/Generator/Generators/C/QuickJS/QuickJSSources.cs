@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using CppSharp.Generators.C;
 
 namespace CppSharp.Generators.Cpp
@@ -10,12 +12,11 @@ namespace CppSharp.Generators.Cpp
     /// Generates QuickJS C/C++ source files.
     /// QuickJS documentation: https://bellard.org/quickjs/
     /// </summary>
-    public class QuickJSSources : CppSources
+    public class QuickJSSources : NAPICallbacks
     {
         public QuickJSSources(BindingContext context, IEnumerable<TranslationUnit> units)
             : base(context, units)
         {
-            CTypePrinter.PushContext(TypePrinterContextKind.Managed);
         }
 
         public override void Process()
@@ -34,8 +35,8 @@ namespace CppSharp.Generators.Cpp
             {
                 WriteInclude(new CInclude()
                 {
-                    File = unit.FileName,
-                    Kind = CInclude.IncludeKind.Quoted
+                    File = unit.IncludePath,
+                    Kind = CInclude.IncludeKind.Angled
                 });
             }
 
@@ -45,10 +46,10 @@ namespace CppSharp.Generators.Cpp
             VisitNamespace(TranslationUnit);
         }
 
-        public override ParamMarshal GenerateFunctionParamMarshal(Parameter param, int paramIndex,
+        public override NAPICallbacks.ParamMarshal GenerateFunctionParamMarshal(Parameter param, int paramIndex,
             Function function = null)
         {
-            var paramMarshal = new ParamMarshal { Name = param.Name, Param = param };
+            var paramMarshal = new NAPICallbacks.ParamMarshal { Name = param.Name, Param = param };
 
             var argName = Generator.GeneratedIdentifier(param.Name);
 
@@ -98,8 +99,20 @@ namespace CppSharp.Generators.Cpp
             WriteLine($"return {marshal.Context.Return};");
         }
 
-        public override bool VisitFunctionDecl(Function function)
+        public override void GenerateFunctionGroup(List<Function> @group)
         {
+            GenerateFunctionCallback(@group);
+        }
+
+        public override void GenerateMethodGroup(List<Method> @group)
+        {
+            GenerateFunctionCallback(@group.OfType<Function>().ToList());
+        }
+        public override void GenerateFunctionCallback(List<Function> @group)
+        {
+            var function = @group.First();
+
+            PushBlock();
             Write("extern \"C\" ");
             WriteLine($"JSValue js_{function.Name}(JSContext* ctx, JSValueConst this_val,");
             WriteLineIndent("int argc, JSValueConst* argv)");
@@ -107,9 +120,14 @@ namespace CppSharp.Generators.Cpp
 
             GenerateFunctionCall(function);
 
-            UnindentAndWriteCloseBrace();
+            var needsReturn = !function.ReturnType.Type.IsPrimitiveType(PrimitiveType.Void);
+            if (!needsReturn)
+            {
+                WriteLine("return JS_UNDEFINED;");
+            }
 
-            return true;
+            UnindentAndWriteCloseBrace();
+            PopBlock(NewLineKind.BeforeNextBlock);
         }
     }
 }
