@@ -1,10 +1,91 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using CppSharp.Generators.C;
+using CppSharp.Passes;
 
 namespace CppSharp.Generators.Cpp
 {
+    public class NAPICodeGenerator : CCodeGenerator
+    {
+        public override string FileExtension => "cpp";
+
+        public NAPICodeGenerator(BindingContext context, IEnumerable<TranslationUnit> units)
+            : base(context, units)
+        {
+        }
+
+        public override void VisitDeclContextFunctions(DeclarationContext context)
+        {
+            var functions = context.Functions.Where(f => !ASTUtils.CheckIgnoreFunction(f)).ToList();
+            var unique = functions.GroupBy(m => m.Name);
+            foreach (var group in unique)
+                GenerateFunctionGroup(group.ToList());
+        }
+
+        public virtual void GenerateFunctionGroup(List<Function> group)
+        {
+            foreach (var function in group)
+            {
+                function.Visit(this);
+                return;
+            }
+        }
+
+        public override bool VisitClassDecl(Class @class)
+        {
+            return VisitClassDeclContext(@class);
+        }
+
+        public override void VisitClassConstructors(Class @class)
+        {
+            var constructors = @class.Constructors.Where(c => c.IsGenerated && !c.IsCopyConstructor)
+                .ToList();
+            if (!constructors.Any())
+                return;
+
+            GenerateMethodGroup(constructors);
+        }
+
+        public static bool ShouldGenerate(Function function)
+        {
+            if (!function.IsGenerated)
+                return false;
+
+            if (function is Method method)
+            {
+                if (method.IsConstructor || method.IsDestructor)
+                    return false;
+
+                if (method.IsOperator)
+                    if (method.OperatorKind == CXXOperatorKind.Conversion ||
+                        method.OperatorKind == CXXOperatorKind.Equal)
+                        return false;
+            }
+
+            return true;
+        }
+
+        public override void VisitClassMethods(Class @class)
+        {
+            var methods = @class.Methods.Where(ShouldGenerate);
+            var uniqueMethods = methods.GroupBy(m => m.Name);
+            foreach (var group in uniqueMethods)
+                GenerateMethodGroup(group.ToList());
+        }
+
+        public virtual void GenerateMethodGroup(List<Method> @group)
+        {
+            foreach (var method in @group)
+            {
+                method.Visit(this);
+                return;
+            }
+        }
+    }
+
     /// <summary>
     /// Generates a common Node N-API C/C++ common files.
     /// N-API documentation: https://nodejs.org/api/n-api.html

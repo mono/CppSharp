@@ -14,118 +14,6 @@ using static CppSharp.Generators.Cpp.NAPISources;
 
 namespace CppSharp.Generators.Cpp
 {
-    public class NAPIClassReturnCollector : TranslationUnitPass
-    {
-        public HashSet<Class> Classes = new HashSet<Class>();
-        public TranslationUnit TranslationUnit;
-
-        public override bool VisitFunctionDecl(Function function)
-        {
-            if (!NAPISources.ShouldGenerate(function))
-                return false;
-
-            var retType = function.ReturnType.Type.Desugar();
-            if (retType.IsPointer())
-                retType = retType.GetFinalPointee().Desugar();
-
-            if (!(retType is TagType tagType))
-                return base.VisitFunctionDecl(function);
-
-            if (!(tagType.Declaration is Class @class))
-                return base.VisitFunctionDecl(function);
-
-            if (@class.TranslationUnit == TranslationUnit)
-                return base.VisitFunctionDecl(function);
-
-            Classes.Add(@class);
-            return true;
-        }
-
-        public override bool VisitTranslationUnit(TranslationUnit unit)
-        {
-            TranslationUnit = unit;
-            return base.VisitTranslationUnit(unit);
-        }
-    }
-
-    public class NAPICodeGenerator : CCodeGenerator
-    {
-        public override string FileExtension => "cpp";
-
-        public NAPICodeGenerator(BindingContext context, IEnumerable<TranslationUnit> units)
-            : base(context, units)
-        {
-        }
-
-        public override void VisitDeclContextFunctions(DeclarationContext context)
-        {
-            var functions = context.Functions.Where(f => !ASTUtils.CheckIgnoreFunction(f)).ToList();
-            var unique = functions.GroupBy(m => m.Name);
-            foreach (var group in unique)
-                GenerateFunctionGroup(group.ToList());
-        }
-
-        public virtual void GenerateFunctionGroup(List<Function> group)
-        {
-            foreach (var function in group)
-            {
-                function.Visit(this);
-                return;
-            }
-        }
-
-        public override bool VisitClassDecl(Class @class)
-        {
-            return VisitClassDeclContext(@class);
-        }
-
-        public override void VisitClassConstructors(Class @class)
-        {
-            var constructors = @class.Constructors.Where(c => c.IsGenerated && !c.IsCopyConstructor)
-                .ToList();
-            if (!constructors.Any())
-                return;
-
-            GenerateMethodGroup(constructors);
-        }
-
-        public static bool ShouldGenerate(Function function)
-        {
-            if (!function.IsGenerated)
-                return false;
-
-            if (function is Method method)
-            {
-                if (method.IsConstructor || method.IsDestructor)
-                    return false;
-
-                if (method.IsOperator)
-                    if (method.OperatorKind == CXXOperatorKind.Conversion ||
-                        method.OperatorKind == CXXOperatorKind.Equal)
-                        return false;
-            }
-
-            return true;
-        }
-
-        public override void VisitClassMethods(Class @class)
-        {
-            var methods = @class.Methods.Where(ShouldGenerate);
-            var uniqueMethods = methods.GroupBy(m => m.Name);
-            foreach (var group in uniqueMethods)
-                GenerateMethodGroup(group.ToList());
-        }
-
-        public virtual void GenerateMethodGroup(List<Method> @group)
-        {
-            foreach (var method in @group)
-            {
-                method.Visit(this);
-                return;
-            }
-        }
-    }
-
     public class NAPISources : NAPICodeGenerator
     {
         public override string FileExtension => "cpp";
@@ -242,6 +130,40 @@ namespace CppSharp.Generators.Cpp
         }
     }
 
+    public class NAPIClassReturnCollector : TranslationUnitPass
+    {
+        public readonly HashSet<Class> Classes = new HashSet<Class>();
+        private TranslationUnit translationUnit;
+
+        public override bool VisitFunctionDecl(Function function)
+        {
+            if (!NAPICodeGenerator.ShouldGenerate(function))
+                return false;
+
+            var retType = function.ReturnType.Type.Desugar();
+            if (retType.IsPointer())
+                retType = retType.GetFinalPointee().Desugar();
+
+            if (!(retType is TagType tagType))
+                return base.VisitFunctionDecl(function);
+
+            if (!(tagType.Declaration is Class @class))
+                return base.VisitFunctionDecl(function);
+
+            if (@class.TranslationUnit == translationUnit)
+                return base.VisitFunctionDecl(function);
+
+            Classes.Add(@class);
+            return true;
+        }
+
+        public override bool VisitTranslationUnit(TranslationUnit unit)
+        {
+            translationUnit = unit;
+            return base.VisitTranslationUnit(unit);
+        }
+    }
+
     public class NAPIRegister : NAPICodeGenerator
     {
         public NAPIRegister(BindingContext context, IEnumerable<TranslationUnit> units)
@@ -260,7 +182,7 @@ namespace CppSharp.Generators.Cpp
                 return true;
 
             PushBlock(BlockKind.InternalsClass, @class);
-            var callbacks = new NAPICallbacks(Context);
+            var callbacks = new NAPIInvokes(Context);
             @class.Visit(callbacks);
             Write(callbacks.Generate());
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -270,7 +192,7 @@ namespace CppSharp.Generators.Cpp
             WriteLine("(napi_env env)");
             WriteOpenBraceAndIndent();
 
-            var sources = new NAPISourcesClass(Context);
+            var sources = new NAPIRegisterImpl(Context);
             sources.Indent(CurrentIndentation);
             @class.Visit(sources);
             Write(sources.Generate());
@@ -287,7 +209,7 @@ namespace CppSharp.Generators.Cpp
                 return;
 
             PushBlock(BlockKind.Function);
-            var callbacks = new NAPICallbacks(Context);
+            var callbacks = new NAPIInvokes(Context);
             callbacks.GenerateFunctionGroup(group);
             Write(callbacks.Generate());
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -298,10 +220,19 @@ namespace CppSharp.Generators.Cpp
             WriteLine("(napi_env env)");
             WriteOpenBraceAndIndent();
 
-            var sources = new NAPISourcesClass(Context);
-            sources.Indent(CurrentIndentation);
-            @function.Visit(sources);
-            Write(sources.Generate());
+            WriteLine("napi_status status;");
+
+            var qualifiedMethodId = GetCIdentifier(Context, function);
+            var valueId = $"_{qualifiedMethodId}";
+            WriteLine($"napi_value {valueId};");
+
+            var callbackId = $"callback_function_{qualifiedMethodId}";
+            WriteLine($"status = napi_create_function(env, \"{function.Name}\", NAPI_AUTO_LENGTH, " +
+                      $"{callbackId}, 0, &{valueId});");
+            WriteLine("assert(status == napi_ok);");
+            NewLine();
+
+            WriteLine($"return {valueId};");
 
             UnindentAndWriteCloseBrace();
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -318,7 +249,7 @@ namespace CppSharp.Generators.Cpp
             WriteLine("(napi_env env, napi_value exports)");
             WriteOpenBraceAndIndent();
 
-            var sources = new NAPISourcesEnum(Context);
+            var sources = new NAPIRegisterImpl(Context);
             sources.Indent(CurrentIndentation);
             @enum.Visit(sources);
             Write(sources.Generate());
@@ -329,14 +260,150 @@ namespace CppSharp.Generators.Cpp
         }
     }
 
-    public class NAPICallbacks : NAPICodeGenerator
+    public class NAPIRegisterImpl : NAPICodeGenerator
     {
-        public NAPICallbacks(BindingContext context)
+        public NAPIRegisterImpl(BindingContext context)
             : base(context, null)
         {
         }
 
-        public NAPICallbacks(BindingContext context, IEnumerable<TranslationUnit> units)
+        public override bool VisitClassDecl(Class @class)
+        {
+            WriteLine("napi_status status;");
+
+            WriteLine("napi_property_attributes attributes = (napi_property_attributes) (napi_default | napi_enumerable);");
+            WriteLine("napi_property_descriptor props[] =");
+            WriteOpenBraceAndIndent();
+            WriteLine("// { utf8name, name, method, getter, setter, value, attributes, data }");
+
+            VisitClassDeclContext(@class);
+            @class.FindHierarchy(c =>
+            {
+                WriteLine($"// {@class.QualifiedOriginalName}");
+                return VisitClassDeclContext(c);
+            });
+            NewLine();
+
+            Unindent();
+            WriteLine("};");
+            NewLine();
+
+            string ctorCallbackId = "nullptr";
+            var ctor = @class.Constructors.FirstOrDefault();
+            if (ctor != null)
+            {
+                var ctorQualifiedId = GetCIdentifier(Context, ctor);
+                ctorCallbackId = $"callback_method_{ctorQualifiedId}";
+            }
+
+            WriteLine("napi_value constructor;");
+            WriteLine($"status = napi_define_class(env, \"{@class.Name}\", NAPI_AUTO_LENGTH, " +
+                      $"{ctorCallbackId}, nullptr, sizeof(props) / sizeof(props[0]), props, &constructor);");
+            WriteLine("assert(status == napi_ok);");
+            NewLine();
+
+            WriteLine($"status = napi_create_reference(env, constructor, 1, &ctor_{GetCIdentifier(Context, ctor)});");
+            WriteLine("assert(status == napi_ok);");
+            NewLine();
+
+            WriteLine("return constructor;");
+            return true;
+        }
+
+        public override bool VisitMethodDecl(Method method)
+        {
+            if (method.IsConstructor)
+                return true;
+
+            PushBlock(BlockKind.Method);
+
+            var attributes = "attributes";
+            if (method.IsStatic)
+                attributes += " | napi_static";
+
+            var qualifiedId = GetCIdentifier(Context, method);
+            var callbackId = $"callback_method_{qualifiedId}";
+            Write($"{{ \"{method.Name}\", nullptr, {callbackId}, nullptr, nullptr, nullptr, (napi_property_attributes)({attributes}), nullptr }},");
+
+            PopBlock(NewLineKind.BeforeNextBlock);
+
+            return true;
+        }
+
+        public override bool VisitEnumDecl(Enumeration @enum)
+        {
+            enumItemIndex = 0;
+
+            WriteLine("napi_status status;");
+            WriteLine("napi_value result;");
+            WriteLine("NAPI_CALL(env, napi_create_object(env, &result));");
+            NewLine();
+
+            PushBlock();
+
+            foreach (var item in @enum.Items)
+                item.Visit(this);
+
+            PopBlock(NewLineKind.Always);
+
+            WriteLine("napi_property_attributes attributes = (napi_property_attributes) (napi_default | napi_enumerable);");
+            WriteLine("napi_property_descriptor props[] =");
+            WriteOpenBraceAndIndent();
+            WriteLine("// { utf8name, name, method, getter, setter, value, attributes, data }");
+
+            var items = @enum.Items.Where(item => item.IsGenerated).ToList();
+            for (int i = 0; i < items.Count; i++)
+            {
+                var item = items[i];
+                var isLast = i == items.Count - 1;
+
+                Write($"{{ \"{item.Name}\", nullptr, nullptr, nullptr, nullptr, i_{i}, attributes, nullptr }}");
+                WriteLine(isLast ? string.Empty : ",");
+            }
+
+            Unindent();
+            WriteLine("};");
+            NewLine();
+
+            var @sizeof = $"sizeof(props) / sizeof(props[0])";
+            WriteLine($"NAPI_CALL(env, napi_define_properties(env, result, {@sizeof}, props));");
+            NewLine();
+
+            WriteLine("return result;");
+            return true;
+        }
+
+        static int enumItemIndex = 0;
+
+        public override bool VisitEnumItemDecl(Enumeration.Item item)
+        {
+            PushBlock(BlockKind.EnumItem);
+            WriteLine("// " + item.Name);
+            WriteLine($"napi_value i_{enumItemIndex};");
+
+            var @enum = item.Namespace as Enumeration;
+            var (_, function) = NAPIMarshalNativeToManagedPrinter.GetNAPIPrimitiveType(@enum.BuiltinType.Type);
+            WriteLine($"status = {function}(env, {@enum.GetItemValueAsString(item)}, &i_{enumItemIndex++});");
+            WriteLine("assert(status == napi_ok);");
+
+            PopBlock(NewLineKind.BeforeNextBlock);
+            return true;
+        }
+
+        public override bool VisitProperty(Property property)
+        {
+            return true;
+        }
+    }
+
+    public class NAPIInvokes : NAPICodeGenerator
+    {
+        public NAPIInvokes(BindingContext context)
+            : base(context, null)
+        {
+        }
+
+        public NAPIInvokes(BindingContext context, IEnumerable<TranslationUnit> units)
             : base(context, units)
         {
         }
@@ -346,8 +413,8 @@ namespace CppSharp.Generators.Cpp
             var function = @group.First();
 
             PushBlock(BlockKind.Function, function);
-            GenerateFunctionCallback(@group);
 
+            GenerateFunctionCallback(@group);
             GenerateNativeCall(group);
             NewLine();
 
@@ -374,6 +441,7 @@ namespace CppSharp.Generators.Cpp
 
             GenerateFunctionCallback(@group.OfType<Function>().ToList());
             GenerateNativeCall(@group);
+            NewLine();
 
             WriteLine("return _this;");
             UnindentAndWriteCloseBrace();
@@ -903,234 +971,6 @@ namespace CppSharp.Generators.Cpp
         public override bool VisitProperty(Property property)
         {
             return true;
-        }
-    }
-
-    public class NAPISourcesClass : NAPICodeGenerator
-    {
-        public NAPISourcesClass(BindingContext context)
-            : base(context, null)
-        {
-        }
-
-        public override bool VisitClassDecl(Class @class)
-        {
-            WriteLine("napi_status status;");
-
-            WriteLine("napi_property_attributes attributes = (napi_property_attributes) (napi_default | napi_enumerable);");
-            WriteLine("napi_property_descriptor props[] =");
-            WriteOpenBraceAndIndent();
-            WriteLine("// { utf8name, name, method, getter, setter, value, attributes, data }");
-
-            VisitClassDeclContext(@class);
-            @class.FindHierarchy(c =>
-            {
-                WriteLine($"// {@class.QualifiedOriginalName}");
-                return VisitClassDeclContext(c);
-            });
-            NewLine();
-
-            Unindent();
-            WriteLine("};");
-            NewLine();
-
-            string ctorCallbackId = "nullptr";
-            var ctor = @class.Constructors.FirstOrDefault();
-            if (ctor != null)
-            {
-                var ctorQualifiedId = GetCIdentifier(Context, ctor);
-                ctorCallbackId = $"callback_method_{ctorQualifiedId}";
-            }
-
-            WriteLine("napi_value constructor;");
-            WriteLine($"status = napi_define_class(env, \"{@class.Name}\", NAPI_AUTO_LENGTH, " +
-                      $"{ctorCallbackId}, nullptr, sizeof(props) / sizeof(props[0]), props, &constructor);");
-            WriteLine("assert(status == napi_ok);");
-            NewLine();
-
-            WriteLine($"status = napi_create_reference(env, constructor, 1, &ctor_{GetCIdentifier(Context, ctor)});");
-            WriteLine("assert(status == napi_ok);");
-            NewLine();
-
-            WriteLine("return constructor;");
-            return true;
-        }
-
-        public override bool VisitFunctionDecl(Function function)
-        {
-            PushBlock(BlockKind.Function);
-
-            WriteLine("napi_status status;");
-
-            var qualifiedId = GetCIdentifier(Context, function);
-            var callbackId = $"callback_function_{qualifiedId}";
-
-            CreateJSFunction(function);
-
-            PopBlock(NewLineKind.BeforeNextBlock);
-
-            return true;
-        }
-
-        public override bool VisitMethodDecl(Method method)
-        {
-            if (method.IsConstructor)
-                return true;
-
-            PushBlock(BlockKind.Method);
-
-            var attributes = "attributes";
-            if (method.IsStatic)
-                attributes += " | napi_static";
-
-            var qualifiedId = GetCIdentifier(Context, method);
-            var callbackId = $"callback_method_{qualifiedId}";
-            Write($"{{ \"{method.Name}\", nullptr, {callbackId}, nullptr, nullptr, nullptr, (napi_property_attributes)({attributes}), nullptr }},");
-
-            PopBlock(NewLineKind.BeforeNextBlock);
-
-            return true;
-        }
-
-        private void CreateJSFunction(Function function)
-        {
-            var qualifiedMethodId = GetCIdentifier(Context, function);
-            var valueId = $"_{qualifiedMethodId}";
-            var callbackId = $"callback_function_{qualifiedMethodId}";
-            WriteLine($"napi_value {valueId};");
-            WriteLine($"status = napi_create_function(env, \"{function.Name}\", NAPI_AUTO_LENGTH, " +
-                      $"{callbackId}, 0, &{valueId});");
-            WriteLine("assert(status == napi_ok);");
-            NewLine();
-
-            WriteLine($"return {valueId};");
-        }
-
-        public override bool VisitEnumDecl(Enumeration @enum)
-        {
-            return true;
-        }
-
-        public override bool VisitProperty(Property property)
-        {
-            return true;
-        }
-    }
-
-    public class NAPISourcesEnum : NAPICodeGenerator
-    {
-        public NAPISourcesEnum(BindingContext context)
-            : base(context, null)
-        {
-        }
-
-        public override bool VisitEnumDecl(Enumeration @enum)
-        {
-            enumItemIndex = 0;
-
-            WriteLine("napi_status status;");
-            WriteLine("napi_value result;");
-            WriteLine("NAPI_CALL(env, napi_create_object(env, &result));");
-            NewLine();
-
-            PushBlock();
-
-            foreach (var item in @enum.Items)
-                item.Visit(this);
-
-            PopBlock(NewLineKind.Always);
-
-            WriteLine("napi_property_attributes attributes = (napi_property_attributes) (napi_default | napi_enumerable);");
-            WriteLine("napi_property_descriptor props[] =");
-            WriteOpenBraceAndIndent();
-            WriteLine("// { utf8name, name, method, getter, setter, value, attributes, data }");
-
-            var items = @enum.Items.Where(item => item.IsGenerated).ToList();
-            for (int i = 0; i < items.Count; i++)
-            {
-                var item = items[i];
-                var isLast = i == items.Count - 1;
-
-                Write($"{{ \"{item.Name}\", nullptr, nullptr, nullptr, nullptr, i_{i}, attributes, nullptr }}");
-                WriteLine(isLast ? string.Empty : ",");
-            }
-
-            Unindent();
-            WriteLine("};");
-            NewLine();
-
-            var @sizeof = $"sizeof(props) / sizeof(props[0])";
-            WriteLine($"NAPI_CALL(env, napi_define_properties(env, result, {@sizeof}, props));");
-            NewLine();
-
-            WriteLine("return result;");
-            return true;
-        }
-
-        static int enumItemIndex = 0;
-
-        public override bool VisitEnumItemDecl(Enumeration.Item item)
-        {
-            PushBlock(BlockKind.EnumItem);
-            WriteLine("// " + item.Name);
-            WriteLine($"napi_value i_{enumItemIndex};");
-
-            var @enum = item.Namespace as Enumeration;
-            var function = GetIntNAPICreateFunction(@enum.BuiltinType.Type);
-            WriteLine($"status = {function}(env, {@enum.GetItemValueAsString(item)}, &i_{enumItemIndex++});");
-            WriteLine("assert(status == napi_ok);");
-
-            PopBlock(NewLineKind.BeforeNextBlock);
-            return true;
-        }
-
-        public override bool VisitProperty(Property property)
-        {
-            return true;
-        }
-
-        public static string GetIntNAPICreateFunction(PrimitiveType type)
-        {
-            switch(type)
-            {
-                case PrimitiveType.Bool:
-                case PrimitiveType.WideChar:
-                case PrimitiveType.Char:
-                case PrimitiveType.SChar:
-                case PrimitiveType.Char16:
-                case PrimitiveType.Char32:
-                case PrimitiveType.Short:
-                case PrimitiveType.Int:
-                case PrimitiveType.Long:
-                    return "napi_create_int32";
-                case PrimitiveType.UChar:
-                case PrimitiveType.UShort:
-                case PrimitiveType.UInt:
-                case PrimitiveType.ULong:
-                    return "napi_create_uint32";
-                case PrimitiveType.LongLong:
-                    return "napi_create_bigint_int64";
-                case PrimitiveType.ULongLong:
-                    return "napi_create_bigint_uint64";
-                case PrimitiveType.Half:
-                case PrimitiveType.Float:
-                case PrimitiveType.Double:
-                case PrimitiveType.LongDouble:
-                    return "napi_create_double";
-                case PrimitiveType.Int128:
-                case PrimitiveType.UInt128:
-                case PrimitiveType.Float128:
-                    return "api_create_bigint_words";
-                case PrimitiveType.String:
-                    return "napi_create_string_utf8";
-                case PrimitiveType.Null:
-                case PrimitiveType.Void:
-                case PrimitiveType.IntPtr:
-                case PrimitiveType.UIntPtr:
-                case PrimitiveType.Decimal:
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
-            }
         }
     }
 }
