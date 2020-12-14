@@ -1,1 +1,0 @@
-extern "C" int plus(int a, int b);
