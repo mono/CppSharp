@@ -24,7 +24,7 @@
 
   <Target Name="PackNativeHeaders" AfterTargets="prepack" Condition="'$(RID)' == 'win-x64'">
     <ItemGroup>
-      <ClangHeaders Include="$(SrcDir)lib\**" />
+      <ClangHeaders Include="$(OutputPath)lib\**" />
     </ItemGroup>
     <Copy SourceFiles="@(ClangHeaders)" DestinationFiles="@(ClangHeaders->'$(PackageDir)contentFiles\any\any\lib\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
