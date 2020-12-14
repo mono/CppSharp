@@ -29,7 +29,7 @@
     <Copy SourceFiles="@(ClangHeaders)" DestinationFiles="@(ClangHeaders->'$(PackageDir)contentFiles\any\any\lib\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
 
-  <Target Name="PackNativeLibs" AfterTargets="prepack">
+  <Target Name="PackNativeLibs" AfterTargets="prepack" Condition="'$(Platform)' == 'x64'">
     <ItemGroup>
       <NativeLibs Include="$(OutputPath)$(NativeTargetPrefix)CppSharp.CppParser.$(NativeTargetExt)" />
       <NativeLibs Include="$(OutputPath)$(NativeTargetPrefix)Std-symbols.$(NativeTargetExt)" />
