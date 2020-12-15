@@ -128,7 +128,7 @@ namespace CppSharp.Generators.NAPI
 
         public bool VisitPrimitiveType(PrimitiveType primitive)
         {
-            var result = $"__result";
+            var result = Generator.GeneratedIdentifier(Context.ReturnVarName);
             var (_, func) = GetNAPIPrimitiveType(primitive);
 
             switch (primitive)
@@ -755,7 +755,7 @@ namespace CppSharp.Generators.NAPI
 
         public override bool VisitEnumDecl(Enumeration @enum)
         {
-            VisitPrimitiveType(PrimitiveType.Int);
+            VisitPrimitiveType(@enum.BuiltinType.Type);
 
             Context.Return.StringBuilder.Clear();
             Context.Return.Write($"(::{@enum.QualifiedOriginalName}){Context.Parameter.Name}");
