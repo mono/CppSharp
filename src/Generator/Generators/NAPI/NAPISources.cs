@@ -736,7 +736,7 @@ namespace CppSharp.Generators.Cpp
                     ReturnType = param.QualifiedType
                 };
 
-                var marshal = new NAPIMarshalNativeToManagedPrinter(ctx);
+                var marshal = GetMarshalNativeToManagedPrinter(ctx);
                 param.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
@@ -761,7 +761,7 @@ namespace CppSharp.Generators.Cpp
                 ReturnType = function.ReturnType
             };
 
-            var marshal = new NAPIMarshalNativeToManagedPrinter(ctx);
+            var marshal = GetMarshalNativeToManagedPrinter(ctx);
             function.ReturnType.Visit(marshal);
 
             if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
@@ -811,6 +811,16 @@ namespace CppSharp.Generators.Cpp
             return marshals;
         }
 
+        public virtual MarshalPrinter<MarshalContext> GetMarshalManagedToNativePrinter(MarshalContext ctx)
+        {
+            return new NAPIMarshalManagedToNativePrinter(ctx);
+        }
+
+        public virtual MarshalPrinter<MarshalContext> GetMarshalNativeToManagedPrinter(MarshalContext ctx)
+        {
+            return new NAPIMarshalNativeToManagedPrinter(ctx);
+        }
+
         public virtual ParamMarshal GenerateFunctionParamMarshal(Parameter param, int paramIndex,
             Function function = null)
         {
@@ -830,7 +840,7 @@ namespace CppSharp.Generators.Cpp
                 Function = function
             };
 
-            var marshal = new NAPIMarshalManagedToNativePrinter(ctx);
+            var marshal = GetMarshalManagedToNativePrinter(ctx);
             effectiveParam.Visit(marshal);
 
             if (string.IsNullOrEmpty(marshal.Context.Return))
