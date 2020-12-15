@@ -861,9 +861,9 @@ namespace CppSharp.Generators.Cpp
                     NeedNewLine();
                 }
 
-                WriteLine($"auto {marshal.VarPrefix}{argName} = {marshal.Context.Return};");
-                paramMarshal.Prefix = marshal.ArgumentPrefix;
                 NewLineIfNeeded();
+                WriteLine($"auto {marshal.Context.VarPrefix}{argName} = {marshal.Context.Return};");
+                paramMarshal.Prefix = marshal.Context.ArgumentPrefix;
             }
 
             paramMarshal.Name = argName;
