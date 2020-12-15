@@ -337,15 +337,9 @@ namespace CppSharp.Generators.NAPI
 
     public class NAPIMarshalManagedToNativePrinter : MarshalPrinter<MarshalContext>
     {
-        public readonly TextGenerator VarPrefix;
-        public readonly TextGenerator ArgumentPrefix;
-
         public NAPIMarshalManagedToNativePrinter(MarshalContext ctx) 
             : base(ctx)
         {
-            VarPrefix = new TextGenerator();
-            ArgumentPrefix = new TextGenerator();
-
             Context.MarshalToNative = this;
         }
 
@@ -421,7 +415,7 @@ namespace CppSharp.Generators.NAPI
                 var isRef = Context.Parameter.Usage == ParameterUsage.Out ||
                     Context.Parameter.Usage == ParameterUsage.InOut;
 
-                ArgumentPrefix.Write("&");
+                Context.ArgumentPrefix.Write("&");
                 Context.Return.Write($"(::{@enum.QualifiedOriginalName}){0}{Context.Parameter.Name}",
                     isRef ? string.Empty : "*");
                 return true;
@@ -707,7 +701,7 @@ namespace CppSharp.Generators.NAPI
             var deref = isPointer ? "" : "*";
 
             if (!isPointer && Context.Parameter.Type.IsReference())
-                VarPrefix.Write("&");
+                Context.VarPrefix.Write("&");
 
             Context.Return.Write($"{deref}{instance}");
         }
