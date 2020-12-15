@@ -64,31 +64,9 @@ namespace CppSharp.Generators.Cpp
 
             var moduleName = module.LibraryName;
 
-            // Generate JS module function list.
-            WriteLine($"static const JSCFunctionListEntry js_{moduleName}_funcs[] =");
-            WriteOpenBraceAndIndent();
-
-            // Foreach translation unit, write the generated functions.
-            foreach (var unit in TranslationUnits)
-            {
-                var functionPrinter = new QuickJSModuleFunctionPrinter(Context);
-                functionPrinter.Indent(CurrentIndentation);
-                unit.Visit(functionPrinter);
-
-                Write(functionPrinter.Generate());
-            }
-
-            Unindent();
-            WriteLine("};");
-            NewLine();
-
             // Generate init function.
             WriteLine($"static int js_{moduleName}_init(JSContext* ctx, JSModuleDef* m)");
             WriteOpenBraceAndIndent();
-/*
-            WriteLine($"return JS_SetModuleExportList(ctx, m, js_{moduleName}_funcs," +
-                $" countof(js_{moduleName}_funcs));");
-*/
 
             foreach (var unit in TranslationUnits)
             {
@@ -125,10 +103,6 @@ namespace CppSharp.Generators.Cpp
                 WriteLine($"register_{name}(ctx, m, /*set=*/false);");
             }
             NewLine();
-/*
-            WriteLine($"JS_AddModuleExportList(ctx, m, js_{moduleName}_funcs," +
-                $" countof(js_{moduleName}_funcs));");
-*/
 
             WriteLine("return m;");
 
@@ -150,34 +124,6 @@ namespace CppSharp.Generators.Cpp
                 .Replace('\\', '/');
 
             return $"{file}.h";
-        }
-    }
-
-    public class QuickJSModuleFunctionPrinter : CCodeGenerator
-    {
-        public QuickJSModuleFunctionPrinter(BindingContext context)
-            : base(context, null)
-        {
-        }
-
-        public override bool VisitTranslationUnit(TranslationUnit unit)
-        {
-            WriteLine($"// {QuickJSModule.GetIncludeFileName(Context, unit)}");
-
-            return base.VisitTranslationUnit(unit);
-        }
-
-        public override bool VisitFunctionDecl(Function function)
-        {
-            if (!function.IsGenerated)
-                return true;
-
-/*
-            WriteLine($"JS_CFUNC_DEF(\"{function.Name}\"," +
-                $" {function.Parameters.Count}, js_{function.Name}),");
-*/
-
-            return true;
         }
     }
 }
