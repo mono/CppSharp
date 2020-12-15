@@ -11,8 +11,8 @@ green=`tput setaf 2`
 reset=`tput sgr0`
 
 echo "${green}Generating bindings${reset}"
-#dotnet $rootdir/bin/${configuration}_${platform}/CppSharp.CLI.dll \
-# --gen=qjs -I$dir/.. -o $dir/gen -m tests $dir/../*.h
+dotnet $rootdir/bin/${configuration}_${platform}/CppSharp.CLI.dll \
+ --gen=qjs -I$dir/.. -o $dir/gen -m tests $dir/../Builtins.h $dir/../Enums.h
 
 echo "${green}Building generated binding files${reset}"
 premake=$rootdir/build/premake.sh
