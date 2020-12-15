@@ -93,4 +93,15 @@ function builtins()
     eq(test.PassAndReturnsUInt64(uint64.max), uint64.max);
 }
 
+function enums()
+{
+    eq(test.Enum0.Item0, 0);
+    eq(test.Enum0.Item1, 1);
+    eq(test.Enum0.Item2, 5);
+
+    eq(test.ReturnsEnum(), test.Enum0.Item0);
+    eq(test.PassAndReturnsEnum(test.Enum0.Item1), test.Enum0.Item1);
+}
+
 builtins();
+enums();

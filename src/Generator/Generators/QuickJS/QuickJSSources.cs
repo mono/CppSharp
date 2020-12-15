@@ -6,6 +6,7 @@ using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators.C;
 using static CppSharp.Generators.Cpp.NAPISources;
+using static CppSharp.Generators.Cpp.NAPIInvokes;
 
 namespace CppSharp.Generators.Cpp
 {
@@ -185,13 +186,105 @@ namespace CppSharp.Generators.Cpp
             PushBlock(BlockKind.Enum);
             {
                 Write($"static void register_enum_{GetCIdentifier(Context, @enum)}");
-                WriteLine("(JSContext *ctx, JSModuleDef *m)");
+                WriteLine("(JSContext *ctx, JSModuleDef *m, bool set)");
                 WriteOpenBraceAndIndent();
+
+                WriteLine("if (!set)");
+                WriteOpenBraceAndIndent();
+                {
+                    WriteLine($"int status = JS_AddModuleExport(ctx, m, \"{@enum.Name}\");");
+                    WriteLine("assert(status != -1);");
+                    WriteLine("return;");
+                }
+                UnindentAndWriteCloseBrace();
+                NewLine();
+
+                var sources = new QuickJSRegisterImpl(Context);
+                sources.Indent(CurrentIndentation);
+                @enum.Visit(sources);
+                Write(sources.Generate());
+
+                WriteLine($"int status = JS_SetModuleExport(ctx, m, \"{@enum.Name}\", val);");
+                WriteLine("assert(status != -1);");
 
                 UnindentAndWriteCloseBrace();
             }
             PopBlock(NewLineKind.BeforeNextBlock);
 
+            return true;
+        }
+    }
+
+    public class QuickJSRegisterImpl : QuickJSInvokes
+    {
+        public QuickJSRegisterImpl(BindingContext context)
+            : base(context, null)
+        {
+        }
+
+        public override bool VisitClassDecl(Class @class)
+        {
+
+            return true;
+        }
+
+        public override bool VisitMethodDecl(Method method)
+        {
+            if (method.IsConstructor)
+                return true;
+
+            PushBlock(BlockKind.Method);
+            {
+            }
+            PopBlock(NewLineKind.BeforeNextBlock);
+
+            return true;
+        }
+
+        public override bool VisitEnumDecl(Enumeration @enum)
+        {
+            WriteLine("JSValue val = JS_NewObject(ctx);");
+            NewLine();
+
+            PushBlock();
+            {
+                foreach (var item in @enum.Items)
+                    item.Visit(this);
+            }
+            PopBlock(NewLineKind.Always);
+
+            return true;
+        }
+
+        public override bool VisitEnumItemDecl(Enumeration.Item item)
+        {
+            PushBlock(BlockKind.EnumItem);
+            {
+                WriteLine("// " + item.Name);
+                WriteOpenBraceAndIndent();
+                {
+                    var ctx = new MarshalContext(Context, CurrentIndentation)
+                    {
+                        ArgName = item.Value.ToString(),
+                        ReturnVarName = "item"
+                    };
+
+                    var marshal = GetMarshalNativeToManagedPrinter(ctx);
+                    item.Visit(marshal);
+
+                    if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                        Write(marshal.Context.Before);
+
+                    WriteLine($"JS_SetPropertyStr(ctx, val, \"{item.Name}\", {marshal.Context.Return});");
+                }
+                UnindentAndWriteCloseBrace();
+            }
+            PopBlock(NewLineKind.BeforeNextBlock);
+            return true;
+        }
+
+        public override bool VisitProperty(Property property)
+        {
             return true;
         }
     }
@@ -208,57 +301,14 @@ namespace CppSharp.Generators.Cpp
         {
         }
 
-        public override ParamMarshal GenerateFunctionParamMarshal(Parameter param, int paramIndex,
-            Function function = null)
+        public override MarshalPrinter<MarshalContext> GetMarshalManagedToNativePrinter(MarshalContext ctx)
         {
-            var paramMarshal = new ParamMarshal { Name = param.Name, Param = param };
-
-            var argName = Generator.GeneratedIdentifier(param.Name);
-
-            Parameter effectiveParam = param;
-            var isRef = param.IsOut || param.IsInOut;
-            var paramType = param.Type;
-
-            var ctx = new MarshalContext(Context, CurrentIndentation)
-            {
-                Parameter = effectiveParam,
-                ParameterIndex = paramIndex,
-                ArgName = argName,
-                Function = function
-            };
-
-            var marshal = new QuickJSMarshalManagedToNativePrinter(ctx);
-            effectiveParam.Visit(marshal);
-
-            if (string.IsNullOrEmpty(marshal.Context.Before))
-                throw new Exception($"Cannot marshal argument of function '{function.QualifiedOriginalName}'");
-
-            if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
-                Write(marshal.Context.Before);
-
-            NewLine();
-
-            paramMarshal.Name = argName;
-            return paramMarshal;
+            return new QuickJSMarshalManagedToNativePrinter(ctx);
         }
 
-        public override void GenerateFunctionCallReturnMarshal(Function function)
+        public override MarshalPrinter<MarshalContext> GetMarshalNativeToManagedPrinter(MarshalContext ctx)
         {
-            var ctx = new MarshalContext(Context, CurrentIndentation)
-            {
-                ArgName = Helpers.ReturnIdentifier,
-                ReturnVarName = Helpers.ReturnIdentifier,
-                ReturnType = function.ReturnType
-            };
-
-            var marshal = new QuickJSMarshalNativeToManagedPrinter(ctx);
-            function.ReturnType.Visit(marshal);
-
-            if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
-                Write(marshal.Context.Before);
-
-            NewLine();
-            WriteLine($"return {marshal.Context.Return};");
+            return new QuickJSMarshalNativeToManagedPrinter(ctx);
         }
 
         public override void GenerateFunctionGroup(List<Function> @group)
@@ -278,8 +328,7 @@ namespace CppSharp.Generators.Cpp
             var callbackId = $"callback_{type}_{GetCIdentifier(Context, function)}";
 
             PushBlock();
-            Write("extern \"C\" ");
-            WriteLine($"JSValue {callbackId}(JSContext* ctx, JSValueConst this_val,");
+            WriteLine($"static JSValue {callbackId}(JSContext* ctx, JSValueConst this_val,");
             WriteLineIndent("int argc, JSValueConst* argv)");
             WriteOpenBraceAndIndent();
 
