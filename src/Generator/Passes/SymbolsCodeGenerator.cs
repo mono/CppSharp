@@ -201,21 +201,24 @@ namespace CppSharp.Passes
             bool needSubclass = method.Access == AccessSpecifier.Protected ||
                 ((Class) method.Namespace).IsAbstract;
             string @namespace = method.Namespace.Visit(cppTypePrinter);
-            Write("extern \"C\" ");
+            if (!needSubclass)
+                Write("extern \"C\" ");
             Write($"{GetExporting()}void {wrapper}");
             if (needSubclass)
                 Write("Protected");
 
             string instance = Helpers.InstanceField;
-            string @class = needSubclass ? wrapper : @namespace;
-            Write($"({@class}* {instance}) {{ {instance}->~{method.Namespace.Name}(); }};");
             if (needSubclass)
             {
-                NewLine();
-                Write($@"extern ""C"" {GetExporting()}void {wrapper}({wrapper}* {instance}) {{ {
-                    instance}->{wrapper}Protected({instance}); }}");
+                string @class = wrapper + method.Namespace.Name;
+                WriteLine($"() {{ this->~{@class}(); }} }};");
+                Write($@"extern ""C"" {GetExporting()}void {wrapper}({
+                    @class}* {instance}) {{ {instance}->{wrapper}Protected");
             }
-            NewLine();
+            else
+                Write($@"({$"{@namespace}*{instance}"}) {{ {
+                    instance}->~{method.Namespace.Name}");
+            WriteLine("(); }");
         }
 
         private void TakeFunctionAddress(Function function, string wrapper)
