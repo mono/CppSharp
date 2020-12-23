@@ -59,8 +59,8 @@ namespace CppSharp.Passes
             }
 
             Class @class = (Class) method.Namespace;
-            bool needSubclass = method.Access == AccessSpecifier.Protected ||
-                @class.IsAbstract;
+            bool needSubclass = (method.Access == AccessSpecifier.Protected ||
+                @class.IsAbstract) && (method.IsConstructor || method.IsDestructor);
             string wrapper = GetWrapper(method);
             int i = 0;
             foreach (var param in method.Parameters.Where(

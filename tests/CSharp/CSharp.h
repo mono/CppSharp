@@ -1376,6 +1376,7 @@ public:
     virtual int size() const = 0;
     virtual int capacity() const = 0;
     virtual void* get(int n) = 0;
+    void hasParameterOnEmtptyCtor(int i) {}
 };
 
 class DLL_API InterfaceTester
