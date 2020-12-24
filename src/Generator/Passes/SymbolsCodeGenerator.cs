@@ -153,25 +153,21 @@ namespace CppSharp.Passes
                 Context.ParserOptions.IsItaniumLikeAbi).Select(
                     p => cppTypePrinter.VisitParameter(p)));
 
-            string @namespace = method.Namespace.Visit(cppTypePrinter);
-            Class @class = (Class) method.Namespace;
-            bool needSubclass = method.Access == AccessSpecifier.Protected || @class.IsAbstract;
-            if (needSubclass)
+            if (method.Access != AccessSpecifier.Protected)
+                Write("extern \"C\" ");
+            Write($"{GetExporting()}void {wrapper}({signature}) ");
+
+            if (method.Access == AccessSpecifier.Protected ||
+                ((Class) method.Namespace).IsAbstract)
             {
-                Write($"extern \"C\" {GetExporting()}void {wrapper}({signature}) ");
-                WriteLine($"{{ ::new ({Helpers.InstanceField}) {wrapper}{method.Namespace.Name}({@params}); }}");
+                Write($@"{{ ::new ({Helpers.InstanceField}) {
+                    wrapper}{method.Namespace.Name}({@params}); }}");
+                WriteLine(method.Access == AccessSpecifier.Protected ? " };" : string.Empty);
             }
             else
             {
-                Write("extern \"C\" ");
-                if (needSubclass)
-                    Write($@"class {wrapper}{method.Namespace.Namespace.Name} : public {
-                        method.Namespace.Namespace.Visit(cppTypePrinter)} {{ ");
-                Write($"{GetExporting()}void {wrapper}({signature}) ");
-                Write($"{{ ::new ({Helpers.InstanceField}) {@namespace}({@params}); }}");
-                if (needSubclass)
-                    Write("; }");
-                NewLine();
+                string @namespace = method.Namespace.Visit(cppTypePrinter);
+                WriteLine($"{{ ::new ({Helpers.InstanceField}) {@namespace}({@params}); }}");
             }
 
             foreach (var param in method.Parameters.Where(p =>

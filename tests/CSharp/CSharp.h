@@ -1502,10 +1502,11 @@ struct DLL_API ClassMicrosoftObjectAlignment : ClassMicrosoftObjectAlignmentBase
     bool boolean;
 };
 
-class DLL_API ProtectedDestructor
+class DLL_API ProtectedConstructorDestructor
 {
 protected:
-    ~ProtectedDestructor() {}
+    ProtectedConstructorDestructor() {}
+    ~ProtectedConstructorDestructor() {}
 };
 
 DLL_API extern const unsigned ClassCustomTypeAlignmentOffsets[5];
