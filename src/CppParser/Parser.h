@@ -137,7 +137,6 @@ private:
     Parameter* WalkParameter(const clang::ParmVarDecl* PVD,
         const clang::SourceLocation& ParamStartLoc);
     void SetBody(const clang::FunctionDecl* FD, Function* F);
-    std::stack<clang::Scope> GetScopesFor(clang::FunctionDecl* FD);
     void MarkValidity(Function* F);
     void WalkFunction(const clang::FunctionDecl* FD, Function* F);
     int GetAlignAs(const clang::AlignedAttr* alignedAttr);
