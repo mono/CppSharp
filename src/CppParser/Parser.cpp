@@ -3114,6 +3114,10 @@ static bool IsInvalid(clang::Stmt* Body, std::unordered_set<clang::Stmt*>& Bodie
         return false;
     Bodies.insert(Body);
 
+    if (auto E = dyn_cast<clang::Expr>(Body))
+        if (E->containsErrors())
+            return true;
+
     Decl* D = 0;
     switch (Body->getStmtClass())
     {
