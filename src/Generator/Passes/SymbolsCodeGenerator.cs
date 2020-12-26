@@ -312,9 +312,9 @@ namespace CppSharp.Passes
                     switch (a.Kind)
                     {
                         case TemplateArgument.ArgumentKind.Type:
-                            return a.Type.Visit(cppTypePrinter).Type;
+                            return a.Type.Visit(cppTypePrinter).ToString();
                         case TemplateArgument.ArgumentKind.Declaration:
-                            return a.Declaration.Visit(cppTypePrinter).Type;
+                            return a.Declaration.Visit(cppTypePrinter).ToString();
                         case TemplateArgument.ArgumentKind.Integral:
                             return a.Integral.ToString(CultureInfo.InvariantCulture);
                     }
