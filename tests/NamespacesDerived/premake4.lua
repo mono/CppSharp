@@ -7,6 +7,3 @@ group "Tests/Namespaces"
 
   SetupTestGeneratorProject("NamespacesDerived")
   SetupTestProjectsCSharp("NamespacesDerived", "NamespacesBase")
-
-  project("NamespacesDerived.Tests.CSharp")
-    links { "NamespacesBase.CSharp" }

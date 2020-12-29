@@ -101,7 +101,7 @@ namespace CppSharp.Types.Std
             if (enconding == Encoding.ASCII)
                 return new CustomType("[MarshalAs(UnmanagedType.LPStr)] string");
             else if (enconding == Encoding.UTF8)
-                return new CustomType("[MarshalAs(UnmanagedType.LPUTF8Str)] string");
+                return new CustomType("[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string");
             else if (enconding == Encoding.Unicode || enconding == Encoding.BigEndianUnicode)
                 return new CustomType("[MarshalAs(UnmanagedType.LPWStr)] string");
             else if (enconding == Encoding.UTF32)

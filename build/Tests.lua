@@ -84,7 +84,9 @@ function SetupTestProjectsCSharp(name, depends, extraFiles, suffix)
       str = "Std"
     end
   
-  SetupExternalManagedTestProject(name .. ".CSharp")
+  if name ~= "NamespacesDerived" then
+    SetupExternalManagedTestProject(name .. ".CSharp")
+  end
   SetupExternalManagedTestProject(name .. ".Tests.CSharp")
 end
 

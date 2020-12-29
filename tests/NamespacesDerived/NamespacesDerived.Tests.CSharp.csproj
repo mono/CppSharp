@@ -1,1 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="NamespacesDerived.Gen.csproj" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="NamespacesBase">
+      <HintPath>..\..\build\gen\NamespacesDerived\NamespacesBase.dll</HintPath>
+    </Reference>
+    <Reference Include="NamespacesDerived">
+      <HintPath>..\..\build\gen\NamespacesDerived\NamespacesDerived.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

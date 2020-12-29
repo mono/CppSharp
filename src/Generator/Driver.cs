@@ -1,26 +1,23 @@
 using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using CppSharp.AST;
 using CppSharp.Generators;
+using CppSharp.Generators.C;
 using CppSharp.Generators.CLI;
+using CppSharp.Generators.Cpp;
 using CppSharp.Generators.CSharp;
 using CppSharp.Parser;
 using CppSharp.Passes;
 using CppSharp.Utils;
-using Microsoft.CSharp;
 using CppSharp.Types;
-using CppSharp.Generators.Cpp;
-using CppSharp.Generators.C;
 
 namespace CppSharp
 {
     public class Driver : IDisposable
     {
-        public DriverOptions Options { get; private set; }
+        public DriverOptions Options { get; }
         public ParserOptions ParserOptions { get; set; }
         public BindingContext Context { get; private set; }
         public Generator Generator { get; private set; }
@@ -351,68 +348,29 @@ namespace CppSharp
                 File.WriteAllText(file, generatedCode);
         }
 
-        private static readonly Dictionary<Module, string> libraryMappings = new Dictionary<Module, string>();
-
-        public void CompileCode(Module module)
+        public bool CompileCode(Module module)
         {
-            var assemblyFile = Path.Combine(Options.OutputDir, module.LibraryName + ".dll");
+            File.WriteAllText(Path.Combine(Options.OutputDir, "Directory.Build.props"), "<Project />");
 
-            var docFile = Path.ChangeExtension(assemblyFile, ".xml");
+            var msBuildGenerator = new MSBuildGenerator(Context, module, libraryMappings);
+            msBuildGenerator.Process();
+            string csproj = Path.Combine(Options.OutputDir,
+                $"{module.LibraryName}.{msBuildGenerator.FileExtension}");
+            File.WriteAllText(csproj, msBuildGenerator.Generate());
 
-            var compilerOptions = new StringBuilder();
-            compilerOptions.Append($" /doc:\"{docFile}\"");
-            compilerOptions.Append(" /debug:pdbonly");
-            compilerOptions.Append(" /unsafe");
-
-            var compilerParameters = new CompilerParameters
+            string output = ProcessHelper.Run("dotnet", $"msbuild -restore {csproj}",
+                out int error, out string errorMessage);
+            if (error == 0)
             {
-                GenerateExecutable = false,
-                TreatWarningsAsErrors = false,
-                OutputAssembly = assemblyFile,
-                GenerateInMemory = false,
-                CompilerOptions = compilerOptions.ToString()
-            };
-
-            if (module != Options.SystemModule)
-                compilerParameters.ReferencedAssemblies.Add(
-                    Path.Combine(Options.OutputDir, $"{Options.SystemModule.LibraryName}.dll"));
-            // add a reference to System.Core
-            compilerParameters.ReferencedAssemblies.Add(typeof(Enumerable).Assembly.Location);
-
-            var location = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            var outputDir = Path.GetDirectoryName(location);
-            var locationRuntime = Path.Combine(outputDir, "CppSharp.Runtime.dll");
-            compilerParameters.ReferencedAssemblies.Add(locationRuntime);
-
-            compilerParameters.ReferencedAssemblies.AddRange(
-                (from dependency in module.Dependencies
-                 where libraryMappings.ContainsKey(dependency)
-                 select libraryMappings[dependency]).ToArray());
-
-            compilerParameters.ReferencedAssemblies.AddRange(module.ReferencedAssemblies.ToArray());
-
-            Diagnostics.Message($"Compiling {module.LibraryName}...");
-            CompilerResults compilerResults;
-            using (var codeProvider = new CSharpCodeProvider(
-                new Dictionary<string, string> {
-                    { "CompilerDirectoryPath", ManagedToolchain.FindCSharpCompilerDir() } }))
-            {
-                compilerResults = codeProvider.CompileAssemblyFromFile(
-                    compilerParameters, module.CodeFiles.ToArray());
+                Diagnostics.Message($@"Compilation succeeded: {
+                    libraryMappings[module] = Path.Combine(
+                        Options.OutputDir, $"{module.LibraryName}.dll")}.");
+                return true;
             }
 
-            var errors = compilerResults.Errors.Cast<CompilerError>().Where(e => !e.IsWarning &&
-                // HACK: auto-compiling on OS X produces "errors" which do not affect compilation so we ignore them
-                (!Platform.IsMacOS || !e.ErrorText.EndsWith("(Location of the symbol related to previous warning)", StringComparison.Ordinal))).ToList();
-            foreach (var error in errors)
-                Diagnostics.Error(error.ToString());
-
-            HasCompilationErrors = errors.Count > 0;
-            if (!HasCompilationErrors)
-            {
-                libraryMappings[module] = Path.Combine(outputDir, assemblyFile);
-                Diagnostics.Message("Compilation succeeded.");
-            }
+            Diagnostics.Error(output);
+            Diagnostics.Error(errorMessage);
+            return false;
         }
 
         public void AddTranslationUnitPass(TranslationUnitPass pass)
@@ -433,6 +391,7 @@ namespace CppSharp
         }
 
         private bool hasParsingErrors;
+        private static readonly Dictionary<Module, string> libraryMappings = new Dictionary<Module, string>();
     }
 
     public static class ConsoleDriver
@@ -498,12 +457,7 @@ namespace CppSharp
 
                     driver.SaveCode(outputs);
                     if (driver.Options.IsCSharpGenerator && driver.Options.CompileCode)
-                        foreach (var module in driver.Options.Modules)
-                        {
-                            driver.CompileCode(module);
-                            if (driver.HasCompilationErrors)
-                                break;
-                        }
+                        driver.Options.Modules.Any(m => !driver.CompileCode(m));
                 }
             }
         }

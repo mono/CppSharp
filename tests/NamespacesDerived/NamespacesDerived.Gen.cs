@@ -1,5 +1,4 @@
 using System.IO;
-using System.Reflection;
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Utils;
@@ -18,6 +17,7 @@ namespace CppSharp.Tests
             base.Setup(driver);
             driver.Options.GenerateDefaultValuesForArguments = true;
             driver.Options.GenerateClassTemplates = true;
+            driver.Options.CompileCode = true;
             driver.Options.DependentNameSpaces.Add("System.Runtime.CompilerServices");
             driver.Options.Modules[1].IncludeDirs.Add(GetTestsDirectory("NamespacesDerived"));
             var @base = "NamespacesBase";
