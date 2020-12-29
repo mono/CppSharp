@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(TestName).CSharp.csproj" Condition="$(MSBuildProjectName.EndsWith('CSharp'))" />
+    <ProjectReference Include="$(TestName).CSharp.csproj" Condition="$(MSBuildProjectName.EndsWith('CSharp')) AND $(TestName) != 'NamespacesDerived'" />
     <ProjectReference Include="$(NativeProjectsDir)$(TestName).Native.vcxproj" Condition="$(IsWindows)" ReferenceOutputAssembly="false" />
     <ProjectReference Include="$(NativeProjectsDir)$(TestName).CLI.vcxproj" Condition="$(MSBuildProjectName.EndsWith('CLI')) AND $(IsWindows)" />
   </ItemGroup>

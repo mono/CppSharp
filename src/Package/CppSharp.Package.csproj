@@ -14,7 +14,6 @@ It can also be used as a library to parse native code into a syntax tree with a 
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="System.CodeDom" />    
     <PackageReference Include="Microsoft.Win32.Registry" />
     <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" />
     <Content Include="$(PackageDir)runtimes\**" PackagePath="runtimes" />
