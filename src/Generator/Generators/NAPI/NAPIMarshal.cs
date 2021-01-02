@@ -153,7 +153,7 @@ namespace CppSharp.Generators.NAPI
             case PrimitiveType.Double:
             case PrimitiveType.LongDouble:
                 Context.Before.WriteLine($"napi_value {result};");
-                Context.Before.WriteLine($"status = {func}(env, {Context.ReturnVarName}, &{result});");
+                Context.Before.WriteLine($"status = {func}(env, {Context.ArgName}, &{result});");
                 Context.Before.WriteLine("assert(status == napi_ok);");
                 Context.Return.Write(result);
                 return true;
@@ -165,7 +165,7 @@ namespace CppSharp.Generators.NAPI
 
             case PrimitiveType.String:
                 Context.Before.WriteLine($"napi_value {result};");
-                Context.Before.WriteLine($"status = {func}(env, {Context.ReturnVarName}, NAPI_AUTO_LENGTH, &{result});");
+                Context.Before.WriteLine($"status = {func}(env, {Context.ArgName}, NAPI_AUTO_LENGTH, &{result});");
                 Context.Before.WriteLine("assert(status == napi_ok);");
                 Context.Return.Write(result);
                 return true;
@@ -313,7 +313,7 @@ namespace CppSharp.Generators.NAPI
 
         public override bool VisitEnumDecl(Enumeration @enum)
         {
-            Context.ReturnVarName = $"(int32_t) {Context.ReturnVarName}";
+            Context.ArgName = $"(int32_t) {Context.ArgName}";
             VisitPrimitiveType(PrimitiveType.Int);
 
             return true;
@@ -531,7 +531,7 @@ namespace CppSharp.Generators.NAPI
             case PrimitiveType.Double:
             case PrimitiveType.LongDouble:
                 Context.Before.WriteLine($"{type} {Context.Parameter.Name};");
-                Context.Before.WriteLine($"status = {func}(env, args[{Context.ParameterIndex}]," +
+                Context.Before.WriteLine($"status = {func}(env, {Context.ArgName}," +
                                          $" &{Context.Parameter.Name});");
 
                 if (!string.IsNullOrEmpty(cast))
@@ -547,7 +547,7 @@ namespace CppSharp.Generators.NAPI
             case PrimitiveType.Float128:
                 Context.Before.WriteLine($"{type} {Context.Parameter.Name};");
                 Context.Before.WriteLine("bool lossless;");
-                Context.Before.WriteLine($"status = {func}(env, args[{Context.ParameterIndex}]," +
+                Context.Before.WriteLine($"status = {func}(env, {Context.ArgName}," +
                                          $" &{Context.Parameter.Name}, &lossless);");
 
                 if (!string.IsNullOrEmpty(cast))
@@ -559,17 +559,17 @@ namespace CppSharp.Generators.NAPI
             case PrimitiveType.String:
                 var size = $"_{Context.Parameter.Name}_size";
                 Context.Before.WriteLine($"size_t {size};");
-                Context.Before.WriteLine($"status = {func}(env, args[{Context.ParameterIndex}], " +
+                Context.Before.WriteLine($"status = {func}(env, {Context.ArgName}, " +
                                          $"nullptr, 0, &{size});");
                 Context.Before.NewLine();
 
                 var buf = $"{Context.Parameter.Name}";
                 Context.Before.WriteLine($"char* {buf} = (char*) malloc({size});");
-                Context.Before.WriteLine($"status = {func}(env, args[{Context.ParameterIndex}], " +
+                Context.Before.WriteLine($"status = {func}(env, {Context.ArgName}, " +
                                          $"nullptr, 0, &{size});");
                 Context.Before.WriteLine("assert(status == napi_ok);");
 
-                Context.Cleanup.WriteLine($"free({buf};");
+                Context.Cleanup.WriteLine($"free({buf});");
                 Context.Return.Write($"{buf}");
                 return true;
 
