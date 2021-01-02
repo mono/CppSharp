@@ -403,75 +403,6 @@ namespace CppSharp.Generator.Tests.AST
         }
 
         [Test]
-        public void TestComments()
-        {
-            var @class = AstContext.FindCompleteClass("TestComments");
-            var textGenerator = new TextGenerator();
-            textGenerator.Print(@class.Comment.FullComment, CommentKind.BCPLSlash);
-            Assert.AreEqual(@"/// <summary>
-/// <para>Hash set/map base class.</para>
-/// <para>Note that to prevent extra memory use due to vtable pointer, %HashBase intentionally does not declare a virtual destructor</para>
-/// <para>and therefore %HashBase pointers should never be used.</para>
-/// </summary>
-".Replace("\r", string.Empty), textGenerator.StringBuilder.Replace("\r", string.Empty).ToString());
-
-            var method = @class.Methods.First(m => m.Name == "GetIOHandlerControlSequence");
-            textGenerator.StringBuilder.Clear();
-            textGenerator.Print(method.Comment.FullComment, CommentKind.BCPL);
-            Assert.AreEqual(@"// <summary>
-// <para>Get the string that needs to be written to the debugger stdin file</para>
-// <para>handle when a control character is typed.</para>
-// </summary>
-// <param name=""ch"">The character that was typed along with the control key</param>
-// <returns>
-// <para>The string that should be written into the file handle that is</para>
-// <para>feeding the input stream for the debugger, or NULL if there is</para>
-// <para>no string for this control key.</para>
-// </returns>
-// <remarks>
-// <para>Some GUI programs will intercept &quot;control + char&quot; sequences and want</para>
-// <para>to have them do what normally would happen when using a real</para>
-// <para>terminal, so this function allows GUI programs to emulate this</para>
-// <para>functionality.</para>
-// </remarks>
-".Replace("\r", string.Empty), textGenerator.StringBuilder.Replace("\r", string.Empty).ToString());
-
-            var methodTestDoxygen = @class.Methods.First(m => m.Name == "SBAttachInfo");
-            textGenerator.StringBuilder.Clear();
-            textGenerator.Print(methodTestDoxygen.Comment.FullComment, CommentKind.BCPLSlash);
-            Assert.AreEqual(@"/// <summary>Attach to a process by name.</summary>
-/// <param name=""path"">A full or partial name for the process to attach to.</param>
-/// <param name=""wait_for"">
-/// <para>If <c>false,</c> attach to an existing process whose name matches.</para>
-/// <para>If <c>true,</c> then wait for the next process whose name matches.</para>
-/// </param>
-/// <remarks>
-/// <para>This function implies that a future call to SBTarget::Attach(...)</para>
-/// <para>will be synchronous.</para>
-/// </remarks>
-".Replace("\r", string.Empty), textGenerator.StringBuilder.Replace("\r", string.Empty).ToString());
-
-            var methodDoxygenCustomTags = @class.Methods.First(m => m.Name == "glfwDestroyWindow");
-            new CleanCommentsPass().VisitFull(methodDoxygenCustomTags.Comment.FullComment);
-            textGenerator.StringBuilder.Clear();
-            textGenerator.Print(methodDoxygenCustomTags.Comment.FullComment, CommentKind.BCPLSlash);
-            Assert.AreEqual(@"/// <summary>Destroys the specified window and its context.</summary>
-/// <param name=""window"">The window to destroy.</param>
-/// <remarks>
-/// <para>This function destroys the specified window and its context.  On calling</para>
-/// <para>this function, no further callbacks will be called for that window.</para>
-/// <para>If the context of the specified window is current on the main thread, it is</para>
-/// <para>detached before being destroyed.</para>
-/// <para>The context of the specified window must not be current on any other</para>
-/// <para>thread when this function is called.</para>
-/// <para>This function must not be called from a callback.</para>
-/// <para>This function must only be called from the main thread.</para>
-/// <para>Added in version 3.0.  Replaces `glfwCloseWindow`.</para>
-/// </remarks>
-".Replace("\r", string.Empty), textGenerator.StringBuilder.Replace("\r", string.Empty).ToString());
-        }
-
-        [Test]
         public void TestCompletionOfClassTemplates()
         {
             var templates = AstContext.FindDecl<ClassTemplate>("ForwardedTemplate").ToList();
@@ -515,7 +446,7 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestLayoutBase()
         {
-            var @class = AstContext.FindCompleteClass("TestComments");
+            var @class = AstContext.FindCompleteClass("HasConstFunction");
             Assert.That(@class.Layout.Bases.Count, Is.EqualTo(0));
         }
 

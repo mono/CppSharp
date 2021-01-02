@@ -100,3 +100,71 @@ namespace NamespacesBase
         Base base;
     };
 }
+
+/// Hash set/map base class.
+/** Note that to prevent extra memory use due to vtable pointer, %HashBase intentionally does not declare a virtual destructor
+and therefore %HashBase pointers should never be used.
+*/
+class TestComments
+{
+public:
+    //----------------------------------------------------------------------
+    /// Get the string that needs to be written to the debugger stdin file
+    /// handle when a control character is typed.
+    ///
+    /// Some GUI programs will intercept "control + char" sequences and want
+    /// to have them do what normally would happen when using a real
+    /// terminal, so this function allows GUI programs to emulate this
+    /// functionality.
+    ///
+    /// @param[in] ch
+    ///     The character that was typed along with the control key
+    ///
+    /// @return
+    ///     The string that should be written into the file handle that is
+    ///     feeding the input stream for the debugger, or NULL if there is
+    ///     no string for this control key.
+    //----------------------------------------------------------------------
+    const char* GetIOHandlerControlSequence(char ch);
+
+    //------------------------------------------------------------------
+    /// Attach to a process by name.
+    ///
+    /// This function implies that a future call to SBTarget::Attach(...)
+    /// will be synchronous.
+    ///
+    /// @param[in] path
+    ///     A full or partial name for the process to attach to.
+    ///
+    /// @param[in] wait_for
+    ///     If \b false, attach to an existing process whose name matches.
+    ///     If \b true, then wait for the next process whose name matches.
+    //------------------------------------------------------------------
+    int SBAttachInfo(const char* path, bool wait_for);
+
+    /*! @brief Destroys the specified window and its context.
+    *
+    *  This function destroys the specified window and its context.  On calling
+    *  this function, no further callbacks will be called for that window.
+    *
+    *  If the context of the specified window is current on the main thread, it is
+    *  detached before being destroyed.
+    *
+    *  @param[in] window The window to destroy.
+    *
+    *  @note The context of the specified window must not be current on any other
+    *  thread when this function is called.
+    *
+    *  @reentrancy This function must not be called from a callback.
+    *
+    *  @thread_safety This function must only be called from the main thread.
+    *
+    *  @since Added in version 3.0.  Replaces `glfwCloseWindow`.
+    */
+    void glfwDestroyWindow(int* window);
+
+    /**
+     * <sip:alice@example.net>
+     */
+    class LinphoneAddress {};
+};
