@@ -42,6 +42,11 @@ struct TestReadOnlyProperties
 #define TEST_ENUM_ITEM_NAME_1 0x1
 #define TEST_ENUM_ITEM_NAME_2 0x2U
 
+enum
+{
+    TEST_ENUM_ITEM_NAME_3 = 3
+};
+
 // TestStructInheritance
 struct S1 { int F1, F2; };
 struct S2 : S1 { int F3; };

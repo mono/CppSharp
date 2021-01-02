@@ -36,6 +36,18 @@ namespace CppSharp.AST
                 }
             }
 
+            public Item()
+            {
+
+            }
+
+            public Item(Item item) : base(item)
+            {
+                Value = item.Value;
+                Expression = item.Expression;
+                ExplicitValue = item.ExplicitValue;
+            }
+
             public override T Visit<T>(IDeclVisitor<T> visitor)
             {
                 return visitor.VisitEnumItemDecl(this);
