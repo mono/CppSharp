@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using CodingSeb.ExpressionEvaluator;
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Passes;
