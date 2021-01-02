@@ -9,7 +9,7 @@ namespace CppSharp.Utils.FSM
       public readonly List<char> Sigma = new List<char>();
       public readonly List<Transition> Delta = new List<Transition>();
       public List<string> Q0 = new List<string>();
-      public readonly List<string> F = new List<string>();
+      public List<string> F = new List<string>();
 
       public DFSM(IEnumerable<string> q, IEnumerable<char> sigma, IEnumerable<Transition> delta,
          IEnumerable<string> q0, IEnumerable<string> f){
