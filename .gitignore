@@ -48,6 +48,7 @@ src/generator/generator
 /artifacts
 /deps/llvm
 /extra
+/.idea/
 /include/include
 /include/libc
 /include/libcxx
