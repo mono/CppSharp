@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using CodingSeb.ExpressionEvaluator;
 using CppSharp.AST;
 using CppSharp.Generators;
+using CppSharp.Generators.CSharp;
 using CppSharp.Passes;
 
 namespace CppSharp
@@ -98,67 +99,105 @@ namespace CppSharp
                 {
                     Name = macro.Name,
                     Expression = macro.Expression,
-                    Value = ParseMacroExpression(macro.Expression, @enum),
+                    Value = ParseEnumItemMacroExpression(macro, @enum),
                     Namespace = @enum
                 };
         }
 
-        static bool ParseToNumber(string num, Enumeration @enum, out long val)
+        static bool EvaluateEnumExpression(string expr, Enumeration @enum, out object eval)
         {
-            //ExpressionEvaluator does not work with hex
-            if (num.StartsWith("0x", StringComparison.CurrentCultureIgnoreCase))
+            var evaluator = new ExpressionEvaluator { Variables = new Dictionary<string, object>() };
+
+            // Include values of past items
+            foreach (var item in @enum.Items)
             {
-                num = num.Substring(2);
-
-                // This is in case the literal contains suffix
-                num = Regex.Replace(num, "(?i)[ul]*$", String.Empty);
-
-                return long.TryParse(num, NumberStyles.HexNumber,
-                    CultureInfo.CurrentCulture, out val);
+                evaluator.Variables.Add(item.Name, item.Value);
             }
 
-            ExpressionEvaluator evaluator = new ExpressionEvaluator();
-            //Include values of past items
-            evaluator.Variables = new Dictionary<string, object>();
-            foreach (Enumeration.Item item in @enum.Items)
-            {
-                //ExpressionEvaluator is requires lowercase variables
-                evaluator.Variables.Add(item.Name.ToLower(), item.Value);
-            }
             try
             {
-                var ret = evaluator.Evaluate("(long)" + num.ReplaceLineBreaks(" ").Replace('\\',' '));
-                val = (long)ret;
+                expr = expr.ReplaceLineBreaks(" ").Replace('\\', ' ');
+                eval = evaluator.Evaluate(expr);
                 return true;
             }
-            catch (ExpressionEvaluatorSyntaxErrorException)
+            catch (Exception ex)
             {
-                val = 0;
-                return false;
+                throw new Exception($"Failed to evaluate expression: {ex.Message}");
             }
         }
 
-        static ulong ParseMacroExpression(string expression, Enumeration @enum)
+        static ulong ParseEnumItemMacroExpression(MacroDefinition macro, Enumeration @enum)
         {
+            var expression = macro.Expression;
+
             // TODO: Handle string expressions
             if (expression.Length == 3 && expression[0] == '\'' && expression[2] == '\'') // '0' || 'A'
-                return expression[1]; // return the ASCI code of this character
+                return expression[1]; // return the ASCII code of this character
 
-            long val;
-            return ParseToNumber(expression, @enum, out val) ? (ulong)val : 0;
+            object eval;
+            try
+            {
+                EvaluateEnumExpression(expression, @enum, out eval);
+            }
+            catch (Exception)
+            {
+                // TODO: This should just throw, but we have a pre-existing behavior that expects malformed
+                // macro expressions to default to 0, see CSharp.h (MY_MACRO_TEST2_0), so do it for now.
+                return 0;
+            }
+
+            if (eval is ulong number)
+                return number;
+
+            unchecked
+            {
+                ulong val = ((ulong) (int) eval);
+                return val;
+            }
         }
 
-        public static Enumeration GenerateEnumFromMacros(this ASTContext context, string name,
-            params string[] macros)
+        class CollectEnumItems : AstVisitor
         {
-            var @enum = new Enumeration { Name = name };
+            public List<Enumeration.Item> Items;
+            private Regex regex;
 
-            var regexPattern = string.Join("|", macros.Select(pattern => $"({pattern}$)"));
-            var regex = new Regex(regexPattern);
+            public CollectEnumItems(Regex regex)
+            {
+                Items = new List<Enumeration.Item>();
+                this.regex = regex;
+            }
 
+            public override bool VisitEnumItemDecl(Enumeration.Item item)
+            {
+                if (AlreadyVisited(item))
+                    return true;
+
+                // Prevents collecting previously generated items when generating enums from macros.
+                if (item.IsImplicit)
+                    return true;
+
+                var match = regex.Match(item.Name);
+                if (match.Success)
+                    Items.Add(item);
+
+                return true;
+            }
+        }
+
+        public static List<Enumeration.Item> FindMatchingEnumItems(this ASTContext context, Regex regex)
+        {
+            var collector = new CollectEnumItems(regex);
+            foreach (var unit in context.TranslationUnits)
+                collector.VisitTranslationUnit(unit);
+
+            return collector.Items;
+        }
+
+        public static List<MacroDefinition> FindMatchingMacros(this ASTContext context,
+            Regex regex, ref TranslationUnit unitToAttach)
+        {
             int maxItems = 0;
-            TranslationUnit unitToAttach = null;
-            ulong maxValue = 0;
+            var macroDefinitions = new List<MacroDefinition>();
 
             foreach (var unit in context.TranslationUnits)
             {
@@ -167,20 +206,16 @@ namespace CppSharp
                 foreach (var macro in unit.PreprocessedEntities.OfType<MacroDefinition>())
                 {
                     var match = regex.Match(macro.Name);
-                    if (!match.Success) continue;
-
-                    if (macro.Enumeration != null)
+                    if (!match.Success)
                         continue;
 
-                    // Skip this macro if the enum already has an item with same name.
-                    if (@enum.Items.Exists(it => it.Name == macro.Name))
+                    // if (macro.Enumeration != null)
+                    //     continue;
+
+                    if (macroDefinitions.Exists(m => macro.Name == m.Name))
                         continue;
 
-                    var item = @enum.GenerateEnumItemFromMacro(macro);
-                    @enum.AddItem(item);
-                    macro.Enumeration = @enum;
-
-                    maxValue = Math.Max(maxValue, item.Value);
+                    macroDefinitions.Add(macro);
                     numItems++;
                 }
 
@@ -191,14 +226,56 @@ namespace CppSharp
                 }
             }
 
-            if (@enum.Items.Count > 0)
-            {
-                @enum.BuiltinType = new BuiltinType(GetUnderlyingTypeForEnumValue(maxValue));
-                @enum.Type = @enum.BuiltinType;
-                @enum.Namespace = unitToAttach;
+            return macroDefinitions;
+        }
 
-                unitToAttach.Declarations.Add(@enum);
+        public static Enumeration GenerateEnumFromMacros(this ASTContext context, string name,
+            params string[] values)
+        {
+            TranslationUnit GetUnitFromItems(List<Enumeration.Item> list)
+            {
+                var units = list.Select(item => item.TranslationUnit)
+                    .GroupBy(x => x)
+                    .Select(y => new {Element = y.Key, Counter = y.Count()});
+
+                var translationUnit = units.OrderByDescending(u => u.Counter)
+                    .FirstOrDefault()?.Element ?? null;
+
+                return translationUnit;
             }
+
+            var @enum = new Enumeration { Name = name };
+
+            var regexPattern = string.Join("|", values.Select(pattern => $"({pattern}$)"));
+            var regex = new Regex(regexPattern);
+
+            var items = FindMatchingEnumItems(context, regex);
+            foreach (var item in items)
+                @enum.AddItem(item);
+
+            TranslationUnit macroUnit = null;
+            var macroDefs = FindMatchingMacros(context, regex, ref macroUnit);
+            foreach (var macro in macroDefs)
+            {
+                // Skip this macro if the enum already has an item with same name.
+                if (@enum.Items.Exists(it => it.Name == macro.Name))
+                    continue;
+
+                var item = @enum.GenerateEnumItemFromMacro(macro);
+                @enum.AddItem(item);
+                macro.Enumeration = @enum;
+            }
+
+            if (@enum.Items.Count <= 0)
+                return @enum;
+
+            var maxValue = @enum.Items.Max(i => i.Value);
+            @enum.BuiltinType = new BuiltinType(GetUnderlyingTypeForEnumValue(maxValue));
+            @enum.Type = @enum.BuiltinType;
+
+            var unit = macroUnit ?? GetUnitFromItems(items);
+            @enum.Namespace = unit;
+            unit.Declarations.Add(@enum);
 
             return @enum;
         }
@@ -222,6 +299,12 @@ namespace CppSharp
 
             if (maxValue < uint.MaxValue)
                 return PrimitiveType.UInt;
+
+            if (maxValue < long.MaxValue)
+                return PrimitiveType.Long;
+
+            if (maxValue < ulong.MaxValue)
+                return PrimitiveType.ULong;
 
             throw new NotImplementedException();
         }

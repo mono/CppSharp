@@ -109,15 +109,16 @@ namespace CppSharp.Generator.Tests.Passes
             Assert.IsNotNull(@enum);
 
             // Testing the values read for the enum
-            Assert.AreEqual(0, @enum.Items[0].Value); // Decimal literal
-            Assert.AreEqual(1, @enum.Items[1].Value); // Hex literal
-            Assert.AreEqual(2, @enum.Items[2].Value); // Hex literal with suffix
+            Assert.AreEqual(3, @enum.Items[0].Value); // Decimal literal
+            Assert.AreEqual(0, @enum.Items[1].Value); // Hex literal
+            Assert.AreEqual(1, @enum.Items[2].Value); // Hex literal with suffix
+            Assert.AreEqual(2, @enum.Items[3].Value); // Enum item
 
             passBuilder.RemovePrefix("TEST_ENUM_ITEM_NAME_", RenameTargets.EnumItem);
             passBuilder.AddPass(new CleanInvalidDeclNamesPass());
             passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
 
-            Assert.That(@enum.Items[0].Name, Is.EqualTo("_0"));
+            Assert.That(@enum.Items[1].Name, Is.EqualTo("_0"));
         }
 
         [Test]

@@ -1577,6 +1577,17 @@ namespace CodingSeb.ExpressionEvaluator
         protected virtual bool EvaluateNumber(string expression, Stack<object> stack, ref int i)
         {
             string restOfExpression = expression.Substring(i);
+
+// CPPSHARP
+            if (restOfExpression.StartsWith("0x", StringComparison.CurrentCultureIgnoreCase))
+            {
+                // This is in case the literal contains suffix
+                var cleanedUp = Regex.Replace(restOfExpression, "(?i)[ul]*$", string.Empty);
+                i += restOfExpression.Length - cleanedUp.Length;
+                restOfExpression = cleanedUp;
+            }
+//
+
             Match numberMatch = Regex.Match(restOfExpression, numberRegexPattern, RegexOptions.IgnoreCase);
             Match otherBaseMatch = otherBasesNumberRegex.Match(restOfExpression);
 
