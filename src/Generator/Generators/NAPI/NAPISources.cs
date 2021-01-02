@@ -11,6 +11,7 @@ using CppSharp.Generators.NAPI;
 using CppSharp.Passes;
 using CppSharp.Utils.FSM;
 using static CppSharp.Generators.Cpp.NAPISources;
+using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.Cpp
 {
@@ -415,7 +416,6 @@ namespace CppSharp.Generators.Cpp
             PushBlock(BlockKind.Function, function);
 
             GenerateFunctionCallback(@group);
-            GenerateNativeCall(group);
             NewLine();
 
             // TODO:
@@ -440,18 +440,12 @@ namespace CppSharp.Generators.Cpp
             PushBlock(BlockKind.Method);
 
             GenerateFunctionCallback(@group.OfType<Function>().ToList());
-            GenerateNativeCall(@group);
             NewLine();
 
             WriteLine("return _this;");
             UnindentAndWriteCloseBrace();
 
             PopBlock(NewLineKind.BeforeNextBlock);
-        }
-
-        public virtual void GenerateNativeCall(IEnumerable<Function> group)
-        {
-
         }
 
         public virtual void GenerateFunctionCallback(List<Function> @group)
@@ -479,15 +473,8 @@ namespace CppSharp.Generators.Cpp
             NewLine();
 
             // Handle the zero arguments case right away if one exists.
-            var zeroParamsOverload = @group.SingleOrDefault(f => f.Parameters.Count == 0);
-            if (zeroParamsOverload != null && @group.Count > 1)
-            {
-                var index = @group.FindIndex(f => f == zeroParamsOverload);
-
-                WriteLine($"if (argc == 0)");
-                WriteLineIndent($"goto overload{index};");
-                NewLine();
-            }
+            CheckZeroArguments(@group);
+            NewLineIfNeeded();
 
             // Check if the arguments are in the expected range.
             CheckArgumentsRange(@group);
@@ -496,16 +483,17 @@ namespace CppSharp.Generators.Cpp
             var needsArguments = @group.Any(f => f.Parameters.Any(p => p.IsGenerated));
             if (needsArguments)
             {
-                //WriteLine("void* data;");
                 WriteLine("status = napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);");
                 WriteLine("assert(status == napi_ok);");
                 NewLine();
 
-                // Next we need to disambiguate which overload to call based on:
-                // 1. Number of arguments passed to the method
-                // 2. Type of arguments
-
-                CheckArgumentsTypes(@group);
+                WriteLine("for (size_t i = 0; i < argc; i++)");
+                WriteOpenBraceAndIndent();
+                {
+                    WriteLine("status = napi_typeof(env, args[i], &types[i]);");
+                    WriteLine("assert(status == napi_ok);");
+                }
+                UnindentAndWriteCloseBrace();
                 NewLine();
             }
 
@@ -530,6 +518,19 @@ namespace CppSharp.Generators.Cpp
             {
                 var stateMachine = CalculateOverloadStates(@group);
                 CheckArgumentsOverload(@group, stateMachine);
+
+                // Error state.
+                Unindent();
+                WriteLine($"error:");
+                Indent();
+
+                WriteLine("status = napi_throw_type_error(env, nullptr, \"Unsupported argument type\");");
+                WriteLine("assert(status == napi_ok);");
+                NewLine();
+
+                WriteLine("return nullptr;");
+                NewLine();
+
                 GenerateOverloadCalls(@group, stateMachine);
             }
             else
@@ -547,7 +548,20 @@ namespace CppSharp.Generators.Cpp
             }
         }
 
-        private void CheckArgumentsRange(IEnumerable<Function> @group)
+        public virtual void CheckZeroArguments(List<Function> @group)
+        {
+            var zeroParamsOverload = @group.SingleOrDefault(f => f.Parameters.Count == 0);
+            if (zeroParamsOverload == null || @group.Count <= 1)
+                return;
+
+            var index = @group.FindIndex(f => f == zeroParamsOverload);
+
+            WriteLine($"if (argc == 0)");
+            WriteLineIndent($"goto overload{index};");
+            NeedNewLine();
+        }
+
+        public virtual void CheckArgumentsRange(IEnumerable<Function> @group)
         {
             var enumerable = @group as List<Function> ?? @group.ToList();
             var (minArgs, maxArgs) = (enumerable.Min(m => m.Parameters.Count),
@@ -557,26 +571,17 @@ namespace CppSharp.Generators.Cpp
 
             WriteLine($"if ({rangeCheck})");
             WriteOpenBraceAndIndent();
+            {
+                WriteLine("status = napi_throw_type_error(env, nullptr, \"Unsupported number of arguments\");");
+                WriteLine("assert(status == napi_ok);");
+                NewLine();
 
-            WriteLine("status = napi_throw_type_error(env, nullptr, \"Unsupported number of arguments\");");
-            WriteLine("assert(status == napi_ok);");
-            NewLine();
-
-            WriteLine("return nullptr;");
-
+                WriteLine("return nullptr;");
+            }
             UnindentAndWriteCloseBrace();
         }
 
-        private void CheckArgumentsTypes(IEnumerable<Function> @group)
-        {
-            WriteLine("for (size_t i = 0; i < argc; i++)");
-            WriteOpenBraceAndIndent();
-            WriteLine("status = napi_typeof(env, args[i], &types[i]);");
-            WriteLine("assert(status == napi_ok);");
-            UnindentAndWriteCloseBrace();
-        }
-
-        private void CheckArgumentsOverload(IList<Function> @group, DFSM stateMachine)
+        public virtual void CheckArgumentsOverload(IList<Function> @group, DFSM stateMachine)
         {
             var typeCheckStates = stateMachine.Q.Except(stateMachine.F).ToList();
             var finalStates = stateMachine.F;
@@ -610,12 +615,7 @@ namespace CppSharp.Generators.Cpp
 
                     var type = uniqueTypes[(int) transition.Symbol];
 
-                    var typeChecker = new NAPITypeCheckGen(paramIndex);
-                    type.Visit(typeChecker);
-
-                    var condition = typeChecker.Generate();
-                    if (string.IsNullOrWhiteSpace(condition))
-                        throw new NotSupportedException();
+                    var condition = GenerateTypeCheckForParameter(paramIndex, type);
 
                     WriteLine($"if ({condition})");
 
@@ -632,21 +632,21 @@ namespace CppSharp.Generators.Cpp
                 NeedNewLine();
             }
             NewLineIfNeeded();
-
-            // Error state.
-            Unindent();
-            WriteLine($"error:");
-            Indent();
-
-            WriteLine("status = napi_throw_type_error(env, nullptr, \"Unsupported argument type\");");
-            WriteLine("assert(status == napi_ok);");
-            NewLine();
-
-            WriteLine("return nullptr;");
-            NewLine();
         }
 
-        private void GenerateOverloadCalls(IList<Function> @group, DFSM stateMachine)
+        public virtual string GenerateTypeCheckForParameter(int paramIndex, Type type)
+        {
+            var typeChecker = new NAPITypeCheckGen(paramIndex);
+            type.Visit(typeChecker);
+
+            var condition = typeChecker.Generate();
+            if (string.IsNullOrWhiteSpace(condition))
+                throw new NotSupportedException();
+
+            return condition;
+        }
+
+        public virtual void GenerateOverloadCalls(IList<Function> @group, DFSM stateMachine)
         {
             // Final states.
             for (var i = 0; i < stateMachine.F.Count; i++)
@@ -661,9 +661,9 @@ namespace CppSharp.Generators.Cpp
                 Indent();
 
                 WriteOpenBraceAndIndent();
-
-                GenerateFunctionCall(function);
-
+                {
+                    GenerateFunctionCall(function);
+                }
                 UnindentAndWriteCloseBrace();
                 NeedNewLine();
             }
@@ -672,105 +672,71 @@ namespace CppSharp.Generators.Cpp
         public virtual void GenerateFunctionCall(Function function)
         {
             var @params = GenerateFunctionParamsMarshal(function.Parameters, function);
-
-            var needsReturn = !function.ReturnType.Type.IsPrimitiveType(PrimitiveType.Void);
-            if (needsReturn)
-            {
-                CTypePrinter.PushContext(TypePrinterContextKind.Native);
-                var returnType = function.ReturnType.Visit(CTypePrinter);
-                CTypePrinter.PopContext();
-
-                Write($"{returnType} {Helpers.ReturnIdentifier} = ");
-            }
-
             var method = function as Method;
-            var @class = function.Namespace as Class;
+            var isVoidReturn = function.ReturnType.Type.IsPrimitiveType(PrimitiveType.Void);
 
-            var property = method?.AssociatedDeclaration as Property;
-            var field = property?.Field;
-            if (field != null)
+            PushBlock();
             {
-                Write($"instance->{field.OriginalName}");
+                if (!isVoidReturn)
+                {
+                    CTypePrinter.PushContext(TypePrinterContextKind.Native);
+                    var returnType = function.ReturnType.Visit(CTypePrinter);
+                    CTypePrinter.PopContext();
 
-                var isGetter = property.GetMethod == method;
-                if (isGetter)
-                    WriteLine(";");
+                    Write($"{returnType} {Helpers.ReturnIdentifier} = ");
+                }
+
+                var @class = function.Namespace as Class;
+                var property = method?.AssociatedDeclaration as Property;
+                var field = property?.Field;
+                if (field != null)
+                {
+                    Write($"instance->{field.OriginalName}");
+
+                    var isGetter = property.GetMethod == method;
+                    if (isGetter)
+                        WriteLine(";");
+                    else
+                        WriteLine($" = {@params[0].Name};");
+                }
                 else
-                    WriteLine($" = {@params[0].Name};");
-            }
-            else
-            {
-                if (method != null && method.IsConstructor)
                 {
-                    Write($"instance = new {@class.QualifiedOriginalName}(");
+                    if (method != null && method.IsConstructor)
+                    {
+                        Write($"instance = new {@class.QualifiedOriginalName}(");
+                    }
+                    else if (IsNativeFunctionOrStaticMethod(function))
+                    {
+                        Write($"::{function.QualifiedOriginalName}(");
+                    }
+                    else
+                    {
+                        if (function.IsNativeMethod())
+                            Write($"instance->");
+
+                        Write($"{base.GetMethodIdentifier(function, TypePrinterContextKind.Native)}(");
+                    }
+
+                    GenerateFunctionParams(@params);
+                    WriteLine(");");
                 }
-                else if (IsNativeFunctionOrStaticMethod(function))
-                {
-                    Write($"::{function.QualifiedOriginalName}(");
-                }
-                else
-                {
-                    if (function.IsNativeMethod())
-                        Write($"instance->");
-
-                    Write($"{base.GetMethodIdentifier(function, TypePrinterContextKind.Native)}(");
-                }
-
-                GenerateFunctionParams(@params);
-                WriteLine(");");
             }
+            PopBlock(NewLineKind.IfNotEmpty);
 
-            foreach(var paramInfo in @params)
-            {
-                var param = paramInfo.Param;
-                if(param.Usage != ParameterUsage.Out && param.Usage != ParameterUsage.InOut)
-                    continue;
+            GenerateFunctionParamsMarshalCleanups(@params);
 
-                if (param.Type.IsPointer() && !param.Type.GetFinalPointee().IsPrimitiveType())
-                    param.QualifiedType = new QualifiedType(param.Type.GetFinalPointee());
-
-                var ctx = new MarshalContext(Context, CurrentIndentation)
-                {
-                    ArgName = paramInfo.Name,
-                    ReturnVarName = paramInfo.Name,
-                    ReturnType = param.QualifiedType
-                };
-
-                var marshal = GetMarshalNativeToManagedPrinter(ctx);
-                param.Visit(marshal);
-
-                if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
-                    Write(marshal.Context.Before);
-
-                WriteLine($"{param.Name} = {marshal.Context.Return};");
-            }
-
+            var isCtor = method != null && method.IsConstructor;
+            var needsReturn = !isVoidReturn || (this is QuickJSInvokes && !isCtor);
             if (needsReturn)
             {
                 NewLine();
                 GenerateFunctionCallReturnMarshal(function);
             }
-        }
 
-        public virtual void GenerateFunctionCallReturnMarshal(Function function)
-        {
-            var ctx = new MarshalContext(Context, CurrentIndentation)
+            if (isCtor)
             {
-                ArgName = Helpers.ReturnIdentifier,
-                ReturnVarName = Helpers.ReturnIdentifier,
-                ReturnType = function.ReturnType
-            };
-
-            var marshal = GetMarshalNativeToManagedPrinter(ctx);
-            function.ReturnType.Visit(marshal);
-
-            if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
-            {
-                Write(marshal.Context.Before);
-                NewLine();
+                WriteLine("goto wrap;");
             }
-
-            WriteLine($"return {marshal.Context.Return};");
         }
 
         public bool IsNativeFunctionOrStaticMethod(Function function)
@@ -788,98 +754,6 @@ namespace CppSharp.Generators.Cpp
             return method.IsStatic || method.Conversion != MethodConversionKind.None;
         }
 
-        public struct ParamMarshal
-        {
-            public string Name;
-            public string Prefix;
-
-            public Parameter Param;
-        }
-
-        public List<ParamMarshal> GenerateFunctionParamsMarshal(IEnumerable<Parameter> @params,
-            Function function = null)
-        {
-            var marshals = new List<ParamMarshal>();
-
-            var paramIndex = 0;
-            foreach (var param in @params)
-            {
-                marshals.Add(GenerateFunctionParamMarshal(param, paramIndex, function));
-                paramIndex++;
-            }
-
-            return marshals;
-        }
-
-        public virtual MarshalPrinter<MarshalContext> GetMarshalManagedToNativePrinter(MarshalContext ctx)
-        {
-            return new NAPIMarshalManagedToNativePrinter(ctx);
-        }
-
-        public virtual MarshalPrinter<MarshalContext> GetMarshalNativeToManagedPrinter(MarshalContext ctx)
-        {
-            return new NAPIMarshalNativeToManagedPrinter(ctx);
-        }
-
-        public virtual ParamMarshal GenerateFunctionParamMarshal(Parameter param, int paramIndex,
-            Function function = null)
-        {
-            var paramMarshal = new ParamMarshal { Name = param.Name, Param = param };
-
-            var argName = Generator.GeneratedIdentifier("arg") + paramIndex.ToString(CultureInfo.InvariantCulture);
-
-            Parameter effectiveParam = param;
-            var isRef = param.IsOut || param.IsInOut;
-            var paramType = param.Type;
-
-            var ctx = new MarshalContext(Context, CurrentIndentation)
-            {
-                Parameter = effectiveParam,
-                ParameterIndex = paramIndex,
-                ArgName = argName,
-                Function = function
-            };
-
-            var marshal = GetMarshalManagedToNativePrinter(ctx);
-            effectiveParam.Visit(marshal);
-
-            if (string.IsNullOrEmpty(marshal.Context.Return))
-                throw new Exception($"Cannot marshal argument of function '{function.QualifiedOriginalName}'");
-
-            if (isRef)
-            {
-                var type = paramType.Visit(CTypePrinter);
-
-                if (param.IsInOut)
-                {
-                    if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
-                    {
-                        Write(marshal.Context.Before);
-                        NeedNewLine();
-                    }
-
-                    WriteLine($"{type} {argName} = {marshal.Context.Return};");
-                }
-                else
-                    WriteLine($"{type} {argName};");
-            }
-            else
-            {
-                if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
-                {
-                    Write(marshal.Context.Before);
-                    NeedNewLine();
-                }
-
-                NewLineIfNeeded();
-                WriteLine($"auto {marshal.Context.VarPrefix}{argName} = {marshal.Context.Return};");
-                paramMarshal.Prefix = marshal.Context.ArgumentPrefix;
-            }
-
-            paramMarshal.Name = argName;
-            return paramMarshal;
-        }
-
         public void GenerateFunctionParams(List<ParamMarshal> @params)
         {
             var names = @params.Select(param =>
@@ -889,7 +763,7 @@ namespace CppSharp.Generators.Cpp
             Write(string.Join(", ", names));
         }
 
-        private static DFSM CalculateOverloadStates(IEnumerable<Function> group)
+        public static DFSM CalculateOverloadStates(IEnumerable<Function> group)
         {
             var functionGroup = group.ToList();
 

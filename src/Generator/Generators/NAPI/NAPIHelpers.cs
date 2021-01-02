@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators.C;
+using CppSharp.Generators.NAPI;
 using CppSharp.Passes;
 
 namespace CppSharp.Generators.Cpp
@@ -84,6 +87,184 @@ namespace CppSharp.Generators.Cpp
                 return;
             }
         }
+
+        public virtual MarshalPrinter<MarshalContext> GetMarshalManagedToNativePrinter(MarshalContext ctx)
+        {
+            return new NAPIMarshalManagedToNativePrinter(ctx);
+        }
+
+        public virtual MarshalPrinter<MarshalContext> GetMarshalNativeToManagedPrinter(MarshalContext ctx)
+        {
+            return new NAPIMarshalNativeToManagedPrinter(ctx);
+        }
+
+        public struct ParamMarshal
+        {
+            public string Name;
+            public string Prefix;
+
+            public Parameter Param;
+            public MarshalContext Context;
+        }
+
+        public virtual List<ParamMarshal> GenerateFunctionParamsMarshal(IEnumerable<Parameter> @params,
+            Function function = null)
+        {
+            var marshals = new List<ParamMarshal>();
+
+            var paramIndex = 0;
+            foreach (var param in @params)
+            {
+                marshals.Add(GenerateFunctionParamMarshal(param, paramIndex, function));
+                paramIndex++;
+            }
+
+            return marshals;
+        }
+
+        public virtual ParamMarshal GenerateFunctionParamMarshal(Parameter param, int paramIndex,
+            Function function = null)
+        {
+            var paramMarshal = new ParamMarshal { Name = param.Name, Param = param };
+
+            var argName = Generator.GeneratedIdentifier("arg") + paramIndex.ToString(CultureInfo.InvariantCulture);
+
+            Parameter effectiveParam = param;
+            var isRef = param.IsOut || param.IsInOut;
+            var paramType = param.Type;
+
+            // TODO: Use same name between generators
+            var typeArgName = $"args[{paramIndex}]";
+            if (this is QuickJSInvokes)
+                typeArgName = $"argv[{paramIndex}]";
+
+            var ctx = new MarshalContext(Context, CurrentIndentation)
+            {
+                Parameter = effectiveParam,
+                ParameterIndex = paramIndex,
+                ArgName = typeArgName,
+                Function = function
+            };
+
+            paramMarshal.Context = ctx;
+
+            var marshal = GetMarshalManagedToNativePrinter(ctx);
+            effectiveParam.Visit(marshal);
+
+            if (string.IsNullOrEmpty(marshal.Context.Return))
+                throw new Exception($"Cannot marshal argument of function '{function.QualifiedOriginalName}'");
+
+            if (isRef)
+            {
+                var type = paramType.Visit(CTypePrinter);
+
+                if (param.IsInOut)
+                {
+                    if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                    {
+                        Write(marshal.Context.Before);
+                        NeedNewLine();
+                    }
+
+                    WriteLine($"{type} {argName} = {marshal.Context.Return};");
+                }
+                else
+                    WriteLine($"{type} {argName};");
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                {
+                    Write(marshal.Context.Before);
+                    NeedNewLine();
+                }
+
+                NewLineIfNeeded();
+                WriteLine($"auto {marshal.Context.VarPrefix}{argName} = {marshal.Context.Return};");
+                paramMarshal.Prefix = marshal.Context.ArgumentPrefix;
+            }
+
+            paramMarshal.Name = argName;
+            return paramMarshal;
+        }
+
+        public virtual void GenerateFunctionCallReturnMarshal(Function function)
+        {
+            var ctx = new MarshalContext(Context, CurrentIndentation)
+            {
+                ArgName = Helpers.ReturnIdentifier,
+                ReturnVarName = Helpers.ReturnIdentifier,
+                ReturnType = function.ReturnType
+            };
+
+            // TODO: Move this into the marshaler
+            if (function.ReturnType.Type.Desugar().IsClass())
+                ctx.ArgName = $"&{ctx.ArgName}";
+
+            var marshal = GetMarshalNativeToManagedPrinter(ctx);
+            function.ReturnType.Visit(marshal);
+
+            if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+            {
+                Write(marshal.Context.Before);
+                NewLine();
+            }
+
+            WriteLine($"return {marshal.Context.Return};");
+        }
+
+        public virtual void GenerateFunctionParamsMarshalCleanups(List<ParamMarshal> @params)
+        {
+            var marshalers = new List<MarshalPrinter<MarshalContext>>();
+
+            PushBlock();
+            {
+                foreach (var paramInfo in @params)
+                {
+                    var param = paramInfo.Param;
+                    if (param.Usage != ParameterUsage.Out && param.Usage != ParameterUsage.InOut)
+                        continue;
+
+                    if (param.Type.IsPointer() && !param.Type.GetFinalPointee().IsPrimitiveType())
+                        param.QualifiedType = new QualifiedType(param.Type.GetFinalPointee());
+
+                    var ctx = new MarshalContext(Context, CurrentIndentation)
+                    {
+                        ArgName = paramInfo.Name,
+                        ReturnVarName = paramInfo.Name,
+                        ReturnType = param.QualifiedType
+                    };
+
+                    var marshal = GetMarshalNativeToManagedPrinter(ctx);
+                    marshalers.Add(marshal);
+
+                    param.Visit(marshal);
+
+                    if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                        Write(marshal.Context.Before);
+
+                    WriteLine($"{param.Name} = {marshal.Context.Return};");
+                }
+            }
+            PopBlock(NewLineKind.IfNotEmpty);
+
+            PushBlock();
+            {
+                foreach (var marshal in marshalers)
+                {
+                    if (!string.IsNullOrWhiteSpace(marshal.Context.Cleanup))
+                        Write(marshal.Context.Cleanup);
+                }
+
+                foreach (var marshal in @params)
+                {
+                    if (!string.IsNullOrWhiteSpace(marshal.Context.Cleanup))
+                        Write(marshal.Context.Cleanup);
+                }
+            }
+            PopBlock(NewLineKind.IfNotEmpty);
+        }
+
     }
 
     /// <summary>
