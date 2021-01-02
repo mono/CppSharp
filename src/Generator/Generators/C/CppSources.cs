@@ -181,7 +181,7 @@ namespace CppSharp.Generators.Cpp
 
         public virtual void GenerateClassMethods(Class @class)
         {
-            foreach (var method in @class.Methods.Where(m => !m.IsOperator))
+            foreach (var method in @class.Methods)
             {
                 if (ASTUtils.CheckIgnoreMethod(method) || CppHeaders.FunctionIgnored(method))
                     continue;
