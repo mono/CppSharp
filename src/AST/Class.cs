@@ -145,15 +145,9 @@ namespace CppSharp.AST
             specializations = new List<ClassTemplateSpecialization>();
         }
 
-        public bool HasBase
-        {
-            get { return Bases.Count > 0; }
-        }
+        public bool HasBase => Bases.Count > 0;
 
-        public bool HasBaseClass
-        {
-            get { return BaseClass != null; }
-        }
+        public bool HasBaseClass => BaseClass != null;
 
         public Class BaseClass
         {

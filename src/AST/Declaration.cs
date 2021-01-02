@@ -79,7 +79,7 @@ namespace CppSharp.AST
 
         /// <summary>
         /// Whether the declaration was explicitly set to be generated via
-        /// the GenerationKind propery as opposed to the default generated state.
+        /// the GenerationKind property as opposed to the default generated state.
         /// </summary>
         public virtual bool IsExplicitlyGenerated =>
             generationKind.HasValue && generationKind.Value == GenerationKind.Generate;

@@ -172,10 +172,7 @@ namespace CppSharp
         {
             get
             {
-                if (Blocks.Any(block => !block.IsEmpty))
-                    return false;
-
-                return string.IsNullOrEmpty(Text.ToString());
+                return Blocks.All(block => block.IsEmpty) && string.IsNullOrEmpty(Text.ToString());
             }
         }
 
@@ -275,10 +272,18 @@ namespace CppSharp
 
         public void PushBlock(BlockKind kind = BlockKind.Unknown, object obj = null)
         {
-            var block = new Block { Kind = kind, Object = obj };
-            block.Text.CurrentIndentation = CurrentIndentation;
-            block.Text.IsStartOfLine = ActiveBlock.Text.IsStartOfLine;
-            block.Text.NeedsNewLine = ActiveBlock.Text.NeedsNewLine;
+            var block = new Block
+            {
+                Kind = kind,
+                Object = obj,
+                Text =
+                {
+                    CurrentIndentation = CurrentIndentation,
+                    IsStartOfLine = ActiveBlock.Text.IsStartOfLine,
+                    NeedsNewLine = ActiveBlock.Text.NeedsNewLine
+                }
+            };
+
             PushBlock(block);
         }
 

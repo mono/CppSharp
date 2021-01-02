@@ -568,8 +568,7 @@ namespace CppSharp.Passes
                 if (parameter.Type.Desugar().IsPrimitiveType(PrimitiveType.Null))
                     return true;
 
-                TypeMap typeMap;
-                if (TypeMaps.FindTypeMap(parameter.Type, out typeMap))
+                if (TypeMaps.FindTypeMap(parameter.Type, out var typeMap))
                     return typeMap.IsIgnored;
             }
 

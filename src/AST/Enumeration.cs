@@ -29,10 +29,9 @@ namespace CppSharp.AST
             {
                 get
                 {
-                    if (Expression == null)
-                    {
+                    if (string.IsNullOrEmpty(Expression))
                         return false;
-                    }
+
                     return Expression.Contains("0x") || Expression.Contains("0X");
                 }
             }
