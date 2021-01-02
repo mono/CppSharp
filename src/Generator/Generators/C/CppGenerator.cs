@@ -37,7 +37,7 @@ namespace CppSharp.Generators.Cpp
             return true;
         }
 
-        public static bool ShouldGenerateClassNativeField(Class @class)
+        public static bool ShouldGenerateClassNativeInstanceField(Class @class)
         {
             if (@class.IsStatic)
                 return false;

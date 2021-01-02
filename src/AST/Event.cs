@@ -9,7 +9,7 @@ namespace CppSharp.AST
             return visitor.VisitEvent(this);
         }
 
-        public Type Type { get { return QualifiedType.Type; } }
+        public Type Type => QualifiedType.Type;
         public QualifiedType QualifiedType { get; set; }
 
         public List<Parameter> Parameters { get; } = new List<Parameter>();

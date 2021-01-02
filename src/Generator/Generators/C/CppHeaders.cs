@@ -326,7 +326,7 @@ namespace CppSharp.Generators.Cpp
             VisitDeclContext(@class);
             Unindent();
 
-            if (CppGenerator.ShouldGenerateClassNativeField(@class))
+            if (CppGenerator.ShouldGenerateClassNativeInstanceField(@class))
                 GenerateClassNativeField(@class);
 
             GenerateClassConstructors(@class);
@@ -339,7 +339,7 @@ namespace CppSharp.Generators.Cpp
 
             GenerateClassVariables(@class);
 
-            if (CppGenerator.ShouldGenerateClassNativeField(@class))
+            if (CppGenerator.ShouldGenerateClassNativeInstanceField(@class))
             {
                 PushBlock(BlockKind.AccessSpecifier);
                 WriteLine("protected:");

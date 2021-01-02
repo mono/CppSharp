@@ -31,10 +31,7 @@ namespace CppSharp.Generators.CLI
         private TranslationUnit TranslationUnit;
 
         private Dictionary<Declaration, CLITypeReference> typeReferences;
-        public IEnumerable<CLITypeReference> TypeReferences
-        {
-            get { return typeReferences.Values; }
-        }
+        public IEnumerable<CLITypeReference> TypeReferences => typeReferences.Values;
 
         public HashSet<Declaration> GeneratedDeclarations;
 
