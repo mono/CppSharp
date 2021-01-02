@@ -125,33 +125,17 @@ namespace CppSharp
 
             var builder = new StringBuilder();
             Block previousBlock = null;
+            var previousBlockEmpty = false;
 
-            var blockIndex = 0;
             foreach (var childBlock in Blocks)
             {
                 var childText = childBlock.Generate();
-
-                var nextBlock = (++blockIndex < Blocks.Count)
-                    ? Blocks[blockIndex]
-                    : null;
-
-                var skipBlock = false;
-                if (nextBlock != null)
-                {
-                    var nextText = nextBlock.Generate();
-                    if (nextText.Length == 0 &&
-                        childBlock.NewLineKind == NewLineKind.IfNotEmpty)
-                        skipBlock = true;
-                }
-
-                if (skipBlock)
-                    continue;
-
                 if (childText.Length == 0)
                     continue;
 
                 if (previousBlock != null &&
-                    previousBlock.NewLineKind == NewLineKind.BeforeNextBlock)
+                    (previousBlock.NewLineKind == NewLineKind.BeforeNextBlock ||
+                     (previousBlock.NewLineKind == NewLineKind.IfNotEmpty && !previousBlockEmpty)))
                     builder.AppendLine();
 
                 builder.Append(childText);
@@ -160,6 +144,7 @@ namespace CppSharp
                     builder.AppendLine();
 
                 previousBlock = childBlock;
+                previousBlockEmpty = childText.Length == 0;
             }
 
             if (Text.StringBuilder.Length != 0)
