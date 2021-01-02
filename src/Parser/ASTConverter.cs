@@ -1212,6 +1212,17 @@ namespace CppSharp
             return expression;
         }
 
+        public static string CleanSignature(string signature)
+        {
+            // Sometimes the parser might return multiline signatures, including the function body.
+            // It should be dealt with in the native parser eventually, but fix it up here for now.
+            var bracket = signature.IndexOf("{", StringComparison.Ordinal);
+            if (bracket != -1)
+                signature = signature.Substring(0, bracket);
+            signature = signature.Replace("\n", "").Trim();
+            return signature;
+        }
+
         public void VisitFunction(Function function, AST.Function _function)
         {
             VisitDeclaration(function, _function);
@@ -1229,7 +1240,7 @@ namespace CppSharp
             _function.FriendKind = VisitFriendKind(function.FriendKind);
             _function.OperatorKind = VisitCXXOperatorKind(function.OperatorKind);
             _function.Mangled = function.Mangled;
-            _function.Signature = function.Signature;
+            _function.Signature = CleanSignature(function.Signature);
             _function.Body = function.Body;
             _function.CallingConvention = VisitCallingConvention(function.CallingConvention);
             if (function.InstantiatedFrom != null)

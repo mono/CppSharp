@@ -347,7 +347,7 @@ namespace CppSharp.Generator.Tests.AST
         public void TestSignature()
         {
             Assert.AreEqual("void testSignature()", AstContext.FindFunction("testSignature").Single().Signature);
-            Assert.AreEqual("void testImpl(){}",
+            Assert.AreEqual("void testImpl()",
                 StripWindowsNewLines(AstContext.FindFunction("testImpl").Single().Signature));
             Assert.AreEqual("void testConstSignature() const",
                 AstContext.FindClass("HasConstFunction").Single().FindMethod("testConstSignature").Signature);
