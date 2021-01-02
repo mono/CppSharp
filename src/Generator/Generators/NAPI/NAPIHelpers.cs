@@ -22,6 +22,9 @@ namespace CppSharp.Generators.Cpp
 
         public override void VisitDeclContextFunctions(DeclarationContext context)
         {
+            if (!VisitOptions.VisitNamespaceFunctions)
+                return;
+
             var functions = context.Functions.Where(f => !ASTUtils.CheckIgnoreFunction(f)).ToList();
             var unique = functions.GroupBy(m => m.Name);
             foreach (var group in unique)
@@ -46,6 +49,7 @@ namespace CppSharp.Generators.Cpp
         {
             var constructors = @class.Constructors.Where(c => c.IsGenerated && !c.IsCopyConstructor)
                 .ToList();
+
             if (!constructors.Any())
                 return;
 
@@ -57,15 +61,17 @@ namespace CppSharp.Generators.Cpp
             if (!function.IsGenerated)
                 return false;
 
-            if (function is Method method)
-            {
-                if (method.IsConstructor || method.IsDestructor)
-                    return false;
+            if (!(function is Method method))
+                return true;
 
-                if (method.IsOperator)
-                    if (method.OperatorKind == CXXOperatorKind.Conversion ||
-                        method.OperatorKind == CXXOperatorKind.Equal)
-                        return false;
+            if (method.IsConstructor || method.IsDestructor)
+                return false;
+
+            if (method.IsOperator)
+            {
+                if (method.OperatorKind == CXXOperatorKind.Conversion ||
+                    method.OperatorKind == CXXOperatorKind.Equal)
+                    return false;
             }
 
             return true;
