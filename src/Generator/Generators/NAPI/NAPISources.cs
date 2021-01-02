@@ -822,6 +822,11 @@ namespace CppSharp.Generators.Cpp
             DFSM = Minimize.MinimizeDFSM(DFSM);
 #endif
 
+            // The construction step above can result in unordered final states, so re-order them to
+            // make the following code generation steps easier.
+
+            DFSM.F = DFSM.F.OrderBy(f => f).ToList();
+
             return DFSM;
         }
 
