@@ -262,12 +262,27 @@ namespace CppSharp.Generators
         {
             foreach (var decl in context.Declarations)
             {
-                if (decl is Function) continue;
+                if (decl is Function)
+                    continue;
+
+                if (decl is Class && !VisitOptions.VisitNamespaceClasses)
+                    continue;
+
+                if (decl is Enumeration && !VisitOptions.VisitNamespaceEnums)
+                    continue;
+
+                if (decl is Event && !VisitOptions.VisitNamespaceEvents)
+                    continue;
+
+                if (decl is Variable && !VisitOptions.VisitNamespaceVariables)
+                    continue;
+
                 if (decl.IsGenerated)
                     decl.Visit(this);
             }
 
-            VisitDeclContextFunctions(context);
+            if (VisitOptions.VisitNamespaceFunctions)
+                VisitDeclContextFunctions(context);
 
             return true;
         }
@@ -303,25 +318,6 @@ namespace CppSharp.Generators
 
             VisitClassConstructors(@class);
             VisitClassMethods(@class);
-
-            foreach (var @event in @class.Events)
-            {
-                if (!@event.IsGenerated)
-                    continue;
-
-                @event.Visit(this);
-            }
-
-            foreach (var variable in @class.Variables)
-            {
-                if (!variable.IsGenerated)
-                    continue;
-
-                if (variable.Access != AccessSpecifier.Public)
-                    continue;
-
-                variable.Visit(this);
-            }
 
             return true;
         }

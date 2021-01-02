@@ -21,7 +21,7 @@ namespace CppSharp.AST
     public enum VisitFlags
     {
         /// <summary>
-        /// We always visit classes, functions and declaration contexts.
+        /// We always visit declaration contexts.
         /// </summary>
         Default = 0,
 
@@ -37,6 +37,8 @@ namespace CppSharp.AST
         NamespaceTypedefs = 1 << 8,
         NamespaceEvents = 1 << 9,
         NamespaceVariables = 1 << 10,
+        NamespaceClasses = 1 << 15,
+        NamespaceFunctions = 1 << 16,
 
         FunctionReturnType = 1 << 11,
         FunctionParameters = 1 << 12,
@@ -46,7 +48,7 @@ namespace CppSharp.AST
         Any = ClassBases | ClassFields | ClassProperties | ClassMethods |
             ClassTemplateSpecializations | PropertyAccessors |
             NamespaceEnums | NamespaceTemplates | NamespaceTypedefs |
-            NamespaceEvents | NamespaceVariables |
+            NamespaceEvents | NamespaceVariables | NamespaceClasses | NamespaceFunctions |
             FunctionReturnType | FunctionParameters |
             EventParameters | TemplateArguments
     }
@@ -63,7 +65,9 @@ namespace CppSharp.AST
         public bool VisitClassTemplateSpecializations => (flags & VisitFlags.ClassTemplateSpecializations) != 0;
         public bool VisitPropertyAccessors => (flags & VisitFlags.PropertyAccessors) != 0;
 
+        public bool VisitNamespaceClasses => (flags & VisitFlags.NamespaceClasses) != 0;
         public bool VisitNamespaceEnums => (flags & VisitFlags.NamespaceEnums) != 0;
+        public bool VisitNamespaceFunctions => (flags & VisitFlags.NamespaceFunctions) != 0;
         public bool VisitNamespaceTemplates => (flags & VisitFlags.NamespaceTemplates) != 0;
         public bool VisitNamespaceTypedefs => (flags & VisitFlags.NamespaceTypedefs) != 0;
         public bool VisitNamespaceEvents => (flags & VisitFlags.NamespaceEvents) != 0;
