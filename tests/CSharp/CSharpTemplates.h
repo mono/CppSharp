@@ -140,6 +140,8 @@ private:
 template <typename T>
 class Base
 {
+public:
+    typedef T* typedefT;
 };
 
 template <typename T>
@@ -160,6 +162,7 @@ public:
     T getDependentValue();
     void setDependentValue(const T& value);
     IndependentFields<Nested> returnNestedInTemplate();
+    typename Base<T>::typedefT typedefT() { return 0; }
     const T* returnTakeDependentPointer(const T* p);
     const T* propertyReturnDependentPointer();
     void hasDefaultDependentParam(T* ptr, const T& refT = T());
