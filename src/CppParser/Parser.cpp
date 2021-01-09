@@ -39,8 +39,13 @@
 #include <clang/Lex/PreprocessorOptions.h>
 #include <clang/Lex/PreprocessingRecord.h>
 #include <clang/Parse/ParseAST.h>
+// HACK: change a private setting to avoid an inexplicable and unimportant crash
+#define private public
+#include <clang/Sema/AnalysisBasedWarnings.h>
+#define private private
 #include <clang/Sema/Sema.h>
 #include <clang/Sema/SemaConsumer.h>
+#include <clang/Sema/Template.h>
 #include <clang/Frontend/Utils.h>
 #include <clang/Driver/Driver.h>
 #include <clang/Driver/ToolChain.h>
@@ -3033,6 +3038,24 @@ void Parser::CompleteIfSpecializationType(const clang::QualType& QualType)
 
     c->getSema().InstantiateClassTemplateSpecialization(CTS->getBeginLoc(),
         CTS, TSK_ImplicitInstantiation, false);
+    if (!c->getSourceManager().isInSystemHeader(CTS->getBeginLoc()))
+    {
+        MultiLevelTemplateArgumentList templateArgs(
+            CTS->getTemplateInstantiationArgs());
+        for (auto D : CTS->decls())
+        {
+            if (D->getKind() == Decl::Kind::CXXRecord && !D->isImplicit())
+            {
+                auto R = cast<clang::CXXRecordDecl>(D);
+                if (!R->isCompleteDefinition())
+                {
+                    c->getSema().InstantiateClass(R->getBeginLoc(),
+                        R, R->getTemplateInstantiationPattern(),
+                        templateArgs, TSK_ImplicitInstantiation, false);
+                }
+            }
+        }
+    }
 
     c->getSema().getDiagnostics().setClient(existingClient, false);
 
@@ -3152,6 +3175,8 @@ void Parser::MarkValidity(Function* F)
 
     if (!FD->getTemplateInstantiationPattern() || !FD->isExternallyVisible())
         return;
+
+    c->getSema().AnalysisWarnings.DefaultPolicy.disableCheckFallThrough();
 
     auto existingClient = c->getSema().getDiagnostics().getClient();
     std::unique_ptr<::DiagnosticConsumer> SemaDiagnostics(new ::DiagnosticConsumer());
