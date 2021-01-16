@@ -127,3 +127,39 @@ union DLL_API UnionWithNestedStructArray
 };
 
 std::string DLL_API UnionWithNestedStructArrayTestMethod(UnionWithNestedStructArray val);
+
+struct TestAliasOFPrimitiveType
+{
+    typedef void                voi;
+    typedef bool                boo;
+    typedef char                cha;
+    typedef signed char         schar;
+    typedef unsigned char       uchar;
+    typedef short               sho;
+    typedef unsigned short      usho;
+    typedef int                 intger;
+    typedef unsigned int        uint;
+    typedef long                lon;
+    typedef unsigned long       ulon;
+    typedef long long           llon;
+    typedef unsigned long long  ullon;
+    typedef float               f32;
+    typedef double              f64;
+
+    voi     Func()          { return; }
+    boo     Func(boo x)     { return x; }
+    cha     Func(cha x)     { return x; }
+    schar   Func(schar x)   { return x; }
+    uchar   Func(uchar x)   { return x; }
+    sho     Func(sho x)     { return x; }
+    usho    Func(usho x)    { return x; }
+    intger  Func(intger x)  { return x; }
+    uint    Func(uint x)    { return x; }
+    lon     Func(lon x)     { return x; }
+    ulon    Func(ulon x)    { return x; }
+    llon    Func(llon x)    { return x; }
+    ullon   Func(ullon x)   { return x; }
+    f32     Func(f32 x)     { return x; }
+    f64     Func(f64 x)     { return x; }
+
+};
