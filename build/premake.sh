@@ -5,11 +5,11 @@ DIR=$( cd "$( dirname "$0" )" && pwd )
 case "$(uname -s)" in
 
    Darwin|Linux)
-     $DIR/premake/premake5 $*
+     "$DIR/premake/premake5" "$@"
      ;;
 
    CYGWIN*|MINGW32*|MSYS*|MINGW*)
-     $DIR/premake/premake5.exe $*
+     "$DIR/premake/premake5.exe" "$@"
      ;;
 
    *)
