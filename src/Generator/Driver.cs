@@ -356,7 +356,7 @@ namespace CppSharp
                 $"{module.LibraryName}.{msBuildGenerator.FileExtension}");
             File.WriteAllText(csproj, msBuildGenerator.Generate());
 
-            string output = ProcessHelper.Run("dotnet", $"build {csproj}",
+            string output = ProcessHelper.Run("dotnet", $"build \"{csproj}\"",
                 out int error, out string errorMessage);
             if (error == 0)
             {
