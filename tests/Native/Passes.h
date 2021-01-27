@@ -105,3 +105,9 @@ protected:
         int Protected;
     };
 };
+
+class TestExtractInterfacePass
+{
+public:
+    void DoSomething();
+};
