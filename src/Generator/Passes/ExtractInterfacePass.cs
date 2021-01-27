@@ -9,15 +9,12 @@ namespace CppSharp.Passes
     public class ExtractInterfacePass : TranslationUnitPass
     {
         /// <summary>
-        /// Collects all interfaces in a unit to be added at the end 
-        /// because the unit cannot be changed while it's being iterated though.
-        /// We also need it to check if a class already has a complementary interface
-        /// because different classes may have the same secondary bases.
+        /// Creates interface from generated classes
         /// </summary>
         private readonly HashSet<Class> interfaces = new HashSet<Class>();
 
         /// <summary>
-        /// Change and implement secondary bases at the end to avoid processing implementations.
+        /// Classes that require interfaces to be created
         /// </summary>
         private readonly HashSet<Class> classesNeedingInterface = new HashSet<Class>();
 
@@ -56,7 +53,6 @@ namespace CppSharp.Passes
             }
 
             classesNeedingInterface.Add(@class);
-            Console.WriteLine(@class.Name);
             GetInterface(@class);
             return true;
         }

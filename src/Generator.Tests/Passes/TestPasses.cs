@@ -19,6 +19,20 @@ namespace CppSharp.Generator.Tests.Passes
         }
 
         [Test]
+        public void TestExtractInterfacePass()
+        {
+            var c = AstContext.Class("TestExtractInterfacePass");
+
+            Assert.IsNull(c.GetInterface());
+
+            passBuilder.AddPass(new ExtractInterfacePass());
+            passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
+
+            Assert.IsNotNull(c.GetInterface());
+            Assert.AreEqual("ITestExtractInterfacePass", c.GetInterface().Name);
+        }
+
+        [Test]
         public void TestCheckFlagEnumsPass()
         {
             var @enum = AstContext.Enum("FlagEnum");
