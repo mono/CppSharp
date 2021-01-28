@@ -18,7 +18,7 @@ namespace CppSharp.Passes
         /// <summary>
         /// Change and implement secondary bases at the end to avoid processing implementations.
         /// </summary>
-        private readonly HashSet<Class> classesWithSecondaryBases = new HashSet<Class>();
+        protected readonly HashSet<Class> classesWithSecondaryBases = new HashSet<Class>();
 
         public MultipleInheritancePass()
             => VisitOptions.ResetFlags(VisitFlags.Default);
@@ -69,7 +69,7 @@ namespace CppSharp.Passes
             return true;
         }
 
-        private Class GetInterface(Class @base)
+        protected Class GetInterface(Class @base)
         {
             if (@base.CompleteDeclaration != null)
                 @base = (Class) @base.CompleteDeclaration;
