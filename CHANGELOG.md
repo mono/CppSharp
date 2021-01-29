@@ -1,3 +1,490 @@
+## [0.11.0] - 2021-1-29
+
+- The NuGet package now supports Linux and macOS as well
+
+- Upgrade to .NET Core 3.1 and improve build system
+
+- Make auto-compiling of C# work with .NET Core
+
+- Adding extract interface pass
+
+- Add a log for changes per release
+
+- Fixed alias of signed char cannot be marshaled
+
+- Add missing quotes to support paths with spaces in build scripts
+
+- Ignore the still unsupported dependent type names
+
+- Rewrite GenerateEnumFromMacros helper to also look into enum items.
+
+- Fix generation of overloads in NAPI by re-ordering final calculated states.
+
+- Update expression evaluator code from latest upstream.
+
+- Improve visiting options implementation in CodeGenerator.
+
+- Clean multiline function signatures in the AST converter.
+
+- Fix generation of text blocks using NewLineKind.IfNotEmpty.
+
+- Git ignore IDEA project folders.
+
+- Change XML comments to be tested at run-time
+
+- Generate valid C++ for pointers in template args
+
+- Better detect invalid specialized functions
+
+- Simplify the marking of invalid functions
+
+- Generate valid C++ for protected constructors
+
+- Generate valid C++ for protected destructors
+
+- Only implement abstract classes in C++ for ctors/dtors
+
+- Fix test generation for QuickJS generator.
+
+- Remove unused code in QuickJS module generator.
+
+- Add enum support to QuickJS generator.
+
+- Marshaling correctness fix for enum and primitive types in NAPI.
+
+- Abstract marshaler into overridable method in NAPI sources.
+
+- Extract NAPI VarPrefix and ArgumentPrefix to base class.
+
+- Add missing clang headers
+
+- Create a single nuget package that supports windows / linux / macos
+
+- Refactor QuickJS generator structure to follow NAPI patterns.
+
+- Add initial QuickJS primitive type support and test suite.
+
+- Ensure a tested specialization is really generated
+
+- Place all output of tests in their own directories
+
+- Use C++17 in all native projects
+
+- Disable getter/setter to property pass by default in non-managed backends.
+
+- Fix forward include collector to consider value class semantics in function returns.
+
+- Factor VarPrefix and ArgumentPrefix helpers into base marshaler.
+
+- Implement basic visiting behavior in some CodeGenerator overloads.
+
+- Normalize visiting overloads to be virtual.
+
+- Flush `Module.ExternalClassTemplateSpecializations` to avoid emitting the same specialization in multiple files
+
+- Add initial Node and N-API testing infrastructure and tests.
+
+- Big update to NAPI generator with initial support for basic examples.
+
+- Add DFA/NFA state machine utility code.
+
+- Replace outdated Clang compiler flags such as `std=c++1z` and replace it with `std=c++17`
+
+- Change `GenerateSequentialLayout` default value to `true`
+
+- Simplify TU.FileRelativeDirectory by using Path.GetDirectoryName.
+
+- Update driver to only generate system modules for C# generators.
+
+- Add ILibrary.GenerateCode as a custom code generation callback.
+
+- Upgrade .NET projects to C# 8.0.
+
+- Improve generation of type printing declaration names for C language.
+
+- Rework constructor generation in C++ code generator.
+
+- Setup include dirs on the module instead of parser options in the CLI.
+
+- Improve error handling in CLI and avoid defaulting to a generator on unknown option..
+
+- Add N-API generator support to the CLI.
+
+- Extract and re-use GetIncludePath across multiple generators.
+
+- Fix TU.FileRelativeDirectory to be more robust against some paths.
+
+- Fully resolve include dirs paths in driver option validation.
+
+- Fix ShouldGenerateClassNativeField to use NeedsBase instead of HasBase.
+
+- Update Class.HasNonIgnoredBase to use the actual base class.
+
+- Fix rename pass not handling some declarations due to early return.
+
+- Manage package versions centrally
+
+- Add `LanguageVersion.CPP20` support
+
+- Only upload artifacts from master branch
+
+- Make unit tests independent of the generator
+
+- Simplify code that regenerates test bindings
+
+- Only use premake for native projects and improve c# projects.
+
+- Move GeneratorTestFixture type to its own file.
+
+- Fix typo and move alignment offsets to cpp file
+
+- Export or implement accessible functions in tests
+
+- Export symbols for indirectly accessible constructors
+
+- Publish artifacts for CI builds (#1533)
+
+- Fix importing/exporting redeclaration in symbols
+
+- CI: Add `Restore` step to make it easier to analyze build times
+
+- Don't warn repeatedly about an existing LLVM dir
+
+- Don't download LLVM if its destination exists
+
+- Fix the expression-generator after changed paths
+
+- Fix a regressive crash when generating parser bindings
+
+- Remove redundant overrides from the generated C++/CLI
+
+- Disable the msvc warning about unexported template specializations
+
+- Fix naive version comparison
+
+- Fix GCC version detection
+
+- Move all LLVM files to /build/llvm
+
+- Ignore premake5 binaries
+
+- Remove secondary Zstandard compression from LLVM packages
+
+- Show a message explaining how to build LLVM when a pre-built package is unavailable.
+
+- Fix wrong LLVM package name when GCC version is >= 10
+
+- Add LLVM commands to build.sh
+
+- Test using a specialization from a dependent module
+
+- Add install_tools target to build.sh and fix LLVM CI.
+
+- Deprecate GCC 7 and add GCC 10 build for LLVM CI.
+
+- Move generated .vcxproj files back to their original place
+
+- Add missing `-configuration` option to build.sh script
+
+- Replace Generate*.bat files with a single generate.sh which uses VS2019 by default
+
+- Remove DownloadDeps.bat file
+
+- Add build.sh and test.sh with execute permissions
+
+- Only search for MSVC toolchain in Windows
+
+- Generate correct LLVM package name regardless of the current operating system
+
+- Avoid using "action:vs* filter because there are better ones that are more specific (#1523)
+
+- Convert the visiting options to an enum
+
+- Update CanCheckCodeGenInfo to check function types as well.
+
+- Check for a dependent expression before walking variable initializer.
+
+- Some Premake robustness fixes for Clang toolchain.
+
+- Use explicit native type printer kind in CLI headers code.
+
+- Ignore testing the incorrect marshalling of parameters typed const& to primitives
+
+- Don't check the unsupported operator= for symbols
+
+- Add initial NAPI and JS generator.
+
+- Add initial QuickJS generator.
+
+- Add C++ generator support to the CLI.
+
+- Remove artificial limitations for cross-generation in CLI.
+
+- Simplify target-specific message output code in CLI.
+
+- Add a new option to set a prefix for generated files in CLI.
+
+- Improve module naming heuristics and add an option for setting it explicitly.
+
+- Implement C support as generator kind in CLI.
+
+- Refactor string.Format calls in CLI.
+
+- Implement Method.HasSameSignature for signature comparison.
+
+- Implement Method.ToString() to help with debugging.
+
+- A temporary hack to deal with a bug in MSVC v142 - VS 2019 build tools
+
+- Don't wrap trivial constructors and destructors
+
+- Ensure bindings are regenerated as needed without using DisableFastUpToDateCheck (#1511)
+
+- Continue implementation of C++ generator.
+
+- Add pass to fix up pure C++ methods to C++ generator.
+
+- More robust C++ type printing of incomplete class declarations.
+
+- Save existing parameter when doing C++ parameter type printing.
+
+- Add initial C base generator.
+
+- Check if module exists before using it in C code generator.
+
+- More robust enum generation for C family languages in C code generator.
+
+- Fix C generator GenerateMethodSpecifier to support pure and const specifiers.
+
+- Add set of generated declarations to CLITypeReferences.
+
+- Add initial block visitor to GeneratorOutputPass.
+
+- Only add files to module if module is not null.
+
+- Add per-declaration support for decl maps.
+
+- Add BlockGenerator.NeedsNewLine helper property.
+
+- Fix class nested enums to be handled by the rename pass.
+
+- Document recently added GenerationOutputMode option.
+
+- Add TypeQualifiersMode to Type and implement in C++ type printer.
+
+- Add new VisitQualifiedType overload to visitors.
+
+- Set include path as weell as file path when creating a new TU.
+
+- Fix IsGeneratedOverride to take virtual methods into account.
+
+- Add some helper class hierarchy methods.
+
+- Fix CppMarshal WriteClassInstance to deal with incomplete classes.
+
+- Rework Generator interface and add GenerationOutputMode option.
+
+- Improve IsTypeComplete to be more robust.
+
+- Improve ignored check for decls with explicit generation kinds.
+
+- Generate acessor methods for C targets in field to property pass..
+
+- Set the correct enum integer type in GenerateEnumFromMacros.
+
+- Fix ignored base checking in CheckIgnoredDecls.
+
+- Be more strict when constructing a regex for parsing macros.
+
+- Handle enum items in rename pass.
+
+- Fix code to use BaseClass property instead of first base.
+
+- Add initial implementation of declaration maps.
+
+- Remove unsupported Visual Studio versions from generate options
+
+- Rename GenerateProjects.bat to Generate.bat
+
+- Add GenerateVS2019.bat shortcut similar to GenerateMake.bat
+
+- Prevent projects from picking up obj files that are generated sometimes (#1508)
+
+- Fix all of our warnings in the parser
+
+- Fix error in Tests.lua by requiring gmake2 module.
+
+- Add a GCC 9 build to the LLVM CI build matrix.
+
+- Fix minor issue when invoking Premake without an action.
+
+- Compress LLVM archives using zstd.
+
+- Call MSBuild in x86 build with Win32 platform.
+
+- Pass the target architecture when building LLVM.
+
+- Publish artifacts after building LLVM.
+
+- Fix VS environment paths by setting global env variables.
+
+- Do not use LLD when building LLVM under macOS.
+
+- Generate C++ for constructors of abstract types
+
+- Use NUnit3TestAdapter package (#1504)
+
+- Add a build for LLVM to the CI
+
+- Use correct C# parser bindings for windows x64 (#1501)
+
+- Avoid installing NUnit if its already installed. (#1500)
+
+- Generate code from tests where libraries appear
+
+- Fix generation of SequentialLayout structures (#1499)
+
+- Update parser bindings. (#1497)
+
+- Fix CS0162 warning about unreachable code (#1492)
+
+- Fix CS0109 warnings about new keyword not being required. (#1493)
+
+- Enable Multi-processor Compilation (MSVC)
+
+- Fix C4273 warnings about inconsistent dll linkage (#1491)
+
+- Fix warnings about unnecessary using directives. (#1489)
+
+- Fix C4251 warnings (#1487)
+
+- Avoid generating an interface with a Dispose method if we already inherit from IDisposable. (#1486)
+
+- Fix finding of symbols for members of templates
+
+- Always ignore warnings about missing PDB files
+
+- Reduce number of "download progress" messages. (#1482)
+
+- Mark variables with constant expressions as found
+
+- Make the CPP ABI visible only to the STD symbols
+
+- Generate valid C++ for destructors of nested types
+
+- Always use the mangled names as reported by Clang
+
+- Switch CI to GitHub Actions
+
+- Call the destructor instead of deleting the object in the generated symbols
+
+- Regenerate the parser bindings with sequential layouts (#1479)
+
+- Remove dummy variable and use discards instead available since C# 7.0 (#1478)
+
+- Fallback to LayoutKind.Explicit when a custom alignment is specified. (#1476)
+
+- Remove `Layout.GetSize()` method as it's no longer relevant (#1474)
+
+- Fix `String.CSharpSignatureType` returning incorrect type when the given type is a pointer or a reference. (#1473)
+
+- Expose if a variable is a constant expression
+
+- Fix the generation of sequential layouts
+
+- Create projects which always build generated code
+
+- Simplify the marshalling of returned pointers (#1470)
+
+- VTable: improve codegen & make it thread safe (#1469)
+
+- Create VTables class to cache delegates pointing to native virtual methods (#1468)
+
+- Improve UTF32Marshaller performance (#1467)
+
+- Improve generation of C# (#1466)
+
+- Reduce calls to ConcurrentDictionary to improve performance (#1464)
+
+- Ensure expression is a valid float constant before trying to append `f` suffix (#1465)
+
+- Fix passing of CMake options to LLVM on Windows
+
+- Update the kind of completed specializations (#1460)
+
+- Fix ambiguous conversion functions (#1458)
+
+- Prevent string destructor from being called twice when its passed by value (#1455)
+
+- Remove unsupported calling convention usage (#1454)
+
+- Fix PInvokeStackImbalance when calling C++ methods (#1453)
+
+- Load symbols at startup to avoid very expensive ResolveSymbol calls everywhere (#1447)
+
+- Fix IntPtr array marshalling bug and move hard to read code to CppSharp.Runtime (#1446)
+
+- Fix string marshalling bug and move hard to read code to CppSharp.Runtime (#1445)
+
+- Add support for const char32_t* and fix const wchar_t* in linux / osx (#1444)
+
+- Copy arrays of primitive values using System.Buffers.MemoryCopy (#1440)
+
+- Fix marshalling for bool arrays (#1439)
+
+- Fix wrong [MarshalAs(UnmanagedType)] for strings (#1438)
+
+- Remove call argument to fix broken build (#1436)
+
+- Basic support for static constexpr variables (#1435)
+
+- Add support for C++ character literals (u, U, L) (#1434)
+
+- Upgrade premake in preparation for .NET Core (#1298)
+
+- Use C# 'default literal' to avoid using a type's name that may be renamed (#1432)
+
+- Add missing `Variable.Type` null check. (#1430)
+
+- Fix generated constructor cant use `placement new` when class overloads `operator new` (#1431)
+
+- Fix generation of VS projects under non-Windows platforms.
+
+- Fix wrong marshalling for static member arrays (#1428)
+
+- Fix wrong generated destructor
+
+- Ignore non-const data() method for std types like basic_string [c++17] (#1427)
+
+- Fix crash when trying to read a CXXRecordDecl that doesn't have a definition (#1426)
+
+- RemovePass is now generic.
+
+- Added the ability to remove a built-in pass.
+
+- Fix anonymous member name colliding with enclosing type name (#1425)
+
+- Allow the users to overwrite CppSharp type maps.
+
+- Find libraries even when given with no extensions
+
+- Add an option for building with Visual Studio 2019
+
+- Fix GCC path detection for Ubuntu 20.
+
+- Move libraries to a new class for linking options
+
+- Fix memory leaks when using the driver
+
+- Simplify ClangParser by making it static
+
+- Pack the lld headers as well
+
+- Import native DLL-s (tests and parser) with MSVC
+
+- Implement and export all methods in tests
+
+
 ## [0.10.5] - 2020-6-27
 
 - Don't add ABI-specific parameters when wrapping C
