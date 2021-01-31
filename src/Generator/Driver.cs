@@ -383,8 +383,8 @@ namespace CppSharp
 
         public void Dispose()
         {
-            Generator.Dispose();
-            Context.TargetInfo?.Dispose();
+            Generator?.Dispose();
+            Context?.TargetInfo?.Dispose();
             ParserOptions.Dispose();
         }
 
