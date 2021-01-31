@@ -9,6 +9,7 @@
 #include "CppSharp.h"
 #include <Decl.h>
 #include "Sources.h"
+#include "Types.h"
 
 namespace CppSharp
 {
@@ -65,7 +66,6 @@ namespace CppSharp
             ref class StatementObsolete;
             ref class Stmt;
             ref class Template;
-            ref class TemplateArgument;
             ref class TemplateParameter;
             ref class TemplateTemplateParameter;
             ref class TranslationUnit;
@@ -458,6 +458,7 @@ namespace CppSharp
                 static operator CppSharp::Parser::AST::Declaration^(CppSharp::Parser::AST::DeclarationKind kind);
 
             protected:
+
                 bool __ownsNativeInstance;
             };
 
@@ -757,6 +758,7 @@ namespace CppSharp
                 }
 
             protected:
+
                 bool __ownsNativeInstance;
             };
 
@@ -1333,6 +1335,7 @@ namespace CppSharp
                 }
 
             protected:
+
                 bool __ownsNativeInstance;
             };
 
@@ -1430,6 +1433,7 @@ namespace CppSharp
                 }
 
             protected:
+
                 bool __ownsNativeInstance;
             };
 
@@ -1472,6 +1476,7 @@ namespace CppSharp
                 void ClearComponents();
 
             protected:
+
                 bool __ownsNativeInstance;
             };
 
@@ -1521,6 +1526,7 @@ namespace CppSharp
                 }
 
             protected:
+
                 bool __ownsNativeInstance;
             };
 
@@ -1570,6 +1576,7 @@ namespace CppSharp
                 }
 
             protected:
+
                 bool __ownsNativeInstance;
             };
 
@@ -1607,6 +1614,7 @@ namespace CppSharp
                 }
 
             protected:
+
                 bool __ownsNativeInstance;
             };
 
@@ -1731,6 +1739,7 @@ namespace CppSharp
                 void ClearBases();
 
             protected:
+
                 bool __ownsNativeInstance;
             };
 
@@ -2260,6 +2269,7 @@ namespace CppSharp
                 void ClearArguments();
 
             protected:
+
                 bool __ownsNativeInstance;
             };
 
@@ -2434,6 +2444,7 @@ namespace CppSharp
                 }
 
             protected:
+
                 bool __ownsNativeInstance;
             };
 
@@ -2594,6 +2605,7 @@ namespace CppSharp
                 void ClearTranslationUnits();
 
             protected:
+
                 bool __ownsNativeInstance;
             };
         }

@@ -152,6 +152,7 @@ namespace CppSharp
                 void ClearDependencies();
 
             protected:
+
                 bool __ownsNativeInstance;
             };
 
@@ -185,6 +186,7 @@ namespace CppSharp
                 static operator CppSharp::Parser::AST::Comment^(CppSharp::Parser::AST::CommentKind kind);
 
             protected:
+
                 bool __ownsNativeInstance;
             };
 
@@ -334,6 +336,7 @@ namespace CppSharp
                     }
 
                 protected:
+
                     bool __ownsNativeInstance;
                 };
 
@@ -562,6 +565,7 @@ namespace CppSharp
                     }
 
                 protected:
+
                     bool __ownsNativeInstance;
                 };
 
@@ -662,6 +666,7 @@ namespace CppSharp
                     }
 
                 protected:
+
                     bool __ownsNativeInstance;
                 };
 
@@ -787,6 +792,7 @@ namespace CppSharp
                 }
 
             protected:
+
                 bool __ownsNativeInstance;
             };
         }

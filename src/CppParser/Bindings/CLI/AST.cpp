@@ -20,7 +20,7 @@ CppSharp::Parser::AST::NativeLibrary^ CppSharp::Parser::AST::NativeLibrary::__Cr
     return gcnew ::CppSharp::Parser::AST::NativeLibrary((::CppSharp::CppParser::AST::NativeLibrary*) native.ToPointer());
 }
 
-CppSharp::Parser::AST::NativeLibrary::NativeLibrary(::CppSharp::CppParser::AST::NativeLibrary* native, const bool ownNativeInstance)
+CppSharp::Parser::AST::NativeLibrary::NativeLibrary(::CppSharp::CppParser::AST::NativeLibrary* native, bool ownNativeInstance)
     : __ownsNativeInstance(ownNativeInstance)
 {
     NativePtr = native;
@@ -186,7 +186,7 @@ CppSharp::Parser::AST::Comment^ CppSharp::Parser::AST::Comment::__CreateInstance
     return gcnew ::CppSharp::Parser::AST::Comment((::CppSharp::CppParser::AST::Comment*) native.ToPointer());
 }
 
-CppSharp::Parser::AST::Comment::Comment(::CppSharp::CppParser::AST::Comment* native, const bool ownNativeInstance)
+CppSharp::Parser::AST::Comment::Comment(::CppSharp::CppParser::AST::Comment* native, bool ownNativeInstance)
     : __ownsNativeInstance(ownNativeInstance)
 {
     NativePtr = native;
@@ -256,7 +256,7 @@ CppSharp::Parser::AST::BlockContentComment^ CppSharp::Parser::AST::BlockContentC
     return gcnew ::CppSharp::Parser::AST::BlockContentComment((::CppSharp::CppParser::AST::BlockContentComment*) native.ToPointer());
 }
 
-CppSharp::Parser::AST::BlockContentComment::BlockContentComment(::CppSharp::CppParser::AST::BlockContentComment* native, const bool ownNativeInstance)
+CppSharp::Parser::AST::BlockContentComment::BlockContentComment(::CppSharp::CppParser::AST::BlockContentComment* native, bool ownNativeInstance)
     : CppSharp::Parser::AST::Comment((::CppSharp::CppParser::AST::Comment*)native, ownNativeInstance)
 {
 }
@@ -313,7 +313,7 @@ CppSharp::Parser::AST::FullComment^ CppSharp::Parser::AST::FullComment::__Create
     return gcnew ::CppSharp::Parser::AST::FullComment((::CppSharp::CppParser::AST::FullComment*) native.ToPointer());
 }
 
-CppSharp::Parser::AST::FullComment::FullComment(::CppSharp::CppParser::AST::FullComment* native, const bool ownNativeInstance)
+CppSharp::Parser::AST::FullComment::FullComment(::CppSharp::CppParser::AST::FullComment* native, bool ownNativeInstance)
     : CppSharp::Parser::AST::Comment((::CppSharp::CppParser::AST::Comment*)native, ownNativeInstance)
 {
 }
@@ -408,7 +408,7 @@ CppSharp::Parser::AST::InlineContentComment^ CppSharp::Parser::AST::InlineConten
     return gcnew ::CppSharp::Parser::AST::InlineContentComment((::CppSharp::CppParser::AST::InlineContentComment*) native.ToPointer());
 }
 
-CppSharp::Parser::AST::InlineContentComment::InlineContentComment(::CppSharp::CppParser::AST::InlineContentComment* native, const bool ownNativeInstance)
+CppSharp::Parser::AST::InlineContentComment::InlineContentComment(::CppSharp::CppParser::AST::InlineContentComment* native, bool ownNativeInstance)
     : CppSharp::Parser::AST::Comment((::CppSharp::CppParser::AST::Comment*)native, ownNativeInstance)
 {
 }
@@ -475,7 +475,7 @@ CppSharp::Parser::AST::ParagraphComment^ CppSharp::Parser::AST::ParagraphComment
     return gcnew ::CppSharp::Parser::AST::ParagraphComment((::CppSharp::CppParser::AST::ParagraphComment*) native.ToPointer());
 }
 
-CppSharp::Parser::AST::ParagraphComment::ParagraphComment(::CppSharp::CppParser::AST::ParagraphComment* native, const bool ownNativeInstance)
+CppSharp::Parser::AST::ParagraphComment::ParagraphComment(::CppSharp::CppParser::AST::ParagraphComment* native, bool ownNativeInstance)
     : CppSharp::Parser::AST::BlockContentComment((::CppSharp::CppParser::AST::BlockContentComment*)native, ownNativeInstance)
 {
 }
@@ -581,7 +581,7 @@ CppSharp::Parser::AST::BlockCommandComment::Argument^ CppSharp::Parser::AST::Blo
     return gcnew ::CppSharp::Parser::AST::BlockCommandComment::Argument((::CppSharp::CppParser::AST::BlockCommandComment::Argument*) native.ToPointer());
 }
 
-CppSharp::Parser::AST::BlockCommandComment::Argument::Argument(::CppSharp::CppParser::AST::BlockCommandComment::Argument* native, const bool ownNativeInstance)
+CppSharp::Parser::AST::BlockCommandComment::Argument::Argument(::CppSharp::CppParser::AST::BlockCommandComment::Argument* native, bool ownNativeInstance)
     : __ownsNativeInstance(ownNativeInstance)
 {
     NativePtr = native;
@@ -642,7 +642,7 @@ CppSharp::Parser::AST::BlockCommandComment^ CppSharp::Parser::AST::BlockCommandC
     return gcnew ::CppSharp::Parser::AST::BlockCommandComment((::CppSharp::CppParser::AST::BlockCommandComment*) native.ToPointer());
 }
 
-CppSharp::Parser::AST::BlockCommandComment::BlockCommandComment(::CppSharp::CppParser::AST::BlockCommandComment* native, const bool ownNativeInstance)
+CppSharp::Parser::AST::BlockCommandComment::BlockCommandComment(::CppSharp::CppParser::AST::BlockCommandComment* native, bool ownNativeInstance)
     : CppSharp::Parser::AST::BlockContentComment((::CppSharp::CppParser::AST::BlockContentComment*)native, ownNativeInstance)
 {
 }
@@ -776,7 +776,7 @@ CppSharp::Parser::AST::ParamCommandComment^ CppSharp::Parser::AST::ParamCommandC
     return gcnew ::CppSharp::Parser::AST::ParamCommandComment((::CppSharp::CppParser::AST::ParamCommandComment*) native.ToPointer());
 }
 
-CppSharp::Parser::AST::ParamCommandComment::ParamCommandComment(::CppSharp::CppParser::AST::ParamCommandComment* native, const bool ownNativeInstance)
+CppSharp::Parser::AST::ParamCommandComment::ParamCommandComment(::CppSharp::CppParser::AST::ParamCommandComment* native, bool ownNativeInstance)
     : CppSharp::Parser::AST::BlockCommandComment((::CppSharp::CppParser::AST::BlockCommandComment*)native, ownNativeInstance)
 {
 }
@@ -843,7 +843,7 @@ CppSharp::Parser::AST::TParamCommandComment^ CppSharp::Parser::AST::TParamComman
     return gcnew ::CppSharp::Parser::AST::TParamCommandComment((::CppSharp::CppParser::AST::TParamCommandComment*) native.ToPointer());
 }
 
-CppSharp::Parser::AST::TParamCommandComment::TParamCommandComment(::CppSharp::CppParser::AST::TParamCommandComment* native, const bool ownNativeInstance)
+CppSharp::Parser::AST::TParamCommandComment::TParamCommandComment(::CppSharp::CppParser::AST::TParamCommandComment* native, bool ownNativeInstance)
     : CppSharp::Parser::AST::BlockCommandComment((::CppSharp::CppParser::AST::BlockCommandComment*)native, ownNativeInstance)
 {
 }
@@ -936,7 +936,7 @@ CppSharp::Parser::AST::VerbatimBlockLineComment^ CppSharp::Parser::AST::Verbatim
     return gcnew ::CppSharp::Parser::AST::VerbatimBlockLineComment((::CppSharp::CppParser::AST::VerbatimBlockLineComment*) native.ToPointer());
 }
 
-CppSharp::Parser::AST::VerbatimBlockLineComment::VerbatimBlockLineComment(::CppSharp::CppParser::AST::VerbatimBlockLineComment* native, const bool ownNativeInstance)
+CppSharp::Parser::AST::VerbatimBlockLineComment::VerbatimBlockLineComment(::CppSharp::CppParser::AST::VerbatimBlockLineComment* native, bool ownNativeInstance)
     : CppSharp::Parser::AST::Comment((::CppSharp::CppParser::AST::Comment*)native, ownNativeInstance)
 {
 }
@@ -993,7 +993,7 @@ CppSharp::Parser::AST::VerbatimBlockComment^ CppSharp::Parser::AST::VerbatimBloc
     return gcnew ::CppSharp::Parser::AST::VerbatimBlockComment((::CppSharp::CppParser::AST::VerbatimBlockComment*) native.ToPointer());
 }
 
-CppSharp::Parser::AST::VerbatimBlockComment::VerbatimBlockComment(::CppSharp::CppParser::AST::VerbatimBlockComment* native, const bool ownNativeInstance)
+CppSharp::Parser::AST::VerbatimBlockComment::VerbatimBlockComment(::CppSharp::CppParser::AST::VerbatimBlockComment* native, bool ownNativeInstance)
     : CppSharp::Parser::AST::BlockCommandComment((::CppSharp::CppParser::AST::BlockCommandComment*)native, ownNativeInstance)
 {
 }
@@ -1088,7 +1088,7 @@ CppSharp::Parser::AST::VerbatimLineComment^ CppSharp::Parser::AST::VerbatimLineC
     return gcnew ::CppSharp::Parser::AST::VerbatimLineComment((::CppSharp::CppParser::AST::VerbatimLineComment*) native.ToPointer());
 }
 
-CppSharp::Parser::AST::VerbatimLineComment::VerbatimLineComment(::CppSharp::CppParser::AST::VerbatimLineComment* native, const bool ownNativeInstance)
+CppSharp::Parser::AST::VerbatimLineComment::VerbatimLineComment(::CppSharp::CppParser::AST::VerbatimLineComment* native, bool ownNativeInstance)
     : CppSharp::Parser::AST::BlockCommandComment((::CppSharp::CppParser::AST::BlockCommandComment*)native, ownNativeInstance)
 {
 }
@@ -1146,7 +1146,7 @@ CppSharp::Parser::AST::InlineCommandComment::Argument^ CppSharp::Parser::AST::In
     return gcnew ::CppSharp::Parser::AST::InlineCommandComment::Argument((::CppSharp::CppParser::AST::InlineCommandComment::Argument*) native.ToPointer());
 }
 
-CppSharp::Parser::AST::InlineCommandComment::Argument::Argument(::CppSharp::CppParser::AST::InlineCommandComment::Argument* native, const bool ownNativeInstance)
+CppSharp::Parser::AST::InlineCommandComment::Argument::Argument(::CppSharp::CppParser::AST::InlineCommandComment::Argument* native, bool ownNativeInstance)
     : __ownsNativeInstance(ownNativeInstance)
 {
     NativePtr = native;
@@ -1207,7 +1207,7 @@ CppSharp::Parser::AST::InlineCommandComment^ CppSharp::Parser::AST::InlineComman
     return gcnew ::CppSharp::Parser::AST::InlineCommandComment((::CppSharp::CppParser::AST::InlineCommandComment*) native.ToPointer());
 }
 
-CppSharp::Parser::AST::InlineCommandComment::InlineCommandComment(::CppSharp::CppParser::AST::InlineCommandComment* native, const bool ownNativeInstance)
+CppSharp::Parser::AST::InlineCommandComment::InlineCommandComment(::CppSharp::CppParser::AST::InlineCommandComment* native, bool ownNativeInstance)
     : CppSharp::Parser::AST::InlineContentComment((::CppSharp::CppParser::AST::InlineContentComment*)native, ownNativeInstance)
 {
 }
@@ -1325,7 +1325,7 @@ CppSharp::Parser::AST::HTMLTagComment^ CppSharp::Parser::AST::HTMLTagComment::__
     return gcnew ::CppSharp::Parser::AST::HTMLTagComment((::CppSharp::CppParser::AST::HTMLTagComment*) native.ToPointer());
 }
 
-CppSharp::Parser::AST::HTMLTagComment::HTMLTagComment(::CppSharp::CppParser::AST::HTMLTagComment* native, const bool ownNativeInstance)
+CppSharp::Parser::AST::HTMLTagComment::HTMLTagComment(::CppSharp::CppParser::AST::HTMLTagComment* native, bool ownNativeInstance)
     : CppSharp::Parser::AST::InlineContentComment((::CppSharp::CppParser::AST::InlineContentComment*)native, ownNativeInstance)
 {
 }
@@ -1383,7 +1383,7 @@ CppSharp::Parser::AST::HTMLStartTagComment::Attribute^ CppSharp::Parser::AST::HT
     return gcnew ::CppSharp::Parser::AST::HTMLStartTagComment::Attribute((::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute*) native.ToPointer());
 }
 
-CppSharp::Parser::AST::HTMLStartTagComment::Attribute::Attribute(::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute* native, const bool ownNativeInstance)
+CppSharp::Parser::AST::HTMLStartTagComment::Attribute::Attribute(::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute* native, bool ownNativeInstance)
     : __ownsNativeInstance(ownNativeInstance)
 {
     NativePtr = native;
@@ -1454,7 +1454,7 @@ CppSharp::Parser::AST::HTMLStartTagComment^ CppSharp::Parser::AST::HTMLStartTagC
     return gcnew ::CppSharp::Parser::AST::HTMLStartTagComment((::CppSharp::CppParser::AST::HTMLStartTagComment*) native.ToPointer());
 }
 
-CppSharp::Parser::AST::HTMLStartTagComment::HTMLStartTagComment(::CppSharp::CppParser::AST::HTMLStartTagComment* native, const bool ownNativeInstance)
+CppSharp::Parser::AST::HTMLStartTagComment::HTMLStartTagComment(::CppSharp::CppParser::AST::HTMLStartTagComment* native, bool ownNativeInstance)
     : CppSharp::Parser::AST::HTMLTagComment((::CppSharp::CppParser::AST::HTMLTagComment*)native, ownNativeInstance)
 {
 }
@@ -1562,7 +1562,7 @@ CppSharp::Parser::AST::HTMLEndTagComment^ CppSharp::Parser::AST::HTMLEndTagComme
     return gcnew ::CppSharp::Parser::AST::HTMLEndTagComment((::CppSharp::CppParser::AST::HTMLEndTagComment*) native.ToPointer());
 }
 
-CppSharp::Parser::AST::HTMLEndTagComment::HTMLEndTagComment(::CppSharp::CppParser::AST::HTMLEndTagComment* native, const bool ownNativeInstance)
+CppSharp::Parser::AST::HTMLEndTagComment::HTMLEndTagComment(::CppSharp::CppParser::AST::HTMLEndTagComment* native, bool ownNativeInstance)
     : CppSharp::Parser::AST::HTMLTagComment((::CppSharp::CppParser::AST::HTMLTagComment*)native, ownNativeInstance)
 {
 }
@@ -1619,7 +1619,7 @@ CppSharp::Parser::AST::TextComment^ CppSharp::Parser::AST::TextComment::__Create
     return gcnew ::CppSharp::Parser::AST::TextComment((::CppSharp::CppParser::AST::TextComment*) native.ToPointer());
 }
 
-CppSharp::Parser::AST::TextComment::TextComment(::CppSharp::CppParser::AST::TextComment* native, const bool ownNativeInstance)
+CppSharp::Parser::AST::TextComment::TextComment(::CppSharp::CppParser::AST::TextComment* native, bool ownNativeInstance)
     : CppSharp::Parser::AST::InlineContentComment((::CppSharp::CppParser::AST::InlineContentComment*)native, ownNativeInstance)
 {
 }
@@ -1677,7 +1677,7 @@ CppSharp::Parser::AST::RawComment^ CppSharp::Parser::AST::RawComment::__CreateIn
     return gcnew ::CppSharp::Parser::AST::RawComment((::CppSharp::CppParser::AST::RawComment*) native.ToPointer());
 }
 
-CppSharp::Parser::AST::RawComment::RawComment(::CppSharp::CppParser::AST::RawComment* native, const bool ownNativeInstance)
+CppSharp::Parser::AST::RawComment::RawComment(::CppSharp::CppParser::AST::RawComment* native, bool ownNativeInstance)
     : __ownsNativeInstance(ownNativeInstance)
 {
     NativePtr = native;

@@ -172,6 +172,7 @@ namespace CppSharp
                 static operator CppSharp::Parser::AST::Type^(CppSharp::Parser::AST::TypeKind kind);
 
             protected:
+
                 bool __ownsNativeInstance;
             };
 
@@ -215,6 +216,7 @@ namespace CppSharp
                 }
 
             protected:
+
                 bool __ownsNativeInstance;
             };
 
@@ -252,6 +254,7 @@ namespace CppSharp
                 }
 
             protected:
+
                 bool __ownsNativeInstance;
             };
 
@@ -568,6 +571,7 @@ namespace CppSharp
                 }
 
             protected:
+
                 bool __ownsNativeInstance;
             };
 

@@ -876,7 +876,7 @@ namespace Std
         public partial struct __Internal
         {
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "?assign@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAAAEAV12@QEBD@Z", CallingConvention = __CallingConvention.Cdecl)]
-            internal static extern __IntPtr Assign(__IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string _Ptr);
+            internal static extern __IntPtr Assign(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string _Ptr);
 
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "?data@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEBAPEBDXZ", CallingConvention = __CallingConvention.Cdecl)]
             internal static extern __IntPtr Data(__IntPtr __instance);

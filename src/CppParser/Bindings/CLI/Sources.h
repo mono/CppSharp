@@ -41,6 +41,7 @@ namespace CppSharp
             static operator CppSharp::Parser::SourceLocation(unsigned int ID);
 
         private:
+
             unsigned int __ID;
         };
 
@@ -78,6 +79,7 @@ namespace CppSharp
             }
 
         protected:
+
             bool __ownsNativeInstance;
         };
     }

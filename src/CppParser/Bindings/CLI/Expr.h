@@ -22,7 +22,6 @@ namespace CppSharp
             enum class CastKind;
             enum class ObjCBridgeCastKind;
             enum class OverloadedOperatorKind;
-            enum class StmtClass;
             enum class UnaryExprOrTypeTrait;
             enum class UnaryOperatorKind;
             ref class AbstractConditionalOperator;
@@ -498,6 +497,7 @@ namespace CppSharp
                     }
 
                 protected:
+
                     bool __ownsNativeInstance;
                 };
 
@@ -2358,6 +2358,7 @@ namespace CppSharp
                     }
 
                 protected:
+
                     bool __ownsNativeInstance;
                 };
 
@@ -2383,6 +2384,7 @@ namespace CppSharp
                     ~FieldDesignator();
 
                 protected:
+
                     bool __ownsNativeInstance;
                 };
 
@@ -2408,6 +2410,7 @@ namespace CppSharp
                     ~ArrayOrRangeDesignator();
 
                 protected:
+
                     bool __ownsNativeInstance;
                 };
 
@@ -4178,6 +4181,7 @@ namespace CppSharp
                     ~FindResult();
 
                 protected:
+
                     bool __ownsNativeInstance;
                 };
 
@@ -4779,6 +4783,7 @@ namespace CppSharp
                     ~ExtraState();
 
                 protected:
+
                     bool __ownsNativeInstance;
                 };
 

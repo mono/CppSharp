@@ -305,6 +305,7 @@ namespace CppSharp
             }
 
         protected:
+
             bool __ownsNativeInstance;
         };
     }

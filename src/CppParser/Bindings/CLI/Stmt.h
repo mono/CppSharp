@@ -244,6 +244,7 @@ namespace CppSharp
                 static operator CppSharp::Parser::AST::Stmt^(CppSharp::Parser::AST::StmtClass klass);
 
             protected:
+
                 bool __ownsNativeInstance;
             };
 
@@ -1138,6 +1139,7 @@ namespace CppSharp
                     }
 
                 protected:
+
                     bool __ownsNativeInstance;
                 };
 
@@ -1399,6 +1401,7 @@ namespace CppSharp
                     }
 
                 protected:
+
                     bool __ownsNativeInstance;
                 };
 
@@ -1683,6 +1686,7 @@ namespace CppSharp
                     ~CtorArgs();
 
                 protected:
+
                     bool __ownsNativeInstance;
                 };
 
