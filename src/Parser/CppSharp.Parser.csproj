@@ -18,8 +18,7 @@
     <ProjectReference Include="..\Core\CppSharp.csproj" />
     <ProjectReference Include="..\AST\CppSharp.AST.csproj" />
     <ProjectReference Include="..\Runtime\CppSharp.Runtime.csproj" />
-    <ProjectReference Include="..\CppParser\Bindings\CSharp\CppSharp.Parser.CSharp.csproj" Condition="!$(IsWindows) OR $(CI)" />
-    <ProjectReference Include="$(NativeProjectsDir)\CppSharp.Parser.CLI.vcxproj" Condition="$(IsWindows) AND !$(CI)" />
+    <ProjectReference Include="..\CppParser\Bindings\CSharp\CppSharp.Parser.CSharp.csproj" />
   </ItemGroup>
 
   <Target Name="PackNativeHeaders" AfterTargets="prepack" Condition="'$(RID)' == 'win-x64'">

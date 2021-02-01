@@ -1,5 +1,6 @@
 <Project>
   <ItemGroup>
+    <PackageVersion Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageVersion Include="Microsoft.Win32.Registry" Version="4.7.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
     <PackageVersion Include="NUnit" Version="3.11.0" />

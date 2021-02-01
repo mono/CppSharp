@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using CppSharp.AST;
@@ -20,7 +21,7 @@ namespace CppSharp.Utils
             this.kind = kind;
         }
 
-        public virtual void Setup(Driver driver)
+        public override void Setup(Driver driver)
         {
             var options = driver.Options;
             options.GeneratorKind = kind;
@@ -47,15 +48,15 @@ namespace CppSharp.Utils
                 testModule.Headers.Add(Path.GetFileName(file));
         }
 
-        public virtual void Preprocess(Driver driver, ASTContext ctx)
+        public override void Preprocess(Driver driver, ASTContext ctx)
         {
         }
 
-        public virtual void Postprocess(Driver driver, ASTContext ctx)
+        public override void Postprocess(Driver driver, ASTContext ctx)
         {
         }
 
-        public virtual void SetupPasses(Driver driver)
+        public override void SetupPasses(Driver driver)
         {
         }
 
@@ -100,6 +101,10 @@ namespace CppSharp.Utils
             }
 
             throw new Exception("Could not find tests output directory");
+        }
+
+        public void GenerateCode(Driver driver, List<GeneratorOutput> outputs)
+        {
         }
         #endregion
     }

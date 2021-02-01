@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using CodingSeb.ExpressionEvaluator;
 using CppSharp.AST;
 using CppSharp.Generators;
-using CppSharp.Generators.CSharp;
 using CppSharp.Passes;
 
 namespace CppSharp
@@ -14,33 +12,33 @@ namespace CppSharp
     /// <summary>
     /// Used to massage the library types into something more .NET friendly.
     /// </summary>
-    public interface ILibrary
+    public abstract class ILibrary
     {
         /// <summary>
         /// Do transformations that should happen before passes are processed.
         /// </summary>
-        void Preprocess(Driver driver, ASTContext ctx);
+        public abstract void Preprocess(Driver driver, ASTContext ctx);
 
         /// <summary>
         /// Do transformations that should happen after passes are processed.
         /// </summary>
-        void Postprocess(Driver driver, ASTContext ctx);
+        public abstract void Postprocess(Driver driver, ASTContext ctx);
 
         /// <summary>
         /// Setup the driver options here.
         /// </summary>
-        void Setup(Driver driver);
+        public abstract void Setup(Driver driver);
 
         /// <summary>
         /// Setup your passes here.
         /// </summary>
         /// <param name="driver"></param>
-        void SetupPasses(Driver driver);
+        public abstract void SetupPasses(Driver driver);
 
         /// <summary>
         /// Generate custom code here.
         /// </summary>
-        void GenerateCode(Driver driver, List<GeneratorOutput> outputs) { }
+        public virtual void GenerateCode(Driver driver, List<GeneratorOutput> outputs) { }
     }
 
     public static class LibraryHelpers

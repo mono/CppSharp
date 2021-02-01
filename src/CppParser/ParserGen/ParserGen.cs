@@ -44,7 +44,7 @@ namespace CppSharp
             throw new Exception("Could not find build directory: " + dir);
         }
 
-        public void Setup(Driver driver)
+        public override void Setup(Driver driver)
         {
             var parserOptions = driver.ParserOptions;
             parserOptions.TargetTriple = Triple;
@@ -118,11 +118,11 @@ namespace CppSharp
             options.AddArguments("-stdlib=libc++");
         }
 
-        public void SetupPasses(Driver driver)
+        public override void SetupPasses(Driver driver)
         {
         }
 
-        public void Preprocess(Driver driver, ASTContext ctx)
+        public override void Preprocess(Driver driver, ASTContext ctx)
         {
             ctx.RenameNamespace("CppSharp::CppParser", "Parser");
 
@@ -146,7 +146,7 @@ namespace CppSharp
             }
         }
 
-        public void Postprocess(Driver driver, ASTContext ctx)
+        public override void Postprocess(Driver driver, ASTContext ctx)
         {
         }
 
@@ -191,6 +191,10 @@ namespace CppSharp
                     isGnuCpp11Abi: true));
                 Console.WriteLine();
             }
+        }
+
+        public void GenerateCode(Driver driver, List<GeneratorOutput> outputs)
+        {
         }
     }
 }

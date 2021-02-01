@@ -28,7 +28,7 @@ namespace CppSharp.Generators.Cpp
         {
             var paths = unit.FileRelativePath.Split('/').ToList();
             paths = paths.Select(p => Path.GetFileNameWithoutExtension(p.ToLowerInvariant())).ToList();
-            var name = string.Join('_', paths);
+            var name = string.Join("_", paths);
             return name;
         }
 

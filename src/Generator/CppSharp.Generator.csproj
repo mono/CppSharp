@@ -12,4 +12,8 @@
     <ProjectReference Include="..\Parser\CppSharp.Parser.csproj" />
     <ProjectReference Include="$(NativeProjectsDir)Std-symbols.vcxproj" ReferenceOutputAssembly="false" Condition="$(IsWindows)" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" />
+  </ItemGroup>
 </Project>

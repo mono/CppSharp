@@ -47,6 +47,10 @@
     <GeneratorFileExtension>exe</GeneratorFileExtension>
     <DotNetCmd></DotNetCmd>
   </PropertyGroup>
+	
+  <PropertyGroup Condition="$(MSBuildProjectFile.StartsWith('CppSharp.')) AND !$(MSBuildProjectFile.StartsWith('CppSharp.Generator.Tests'))">
+	<TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
 
   <Target Name="prepack" DependsOnTargets="Build" Condition="'$(IsPackable)' == 'true' AND '$(Platform)' == 'x64'">
     <Copy SourceFiles="$(TargetDir)ref\$(TargetFileName)" DestinationFolder="$(PackageDir)ref\$(GlobalTargetFramework)" Condition="'$(ProduceReferenceAssembly)' == 'true' AND '$(RID)' == 'win-x64'" />

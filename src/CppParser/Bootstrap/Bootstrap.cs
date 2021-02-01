@@ -46,7 +46,7 @@ namespace CppSharp
             return Directory.EnumerateDirectories(llvmDir, $"*{llvmRevision}*").FirstOrDefault();
         }
 
-        public void Setup(Driver driver)
+        public override void Setup(Driver driver)
         {
             driver.Options.GeneratorKind = GeneratorKind.CSharp;
             driver.Options.DryRun = true;
@@ -83,11 +83,11 @@ namespace CppSharp
             module.LibraryDirs.Add(Path.Combine(llvmPath, "lib"));
         }
 
-        public void SetupPasses(Driver driver)
+        public override void SetupPasses(Driver driver)
         {
         }
 
-        public void Preprocess(Driver driver, ASTContext ctx)
+        public override void Preprocess(Driver driver, ASTContext ctx)
         {
             new IgnoreMethodsWithParametersPass { Context = driver.Context }
                 .VisitASTContext(ctx);
@@ -116,7 +116,7 @@ namespace CppSharp
             GenerateExpr(driver.Context);
         }
 
-        public void Postprocess(Driver driver, ASTContext ctx)
+        public override void Postprocess(Driver driver, ASTContext ctx)
         {
         }
 

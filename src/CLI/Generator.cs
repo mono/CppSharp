@@ -108,7 +108,7 @@ namespace CppSharp
             return true;
         }
 
-        public void Setup(Driver driver)
+        public override void Setup(Driver driver)
         {
             var parserOptions = driver.ParserOptions;
             parserOptions.TargetTriple = triple;
@@ -168,21 +168,17 @@ namespace CppSharp
             parserOptions.AddDefines("_GLIBCXX_USE_CXX11_ABI=" + (options.Cpp11ABI ? "1" : "0"));
         }
 
-        public void SetupPasses(Driver driver)
+        public override void SetupPasses(Driver driver)
         {
             driver.Context.TranslationUnitPasses.AddPass(new FunctionToInstanceMethodPass());
             driver.Context.TranslationUnitPasses.AddPass(new MarshalPrimitivePointersAsRefTypePass());
         }
 
-        public void GenerateCode(Driver driver, List<GeneratorOutput> outputs)
+        public override void Preprocess(Driver driver, ASTContext ctx)
         {
         }
 
-        public void Preprocess(Driver driver, ASTContext ctx)
-        {
-        }
-
-        public void Postprocess(Driver driver, ASTContext ctx)
+        public override void Postprocess(Driver driver, ASTContext ctx)
         {
         }
 
