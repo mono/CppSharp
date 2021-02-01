@@ -376,9 +376,8 @@ namespace CppSharp.Parser
         {
             get
             {
-                var assemblyDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var builtinsDir = Path.Combine(assemblyDir, "lib", "clang", ClangVersion, "include");
-                return builtinsDir;
+                var assemblyDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                return Path.Combine(assemblyDir, "lib", "clang", ClangVersion, "include");
             }
         }
 
