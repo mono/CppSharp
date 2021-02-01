@@ -80,7 +80,7 @@ namespace CppSharp
                     internal static extern __IntPtr GetSymbols(__IntPtr __instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?addSymbols@NativeLibrary@AST@CppParser@CppSharp@@QEAAXPEBD@Z", CallingConvention = __CallingConvention.Cdecl)]
-                    internal static extern void AddSymbols(__IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
+                    internal static extern void AddSymbols(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?clearSymbols@NativeLibrary@AST@CppParser@CppSharp@@QEAAXXZ", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ClearSymbols(__IntPtr __instance);
@@ -89,7 +89,7 @@ namespace CppSharp
                     internal static extern __IntPtr GetDependencies(__IntPtr __instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?addDependencies@NativeLibrary@AST@CppParser@CppSharp@@QEAAXPEBD@Z", CallingConvention = __CallingConvention.Cdecl)]
-                    internal static extern void AddDependencies(__IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
+                    internal static extern void AddDependencies(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?clearDependencies@NativeLibrary@AST@CppParser@CppSharp@@QEAAXXZ", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ClearDependencies(__IntPtr __instance);
@@ -39179,7 +39179,7 @@ namespace CppSharp
                 internal static extern __IntPtr GetArguments(__IntPtr __instance, uint i);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?addArguments@CppParserOptions@CppParser@CppSharp@@QEAAXPEBD@Z", CallingConvention = __CallingConvention.Cdecl)]
-                internal static extern void AddArguments(__IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
+                internal static extern void AddArguments(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?clearArguments@CppParserOptions@CppParser@CppSharp@@QEAAXXZ", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern void ClearArguments(__IntPtr __instance);
@@ -39188,7 +39188,7 @@ namespace CppSharp
                 internal static extern __IntPtr GetSourceFiles(__IntPtr __instance, uint i);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?addSourceFiles@CppParserOptions@CppParser@CppSharp@@QEAAXPEBD@Z", CallingConvention = __CallingConvention.Cdecl)]
-                internal static extern void AddSourceFiles(__IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
+                internal static extern void AddSourceFiles(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?clearSourceFiles@CppParserOptions@CppParser@CppSharp@@QEAAXXZ", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern void ClearSourceFiles(__IntPtr __instance);
@@ -39197,7 +39197,7 @@ namespace CppSharp
                 internal static extern __IntPtr GetIncludeDirs(__IntPtr __instance, uint i);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?addIncludeDirs@CppParserOptions@CppParser@CppSharp@@QEAAXPEBD@Z", CallingConvention = __CallingConvention.Cdecl)]
-                internal static extern void AddIncludeDirs(__IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
+                internal static extern void AddIncludeDirs(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?clearIncludeDirs@CppParserOptions@CppParser@CppSharp@@QEAAXXZ", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern void ClearIncludeDirs(__IntPtr __instance);
@@ -39206,7 +39206,7 @@ namespace CppSharp
                 internal static extern __IntPtr GetSystemIncludeDirs(__IntPtr __instance, uint i);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?addSystemIncludeDirs@CppParserOptions@CppParser@CppSharp@@QEAAXPEBD@Z", CallingConvention = __CallingConvention.Cdecl)]
-                internal static extern void AddSystemIncludeDirs(__IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
+                internal static extern void AddSystemIncludeDirs(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?clearSystemIncludeDirs@CppParserOptions@CppParser@CppSharp@@QEAAXXZ", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern void ClearSystemIncludeDirs(__IntPtr __instance);
@@ -39215,7 +39215,7 @@ namespace CppSharp
                 internal static extern __IntPtr GetDefines(__IntPtr __instance, uint i);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?addDefines@CppParserOptions@CppParser@CppSharp@@QEAAXPEBD@Z", CallingConvention = __CallingConvention.Cdecl)]
-                internal static extern void AddDefines(__IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
+                internal static extern void AddDefines(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?clearDefines@CppParserOptions@CppParser@CppSharp@@QEAAXXZ", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern void ClearDefines(__IntPtr __instance);
@@ -39224,7 +39224,7 @@ namespace CppSharp
                 internal static extern __IntPtr GetUndefines(__IntPtr __instance, uint i);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?addUndefines@CppParserOptions@CppParser@CppSharp@@QEAAXPEBD@Z", CallingConvention = __CallingConvention.Cdecl)]
-                internal static extern void AddUndefines(__IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
+                internal static extern void AddUndefines(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?clearUndefines@CppParserOptions@CppParser@CppSharp@@QEAAXXZ", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern void ClearUndefines(__IntPtr __instance);
@@ -39233,7 +39233,7 @@ namespace CppSharp
                 internal static extern __IntPtr GetSupportedStdTypes(__IntPtr __instance, uint i);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?addSupportedStdTypes@CppParserOptions@CppParser@CppSharp@@QEAAXPEBD@Z", CallingConvention = __CallingConvention.Cdecl)]
-                internal static extern void AddSupportedStdTypes(__IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
+                internal static extern void AddSupportedStdTypes(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?clearSupportedStdTypes@CppParserOptions@CppParser@CppSharp@@QEAAXXZ", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern void ClearSupportedStdTypes(__IntPtr __instance);
@@ -39704,7 +39704,7 @@ namespace CppSharp
                 internal static extern __IntPtr GetArguments(__IntPtr __instance, uint i);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?addArguments@LinkerOptions@CppParser@CppSharp@@QEAAXPEBD@Z", CallingConvention = __CallingConvention.Cdecl)]
-                internal static extern void AddArguments(__IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
+                internal static extern void AddArguments(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?clearArguments@LinkerOptions@CppParser@CppSharp@@QEAAXXZ", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern void ClearArguments(__IntPtr __instance);
@@ -39713,7 +39713,7 @@ namespace CppSharp
                 internal static extern __IntPtr GetLibraryDirs(__IntPtr __instance, uint i);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?addLibraryDirs@LinkerOptions@CppParser@CppSharp@@QEAAXPEBD@Z", CallingConvention = __CallingConvention.Cdecl)]
-                internal static extern void AddLibraryDirs(__IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
+                internal static extern void AddLibraryDirs(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?clearLibraryDirs@LinkerOptions@CppParser@CppSharp@@QEAAXXZ", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern void ClearLibraryDirs(__IntPtr __instance);
@@ -39722,7 +39722,7 @@ namespace CppSharp
                 internal static extern __IntPtr GetLibraries(__IntPtr __instance, uint i);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?addLibraries@LinkerOptions@CppParser@CppSharp@@QEAAXPEBD@Z", CallingConvention = __CallingConvention.Cdecl)]
-                internal static extern void AddLibraries(__IntPtr __instance, [MarshalAs(UnmanagedType.LPUTF8Str)] string s);
+                internal static extern void AddLibraries(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?clearLibraries@LinkerOptions@CppParser@CppSharp@@QEAAXXZ", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern void ClearLibraries(__IntPtr __instance);
