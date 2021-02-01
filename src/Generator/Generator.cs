@@ -160,7 +160,7 @@ namespace CppSharp.Generators
             {
                 TranslationUnit = new TranslationUnit
                 {
-                    FilePath = $"{module.LibraryName}",
+                    FilePath = $"{module.LibraryName}.h",
                     Module = module
                 },
                 Outputs = Generate(generatedUnits)
