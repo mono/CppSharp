@@ -8,6 +8,5 @@
   
   <ItemGroup>
     <PackageReference Include="Microsoft.Win32.Registry" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" PrivateAssets="All" />
   </ItemGroup>
 </Project>

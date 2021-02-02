@@ -74,14 +74,6 @@ namespace CppSharp.Parser
         public bool EnableRTTI { get; set; }
         public LanguageVersion? LanguageVersion { get; set; }
 
-        /// <summary>
-        /// This option forces the driver code to use Clang's toolchain code
-        /// to lookup the location of system headers and library locations.
-        /// At the moment, it only makes a difference for MSVC targets.
-        /// If its true, then we opt to use Clang's MSVC lookup logic.
-        /// </summary>
-        public bool ForceClangToolchainLookup = true;
-
         public void BuildForSourceFile(
             IEnumerable<CppSharp.AST.Module> modules, string file = null)
         {
@@ -150,21 +142,6 @@ namespace CppSharp.Parser
 
             var clVersion = MSVCToolchain.GetCLVersion(vsVersion);
             ToolSetToUse = clVersion.Major * 10000000 + clVersion.Minor * 100000;
-
-            if (!ForceClangToolchainLookup)
-            {
-                NoStandardIncludes = true;
-                NoBuiltinIncludes = true;
-
-                AddSystemIncludeDirs(BuiltinsDir);
-
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    vsVersion = MSVCToolchain.FindVSVersion(vsVersion);
-                    foreach (var include in MSVCToolchain.GetSystemIncludes(vsVersion))
-                        AddSystemIncludeDirs(include);
-                }
-            }
 
             // do not remove the CppSharp prefix becase the Mono C# compiler breaks
             if (!LanguageVersion.HasValue)
