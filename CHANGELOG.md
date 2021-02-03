@@ -1,3 +1,12 @@
+## [0.11.1] - 2021-2-3
+
+- Restore backwards compatibility with .NET Framework
+
+- Remove looking MSVC headers up with COM
+
+- Look for the Clang headers along the main entry (#1573)
+
+
 ## [0.11.0] - 2021-1-29
 
 - The NuGet package now supports Linux and macOS as well
