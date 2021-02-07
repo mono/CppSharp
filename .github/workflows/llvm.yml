@@ -40,6 +40,7 @@ jobs:
             echo ::set-env name=%%a::%%b
           )
           endlocal
+          wmic product where "description='Xamarin Offline Packages' " uninstall
 
       - name: Fix intrin.h file
         if: matrix.config.vs > 0
