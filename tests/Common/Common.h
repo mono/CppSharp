@@ -89,6 +89,7 @@ public:
     Foo(const float& f);
     int A;
     float B;
+    int Init = 20;
     IgnoredType ignoredType;
     int fixedArray[3];
     char fixedCharArray[3];

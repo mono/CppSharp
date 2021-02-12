@@ -427,6 +427,7 @@ public class CommonTests
     {
         using (Foo foo = new Foo { A = 5, B = 5.5f })
         {
+            Assert.That(foo.Init, Is.EqualTo(20));
             using (var copyFoo = new Foo(foo))
             {
                 Assert.That(foo.A, Is.EqualTo(copyFoo.A));
