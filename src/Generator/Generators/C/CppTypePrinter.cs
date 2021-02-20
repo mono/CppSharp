@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Generators.CSharp;
 using CppSharp.Types;
 
 namespace CppSharp.Generators.C
@@ -21,6 +22,7 @@ namespace CppSharp.Generators.C
         public bool PrintTypeQualifiers { get; set; }
         public bool PrintTypeModifiers { get; set; }
         public bool PrintVariableArrayAsPointers { get; set; }
+
         public TypePrintScopeKind MethodScopeKind = TypePrintScopeKind.Qualified;
 
         public CppTypePrinter(BindingContext context) : base(TypePrinterContextKind.Native)
@@ -421,7 +423,24 @@ namespace CppSharp.Generators.C
                 return result;
 
             result.Name = param.Name;
-            return result.ToString();
+
+            if (param.DefaultArgument != null && Options.GenerateDefaultValuesForArguments)
+            {
+                try
+                {
+                    var expressionPrinter = new CSharpExpressionPrinter(this);
+                    var defaultValue = expressionPrinter.VisitParameter(param);
+                    return $"{result} = {defaultValue}";
+                }
+                catch (Exception)
+                {
+                    var function = param.Namespace as Function;
+                    Diagnostics.Warning($"Error printing default argument expression: " +
+                                        $"{function.QualifiedOriginalName}({param.OriginalName})");
+                }
+            }
+
+            return $"{result}";
         }
 
         public override TypePrinterResult VisitDelegate(FunctionType function)

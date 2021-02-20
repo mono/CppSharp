@@ -16,7 +16,7 @@ namespace CppSharp.Generators.CSharp
 
     public class CSharpExpressionPrinter : IExpressionPrinter<string>
     {
-        public CSharpExpressionPrinter(CSharpTypePrinter typePrinter)
+        public CSharpExpressionPrinter(TypePrinter typePrinter)
         {
             this.typePrinter = typePrinter;
         }
@@ -87,6 +87,6 @@ namespace CppSharp.Generators.CSharp
             throw new System.NotImplementedException();
         }
 
-        private readonly CSharpTypePrinter typePrinter;
+        private readonly TypePrinter typePrinter;
     }
 }
