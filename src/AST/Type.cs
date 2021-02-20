@@ -182,6 +182,11 @@ namespace CppSharp.AST
         {
         }
 
+        public ArrayType(QualifiedType qualifiedType)
+        {
+            QualifiedType = qualifiedType;
+        }
+
         public ArrayType(ArrayType type)
             : base(type)
         {
