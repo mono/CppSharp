@@ -462,7 +462,7 @@ namespace CppSharp.Generators.CLI
             PopBlock();
         }
 
-        public void GenerateClassEvents(Class @class)
+        public override void GenerateClassEvents(Class @class)
         {
             foreach (var @event in @class.Events)
             {

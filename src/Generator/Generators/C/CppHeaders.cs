@@ -490,7 +490,7 @@ namespace CppSharp.Generators.Cpp
             return true;
         }
 
-        public void GenerateClassEvents(Class @class)
+        public override void GenerateClassEvents(Class @class)
         {
             Indent();
 
