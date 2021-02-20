@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using CppSharp.AST;
 using CppSharp.Generators.C;
 
@@ -30,30 +31,24 @@ namespace CppSharp.Generators.Cpp
                 WriteInclude("CppSharp_QuickJS.h", CInclude.IncludeKind.Angled);
 
                 foreach (var unit in TranslationUnits)
-                {
-                    WriteInclude(new CInclude()
-                    {
-                        File = GetIncludeFileName(Context, unit),
-                        Kind = CInclude.IncludeKind.Quoted
-                    });
-                }
-
+                    WriteInclude(GetIncludeFileName(Context, unit), CInclude.IncludeKind.Quoted);
                 NewLine();
             }
             PopBlock();
+            NewLine();
 
             WriteLine("extern \"C\" {");
             NewLine();
 
             PushBlock();
             {
-                foreach (var unit in TranslationUnits)
+                foreach (var unit in TranslationUnits.Where(unit => unit.IsGenerated))
                 {
                     var name = NAPISources.GetTranslationUnitName(unit);
-                    WriteLine($"extern void register_{name}(JSContext *ctx, JSModuleDef *m, bool set);");
+                    WriteLine($"extern void register_{name}(JSContext *ctx, JSModuleDef *m, bool set, int phase);");
                 }
             }
-            PopBlock(NewLineKind.BeforeNextBlock);
+            PopBlock();
             NewLine();
 
             WriteLine("#define countof(x) (sizeof(x) / sizeof((x)[0]))");
@@ -65,11 +60,19 @@ namespace CppSharp.Generators.Cpp
             WriteLine($"static int js_{moduleName}_init(JSContext* ctx, JSModuleDef* m)");
             WriteOpenBraceAndIndent();
 
-            foreach (var unit in TranslationUnits)
+            WriteLine("for (int phase = 0; phase < 2; phase++)");
+            WriteOpenBraceAndIndent();
             {
-                var name = NAPISources.GetTranslationUnitName(unit);
-                WriteLine($"register_{name}(ctx, m, /*set=*/true);");
+                WriteLine("register_CppSharp_QuickJS(ctx, m,  /*set=*/true, phase);");
+                NewLine();
+
+                foreach (var unit in TranslationUnits.Where(unit => unit.IsGenerated))
+                {
+                    var name = NAPISources.GetTranslationUnitName(unit);
+                    WriteLine($"register_{name}(ctx, m, /*set=*/true, phase);");
+                }
             }
+            UnindentAndWriteCloseBrace();
             NewLine();
 
             WriteLine("return 0;");
@@ -94,10 +97,13 @@ namespace CppSharp.Generators.Cpp
             WriteLineIndent("return nullptr;");
             NewLine();
 
+            WriteLine("register_CppSharp_QuickJS(ctx, m,  /*set=*/false, 0);");
+            NewLine();
+
             foreach (var unit in TranslationUnits)
             {
                 var name = NAPISources.GetTranslationUnitName(unit);
-                WriteLine($"register_{name}(ctx, m, /*set=*/false);");
+                WriteLine($"register_{name}(ctx, m, /*set=*/false, 0);");
             }
             NewLine();
 
@@ -109,8 +115,7 @@ namespace CppSharp.Generators.Cpp
             WriteLine("}");
         }
 
-        public static string GetIncludeFileName(BindingContext context,
-            TranslationUnit unit)
+        public static string GetIncludeFileName(BindingContext context, TranslationUnit unit)
         {
             // TODO: Replace with GetIncludePath
             string file;
