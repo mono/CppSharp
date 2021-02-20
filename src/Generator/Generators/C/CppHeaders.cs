@@ -329,6 +329,9 @@ namespace CppSharp.Generators.Cpp
             if (CppGenerator.ShouldGenerateClassNativeInstanceField(@class))
                 GenerateClassNativeField(@class);
 
+            if (Options.GenerateExternalDataFields)
+                GenerateExternalDataFields(@class);
+
             GenerateClassConstructors(@class);
             GenerateClassProperties(@class);
             GenerateClassEvents(@class);
@@ -364,6 +367,44 @@ namespace CppSharp.Generators.Cpp
             PopBlock(NewLineKind.BeforeNextBlock);
 
             return true;
+        }
+
+        // Generate an external instance storage location for external bindings.
+        public virtual void GenerateExternalDataFields(Class @class)
+        {
+            PushBlock();
+
+            var voidPtrType = new PointerType(new QualifiedType(new BuiltinType(PrimitiveType.Void)));
+            var externalInstanceField = new Field()
+            {
+                Name = Generator.GeneratedIdentifier("ExternalInstance"),
+                QualifiedType = new QualifiedType(voidPtrType),
+                Namespace = @class
+            };
+
+            Indent();
+            CTypePrinter.PushContext(TypePrinterContextKind.Native);
+            externalInstanceField.Visit(this);
+            CTypePrinter.PopContext();
+
+            var externalDataField = new Field()
+            {
+                Name = Generator.GeneratedIdentifier("ExternalData"),
+                QualifiedType = new QualifiedType(new ArrayType
+                {
+                    QualifiedType =  new QualifiedType(voidPtrType),
+                    SizeType =  ArrayType.ArraySize.Constant,
+                    Size = 2
+                }),
+                Namespace = @class
+            };
+
+            CTypePrinter.PushContext(TypePrinterContextKind.Native);
+            var result = externalDataField.Visit(CTypePrinter);
+            CTypePrinter.PopContext();
+            Unindent();
+
+            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
         public void GenerateClassNativeField(Class @class)
