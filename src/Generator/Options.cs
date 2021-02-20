@@ -185,6 +185,12 @@ namespace CppSharp
 
         public bool UsePropertyDetectionHeuristics { get; set; } = true;
 
+        /// <summary>
+        /// Experimental option that makes the C/C++ generator generate some extra data storage
+        /// on the generated instance, for supporting higher-level binding of the code.
+        /// </summary>
+        public bool GenerateExternalDataFields { get; set; } = false;
+
         #endregion
     }
 
