@@ -182,12 +182,11 @@ namespace CppSharp.Generators.Cpp
                 if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
                 {
                     Write(marshal.Context.Before);
-                    NeedNewLine();
                 }
 
-                NewLineIfNeeded();
                 WriteLine($"auto {marshal.Context.VarPrefix}{argName} = {marshal.Context.Return};");
                 paramMarshal.Prefix = marshal.Context.ArgumentPrefix;
+                NewLine();
             }
 
             paramMarshal.Name = argName;

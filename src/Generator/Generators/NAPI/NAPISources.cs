@@ -550,12 +550,17 @@ namespace CppSharp.Generators.Cpp
 
         public virtual void CheckZeroArguments(List<Function> @group)
         {
-            var zeroParamsOverload = @group.SingleOrDefault(f => f.Parameters.Count == 0);
-            if (zeroParamsOverload == null || @group.Count <= 1)
+            var zeroParamsOverload = @group.Where(f => f.Parameters.Count == 0 ||
+                (f.Parameters.Count >= 1 && f.Parameters.First().HasDefaultValue)).ToArray();
+
+            if (zeroParamsOverload.Length == 0 || @group.Count <= 1)
                 return;
 
-            var index = @group.FindIndex(f => f == zeroParamsOverload);
+            if (zeroParamsOverload.Length > 1)
+                throw new Exception($"Found ambiguity between default parameter overloads for: " +
+                                    $"{@group.First().QualifiedOriginalName}");
 
+            var index = @group.FindIndex(f => f == zeroParamsOverload.First());
             WriteLine($"if (argc == 0)");
             WriteLineIndent($"goto overload{index};");
             NeedNewLine();
@@ -581,8 +586,15 @@ namespace CppSharp.Generators.Cpp
             UnindentAndWriteCloseBrace();
         }
 
-        public virtual void CheckArgumentsOverload(IList<Function> @group, DFSM stateMachine)
+        public virtual void CheckArgumentsOverload(List<Function> @group, DFSM stateMachine)
         {
+            int GetParamIndex(Transition transition, string state)
+            {
+                var isInitialState = stateMachine.Q0.Contains(state);
+                var paramIndex = isInitialState ? 0 : int.Parse(transition.StartState.Split(' ').Last().Split('_').Last()) + 1;
+                return paramIndex;
+            }
+
             var typeCheckStates = stateMachine.Q.Except(stateMachine.F).ToList();
             var finalStates = stateMachine.F;
 
@@ -605,16 +617,36 @@ namespace CppSharp.Generators.Cpp
                 var state = typeCheckStates[i];
                 var transitions = stateMachine.Delta.Where(t => t.StartState == state).ToArray();
 
+                // Deal with default parameters.
+                var currentParamIndex = GetParamIndex(transitions.First(), state);
+                var defaultParams = @group.Where(f => f.Parameters.Count > currentParamIndex)
+                                                    .Select(f => f.Parameters[currentParamIndex])
+                                                    .Where(p => p.HasDefaultValue).ToArray();
+
+                // Check for an ambiguous case of overload resolution and throw. This does prevents some technically
+                // legal overloads from being generated, so in the future this can be updated to just throw
+                // a runtime error in JS instead, which would allow the ambiguous overloads to be called when
+                // resolved with all explicit arguments.
+                if (defaultParams.Length > 1)
+                    throw new Exception($"Found ambiguity between default parameter overloads for: " +
+                                        $"{@group.First().QualifiedOriginalName}");
+
+                if (defaultParams.Length == 1)
+                {
+                    WriteLine($"if (argc == {currentParamIndex})");
+
+                    var overload = defaultParams.First().Namespace as Function;
+                    var index = @group.FindIndex(f => f == overload);
+                    WriteLineIndent($"goto overload{index};");
+                    NewLine();
+                }
+
                 foreach (var transition in transitions)
                 {
                     NewLineIfNeeded();
 
-                    var isInitialState = stateMachine.Q0.Contains(state);
-                    var paramIndex =  isInitialState ? 0 :
-                        int.Parse(transition.StartState.Split(' ').Last().Split('_').Last()) + 1;
-
-                    var type = uniqueTypes[(int) transition.Symbol];
-
+                    var paramIndex = GetParamIndex(transition, state);
+                    var type = uniqueTypes[transition.Symbol];
                     var condition = GenerateTypeCheckForParameter(paramIndex, type);
 
                     WriteLine($"if ({condition})");
