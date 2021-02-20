@@ -39,6 +39,8 @@ namespace CppSharp.Generators.C
 
         public virtual string ClassCtorInstanceParamIdentifier => "instance";
 
+        public virtual bool GenerateSemicolonAsDeclarationTerminator => true;
+
         public override void Process()
         {
 
@@ -125,6 +127,28 @@ namespace CppSharp.Generators.C
 
             GenerateDeclarationCommon(@enum);
 
+            var enumName = GenerateEnumSpecifier(@enum);
+
+            NewLine();
+            WriteOpenBraceAndIndent();
+
+            GenerateEnumItems(@enum);
+
+            Unindent();
+
+            var generateTypedef = Options.GeneratorKind == GeneratorKind.C;
+            if (!string.IsNullOrWhiteSpace(enumName) && generateTypedef)
+                WriteLine($"}} {enumName};");
+            else
+                WriteLine("}}{0}", GenerateSemicolonAsDeclarationTerminator ? ";" : "");
+
+            PopBlock(NewLineKind.BeforeNextBlock);
+
+            return true;
+        }
+
+        public virtual string GenerateEnumSpecifier(Enumeration @enum)
+        {
             if (IsCLIGenerator)
             {
                 if (@enum.Modifiers.HasFlag(Enumeration.EnumModifiers.Flags))
@@ -137,8 +161,7 @@ namespace CppSharp.Generators.C
             }
 
             var enumKind = @enum.IsScoped || IsCLIGenerator ? "enum class" : "enum";
-            var enumName = Options.GeneratorKind == GeneratorKind.C ?
-                QualifiedName(@enum) : @enum.Name;
+            var enumName = Options.GeneratorKind == GeneratorKind.C ? QualifiedName(@enum) : @enum.Name;
 
             var generateTypedef = Options.GeneratorKind == GeneratorKind.C;
             if (generateTypedef)
@@ -157,21 +180,7 @@ namespace CppSharp.Generators.C
                     Write($" : {typeName}");
             }
 
-            NewLine();
-            WriteOpenBraceAndIndent();
-
-            GenerateEnumItems(@enum);
-
-            Unindent();
-
-            if (!string.IsNullOrWhiteSpace(enumName) && generateTypedef)
-                WriteLine($"}} {enumName};");
-            else
-                WriteLine("};");
-
-            PopBlock(NewLineKind.BeforeNextBlock);
-
-            return true;
+            return enumName;
         }
 
         public override bool VisitEnumItemDecl(Enumeration.Item item)
