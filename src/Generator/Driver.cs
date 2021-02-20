@@ -254,6 +254,7 @@ namespace CppSharp
 
             TranslationUnitPasses.AddPass(new FlattenAnonymousTypesToFields());
             TranslationUnitPasses.AddPass(new CleanInvalidDeclNamesPass());
+            TranslationUnitPasses.AddPass(new FastDelegateToDelegatesPass());
             TranslationUnitPasses.AddPass(new FieldToPropertyPass());
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
             TranslationUnitPasses.AddPass(new CheckFlagEnumsPass());
