@@ -191,10 +191,7 @@ namespace CppSharp.AST
             Size = type.Size;
         }
 
-        public Type Type
-        {
-            get { return QualifiedType.Type; }
-        }
+        public Type Type => QualifiedType.Type;
 
         public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals = new TypeQualifiers())
         {
@@ -690,12 +687,10 @@ namespace CppSharp.AST
         {
             var finalType = Desugared.Type.GetFinalPointee() ?? Desugared.Type;
 
-            var tagType = finalType as TagType;
-            if (tagType != null)
+            if (finalType is TagType tagType)
                 return tagType.Declaration;
 
-            var injectedClassNameType = finalType as InjectedClassNameType;
-            if (injectedClassNameType == null)
+            if (!(finalType is InjectedClassNameType injectedClassNameType))
                 return null;
 
             var injectedSpecializationType = (TemplateSpecializationType)
@@ -801,11 +796,14 @@ namespace CppSharp.AST
             : base(type)
         {
             if (type.Parameter != null)
+            {
                 Parameter = new TypeTemplateParameter
                 {
                     Constraint = type.Parameter.Constraint,
                     Name = type.Parameter.Name
                 };
+            }
+
             Depth = type.Depth;
             Index = type.Index;
             IsParameterPack = type.IsParameterPack;

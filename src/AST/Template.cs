@@ -35,7 +35,7 @@ namespace CppSharp.AST
     }
 
     /// <summary>
-    /// Represents a template parameter
+    /// Represents a type template parameter.
     /// </summary>
     public class TypeTemplateParameter : Declaration
     {
@@ -70,7 +70,7 @@ namespace CppSharp.AST
     }
 
     /// <summary>
-    /// Represents a hard-coded template parameter
+    /// Represents a non-type template parameter.
     /// </summary>
     public class NonTypeTemplateParameter : Declaration
     {
@@ -139,12 +139,7 @@ namespace CppSharp.AST
         // Name of the declaration.
         public override string Name
         {
-            get 
-            {
-                if (TemplatedDecl != null)
-                    return TemplatedDecl.Name;
-                return base.Name;
-            }
+            get => TemplatedDecl != null ? TemplatedDecl.Name : base.Name;
             set 
             { 
                 base.Name = value;
@@ -166,7 +161,7 @@ namespace CppSharp.AST
 
         public Declaration TemplatedDecl;
 
-        public List<Declaration> Parameters;
+        public readonly List<Declaration> Parameters;
 
         public override string ToString()
         {
@@ -190,12 +185,9 @@ namespace CppSharp.AST
     /// </summary>
     public class ClassTemplate : Template
     {
-        public List<ClassTemplateSpecialization> Specializations;
+        public readonly List<ClassTemplateSpecialization> Specializations;
 
-        public Class TemplatedClass
-        {
-            get { return TemplatedDecl as Class; }
-        }
+        public Class TemplatedClass => TemplatedDecl as Class;
 
         public ClassTemplate()
         {
@@ -215,12 +207,7 @@ namespace CppSharp.AST
 
         public override string Name
         {
-            get 
-            { 
-                if(TemplatedDecl != null) 
-                    return TemplatedClass.Name;
-               return base.Name;
-            }
+            get => TemplatedDecl != null ? TemplatedClass.Name : base.Name;
             set 
             { 
                 if(TemplatedDecl != null) 
@@ -232,12 +219,7 @@ namespace CppSharp.AST
 
         public override string OriginalName
         {
-            get 
-            { 
-                if(TemplatedDecl != null) 
-                    return TemplatedClass.OriginalName;
-               return base.OriginalName;
-            }
+            get => TemplatedDecl != null ? TemplatedClass.OriginalName : base.OriginalName;
             set 
             { 
                 if(TemplatedDecl != null) 
@@ -293,7 +275,7 @@ namespace CppSharp.AST
     {
         public ClassTemplate TemplatedDecl;
 
-        public List<TemplateArgument> Arguments;
+        public readonly List<TemplateArgument> Arguments;
 
         public TemplateSpecializationKind SpecializationKind;
 
@@ -327,7 +309,7 @@ namespace CppSharp.AST
     /// </summary>
     public class FunctionTemplate : Template
     {
-        public List<FunctionTemplateSpecialization> Specializations;
+        public readonly List<FunctionTemplateSpecialization> Specializations;
 
         public FunctionTemplate()
         {
@@ -340,10 +322,7 @@ namespace CppSharp.AST
             Specializations = new List<FunctionTemplateSpecialization>();
         }
 
-        public Function TemplatedFunction
-        {
-            get { return TemplatedDecl as Function; }
-        }
+        public Function TemplatedFunction => TemplatedDecl as Function;
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
@@ -359,7 +338,7 @@ namespace CppSharp.AST
     {
         public FunctionTemplate Template;
 
-        public List<TemplateArgument> Arguments;
+        public readonly List<TemplateArgument> Arguments;
 
         public Function SpecializedFunction;
 
@@ -390,12 +369,9 @@ namespace CppSharp.AST
     /// </summary>
     public class VarTemplate : Template
     {
-        public List<VarTemplateSpecialization> Specializations;
+        public readonly List<VarTemplateSpecialization> Specializations;
 
-        public Variable TemplatedVariable
-        {
-            get { return TemplatedDecl as Variable; }
-        }
+        public Variable TemplatedVariable => TemplatedDecl as Variable;
 
         public VarTemplate()
         {
@@ -421,7 +397,7 @@ namespace CppSharp.AST
     {
         public VarTemplate TemplatedDecl;
 
-        public List<TemplateArgument> Arguments;
+        public readonly List<TemplateArgument> Arguments;
 
         public TemplateSpecializationKind SpecializationKind;
 

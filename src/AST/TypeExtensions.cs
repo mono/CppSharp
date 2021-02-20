@@ -121,37 +121,33 @@
             t = t.Desugar();
 
             TagType tagType = null;
-            var type = t as TemplateSpecializationType;
-            if (type != null)
+            if (t is TemplateSpecializationType type)
             {
                 if (type.IsDependent)
                 {
-                    if (type.Template is TypeAliasTemplate)
+                    switch (type.Template)
                     {
-                        type.Desugared.Type.TryGetDeclaration(out decl, value);
-                        decl = decl as T;
-                        return decl != null;
-                    }
-
-                    var classTemplate = type.Template as ClassTemplate;
-                    if (classTemplate != null)
-                    {
-                        var templatedClass = classTemplate.TemplatedClass;
-                        decl = templatedClass.CompleteDeclaration == null
-                            ? templatedClass as T
-                            : (T) templatedClass.CompleteDeclaration;
-                        if (decl != null)
+                        case TypeAliasTemplate _:
+                            type.Desugared.Type.TryGetDeclaration(out decl, value);
+                            return decl != null;
+                        case ClassTemplate classTemplate:
                         {
+                            var templatedClass = classTemplate.TemplatedClass;
+                            decl = templatedClass.CompleteDeclaration == null
+                                ? templatedClass as T
+                                : (T) templatedClass.CompleteDeclaration;
+
+                            if (decl == null)
+                                return false;
+
                             if (value != null)
                                 type.Template = new ClassTemplate { TemplatedDecl = value };
+
                             return true;
                         }
-                        return false;
+                        case TemplateTemplateParameter templateTemplateParameter:
+                            return (decl = templateTemplateParameter.TemplatedDecl as T) != null;
                     }
-
-                    var templateTemplateParameter = type.Template as TemplateTemplateParameter;
-                    if (templateTemplateParameter != null)
-                        return (decl = templateTemplateParameter.TemplatedDecl as T) != null;
                 }
                 tagType = (type.Desugared.Type.GetFinalPointee() ?? type.Desugared.Type) as TagType;
             }

@@ -196,7 +196,7 @@ namespace CppSharp.AST
 
         public override string ToString()
         {
-            return DebugText;
+            return !string.IsNullOrEmpty(DebugText) ? DebugText : Name;
         }
     }
 }
