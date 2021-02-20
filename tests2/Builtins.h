@@ -51,3 +51,9 @@ int32_t         PassAndReturnsInt32  (int32_t  v) { return v; }
 uint32_t        PassAndReturnsUInt32 (uint32_t v) { return v; }
 int64_t         PassAndReturnsInt64  (int64_t  v) { return v; }
 uint64_t        PassAndReturnsUInt64 (uint64_t v) { return v; }
+
+// Pointer types
+const char* ReturnsConstCharPtr() { return "Hello"; }
+const char* PassAndReturnsConstCharPtr(const char* ptr) { return ptr; }
+
+

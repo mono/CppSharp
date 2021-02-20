@@ -1,8 +1,8 @@
-qjs_inc_dir = path.getabsolute("../../deps/txiki.js/deps/quickjs/include")
-qjs_lib_dir = path.getabsolute("../../deps/txiki.js/deps/quickjs/include")
+local qjs_dir = path.getabsolute("../../deps/quickjs")
+local runtime = "../../src/Generator/Generators/QuickJS/Runtime"
 
 workspace "qjs"
-    configurations { "release" }
+    configurations { "debug", "release" }
     location "gen"
     symbols "On"
     optimize "Off"
@@ -10,8 +10,19 @@ workspace "qjs"
     project "test"
         kind "SharedLib"
         language "C++"
-        files {"gen/**.cpp"}
-        includedirs { qjs_inc_dir, ".." }
+        files
+        {
+            "gen/**.cpp",
+            runtime .. "/*.cpp",
+            runtime .. "/*.c"
+        }
+        includedirs
+        {
+            qjs_dir,
+            runtime,
+            "..",
+            "../../include"
+        }
         libdirs { qjs_lib_dir }
         filter { "kind:StaticLib" }
             links { "quickjs" }
