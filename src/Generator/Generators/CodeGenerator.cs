@@ -398,7 +398,7 @@ namespace CppSharp.Generators
 
         public virtual bool VisitEvent(Event @event)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public virtual bool VisitProperty(Property property)

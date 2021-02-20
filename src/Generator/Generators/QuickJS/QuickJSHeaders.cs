@@ -47,5 +47,10 @@ namespace CppSharp.Generators.Cpp
 
             return true;
         }
+
+        public override bool VisitEvent(Event @event)
+        {
+            return true;
+        }
     }
 }

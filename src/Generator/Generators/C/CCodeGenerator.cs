@@ -312,6 +312,18 @@ namespace CppSharp.Generators.C
             return true;
         }
 
+        public virtual void GenerateClassEvents(Class @class)
+        {
+            Indent();
+
+            foreach (var @event in @class.Events)
+            {
+                if (!@event.IsGenerated) continue;
+                @event.Visit(this);
+            }
+
+            Unindent();
+        }
         public virtual string GetMethodIdentifier(Function function,
             TypePrinterContextKind context = TypePrinterContextKind.Managed)
         {
