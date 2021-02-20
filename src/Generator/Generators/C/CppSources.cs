@@ -353,14 +353,20 @@ namespace CppSharp.Generators.Cpp
         public override string GetMethodIdentifier(Function function,
             TypePrinterContextKind context = TypePrinterContextKind.Managed)
         {
-            var method = function as Method;
-            if (method != null)
+            string id;
+            if (function is Method method)
             {
                 var @class = method.Namespace as Class;
-                return $"{QualifiedIdentifier(@class)}::{base.GetMethodIdentifier(method, context)}";
+                CTypePrinter.PushScope(TypePrintScopeKind.Qualified);
+                id = $"{QualifiedIdentifier(@class)}::{base.GetMethodIdentifier(method, context)}";
+                CTypePrinter.PopScope();
+                return id;
             }
 
-            return base.GetMethodIdentifier(function);
+            CTypePrinter.PushScope(TypePrintScopeKind.Qualified);
+            id = base.GetMethodIdentifier(function);
+            CTypePrinter.PopScope();
+            return id;
         }
 
         public override bool VisitMethodDecl(Method method)

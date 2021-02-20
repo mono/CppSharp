@@ -113,14 +113,14 @@ namespace CppSharp.Generators.Cpp
             var cTypePrinter = new CppTypePrinter(context)
             {
                 PrintFlavorKind = CppTypePrintFlavorKind.C,
-                ScopeKind = TypePrintScopeKind.Local
             };
+            cTypePrinter.PushScope(TypePrintScopeKind.Local);
 
             var functionName = cTypePrinter.VisitDeclaration(decl).ToString();
             if (scope == TypePrintScopeKind.Local)
                 return functionName;
 
-            cTypePrinter.ScopeKind = scope;
+            cTypePrinter.PushScope(scope);
             var qualifiedParentName = cTypePrinter.VisitDeclaration(decl.Namespace).ToString();
 
             // HACK: CppTypePrinter code calls into decl.QualifiedName, which does not take into
