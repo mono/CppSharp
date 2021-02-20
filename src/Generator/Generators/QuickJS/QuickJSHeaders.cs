@@ -52,5 +52,10 @@ namespace CppSharp.Generators.Cpp
         {
             return true;
         }
+
+        public override bool VisitFieldDecl(Field field)
+        {
+            return true;
+        }
     }
 }

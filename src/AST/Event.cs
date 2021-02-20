@@ -15,5 +15,7 @@ namespace CppSharp.AST
         public List<Parameter> Parameters { get; } = new List<Parameter>();
 
         public Declaration OriginalDeclaration { get; set; }
+
+        public int GlobalId { get; set; }
     }
 }
