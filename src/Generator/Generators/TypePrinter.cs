@@ -49,6 +49,7 @@ namespace CppSharp.Generators
     {
         private readonly Stack<TypePrinterContextKind> contexts;
         private readonly Stack<MarshalKind> marshalKinds;
+        private readonly Stack<TypePrintScopeKind> scopeKinds;
 
         public TypePrinterContextKind ContextKind => contexts.Peek();
 
@@ -56,30 +57,28 @@ namespace CppSharp.Generators
 
         public MarshalKind MarshalKind => marshalKinds.Peek();
 
-        public TypePrintScopeKind ScopeKind = TypePrintScopeKind.GlobalQualified;
+        public TypePrintScopeKind ScopeKind => scopeKinds.Peek();
         public bool IsGlobalQualifiedScope => ScopeKind == TypePrintScopeKind.GlobalQualified;
 
         public TypePrinter(TypePrinterContextKind contextKind = TypePrinterContextKind.Managed)
         {
             contexts = new Stack<TypePrinterContextKind>();
             marshalKinds = new Stack<MarshalKind>();
+            scopeKinds = new Stack<TypePrintScopeKind>();
             PushContext(contextKind);
             PushMarshalKind(MarshalKind.Unknown);
+            PushScope(TypePrintScopeKind.GlobalQualified);
         }
 
-        public void PushContext(TypePrinterContextKind contextKind)
-        {
-            contexts.Push(contextKind);
-        }
-
+        public void PushContext(TypePrinterContextKind kind) => contexts.Push(kind);
         public TypePrinterContextKind PopContext() => contexts.Pop();
 
-        public void PushMarshalKind(MarshalKind marshalKind)
-        {
-            marshalKinds.Push(marshalKind);
-        }
-
+        public void PushMarshalKind(MarshalKind kind) => marshalKinds.Push(kind);
         public MarshalKind PopMarshalKind() => marshalKinds.Pop();
+
+        public void PushScope(TypePrintScopeKind kind) => scopeKinds.Push(kind);
+        public TypePrintScopeKind PopScope() => scopeKinds.Pop();
+
         public Parameter Parameter;
 
         #region Dummy implementations

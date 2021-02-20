@@ -109,8 +109,8 @@ namespace CppSharp
             exprCxxUnit.Visit(exprSubclassVisitor);
             ExprClasses = exprSubclassVisitor.Classes;
 
-            CodeGeneratorHelpers.CppTypePrinter = new CppTypePrinter(driver.Context)
-                { ScopeKind = TypePrintScopeKind.Local };
+            CodeGeneratorHelpers.CppTypePrinter = new CppTypePrinter(driver.Context);
+            CodeGeneratorHelpers.CppTypePrinter.PushScope(TypePrintScopeKind.Local);
 
             GenerateStmt(driver.Context);
             GenerateExpr(driver.Context);
@@ -501,7 +501,7 @@ namespace CppSharp
             : base(context)
         {
             Declarations = declarations;
-            TypePrinter.ScopeKind = TypePrintScopeKind.Local;
+            TypePrinter.PushScope(TypePrintScopeKind.Local);
             TypePrinter.PrintModuleOutputNamespace = false;
         }
 
@@ -1438,7 +1438,7 @@ namespace CppSharp
         public override void Process()
         {
             Context.Options.GeneratorKind = GeneratorKind.CPlusPlus;
-            CTypePrinter.ScopeKind = TypePrintScopeKind.Local;
+            CTypePrinter.PushScope(TypePrintScopeKind.Local);
 
             GenerateFilePreamble(CommentKind.BCPL);
             NewLine();
@@ -1755,12 +1755,9 @@ namespace CppSharp
         public static string GetQualifiedName(Declaration decl,
             TypePrinter typePrinter)
         {
-            var scopeKind = typePrinter.ScopeKind;
-            typePrinter.ScopeKind = TypePrintScopeKind.Qualified;
-
+            typePrinter.PushScope(TypePrintScopeKind.Qualified);
             var qualifiedName = decl.Visit(typePrinter).Type;
-
-            typePrinter.ScopeKind = scopeKind;
+            typePrinter.PopScope();
 
             qualifiedName = CleanClangNamespaceFromName(qualifiedName);
 
@@ -1905,10 +1902,9 @@ namespace CppSharp
             if (iteratorType.IsPointer())
                 iteratorType = iteratorType.GetFinalPointee();
 
-            var scopeKind = typePrinter.ScopeKind;
-            typePrinter.ScopeKind = TypePrintScopeKind.Qualified;
+            typePrinter.PushScope(TypePrintScopeKind.Qualified);
             var iteratorTypeName = iteratorType.Visit(typePrinter).Type;
-            typePrinter.ScopeKind = scopeKind;
+            typePrinter.PopScope();
 
             iteratorTypeName = CleanClangNamespaceFromName(iteratorTypeName);
 

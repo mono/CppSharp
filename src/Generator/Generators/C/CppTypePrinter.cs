@@ -27,7 +27,6 @@ namespace CppSharp.Generators.C
         {
             Context = context;
             PrintFlavorKind = CppTypePrintFlavorKind.Cpp;
-            ScopeKind = TypePrintScopeKind.GlobalQualified;
             PrintTypeQualifiers = true;
             PrintTypeModifiers = true;
         }
@@ -60,12 +59,12 @@ namespace CppSharp.Generators.C
             var typePrinter = new CppTypePrinter(Context)
             {
                 PrintFlavorKind = PrintFlavorKind,
-                ScopeKind = ScopeKind,
                 PrintTypeQualifiers = PrintTypeQualifiers,
                 PrintTypeModifiers = PrintTypeModifiers,
                 ResolveTypeMaps = false
             };
             typePrinter.PushContext(ContextKind);
+            typePrinter.PushScope(ScopeKind);
 
             var typeName = typeMap.CppSignatureType(typePrinterContext).Visit(typePrinter);
             result = new TypePrinterResult(typeName) { TypeMap = typeMap };
