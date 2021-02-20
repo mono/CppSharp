@@ -53,24 +53,14 @@ namespace CppSharp.AST
 
         public virtual GenerationKind GenerationKind
         {
-            get
-            {
-                if (generationKind.HasValue)
-                    return generationKind.Value;
-
-                return GenerationKind.Generate;
-            }
-
-            set
-            {
-                generationKind = value;
-            }
+            get => generationKind ?? GenerationKind.Generate;
+            set => generationKind = value;
         }
 
         /// <summary>
         /// Whether the declaration should be generated.
         /// </summary>
-        public virtual bool IsGenerated => GenerationKind == GenerationKind.Generate;
+        public bool IsGenerated => GenerationKind == GenerationKind.Generate;
 
         /// <summary>
         /// Whether the declaration has an explicit set generation kind.
@@ -81,8 +71,7 @@ namespace CppSharp.AST
         /// Whether the declaration was explicitly set to be generated via
         /// the GenerationKind property as opposed to the default generated state.
         /// </summary>
-        public virtual bool IsExplicitlyGenerated =>
-            generationKind.HasValue && generationKind.Value == GenerationKind.Generate;
+        public bool IsExplicitlyGenerated => generationKind == GenerationKind.Generate;
 
         /// <summary>
         /// Whether the declaration internal bindings should be generated.
@@ -92,9 +81,8 @@ namespace CppSharp.AST
         /// <summary>
         /// Whether a binded version of this declaration is available.
         /// </summary>
-        public bool IsDeclared => 
-                GenerationKind == GenerationKind.Generate
-                    || GenerationKind == GenerationKind.Internal;
+        public bool IsDeclared => GenerationKind == GenerationKind.Generate
+            || GenerationKind == GenerationKind.Internal;
 
         public void ExplicitlyIgnore()
         {
@@ -104,13 +92,13 @@ namespace CppSharp.AST
         [Obsolete("Replace set by ExplicitlyIgnore(). Replace get by GenerationKind == GenerationKind.None.")]
         public bool ExplicityIgnored
         {
-            get { return GenerationKind == GenerationKind.None; }
+            get => GenerationKind == GenerationKind.None;
             set { if (value) ExplicitlyIgnore(); }
         }
 
         public virtual bool Ignore
         {
-            get { return GenerationKind == GenerationKind.None; }
+            get => GenerationKind == GenerationKind.None;
             set { if (value) ExplicitlyIgnore(); }
         }
     }
@@ -135,12 +123,11 @@ namespace CppSharp.AST
         // Namespace the declaration is contained in.
         public DeclarationContext Namespace
         {
-            get { return @namespace; }
+            get => @namespace;
             set
             {
                 @namespace = value;
-                if (OriginalNamespace == null)
-                    OriginalNamespace = @namespace;
+                OriginalNamespace ??= @namespace;
             }
         }
 
@@ -177,12 +164,11 @@ namespace CppSharp.AST
 
         public virtual string Name
         {
-            get { return name; }
+            get => name;
             set
             {
                 name = value;
-                if (OriginalName == null)
-                    OriginalName = name;
+                OriginalName ??= name;
             }
         }
 
@@ -192,19 +178,13 @@ namespace CppSharp.AST
         /// the real and the "effective" name of the declaration to properly
         /// support things like inline namespaces when handling type maps.
         /// </summary>
-        public virtual string LogicalName
-        {
-            get { return Name; }
-        }
+        public virtual string LogicalName => Name;
 
         /// <summary>
         /// The effective original name of a declaration is the logical
         /// original name for the declaration.
         /// </summary>
-        public virtual string LogicalOriginalName
-        {
-            get { return OriginalName; }
-        }
+        public virtual string LogicalOriginalName => OriginalName;
 
         public static string QualifiedNameSeparator = "::";
 
@@ -233,8 +213,7 @@ namespace CppSharp.AST
             var currentNamespace = @namespace;
             while (currentNamespace != null)
             {
-                var isInlineNamespace = currentNamespace is Namespace &&
-                    ((Namespace) currentNamespace).IsInline;
+                var isInlineNamespace = currentNamespace is Namespace {IsInline: true};
                 if (!isInlineNamespace)
                     namespaces.Push(currentNamespace);
                 currentNamespace = currentNamespace.Namespace;
@@ -280,8 +259,7 @@ namespace CppSharp.AST
 
         private static string GetDeclName(Declaration decl, string name)
         {
-            var specialization = decl as ClassTemplateSpecialization;
-            if (specialization != null)
+            if (decl is ClassTemplateSpecialization specialization)
                 return string.Format("{0}<{1}>", name,
                     string.Join(", ", specialization.Arguments.Select(
                         a => a.Type.Type == null ? string.Empty : a.Type.ToString())));

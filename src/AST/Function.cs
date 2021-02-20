@@ -111,10 +111,7 @@ namespace CppSharp.AST
         /// It's false in Clang to begin with. I tried fixing it to no avail.
         /// I don't have any more time at the moment.
         /// </summary>
-        public bool IsConst
-        {
-            get { return DebugText.StartsWith("const ", System.StringComparison.Ordinal); }
-        }
+        public bool IsConst => DebugText.StartsWith("const ", System.StringComparison.Ordinal);
 
         ExpressionObsolete defaultArgument;
         private Stmt defaultValue;
@@ -193,8 +190,10 @@ namespace CppSharp.AST
             FunctionType = function.FunctionType;
             if (function.SpecializationInfo != null)
             {
-                SpecializationInfo = new FunctionTemplateSpecialization(function.SpecializationInfo);
-                SpecializationInfo.SpecializedFunction = function;
+                SpecializationInfo = new FunctionTemplateSpecialization(function.SpecializationInfo)
+                {
+                    SpecializedFunction = function
+                };
             }
         }
 
@@ -279,8 +278,8 @@ namespace CppSharp.AST
         public Type Type => ReturnType.Type;
         public QualifiedType QualifiedType
         {
-            get { return ReturnType; }
-            set { ReturnType = value; }
+            get => ReturnType;
+            set => ReturnType = value;
         }
     }
 }

@@ -2185,9 +2185,11 @@ namespace CppSharp
 
         protected override AST.Comment VisitInlineCommandComment(InlineCommandComment comment)
         {
-            var inlineCommandComment = new AST.InlineCommandComment();
-            inlineCommandComment.HasTrailingNewline = comment.HasTrailingNewline;
-            inlineCommandComment.CommandId = comment.CommandId;
+            var inlineCommandComment = new AST.InlineCommandComment
+            {
+                HasTrailingNewline = comment.HasTrailingNewline,
+                CommandId = comment.CommandId
+            };
             switch (comment.CommentRenderKind)
             {
                 case InlineCommandComment.RenderKind.RenderNormal:

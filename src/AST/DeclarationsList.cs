@@ -23,7 +23,7 @@ namespace CppSharp.AST
 
         public void AddRange(IEnumerable<Declaration> declarations)
         {
-            foreach (Declaration declaration in declarations)
+            foreach (var declaration in declarations)
             {
                 Add(declaration);
             }
@@ -31,8 +31,9 @@ namespace CppSharp.AST
 
         protected override void InsertItem(int index, Declaration item)
         {
-            Kind kind = GetKind(item);
-            int offset = GetOffset(kind);
+            var kind = GetKind(item);
+            var offset = GetOffset(kind);
+
             // USR null means an artificial declaration, add at the end
             if (item.USR == null)
             {
@@ -40,10 +41,11 @@ namespace CppSharp.AST
             }
             else
             {
-                int i = BinarySearch(GetStart(kind), offset, item);
+                var i = BinarySearch(GetStart(kind), offset, item);
                 base.InsertItem(i, item);
             }
-            for (Kind i = kind; i <= Kind.Event; i++)
+
+            for (var i = kind; i <= Kind.Event; i++)
             {
                 if (offsets.ContainsKey(i))
                 {
@@ -55,7 +57,7 @@ namespace CppSharp.AST
         protected override void RemoveItem(int index)
         {
             base.RemoveItem(index);
-            for (Kind i = Kind.Namespace; i <= Kind.Event; i++)
+            for (var i = Kind.Namespace; i <= Kind.Event; i++)
             {
                 if (offsets.ContainsKey(i) && index < offsets[i])
                 {
@@ -64,14 +66,16 @@ namespace CppSharp.AST
             }
         }
 
+
         private IEnumerable<T> OfType<T>(Kind kind) where T : Declaration
         {
             if (!offsets.ContainsKey(kind))
             {
                 yield break;
             }
-            int offset = offsets[kind];
-            for (int i = GetStart(kind); i < offset; i++)
+
+            var offset = offsets[kind];
+            for (var i = GetStart(kind); i < offset; i++)
             {
                 yield return (T) this[i];
             }
@@ -79,47 +83,41 @@ namespace CppSharp.AST
 
         private static Kind GetKind(Declaration item)
         {
-            if (item is Namespace)
-                return Kind.Namespace;
-            if (item is Enumeration)
-                return Kind.Enum;
-            if (item is Function)
-                return Kind.Function;
-            if (item is Class)
-                return Kind.Class;
-            if (item is Template)
-                return Kind.Template;
-            if (item is TypedefNameDecl)
-                return Kind.Typedef;
-            if (item is Variable)
-                return Kind.Variable;
-            if (item is Friend)
-                return Kind.Friend;
-            if (item is Event)
-                return Kind.Event;
-            throw new System.ArgumentOutOfRangeException(nameof(item),
-                "Unsupported type of declaration.");
+            return item switch
+            {
+                Namespace _ => Kind.Namespace,
+                Enumeration _ => Kind.Enum,
+                Function _ => Kind.Function,
+                Class _ => Kind.Class,
+                Template _ => Kind.Template,
+                TypedefNameDecl _ => Kind.Typedef,
+                Variable _ => Kind.Variable,
+                Friend _ => Kind.Friend,
+                Event _ => Kind.Event,
+                _ => throw new System.ArgumentOutOfRangeException(nameof(item),  "Unsupported type of declaration.")
+            };
         }
 
         private int GetOffset(Kind kind)
         {
-            if (!offsets.ContainsKey(kind))
+            if (offsets.ContainsKey(kind))
+                return offsets[kind];
+
+            for (var i = kind - 1; i >= Kind.Namespace; i--)
             {
-                for (Kind i = kind - 1; i >= Kind.Namespace; i--)
+                if (offsets.ContainsKey(i))
                 {
-                    if (offsets.ContainsKey(i))
-                    {
-                        return offsets[kind] = offsets[i];
-                    }
+                    return offsets[kind] = offsets[i];
                 }
-                offsets[kind] = 0;
             }
+
+            offsets[kind] = 0;
             return offsets[kind];
         }
 
         private int GetStart(Kind kind)
         {
-            for (Kind i = kind - 1; i >= Kind.Namespace; i--)
+            for (var i = kind - 1; i >= Kind.Namespace; i--)
             {
                 if (offsets.ContainsKey(i))
                 {

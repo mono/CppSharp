@@ -11,8 +11,8 @@ namespace CppSharp.AST
         {
             if (!function.IsGenerated) return true;
 
-            if (function is Method)
-                return CheckIgnoreMethod(function as Method);
+            if (function is Method method)
+                return CheckIgnoreMethod(method);
 
             return false;
         }
@@ -127,9 +127,8 @@ namespace CppSharp.AST
 
         private static bool UsesAdditionalTypeParam(Method method)
         {
-            var specialization = method.Namespace as ClassTemplateSpecialization;
             Class template;
-            if (specialization != null)
+            if (method.Namespace is ClassTemplateSpecialization specialization)
                 template = specialization.TemplatedDecl.TemplatedClass;
             else
             {
@@ -143,8 +142,7 @@ namespace CppSharp.AST
                 if (!p.IsDependent)
                     return false;
                 var desugared = p.Type.Desugar();
-                var finalType = (desugared.GetFinalPointee() ?? desugared).Desugar()
-                    as TemplateParameterType;
+                var finalType = (desugared.GetFinalPointee() ?? desugared).Desugar() as TemplateParameterType;
                 return finalType != null && !typeParams.Contains(finalType.Parameter.Name);
             });
         }
@@ -165,8 +163,7 @@ namespace CppSharp.AST
             ITypeMapDatabase typeMaps, bool internalOnly, Type type,
             ClassTemplateSpecialization specialization)
         {
-            TypeMap typeMap;
-            typeMaps.FindTypeMap(type, out typeMap);
+            typeMaps.FindTypeMap(type, out var typeMap);
 
             return (!internalOnly && (((specialization.Ignore ||
                 specialization.TemplatedDecl.TemplatedClass.Ignore) && typeMap == null) ||
@@ -179,8 +176,7 @@ namespace CppSharp.AST
 
         private static ClassTemplateSpecialization GetParentSpecialization(Type type)
         {
-            Declaration declaration;
-            if (type.TryGetDeclaration(out declaration))
+            if (type.TryGetDeclaration(out Declaration declaration))
             {
                 ClassTemplateSpecialization specialization = null;
                 do
@@ -207,8 +203,7 @@ namespace CppSharp.AST
 
         public static bool IsMappedToPrimitive(ITypeMapDatabase typeMaps, Type type)
         {
-            TypeMap typeMap;
-            if (!typeMaps.FindTypeMap(type, out typeMap))
+            if (!typeMaps.FindTypeMap(type, out var typeMap))
                 return false;
 
             var typePrinterContext = new TypePrinterContext { Type = type };
@@ -258,16 +253,14 @@ namespace CppSharp.AST
 
         public static bool IsBuiltinOperator(CXXOperatorKind kind)
         {
-            bool isBuiltin;
-            GetOperatorIdentifier(kind, out isBuiltin);
+            GetOperatorIdentifier(kind, out var isBuiltin);
 
             return isBuiltin;
         }
 
         public static string GetOperatorIdentifier(CXXOperatorKind kind)
         {
-            bool isBuiltin;
-            return GetOperatorIdentifier(kind, out isBuiltin);
+            return GetOperatorIdentifier(kind, out _);
         }
 
         public static string GetOperatorIdentifier(CXXOperatorKind kind,

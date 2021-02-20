@@ -47,19 +47,12 @@ namespace CppSharp.AST
         {
             get
             {
-                Class @class;
-                Type.TryGetClass(out @class);
+                Type.TryGetClass(out var @class);
                 return @class;
             }
         }
 
-        public bool IsClass
-        {
-            get
-            {
-                return Type.IsClass();
-            }
-        }
+        public bool IsClass => Type.IsClass();
     }
 
     public enum ClassType
@@ -69,7 +62,7 @@ namespace CppSharp.AST
         Interface
     }
 
-    // Represents a C++ record Decl.
+    // Represents a C++ record decl.
     public class Class : DeclarationContext
     {
         public List<BaseClassSpecifier> Bases;
@@ -104,10 +97,7 @@ namespace CppSharp.AST
         public bool IsOpaque
         {
             get => isOpaque ?? (IsIncomplete && CompleteDeclaration == null);
-            set
-            {
-                isOpaque = value;
-            }
+            set => isOpaque = value;
         }
 
         // True if the class is dynamic.
@@ -163,39 +153,22 @@ namespace CppSharp.AST
             }
         }
 
-        public bool HasNonIgnoredBase
-        {
-            get
-            {
-                return HasBaseClass && !IsValueType
-                       && BaseClass != null
-                       && !BaseClass.IsValueType
-                       && BaseClass.IsGenerated;
-            }
-        }
+        public bool HasNonIgnoredBase =>
+            HasBaseClass && !IsValueType
+                         && BaseClass != null
+                         && !BaseClass.IsValueType
+                         && BaseClass.IsGenerated;
 
-        public bool NeedsBase
-        {
-            get { return HasNonIgnoredBase && IsGenerated; }
-        }
+        public bool NeedsBase => HasNonIgnoredBase && IsGenerated;
 
         // When we have an interface, this is the class mapped to that interface.
         public Class OriginalClass { get; set; }
 
-        public bool IsValueType
-        {
-            get { return Type == ClassType.ValueType || IsUnion; }
-        }
+        public bool IsValueType => Type == ClassType.ValueType || IsUnion;
 
-        public bool IsRefType
-        {
-            get { return Type == ClassType.RefType && !IsUnion; }
-        }
+        public bool IsRefType => Type == ClassType.RefType && !IsUnion;
 
-        public bool IsInterface
-        {
-            get { return Type == ClassType.Interface; }
-        }
+        public bool IsInterface => Type == ClassType.Interface;
 
         public bool IsAbstractImpl
         {
@@ -261,10 +234,7 @@ namespace CppSharp.AST
             }
         }
 
-        public bool IsTemplate
-        {
-            get { return IsDependent && TemplateParameters.Count > 0; }
-        }
+        public bool IsTemplate => IsDependent && TemplateParameters.Count > 0;
 
         public override IEnumerable<Function> FindOperator(CXXOperatorKind kind)
         {

@@ -30,8 +30,7 @@ namespace CppSharp.Generators.CSharp
                  parameter.DefaultArgument.Class == StatementClass.BinaryOperator))
                 return $"({desugared.Visit(typePrinter)}) {expression}";
             var finalType = (desugared.GetFinalPointee() ?? desugared).Desugar();
-            Class @class;
-            if (finalType.TryGetClass(out @class) && @class.IsInterface)
+            if (finalType.TryGetClass(out var @class) && @class.IsInterface)
                 return $@"({@class.Visit(typePrinter)}) ({
                     @class.OriginalClass.Visit(typePrinter)}) {expression}";
             return expression;
@@ -46,17 +45,13 @@ namespace CppSharp.Generators.CSharp
                     switch (callExpr.Declaration.GenerationKind)
                     {
                         case GenerationKind.Generate:
-                            return string.Format("{0}.{1}({2})",
-                                typePrinter.VisitDeclaration(callExpr.Declaration.Namespace),
-                                callExpr.Declaration.Name,
-                                string.Join(", ", callExpr.Arguments.Select(VisitExpression)));
+                            var args = string.Join(", ", callExpr.Arguments.Select(VisitExpression));
+                            return $"{typePrinter.VisitDeclaration(callExpr.Declaration.Namespace)}.{callExpr.Declaration.Name}({args})";
                         case GenerationKind.Internal:
                             // a non-ctor can only be internal if it's been converted to a property
                             var property = ((Class) callExpr.Declaration.Namespace).Properties.First(
                                 p => p.GetMethod == callExpr.Declaration);
-                            return string.Format("{0}.{1}",
-                                typePrinter.VisitDeclaration(callExpr.Declaration.Namespace),
-                                property.Name);
+                            return $"{typePrinter.VisitDeclaration(callExpr.Declaration.Namespace)}.{property.Name}";
                         default:
                             return expr.String;
                     }

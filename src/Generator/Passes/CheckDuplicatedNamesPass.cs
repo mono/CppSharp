@@ -23,14 +23,12 @@ namespace CppSharp.Passes
 
         public bool UpdateName(Declaration decl)
         {
-            var function = decl as Function;
-            if (function != null)
+            if (decl is Function function)
             {
                 return UpdateName(function);
             }
 
-            var property = decl as Property;
-            var isIndexer = property != null && property.Parameters.Count > 0;
+            var isIndexer = decl is Property property && property.Parameters.Count > 0;
             if (isIndexer)
             {
                 return false;
@@ -131,10 +129,8 @@ namespace CppSharp.Passes
 
             private static bool CheckForSpecializations(Type leftPointee, Type rightPointee)
             {
-                Class leftClass;
-                Class rightClass;
-                if (!leftPointee.TryGetDeclaration(out leftClass) ||
-                    !rightPointee.TryGetDeclaration(out rightClass))
+                if (!leftPointee.TryGetDeclaration(out Class leftClass) ||
+                    !rightPointee.TryGetDeclaration(out Class rightClass))
                     return false;
 
                 var leftSpecialization = leftClass as ClassTemplateSpecialization ??
@@ -206,10 +202,7 @@ namespace CppSharp.Passes
             switch (kind)
             {
                 case GeneratorKind.C:
-                    typePrinter = new CppTypePrinter(Context)
-                    {
-                        PrintFlavorKind = CppTypePrintFlavorKind.C
-                    };
+                    typePrinter = new CppTypePrinter(Context) { PrintFlavorKind = CppTypePrintFlavorKind.C };
                     break;
                 case GeneratorKind.CPlusPlus:
                 case GeneratorKind.QuickJS:
@@ -310,8 +303,7 @@ namespace CppSharp.Passes
                 return;
 
             var fullName = decl.QualifiedName;
-            var function = decl as Function;
-            if (function != null)
+            if (decl is Function function)
                 fullName = DeclarationName.FixSignatureForConversions(function, fullName);
 
             // If the name is not yet on the map, then add it.
