@@ -23,14 +23,11 @@ namespace CppSharp.Generators.Cpp
         public override void Process()
         {
             GenerateFilePreamble(CommentKind.BCPL);
+            NewLine();
 
             PushBlock(BlockKind.Includes);
             {
-                WriteInclude(new CInclude()
-                {
-                    File = "quickjs.h",
-                    Kind = CInclude.IncludeKind.Angled
-                });
+                WriteInclude("CppSharp_QuickJS.h", CInclude.IncludeKind.Angled);
 
                 foreach (var unit in TranslationUnits)
                 {

@@ -27,7 +27,7 @@ namespace CppSharp.Generators.Cpp
 
             PushBlock(BlockKind.Includes);
             {
-                WriteInclude("quickjs.h", CInclude.IncludeKind.Angled);
+                WriteInclude("CppSharp_QuickJS.h", CInclude.IncludeKind.Angled);
                 WriteInclude("assert.h", CInclude.IncludeKind.Angled);
 
                 foreach (var unit in TranslationUnits)
