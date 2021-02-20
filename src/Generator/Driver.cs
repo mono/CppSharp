@@ -344,6 +344,9 @@ namespace CppSharp
         {
             var fi = new FileInfo(file);
 
+            if (fi.Directory != null && !fi.Directory.Exists)
+                fi.Directory.Create();
+
             if (!fi.Exists || fi.Length != generatedCode.Length ||
                 File.ReadAllText(file) != generatedCode)
                 File.WriteAllText(file, generatedCode);
