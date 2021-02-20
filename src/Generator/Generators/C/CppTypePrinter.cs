@@ -38,15 +38,14 @@ namespace CppSharp.Generators.C
         public bool ResolveTypeMaps { get; set; } = true;
         public bool ResolveTypedefs { get; set; }
 
-        public bool FindTypeMap(CppSharp.AST.Type type, out TypePrinterResult result)
+        public virtual bool FindTypeMap(CppSharp.AST.Type type, out TypePrinterResult result)
         {
             result = null;
 
             if (!ResolveTypeMaps)
                 return false;
 
-            TypeMap typeMap;
-            if (!TypeMapDatabase.FindTypeMap(type, out typeMap) || typeMap.IsIgnored)
+            if (!TypeMapDatabase.FindTypeMap(type, out var typeMap) || typeMap.IsIgnored)
                 return false;
 
             var typePrinterContext = new TypePrinterContext
@@ -75,8 +74,7 @@ namespace CppSharp.Generators.C
         public override TypePrinterResult VisitTagType(TagType tag,
             TypeQualifiers quals)
         {
-            TypePrinterResult result;
-            if (FindTypeMap(tag, out result))
+            if (FindTypeMap(tag, out var result))
                 return result;
 
             var qual = GetStringQuals(quals);
@@ -86,8 +84,7 @@ namespace CppSharp.Generators.C
         public override TypePrinterResult VisitArrayType(ArrayType array,
             TypeQualifiers quals)
         {
-            var arraySuffix = string.Empty;
-
+            string arraySuffix;
             switch (array.SizeType)
             {
             case ArrayType.ArraySize.Constant:
@@ -231,9 +228,8 @@ namespace CppSharp.Generators.C
         public override TypePrinterResult VisitTypedefType(TypedefType typedef,
             TypeQualifiers quals)
         {
-            FunctionType func;
             var qual = GetStringQuals(quals);
-            if (ResolveTypedefs && !typedef.Declaration.Type.IsPointerTo(out func))
+            if (ResolveTypedefs && !typedef.Declaration.Type.IsPointerTo(out FunctionType _))
             {
                 TypePrinterResult type = typedef.Declaration.QualifiedType.Visit(this);
                 return new TypePrinterResult { Type = $"{qual}{type.Type}",
@@ -281,10 +277,7 @@ namespace CppSharp.Generators.C
         public override TypePrinterResult VisitTemplateParameterType(
             TemplateParameterType param, TypeQualifiers quals)
         {
-            if (param.Parameter == null || param.Parameter.Name == null)
-                return string.Empty;
-
-            return param.Parameter.Name;
+            return param.Parameter?.Name ?? string.Empty;
         }
 
         public override TypePrinterResult VisitTemplateParameterSubstitutionType(
@@ -409,18 +402,17 @@ namespace CppSharp.Generators.C
             return string.Join(", ", args);
         }
 
-        public override TypePrinterResult VisitParameter(Parameter param,
-            bool hasName = true)
+        public override TypePrinterResult VisitParameter(Parameter param, bool hasName = true)
         {
-            Parameter oldParam = Parameter;
+            var oldParam = Parameter;
             Parameter = param;
 
             var result = param.QualifiedType.Visit(this);
 
             Parameter = oldParam;
 
-            string name = param.Name;
-            bool printName = hasName && !string.IsNullOrEmpty(name);
+            var name = param.Name;
+            var printName = hasName && !string.IsNullOrEmpty(name);
 
             if (PrintFlavorKind == CppTypePrintFlavorKind.ObjC)
                 return printName ? $":({result.Type}){name}" : $":({result.Type})";
@@ -450,7 +442,7 @@ namespace CppSharp.Generators.C
             return base.VisitQualifiedType(type);
         }
 
-        public TypePrinterResult GetDeclName(Declaration declaration,
+        public virtual TypePrinterResult GetDeclName(Declaration declaration,
             TypePrintScopeKind scope)
         {
             switch (scope)
@@ -529,11 +521,9 @@ namespace CppSharp.Generators.C
         public override TypePrinterResult VisitClassTemplateSpecializationDecl(
             ClassTemplateSpecialization specialization)
         {
-            return string.Format("{0}<{1}>", specialization.TemplatedDecl.Visit(this),
-                string.Join(", ",
-                specialization.Arguments.Where(
-                    a => a.Type.Type != null &&
-                        !(a.Type.Type is DependentNameType)).Select(a => a.Type.Visit(this))));
+            var args = specialization.Arguments.Where(a => a.Type.Type != null &&
+                         !(a.Type.Type is DependentNameType)).Select(a => a.Type.Visit(this));
+            return $"{specialization.TemplatedDecl.Visit(this)}<{string.Join(", ", args)}>";
         }
 
         public override TypePrinterResult VisitFieldDecl(Field field)
@@ -559,7 +549,19 @@ namespace CppSharp.Generators.C
                 method.OperatorKind == CXXOperatorKind.ExplicitConversion ?
                 new TypePrinterResult() : method.OriginalReturnType.Visit(this);
 
-            string @class = GetQualifier(method);
+            string @class;
+            switch (MethodScopeKind)
+            {
+                case TypePrintScopeKind.Qualified:
+                    @class = $"{method.Namespace.Visit(this)}::";
+                    break;
+                case TypePrintScopeKind.GlobalQualified:
+                    @class = $"::{method.Namespace.Visit(this)}::";
+                    break;
+                default:
+                    return string.Empty;
+            }
+
             var @params = string.Join(", ", method.Parameters.Select(p => p.Visit(this)));
             var @const = (method.IsConst ? " const" : string.Empty);
             var name = method.OperatorKind == CXXOperatorKind.Conversion ||
@@ -610,8 +612,10 @@ namespace CppSharp.Generators.C
             return VisitDeclaration(item);
         }
 
-        public override TypePrinterResult VisitVariableDecl(Variable variable) =>
-            $"{variable.Type.Visit(this)} {VisitDeclaration(variable)}";
+        public override TypePrinterResult VisitVariableDecl(Variable variable)
+        {
+            return VisitDeclaration(variable);
+        }
 
         public override TypePrinterResult VisitClassTemplateDecl(ClassTemplate template)
         {
@@ -717,19 +721,6 @@ namespace CppSharp.Generators.C
             if (stringQuals.Count == 0)
                 return string.Empty;
             return string.Join(" ", stringQuals) + (appendSpace ? " " : string.Empty);
-        }
-
-        private string GetQualifier(Method method)
-        {
-            switch (MethodScopeKind)
-            {
-                case TypePrintScopeKind.Qualified:
-                    return $"{method.Namespace.Visit(this)}::";
-                case TypePrintScopeKind.GlobalQualified:
-                    return $"::{method.Namespace.Visit(this)}::";
-                default:
-                    return string.Empty;
-            }
         }
 
         private static string GetExceptionType(FunctionType functionType)
