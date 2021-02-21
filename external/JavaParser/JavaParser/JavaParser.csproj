@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Reference Include="IKVM.OpenJDK.Core, Version=8.5.0.3, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\..\deps\ikvm\bin\Debug\netcoreapp3.1\IKVM.OpenJDK.Core.dll</HintPath>
+      </Reference>
+      <Reference Include="IKVM.Runtime, Version=8.5.0.3, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\..\deps\ikvm\bin\Debug\netcoreapp3.1\IKVM.Runtime.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\src\AST\CppSharp.AST.csproj" />
+      <ProjectReference Include="..\..\..\src\Generator\CppSharp.Generator.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" PrivateAssets="All" />
+    </ItemGroup>
+</Project>
