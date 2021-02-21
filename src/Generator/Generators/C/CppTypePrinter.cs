@@ -473,9 +473,9 @@ namespace CppSharp.Generators.C
                     return PrintLogicalNames ? declaration.LogicalName : declaration.Name;
                 }
 
-                if (PrintFlavorKind == CppTypePrintFlavorKind.C)
+                if (PrefixSpecialFunctions)
                 {
-                    if (declaration is Function function && function.IsOperator)
+                    if (declaration is Function {IsOperator: true} function)
                         return $"operator_{function.OperatorKind}";
                 }
 
@@ -484,21 +484,22 @@ namespace CppSharp.Generators.C
             }
             case TypePrintScopeKind.Qualified:
             {
-                var namespaceSep = PrintFlavorKind == CppTypePrintFlavorKind.Cpp ? "::" : "_";
-
                 if (ContextKind == TypePrinterContextKind.Managed)
                 {
-                    var outputNamespace = declaration.TranslationUnit?.Module?.OutputNamespace;
+                    var outputNamespace = GlobalNamespace(declaration);
                     if (!string.IsNullOrEmpty(outputNamespace))
                     {
-                        return $"{outputNamespace}{namespaceSep}{declaration.QualifiedName}";
+                        return $"{outputNamespace}{NamespaceSeparator}{declaration.QualifiedName}";
                     }
 
                     return declaration.QualifiedName;
                 }
 
                 if (declaration.Namespace is Class)
-                    return $"{declaration.Namespace.Visit(this)}{namespaceSep}{GetDeclName(declaration, TypePrintScopeKind.Local)}";
+                {
+                    var declName = GetDeclName(declaration, TypePrintScopeKind.Local);
+                    return $"{declaration.Namespace.Visit(this)}{NamespaceSeparator}{declName}";
+                }
 
                 return PrintLogicalNames ? declaration.QualifiedLogicalOriginalName
                     : declaration.QualifiedOriginalName;
@@ -509,15 +510,26 @@ namespace CppSharp.Generators.C
                             declaration.Name : declaration.OriginalName;
 
                 if (declaration.Namespace is Class)
-                    return $"{declaration.Namespace.Visit(this)}::{name}";
+                    return $"{declaration.Namespace.Visit(this)}{NamespaceSeparator}{name}";
 
-                var qualifier = PrintFlavorKind == CppTypePrintFlavorKind.Cpp ? "::" : string.Empty;
+                var qualifier = HasGlobalNamespacePrefix ? NamespaceSeparator : string.Empty;
                 return qualifier + GetDeclName(declaration, TypePrintScopeKind.Qualified);
             }
             }
 
             throw new NotSupportedException();
         }
+
+        public virtual string GlobalNamespace(Declaration declaration)
+        {
+            return declaration.TranslationUnit?.Module?.OutputNamespace;
+        }
+
+        public virtual bool HasGlobalNamespacePrefix => PrintFlavorKind == CppTypePrintFlavorKind.Cpp;
+
+        public virtual string NamespaceSeparator => PrintFlavorKind == CppTypePrintFlavorKind.Cpp ? "::" : "_";
+
+        public virtual bool PrefixSpecialFunctions => PrintFlavorKind == CppTypePrintFlavorKind.C;
 
         public override TypePrinterResult VisitDeclaration(Declaration decl)
         {
