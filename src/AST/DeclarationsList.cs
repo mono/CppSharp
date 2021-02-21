@@ -66,6 +66,11 @@ namespace CppSharp.AST
             }
         }
 
+        protected override void ClearItems()
+        {
+            base.ClearItems();
+            offsets.Clear();
+        }
 
         private IEnumerable<T> OfType<T>(Kind kind) where T : Declaration
         {
