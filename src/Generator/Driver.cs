@@ -291,6 +291,8 @@ namespace CppSharp
             }
 
             Context.TranslationUnitPasses.AddPass(new HandleVariableInitializerPass());
+
+            TranslationUnitPasses.AddPass(new MarkEventsWithUniqueIdPass());
         }
 
         public void ProcessCode()
