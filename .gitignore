@@ -47,6 +47,7 @@ src/generator/generator
 /build/gen
 /artifacts
 /deps/llvm
+/external
 /extra
 /.idea/
 /include/include
