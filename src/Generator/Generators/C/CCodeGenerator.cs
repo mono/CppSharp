@@ -324,11 +324,11 @@ namespace CppSharp.Generators.C
 
             Unindent();
         }
+
         public virtual string GetMethodIdentifier(Function function,
             TypePrinterContextKind context = TypePrinterContextKind.Managed)
         {
-            var method = function as Method;
-            if (method != null)
+            if (function is Method method)
             {
                 if (method.OperatorKind == CXXOperatorKind.Star)
                 {
@@ -379,16 +379,17 @@ namespace CppSharp.Generators.C
                     Write("explicit ");
             }
 
+            var methodId = GetMethodIdentifier(method);
             if (method.IsConstructor || method.IsDestructor ||
                 method.OperatorKind == CXXOperatorKind.Conversion ||
                 method.OperatorKind == CXXOperatorKind.ExplicitConversion)
             {
-                Write($"{GetMethodIdentifier(method)}(");
+                Write($"{methodId}(");
             }
             else
             {
                 var returnType = method.ReturnType.Visit(CTypePrinter);
-                Write($"{returnType} {GetMethodIdentifier(method)}(");
+                Write($"{returnType} {methodId}(");
             }
 
             GenerateMethodParameters(method);
