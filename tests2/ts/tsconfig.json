@@ -1,0 +1,13 @@
+{
+    "include": ["*.ts", "./gen/*.ts"],
+    "compilerOptions": {
+      "alwaysStrict": true, // Parse in strict mode and emit "use strict" for each source file. 
+      "noImplicitAny": true,
+      "strictNullChecks": true,
+      "sourceMap": true,
+      "typeRoots": ["./gen"]
+    },
+    "typeAcquisition": {
+      "include": ["gen"]
+    }
+  }

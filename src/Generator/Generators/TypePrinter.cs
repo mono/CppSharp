@@ -13,6 +13,7 @@ namespace CppSharp.Generators
         public StringBuilder NamePrefix { get; set; } = new StringBuilder();
         public StringBuilder NameSuffix { get; set; } = new StringBuilder();
         public TypeMap TypeMap { get; set; }
+        public GeneratorKind Kind { get; set; }
 
         public TypePrinterResult(string type = "", string nameSuffix = "")
         {
@@ -35,7 +36,10 @@ namespace CppSharp.Generators
 
         public override string ToString()
         {
-            bool hasPlaceholder = Type.Contains("{0}");
+            if (Kind == GeneratorKind.TypeScript)
+                return $"{Name}{NameSuffix}: {Type}";
+
+            var hasPlaceholder = Type.Contains("{0}");
             if (hasPlaceholder)
                 return string.Format(Type, $"{NamePrefix}{Name}{NameSuffix}");
 
