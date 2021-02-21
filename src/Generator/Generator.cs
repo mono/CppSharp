@@ -18,7 +18,8 @@ namespace CppSharp.Generators
         Java,
         Swift,
         QuickJS,
-        NAPI
+        NAPI,
+        TypeScript
     }
 
     /// <summary>

@@ -225,6 +225,10 @@ namespace CppSharp
                 case "qjs":
                     options.Kind = CppSharp.Generators.GeneratorKind.QuickJS;
                     return;
+                case "ts":
+                case "typescript":
+                    options.Kind = CppSharp.Generators.GeneratorKind.TypeScript;
+                    return;
             }
 
             errorMessages.Add($"Unknown generator kind: {generator}.");

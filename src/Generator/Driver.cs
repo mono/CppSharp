@@ -8,6 +8,7 @@ using CppSharp.Generators.C;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.Cpp;
 using CppSharp.Generators.CSharp;
+using CppSharp.Generators.TS;
 using CppSharp.Parser;
 using CppSharp.Passes;
 using CppSharp.Utils;
@@ -46,6 +47,8 @@ namespace CppSharp
                     return new QuickJSGenerator(Context);
                 case GeneratorKind.NAPI:
                     return new NAPIGenerator(Context);
+                case GeneratorKind.TypeScript:
+                    return new TSGenerator(Context);
             }
 
             throw new NotImplementedException();
@@ -238,7 +241,11 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new CheckMacroPass());
             TranslationUnitPasses.AddPass(new CheckStaticClass());
 
-            TranslationUnitPasses.AddPass(new CheckAmbiguousFunctions());
+            if (Options.IsCLIGenerator || Options.IsCSharpGenerator || Options.IsCppGenerator)
+            {
+                TranslationUnitPasses.AddPass(new CheckAmbiguousFunctions());
+            }
+
             TranslationUnitPasses.AddPass(new ConstructorToConversionOperatorPass());
             TranslationUnitPasses.AddPass(new MarshalPrimitivePointersAsRefTypePass());
 
