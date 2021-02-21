@@ -1,0 +1,16 @@
+{
+  "name": "webidl-json",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "webidl2": "^23.13.0"
+  },
+  "devDependencies": {},
+  "description": ""
+}

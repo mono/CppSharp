@@ -1,0 +1,1 @@
+SetupExternalManagedProject("CppSharp.WebIDL")
