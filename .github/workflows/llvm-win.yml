@@ -1,0 +1,71 @@
+name: LLVM-win
+
+on:
+    workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - { os: windows-2019, platform: x86, vs: 2019 }
+          - { os: windows-2019, platform: x64, vs: 2019 }
+
+    runs-on: ${{ matrix.config.os }}
+
+    env:
+      CC: ${{ matrix.config.cc }}
+      CXX: ${{ matrix.config.cxx }}
+      VS_VERSION: ${{ matrix.config.vs }}
+      PLATFORM: ${{ matrix.config.platform }}
+      ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+
+    steps:
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v3.x
+    
+      - name: Check out
+        shell: cmd
+        run: |
+          git clone -b ${{ env.GITHUB_REF_SLUG }} https://github.com/mono/CppSharp.git C:\CppSharp
+        
+      - uses: lukka/get-cmake@latest
+
+      - name: Environment
+        shell: cmd
+        run: |
+          call "C:\Program Files (x86)\Microsoft Visual Studio\%VS_VERSION%\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %PLATFORM%
+          :: Loop over all environment variables and make them global using set-env.
+          :: See: https://stackoverflow.com/a/39184941
+          setlocal
+          for /f "delims== tokens=1,2" %%a in ('set') do (
+            echo ::set-env name=%%a::%%b
+          )
+          endlocal
+
+      - name: Fix intrin.h file
+        shell: powershell
+        run: build/intrin.ps1
+        working-directory: C:\CppSharp
+
+      - name: Clone LLVM
+        shell: bash
+        run: build/build.sh clone_llvm
+        working-directory: C:\CppSharp
+          
+      - name: Build LLVM
+        shell: bash
+        run: build/build.sh build_llvm -platform $PLATFORM
+        working-directory: C:\CppSharp
+
+      - name: Package LLVM
+        shell: bash
+        run: build/build.sh package_llvm -platform $PLATFORM
+        working-directory: C:\CppSharp
+
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v2
+        with:
+          name: llvm
+          path: C:\CppSharp\build\llvm\llvm-*-*.*
