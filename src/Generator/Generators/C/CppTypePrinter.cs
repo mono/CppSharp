@@ -643,10 +643,8 @@ namespace CppSharp.Generators.C
             return VisitDeclaration(item);
         }
 
-        public override TypePrinterResult VisitVariableDecl(Variable variable)
-        {
-            return VisitDeclaration(variable);
-        }
+        public override TypePrinterResult VisitVariableDecl(Variable variable) =>
+            $"{variable.Type.Visit(this)} {VisitDeclaration(variable)}";
 
         public override TypePrinterResult VisitClassTemplateDecl(ClassTemplate template)
         {
