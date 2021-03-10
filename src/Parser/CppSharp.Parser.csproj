@@ -8,6 +8,14 @@
     <NativeTargetExt Condition="$(IsMacOSX)">dylib</NativeTargetExt>
     <NativeTargetPrefix Condition="!$(IsWindows)">lib</NativeTargetPrefix>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
   
   <ItemGroup Condition="$(GenerateBuildConfig)">
     <Compile Include="$(ActionDir)BuildConfig.cs" LinkBase="build" />
