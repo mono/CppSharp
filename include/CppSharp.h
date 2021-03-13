@@ -34,7 +34,7 @@ namespace clix {
     /// <remarks>
     ///   This is the default encoding you've most likely been using all around in C++. ANSI
     ///   means 8 Bit encoding with character codes depending on the system's selected code page.
-    /// <remarks>
+    /// </remarks>
     E_ANSI,
 
     /// <summary>UTF-8 encoding</summary>
@@ -43,7 +43,7 @@ namespace clix {
     ///   (0-127) will be represented as single bytes. Be aware that UTF-8 uses more than one
     ///   byte for extended characters, so std::string::length() might not reflect the actual
     ///   length of the string in characters if it contains any non-ASCII characters.
-    /// <remarks>
+    /// </remarks>
     E_UTF8,
 
     /// <summary>UTF-16 encoding</summary>
