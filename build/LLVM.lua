@@ -195,8 +195,7 @@ function SetupLLVMLibs()
       "LLVMDebugInfoMSF",
       "LLVMBinaryFormat",
       "LLVMSupport",
-      "LLVMDemangle",
-      "LLVMHelloNew"
+      "LLVMDemangle"
     }
     
   filter(c)
