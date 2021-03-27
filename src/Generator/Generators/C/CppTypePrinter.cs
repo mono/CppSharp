@@ -590,11 +590,12 @@ namespace CppSharp.Generators.C
                     @class = $"::{method.Namespace.Visit(this)}::";
                     break;
                 default:
-                    return string.Empty;
+                    @class = string.Empty;
+                    break;
             }
 
             var @params = string.Join(", ", method.Parameters.Select(p => p.Visit(this)));
-            var @const = (method.IsConst ? " const" : string.Empty);
+            var @const = method.IsConst ? " const" : string.Empty;
             var name = method.OperatorKind == CXXOperatorKind.Conversion ||
                 method.OperatorKind == CXXOperatorKind.ExplicitConversion ?
                 $"operator {method.OriginalReturnType.Visit(this)}" :
