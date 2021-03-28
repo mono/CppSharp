@@ -51,7 +51,8 @@ namespace CppSharp.Passes
                 QualifiedType = field.QualifiedType,
                 Access = field.Access,
                 Field = field,
-                AssociatedDeclaration = field
+                AssociatedDeclaration = field,
+                Comment = field.Comment
             };
 
             if (Options.GeneratorKind == GeneratorKind.C ||
