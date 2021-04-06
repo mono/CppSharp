@@ -752,6 +752,7 @@ public unsafe class CSharpTests
             (typeof(ClassCustomTypeAlignment), CSharp.CSharp.ClassCustomTypeAlignmentOffsets),
             (typeof(ClassCustomObjectAlignment), CSharp.CSharp.ClassCustomObjectAlignmentOffsets),
             (typeof(ClassMicrosoftObjectAlignment), CSharp.CSharp.ClassMicrosoftObjectAlignmentOffsets),
+            (typeof(StructWithEmbeddedArrayOfStructObjectAlignment), CSharp.CSharp.StructWithEmbeddedArrayOfStructObjectAlignmentOffsets),
         })
         {
             var internalType = type.GetNestedType("__Internal");

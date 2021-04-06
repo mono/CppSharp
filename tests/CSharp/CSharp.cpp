@@ -1888,3 +1888,9 @@ const unsigned ClassMicrosoftObjectAlignmentOffsets[4]
     offsetof(ClassMicrosoftObjectAlignment, i16),
     offsetof(ClassMicrosoftObjectAlignment, boolean),
 };
+
+const unsigned StructWithEmbeddedArrayOfStructObjectAlignmentOffsets[2]
+{
+    offsetof(StructWithEmbeddedArrayOfStructObjectAlignment, boolean),
+    offsetof(StructWithEmbeddedArrayOfStructObjectAlignment, embedded_struct),
+};
