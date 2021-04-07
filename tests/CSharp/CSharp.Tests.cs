@@ -708,6 +708,19 @@ public unsafe class CSharpTests
     }
 
     [Test]
+    public void TestZeroAllocatedMemoryOption()
+    {
+        // We've arranged in the generator for the ZeroAllocatedMemory option to return true for this one
+        // class.
+        var test = new ClassZeroAllocatedMemoryTest();
+        Assert.That(test.P1, Is.EqualTo(0));
+        Assert.That(test.p2.P2p1, Is.EqualTo(0));
+        Assert.That(test.p2.P2p2, Is.EqualTo(0));
+        Assert.That(test.P3, Is.EqualTo(false));
+        Assert.That(test.P4, Is.EqualTo('\0'));
+    }
+
+    [Test]
     public void TestAlignment()
     {
         foreach (var internalType in new[]

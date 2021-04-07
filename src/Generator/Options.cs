@@ -119,6 +119,18 @@ namespace CppSharp
         /// </summary>
         public bool GenerateFinalizers;
 
+        /// <summary>
+        /// If <see cref="ZeroAllocatedMemory"/> returns <c>true</c> for a given <see cref="Class"/>,
+        /// unmanaged memory allocated in the class' default constructor will be initialized with
+        /// zeros. The default implementation always returns <c>false</c>. Currently, C# only.
+        /// </summary>
+        /// <remarks>
+        /// If this option returns <c>true</c>, you must take a reference to the nuget package
+        /// System.Runtime.CompilerServices.Unsafe in the project(s) containing the generated file(s) to
+        /// resolve the Unsafe.InitBlock method.
+        /// </remarks>
+        public Func<Class, bool> ZeroAllocatedMemory = (@class) => false;
+
         public string IncludePrefix;
         public Func<TranslationUnit, string> GenerateName;
 

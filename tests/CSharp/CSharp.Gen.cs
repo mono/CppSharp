@@ -63,6 +63,9 @@ namespace CppSharp.Tests
                     Name = "MacroTest",
                     Namespace = ctx.TranslationUnits.First(u => u.IsValid && !u.IsSystemHeader)
                 };
+
+            // Preserve the original semantics except for our one test class.
+            driver.Options.ZeroAllocatedMemory = (@class) => @class.Name == "ClassZeroAllocatedMemoryTest";
         }
 
         public override void Postprocess(Driver driver, ASTContext ctx)

@@ -1454,6 +1454,14 @@ struct TestVariableWithoutType
     static constexpr auto variable = create(n...);
 };
 
+struct DLL_API ClassZeroAllocatedMemoryTest
+{
+    int p1;
+    struct { int p2p1; int p2p2; } p2;
+    bool p3;
+    char p4;
+};
+
 struct DLL_API ConversionFunctions
 {
     ConversionFunctions();
