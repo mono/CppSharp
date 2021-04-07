@@ -1504,7 +1504,7 @@ struct DLL_API ClassMicrosoftObjectAlignment : ClassMicrosoftObjectAlignmentBase
 
 struct DLL_API EmbeddedStruct
 {
-    int64_t i64;
+    uint64_t ui64;
 };
 struct DLL_API StructWithEmbeddedArrayOfStructObjectAlignment
 {

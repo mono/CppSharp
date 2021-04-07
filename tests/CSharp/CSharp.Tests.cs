@@ -767,6 +767,22 @@ public unsafe class CSharpTests
         }
     }
 
+    [Test]
+    public void TestEmbeddedArrayOfStructAccessor()
+    {
+        const ulong firstLong =  0xC92EEDE87AAB4FECul;
+        const ulong secondLong = 0xAD5FB16491935522ul;
+
+        var testStruct = new StructWithEmbeddedArrayOfStructObjectAlignment();
+        testStruct.EmbeddedStruct[0].Ui64 = firstLong;
+        testStruct.EmbeddedStruct[1].Ui64 = secondLong;
+
+        // Since the memory allocated for EmbeddedStruct is generally uninintialized, I suppose it _could_
+        // just happen to match, but it seems very unlikely.
+        Assert.That(firstLong, Is.EqualTo(testStruct.EmbeddedStruct[0].Ui64));
+        Assert.That(secondLong, Is.EqualTo(testStruct.EmbeddedStruct[1].Ui64));
+    }
+
     public void TestClassSize()
     {
         Assert.That(Marshal.SizeOf<HasSecondaryBaseWithAbstractWithDefaultArg.__Internal>, Is.EqualTo(Marshal.SizeOf<IntPtr>() * 2));
