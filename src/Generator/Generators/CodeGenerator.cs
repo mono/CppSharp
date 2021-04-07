@@ -1301,6 +1301,7 @@ namespace CppSharp.Generators
         public static readonly string OwnsNativeInstanceIdentifier = Generator.GeneratedIdentifier("ownsNativeInstance");
 
         public static readonly string CreateInstanceIdentifier = Generator.GeneratedIdentifier("CreateInstance");
+        public static readonly string GetOrCreateInstanceIdentifier = Generator.GeneratedIdentifier("GetOrCreateInstance");
 
         public static string GetSuffixForInternal(DeclarationContext @class)
         {
