@@ -852,6 +852,37 @@ public unsafe class CSharpTests
     }
 
     [Test]
+    public void TestStringMemManagement()
+    {
+        const int instanceCount = 100;
+        //const string otherString = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Facilisi etiam dignissim diam quis enim lobortis scelerisque.";
+        const string otherString = "1234";
+
+        var batch = new TestString[instanceCount];
+        for (var i = 0; i < instanceCount; i++)
+        {
+            batch[i] = new TestString { UnicodeConst = otherString };
+            if (batch[i].UnicodeConst != otherString)
+            {
+                throw new Exception($"iteration {i}");
+            }
+        }
+
+        GC.Collect();
+
+        for (var i = 0; i < instanceCount; i++) 
+        {
+            if (batch[i].UnicodeConst != otherString)
+            {
+                throw new Exception($"iteration {i}");
+            }
+            Assert.That(batch[i].UnicodeConst, Is.EqualTo(otherString));
+        }
+
+        Array.ForEach(batch, ts => ts.Dispose());
+    }
+
+    [Test]
     public void TestEnumProperty()
     {
         using (var proprietor = new Proprietor())

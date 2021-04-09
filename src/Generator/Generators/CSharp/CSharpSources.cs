@@ -455,6 +455,14 @@ namespace CppSharp.Generators.CSharp
                     var dict = $@"global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {
                         printedClass}>";
                     WriteLine("internal static readonly {0} NativeToManagedMap = new {0}();", dict);
+
+#if !OLD_WAY
+                    // Add booleans to track who owns unmanaged memory for string fields
+                    foreach (var field in @class.Layout.Fields.Where(f => f.QualifiedType.Type.IsConstCharString()))
+                    {
+                        WriteLine($"private bool __{field.Name}OwnsNativeMemory = false;");
+                    }
+#endif
                 }
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
@@ -871,7 +879,7 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        #endregion
+#endregion
 
         private void GeneratePropertySetter<T>(T decl,
             Class @class, bool isAbstract = false, Property property = null)
@@ -1626,7 +1634,7 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        #region Virtual Tables
+#region Virtual Tables
 
         public List<VTableComponent> GetUniqueVTableMethodEntries(Class @class)
         {
@@ -2033,9 +2041,9 @@ namespace CppSharp.Generators.CSharp
             return @class.IsGenerated && @class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count > 0;
         }
 
-        #endregion
+#endregion
 
-        #region Events
+#region Events
 
         public override bool VisitEvent(Event @event)
         {
@@ -2143,9 +2151,9 @@ namespace CppSharp.Generators.CSharp
             UnindentAndWriteCloseBrace();
         }
 
-        #endregion
+#endregion
 
-        #region Constructors
+#region Constructors
 
         public void GenerateClassConstructors(Class @class)
         {
@@ -2267,7 +2275,24 @@ namespace CppSharp.Generators.CSharp
             }
 
             WriteLine("if ({0})", Helpers.OwnsNativeInstanceIdentifier);
-            WriteLineIndent("Marshal.FreeHGlobal({0});", Helpers.InstanceIdentifier);
+            WriteOpenBraceAndIndent();
+
+#if !OLD_WAY
+            // If we have any fields holding unmanaged pointers, free the memory they reference. TODO: we're
+            // currently only doing this for const char* strings. If the pointer points to a generated type,
+            // we should call the instance's Dispose() method in case it holds extraneous pointers to
+            // unmanaged memory.
+            //
+            // TODO: do we have to explicitly initialized IntPtr's with Zero in the constructor?
+            foreach (var field in @class.Layout.Fields.Where(f => f.QualifiedType.Type.IsConstCharString()))
+            {
+                var ptr = $"(({Helpers.InternalStruct}*){Helpers.InstanceIdentifier})->{field.Name}";
+                WriteLine($"if (__{field.Name}OwnsNativeMemory) Marshal.FreeHGlobal({ptr});");
+            }
+#endif
+
+            WriteLine("Marshal.FreeHGlobal({0});", Helpers.InstanceIdentifier);
+            UnindentAndWriteCloseBrace();
 
             WriteLine("{0} = IntPtr.Zero;", Helpers.InstanceIdentifier);
             UnindentAndWriteCloseBrace();
@@ -2482,9 +2507,9 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                 WriteLineIndent(": this()");
         }
 
-        #endregion
+#endregion
 
-        #region Methods / Functions
+#region Methods / Functions
 
         public void GenerateFunction(Function function, string parentName)
         {
@@ -3230,7 +3255,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
             return TypePrinter.VisitParameters(@params, true).Type;
         }
 
-        #endregion
+#endregion
 
         public override bool VisitTypedefNameDecl(TypedefNameDecl typedef)
         {
