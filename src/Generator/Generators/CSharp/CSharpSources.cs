@@ -2279,8 +2279,6 @@ namespace CppSharp.Generators.CSharp
             // currently only doing this for const char* strings. If the pointer points to a generated type,
             // we should call the instance's Dispose() method in case it holds extraneous pointers to
             // unmanaged memory.
-            //
-            // TODO: do we have to explicitly initialized IntPtr's with Zero in the constructor?
             foreach (var field in @class.Layout.Fields.Where(f => f.QualifiedType.Type.IsConstCharString()))
             {
                 var ptr = $"(({Helpers.InternalStruct}*){Helpers.InstanceIdentifier})->{field.Name}";
