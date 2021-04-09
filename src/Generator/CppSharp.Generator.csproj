@@ -3,9 +3,6 @@
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <IsPackable>true</IsPackable>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <DefineConstants>TRACE;NEW_WAY</DefineConstants>
-  </PropertyGroup>
   
   <ItemGroup>
     <EmbeddedResource Include="Passes\verbs.txt" />

@@ -133,8 +133,6 @@ namespace CppSharp.Types.Std
             if (substitution != null)
                 param = $"({substitution.Replacement}) (object) {param}";
 
-#if OLD_WAY
-#else
             // Allow setting native field to null via setter property.
             if (ctx.MarshalKind == MarshalKind.NativeField)
             {
@@ -158,17 +156,7 @@ namespace CppSharp.Types.Std
                 ctx.Before.WriteLine("return;");
                 ctx.Before.UnindentAndWriteCloseBrace();
             }
-#endif
-#if OLD_WAY
-            string bytes = $"__bytes{ctx.ParameterIndex}";
-            string bytePtr = $"__bytePtr{ctx.ParameterIndex}";
-            ctx.Before.WriteLine($@"byte[] {bytes} = global::System.Text.Encoding.{
-                GetEncoding().Name}.GetBytes({param});");
-            ctx.Before.WriteLine($"fixed (byte* {bytePtr} = {bytes})");
-            ctx.HasCodeBlock = true;
-            ctx.Before.WriteOpenBraceAndIndent();
-            ctx.Return.Write($"new global::System.IntPtr({bytePtr})");
-#else
+
             var bytes = $"__bytes{ctx.ParameterIndex}";
             var bytePtr = $"__bytePtr{ctx.ParameterIndex}";
             var encodingName = GetEncoding().Name;
@@ -202,7 +190,6 @@ namespace CppSharp.Types.Std
             }
 
             ctx.Return.Write($"{bytePtr}");
-#endif
         }
 
         public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)
