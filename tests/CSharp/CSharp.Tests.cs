@@ -855,8 +855,7 @@ public unsafe class CSharpTests
     public void TestStringMemManagement()
     {
         const int instanceCount = 100;
-        //const string otherString = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Facilisi etiam dignissim diam quis enim lobortis scelerisque.";
-        const string otherString = "1234";
+        const string otherString = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 
         var batch = new TestString[instanceCount];
         for (var i = 0; i < instanceCount; i++)
@@ -880,6 +879,33 @@ public unsafe class CSharpTests
         }
 
         Array.ForEach(batch, ts => ts.Dispose());
+    }
+
+    [Test]
+    public void TestStringRefWithCopyConstructor()
+    {
+        const string otherString = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+        var ts1 = new TestString { UnicodeConst = otherString };
+        var ts2 = new TestString(ts1);
+
+        // verify that the copy has its own reference to UnicodeConst.
+        var ownsNativeMemory = (bool)ts2.GetType()
+                    .GetField("__unicodeConst_OwnsNativeMemory", BindingFlags.Instance | BindingFlags.NonPublic)
+                    .GetValue(ts2);
+        Assert.That(true, Is.EqualTo(ownsNativeMemory));
+
+        var offset = Marshal.OffsetOf<TestString.__Internal>("unicodeConst");
+        var ts1PtrRef = IntPtr.Add(ts1.__Instance, (int)offset);
+        var ts2PtrRef = IntPtr.Add(ts2.__Instance, (int)offset);
+        var ts1Ptr = *(IntPtr*)ts1PtrRef;
+        var ts2Ptr = *(IntPtr*)ts2PtrRef;
+        Assert.That(ts1Ptr != ts2Ptr);
+
+        // should be able to dispose in any order.
+        Assert.That(otherString, Is.EqualTo(ts1.UnicodeConst));
+        ts1.Dispose();
+        Assert.That(otherString, Is.EqualTo(ts2.UnicodeConst));
+        ts2.Dispose();
     }
 
     [Test]

@@ -459,7 +459,7 @@ namespace CppSharp.Generators.CSharp
                     // Add booleans to track who owns unmanaged memory for string fields
                     foreach (var field in @class.Layout.Fields.Where(f => f.QualifiedType.Type.IsConstCharString()))
                     {
-                        WriteLine($"private bool __{field.Name}OwnsNativeMemory = false;");
+                        WriteLine($"private bool __{field.Name}_OwnsNativeMemory = false;");
                     }
                 }
                 PopBlock(NewLineKind.BeforeNextBlock);
@@ -2272,21 +2272,23 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
-            WriteLine("if ({0})", Helpers.OwnsNativeInstanceIdentifier);
-            WriteOpenBraceAndIndent();
-
-            // If we have any fields holding unmanaged pointers, free the memory they reference. TODO: we're
-            // currently only doing this for const char* strings. If the pointer points to a generated type,
-            // we should call the instance's Dispose() method in case it holds extraneous pointers to
+            // If we have any fields holding references to unmanaged memory allocated here, free the
+            // referenced memory. Don't rely on testing if the field's IntPtr is IntPtr.Zero since 
+            // unmanaged memory isn't always initialized and/or a reference may be owned by the
+            // native side.
+            //
+            // TODO: We should delegate to the dispose methods of references we hold to other
+            // generated type instances since those instances could also hold references to
             // unmanaged memory.
             foreach (var field in @class.Layout.Fields.Where(f => f.QualifiedType.Type.IsConstCharString()))
             {
                 var ptr = $"(({Helpers.InternalStruct}*){Helpers.InstanceIdentifier})->{field.Name}";
-                WriteLine($"if (__{field.Name}OwnsNativeMemory) Marshal.FreeHGlobal({ptr});");
+                WriteLine($"if (__{field.Name}_OwnsNativeMemory)");
+                WriteLineIndent($"Marshal.FreeHGlobal({ptr});");
             }
 
-            WriteLine("Marshal.FreeHGlobal({0});", Helpers.InstanceIdentifier);
-            UnindentAndWriteCloseBrace();
+            WriteLine("if ({0})", Helpers.OwnsNativeInstanceIdentifier);
+            WriteLineIndent("Marshal.FreeHGlobal({0});", Helpers.InstanceIdentifier);
 
             WriteLine("{0} = IntPtr.Zero;", Helpers.InstanceIdentifier);
             UnindentAndWriteCloseBrace();
@@ -2917,6 +2919,21 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                     var classInternal = TypePrinter.PrintNative(@class);
                     WriteLine($@"*(({classInternal}*) {Helpers.InstanceIdentifier}) = *(({
                         classInternal}*) {method.Parameters[0].Name}.{Helpers.InstanceIdentifier});");
+
+                    // Copy any string references owned by the source to the new instance so we
+                    // don't have to ref count them.
+                    foreach (var field in @class.Fields.Where(f => f.QualifiedType.Type.IsConstCharString()))
+                    {
+                        var prop = @class.Properties.Where(p => p.Field == field).FirstOrDefault();
+                        // If there is no property or no setter then this instance can never own the native
+                        // memory. Worry about the case where there's only a setter (write-only) when we 
+                        // understand the use case and how it can occur.
+                        if (prop != null && prop.HasGetter && prop.HasSetter)
+                        {
+                            WriteLine($"if ({method.Parameters[0].Name}.__{field.OriginalName}_OwnsNativeMemory)");
+                            WriteLineIndent($@"this.{prop.Name} = {method.Parameters[0].Name}.{prop.Name};");
+                        }
+                    }
                 }
             }
             else

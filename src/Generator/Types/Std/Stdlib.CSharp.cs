@@ -147,9 +147,9 @@ namespace CppSharp.Types.Std
                 // be set to the Field we're operating on.
                 var fieldName = ctx.ReturnVarName.Substring(ctx.ReturnVarName.LastIndexOf("->") + 2); 
                 
-                ctx.Before.WriteLine($"if (__{fieldName}OwnsNativeMemory)");
+                ctx.Before.WriteLine($"if (__{fieldName}_OwnsNativeMemory)");
                 ctx.Before.WriteLineIndent($"Marshal.FreeHGlobal({ctx.ReturnVarName});");
-                ctx.Before.WriteLine($"__{fieldName}OwnsNativeMemory = true;");
+                ctx.Before.WriteLine($"__{fieldName}_OwnsNativeMemory = true;");
                 ctx.Before.WriteLine($"if ({param} == null)");
                 ctx.Before.WriteOpenBraceAndIndent();
                 ctx.Before.WriteLine($"{ctx.ReturnVarName} = global::System.IntPtr.Zero;");
