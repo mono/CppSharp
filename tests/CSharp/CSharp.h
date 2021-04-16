@@ -1288,6 +1288,14 @@ struct StructTestArrayTypeFromTypedef
 #define MY_MACRO_TEST2_4     (1 << 3)
 #define MY_MACRO_TEST2_ALL   (1 << 4) - 1
 
+#define SIGNED_MACRO_VALUES_TO_ENUM_TEST_1 1 << 5 
+#define SIGNED_MACRO_VALUES_TO_ENUM_TEST_2 1 << 22
+#define SIGNED_MACRO_VALUES_TO_ENUM_TEST_3 1L << 32
+#define SIGNED_MACRO_VALUES_TO_ENUM_TEST_4 -1
+
+enum TEST_BOOL_VALUED_ENUMS { TEST_BOOL_VALUED_ENUMS_V1 = true, TEST_BOOL_VALUED_ENUMS_V2 = false};
+#define TEST_BOOL_VALUED_ENUMS_V3 42
+
 struct DLL_API ComplexArrayElement
 {
     ComplexArrayElement();
