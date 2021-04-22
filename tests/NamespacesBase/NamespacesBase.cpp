@@ -41,14 +41,6 @@ int HasVirtualInCore::virtualInCore(int parameter)
     return 1;
 }
 
-SecondaryBase::SecondaryBase()
-{
-}
-
-SecondaryBase::~SecondaryBase()
-{
-}
-
 void SecondaryBase::function()
 {
 }

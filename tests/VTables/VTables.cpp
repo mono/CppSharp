@@ -1,14 +1,6 @@
 #include "VTables.h"
 #include <typeinfo>
 
-Foo::Foo()
-{
-}
-
-Foo::~Foo()
-{
-}
-
 int Foo::vfoo()
 {
     return 5;
@@ -70,10 +62,6 @@ BaseClassVirtual* BaseClassVirtual::getBasePtr()
 const char* BaseClassVirtual::getTypeName()
 {
     return typeid(BaseClassVirtual).name();
-}
-
-DerivedClassVirtual::DerivedClassVirtual()
-{
 }
 
 int DerivedClassVirtual::retInt()

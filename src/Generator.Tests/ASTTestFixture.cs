@@ -15,18 +15,14 @@ namespace CppSharp.Generator.Tests
         protected void ParseLibrary(params string[] files)
         {
             var options = new DriverOptions { GeneratorKind = GeneratorKind.CSharp };
-            var parserOptions = new ParserOptions();
-
-            var testsPath = GeneratorTest.GetTestsDirectory("Native");
-            parserOptions.AddIncludeDirs(testsPath);
-            parserOptions.SkipPrivateDeclarations = true;
 
             var module = options.AddModule("Test");
+            module.IncludeDirs.Add(GeneratorTest.GetTestsDirectory("Native"));
             module.Headers.AddRange(files);
 
             Driver = new Driver(options)
             {
-                ParserOptions = parserOptions
+                ParserOptions = new ParserOptions { SkipPrivateDeclarations = true }
             };
 
             Driver.Setup();

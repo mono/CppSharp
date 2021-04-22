@@ -33,6 +33,7 @@
 #include <clang/AST/Comment.h>
 #include <clang/AST/DeclFriend.h>
 #include <clang/AST/ExprCXX.h>
+#include <clang/CodeGen/CodeGenAction.h>
 #include <clang/Lex/DirectoryLookup.h>
 #include <clang/Lex/HeaderSearch.h>
 #include <clang/Lex/Preprocessor.h>
@@ -245,6 +246,8 @@ void Parser::Setup()
 
     std::vector<const char*> args;
     args.push_back("-cc1");
+    args.push_back("-flto");
+    args.push_back("-O3");
 
     for (unsigned I = 0, E = opts->Arguments.size(); I != E; ++I)
     {
@@ -4622,6 +4625,22 @@ ParserResult* Parser::ParseLibrary(const LinkerOptions* Opts)
     return res;
 }
 
+ParserResult* Parser::Build(const LinkerOptions* LinkerOptions, const std::string& File, bool Last)
+{
+    ParserResult* error = Compile(File);
+    if (error)
+        return error;
+
+    Link(File, LinkerOptions);
+
+    if (Last)
+        llvm::llvm_shutdown();
+
+    auto res = new ParserResult();
+    HandleDiagnostics(res);
+    return res;
+}
+
 ParserResult* ClangParser::ParseHeader(CppParserOptions* Opts)
 {
     if (!Opts)
@@ -4659,6 +4678,45 @@ ParserResult* ClangParser::ParseLibrary(LinkerOptions* Opts)
         return nullptr;
 
     return Parser::ParseLibrary(Opts);
+}
+
+ParserResult* ClangParser::Build(CppParserOptions* Opts,
+    const LinkerOptions* LinkerOptions, const std::string& File, bool Last)
+{
+    if (!Opts)
+        return 0;
+
+    Parser Parser(Opts);
+    return Parser.Build(LinkerOptions, File, Last);
+}
+
+ParserResult* Parser::Compile(const std::string& File)
+{
+    llvm::InitializeAllAsmPrinters();
+    llvm::StringRef Stem = llvm::sys::path::stem(File);
+    Setup();
+
+    c->getDiagnostics().setClient(new ::DiagnosticConsumer());
+
+    c->getFrontendOpts().Inputs.clear();
+    c->getFrontendOpts().Inputs.push_back(clang::FrontendInputFile(File, clang::Language::CXX));
+
+    const llvm::Triple Triple = c->getTarget().getTriple();
+    llvm::StringRef Dir(llvm::sys::path::parent_path(File));
+    llvm::SmallString<1024> Object(Dir);
+    llvm::sys::path::append(Object,
+        (Triple.isOSWindows() ? "" : "lib") + Stem + ".o");
+    c->getFrontendOpts().OutputFile = std::string(Object);
+
+    llvm::LLVMContext context;
+    auto action = std::make_unique<clang::EmitObjAction>(&context);
+    if (!c->ExecuteAction(*action))
+    {
+        auto res = new ParserResult();
+        HandleDiagnostics(res);
+        return res;
+    }
+    return 0;
 }
 
 ParserTargetInfo* Parser::GetTargetInfo()

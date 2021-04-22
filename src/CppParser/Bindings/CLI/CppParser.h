@@ -506,6 +506,8 @@ namespace CppSharp
 
             static CppSharp::Parser::ParserResult^ ParseLibrary(CppSharp::Parser::LinkerOptions^ Opts);
 
+            static CppSharp::Parser::ParserResult^ Build(CppSharp::Parser::CppParserOptions^ Opts, CppSharp::Parser::LinkerOptions^ LinkerOptions, System::String^ File, bool Last);
+
         protected:
 
             bool __ownsNativeInstance;

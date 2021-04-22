@@ -18,11 +18,5 @@
     <GeneratorInputs Include="*.h" />
     <CustomAdditionalCompileInputs Include="@(GeneratorInputs)" />
     <UpToDateCheckInput Include="@(GeneratorInputs)" />
-    <ModuleFiles Include="$(OutputPath)*Std-symbols.*"
-                 Exclude="$(OutputPath)Std-symbols.pdb;$(OutputPath)Std-symbols.exp;$(OutputPath)Std-symbols.lib"  />
   </ItemGroup>
-
-  <Target Name="CopyStdSymbols" AfterTargets="PostBuildEvent">
-    <Copy SourceFiles="@(ModuleFiles)" DestinationFolder="$(GenDir)$(TestName)" />
-  </Target>
 </Project>

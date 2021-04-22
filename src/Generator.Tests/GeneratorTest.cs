@@ -27,8 +27,8 @@ namespace CppSharp.Utils
             options.OutputDir = Path.Combine(GetOutputDirectory(), "build", "gen", name);
             options.Quiet = true;
             options.GenerateDebugOutput = true;
+            options.CheckSymbols = true;
             var testModule = options.AddModule(name);
-            testModule.SharedLibraryName = $"{name}.Native";
 
             Diagnostics.Message("");
             Diagnostics.Message("Generating bindings for {0} ({1})",
@@ -40,6 +40,8 @@ namespace CppSharp.Utils
 
             var path = Path.GetFullPath(GetTestsDirectory(name));
             testModule.IncludeDirs.Add(path);
+            testModule.LibraryDirs.Add(options.OutputDir);
+            testModule.Libraries.Add($"{name}.Native");
 
             Diagnostics.Message("Looking for tests in: {0}", path);
             var files = Directory.EnumerateFiles(path, "*.h");

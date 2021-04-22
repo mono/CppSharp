@@ -4,9 +4,6 @@
 class DLL_API Foo
 {
 public:
-    Foo();
-    ~Foo();
-
     const char* Unicode;
     static std::string StringVariable;
 
