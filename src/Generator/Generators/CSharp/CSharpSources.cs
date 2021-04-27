@@ -837,7 +837,7 @@ namespace CppSharp.Generators.CSharp
                 if (sequentialLayout && i > 0)
                 {
                     var padding = field.Offset - field.CalculateOffset(fields[i - 1], Context.TargetInfo);
-                        
+
                     if (padding > 1)
                         WriteLine($"internal fixed byte {field.Name}Padding[{padding}];");
                     else if (padding > 0)

@@ -1510,6 +1510,16 @@ struct DLL_API ClassMicrosoftObjectAlignment : ClassMicrosoftObjectAlignmentBase
     bool boolean;
 };
 
+struct DLL_API EmbeddedStruct
+{
+    uint64_t ui64;
+};
+struct DLL_API StructWithEmbeddedArrayOfStructObjectAlignment
+{
+    bool boolean;
+    EmbeddedStruct embedded_struct[2];
+};
+
 class DLL_API ProtectedConstructorDestructor
 {
 protected:
@@ -1520,6 +1530,7 @@ protected:
 DLL_API extern const unsigned ClassCustomTypeAlignmentOffsets[5];
 DLL_API extern const unsigned ClassCustomObjectAlignmentOffsets[2];
 DLL_API extern const unsigned ClassMicrosoftObjectAlignmentOffsets[4];
+DLL_API extern const unsigned StructWithEmbeddedArrayOfStructObjectAlignmentOffsets[2];
 
 DLL_API const char* TestCSharpString(const char* in, CS_OUT const char** out);
 DLL_API const wchar_t* TestCSharpStringWide(const wchar_t* in, CS_OUT const wchar_t** out);
