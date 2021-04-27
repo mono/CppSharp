@@ -91,8 +91,8 @@ namespace CppSharp.Generators.CSharp
                         {
                             if (arrayType == finalArrayType)
                                 supportBefore.WriteLineIndent(
-                                    "{0}[i] = {1}.{2}(*(({1}.{3}*)&({4}[i * sizeof({1}.{3})])));",
-                                    value, array.Type, Helpers.CreateInstanceIdentifier,
+                                    "{0}[i] = {1}.{2}((IntPtr)(({1}.{3}*)&({4}[i * sizeof({1}.{3})])), true, true);",
+                                    value, array.Type, Helpers.GetOrCreateInstanceIdentifier,
                                     Helpers.InternalStruct, Context.ReturnVarName);
                             else
                                 supportBefore.WriteLineIndent(

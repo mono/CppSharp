@@ -752,6 +752,7 @@ public unsafe class CSharpTests
             (typeof(ClassCustomTypeAlignment), CSharp.CSharp.ClassCustomTypeAlignmentOffsets),
             (typeof(ClassCustomObjectAlignment), CSharp.CSharp.ClassCustomObjectAlignmentOffsets),
             (typeof(ClassMicrosoftObjectAlignment), CSharp.CSharp.ClassMicrosoftObjectAlignmentOffsets),
+            (typeof(StructWithEmbeddedArrayOfStructObjectAlignment), CSharp.CSharp.StructWithEmbeddedArrayOfStructObjectAlignmentOffsets),
         })
         {
             var internalType = type.GetNestedType("__Internal");
@@ -764,6 +765,22 @@ public unsafe class CSharpTests
             Assert.That(managedOffsets, Is.EqualTo(offsets));
             Assert.That(Marshal.SizeOf(internalType), Is.EqualTo(internalType.StructLayoutAttribute.Size));
         }
+    }
+
+    [Test]
+    public void TestEmbeddedArrayOfStructAccessor()
+    {
+        const ulong firstLong =  0xC92EEDE87AAB4FECul;
+        const ulong secondLong = 0xAD5FB16491935522ul;
+
+        var testStruct = new StructWithEmbeddedArrayOfStructObjectAlignment();
+        testStruct.EmbeddedStruct[0].Ui64 = firstLong;
+        testStruct.EmbeddedStruct[1].Ui64 = secondLong;
+
+        // Since the memory allocated for EmbeddedStruct is generally uninintialized, I suppose it _could_
+        // just happen to match, but it seems very unlikely.
+        Assert.That(firstLong, Is.EqualTo(testStruct.EmbeddedStruct[0].Ui64));
+        Assert.That(secondLong, Is.EqualTo(testStruct.EmbeddedStruct[1].Ui64));
     }
 
     public void TestClassSize()
