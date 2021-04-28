@@ -2903,7 +2903,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
             else
             {
                 if (method.IsDefaultConstructor && Context.Options.ZeroAllocatedMemory(@class))
-                    WriteLine($"System.Runtime.CompilerServices.Unsafe.InitBlock((void*){Helpers.InstanceIdentifier}, 0, (uint)sizeof({@internal}));");
+                    WriteLine($"global::System.Runtime.CompilerServices.Unsafe.InitBlock((void*){Helpers.InstanceIdentifier}, 0, (uint)sizeof({@internal}));");
 
                 if (!method.IsDefaultConstructor || @class.HasNonTrivialDefaultConstructor)
                     GenerateInternalFunctionCall(method);
