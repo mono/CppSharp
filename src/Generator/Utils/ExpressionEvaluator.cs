@@ -1604,11 +1604,13 @@ namespace CodingSeb.ExpressionEvaluator
                 if (otherBaseMatch.Groups["sign"].Success)
                 {
                     string value = otherBaseMatch.Groups["value"].Value.Replace("_", "").Substring(2);
-                    stack.Push(otherBaseMatch.Groups["sign"].Value.Equals("-") ? -Convert.ToInt32(value, baseValue) : Convert.ToInt32(value, baseValue));
+                    var sign = otherBaseMatch.Groups["sign"].Value.Equals("-") ? -1 : 1;
+                    stack.Push(ParseInteger(value, baseValue, sign));
                 }
                 else
                 {
-                    stack.Push(Convert.ToInt32(otherBaseMatch.Value.Replace("_", "").Substring(2), baseValue));
+                    string value = otherBaseMatch.Value.Replace("_", "").Substring(2);
+                    stack.Push(ParseInteger(value, baseValue, 1));
                 }
 
                 return true;
@@ -1637,7 +1639,9 @@ namespace CodingSeb.ExpressionEvaluator
                 }
                 else
                 {
-                    stack.Push(int.Parse(numberMatch.Value.Replace("_", ""), NumberStyles.Any, CultureInfoForNumberParsing));
+                    string numberNoSign = numberMatch.Groups[1].Value.Replace("_", "");  
+                    int sign = numberMatch.Groups["sign"].Success ? -1 : 1;
+                    stack.Push(ParseInteger(numberNoSign, 10, sign));
                 }
 
                 return true;
@@ -1647,6 +1651,44 @@ namespace CodingSeb.ExpressionEvaluator
                 return false;
             }
         }
+
+// CPPSHARP
+
+        /// <summary>
+        /// Heuristically convert <paramref name="numberToParse"/> to an int, uint, long, or ulong
+        /// depending on the size of the number parsed. This method should only be called when no
+        /// number type suffix is available. 
+        /// </summary>
+        /// <remarks>
+        /// The original implementation always converted to ints. This method extends support to
+        /// uints, longs and ulongs where needed. The intent is to match C#'s implicit typing for
+        /// integer types. For example, C# implicitly types 2147483648 as a uint.
+        /// </remarks>
+        /// <param name="numberToParse">
+        /// the number to parse - should not include any number-type suffix, radix, or sign prefix.
+        /// Just the digits/letters.
+        /// </param>
+        /// <param name="fromBase">
+        /// the radix to apply when parsing the number. Must be 2, 8, 10, or 16.
+        /// </param>
+        /// <param name="sign">
+        /// the result is negative if <paramref name="sign"/> is less than zero. Otherwise, the
+        /// result is positive.
+        /// </param>
+        private static object ParseInteger(string numberToParse, int fromBase, int sign)
+        {
+            var number = Convert.ToUInt64(numberToParse, fromBase);
+            if (sign < 0)
+            {
+                if (number <= 2147483648) return -(int)number;
+                return -(long)number;
+            }
+            if (number <= int.MaxValue) return (int)number;
+            if (number <= uint.MaxValue) return (uint)number;
+            if (number <= long.MaxValue) return (long)number;
+            return number;
+        }
+//
 
         protected virtual bool EvaluateInstanceCreationWithNewKeyword(string expression, Stack<object> stack, ref int i)
         {

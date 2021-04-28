@@ -1300,6 +1300,7 @@ public unsafe class CSharpTests
         var a = (MyMacroTestEnum)'1';
         var b = (MyMacroTestEnum)'2';
         Assert.IsTrue(a == MyMacroTestEnum.MY_MACRO_TEST_1 && b == MyMacroTestEnum.MY_MACRO_TEST_2);
+        Assert.AreEqual(typeof(byte), Enum.GetUnderlyingType(typeof(MyMacroTestEnum)));
     }
 
     [Test]
@@ -1317,6 +1318,25 @@ public unsafe class CSharpTests
                     c == MyMacroTest2Enum.MY_MACRO_TEST2_2 && d == MyMacroTest2Enum.MY_MACRO_TEST2_3 &&
                     e == MyMacroTest2Enum.MY_MACRO_TEST2_1_2 && f == MyMacroTest2Enum.MY_MACRO_TEST2_1_2_3 &&
                     g == MyMacroTest2Enum.MY_MACRO_TEST2_4 && h == MyMacroTest2Enum.MY_MACRO_TEST2ALL);
+    }
+
+    [Test]
+    public void TestSignedMacroToEnums()
+    {
+        Assert.AreEqual(typeof(long), Enum.GetUnderlyingType(typeof(SignedMacroValuesToEnumTest)));
+        Assert.AreEqual(1 << 5, (long)SignedMacroValuesToEnumTest.SIGNED_MACRO_VALUES_TO_ENUM_TEST_1);
+        Assert.AreEqual(1 << 22, (long)SignedMacroValuesToEnumTest.SIGNED_MACRO_VALUES_TO_ENUM_TEST_2);
+        Assert.AreEqual(1L << 32, (long)SignedMacroValuesToEnumTest.SIGNED_MACRO_VALUES_TO_ENUM_TEST_3);
+        Assert.AreEqual(-1, (long)SignedMacroValuesToEnumTest.SIGNED_MACRO_VALUES_TO_ENUM_TEST_4);
+    }
+
+    [Test]
+    public void BoolValuedEnumsTest()
+    {
+        Assert.AreEqual(typeof(byte), Enum.GetUnderlyingType(typeof(TestBoolValuedEnums)));
+        Assert.AreEqual(Convert.ToByte(true), (byte)TestBoolValuedEnums.TEST_BOOL_VALUED_ENUMS_V1);
+        Assert.AreEqual(Convert.ToByte(false), (byte)TestBoolValuedEnums.TEST_BOOL_VALUED_ENUMS_V2);
+        Assert.AreEqual(Convert.ToByte(42), (byte)TestBoolValuedEnums.TEST_BOOL_VALUED_ENUMS_V3);
     }
 
     [Test]
