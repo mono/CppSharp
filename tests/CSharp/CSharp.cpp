@@ -1457,8 +1457,11 @@ TestString::~TestString()
 }
 
 TestChar32String::TestChar32String() : 
-    thirtyTwoBitConst(U"ქართული ენა"), 
-    thirtyTwoBitNonConst(U"Test String") {}
+    thirtyTwoBitConst(U"ქართული ენა")
+{
+    static std::u32string nonConst = U"Test String";
+    thirtyTwoBitNonConst = &nonConst[0];
+}
 
 TestChar32String::~TestChar32String() {}
 void TestChar32String::UpdateString(const char32_t* s) 
@@ -1470,8 +1473,11 @@ void TestChar32String::UpdateString(const char32_t* s)
 const char32_t* TestChar32String::RetrieveString() { return thirtyTwoBitConst; }
 
 TestChar16String::TestChar16String() : 
-    sixteenBitConst(u"ქართული ენა"), 
-    sixteenBitNonConst(u"Test String") {}
+    sixteenBitConst(u"ქართული ენა") 
+{
+    static std::u16string nonConst = u"Test String";
+    sixteenBitNonConst = &nonConst[0];
+}
 
 TestChar16String::~TestChar16String() {}
 
