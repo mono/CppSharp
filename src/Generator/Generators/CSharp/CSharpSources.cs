@@ -1417,13 +1417,17 @@ namespace CppSharp.Generators.CSharp
                 if (templateSubstitution != null && returnType.Type.IsDependent)
                     Write($"({templateSubstitution.ReplacedParameter.Parameter.Name}) (object) ");
                 if ((final.IsPrimitiveType() && !final.IsPrimitiveType(PrimitiveType.Void) &&
-                    (!final.IsPrimitiveType(PrimitiveType.Char) &&
-                     !final.IsPrimitiveType(PrimitiveType.WideChar) ||
+                    ((!final.IsPrimitiveType(PrimitiveType.Char) &&
+                      !final.IsPrimitiveType(PrimitiveType.WideChar) &&
+                      !final.IsPrimitiveType(PrimitiveType.Char16) &&
+                      !final.IsPrimitiveType(PrimitiveType.Char32)) ||
                      (!Context.Options.MarshalCharAsManagedChar &&
                       !((PointerType) field.Type).QualifiedPointee.Qualifiers.IsConst)) &&
                     templateSubstitution == null) ||
                     (!((PointerType) field.Type).QualifiedPointee.Qualifiers.IsConst &&
-                     final.IsPrimitiveType(PrimitiveType.WideChar)))
+                      (final.IsPrimitiveType(PrimitiveType.WideChar) || 
+                       final.IsPrimitiveType(PrimitiveType.Char16) || 
+                       final.IsPrimitiveType(PrimitiveType.Char32))))
                     Write($"({field.Type.GetPointee().Desugar()}*) ");
             }
             WriteLine($"{@return};");

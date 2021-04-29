@@ -1452,13 +1452,39 @@ TestString::TestString() : unicodeConst(L"ქართული ენა"), uni
 {
 }
 
-void decltypeFunctionPointer() {}
-
-void usesDecltypeFunctionPointer(funcPtr func) {}
-
 TestString::~TestString()
 {
 }
+
+TestChar32String::TestChar32String() : 
+    thirtyTwoBitConst(U"ქართული ენა"), 
+    thirtyTwoBitNonConst(U"Test String") {}
+
+TestChar32String::~TestChar32String() {}
+void TestChar32String::UpdateString(const char32_t* s) 
+{ 
+    static std::u32string nativeOwnedMemory = s;
+    thirtyTwoBitConst = nativeOwnedMemory.data();
+}
+
+const char32_t* TestChar32String::RetrieveString() { return thirtyTwoBitConst; }
+
+TestChar16String::TestChar16String() : 
+    sixteenBitConst(u"ქართული ენა"), 
+    sixteenBitNonConst(u"Test String") {}
+
+TestChar16String::~TestChar16String() {}
+
+void TestChar16String::UpdateString(const char16_t* s) 
+{ 
+    static std::u16string nativeOwnedMemory = s;
+    sixteenBitConst = nativeOwnedMemory.data(); 
+}
+const char16_t* TestChar16String::RetrieveString() { return sixteenBitConst; }
+
+void decltypeFunctionPointer() {}
+
+void usesDecltypeFunctionPointer(funcPtr func) {}
 
 PrimaryBaseWithAbstractWithDefaultArg::PrimaryBaseWithAbstractWithDefaultArg()
 {
