@@ -1146,6 +1146,31 @@ public:
     wchar_t* unicode;
 };
 
+class DLL_API TestChar32String
+{
+public:
+    TestChar32String();
+    ~TestChar32String();
+    const char32_t* thirtyTwoBitConst;
+    char32_t* thirtyTwoBitNonConst;
+
+    void UpdateString(const char32_t* s);
+    const char32_t* RetrieveString();
+};
+
+class DLL_API TestChar16String
+{
+public:
+    TestChar16String();
+    ~TestChar16String();
+    const char16_t* sixteenBitConst;
+    char16_t* sixteenBitNonConst;
+
+    void UpdateString(const char16_t* s);
+    const char16_t* RetrieveString();
+};
+
+
 DLL_API void decltypeFunctionPointer();
 
 using funcPtr = decltype(&decltypeFunctionPointer);

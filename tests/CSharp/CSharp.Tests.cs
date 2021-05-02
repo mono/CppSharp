@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using CSharp;
 using NUnit.Framework;
 
@@ -866,6 +867,153 @@ public unsafe class CSharpTests
         {
             Assert.That(testString.UnicodeConst, Is.EqualTo("ქართული ენა"));
         }
+    }
+
+    [Test]
+    public void TestStringMemManagement()
+    {
+        const int instanceCount = 100;
+        const string otherString = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+
+        var batch = new TestString[instanceCount];
+        for (var i = 0; i < instanceCount; i++)
+        {
+            batch[i] = new TestString { UnicodeConst = otherString };
+            if (batch[i].UnicodeConst != otherString)
+            {
+                throw new Exception($"iteration {i}");
+            }
+        }
+
+        GC.Collect();
+
+        for (var i = 0; i < instanceCount; i++) 
+        {
+            if (batch[i].UnicodeConst != otherString)
+            {
+                throw new Exception($"iteration {i}");
+            }
+            Assert.That(batch[i].UnicodeConst, Is.EqualTo(otherString));
+        }
+
+        Array.ForEach(batch, ts => ts.Dispose());
+    }
+
+    static bool OwnsNativeMemory<T>(T instance, string fieldName)
+    {
+        return (bool)instance.GetType()
+            .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
+            .GetValue(instance);
+    }
+
+    [Test]
+    public void TestManagedOwnsChar32String()
+    {
+        const string constructorString = "ქართული ენა";
+        const string str = "ßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵ";
+
+        using (var ts = new TestChar32String())
+        {
+            Assert.That(ts.ThirtyTwoBitConst, Is.EqualTo(constructorString));
+            Assert.That(OwnsNativeMemory(ts, "__thirtyTwoBitConst_OwnsNativeMemory"), Is.EqualTo(false));
+
+            ts.ThirtyTwoBitConst = str;
+            Assert.That(ts.RetrieveString, Is.EqualTo(str));
+            Assert.That(OwnsNativeMemory(ts, "__thirtyTwoBitConst_OwnsNativeMemory"), Is.EqualTo(true));
+        }
+    }
+
+    [Test]
+    public void TestNativeOwnsChar32String()
+    {
+        const string constructorString = "ქართული ენა";
+        const string str = "ҪҫҬҭҮүҰұҲҳҴҵҶҷҸҹҺһҼҽҾҿӀӁӂӃӄӅӆӇӈӉӊӋӌӍӎӏӐӑӒӓӔӕӖӗӘәӚӛӜӝӞӟӠӡӢӣӤӥӦӧӨөӪӫӬӭӮӯӰӱӲӳӴӵӶӷӸӹӺӻӼӽ";
+        const string otherStr = "Test String";
+
+        using (var ts = new TestChar32String())
+        {
+            Assert.That(ts.ThirtyTwoBitConst, Is.EqualTo(constructorString));
+            Assert.That(OwnsNativeMemory(ts, "__thirtyTwoBitConst_OwnsNativeMemory"), Is.EqualTo(false));
+            ts.UpdateString(str);
+            Assert.That(ts.ThirtyTwoBitConst, Is.EqualTo(str));
+            Assert.That(OwnsNativeMemory(ts, "__thirtyTwoBitConst_OwnsNativeMemory"), Is.EqualTo(false));
+
+            var x = (uint *)ts.ThirtyTwoBitNonConst;
+            for (int i = 0; i < otherStr.Length; i++)
+            {
+                Assert.That(*x++, Is.EqualTo(otherStr[i]));
+            }
+            Assert.That(*x, Is.EqualTo(0));
+        }
+    }
+
+    [Test]
+    public void TestManagedOwnsChar16String()
+    {
+        const string constructorString = "ქართული ენა";
+        const string str = "ßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵ";
+
+        using (var ts = new TestChar16String())
+        {
+            Assert.That(ts.SixteenBitConst, Is.EqualTo(constructorString));
+            Assert.That(OwnsNativeMemory(ts, "__sixteenBitConst_OwnsNativeMemory"), Is.EqualTo(false));
+
+            ts.SixteenBitConst = str;
+            Assert.That(ts.RetrieveString, Is.EqualTo(str));
+            Assert.That(OwnsNativeMemory(ts, "__sixteenBitConst_OwnsNativeMemory"), Is.EqualTo(true));
+        }
+    }
+
+    [Test]
+    public void TestNativeOwnsChar16String()
+    {
+        const string constructorString = "ქართული ენა";
+        const string str = "ѐёђѓєѕіїјљњћќѝўџѠѡѢѣѤѥѦѧѨѩѪѫѬѭѮѯѰѱѲѳѴѵѶѷѸѹѺѻѼѽѾѿҀҁҊҋҌҍҎҏҐґҒғҔҕҖҗҘҙҚқҜҝҞҟҠҡҢңҤҥҦҧҨҩ";
+        const string otherStr = "Test String";
+
+        using (var ts = new TestChar16String())
+        {
+            Assert.That(ts.SixteenBitConst, Is.EqualTo(constructorString));
+            Assert.That(OwnsNativeMemory(ts, "__sixteenBitConst_OwnsNativeMemory"), Is.EqualTo(false));
+
+            ts.UpdateString(str);
+            Assert.That(ts.SixteenBitConst, Is.EqualTo(str));
+            Assert.That(OwnsNativeMemory(ts, "__sixteenBitConst_OwnsNativeMemory"), Is.EqualTo(false));
+
+            var x = ts.SixteenBitNonConst;
+            for (int i = 0; i < otherStr.Length; i++)
+            {
+                Assert.That(*x++, Is.EqualTo(otherStr[i]));
+            }
+            Assert.That(*x, Is.EqualTo(0));
+        }
+    }
+
+    [Test]
+    public void TestStringRefWithCopyConstructor()
+    {
+        const string otherString = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+        var ts1 = new TestString { UnicodeConst = otherString };
+        var ts2 = new TestString(ts1);
+
+        // verify that the copy has its own reference to UnicodeConst.
+        var ownsNativeMemory = (bool)ts2.GetType()
+                    .GetField("__unicodeConst_OwnsNativeMemory", BindingFlags.Instance | BindingFlags.NonPublic)
+                    .GetValue(ts2);
+        Assert.That(true, Is.EqualTo(ownsNativeMemory));
+
+        var offset = Marshal.OffsetOf<TestString.__Internal>("unicodeConst");
+        var ts1PtrRef = IntPtr.Add(ts1.__Instance, (int)offset);
+        var ts2PtrRef = IntPtr.Add(ts2.__Instance, (int)offset);
+        var ts1Ptr = *(IntPtr*)ts1PtrRef;
+        var ts2Ptr = *(IntPtr*)ts2PtrRef;
+        Assert.That(ts1Ptr != ts2Ptr);
+
+        // should be able to dispose in any order.
+        Assert.That(otherString, Is.EqualTo(ts1.UnicodeConst));
+        ts1.Dispose();
+        Assert.That(otherString, Is.EqualTo(ts2.UnicodeConst));
+        ts2.Dispose();
     }
 
     [Test]
