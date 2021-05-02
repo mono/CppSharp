@@ -57,6 +57,8 @@ namespace CppSharp.Tests
             var enumTest = ctx.GenerateEnumFromMacros("MyMacroTestEnum", list.ToArray());
 
             ctx.GenerateEnumFromMacros("MyMacroTest2Enum", "MY_MACRO_TEST2_.*");
+            ctx.GenerateEnumFromMacros("SignedMacroValuesToEnumTest", "SIGNED_MACRO_VALUES_TO_ENUM_TEST_.*");
+            ctx.GenerateEnumFromMacros("TestBoolValuedEnums", "TEST_BOOL_VALUED_ENUMS_.*");
 
             enumTest.Namespace = new Namespace()
                 {

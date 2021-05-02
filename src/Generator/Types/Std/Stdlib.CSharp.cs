@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
@@ -96,15 +97,18 @@ namespace CppSharp.Types.Std
                 return new CustomType(typePrinter.IntPtrType);
             }
 
-            var (enconding, _) = GetEncoding();
+            var (encoding, _) = GetEncoding();
 
-            if (enconding == Encoding.ASCII)
-                return new CustomType("[MarshalAs(UnmanagedType.LPStr)] string");
-            else if (enconding == Encoding.UTF8)
+            if (encoding == Encoding.ASCII || encoding == Encoding.Default)
+                // This is not really right. ASCII is 7-bit only - the 8th bit is stripped; ANSI has
+                // multi-byte support via a code page. MarshalAs(UnmanagedType.LPStr) marshals as ANSI.
+                // Perhaps we need a CppSharp.Runtime.ASCIIMarshaller?
+                return new CustomType("[MarshalAs(UnmanagedType.LPStr)] string");   
+            else if (encoding == Encoding.UTF8)
                 return new CustomType("[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string");
-            else if (enconding == Encoding.Unicode || enconding == Encoding.BigEndianUnicode)
+            else if (encoding == Encoding.Unicode || encoding == Encoding.BigEndianUnicode)
                 return new CustomType("[MarshalAs(UnmanagedType.LPWStr)] string");
-            else if (enconding == Encoding.UTF32)
+            else if (encoding == Encoding.UTF32)
                 return new CustomType("[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF32Marshaller))] string");
 
             throw new System.NotSupportedException(
@@ -129,14 +133,63 @@ namespace CppSharp.Types.Std
             if (substitution != null)
                 param = $"({substitution.Replacement}) (object) {param}";
 
-            string bytes = $"__bytes{ctx.ParameterIndex}";
-            string bytePtr = $"__bytePtr{ctx.ParameterIndex}";
-            ctx.Before.WriteLine($@"byte[] {bytes} = global::System.Text.Encoding.{
-                GetEncoding().Name}.GetBytes({param});");
-            ctx.Before.WriteLine($"fixed (byte* {bytePtr} = {bytes})");
-            ctx.HasCodeBlock = true;
-            ctx.Before.WriteOpenBraceAndIndent();
-            ctx.Return.Write($"new global::System.IntPtr({bytePtr})");
+            // Allow setting native field to null via setter property.
+            if (ctx.MarshalKind == MarshalKind.NativeField)
+            {
+                // Free memory if we're holding a pointer to unmanaged memory that we (think we)
+                // allocated. We can't simply compare with IntPtr.Zero since the reference could be
+                // owned by the native side.
+
+                // TODO: Surely, we can do better than stripping out the name of the field using
+                // string manipulation on the ReturnVarName, but I don't see it yet. Seems like it
+                // would be really helpful to have ctx hold a Decl property representing the
+                // "appropriate" Decl when we get here. When MarshalKind == NativeField, Decl would
+                // be set to the Field we're operating on.
+                var fieldName = ctx.ReturnVarName.Substring(ctx.ReturnVarName.LastIndexOf("->") + 2); 
+                
+                ctx.Before.WriteLine($"if (__{fieldName}_OwnsNativeMemory)");
+                ctx.Before.WriteLineIndent($"Marshal.FreeHGlobal({ctx.ReturnVarName});");
+                ctx.Before.WriteLine($"__{fieldName}_OwnsNativeMemory = true;");
+                ctx.Before.WriteLine($"if ({param} == null)");
+                ctx.Before.WriteOpenBraceAndIndent();
+                ctx.Before.WriteLine($"{ctx.ReturnVarName} = global::System.IntPtr.Zero;");
+                ctx.Before.WriteLine("return;");
+                ctx.Before.UnindentAndWriteCloseBrace();
+            }
+
+            var bytes = $"__bytes{ctx.ParameterIndex}";
+            var bytePtr = $"__bytePtr{ctx.ParameterIndex}";
+            var encodingName = GetEncoding().Name;
+
+            switch (encodingName)
+            {
+                case nameof(Encoding.Unicode):
+                    ctx.Before.WriteLine($@"var {bytePtr} = Marshal.StringToHGlobalUni({param});");
+                    break;
+                case nameof(Encoding.Default):
+                    ctx.Before.WriteLine($@"var {bytePtr} = Marshal.StringToHGlobalAnsi({param});");
+                    break;
+                default:
+                    {
+                        var encodingBytesPerChar = GetCharWidth() / 8;
+                        var writeNulMethod = encodingBytesPerChar switch
+                        {
+                            1 => nameof(Marshal.WriteByte),
+                            2 => nameof(Marshal.WriteInt16),
+                            4 => nameof(Marshal.WriteInt32),
+                            _ => throw new System.NotImplementedException(
+                                    $"Encoding bytes per char: {encodingBytesPerChar} is not implemented.")
+                        };
+
+                        ctx.Before.WriteLine($@"var {bytes} = global::System.Text.Encoding.{encodingName}.GetBytes({param});");
+                        ctx.Before.WriteLine($@"var {bytePtr} = Marshal.AllocHGlobal({bytes}.Length + {encodingBytesPerChar});");
+                        ctx.Before.WriteLine($"Marshal.Copy({bytes}, 0, {bytePtr}, {bytes}.Length);");
+                        ctx.Before.WriteLine($"Marshal.{writeNulMethod}({bytePtr} + {bytes}.Length, 0);");
+                    }
+                    break;
+            }
+
+            ctx.Return.Write($"{bytePtr}");
         }
 
         public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)
@@ -168,6 +221,8 @@ namespace CppSharp.Types.Std
             switch (GetCharWidth())
             {
                 case 8:
+                    if (Context.Options.Encoding == Encoding.Default)   // aka ANSI with system default code page
+                        return (Context.Options.Encoding, nameof(Encoding.Default));
                     if (Context.Options.Encoding == Encoding.ASCII)
                         return (Context.Options.Encoding, nameof(Encoding.ASCII));
                     if (Context.Options.Encoding == Encoding.UTF8)

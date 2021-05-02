@@ -92,67 +92,117 @@ namespace CppSharp
                     select @enum).FirstOrDefault();
         }
 
+        /// <summary>
+        /// Constructs an <see cref="Enumeration.Item"/> by parsing the <see
+        /// cref="MacroDefinition.Expression"/> in <paramref name="macro"/>. 
+        /// </summary>
+        /// <remarks>
+        /// As a side effect, updates <see cref="Enumeration.Type"/> and <see
+        /// cref="Enumeration.BuiltinType"/> in <paramref name="@enum"/> to reflect an appropriate 
+        /// primitive type that can hold the newly-parsed <paramref name="macro"/> expression value 
+        /// as well as all previously discovered <see cref="Enumeration.Items"/>. The intent is to
+        /// preserve sign information about the values held in <paramref name="enum"/>.
+        /// </remarks>
         public static Enumeration.Item GenerateEnumItemFromMacro(this Enumeration @enum,
             MacroDefinition macro)
         {
+            var (value, type) = ParseEnumItemMacroExpression(macro, @enum);
+            if (type > @enum.BuiltinType.Type)
+            {
+                @enum.BuiltinType = new BuiltinType(type);
+                @enum.Type = @enum.BuiltinType;
+            }
             return new Enumeration.Item
-                {
-                    Name = macro.Name,
-                    Expression = macro.Expression,
-                    Value = ParseEnumItemMacroExpression(macro, @enum),
-                    Namespace = @enum
-                };
+            {
+                Name = macro.Name,
+                Expression = macro.Expression,
+                Value = value,
+                Namespace = @enum
+            };
         }
 
-        static bool EvaluateEnumExpression(string expr, Enumeration @enum, out object eval)
+        static object EvaluateEnumExpression(string expr, Enumeration @enum)
         {
-            var evaluator = new ExpressionEvaluator { Variables = new Dictionary<string, object>() };
+            // Include values of past items. Convert values to reflect the current
+            // estimate of the PrimitiveType. In particular, recover sign information.
+            var evaluator = new ExpressionEvaluator(@enum.Items.ToDictionary(
+                item => item.Name,
+                item => @enum.BuiltinType.Type switch
+                        {
+                            PrimitiveType.SChar => (sbyte)item.Value,
+                            PrimitiveType.Short => (short)item.Value,
+                            PrimitiveType.Int => (int)item.Value,
+                            PrimitiveType.LongLong => (long)item.Value,
+                            PrimitiveType.UChar => (byte)item.Value,
+                            PrimitiveType.UShort => (ushort)item.Value,
+                            PrimitiveType.UInt => (uint)item.Value,
+                            PrimitiveType.ULongLong => (object)item.Value,
+                            _ => item.Value
+                        }
+            ));
 
-            // Include values of past items
-            foreach (var item in @enum.Items)
-            {
-                evaluator.Variables.Add(item.Name, item.Value);
-            }
-
-            try
-            {
-                expr = expr.ReplaceLineBreaks(" ").Replace('\\', ' ');
-                eval = evaluator.Evaluate(expr);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Failed to evaluate expression: {ex.Message}");
-            }
+            expr = expr.ReplaceLineBreaks(" ").Replace('\\', ' ');
+            return evaluator.Evaluate(expr);
         }
 
-        static ulong ParseEnumItemMacroExpression(MacroDefinition macro, Enumeration @enum)
+        /// <summary>
+        /// Parse an enum value from a macro expression.
+        /// </summary>
+        /// <returns>
+        /// The result of the expression evaluation cast to a ulong together with the primitive type
+        /// of the result as returned from the expression evaluator. Note that the expression
+        /// evaluator biases towards returning <see cref="int"/> values: it doesn't attempt to
+        /// discover that a value could be stored in a <see cref="byte"/>.
+        /// </returns>
+        static (ulong value, PrimitiveType type) ParseEnumItemMacroExpression(MacroDefinition macro, Enumeration @enum)
         {
             var expression = macro.Expression;
 
+            // The expression evaluator already handles character and string expressions. No need to
+            // special case them here.
+            //
             // TODO: Handle string expressions
-            if (expression.Length == 3 && expression[0] == '\'' && expression[2] == '\'') // '0' || 'A'
-                return expression[1]; // return the ASCII code of this character
+            //if (expression.Length == 3 && expression[0] == '\'' && expression[2] == '\'') // '0' || 'A'
+            //    return expression[1]; // return the ASCII code of this character
 
-            object eval;
             try
             {
-                EvaluateEnumExpression(expression, @enum, out eval);
+                var eval = EvaluateEnumExpression(expression, @enum);
+                // Verify we have some sort of integer type. Enums can have negative values: record
+                // that fact so that we can set the underlying primitive type correctly in the enum
+                // item.
+                switch (System.Type.GetTypeCode(eval.GetType()))
+                {
+                    // Must unbox eval which is typed as object to be able to cast it to a ulong.
+                    case TypeCode.SByte: return ((ulong)(sbyte)eval, PrimitiveType.SChar);
+                    case TypeCode.Int16: return ((ulong)(short)eval, PrimitiveType.Short);
+                    case TypeCode.Int32: return ((ulong)(int)eval, PrimitiveType.Int);
+                    case TypeCode.Int64: return ((ulong)(long)eval, PrimitiveType.LongLong);
+
+                    case TypeCode.Byte: return ((byte)eval, PrimitiveType.UChar);
+                    case TypeCode.UInt16: return ((ushort)eval, PrimitiveType.UShort);
+                    case TypeCode.UInt32: return ((uint)eval, PrimitiveType.UInt);
+                    case TypeCode.UInt64: return ((ulong)eval, PrimitiveType.ULongLong);
+
+                    case TypeCode.Char: return ((char)eval, PrimitiveType.UShort);
+                    // C++ allows booleans as enum values - they're translated to 1, 0.
+                    case TypeCode.Boolean: return ((bool)eval ? 1UL : 0UL, PrimitiveType.UChar);
+
+                    default: throw new Exception($"Expression {expression} is not a valid expression type for an enum");
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // TODO: This should just throw, but we have a pre-existing behavior that expects malformed
                 // macro expressions to default to 0, see CSharp.h (MY_MACRO_TEST2_0), so do it for now.
-                return 0;
-            }
 
-            if (eval is ulong number)
-                return number;
+                // Like other paths, we can however, write a diagnostic message to the console.
 
-            unchecked
-            {
-                ulong val = ((ulong) (int) eval);
-                return val;
+                Diagnostics.PushIndent();
+                Diagnostics.Warning($"Unable to translate macro '{macro.Name}' to en enum value: {ex.Message}");
+                Diagnostics.PopIndent();
+
+                return (0, PrimitiveType.Int);
             }
         }
 
@@ -269,8 +319,30 @@ namespace CppSharp
             if (@enum.Items.Count <= 0)
                 return @enum;
 
-            var maxValue = @enum.Items.Max(i => i.Value);
-            @enum.BuiltinType = new BuiltinType(GetUnderlyingTypeForEnumValue(maxValue));
+            // The value of @enum.BuiltinType has been adjusted on the fly via
+            // GenerateEnumItemFromMacro. However, its notion of PrimitiveType corresponds with
+            // what the ExpressionEvaluator returns. In particular, the expression "1" will result
+            // in PrimitiveType.Int from the expression evaluator. Narrow the type to account for
+            // types narrower than int.
+            // 
+            // Note that there is no guarantee that all items can be held in any builtin type. For
+            // example, some value > long.MaxValue and some negative value. That case will result in
+            // compile errors of the generated code. If needed, we could detect it and print a
+            // diagnostic.
+            ulong maxValue;
+            long minValue;
+            if (@enum.BuiltinType.IsUnsigned)
+            {
+                maxValue = @enum.Items.Max(i => i.Value);
+                minValue = 0;
+            }
+            else
+            {
+                maxValue = (ulong)@enum.Items.Max(i => Math.Max(0, unchecked((long)i.Value)));
+                minValue = @enum.Items.Min(i => unchecked((long)i.Value));
+            }
+            
+            @enum.BuiltinType = new BuiltinType(GetUnderlyingTypeForEnumValue(maxValue, minValue));
             @enum.Type = @enum.BuiltinType;
 
             var unit = macroUnit ?? GetUnitFromItems(items);
@@ -280,33 +352,39 @@ namespace CppSharp
             return @enum;
         }
 
-        private static PrimitiveType GetUnderlyingTypeForEnumValue(ulong maxValue)
+        private static PrimitiveType GetUnderlyingTypeForEnumValue(ulong maxValue, long minValue)
         {
-            if (maxValue < (byte)sbyte.MaxValue)
-                return PrimitiveType.SChar;
+            if (maxValue <= (ulong)sbyte.MaxValue && minValue >= sbyte.MinValue)
+                // Previously, returned PrimitiveType.SChar. But that type doesn't seem to be well-supported elsewhere.
+                // Bias towards UChar (byte), since that's what would normally be used in C#.
+                return minValue >= 0 ? PrimitiveType.UChar : PrimitiveType.SChar;
 
-            if (maxValue < byte.MaxValue)
+            if (maxValue <= byte.MaxValue && minValue >= 0)
                 return PrimitiveType.UChar;
 
-            if (maxValue < (ushort)short.MaxValue)
+            if (maxValue <= (ulong)short.MaxValue && minValue >= short.MinValue)
                 return PrimitiveType.Short;
 
-            if (maxValue < ushort.MaxValue)
+            if (maxValue <= ushort.MaxValue && minValue >= 0)
                 return PrimitiveType.UShort;
 
-            if (maxValue < int.MaxValue)
+            if (maxValue <= int.MaxValue && minValue >= int.MinValue)
                 return PrimitiveType.Int;
 
-            if (maxValue < uint.MaxValue)
+            if (maxValue <= uint.MaxValue && minValue >= 0)
                 return PrimitiveType.UInt;
 
-            if (maxValue < long.MaxValue)
-                return PrimitiveType.Long;
+            if (maxValue <= long.MaxValue && minValue >= long.MinValue)
+                // Previously returned Long. However, LongLong is unambiguous and seems to be supported
+                // wherever PrimitiveType.Long is
+                return PrimitiveType.LongLong;
 
-            if (maxValue < ulong.MaxValue)
-                return PrimitiveType.ULong;
+            if (maxValue <= ulong.MaxValue && minValue >= 0)
+                // Previously returned ULong. However, ULongLong is unambiguous and seems to be supported
+                // wherever PrimitiveType.ULong is
+                return PrimitiveType.ULongLong; // Same as above.
 
-            throw new NotImplementedException();
+            throw new NotImplementedException($"Cannot identify an integral underlying enum type supporting a maximum value of {maxValue} and a minimum value of {minValue}.");
         }
 
         #endregion

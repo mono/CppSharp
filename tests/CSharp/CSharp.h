@@ -1146,6 +1146,31 @@ public:
     wchar_t* unicode;
 };
 
+class DLL_API TestChar32String
+{
+public:
+    TestChar32String();
+    ~TestChar32String();
+    const char32_t* thirtyTwoBitConst;
+    char32_t* thirtyTwoBitNonConst;
+
+    void UpdateString(const char32_t* s);
+    const char32_t* RetrieveString();
+};
+
+class DLL_API TestChar16String
+{
+public:
+    TestChar16String();
+    ~TestChar16String();
+    const char16_t* sixteenBitConst;
+    char16_t* sixteenBitNonConst;
+
+    void UpdateString(const char16_t* s);
+    const char16_t* RetrieveString();
+};
+
+
 DLL_API void decltypeFunctionPointer();
 
 using funcPtr = decltype(&decltypeFunctionPointer);
@@ -1287,6 +1312,14 @@ struct StructTestArrayTypeFromTypedef
                                 MY_MACRO_TEST2_3)
 #define MY_MACRO_TEST2_4     (1 << 3)
 #define MY_MACRO_TEST2_ALL   (1 << 4) - 1
+
+#define SIGNED_MACRO_VALUES_TO_ENUM_TEST_1 1 << 5 
+#define SIGNED_MACRO_VALUES_TO_ENUM_TEST_2 1 << 22
+#define SIGNED_MACRO_VALUES_TO_ENUM_TEST_3 1L << 32
+#define SIGNED_MACRO_VALUES_TO_ENUM_TEST_4 -1
+
+enum TEST_BOOL_VALUED_ENUMS { TEST_BOOL_VALUED_ENUMS_V1 = true, TEST_BOOL_VALUED_ENUMS_V2 = false};
+#define TEST_BOOL_VALUED_ENUMS_V3 42
 
 struct DLL_API ComplexArrayElement
 {
@@ -1510,6 +1543,16 @@ struct DLL_API ClassMicrosoftObjectAlignment : ClassMicrosoftObjectAlignmentBase
     bool boolean;
 };
 
+struct DLL_API EmbeddedStruct
+{
+    uint64_t ui64;
+};
+struct DLL_API StructWithEmbeddedArrayOfStructObjectAlignment
+{
+    bool boolean;
+    EmbeddedStruct embedded_struct[2];
+};
+
 class DLL_API ProtectedConstructorDestructor
 {
 protected:
@@ -1520,6 +1563,7 @@ protected:
 DLL_API extern const unsigned ClassCustomTypeAlignmentOffsets[5];
 DLL_API extern const unsigned ClassCustomObjectAlignmentOffsets[2];
 DLL_API extern const unsigned ClassMicrosoftObjectAlignmentOffsets[4];
+DLL_API extern const unsigned StructWithEmbeddedArrayOfStructObjectAlignmentOffsets[2];
 
 DLL_API const char* TestCSharpString(const char* in, CS_OUT const char** out);
 DLL_API const wchar_t* TestCSharpStringWide(const wchar_t* in, CS_OUT const wchar_t** out);

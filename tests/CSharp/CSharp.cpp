@@ -1452,13 +1452,45 @@ TestString::TestString() : unicodeConst(L"ქართული ენა"), uni
 {
 }
 
-void decltypeFunctionPointer() {}
-
-void usesDecltypeFunctionPointer(funcPtr func) {}
-
 TestString::~TestString()
 {
 }
+
+TestChar32String::TestChar32String() : 
+    thirtyTwoBitConst(U"ქართული ენა")
+{
+    static std::u32string nonConst = U"Test String";
+    thirtyTwoBitNonConst = &nonConst[0];
+}
+
+TestChar32String::~TestChar32String() {}
+void TestChar32String::UpdateString(const char32_t* s) 
+{ 
+    static std::u32string nativeOwnedMemory = s;
+    thirtyTwoBitConst = nativeOwnedMemory.data();
+}
+
+const char32_t* TestChar32String::RetrieveString() { return thirtyTwoBitConst; }
+
+TestChar16String::TestChar16String() : 
+    sixteenBitConst(u"ქართული ენა") 
+{
+    static std::u16string nonConst = u"Test String";
+    sixteenBitNonConst = &nonConst[0];
+}
+
+TestChar16String::~TestChar16String() {}
+
+void TestChar16String::UpdateString(const char16_t* s) 
+{ 
+    static std::u16string nativeOwnedMemory = s;
+    sixteenBitConst = nativeOwnedMemory.data(); 
+}
+const char16_t* TestChar16String::RetrieveString() { return sixteenBitConst; }
+
+void decltypeFunctionPointer() {}
+
+void usesDecltypeFunctionPointer(funcPtr func) {}
 
 PrimaryBaseWithAbstractWithDefaultArg::PrimaryBaseWithAbstractWithDefaultArg()
 {
@@ -1887,4 +1919,10 @@ const unsigned ClassMicrosoftObjectAlignmentOffsets[4]
     offsetof(ClassMicrosoftObjectAlignment, dbl),
     offsetof(ClassMicrosoftObjectAlignment, i16),
     offsetof(ClassMicrosoftObjectAlignment, boolean),
+};
+
+const unsigned StructWithEmbeddedArrayOfStructObjectAlignmentOffsets[2]
+{
+    offsetof(StructWithEmbeddedArrayOfStructObjectAlignment, boolean),
+    offsetof(StructWithEmbeddedArrayOfStructObjectAlignment, embedded_struct),
 };
