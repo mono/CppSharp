@@ -23,17 +23,40 @@ SWIG. So how is it different from SWIG?
  * Strongly-typed customization APIs
  * Can be used as a library
 
-# 2. Targets
+# 2. Generator Backends
 
-The backend of the generator is abstracted and it can target different .NET
-binding technologies:
+The backend of the bindings generator is abstracted and can support several different targets.
+
+It can be changed by using the `Options.GeneratorKind` option.
+
+For .NET we support these bindings technologies:
 
 - C# (P/Invoke)
 - C++/CLI
 
-We have recently introduced an option which makes Clang look up MSVC headers.
-If it works well, we're going to make it the default in our next release.
-Its only disadvantage is the ability to select a specific version of MSVC.
+There is also experimental support for these JavaScript-related targets:
+
+- N-API (Node.js)
+- QuickJS
+- TypeScript
+
+# 3. Native Targets
+
+The parser supports several different targets and needs to be correctly configured to match the compiled native code.
+
+This can be done by using the `ParserOptions.TargetTriple` option.
+
+These triples follow the same format as LLVM/Clang, which is documented [here](https://clang.llvm.org/docs/CrossCompilation.html#target-triple).
+
+Here are a few examples for the most common variants:
+
+- `i686-pc-win32-msvc`
+- `x86_64-pc-win32-msvc`
+- `i686-linux-gnu`
+- `x86_64-linux-gnu`
+- `i686-apple-darwin`
+- `x86_64-apple-darwin`
+
 
 # 3. C/C++ language features
 
