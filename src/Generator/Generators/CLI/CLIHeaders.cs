@@ -262,10 +262,10 @@ namespace CppSharp.Generators.CLI
             GenerateDeclContext(@class);
             Unindent();
 
-            var nativeType = string.Format("::{0}*", @class.QualifiedOriginalName);
+            string nativeType = $"{(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*";
 
             if (CLIGenerator.ShouldGenerateClassNativeField(@class))
-                GenerateClassNativeField(@class, nativeType);
+                GenerateClassNativeField(nativeType);
 
             GenerateClassConstructors(@class, nativeType);
 
@@ -303,15 +303,15 @@ namespace CppSharp.Generators.CLI
             WriteLine("};");
         }
 
-        public void GenerateClassNativeField(Class @class, string nativeType)
+        public void GenerateClassNativeField(string nativeType)
         {
             WriteLineIndent("property {0} NativePtr;", nativeType);
 
             Indent();
-            WriteLine("property System::IntPtr {0}", Helpers.InstanceIdentifier);
+            WriteLine("property ::System::IntPtr {0}", Helpers.InstanceIdentifier);
             WriteOpenBraceAndIndent();
-            WriteLine("virtual System::IntPtr get();");
-            WriteLine("virtual void set(System::IntPtr instance);");
+            WriteLine("virtual ::System::IntPtr get();");
+            WriteLine("virtual void set(::System::IntPtr instance);");
             UnindentAndWriteCloseBrace();
             NewLine();
 
@@ -455,7 +455,7 @@ namespace CppSharp.Generators.CLI
 
             GenerateDeclarationCommon(field);
             if (@class.IsUnion)
-                WriteLine("[System::Runtime::InteropServices::FieldOffset({0})]",
+                WriteLine("[::System::Runtime::InteropServices::FieldOffset({0})]",
                     @class.Layout.Fields.Single(f => f.FieldPtr == field.OriginalPtr).Offset);
             WriteLine("{0} {1};", field.Type, field.Name);
 
@@ -575,8 +575,8 @@ namespace CppSharp.Generators.CLI
         public override void GenerateClassSpecifier(Class @class)
         {
             if (@class.IsUnion)
-                WriteLine("[System::Runtime::InteropServices::StructLayout({0})]",
-                          "System::Runtime::InteropServices::LayoutKind::Explicit");
+                WriteLine("[::System::Runtime::InteropServices::StructLayout({0})]",
+                          "::System::Runtime::InteropServices::LayoutKind::Explicit");
 
             // Nested types cannot have visibility modifiers in C++/CLI.
             var isTopLevel = @class.Namespace is TranslationUnit ||
@@ -760,8 +760,8 @@ namespace CppSharp.Generators.CLI
                     : ((FunctionType)attributedType).CallingConvention;
                 var interopCallConv = callingConvention.ToInteropCallConv();
                 if (interopCallConv != System.Runtime.InteropServices.CallingConvention.Winapi)
-                    WriteLine("[System::Runtime::InteropServices::UnmanagedFunctionPointer" + 
-                        "(System::Runtime::InteropServices::CallingConvention::{0})] ",
+                    WriteLine("[::System::Runtime::InteropServices::UnmanagedFunctionPointer" + 
+                        "(::System::Runtime::InteropServices::CallingConvention::{0})] ",
                         interopCallConv);
 
                 var visibility = !insideClass ? "public " : string.Empty;

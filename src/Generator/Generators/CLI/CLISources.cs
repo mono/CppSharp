@@ -136,18 +136,18 @@ namespace CppSharp.Generators.CLI
                 var qualifiedIdentifier = QualifiedIdentifier(@class);
 
                 PushBlock(BlockKind.Method);
-                WriteLine("System::IntPtr {0}::{1}::get()",
+                WriteLine("::System::IntPtr {0}::{1}::get()",
                     qualifiedIdentifier, Helpers.InstanceIdentifier);
                 WriteOpenBraceAndIndent();
-                WriteLine("return System::IntPtr(NativePtr);");
+                WriteLine("return ::System::IntPtr(NativePtr);");
                 UnindentAndWriteCloseBrace();
                 PopBlock(NewLineKind.BeforeNextBlock);
 
                 PushBlock(BlockKind.Method);
-                WriteLine("void {0}::{1}::set(System::IntPtr object)",
+                WriteLine("void {0}::{1}::set(::System::IntPtr object)",
                     qualifiedIdentifier, Helpers.InstanceIdentifier);
                 WriteOpenBraceAndIndent();
-                var nativeType = $"::{@class.QualifiedOriginalName}*";
+                var nativeType = $"{(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*";
                 WriteLine("NativePtr = ({0})object.ToPointer();", nativeType);
                 UnindentAndWriteCloseBrace();
                 PopBlock(NewLineKind.BeforeNextBlock);
@@ -260,7 +260,7 @@ namespace CppSharp.Generators.CLI
                 WriteOpenBraceAndIndent();
                 WriteLine("auto __nativePtr = NativePtr;");
                 WriteLine("NativePtr = 0;");
-                WriteLine("delete (::{0}*) __nativePtr;", @class.QualifiedOriginalName);
+                WriteLine($"delete ({(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*) __nativePtr;", @class.QualifiedOriginalName);
                 UnindentAndWriteCloseBrace();
             }
 
@@ -398,7 +398,7 @@ namespace CppSharp.Generators.CLI
                 if (decl is Variable)
                     variable = $"::{@class.QualifiedOriginalName}::{decl.OriginalName}";
                 else
-                    variable = $"((::{@class.QualifiedOriginalName}*)NativePtr)->{decl.OriginalName}";
+                    variable = $"(({(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*)NativePtr)->{decl.OriginalName}";
 
                 var ctx = new MarshalContext(Context, CurrentIndentation)
                 {
@@ -483,8 +483,10 @@ namespace CppSharp.Generators.CLI
                 string variable;
                 if (decl is Variable)
                     variable = $"::{@class.QualifiedOriginalName}::{decl.OriginalName}";
+                else if (CLIGenerator.ShouldGenerateClassNativeField(@class))
+                    variable = $"NativePtr->{decl.OriginalName}";
                 else
-                    variable = $"((::{@class.QualifiedOriginalName}*)NativePtr)->{decl.OriginalName}";
+                    variable = $"(({(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*)NativePtr)->{decl.OriginalName}";
 
                 var ctx = new MarshalContext(Context, CurrentIndentation)
                 {
@@ -543,12 +545,11 @@ namespace CppSharp.Generators.CLI
             WriteLine("auto _fptr = (void (*)({0}))Marshal::GetFunctionPointerForDelegate({1}Instance).ToPointer();",
                 args, delegateName);
 
-            WriteLine("((::{0}*)NativePtr)->{1}.Connect(_fptr);", @class.QualifiedOriginalName,
-                @event.OriginalName);
+            WriteLine($"(({(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*)NativePtr)->{@event.OriginalName}.Connect(_fptr);");
 
             UnindentAndWriteCloseBrace();
 
-            WriteLine("_{0} = static_cast<{1}>(System::Delegate::Combine(_{0}, evt));",
+            WriteLine("_{0} = static_cast<{1}>(::System::Delegate::Combine(_{0}, evt));",
                 @event.Name, @event.Type);
 
             UnindentAndWriteCloseBrace();
@@ -560,7 +561,7 @@ namespace CppSharp.Generators.CLI
                       @event.Name, @event.Type);
             WriteOpenBraceAndIndent();
 
-            WriteLine("_{0} = static_cast<{1}>(System::Delegate::Remove(_{0}, evt));",
+            WriteLine("_{0} = static_cast<{1}>(::System::Delegate::Remove(_{0}, evt));",
                 @event.Name, @event.Type);
 
             UnindentAndWriteCloseBrace();
@@ -630,7 +631,7 @@ namespace CppSharp.Generators.CLI
 
             Write("{0}::{1}(", qualifiedIdentifier, @class.Name);
 
-            var nativeType = string.Format("::{0}*", @class.QualifiedOriginalName);
+            string nativeType = $"{(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*";
             WriteLine(!withOwnNativeInstanceParam ? "{0} native)" : "{0} native, bool ownNativeInstance)", nativeType);
 
             var hasBase = GenerateClassConstructorBase(@class, null, withOwnNativeInstanceParam);
@@ -784,7 +785,8 @@ namespace CppSharp.Generators.CLI
                     if (!@class.IsAbstract)
                     {
                         var @params = GenerateFunctionParamsMarshal(method.Parameters, method);
-                        Write("NativePtr = new ::{0}(", method.Namespace.QualifiedOriginalName);
+                        Write($@"NativePtr = new {(@class.IsUnion ? "union" : "struct")} ::{
+                            @class.QualifiedOriginalName}(");
                         GenerateFunctionParams(@params);
                         WriteLine(");");
                     }
@@ -867,8 +869,8 @@ namespace CppSharp.Generators.CLI
                 names.Add(marshal.Context.Return);
             }
 
-            WriteLine("::{0} _native({1});", @class.QualifiedOriginalName,
-                      string.Join(", ", names));
+            WriteLine($@"{(@class.IsUnion ? "union" : "struct")} ::{
+                @class.QualifiedOriginalName} _native({string.Join(", ", names)});");
 
             GenerateValueTypeConstructorCallProperties(@class);
         }
@@ -959,7 +961,7 @@ namespace CppSharp.Generators.CLI
             var isValueType = @class != null && @class.IsValueType;
             if (isValueType && !IsNativeFunctionOrStaticMethod(function))
             {
-                WriteLine("auto {0} = ::{1}();", valueMarshalName, @class.QualifiedOriginalName);
+                WriteLine($"auto {valueMarshalName} = {(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}();");
 
                 var param = new Parameter { Name = "(*this)" , Namespace = function.Namespace };
                 var ctx = new MarshalContext(Context, CurrentIndentation)
@@ -1018,7 +1020,7 @@ namespace CppSharp.Generators.CLI
                     if (isValueType)
                         Write($"{valueMarshalName}.");
                     else if (IsNativeMethod(function))
-                        Write("((::{0}*)NativePtr)->", @class.QualifiedOriginalName);
+                        Write($"(({(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*)NativePtr)->");
                     Write("{0}(", function.OriginalName);
                 }
 
@@ -1067,7 +1069,7 @@ namespace CppSharp.Generators.CLI
                 {
                     WriteLine("if ({0} == nullptr) return {1};",
                         returnIdentifier,
-                        isIntPtr ? "System::IntPtr()" : "nullptr");
+                        isIntPtr ? "::System::IntPtr()" : "nullptr");
                 }
 
                 var ctx = new MarshalContext(Context, CurrentIndentation)
@@ -1103,10 +1105,10 @@ namespace CppSharp.Generators.CLI
                 foreach (var param in method.Parameters.Where(
                     p => p.Type.IsPrimitiveType(PrimitiveType.Char)))
                 {
-                    WriteLine("if ({0} < System::Char::MinValue || {0} > System::SByte::MaxValue)", param.Name);
+                    WriteLine("if ({0} < ::System::Char::MinValue || {0} > ::System::SByte::MaxValue)", param.Name);
                     // C++/CLI can actually handle char -> sbyte in all case, this is for compatibility with the C# generator
                     WriteLineIndent(
-                        "throw gcnew System::OverflowException(\"{0} must be in the range {1} - {2}.\");",
+                        "throw gcnew ::System::OverflowException(\"{0} must be in the range {1} - {2}.\");",
                         param.Name, (int) char.MinValue, sbyte.MaxValue);
                 }
             }

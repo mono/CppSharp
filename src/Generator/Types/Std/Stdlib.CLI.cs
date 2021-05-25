@@ -148,7 +148,7 @@ namespace CppSharp.Types.Std
         public override Type CLISignatureType(TypePrinterContext ctx)
         {
             return new CustomType(
-                $"System::Collections::Generic::List<{ctx.GetTemplateParameterList()}>^");
+                $"::System::Collections::Generic::List<{ctx.GetTemplateParameterList()}>^");
         }
 
         public override void CLIMarshalToNative(MarshalContext ctx)
@@ -221,7 +221,7 @@ namespace CppSharp.Types.Std
             var tmpVarName = "_tmp" + ctx.ArgName;
             
             ctx.Before.WriteLine(
-                "auto {0} = gcnew System::Collections::Generic::List<{1}>();",
+                "auto {0} = gcnew ::System::Collections::Generic::List<{1}>();",
                 tmpVarName, managedType);
 
             string retVarName = ctx.ReturnType.Type.Desugar().IsPointer() ? $"*{ctx.ReturnVarName}" : ctx.ReturnVarName;
@@ -266,7 +266,7 @@ namespace CppSharp.Types.Std
         {
             var type = Type as TemplateSpecializationType;
             return new CustomType(
-                $@"System::Collections::Generic::Dictionary<{
+                $@"::System::Collections::Generic::Dictionary<{
                     type.Arguments[0].Type}, {type.Arguments[1].Type}>^");
         }
 

@@ -227,7 +227,7 @@ namespace CppSharp.Tests
             }
 
             return new CustomType(
-                $@"System.Collections.Generic.{
+                $@"global::System.Collections.Generic.{
                     (ctx.MarshalKind == MarshalKind.DefaultExpression ? "List" : "IList")}<{
                     ctx.GetTemplateParameterList()}>");
         }
