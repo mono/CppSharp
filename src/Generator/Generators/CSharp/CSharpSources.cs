@@ -375,7 +375,7 @@ namespace CppSharp.Generators.CSharp
             base.GenerateDeclarationCommon(decl);
 
             foreach (Attribute attribute in decl.Attributes)
-                WriteLine("[{0}({1})]", attribute.Type.FullName, attribute.Value);
+                WriteLine("[global::{0}({1})]", attribute.Type.FullName, attribute.Value);
         }
 
         #region Classes
@@ -2365,7 +2365,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetOrCreateInst
 internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({TypePrinter.IntPtrType} native)
 {{
     if (!NativeToManagedMap.TryGetValue(native, out var managed))
-        throw new System.Exception(""No managed instance was found"");
+        throw new global::System.Exception(""No managed instance was found"");
     var result = ({printedClass})managed;
     if (result.{Helpers.OwnsNativeInstanceIdentifier})
         result.SetupVTables();
@@ -3423,6 +3423,11 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
             if (function.IsPure)
                 return;
 
+            if (function.OriginalName == "system_do_it")
+            {
+                System.Diagnostics.Debugger.Break();
+            }
+
             PushBlock(BlockKind.InternalsClassMethod);
             var callConv = function.CallingConvention.ToInteropCallConv();
 
@@ -3555,7 +3560,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
             {
                 WriteLine($"var path = \"{path}\";");
                 WriteLine("var image = CppSharp.SymbolResolver.LoadImage(ref path);");
-                WriteLine("if (image == IntPtr.Zero) throw new System.DllNotFoundException(path);");
+                WriteLine("if (image == IntPtr.Zero) throw new global::System.DllNotFoundException(path);");
 
                 foreach (var symbol in symbols)
                 {

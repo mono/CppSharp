@@ -38,7 +38,7 @@ namespace CppSharp.Generators.CLI
             if (array.SizeType == ArrayType.ArraySize.Incomplete &&
                 array.Type.Desugar().IsPrimitiveType(PrimitiveType.Char) &&
                 array.QualifiedType.Qualifiers.IsConst)
-                return "System::String^";
+                return VisitCILType(new CILType(typeof(string)), quals);
 
             return $"cli::array<{array.Type.Visit(this)}>^";
         }
@@ -75,9 +75,9 @@ namespace CppSharp.Generators.CLI
 
             var str = string.Empty;
             if(param.Usage == ParameterUsage.Out)
-                str += "[System::Runtime::InteropServices::Out] ";
+                str += "[::System::Runtime::InteropServices::Out] ";
             else if (param.Usage == ParameterUsage.InOut)
-                str += "[System::Runtime::InteropServices::In, System::Runtime::InteropServices::Out] ";
+                str += "[::System::Runtime::InteropServices::In, ::System::Runtime::InteropServices::Out] ";
 
             str += type;
 
@@ -179,8 +179,8 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.Void: return "void";
                 case PrimitiveType.Char16:
                 case PrimitiveType.Char32:
-                case PrimitiveType.WideChar: return "System::Char";
-                case PrimitiveType.Char: return Options.MarshalCharAsManagedChar ? "System::Char" : "char";
+                case PrimitiveType.WideChar: return "::System::Char";
+                case PrimitiveType.Char: return Options.MarshalCharAsManagedChar ? "::System::Char" : "char";
                 case PrimitiveType.SChar: return "signed char";
                 case PrimitiveType.UChar: return "unsigned char";
                 case PrimitiveType.Short: return "short";
@@ -200,7 +200,7 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.IntPtr: return "IntPtr";
                 case PrimitiveType.UIntPtr: return "UIntPtr";
                 case PrimitiveType.Null: return "void*";
-                case PrimitiveType.String: return "System::String";
+                case PrimitiveType.String: return "::System::String";
             }
 
             throw new NotSupportedException();
@@ -300,7 +300,7 @@ namespace CppSharp.Generators.CLI
             if (!type.Type.IsValueType)
                 result += "^";
 
-            return result;
+            return $"::{result}";
         }
 
         public override TypePrinterResult VisitUnsupportedType(UnsupportedType type, TypeQualifiers quals)

@@ -1549,3 +1549,16 @@ void DLL_API PointerToTypedefPointerTestMethod(LPPointerToTypedefPointerTest* lp
 typedef int *LPINT;
 
 void DLL_API PointerToPrimitiveTypedefPointerTestMethod(LPINT lp, int valToSet);
+
+// this name must match a universally accessible system function or class to reproduce the bug
+struct system
+{
+    int32_t field1;
+    int32_t field2;
+};
+
+extern "C"
+{
+    DLL_API void takeConflictName(struct system* self);
+    DLL_API struct system freeFunctionReturnByValue();
+} // extern "C"
