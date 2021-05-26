@@ -1368,7 +1368,8 @@ namespace CppSharp.Generators.CSharp
             var name = ((Class) field.Namespace).Layout.Fields.First(
                 f => f.FieldPtr == field.OriginalPtr).Name;
             string returnVar;
-            var arrayType = field.Type.Desugar() as ArrayType;
+            Type fieldType = field.Type.Desugar();
+            var arrayType = fieldType as ArrayType;
             if (@class.IsValueType)
             {
                 if (arrayType != null)
@@ -1385,8 +1386,8 @@ namespace CppSharp.Generators.CSharp
                 // Class field getter should return a reference object instead of a copy. Wrapping `returnVar` in
                 // IntPtr ensures that non-copying object constructor is invoked.
                 Class typeClass;
-                if (field.Type.TryGetClass(out typeClass) && !typeClass.IsValueType &&
-                    !ASTUtils.IsMappedToPrimitive(Context.TypeMaps, field.Type))
+                if (fieldType.TryGetClass(out typeClass) && !typeClass.IsValueType &&
+                    !ASTUtils.IsMappedToPrimitive(Context.TypeMaps, fieldType))
                     returnVar = $"new {TypePrinter.IntPtrType}(&{returnVar})";
             }
 
@@ -1410,9 +1411,9 @@ namespace CppSharp.Generators.CSharp
             Write("return ");
 
             var @return = marshal.Context.Return.ToString();
-            if (field.Type.IsPointer())
+            if (fieldType.IsPointer())
             {
-                var final = field.Type.GetFinalPointee().Desugar(resolveTemplateSubstitution: false);
+                var final = fieldType.GetFinalPointee().Desugar(resolveTemplateSubstitution: false);
                 var templateSubstitution = final as TemplateParameterSubstitutionType;
                 if (templateSubstitution != null && returnType.Type.IsDependent)
                     Write($"({templateSubstitution.ReplacedParameter.Parameter.Name}) (object) ");
@@ -1422,13 +1423,13 @@ namespace CppSharp.Generators.CSharp
                       !final.IsPrimitiveType(PrimitiveType.Char16) &&
                       !final.IsPrimitiveType(PrimitiveType.Char32)) ||
                      (!Context.Options.MarshalCharAsManagedChar &&
-                      !((PointerType) field.Type).QualifiedPointee.Qualifiers.IsConst)) &&
+                      !((PointerType) fieldType).QualifiedPointee.Qualifiers.IsConst)) &&
                     templateSubstitution == null) ||
-                    (!((PointerType) field.Type).QualifiedPointee.Qualifiers.IsConst &&
+                    (!((PointerType) fieldType).QualifiedPointee.Qualifiers.IsConst &&
                       (final.IsPrimitiveType(PrimitiveType.WideChar) || 
                        final.IsPrimitiveType(PrimitiveType.Char16) || 
                        final.IsPrimitiveType(PrimitiveType.Char32))))
-                    Write($"({field.Type.GetPointee().Desugar()}*) ");
+                    Write($"({fieldType.GetPointee().Desugar()}*) ");
             }
             WriteLine($"{@return};");
 

@@ -24,6 +24,7 @@ public class CommonTests
             Assert.That(foo.B, Is.EqualTo(5));
             Bar bar = foo;
             Assert.IsTrue(Bar.Item.Item1 == bar);
+            foo.FieldOfTypedefPrimitivePointer = null;
 
             using (var hasOverloadsWithDifferentPointerKindsToSameType =
                 new HasOverloadsWithDifferentPointerKindsToSameType())

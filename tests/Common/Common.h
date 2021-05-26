@@ -108,6 +108,9 @@ public:
 
     typedef Foo* FooPtr;
 
+    typedef uint8_t* typedefPrimitivePointer;
+    typedefPrimitivePointer fieldOfTypedefPrimitivePointer;
+
     void TakesTypedefedPtr(FooPtr date);
     int TakesRef(const Foo& other);
 
