@@ -1879,7 +1879,7 @@ namespace CppSharp.Generators.CSharp
         {
             if (method.IsDestructor)
             {
-                WriteLine("{0}.Dispose(true);", Helpers.TargetIdentifier);
+                WriteLine("{0}.Dispose( disposing: true, fromNativeDtor: true);", Helpers.TargetIdentifier);
                 return;
             }
 
@@ -2225,13 +2225,13 @@ namespace CppSharp.Generators.CSharp
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
 
-            // Generate Dispose(bool) method
+            // Generate Dispose(bool, bool) method
             PushBlock(BlockKind.Method);
             Write("public ");
             if (!@class.IsValueType)
                 Write(hasBaseClass ? "override " : "virtual ");
 
-            WriteLine("void Dispose(bool disposing)");
+            WriteLine("void Dispose(bool disposing, bool fromNativeDtor = false)");
             WriteOpenBraceAndIndent();
 
             if (@class.IsRefType)
@@ -2259,7 +2259,15 @@ namespace CppSharp.Generators.CSharp
                 if (!Options.CheckSymbols ||
                     Context.Symbols.FindLibraryBySymbol(dtor.Mangled, out library))
                 {
-                    WriteLine("if (disposing)");
+                    // When we have a virtual dtor on the native side we detour the vtable entry
+                    // even when we don't own the underlying native instance. I think we do this
+                    // so that the managed side can null out the __Instance pointer and remove the
+                    // instance from the NativeToManagedMap. Of course, this is somewhat half-hearted
+                    // since we can't/don't do this when there's no virtual dtor available to detour.
+                    //
+                    // Anyway, we must call native dtor in this case even if we don't own the underlying
+                    // native instance (since we are simply detouring here).
+                    WriteLine($"if (disposing && ({Helpers.OwnsNativeInstanceIdentifier} || fromNativeDtor))");
                     if (@class.IsDependent || dtor.IsVirtual)
                         WriteOpenBraceAndIndent();
                     else
