@@ -2689,6 +2689,14 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                 {
                     GenerateVirtualFunctionCall(method);
                 }
+                else if (method.IsDestructor)
+                {
+                    // It is possible that HasNonTrivialDestructor property different for specialization vs.
+                    // the template. When we generate the Internal struct we only put a dtor there if the specialization
+                    // has a non-trivial dtor. So we must make sure do the same test here.
+                    if (@class.HasNonTrivialDestructor)
+                        GenerateInternalFunctionCall(method, returnType: returnType);
+                }
                 else
                 {
                     GenerateInternalFunctionCall(method, returnType: returnType);
