@@ -497,12 +497,22 @@ public unsafe class CSharpTests
     [Test]
     public void TestCallingVirtualDtor()
     {
+        CallDtorVirtually.Destroyed = false;
         using (var callDtorVirtually = new CallDtorVirtually())
         {
             var hasVirtualDtor1 = CallDtorVirtually.GetHasVirtualDtor1(callDtorVirtually);
             hasVirtualDtor1.Dispose();
         }
         Assert.That(CallDtorVirtually.Destroyed, Is.True);
+    }
+
+    [Test]
+    public void TestNonOwning()
+    {
+        CallDtorVirtually.Destroyed = false;
+        var nonOwned = CallDtorVirtually.NonOwnedInstance;
+        nonOwned.Dispose();
+        Assert.That(CallDtorVirtually.Destroyed, Is.False);
     }
 
     [Test]

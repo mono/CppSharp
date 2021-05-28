@@ -704,6 +704,7 @@ public:
     ~CallDtorVirtually();
     static bool Destroyed;
     static HasVirtualDtor1* getHasVirtualDtor1(HasVirtualDtor1* returned);
+    static CallDtorVirtually* getNonOwnedInstance();
 };
 
 class HasProtectedNestedAnonymousType
