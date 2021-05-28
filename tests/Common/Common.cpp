@@ -1460,3 +1460,20 @@ bool ClassWithOverloadedOperators::operator<(const ClassWithOverloadedOperators&
 }
 
 int TestIndexedPropertiesInValueType::operator[](int i) { return i; }
+
+extern "C"
+{
+    void takeConflictName(struct system* self)
+    {
+        self->field1 = 5;
+        self->field2 = 10;
+    }
+
+    struct system freeFunctionReturnByValue()
+    {
+        struct system s;
+        s.field1 = 5;
+        s.field2 = 10;
+        return s;
+    }
+} // extern "C"

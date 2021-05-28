@@ -375,7 +375,7 @@ namespace CppSharp.Generators.CSharp
             base.GenerateDeclarationCommon(decl);
 
             foreach (Attribute attribute in decl.Attributes)
-                WriteLine("[{0}({1})]", attribute.Type.FullName, attribute.Value);
+                WriteLine("[global::{0}({1})]", attribute.Type.FullName, attribute.Value);
         }
 
         #region Classes
@@ -1368,7 +1368,8 @@ namespace CppSharp.Generators.CSharp
             var name = ((Class) field.Namespace).Layout.Fields.First(
                 f => f.FieldPtr == field.OriginalPtr).Name;
             string returnVar;
-            var arrayType = field.Type.Desugar() as ArrayType;
+            Type fieldType = field.Type.Desugar();
+            var arrayType = fieldType as ArrayType;
             if (@class.IsValueType)
             {
                 if (arrayType != null)
@@ -1385,8 +1386,8 @@ namespace CppSharp.Generators.CSharp
                 // Class field getter should return a reference object instead of a copy. Wrapping `returnVar` in
                 // IntPtr ensures that non-copying object constructor is invoked.
                 Class typeClass;
-                if (field.Type.TryGetClass(out typeClass) && !typeClass.IsValueType &&
-                    !ASTUtils.IsMappedToPrimitive(Context.TypeMaps, field.Type))
+                if (fieldType.TryGetClass(out typeClass) && !typeClass.IsValueType &&
+                    !ASTUtils.IsMappedToPrimitive(Context.TypeMaps, fieldType))
                     returnVar = $"new {TypePrinter.IntPtrType}(&{returnVar})";
             }
 
@@ -1410,9 +1411,9 @@ namespace CppSharp.Generators.CSharp
             Write("return ");
 
             var @return = marshal.Context.Return.ToString();
-            if (field.Type.IsPointer())
+            if (fieldType.IsPointer())
             {
-                var final = field.Type.GetFinalPointee().Desugar(resolveTemplateSubstitution: false);
+                var final = fieldType.GetFinalPointee().Desugar(resolveTemplateSubstitution: false);
                 var templateSubstitution = final as TemplateParameterSubstitutionType;
                 if (templateSubstitution != null && returnType.Type.IsDependent)
                     Write($"({templateSubstitution.ReplacedParameter.Parameter.Name}) (object) ");
@@ -1422,13 +1423,13 @@ namespace CppSharp.Generators.CSharp
                       !final.IsPrimitiveType(PrimitiveType.Char16) &&
                       !final.IsPrimitiveType(PrimitiveType.Char32)) ||
                      (!Context.Options.MarshalCharAsManagedChar &&
-                      !((PointerType) field.Type).QualifiedPointee.Qualifiers.IsConst)) &&
+                      !((PointerType) fieldType).QualifiedPointee.Qualifiers.IsConst)) &&
                     templateSubstitution == null) ||
-                    (!((PointerType) field.Type).QualifiedPointee.Qualifiers.IsConst &&
+                    (!((PointerType) fieldType).QualifiedPointee.Qualifiers.IsConst &&
                       (final.IsPrimitiveType(PrimitiveType.WideChar) || 
                        final.IsPrimitiveType(PrimitiveType.Char16) || 
                        final.IsPrimitiveType(PrimitiveType.Char32))))
-                    Write($"({field.Type.GetPointee().Desugar()}*) ");
+                    Write($"({fieldType.GetPointee().Desugar()}*) ");
             }
             WriteLine($"{@return};");
 
@@ -2365,7 +2366,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetOrCreateInst
 internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({TypePrinter.IntPtrType} native)
 {{
     if (!NativeToManagedMap.TryGetValue(native, out var managed))
-        throw new System.Exception(""No managed instance was found"");
+        throw new global::System.Exception(""No managed instance was found"");
     var result = ({printedClass})managed;
     if (result.{Helpers.OwnsNativeInstanceIdentifier})
         result.SetupVTables();
@@ -3431,6 +3432,11 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
             if (function.IsPure)
                 return;
 
+            if (function.OriginalName == "system_do_it")
+            {
+                System.Diagnostics.Debugger.Break();
+            }
+
             PushBlock(BlockKind.InternalsClassMethod);
             var callConv = function.CallingConvention.ToInteropCallConv();
 
@@ -3563,7 +3569,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
             {
                 WriteLine($"var path = \"{path}\";");
                 WriteLine("var image = CppSharp.SymbolResolver.LoadImage(ref path);");
-                WriteLine("if (image == IntPtr.Zero) throw new System.DllNotFoundException(path);");
+                WriteLine("if (image == IntPtr.Zero) throw new global::System.DllNotFoundException(path);");
 
                 foreach (var symbol in symbols)
                 {

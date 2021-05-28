@@ -24,6 +24,7 @@ public class CommonTests
             Assert.That(foo.B, Is.EqualTo(5));
             Bar bar = foo;
             Assert.IsTrue(Bar.Item.Item1 == bar);
+            foo.FieldOfTypedefPrimitivePointer = null;
 
             using (var hasOverloadsWithDifferentPointerKindsToSameType =
                 new HasOverloadsWithDifferentPointerKindsToSameType())
@@ -1113,5 +1114,26 @@ This is a very long string. This is a very long string. This is a very long stri
         int a = 50;
         Common.PointerToPrimitiveTypedefPointerTestMethod(ref a, 100);
         Assert.AreEqual(100, a);
+    }
+
+    [Test]
+    public void TestConflictName()
+    {
+        using (var system = new CommonTest.System())
+        {
+            Common.TakeConflictName(system);
+            Assert.That(system.Field1, Is.EqualTo(5));
+            Assert.That(system.Field2, Is.EqualTo(10));
+        }
+    }
+
+    [Test, Ignore("This was exposed by another bug and doesn't work yet.")]
+    public void TestFreeFunctionReturnByValue()
+    {
+        using (var system = Common.FreeFunctionReturnByValue)
+        {
+            Assert.That(system.Field1, Is.EqualTo(5));
+            Assert.That(system.Field2, Is.EqualTo(10));
+        }
     }
 }

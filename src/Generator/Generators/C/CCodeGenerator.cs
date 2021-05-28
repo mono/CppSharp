@@ -152,7 +152,7 @@ namespace CppSharp.Generators.C
             if (IsCLIGenerator)
             {
                 if (@enum.Modifiers.HasFlag(Enumeration.EnumModifiers.Flags))
-                    WriteLine("[System::Flags]");
+                    WriteLine("[::System::Flags]");
 
                 // A nested class cannot have an assembly access specifier as part
                 // of its declaration.

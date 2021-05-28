@@ -83,9 +83,9 @@ namespace CppSharp.Generators.CLI
             var delegateType = function.ToString();
 
             Context.Return.Write("safe_cast<{0}>(", delegateType + "^");
-            Context.Return.Write("System::Runtime::InteropServices::Marshal::");
+            Context.Return.Write("::System::Runtime::InteropServices::Marshal::");
             Context.Return.Write("GetDelegateForFunctionPointer(");
-            Context.Return.Write("System::IntPtr({0}), {1}::typeid))", Context.ReturnVarName,
+            Context.Return.Write("::System::IntPtr({0}), {1}::typeid))", Context.ReturnVarName,
                 delegateType.TrimEnd('^'));
 
             return true;
@@ -223,9 +223,9 @@ namespace CppSharp.Generators.CLI
             if (decl.Type.IsPointerTo(out function))
             {
                 Context.Return.Write($"{Context.ReturnVarName} == nullptr ? nullptr : safe_cast<{typedef}>(");
-                Context.Return.Write("System::Runtime::InteropServices::Marshal::");
+                Context.Return.Write("::System::Runtime::InteropServices::Marshal::");
                 Context.Return.Write("GetDelegateForFunctionPointer(");
-                Context.Return.Write("IntPtr({0}), {1}::typeid))",Context.ReturnVarName,
+                Context.Return.Write("::System::IntPtr({0}), {1}::typeid))", Context.ReturnVarName,
                     typedef.ToString().TrimEnd('^'));
                 return true;
             }
@@ -280,8 +280,7 @@ namespace CppSharp.Generators.CLI
             if (@class.IsRefType && needsCopy)
             {
                 var name = Generator.GeneratedIdentifier(Context.ReturnVarName);
-                Context.Before.WriteLine("auto {0} = new ::{1}({2});", name,
-                    @class.QualifiedOriginalName, Context.ReturnVarName);
+                Context.Before.WriteLine($"auto {name} = new {(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}({Context.ReturnVarName});");
                 instance = name;
 
                 ownNativeInstance = true;
@@ -306,7 +305,7 @@ namespace CppSharp.Generators.CLI
                     instance);
 
             Context.Return.Write("::{0}(", QualifiedIdentifier(@class));
-            Context.Return.Write("(::{0}*)", @class.QualifiedOriginalName);
+            Context.Return.Write($"({(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*)");
             Context.Return.Write("{0}{1})", instance, ownNativeInstance ? ", true" : "");
         }
 
@@ -449,7 +448,7 @@ namespace CppSharp.Generators.CLI
 
                     supportBefore.WriteLine($"if ({Context.Parameter.Name}->Length != {array.Size})");
                     supportBefore.WriteOpenBraceAndIndent();
-                    supportBefore.WriteLine($"throw gcnew System::InvalidOperationException(\"Source array size must equal destination array size.\");");
+                    supportBefore.WriteLine($"throw gcnew ::System::InvalidOperationException(\"Source array size must equal destination array size.\");");
                     supportBefore.UnindentAndWriteCloseBrace();
 
                     string nativeVal = string.Empty;
@@ -494,7 +493,7 @@ namespace CppSharp.Generators.CLI
 
             var sb = new StringBuilder();
             sb.AppendFormat("static_cast<{0}>(", type);
-            sb.Append("System::Runtime::InteropServices::Marshal::");
+            sb.Append("::System::Runtime::InteropServices::Marshal::");
             sb.Append("GetFunctionPointerForDelegate(");
             sb.AppendFormat("{0}).ToPointer())", Context.Parameter.Name);
             Context.Return.Write(sb.ToString());
@@ -529,7 +528,7 @@ namespace CppSharp.Generators.CLI
                     ArgumentPrefix.Write("&");
                 }
 
-                Context.Return.Write("(::{0}){1}{2}", @enum.QualifiedOriginalName,
+                Context.Return.Write("(enum ::{0}){1}{2}", @enum.QualifiedOriginalName,
                     isRef ? string.Empty : "*", Context.Parameter.Name);
                 return true;
             }
@@ -728,12 +727,12 @@ namespace CppSharp.Generators.CLI
                 && method.Conversion == MethodConversionKind.FunctionToInstanceMethod
                 && Context.ParameterIndex == 0)
             {
-                Context.Return.Write("(::{0}*)", @class.QualifiedOriginalName);
+                Context.Return.Write($"({(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*)");
                 Context.Return.Write("NativePtr");
                 return;
             }
 
-            Context.Return.Write("(::{0}*)", @class.QualifiedOriginalName);
+            Context.Return.Write($"({(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*)");
             Context.Return.Write("{0}->NativePtr", Context.Parameter.Name);
         }
 
@@ -858,7 +857,7 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitEnumDecl(Enumeration @enum)
         {
-            Context.Return.Write("(::{0}){1}", @enum.QualifiedOriginalName,
+            Context.Return.Write("(enum ::{0}){1}", @enum.QualifiedOriginalName,
                          Context.Parameter.Name);
             return true;
         }

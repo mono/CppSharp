@@ -272,7 +272,7 @@ namespace CppSharp.Generators.Cpp
                 Context.Return.Write($"({instance} == nullptr) ? nullptr : {MemoryAllocOperator} ");
 
             Context.Return.Write($"{QualifiedIdentifier(@class)}(");
-            Context.Return.Write($"(::{@class.QualifiedOriginalName}*)");
+            Context.Return.Write($"({(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*)");
             Context.Return.Write($"{instance})");
         }
 
@@ -409,7 +409,7 @@ namespace CppSharp.Generators.Cpp
                     Context.Parameter.Usage == ParameterUsage.InOut;
 
                 Context.ArgumentPrefix.Write("&");
-                Context.Return.Write($"(::{@enum.QualifiedOriginalName}){0}{Context.Parameter.Name}",
+                Context.Return.Write($"(enum ::{@enum.QualifiedOriginalName}){0}{Context.Parameter.Name}",
                     isRef ? string.Empty : "*");
                 return true;
             }
@@ -511,7 +511,7 @@ namespace CppSharp.Generators.Cpp
             PrimitiveType primitive;
             if (decl.Type.IsPrimitiveType(out primitive))
             {
-                Context.Return.Write($"(::{typedef.Declaration.QualifiedOriginalName})");
+                Context.Return.Write($"(typedef ::{typedef.Declaration.QualifiedOriginalName})");
             }
 
             return decl.Type.Visit(this);
@@ -588,7 +588,7 @@ namespace CppSharp.Generators.Cpp
                 && method.Conversion == MethodConversionKind.FunctionToInstanceMethod
                 && Context.ParameterIndex == 0)
             {
-                Context.Return.Write($"(::{@class.QualifiedOriginalName}*)");
+                Context.Return.Write($"({(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*)");
                 Context.Return.Write(Helpers.InstanceIdentifier);
                 return;
             }
@@ -596,7 +596,7 @@ namespace CppSharp.Generators.Cpp
             var paramType = Context.Parameter.Type.Desugar();
             var isPointer = paramType.SkipPointerRefs().IsPointer();
             var deref = isPointer ? "->" : ".";
-            var instance = $"(::{@class.QualifiedOriginalName}*)" +
+            var instance = $"({(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*)" +
                 $"{Context.Parameter.Name}{deref}{Helpers.InstanceIdentifier}";
 
             if (isPointer)
@@ -654,7 +654,7 @@ namespace CppSharp.Generators.Cpp
 
         public override bool VisitEnumDecl(Enumeration @enum)
         {
-            Context.Return.Write("(::{0}){1}", @enum.QualifiedOriginalName,
+            Context.Return.Write("(enum ::{0}){1}", @enum.QualifiedOriginalName,
                          Context.Parameter.Name);
             return true;
         }
