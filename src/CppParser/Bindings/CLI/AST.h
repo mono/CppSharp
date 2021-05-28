@@ -88,15 +88,15 @@ namespace CppSharp
             {
             public:
 
-                property ::CppSharp::CppParser::AST::NativeLibrary* NativePtr;
-                property System::IntPtr __Instance
+                property struct ::CppSharp::CppParser::AST::NativeLibrary* NativePtr;
+                property ::System::IntPtr __Instance
                 {
-                    virtual System::IntPtr get();
-                    virtual void set(System::IntPtr instance);
+                    virtual ::System::IntPtr get();
+                    virtual void set(::System::IntPtr instance);
                 }
 
-                NativeLibrary(::CppSharp::CppParser::AST::NativeLibrary* native);
-                NativeLibrary(::CppSharp::CppParser::AST::NativeLibrary* native, bool ownNativeInstance);
+                NativeLibrary(struct ::CppSharp::CppParser::AST::NativeLibrary* native);
+                NativeLibrary(struct ::CppSharp::CppParser::AST::NativeLibrary* native, bool ownNativeInstance);
                 static NativeLibrary^ __CreateInstance(::System::IntPtr native);
                 static NativeLibrary^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 NativeLibrary();
@@ -105,10 +105,10 @@ namespace CppSharp
 
                 ~NativeLibrary();
 
-                property System::String^ FileName
+                property ::System::String^ FileName
                 {
-                    System::String^ get();
-                    void set(System::String^);
+                    ::System::String^ get();
+                    void set(::System::String^);
                 }
 
                 property CppSharp::Parser::AST::ArchType ArchType
@@ -117,16 +117,16 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::ArchType);
                 }
 
-                property System::Collections::Generic::List<System::String^>^ Symbols
+                property ::System::Collections::Generic::List<::System::String^>^ Symbols
                 {
-                    System::Collections::Generic::List<System::String^>^ get();
-                    void set(System::Collections::Generic::List<System::String^>^);
+                    ::System::Collections::Generic::List<::System::String^>^ get();
+                    void set(::System::Collections::Generic::List<::System::String^>^);
                 }
 
-                property System::Collections::Generic::List<System::String^>^ Dependencies
+                property ::System::Collections::Generic::List<::System::String^>^ Dependencies
                 {
-                    System::Collections::Generic::List<System::String^>^ get();
-                    void set(System::Collections::Generic::List<System::String^>^);
+                    ::System::Collections::Generic::List<::System::String^>^ get();
+                    void set(::System::Collections::Generic::List<::System::String^>^);
                 }
 
                 property unsigned int SymbolsCount
@@ -139,15 +139,15 @@ namespace CppSharp
                     unsigned int get();
                 }
 
-                System::String^ GetSymbols(unsigned int i);
+                ::System::String^ GetSymbols(unsigned int i);
 
-                void AddSymbols(System::String^ s);
+                void AddSymbols(::System::String^ s);
 
                 void ClearSymbols();
 
-                System::String^ GetDependencies(unsigned int i);
+                ::System::String^ GetDependencies(unsigned int i);
 
-                void AddDependencies(System::String^ s);
+                void AddDependencies(::System::String^ s);
 
                 void ClearDependencies();
 
@@ -160,15 +160,15 @@ namespace CppSharp
             {
             public:
 
-                property ::CppSharp::CppParser::AST::Comment* NativePtr;
-                property System::IntPtr __Instance
+                property struct ::CppSharp::CppParser::AST::Comment* NativePtr;
+                property ::System::IntPtr __Instance
                 {
-                    virtual System::IntPtr get();
-                    virtual void set(System::IntPtr instance);
+                    virtual ::System::IntPtr get();
+                    virtual void set(::System::IntPtr instance);
                 }
 
-                Comment(::CppSharp::CppParser::AST::Comment* native);
-                Comment(::CppSharp::CppParser::AST::Comment* native, bool ownNativeInstance);
+                Comment(struct ::CppSharp::CppParser::AST::Comment* native);
+                Comment(struct ::CppSharp::CppParser::AST::Comment* native, bool ownNativeInstance);
                 static Comment^ __CreateInstance(::System::IntPtr native);
                 static Comment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 Comment(CppSharp::Parser::AST::CommentKind kind);
@@ -194,8 +194,8 @@ namespace CppSharp
             {
             public:
 
-                BlockContentComment(::CppSharp::CppParser::AST::BlockContentComment* native);
-                BlockContentComment(::CppSharp::CppParser::AST::BlockContentComment* native, bool ownNativeInstance);
+                BlockContentComment(struct ::CppSharp::CppParser::AST::BlockContentComment* native);
+                BlockContentComment(struct ::CppSharp::CppParser::AST::BlockContentComment* native, bool ownNativeInstance);
                 static BlockContentComment^ __CreateInstance(::System::IntPtr native);
                 static BlockContentComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 BlockContentComment();
@@ -213,8 +213,8 @@ namespace CppSharp
             {
             public:
 
-                FullComment(::CppSharp::CppParser::AST::FullComment* native);
-                FullComment(::CppSharp::CppParser::AST::FullComment* native, bool ownNativeInstance);
+                FullComment(struct ::CppSharp::CppParser::AST::FullComment* native);
+                FullComment(struct ::CppSharp::CppParser::AST::FullComment* native, bool ownNativeInstance);
                 static FullComment^ __CreateInstance(::System::IntPtr native);
                 static FullComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 FullComment();
@@ -223,10 +223,10 @@ namespace CppSharp
 
                 ~FullComment();
 
-                property System::Collections::Generic::List<CppSharp::Parser::AST::BlockContentComment^>^ Blocks
+                property ::System::Collections::Generic::List<CppSharp::Parser::AST::BlockContentComment^>^ Blocks
                 {
-                    System::Collections::Generic::List<CppSharp::Parser::AST::BlockContentComment^>^ get();
-                    void set(System::Collections::Generic::List<CppSharp::Parser::AST::BlockContentComment^>^);
+                    ::System::Collections::Generic::List<CppSharp::Parser::AST::BlockContentComment^>^ get();
+                    void set(::System::Collections::Generic::List<CppSharp::Parser::AST::BlockContentComment^>^);
                 }
 
                 property unsigned int BlocksCount
@@ -245,8 +245,8 @@ namespace CppSharp
             {
             public:
 
-                InlineContentComment(::CppSharp::CppParser::AST::InlineContentComment* native);
-                InlineContentComment(::CppSharp::CppParser::AST::InlineContentComment* native, bool ownNativeInstance);
+                InlineContentComment(struct ::CppSharp::CppParser::AST::InlineContentComment* native);
+                InlineContentComment(struct ::CppSharp::CppParser::AST::InlineContentComment* native, bool ownNativeInstance);
                 static InlineContentComment^ __CreateInstance(::System::IntPtr native);
                 static InlineContentComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 InlineContentComment();
@@ -270,8 +270,8 @@ namespace CppSharp
             {
             public:
 
-                ParagraphComment(::CppSharp::CppParser::AST::ParagraphComment* native);
-                ParagraphComment(::CppSharp::CppParser::AST::ParagraphComment* native, bool ownNativeInstance);
+                ParagraphComment(struct ::CppSharp::CppParser::AST::ParagraphComment* native);
+                ParagraphComment(struct ::CppSharp::CppParser::AST::ParagraphComment* native, bool ownNativeInstance);
                 static ParagraphComment^ __CreateInstance(::System::IntPtr native);
                 static ParagraphComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ParagraphComment();
@@ -286,10 +286,10 @@ namespace CppSharp
                     void set(bool);
                 }
 
-                property System::Collections::Generic::List<CppSharp::Parser::AST::InlineContentComment^>^ Content
+                property ::System::Collections::Generic::List<CppSharp::Parser::AST::InlineContentComment^>^ Content
                 {
-                    System::Collections::Generic::List<CppSharp::Parser::AST::InlineContentComment^>^ get();
-                    void set(System::Collections::Generic::List<CppSharp::Parser::AST::InlineContentComment^>^);
+                    ::System::Collections::Generic::List<CppSharp::Parser::AST::InlineContentComment^>^ get();
+                    void set(::System::Collections::Generic::List<CppSharp::Parser::AST::InlineContentComment^>^);
                 }
 
                 property unsigned int ContentCount
@@ -312,15 +312,15 @@ namespace CppSharp
                 {
                 public:
 
-                    property ::CppSharp::CppParser::AST::BlockCommandComment::Argument* NativePtr;
-                    property System::IntPtr __Instance
+                    property struct ::CppSharp::CppParser::AST::BlockCommandComment::Argument* NativePtr;
+                    property ::System::IntPtr __Instance
                     {
-                        virtual System::IntPtr get();
-                        virtual void set(System::IntPtr instance);
+                        virtual ::System::IntPtr get();
+                        virtual void set(::System::IntPtr instance);
                     }
 
-                    Argument(::CppSharp::CppParser::AST::BlockCommandComment::Argument* native);
-                    Argument(::CppSharp::CppParser::AST::BlockCommandComment::Argument* native, bool ownNativeInstance);
+                    Argument(struct ::CppSharp::CppParser::AST::BlockCommandComment::Argument* native);
+                    Argument(struct ::CppSharp::CppParser::AST::BlockCommandComment::Argument* native, bool ownNativeInstance);
                     static Argument^ __CreateInstance(::System::IntPtr native);
                     static Argument^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                     Argument();
@@ -329,10 +329,10 @@ namespace CppSharp
 
                     ~Argument();
 
-                    property System::String^ Text
+                    property ::System::String^ Text
                     {
-                        System::String^ get();
-                        void set(System::String^);
+                        ::System::String^ get();
+                        void set(::System::String^);
                     }
 
                 protected:
@@ -340,8 +340,8 @@ namespace CppSharp
                     bool __ownsNativeInstance;
                 };
 
-                BlockCommandComment(::CppSharp::CppParser::AST::BlockCommandComment* native);
-                BlockCommandComment(::CppSharp::CppParser::AST::BlockCommandComment* native, bool ownNativeInstance);
+                BlockCommandComment(struct ::CppSharp::CppParser::AST::BlockCommandComment* native);
+                BlockCommandComment(struct ::CppSharp::CppParser::AST::BlockCommandComment* native, bool ownNativeInstance);
                 static BlockCommandComment^ __CreateInstance(::System::IntPtr native);
                 static BlockCommandComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 BlockCommandComment();
@@ -364,10 +364,10 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::ParagraphComment^);
                 }
 
-                property System::Collections::Generic::List<CppSharp::Parser::AST::BlockCommandComment::Argument^>^ Arguments
+                property ::System::Collections::Generic::List<CppSharp::Parser::AST::BlockCommandComment::Argument^>^ Arguments
                 {
-                    System::Collections::Generic::List<CppSharp::Parser::AST::BlockCommandComment::Argument^>^ get();
-                    void set(System::Collections::Generic::List<CppSharp::Parser::AST::BlockCommandComment::Argument^>^);
+                    ::System::Collections::Generic::List<CppSharp::Parser::AST::BlockCommandComment::Argument^>^ get();
+                    void set(::System::Collections::Generic::List<CppSharp::Parser::AST::BlockCommandComment::Argument^>^);
                 }
 
                 property unsigned int ArgumentsCount
@@ -395,8 +395,8 @@ namespace CppSharp
                     InOut = 2
                 };
 
-                ParamCommandComment(::CppSharp::CppParser::AST::ParamCommandComment* native);
-                ParamCommandComment(::CppSharp::CppParser::AST::ParamCommandComment* native, bool ownNativeInstance);
+                ParamCommandComment(struct ::CppSharp::CppParser::AST::ParamCommandComment* native);
+                ParamCommandComment(struct ::CppSharp::CppParser::AST::ParamCommandComment* native, bool ownNativeInstance);
                 static ParamCommandComment^ __CreateInstance(::System::IntPtr native);
                 static ParamCommandComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ParamCommandComment();
@@ -422,8 +422,8 @@ namespace CppSharp
             {
             public:
 
-                TParamCommandComment(::CppSharp::CppParser::AST::TParamCommandComment* native);
-                TParamCommandComment(::CppSharp::CppParser::AST::TParamCommandComment* native, bool ownNativeInstance);
+                TParamCommandComment(struct ::CppSharp::CppParser::AST::TParamCommandComment* native);
+                TParamCommandComment(struct ::CppSharp::CppParser::AST::TParamCommandComment* native, bool ownNativeInstance);
                 static TParamCommandComment^ __CreateInstance(::System::IntPtr native);
                 static TParamCommandComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 TParamCommandComment();
@@ -432,10 +432,10 @@ namespace CppSharp
 
                 ~TParamCommandComment();
 
-                property System::Collections::Generic::List<unsigned int>^ Position
+                property ::System::Collections::Generic::List<unsigned int>^ Position
                 {
-                    System::Collections::Generic::List<unsigned int>^ get();
-                    void set(System::Collections::Generic::List<unsigned int>^);
+                    ::System::Collections::Generic::List<unsigned int>^ get();
+                    void set(::System::Collections::Generic::List<unsigned int>^);
                 }
 
                 property unsigned int PositionCount
@@ -445,7 +445,7 @@ namespace CppSharp
 
                 unsigned int GetPosition(unsigned int i);
 
-                void AddPosition([System::Runtime::InteropServices::In, System::Runtime::InteropServices::Out] unsigned int% s);
+                void AddPosition([::System::Runtime::InteropServices::In, ::System::Runtime::InteropServices::Out] unsigned int% s);
 
                 void ClearPosition();
             };
@@ -454,8 +454,8 @@ namespace CppSharp
             {
             public:
 
-                VerbatimBlockLineComment(::CppSharp::CppParser::AST::VerbatimBlockLineComment* native);
-                VerbatimBlockLineComment(::CppSharp::CppParser::AST::VerbatimBlockLineComment* native, bool ownNativeInstance);
+                VerbatimBlockLineComment(struct ::CppSharp::CppParser::AST::VerbatimBlockLineComment* native);
+                VerbatimBlockLineComment(struct ::CppSharp::CppParser::AST::VerbatimBlockLineComment* native, bool ownNativeInstance);
                 static VerbatimBlockLineComment^ __CreateInstance(::System::IntPtr native);
                 static VerbatimBlockLineComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 VerbatimBlockLineComment();
@@ -464,10 +464,10 @@ namespace CppSharp
 
                 ~VerbatimBlockLineComment();
 
-                property System::String^ Text
+                property ::System::String^ Text
                 {
-                    System::String^ get();
-                    void set(System::String^);
+                    ::System::String^ get();
+                    void set(::System::String^);
                 }
             };
 
@@ -475,8 +475,8 @@ namespace CppSharp
             {
             public:
 
-                VerbatimBlockComment(::CppSharp::CppParser::AST::VerbatimBlockComment* native);
-                VerbatimBlockComment(::CppSharp::CppParser::AST::VerbatimBlockComment* native, bool ownNativeInstance);
+                VerbatimBlockComment(struct ::CppSharp::CppParser::AST::VerbatimBlockComment* native);
+                VerbatimBlockComment(struct ::CppSharp::CppParser::AST::VerbatimBlockComment* native, bool ownNativeInstance);
                 static VerbatimBlockComment^ __CreateInstance(::System::IntPtr native);
                 static VerbatimBlockComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 VerbatimBlockComment();
@@ -485,10 +485,10 @@ namespace CppSharp
 
                 ~VerbatimBlockComment();
 
-                property System::Collections::Generic::List<CppSharp::Parser::AST::VerbatimBlockLineComment^>^ Lines
+                property ::System::Collections::Generic::List<CppSharp::Parser::AST::VerbatimBlockLineComment^>^ Lines
                 {
-                    System::Collections::Generic::List<CppSharp::Parser::AST::VerbatimBlockLineComment^>^ get();
-                    void set(System::Collections::Generic::List<CppSharp::Parser::AST::VerbatimBlockLineComment^>^);
+                    ::System::Collections::Generic::List<CppSharp::Parser::AST::VerbatimBlockLineComment^>^ get();
+                    void set(::System::Collections::Generic::List<CppSharp::Parser::AST::VerbatimBlockLineComment^>^);
                 }
 
                 property unsigned int LinesCount
@@ -507,8 +507,8 @@ namespace CppSharp
             {
             public:
 
-                VerbatimLineComment(::CppSharp::CppParser::AST::VerbatimLineComment* native);
-                VerbatimLineComment(::CppSharp::CppParser::AST::VerbatimLineComment* native, bool ownNativeInstance);
+                VerbatimLineComment(struct ::CppSharp::CppParser::AST::VerbatimLineComment* native);
+                VerbatimLineComment(struct ::CppSharp::CppParser::AST::VerbatimLineComment* native, bool ownNativeInstance);
                 static VerbatimLineComment^ __CreateInstance(::System::IntPtr native);
                 static VerbatimLineComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 VerbatimLineComment();
@@ -517,10 +517,10 @@ namespace CppSharp
 
                 ~VerbatimLineComment();
 
-                property System::String^ Text
+                property ::System::String^ Text
                 {
-                    System::String^ get();
-                    void set(System::String^);
+                    ::System::String^ get();
+                    void set(::System::String^);
                 }
             };
 
@@ -541,15 +541,15 @@ namespace CppSharp
                 {
                 public:
 
-                    property ::CppSharp::CppParser::AST::InlineCommandComment::Argument* NativePtr;
-                    property System::IntPtr __Instance
+                    property struct ::CppSharp::CppParser::AST::InlineCommandComment::Argument* NativePtr;
+                    property ::System::IntPtr __Instance
                     {
-                        virtual System::IntPtr get();
-                        virtual void set(System::IntPtr instance);
+                        virtual ::System::IntPtr get();
+                        virtual void set(::System::IntPtr instance);
                     }
 
-                    Argument(::CppSharp::CppParser::AST::InlineCommandComment::Argument* native);
-                    Argument(::CppSharp::CppParser::AST::InlineCommandComment::Argument* native, bool ownNativeInstance);
+                    Argument(struct ::CppSharp::CppParser::AST::InlineCommandComment::Argument* native);
+                    Argument(struct ::CppSharp::CppParser::AST::InlineCommandComment::Argument* native, bool ownNativeInstance);
                     static Argument^ __CreateInstance(::System::IntPtr native);
                     static Argument^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                     Argument();
@@ -558,10 +558,10 @@ namespace CppSharp
 
                     ~Argument();
 
-                    property System::String^ Text
+                    property ::System::String^ Text
                     {
-                        System::String^ get();
-                        void set(System::String^);
+                        ::System::String^ get();
+                        void set(::System::String^);
                     }
 
                 protected:
@@ -569,8 +569,8 @@ namespace CppSharp
                     bool __ownsNativeInstance;
                 };
 
-                InlineCommandComment(::CppSharp::CppParser::AST::InlineCommandComment* native);
-                InlineCommandComment(::CppSharp::CppParser::AST::InlineCommandComment* native, bool ownNativeInstance);
+                InlineCommandComment(struct ::CppSharp::CppParser::AST::InlineCommandComment* native);
+                InlineCommandComment(struct ::CppSharp::CppParser::AST::InlineCommandComment* native, bool ownNativeInstance);
                 static InlineCommandComment^ __CreateInstance(::System::IntPtr native);
                 static InlineCommandComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 InlineCommandComment();
@@ -591,10 +591,10 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::InlineCommandComment::RenderKind);
                 }
 
-                property System::Collections::Generic::List<CppSharp::Parser::AST::InlineCommandComment::Argument^>^ Arguments
+                property ::System::Collections::Generic::List<CppSharp::Parser::AST::InlineCommandComment::Argument^>^ Arguments
                 {
-                    System::Collections::Generic::List<CppSharp::Parser::AST::InlineCommandComment::Argument^>^ get();
-                    void set(System::Collections::Generic::List<CppSharp::Parser::AST::InlineCommandComment::Argument^>^);
+                    ::System::Collections::Generic::List<CppSharp::Parser::AST::InlineCommandComment::Argument^>^ get();
+                    void set(::System::Collections::Generic::List<CppSharp::Parser::AST::InlineCommandComment::Argument^>^);
                 }
 
                 property unsigned int ArgumentsCount
@@ -613,8 +613,8 @@ namespace CppSharp
             {
             public:
 
-                HTMLTagComment(::CppSharp::CppParser::AST::HTMLTagComment* native);
-                HTMLTagComment(::CppSharp::CppParser::AST::HTMLTagComment* native, bool ownNativeInstance);
+                HTMLTagComment(struct ::CppSharp::CppParser::AST::HTMLTagComment* native);
+                HTMLTagComment(struct ::CppSharp::CppParser::AST::HTMLTagComment* native, bool ownNativeInstance);
                 static HTMLTagComment^ __CreateInstance(::System::IntPtr native);
                 static HTMLTagComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 HTMLTagComment();
@@ -636,15 +636,15 @@ namespace CppSharp
                 {
                 public:
 
-                    property ::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute* NativePtr;
-                    property System::IntPtr __Instance
+                    property struct ::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute* NativePtr;
+                    property ::System::IntPtr __Instance
                     {
-                        virtual System::IntPtr get();
-                        virtual void set(System::IntPtr instance);
+                        virtual ::System::IntPtr get();
+                        virtual void set(::System::IntPtr instance);
                     }
 
-                    Attribute(::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute* native);
-                    Attribute(::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute* native, bool ownNativeInstance);
+                    Attribute(struct ::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute* native);
+                    Attribute(struct ::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute* native, bool ownNativeInstance);
                     static Attribute^ __CreateInstance(::System::IntPtr native);
                     static Attribute^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                     Attribute();
@@ -653,16 +653,16 @@ namespace CppSharp
 
                     ~Attribute();
 
-                    property System::String^ Name
+                    property ::System::String^ Name
                     {
-                        System::String^ get();
-                        void set(System::String^);
+                        ::System::String^ get();
+                        void set(::System::String^);
                     }
 
-                    property System::String^ Value
+                    property ::System::String^ Value
                     {
-                        System::String^ get();
-                        void set(System::String^);
+                        ::System::String^ get();
+                        void set(::System::String^);
                     }
 
                 protected:
@@ -670,8 +670,8 @@ namespace CppSharp
                     bool __ownsNativeInstance;
                 };
 
-                HTMLStartTagComment(::CppSharp::CppParser::AST::HTMLStartTagComment* native);
-                HTMLStartTagComment(::CppSharp::CppParser::AST::HTMLStartTagComment* native, bool ownNativeInstance);
+                HTMLStartTagComment(struct ::CppSharp::CppParser::AST::HTMLStartTagComment* native);
+                HTMLStartTagComment(struct ::CppSharp::CppParser::AST::HTMLStartTagComment* native, bool ownNativeInstance);
                 static HTMLStartTagComment^ __CreateInstance(::System::IntPtr native);
                 static HTMLStartTagComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 HTMLStartTagComment();
@@ -680,16 +680,16 @@ namespace CppSharp
 
                 ~HTMLStartTagComment();
 
-                property System::String^ TagName
+                property ::System::String^ TagName
                 {
-                    System::String^ get();
-                    void set(System::String^);
+                    ::System::String^ get();
+                    void set(::System::String^);
                 }
 
-                property System::Collections::Generic::List<CppSharp::Parser::AST::HTMLStartTagComment::Attribute^>^ Attributes
+                property ::System::Collections::Generic::List<CppSharp::Parser::AST::HTMLStartTagComment::Attribute^>^ Attributes
                 {
-                    System::Collections::Generic::List<CppSharp::Parser::AST::HTMLStartTagComment::Attribute^>^ get();
-                    void set(System::Collections::Generic::List<CppSharp::Parser::AST::HTMLStartTagComment::Attribute^>^);
+                    ::System::Collections::Generic::List<CppSharp::Parser::AST::HTMLStartTagComment::Attribute^>^ get();
+                    void set(::System::Collections::Generic::List<CppSharp::Parser::AST::HTMLStartTagComment::Attribute^>^);
                 }
 
                 property unsigned int AttributesCount
@@ -708,8 +708,8 @@ namespace CppSharp
             {
             public:
 
-                HTMLEndTagComment(::CppSharp::CppParser::AST::HTMLEndTagComment* native);
-                HTMLEndTagComment(::CppSharp::CppParser::AST::HTMLEndTagComment* native, bool ownNativeInstance);
+                HTMLEndTagComment(struct ::CppSharp::CppParser::AST::HTMLEndTagComment* native);
+                HTMLEndTagComment(struct ::CppSharp::CppParser::AST::HTMLEndTagComment* native, bool ownNativeInstance);
                 static HTMLEndTagComment^ __CreateInstance(::System::IntPtr native);
                 static HTMLEndTagComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 HTMLEndTagComment();
@@ -718,10 +718,10 @@ namespace CppSharp
 
                 ~HTMLEndTagComment();
 
-                property System::String^ TagName
+                property ::System::String^ TagName
                 {
-                    System::String^ get();
-                    void set(System::String^);
+                    ::System::String^ get();
+                    void set(::System::String^);
                 }
             };
 
@@ -729,8 +729,8 @@ namespace CppSharp
             {
             public:
 
-                TextComment(::CppSharp::CppParser::AST::TextComment* native);
-                TextComment(::CppSharp::CppParser::AST::TextComment* native, bool ownNativeInstance);
+                TextComment(struct ::CppSharp::CppParser::AST::TextComment* native);
+                TextComment(struct ::CppSharp::CppParser::AST::TextComment* native, bool ownNativeInstance);
                 static TextComment^ __CreateInstance(::System::IntPtr native);
                 static TextComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 TextComment();
@@ -739,10 +739,10 @@ namespace CppSharp
 
                 ~TextComment();
 
-                property System::String^ Text
+                property ::System::String^ Text
                 {
-                    System::String^ get();
-                    void set(System::String^);
+                    ::System::String^ get();
+                    void set(::System::String^);
                 }
             };
 
@@ -750,15 +750,15 @@ namespace CppSharp
             {
             public:
 
-                property ::CppSharp::CppParser::AST::RawComment* NativePtr;
-                property System::IntPtr __Instance
+                property struct ::CppSharp::CppParser::AST::RawComment* NativePtr;
+                property ::System::IntPtr __Instance
                 {
-                    virtual System::IntPtr get();
-                    virtual void set(System::IntPtr instance);
+                    virtual ::System::IntPtr get();
+                    virtual void set(::System::IntPtr instance);
                 }
 
-                RawComment(::CppSharp::CppParser::AST::RawComment* native);
-                RawComment(::CppSharp::CppParser::AST::RawComment* native, bool ownNativeInstance);
+                RawComment(struct ::CppSharp::CppParser::AST::RawComment* native);
+                RawComment(struct ::CppSharp::CppParser::AST::RawComment* native, bool ownNativeInstance);
                 static RawComment^ __CreateInstance(::System::IntPtr native);
                 static RawComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 RawComment();
@@ -773,16 +773,16 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::RawCommentKind);
                 }
 
-                property System::String^ Text
+                property ::System::String^ Text
                 {
-                    System::String^ get();
-                    void set(System::String^);
+                    ::System::String^ get();
+                    void set(::System::String^);
                 }
 
-                property System::String^ BriefText
+                property ::System::String^ BriefText
                 {
-                    System::String^ get();
-                    void set(System::String^);
+                    ::System::String^ get();
+                    void set(::System::String^);
                 }
 
                 property CppSharp::Parser::AST::FullComment^ FullCommentBlock
