@@ -2,7 +2,6 @@
   <Import Project="build/config.props" />
 
   <PropertyGroup>
-    <CI>True</CI>
     <RootDir>$(MSBuildThisFileDirectory)</RootDir>
     <Platforms>x86;x64</Platforms>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
