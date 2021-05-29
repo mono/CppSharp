@@ -2227,7 +2227,7 @@ namespace CppSharp.Generators.CSharp
 
             // Generate Dispose(bool, bool) method
             PushBlock(BlockKind.Method);
-            Write("public ");
+            Write("internal protected ");
             if (!@class.IsValueType)
                 Write(hasBaseClass ? "override " : "virtual ");
 
