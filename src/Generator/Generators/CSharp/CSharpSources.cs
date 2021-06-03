@@ -2225,6 +2225,12 @@ namespace CppSharp.Generators.CSharp
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
 
+            // Declarate partial method that the partial class can implement to participate
+            // in dispose.
+            PushBlock(BlockKind.Method);
+            WriteLine("partial void DisposePartial(bool disposing);");
+            PopBlock(NewLineKind.BeforeNextBlock);
+
             // Generate Dispose(bool, bool) method
             PushBlock(BlockKind.Method);
             Write("internal protected ");
@@ -2251,6 +2257,13 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
+            // TODO: We should delegate to the dispose methods of references we hold to other
+            // generated type instances since those instances could also hold references to
+            // unmanaged memory.
+            //
+            // Delegate to partial method if implemented
+            WriteLine("DisposePartial(disposing);");
+
             var dtor = @class.Destructors.FirstOrDefault();
             if (dtor != null && dtor.Access != AccessSpecifier.Private &&
                 @class.HasNonTrivialDestructor && !@class.IsAbstract)
@@ -2267,7 +2280,7 @@ namespace CppSharp.Generators.CSharp
                     //
                     // Anyway, we must call native dtor in this case even if we don't own the underlying
                     // native instance (since we are simply detouring here).
-                    WriteLine($"if (disposing && ({Helpers.OwnsNativeInstanceIdentifier} || fromNativeDtor))");
+                    WriteLine($"if ({Helpers.OwnsNativeInstanceIdentifier} || fromNativeDtor)");
                     if (@class.IsDependent || dtor.IsVirtual)
                         WriteOpenBraceAndIndent();
                     else
@@ -2290,9 +2303,6 @@ namespace CppSharp.Generators.CSharp
             // unmanaged memory isn't always initialized and/or a reference may be owned by the
             // native side.
             //
-            // TODO: We should delegate to the dispose methods of references we hold to other
-            // generated type instances since those instances could also hold references to
-            // unmanaged memory.
             foreach (var field in @class.Layout.Fields.Where(f => f.QualifiedType.Type.IsConstCharString()))
             {
                 var ptr = $"(({Helpers.InternalStruct}*){Helpers.InstanceIdentifier})->{field.Name}";
