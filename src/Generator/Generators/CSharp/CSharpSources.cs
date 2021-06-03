@@ -2225,7 +2225,7 @@ namespace CppSharp.Generators.CSharp
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
 
-            // Declarate partial method that the partial class can implement to participate
+            // Declare partial method that the partial class can implement to participate
             // in dispose.
             PushBlock(BlockKind.Method);
             WriteLine("partial void DisposePartial(bool disposing);");
@@ -2257,9 +2257,9 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
-            // TODO: We should delegate to the dispose methods of references we hold to other
-            // generated type instances since those instances could also hold references to
-            // unmanaged memory.
+            // TODO: if disposing == true we should delegate to the dispose methods of references
+            // we hold to other generated type instances since those instances could also hold
+            // references to unmanaged memory.
             //
             // Delegate to partial method if implemented
             WriteLine("DisposePartial(disposing);");
