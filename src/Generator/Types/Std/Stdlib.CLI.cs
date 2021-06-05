@@ -224,9 +224,10 @@ namespace CppSharp.Types.Std
                 "auto {0} = gcnew ::System::Collections::Generic::List<{1}>();",
                 tmpVarName, managedType);
 
-            string retVarName = ctx.ReturnType.Type.Desugar().IsPointer() ? $"*{ctx.ReturnVarName}" : ctx.ReturnVarName;
-            ctx.Before.WriteLine("for(auto _element : {0})",
-                retVarName);
+            string retVarName = "__list" + ctx.ParameterIndex;
+            ctx.Before.WriteLine($@"auto {retVarName} = {(
+                ctx.ReturnType.Type.Desugar().IsPointer() ? $"*{ctx.ReturnVarName}" : ctx.ReturnVarName)};");
+            ctx.Before.WriteLine($"for(auto _element : {retVarName})");
             ctx.Before.WriteOpenBraceAndIndent();
             {
                 var elementCtx = new MarshalContext(ctx.Context, ctx.Indentation)

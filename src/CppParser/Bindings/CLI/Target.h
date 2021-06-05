@@ -41,15 +41,15 @@ namespace CppSharp
         {
         public:
 
-            property ::CppSharp::CppParser::ParserTargetInfo* NativePtr;
-            property System::IntPtr __Instance
+            property struct ::CppSharp::CppParser::ParserTargetInfo* NativePtr;
+            property ::System::IntPtr __Instance
             {
-                virtual System::IntPtr get();
-                virtual void set(System::IntPtr instance);
+                virtual ::System::IntPtr get();
+                virtual void set(::System::IntPtr instance);
             }
 
-            ParserTargetInfo(::CppSharp::CppParser::ParserTargetInfo* native);
-            ParserTargetInfo(::CppSharp::CppParser::ParserTargetInfo* native, bool ownNativeInstance);
+            ParserTargetInfo(struct ::CppSharp::CppParser::ParserTargetInfo* native);
+            ParserTargetInfo(struct ::CppSharp::CppParser::ParserTargetInfo* native, bool ownNativeInstance);
             static ParserTargetInfo^ __CreateInstance(::System::IntPtr native);
             static ParserTargetInfo^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
             ParserTargetInfo();
@@ -58,10 +58,10 @@ namespace CppSharp
 
             ~ParserTargetInfo();
 
-            property System::String^ ABI
+            property ::System::String^ ABI
             {
-                System::String^ get();
-                void set(System::String^);
+                ::System::String^ get();
+                void set(::System::String^);
             }
 
             property CppSharp::Parser::ParserIntType Char16Type

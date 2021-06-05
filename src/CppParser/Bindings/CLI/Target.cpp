@@ -9,7 +9,7 @@
 using namespace System;
 using namespace System::Runtime::InteropServices;
 
-CppSharp::Parser::ParserTargetInfo::ParserTargetInfo(::CppSharp::CppParser::ParserTargetInfo* native)
+CppSharp::Parser::ParserTargetInfo::ParserTargetInfo(struct ::CppSharp::CppParser::ParserTargetInfo* native)
     : __ownsNativeInstance(false)
 {
     NativePtr = native;
@@ -17,10 +17,10 @@ CppSharp::Parser::ParserTargetInfo::ParserTargetInfo(::CppSharp::CppParser::Pars
 
 CppSharp::Parser::ParserTargetInfo^ CppSharp::Parser::ParserTargetInfo::__CreateInstance(::System::IntPtr native)
 {
-    return gcnew ::CppSharp::Parser::ParserTargetInfo((::CppSharp::CppParser::ParserTargetInfo*) native.ToPointer());
+    return gcnew ::CppSharp::Parser::ParserTargetInfo((struct ::CppSharp::CppParser::ParserTargetInfo*) native.ToPointer());
 }
 
-CppSharp::Parser::ParserTargetInfo::ParserTargetInfo(::CppSharp::CppParser::ParserTargetInfo* native, bool ownNativeInstance)
+CppSharp::Parser::ParserTargetInfo::ParserTargetInfo(struct ::CppSharp::CppParser::ParserTargetInfo* native, bool ownNativeInstance)
     : __ownsNativeInstance(ownNativeInstance)
 {
     NativePtr = native;
@@ -28,7 +28,7 @@ CppSharp::Parser::ParserTargetInfo::ParserTargetInfo(::CppSharp::CppParser::Pars
 
 CppSharp::Parser::ParserTargetInfo^ CppSharp::Parser::ParserTargetInfo::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
 {
-    return gcnew ::CppSharp::Parser::ParserTargetInfo((::CppSharp::CppParser::ParserTargetInfo*) native.ToPointer(), __ownsNativeInstance);
+    return gcnew ::CppSharp::Parser::ParserTargetInfo((struct ::CppSharp::CppParser::ParserTargetInfo*) native.ToPointer(), __ownsNativeInstance);
 }
 
 CppSharp::Parser::ParserTargetInfo::~ParserTargetInfo()
@@ -39,7 +39,7 @@ CppSharp::Parser::ParserTargetInfo::~ParserTargetInfo()
 CppSharp::Parser::ParserTargetInfo::ParserTargetInfo()
 {
     __ownsNativeInstance = true;
-    NativePtr = new ::CppSharp::CppParser::ParserTargetInfo();
+    NativePtr = new struct ::CppSharp::CppParser::ParserTargetInfo();
 }
 
 CppSharp::Parser::ParserTargetInfo::ParserTargetInfo(CppSharp::Parser::ParserTargetInfo^ _0)
@@ -47,427 +47,427 @@ CppSharp::Parser::ParserTargetInfo::ParserTargetInfo(CppSharp::Parser::ParserTar
     __ownsNativeInstance = true;
     if (ReferenceEquals(_0, nullptr))
         throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-    auto &__arg0 = *(::CppSharp::CppParser::ParserTargetInfo*)_0->NativePtr;
-    NativePtr = new ::CppSharp::CppParser::ParserTargetInfo(__arg0);
+    auto &__arg0 = *(struct ::CppSharp::CppParser::ParserTargetInfo*)_0->NativePtr;
+    NativePtr = new struct ::CppSharp::CppParser::ParserTargetInfo(__arg0);
 }
 
-System::IntPtr CppSharp::Parser::ParserTargetInfo::__Instance::get()
+::System::IntPtr CppSharp::Parser::ParserTargetInfo::__Instance::get()
 {
-    return System::IntPtr(NativePtr);
+    return ::System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::ParserTargetInfo::__Instance::set(System::IntPtr object)
+void CppSharp::Parser::ParserTargetInfo::__Instance::set(::System::IntPtr object)
 {
-    NativePtr = (::CppSharp::CppParser::ParserTargetInfo*)object.ToPointer();
+    NativePtr = (struct ::CppSharp::CppParser::ParserTargetInfo*)object.ToPointer();
 }
 
-System::String^ CppSharp::Parser::ParserTargetInfo::ABI::get()
+::System::String^ CppSharp::Parser::ParserTargetInfo::ABI::get()
 {
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->ABI);
+    return clix::marshalString<clix::E_UTF8>(NativePtr->ABI);
 }
 
-void CppSharp::Parser::ParserTargetInfo::ABI::set(System::String^ value)
+void CppSharp::Parser::ParserTargetInfo::ABI::set(::System::String^ value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->ABI = clix::marshalString<clix::E_UTF8>(value);
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->ABI = clix::marshalString<clix::E_UTF8>(value);
 }
 
 CppSharp::Parser::ParserIntType CppSharp::Parser::ParserTargetInfo::Char16Type::get()
 {
-    return (CppSharp::Parser::ParserIntType)((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->char16Type;
+    return (CppSharp::Parser::ParserIntType)NativePtr->char16Type;
 }
 
 void CppSharp::Parser::ParserTargetInfo::Char16Type::set(CppSharp::Parser::ParserIntType value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->char16Type = (::CppSharp::CppParser::ParserIntType)value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->char16Type = (enum ::CppSharp::CppParser::ParserIntType)value;
 }
 
 CppSharp::Parser::ParserIntType CppSharp::Parser::ParserTargetInfo::Char32Type::get()
 {
-    return (CppSharp::Parser::ParserIntType)((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->char32Type;
+    return (CppSharp::Parser::ParserIntType)NativePtr->char32Type;
 }
 
 void CppSharp::Parser::ParserTargetInfo::Char32Type::set(CppSharp::Parser::ParserIntType value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->char32Type = (::CppSharp::CppParser::ParserIntType)value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->char32Type = (enum ::CppSharp::CppParser::ParserIntType)value;
 }
 
 CppSharp::Parser::ParserIntType CppSharp::Parser::ParserTargetInfo::Int64Type::get()
 {
-    return (CppSharp::Parser::ParserIntType)((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->int64Type;
+    return (CppSharp::Parser::ParserIntType)NativePtr->int64Type;
 }
 
 void CppSharp::Parser::ParserTargetInfo::Int64Type::set(CppSharp::Parser::ParserIntType value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->int64Type = (::CppSharp::CppParser::ParserIntType)value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->int64Type = (enum ::CppSharp::CppParser::ParserIntType)value;
 }
 
 CppSharp::Parser::ParserIntType CppSharp::Parser::ParserTargetInfo::IntMaxType::get()
 {
-    return (CppSharp::Parser::ParserIntType)((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->intMaxType;
+    return (CppSharp::Parser::ParserIntType)NativePtr->intMaxType;
 }
 
 void CppSharp::Parser::ParserTargetInfo::IntMaxType::set(CppSharp::Parser::ParserIntType value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->intMaxType = (::CppSharp::CppParser::ParserIntType)value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->intMaxType = (enum ::CppSharp::CppParser::ParserIntType)value;
 }
 
 CppSharp::Parser::ParserIntType CppSharp::Parser::ParserTargetInfo::IntPtrType::get()
 {
-    return (CppSharp::Parser::ParserIntType)((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->intPtrType;
+    return (CppSharp::Parser::ParserIntType)NativePtr->intPtrType;
 }
 
 void CppSharp::Parser::ParserTargetInfo::IntPtrType::set(CppSharp::Parser::ParserIntType value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->intPtrType = (::CppSharp::CppParser::ParserIntType)value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->intPtrType = (enum ::CppSharp::CppParser::ParserIntType)value;
 }
 
 CppSharp::Parser::ParserIntType CppSharp::Parser::ParserTargetInfo::SizeType::get()
 {
-    return (CppSharp::Parser::ParserIntType)((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->sizeType;
+    return (CppSharp::Parser::ParserIntType)NativePtr->sizeType;
 }
 
 void CppSharp::Parser::ParserTargetInfo::SizeType::set(CppSharp::Parser::ParserIntType value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->sizeType = (::CppSharp::CppParser::ParserIntType)value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->sizeType = (enum ::CppSharp::CppParser::ParserIntType)value;
 }
 
 CppSharp::Parser::ParserIntType CppSharp::Parser::ParserTargetInfo::UIntMaxType::get()
 {
-    return (CppSharp::Parser::ParserIntType)((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->uIntMaxType;
+    return (CppSharp::Parser::ParserIntType)NativePtr->uIntMaxType;
 }
 
 void CppSharp::Parser::ParserTargetInfo::UIntMaxType::set(CppSharp::Parser::ParserIntType value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->uIntMaxType = (::CppSharp::CppParser::ParserIntType)value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->uIntMaxType = (enum ::CppSharp::CppParser::ParserIntType)value;
 }
 
 CppSharp::Parser::ParserIntType CppSharp::Parser::ParserTargetInfo::WCharType::get()
 {
-    return (CppSharp::Parser::ParserIntType)((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->wCharType;
+    return (CppSharp::Parser::ParserIntType)NativePtr->wCharType;
 }
 
 void CppSharp::Parser::ParserTargetInfo::WCharType::set(CppSharp::Parser::ParserIntType value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->wCharType = (::CppSharp::CppParser::ParserIntType)value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->wCharType = (enum ::CppSharp::CppParser::ParserIntType)value;
 }
 
 CppSharp::Parser::ParserIntType CppSharp::Parser::ParserTargetInfo::WIntType::get()
 {
-    return (CppSharp::Parser::ParserIntType)((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->wIntType;
+    return (CppSharp::Parser::ParserIntType)NativePtr->wIntType;
 }
 
 void CppSharp::Parser::ParserTargetInfo::WIntType::set(CppSharp::Parser::ParserIntType value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->wIntType = (::CppSharp::CppParser::ParserIntType)value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->wIntType = (enum ::CppSharp::CppParser::ParserIntType)value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::BoolAlign::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->boolAlign;
+    return NativePtr->boolAlign;
 }
 
 void CppSharp::Parser::ParserTargetInfo::BoolAlign::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->boolAlign = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->boolAlign = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::BoolWidth::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->boolWidth;
+    return NativePtr->boolWidth;
 }
 
 void CppSharp::Parser::ParserTargetInfo::BoolWidth::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->boolWidth = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->boolWidth = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::CharAlign::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->charAlign;
+    return NativePtr->charAlign;
 }
 
 void CppSharp::Parser::ParserTargetInfo::CharAlign::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->charAlign = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->charAlign = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::CharWidth::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->charWidth;
+    return NativePtr->charWidth;
 }
 
 void CppSharp::Parser::ParserTargetInfo::CharWidth::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->charWidth = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->charWidth = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::Char16Align::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->char16Align;
+    return NativePtr->char16Align;
 }
 
 void CppSharp::Parser::ParserTargetInfo::Char16Align::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->char16Align = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->char16Align = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::Char16Width::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->char16Width;
+    return NativePtr->char16Width;
 }
 
 void CppSharp::Parser::ParserTargetInfo::Char16Width::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->char16Width = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->char16Width = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::Char32Align::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->char32Align;
+    return NativePtr->char32Align;
 }
 
 void CppSharp::Parser::ParserTargetInfo::Char32Align::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->char32Align = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->char32Align = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::Char32Width::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->char32Width;
+    return NativePtr->char32Width;
 }
 
 void CppSharp::Parser::ParserTargetInfo::Char32Width::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->char32Width = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->char32Width = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::HalfAlign::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->halfAlign;
+    return NativePtr->halfAlign;
 }
 
 void CppSharp::Parser::ParserTargetInfo::HalfAlign::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->halfAlign = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->halfAlign = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::HalfWidth::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->halfWidth;
+    return NativePtr->halfWidth;
 }
 
 void CppSharp::Parser::ParserTargetInfo::HalfWidth::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->halfWidth = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->halfWidth = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::FloatAlign::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->floatAlign;
+    return NativePtr->floatAlign;
 }
 
 void CppSharp::Parser::ParserTargetInfo::FloatAlign::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->floatAlign = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->floatAlign = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::FloatWidth::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->floatWidth;
+    return NativePtr->floatWidth;
 }
 
 void CppSharp::Parser::ParserTargetInfo::FloatWidth::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->floatWidth = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->floatWidth = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::DoubleAlign::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->doubleAlign;
+    return NativePtr->doubleAlign;
 }
 
 void CppSharp::Parser::ParserTargetInfo::DoubleAlign::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->doubleAlign = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->doubleAlign = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::DoubleWidth::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->doubleWidth;
+    return NativePtr->doubleWidth;
 }
 
 void CppSharp::Parser::ParserTargetInfo::DoubleWidth::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->doubleWidth = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->doubleWidth = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::ShortAlign::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->shortAlign;
+    return NativePtr->shortAlign;
 }
 
 void CppSharp::Parser::ParserTargetInfo::ShortAlign::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->shortAlign = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->shortAlign = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::ShortWidth::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->shortWidth;
+    return NativePtr->shortWidth;
 }
 
 void CppSharp::Parser::ParserTargetInfo::ShortWidth::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->shortWidth = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->shortWidth = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::IntAlign::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->intAlign;
+    return NativePtr->intAlign;
 }
 
 void CppSharp::Parser::ParserTargetInfo::IntAlign::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->intAlign = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->intAlign = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::IntWidth::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->intWidth;
+    return NativePtr->intWidth;
 }
 
 void CppSharp::Parser::ParserTargetInfo::IntWidth::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->intWidth = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->intWidth = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::IntMaxTWidth::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->intMaxTWidth;
+    return NativePtr->intMaxTWidth;
 }
 
 void CppSharp::Parser::ParserTargetInfo::IntMaxTWidth::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->intMaxTWidth = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->intMaxTWidth = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::LongAlign::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->longAlign;
+    return NativePtr->longAlign;
 }
 
 void CppSharp::Parser::ParserTargetInfo::LongAlign::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->longAlign = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->longAlign = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::LongWidth::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->longWidth;
+    return NativePtr->longWidth;
 }
 
 void CppSharp::Parser::ParserTargetInfo::LongWidth::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->longWidth = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->longWidth = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::LongDoubleAlign::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->longDoubleAlign;
+    return NativePtr->longDoubleAlign;
 }
 
 void CppSharp::Parser::ParserTargetInfo::LongDoubleAlign::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->longDoubleAlign = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->longDoubleAlign = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::LongDoubleWidth::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->longDoubleWidth;
+    return NativePtr->longDoubleWidth;
 }
 
 void CppSharp::Parser::ParserTargetInfo::LongDoubleWidth::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->longDoubleWidth = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->longDoubleWidth = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::LongLongAlign::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->longLongAlign;
+    return NativePtr->longLongAlign;
 }
 
 void CppSharp::Parser::ParserTargetInfo::LongLongAlign::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->longLongAlign = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->longLongAlign = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::LongLongWidth::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->longLongWidth;
+    return NativePtr->longLongWidth;
 }
 
 void CppSharp::Parser::ParserTargetInfo::LongLongWidth::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->longLongWidth = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->longLongWidth = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::PointerAlign::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->pointerAlign;
+    return NativePtr->pointerAlign;
 }
 
 void CppSharp::Parser::ParserTargetInfo::PointerAlign::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->pointerAlign = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->pointerAlign = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::PointerWidth::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->pointerWidth;
+    return NativePtr->pointerWidth;
 }
 
 void CppSharp::Parser::ParserTargetInfo::PointerWidth::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->pointerWidth = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->pointerWidth = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::WCharAlign::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->wCharAlign;
+    return NativePtr->wCharAlign;
 }
 
 void CppSharp::Parser::ParserTargetInfo::WCharAlign::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->wCharAlign = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->wCharAlign = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::WCharWidth::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->wCharWidth;
+    return NativePtr->wCharWidth;
 }
 
 void CppSharp::Parser::ParserTargetInfo::WCharWidth::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->wCharWidth = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->wCharWidth = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::Float128Align::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->float128Align;
+    return NativePtr->float128Align;
 }
 
 void CppSharp::Parser::ParserTargetInfo::Float128Align::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->float128Align = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->float128Align = value;
 }
 
 unsigned int CppSharp::Parser::ParserTargetInfo::Float128Width::get()
 {
-    return ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->float128Width;
+    return NativePtr->float128Width;
 }
 
 void CppSharp::Parser::ParserTargetInfo::Float128Width::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->float128Width = value;
+    ((struct ::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->float128Width = value;
 }
 
