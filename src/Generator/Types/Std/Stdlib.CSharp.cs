@@ -343,7 +343,7 @@ namespace CppSharp.Types.Std
                     assign.Name}({varBasicString}, {ctx.Parameter.Name});");
                 ctx.Return.Write($"{varBasicString}.{Helpers.InstanceIdentifier}");
                 ctx.Cleanup.WriteLine($@"{varBasicString}.Dispose({
-                    (!Type.IsAddress() || ctx.Parameter?.IsIndirect == true ? "false" : string.Empty)});");
+                    (!Type.IsAddress() || ctx.Parameter?.IsIndirect == true ? "disposing: true, callNativeDtor:false" : string.Empty)});");
             }
         }
 

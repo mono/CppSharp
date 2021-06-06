@@ -1879,7 +1879,7 @@ namespace CppSharp.Generators.CSharp
         {
             if (method.IsDestructor)
             {
-                WriteLine("{0}.Dispose(true);", Helpers.TargetIdentifier);
+                WriteLine("{0}.Dispose(disposing: true, callNativeDtor: true);", Helpers.TargetIdentifier);
                 return;
             }
 
@@ -2200,7 +2200,7 @@ namespace CppSharp.Generators.CSharp
 
             WriteLine("~{0}()", @class.Name);
             WriteOpenBraceAndIndent();
-            WriteLine("Dispose(false);");
+            WriteLine($"Dispose(false, callNativeDtor : { Helpers.OwnsNativeInstanceIdentifier} );");
             UnindentAndWriteCloseBrace();
 
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -2217,7 +2217,7 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("public void Dispose()");
                 WriteOpenBraceAndIndent();
 
-                WriteLine("Dispose(disposing: true);");
+                WriteLine($"Dispose(disposing: true, callNativeDtor : { Helpers.OwnsNativeInstanceIdentifier} );");
                 if (Options.GenerateFinalizers)
                     WriteLine("GC.SuppressFinalize(this);");
 
@@ -2225,13 +2225,19 @@ namespace CppSharp.Generators.CSharp
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
 
-            // Generate Dispose(bool) method
+            // Declare partial method that the partial class can implement to participate
+            // in dispose.
             PushBlock(BlockKind.Method);
-            Write("public ");
+            WriteLine("partial void DisposePartial(bool disposing);");
+            PopBlock(NewLineKind.BeforeNextBlock);
+
+            // Generate Dispose(bool, bool) method
+            PushBlock(BlockKind.Method);
+            Write("internal protected ");
             if (!@class.IsValueType)
                 Write(hasBaseClass ? "override " : "virtual ");
 
-            WriteLine("void Dispose(bool disposing)");
+            WriteLine("void Dispose(bool disposing, bool callNativeDtor )");
             WriteOpenBraceAndIndent();
 
             if (@class.IsRefType)
@@ -2251,6 +2257,13 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
+            // TODO: if disposing == true we should delegate to the dispose methods of references
+            // we hold to other generated type instances since those instances could also hold
+            // references to unmanaged memory.
+            //
+            // Delegate to partial method if implemented
+            WriteLine("DisposePartial(disposing);");
+
             var dtor = @class.Destructors.FirstOrDefault();
             if (dtor != null && dtor.Access != AccessSpecifier.Private &&
                 @class.HasNonTrivialDestructor && !@class.IsAbstract)
@@ -2259,7 +2272,29 @@ namespace CppSharp.Generators.CSharp
                 if (!Options.CheckSymbols ||
                     Context.Symbols.FindLibraryBySymbol(dtor.Mangled, out library))
                 {
-                    WriteLine("if (disposing)");
+                    // Normally, calling the native dtor should be controlled by whether or not we
+                    // we own the underlying instance. (i.e. Helpers.OwnsNativeInstanceIdentifier).
+                    // However, there are 2 situations when the caller needs to have direct control
+                    // 
+                    // 1. When we have a virtual dtor on the native side we detour the vtable entry
+                    // even when we don't own the underlying native instance. I think we do this
+                    // so that the managed side can null out the __Instance pointer and remove the
+                    // instance from the NativeToManagedMap. Of course, this is somewhat half-hearted
+                    // since we can't/don't do this when there's no virtual dtor available to detour.
+                    // Anyway, we must be able to call the native dtor in this case even if we don't 
+                    /// own the underlying native instance.
+                    //
+                    // 2. When we we pass a disposable object to a function "by value" then the callee
+                    // calls the dtor on the argument so our marshalling code must have a way from preventing
+                    // a duplicate call. Here's a native function that exhibits this behavior:
+                    // void f(std::string f)
+                    // {
+                    //   ....
+                    // compiler generates call to f.dtor() at the end of function
+                    // }
+                    // 
+                    // IDisposable.Dispose() and Object.Finalize() set callNativeDtor = Helpers.OwnsNativeInstanceIdentifier
+                    WriteLine($"if (callNativeDtor)");
                     if (@class.IsDependent || dtor.IsVirtual)
                         WriteOpenBraceAndIndent();
                     else
@@ -2282,9 +2317,6 @@ namespace CppSharp.Generators.CSharp
             // unmanaged memory isn't always initialized and/or a reference may be owned by the
             // native side.
             //
-            // TODO: We should delegate to the dispose methods of references we hold to other
-            // generated type instances since those instances could also hold references to
-            // unmanaged memory.
             foreach (var field in @class.Layout.Fields.Where(f => f.QualifiedType.Type.IsConstCharString()))
             {
                 var ptr = $"(({Helpers.InternalStruct}*){Helpers.InstanceIdentifier})->{field.Name}";

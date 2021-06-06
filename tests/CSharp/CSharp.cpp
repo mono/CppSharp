@@ -1019,6 +1019,12 @@ HasVirtualDtor1* CallDtorVirtually::getHasVirtualDtor1(HasVirtualDtor1* returned
     return returned;
 }
 
+CallDtorVirtually nonOwnedInstance;
+CallDtorVirtually* CallDtorVirtually::getNonOwnedInstance()
+{
+    return &nonOwnedInstance;
+}
+
 TestOverrideFromSecondaryBase::TestOverrideFromSecondaryBase()
 {
 }
