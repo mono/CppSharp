@@ -387,7 +387,7 @@ standard library types:
 ### Strings
 
  - `std::string`
- - `std::wstring`
+ - `std::wstring` (C++/CLI only (UTF-16), [pending PR](https://github.com/mono/CppSharp/pull/983) for C#)
   
  These are mapped automatically to .NET strings.
 
