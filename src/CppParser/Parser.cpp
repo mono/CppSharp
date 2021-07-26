@@ -4640,7 +4640,7 @@ ParserResult* ClangParser::ParseHeader(CppParserOptions* Opts)
     {
         auto parser = new Parser(Opts);
         parsers.push_back(parser);
-        std::vector<std::string> Header(&Headers[i], &Headers[i + 1]);
+        std::vector<std::string> Header{Headers[i]};
         if (i < Headers.size() - 1)
             delete parser->Parse(Header);
         else
