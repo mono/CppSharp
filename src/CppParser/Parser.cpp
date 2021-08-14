@@ -3679,7 +3679,7 @@ AST::ExpressionObsolete* Parser::WalkExpressionObsolete(const clang::Expr* Expr)
                 result.front() != '\'' && 
                 Expr->EvaluateAsInt(integer, c->getASTContext()))
             {
-                result = integer.Val.getInt().toString(10);
+                result = llvm::toString(integer.Val.getInt(), 10);
             }
 
             return new AST::ExpressionObsolete(result);
@@ -3689,7 +3689,7 @@ AST::ExpressionObsolete* Parser::WalkExpressionObsolete(const clang::Expr* Expr)
             Expr->EvaluateAsInt(integer, c->getASTContext())
             )
         {
-            return new AST::ExpressionObsolete(integer.Val.getInt().toString(10));
+            return new AST::ExpressionObsolete(llvm::toString(integer.Val.getInt(), 10));
         }
     }
 
@@ -4268,7 +4268,7 @@ void Parser::SetupLLVMCodegen()
     LLVMModule.reset(new llvm::Module("", LLVMCtx));
 
     LLVMModule->setTargetTriple(c->getTarget().getTriple().getTriple());
-    LLVMModule->setDataLayout(c->getTarget().getDataLayout());
+    LLVMModule->setDataLayout(c->getTarget().getDataLayoutString());
 
     CGM.reset(new clang::CodeGen::CodeGenModule(c->getASTContext(),
         c->getHeaderSearchOpts(), c->getPreprocessorOpts(),

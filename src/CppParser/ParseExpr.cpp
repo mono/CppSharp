@@ -32,7 +32,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -53,7 +53,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -75,7 +75,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -103,7 +103,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -124,7 +124,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -145,7 +145,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -167,7 +167,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -189,7 +189,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -210,7 +210,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -245,7 +245,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -266,7 +266,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -287,7 +287,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -317,7 +317,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -339,7 +339,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -365,7 +365,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -389,7 +389,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -421,7 +421,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -449,7 +449,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -471,7 +471,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -499,7 +499,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -527,7 +527,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -565,7 +565,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -605,7 +605,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -633,7 +633,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -661,7 +661,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -681,7 +681,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -702,7 +702,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -723,7 +723,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -744,7 +744,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -770,7 +770,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -790,7 +790,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -812,7 +812,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -844,7 +844,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -868,7 +868,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -888,7 +888,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -910,7 +910,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -932,7 +932,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -952,7 +952,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -972,7 +972,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -993,7 +993,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1018,7 +1018,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1042,7 +1042,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1063,7 +1063,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1084,7 +1084,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1108,7 +1108,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1141,7 +1141,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1161,7 +1161,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1196,7 +1196,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1230,7 +1230,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1263,7 +1263,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1292,7 +1292,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1322,7 +1322,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1351,7 +1351,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1380,7 +1380,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1414,7 +1414,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1435,7 +1435,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1455,7 +1455,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1476,7 +1476,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1499,7 +1499,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1522,7 +1522,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1544,7 +1544,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1567,7 +1567,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1588,7 +1588,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1610,7 +1610,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1631,7 +1631,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1653,7 +1653,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1674,7 +1674,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1705,7 +1705,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1727,7 +1727,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1756,7 +1756,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1787,7 +1787,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1819,7 +1819,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1839,7 +1839,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1876,7 +1876,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1902,7 +1902,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1926,7 +1926,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1948,7 +1948,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1971,7 +1971,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -1993,7 +1993,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -2019,7 +2019,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -2042,7 +2042,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -2065,7 +2065,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -2093,7 +2093,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -2121,7 +2121,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -2150,7 +2150,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -2172,7 +2172,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -2193,7 +2193,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -2216,7 +2216,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -2237,7 +2237,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -2258,7 +2258,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -2279,7 +2279,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -2303,7 +2303,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -2330,7 +2330,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -2357,7 +2357,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
@@ -2379,7 +2379,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->instantiationDependent = S->isInstantiationDependent();
         _S->containsUnexpandedParameterPack = S->containsUnexpandedParameterPack();
         _S->isLValue = S->isLValue();
-        _S->isRValue = S->isRValue();
+        _S->isRValue = S->isPRValue();
         _S->isXValue = S->isXValue();
         _S->isGLValue = S->isGLValue();
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
