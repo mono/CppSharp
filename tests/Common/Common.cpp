@@ -1336,6 +1336,19 @@ HasPropertyNamedAsParent::~HasPropertyNamedAsParent()
 {
 }
 
+ReturnByValueWithReturnParam::ReturnByValueWithReturnParam() {}
+
+ReturnByValueWithReturnParam::ReturnByValueWithReturnParam(const ReturnByValueWithReturnParam& other) : _ptr(other._ptr) {}
+
+ReturnByValueWithReturnParam::~ReturnByValueWithReturnParam() {}
+
+int ReturnByValueWithReturnParam::getUseCount() { return _ptr.use_count(); }
+
+ReturnByValueWithReturnParam ReturnByValueWithReturnParamFactory::generate()
+{
+    return ReturnByValueWithReturnParam();
+}
+
 void integerOverload(int i)
 {
 }

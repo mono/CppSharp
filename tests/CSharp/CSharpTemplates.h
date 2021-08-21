@@ -794,6 +794,7 @@ template class DLL_API Base<int>;
 template class DLL_API DependentValueFields<int>;
 template class DLL_API DependentValueFields<int*>;
 template class DLL_API DependentValueFields<float>;
+template class DLL_API DependentValueFields<double>;
 template class DLL_API DependentPointerFields<float>;
 template class DLL_API VirtualTemplate<int>;
 template class DLL_API VirtualTemplate<bool>;
