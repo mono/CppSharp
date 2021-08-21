@@ -429,6 +429,9 @@ function package_llvm(conf, llvm_base, llvm_build)
 
 	if os.ishost("windows") and os.isdir(llvm_build_libdir) then
 		os.copydir(llvm_build_libdir, out .. "/build/lib", "*.lib")
+		if string.find(_OPTIONS["configuration"], "Debug") then
+			os.copydir(llvm_build_libdir, out .. "/build/lib", "*.pdb")
+		end
 	else
 		os.copydir(llvm_build_libdir, out .. "/build/lib", "*.a")
 	end

@@ -56,12 +56,12 @@ jobs:
           
       - name: Build LLVM
         shell: bash
-        run: build/build.sh build_llvm -platform $PLATFORM
+        run: build/build.sh build_llvm -configuration Debug -platform $PLATFORM
         working-directory: C:\CppSharp
 
       - name: Package LLVM
         shell: bash
-        run: build/build.sh package_llvm -platform $PLATFORM
+        run: build/build.sh package_llvm -configuration Debug -platform $PLATFORM
         working-directory: C:\CppSharp
 
       - name: 'Upload Artifact'

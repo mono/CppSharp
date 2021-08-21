@@ -1,0 +1,15 @@
+<!-- GENERATED FILE -->
+<Project>
+  <PropertyGroup>
+    <PlatformTarget>x64</PlatformTarget>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Configuration>Release</Configuration>
+    <IsWindows>true</IsWindows>
+    <IsLinux>false</IsLinux>
+    <IsMacOSX>false</IsMacOSX>
+    <CI>false</CI>
+    <GenerateBuildConfig>true</GenerateBuildConfig>
+    <UseCXX11ABI>false</UseCXX11ABI>
+    <PremakeAction>vs2019</PremakeAction>
+  </PropertyGroup>
+</Project>
