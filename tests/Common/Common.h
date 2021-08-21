@@ -1355,6 +1355,24 @@ public:
     int hasPropertyNamedAsParent;
 };
 
+class DLL_API ReturnByValueWithReturnParam
+{
+public:
+    ReturnByValueWithReturnParam();
+    ReturnByValueWithReturnParam(const ReturnByValueWithReturnParam& other);
+    ~ReturnByValueWithReturnParam();
+    int getUseCount();
+
+private:
+    std::shared_ptr<int> _ptr = std::shared_ptr<int>(new int[1]);
+};
+
+class DLL_API ReturnByValueWithReturnParamFactory
+{
+public:
+    static ReturnByValueWithReturnParam generate();
+};
+
 template<typename T> void TemplatedFunction(T type)
 {
 
