@@ -31,11 +31,6 @@ jobs:
         shell: bash
         run: echo "/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/MSBuild/Current/Bin" >> $GITHUB_PATH
 
-      - name: Fix intrin.h file
-        if: matrix.config.vs
-        shell: powershell
-        run: build/intrin.ps1
-
       - name: Setup
         shell: bash
         run: |
