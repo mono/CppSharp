@@ -1535,6 +1535,9 @@ public:
     }
 };
 
+template <typename T>
+struct dependentVariable { static const size_t var = alignof(T); };
+
 class QObjectData {
 };
 
