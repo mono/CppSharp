@@ -44,11 +44,6 @@ jobs:
           )
           endlocal
 
-      - name: Fix intrin.h file
-        shell: powershell
-        run: build/intrin.ps1
-        working-directory: C:\CppSharp
-
       - name: Clone LLVM
         shell: bash
         run: build/build.sh clone_llvm
