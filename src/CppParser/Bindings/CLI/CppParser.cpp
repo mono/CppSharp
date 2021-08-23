@@ -360,12 +360,12 @@ void CppSharp::Parser::CppParserOptions::SupportedStdTypes::set(::System::Collec
 
 CppSharp::Parser::AST::ASTContext^ CppSharp::Parser::CppParserOptions::ASTContext::get()
 {
-    return (NativePtr->ASTContext == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::ASTContext((struct ::CppSharp::CppParser::AST::ASTContext*)NativePtr->ASTContext);
+    return (NativePtr->ASTContext == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::ASTContext((class ::CppSharp::CppParser::AST::ASTContext*)NativePtr->ASTContext);
 }
 
 void CppSharp::Parser::CppParserOptions::ASTContext::set(CppSharp::Parser::AST::ASTContext^ value)
 {
-    ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->ASTContext = (struct ::CppSharp::CppParser::AST::ASTContext*)value->NativePtr;
+    ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->ASTContext = (class ::CppSharp::CppParser::AST::ASTContext*)value->NativePtr;
 }
 
 int CppSharp::Parser::CppParserOptions::ToolSetToUse::get()
@@ -880,14 +880,14 @@ CppSharp::Parser::AST::NativeLibrary^ CppSharp::Parser::ParserResult::GetLibrari
 {
     auto __ret = ((struct ::CppSharp::CppParser::ParserResult*)NativePtr)->getLibraries(i);
     if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::NativeLibrary((struct ::CppSharp::CppParser::AST::NativeLibrary*)__ret);
+    return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::NativeLibrary((class ::CppSharp::CppParser::AST::NativeLibrary*)__ret);
 }
 
 void CppSharp::Parser::ParserResult::AddLibraries(CppSharp::Parser::AST::NativeLibrary^ s)
 {
     if (ReferenceEquals(s, nullptr))
         throw gcnew ::System::ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
-    auto __arg0 = (struct ::CppSharp::CppParser::AST::NativeLibrary*)s->NativePtr;
+    auto __arg0 = (class ::CppSharp::CppParser::AST::NativeLibrary*)s->NativePtr;
     ((struct ::CppSharp::CppParser::ParserResult*)NativePtr)->addLibraries(__arg0);
 }
 
@@ -948,7 +948,7 @@ void CppSharp::Parser::ParserResult::Diagnostics::set(::System::Collections::Gen
     auto __list0 = NativePtr->Libraries;
     for(auto _element : __list0)
     {
-        auto _marshalElement = (_element == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::NativeLibrary((struct ::CppSharp::CppParser::AST::NativeLibrary*)_element);
+        auto _marshalElement = (_element == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::NativeLibrary((class ::CppSharp::CppParser::AST::NativeLibrary*)_element);
         _tmp__Libraries->Add(_marshalElement);
     }
     return _tmp__Libraries;
@@ -959,7 +959,7 @@ void CppSharp::Parser::ParserResult::Libraries::set(::System::Collections::Gener
     auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::NativeLibrary*>();
     for each(CppSharp::Parser::AST::NativeLibrary^ _element in value)
     {
-        auto _marshalElement = (struct ::CppSharp::CppParser::AST::NativeLibrary*)_element->NativePtr;
+        auto _marshalElement = (class ::CppSharp::CppParser::AST::NativeLibrary*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
     ((struct ::CppSharp::CppParser::ParserResult*)NativePtr)->Libraries = _tmpvalue;
@@ -987,7 +987,7 @@ unsigned int CppSharp::Parser::ParserResult::LibrariesCount::get()
     return __ret;
 }
 
-CppSharp::Parser::ClangParser::ClangParser(struct ::CppSharp::CppParser::ClangParser* native)
+CppSharp::Parser::ClangParser::ClangParser(class ::CppSharp::CppParser::ClangParser* native)
     : __ownsNativeInstance(false)
 {
     NativePtr = native;
@@ -995,10 +995,10 @@ CppSharp::Parser::ClangParser::ClangParser(struct ::CppSharp::CppParser::ClangPa
 
 CppSharp::Parser::ClangParser^ CppSharp::Parser::ClangParser::__CreateInstance(::System::IntPtr native)
 {
-    return gcnew ::CppSharp::Parser::ClangParser((struct ::CppSharp::CppParser::ClangParser*) native.ToPointer());
+    return gcnew ::CppSharp::Parser::ClangParser((class ::CppSharp::CppParser::ClangParser*) native.ToPointer());
 }
 
-CppSharp::Parser::ClangParser::ClangParser(struct ::CppSharp::CppParser::ClangParser* native, bool ownNativeInstance)
+CppSharp::Parser::ClangParser::ClangParser(class ::CppSharp::CppParser::ClangParser* native, bool ownNativeInstance)
     : __ownsNativeInstance(ownNativeInstance)
 {
     NativePtr = native;
@@ -1006,7 +1006,7 @@ CppSharp::Parser::ClangParser::ClangParser(struct ::CppSharp::CppParser::ClangPa
 
 CppSharp::Parser::ClangParser^ CppSharp::Parser::ClangParser::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
 {
-    return gcnew ::CppSharp::Parser::ClangParser((struct ::CppSharp::CppParser::ClangParser*) native.ToPointer(), __ownsNativeInstance);
+    return gcnew ::CppSharp::Parser::ClangParser((class ::CppSharp::CppParser::ClangParser*) native.ToPointer(), __ownsNativeInstance);
 }
 
 CppSharp::Parser::ClangParser::~ClangParser()
@@ -1033,7 +1033,7 @@ CppSharp::Parser::ParserResult^ CppSharp::Parser::ClangParser::ParseLibrary(CppS
 CppSharp::Parser::ClangParser::ClangParser()
 {
     __ownsNativeInstance = true;
-    NativePtr = new struct ::CppSharp::CppParser::ClangParser();
+    NativePtr = new class ::CppSharp::CppParser::ClangParser();
 }
 
 CppSharp::Parser::ClangParser::ClangParser(CppSharp::Parser::ClangParser^ _0)
@@ -1041,8 +1041,8 @@ CppSharp::Parser::ClangParser::ClangParser(CppSharp::Parser::ClangParser^ _0)
     __ownsNativeInstance = true;
     if (ReferenceEquals(_0, nullptr))
         throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-    auto &__arg0 = *(struct ::CppSharp::CppParser::ClangParser*)_0->NativePtr;
-    NativePtr = new struct ::CppSharp::CppParser::ClangParser(__arg0);
+    auto &__arg0 = *(class ::CppSharp::CppParser::ClangParser*)_0->NativePtr;
+    NativePtr = new class ::CppSharp::CppParser::ClangParser(__arg0);
 }
 
 ::System::IntPtr CppSharp::Parser::ClangParser::__Instance::get()
@@ -1052,5 +1052,5 @@ CppSharp::Parser::ClangParser::ClangParser(CppSharp::Parser::ClangParser^ _0)
 
 void CppSharp::Parser::ClangParser::__Instance::set(::System::IntPtr object)
 {
-    NativePtr = (struct ::CppSharp::CppParser::ClangParser*)object.ToPointer();
+    NativePtr = (class ::CppSharp::CppParser::ClangParser*)object.ToPointer();
 }

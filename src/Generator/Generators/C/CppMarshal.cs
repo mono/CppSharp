@@ -272,7 +272,7 @@ namespace CppSharp.Generators.Cpp
                 Context.Return.Write($"({instance} == nullptr) ? nullptr : {MemoryAllocOperator} ");
 
             Context.Return.Write($"{QualifiedIdentifier(@class)}(");
-            Context.Return.Write($"({(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*)");
+            Context.Return.Write($"({@class.Tag} ::{@class.QualifiedOriginalName}*)");
             Context.Return.Write($"{instance})");
         }
 
@@ -588,7 +588,7 @@ namespace CppSharp.Generators.Cpp
                 && method.Conversion == MethodConversionKind.FunctionToInstanceMethod
                 && Context.ParameterIndex == 0)
             {
-                Context.Return.Write($"({(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*)");
+                Context.Return.Write($"({@class.Tag} ::{@class.QualifiedOriginalName}*)");
                 Context.Return.Write(Helpers.InstanceIdentifier);
                 return;
             }
@@ -596,7 +596,7 @@ namespace CppSharp.Generators.Cpp
             var paramType = Context.Parameter.Type.Desugar();
             var isPointer = paramType.SkipPointerRefs().IsPointer();
             var deref = isPointer ? "->" : ".";
-            var instance = $"({(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*)" +
+            var instance = $"({@class.Tag} ::{@class.QualifiedOriginalName}*)" +
                 $"{Context.Parameter.Name}{deref}{Helpers.InstanceIdentifier}";
 
             if (isPointer)

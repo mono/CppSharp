@@ -431,15 +431,15 @@ namespace CppSharp
                         IncompleteType = 10
                     };
 
-                    property struct ::CppSharp::CppParser::AST::Expr::Classification* NativePtr;
+                    property class ::CppSharp::CppParser::AST::Expr::Classification* NativePtr;
                     property ::System::IntPtr __Instance
                     {
                         virtual ::System::IntPtr get();
                         virtual void set(::System::IntPtr instance);
                     }
 
-                    Classification(struct ::CppSharp::CppParser::AST::Expr::Classification* native);
-                    Classification(struct ::CppSharp::CppParser::AST::Expr::Classification* native, bool ownNativeInstance);
+                    Classification(class ::CppSharp::CppParser::AST::Expr::Classification* native);
+                    Classification(class ::CppSharp::CppParser::AST::Expr::Classification* native, bool ownNativeInstance);
                     static Classification^ __CreateInstance(::System::IntPtr native);
                     static Classification^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                     Classification();
@@ -501,8 +501,8 @@ namespace CppSharp
                     bool __ownsNativeInstance;
                 };
 
-                Expr(struct ::CppSharp::CppParser::AST::Expr* native);
-                Expr(struct ::CppSharp::CppParser::AST::Expr* native, bool ownNativeInstance);
+                Expr(class ::CppSharp::CppParser::AST::Expr* native);
+                Expr(class ::CppSharp::CppParser::AST::Expr* native, bool ownNativeInstance);
                 static Expr^ __CreateInstance(::System::IntPtr native);
                 static Expr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 Expr();
@@ -604,8 +604,8 @@ namespace CppSharp
             {
             public:
 
-                FullExpr(struct ::CppSharp::CppParser::AST::FullExpr* native);
-                FullExpr(struct ::CppSharp::CppParser::AST::FullExpr* native, bool ownNativeInstance);
+                FullExpr(class ::CppSharp::CppParser::AST::FullExpr* native);
+                FullExpr(class ::CppSharp::CppParser::AST::FullExpr* native, bool ownNativeInstance);
                 static FullExpr^ __CreateInstance(::System::IntPtr native);
                 static FullExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 FullExpr();
@@ -629,8 +629,8 @@ namespace CppSharp
             {
             public:
 
-                ConstantExpr(struct ::CppSharp::CppParser::AST::ConstantExpr* native);
-                ConstantExpr(struct ::CppSharp::CppParser::AST::ConstantExpr* native, bool ownNativeInstance);
+                ConstantExpr(class ::CppSharp::CppParser::AST::ConstantExpr* native);
+                ConstantExpr(class ::CppSharp::CppParser::AST::ConstantExpr* native, bool ownNativeInstance);
                 static ConstantExpr^ __CreateInstance(::System::IntPtr native);
                 static ConstantExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ConstantExpr();
@@ -644,8 +644,8 @@ namespace CppSharp
             {
             public:
 
-                OpaqueValueExpr(struct ::CppSharp::CppParser::AST::OpaqueValueExpr* native);
-                OpaqueValueExpr(struct ::CppSharp::CppParser::AST::OpaqueValueExpr* native, bool ownNativeInstance);
+                OpaqueValueExpr(class ::CppSharp::CppParser::AST::OpaqueValueExpr* native);
+                OpaqueValueExpr(class ::CppSharp::CppParser::AST::OpaqueValueExpr* native, bool ownNativeInstance);
                 static OpaqueValueExpr^ __CreateInstance(::System::IntPtr native);
                 static OpaqueValueExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 OpaqueValueExpr();
@@ -677,8 +677,8 @@ namespace CppSharp
             {
             public:
 
-                DeclRefExpr(struct ::CppSharp::CppParser::AST::DeclRefExpr* native);
-                DeclRefExpr(struct ::CppSharp::CppParser::AST::DeclRefExpr* native, bool ownNativeInstance);
+                DeclRefExpr(class ::CppSharp::CppParser::AST::DeclRefExpr* native);
+                DeclRefExpr(class ::CppSharp::CppParser::AST::DeclRefExpr* native, bool ownNativeInstance);
                 static DeclRefExpr^ __CreateInstance(::System::IntPtr native);
                 static DeclRefExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 DeclRefExpr();
@@ -764,8 +764,8 @@ namespace CppSharp
             {
             public:
 
-                IntegerLiteral(struct ::CppSharp::CppParser::AST::IntegerLiteral* native);
-                IntegerLiteral(struct ::CppSharp::CppParser::AST::IntegerLiteral* native, bool ownNativeInstance);
+                IntegerLiteral(class ::CppSharp::CppParser::AST::IntegerLiteral* native);
+                IntegerLiteral(class ::CppSharp::CppParser::AST::IntegerLiteral* native, bool ownNativeInstance);
                 static IntegerLiteral^ __CreateInstance(::System::IntPtr native);
                 static IntegerLiteral^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 IntegerLiteral();
@@ -791,8 +791,8 @@ namespace CppSharp
             {
             public:
 
-                FixedPointLiteral(struct ::CppSharp::CppParser::AST::FixedPointLiteral* native);
-                FixedPointLiteral(struct ::CppSharp::CppParser::AST::FixedPointLiteral* native, bool ownNativeInstance);
+                FixedPointLiteral(class ::CppSharp::CppParser::AST::FixedPointLiteral* native);
+                FixedPointLiteral(class ::CppSharp::CppParser::AST::FixedPointLiteral* native, bool ownNativeInstance);
                 static FixedPointLiteral^ __CreateInstance(::System::IntPtr native);
                 static FixedPointLiteral^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 FixedPointLiteral();
@@ -827,8 +827,8 @@ namespace CppSharp
                     UTF32 = 4
                 };
 
-                CharacterLiteral(struct ::CppSharp::CppParser::AST::CharacterLiteral* native);
-                CharacterLiteral(struct ::CppSharp::CppParser::AST::CharacterLiteral* native, bool ownNativeInstance);
+                CharacterLiteral(class ::CppSharp::CppParser::AST::CharacterLiteral* native);
+                CharacterLiteral(class ::CppSharp::CppParser::AST::CharacterLiteral* native, bool ownNativeInstance);
                 static CharacterLiteral^ __CreateInstance(::System::IntPtr native);
                 static CharacterLiteral^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CharacterLiteral();
@@ -860,8 +860,8 @@ namespace CppSharp
             {
             public:
 
-                FloatingLiteral(struct ::CppSharp::CppParser::AST::FloatingLiteral* native);
-                FloatingLiteral(struct ::CppSharp::CppParser::AST::FloatingLiteral* native, bool ownNativeInstance);
+                FloatingLiteral(class ::CppSharp::CppParser::AST::FloatingLiteral* native);
+                FloatingLiteral(class ::CppSharp::CppParser::AST::FloatingLiteral* native, bool ownNativeInstance);
                 static FloatingLiteral^ __CreateInstance(::System::IntPtr native);
                 static FloatingLiteral^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 FloatingLiteral();
@@ -893,8 +893,8 @@ namespace CppSharp
             {
             public:
 
-                ImaginaryLiteral(struct ::CppSharp::CppParser::AST::ImaginaryLiteral* native);
-                ImaginaryLiteral(struct ::CppSharp::CppParser::AST::ImaginaryLiteral* native, bool ownNativeInstance);
+                ImaginaryLiteral(class ::CppSharp::CppParser::AST::ImaginaryLiteral* native);
+                ImaginaryLiteral(class ::CppSharp::CppParser::AST::ImaginaryLiteral* native, bool ownNativeInstance);
                 static ImaginaryLiteral^ __CreateInstance(::System::IntPtr native);
                 static ImaginaryLiteral^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ImaginaryLiteral();
@@ -923,8 +923,8 @@ namespace CppSharp
                     UTF32 = 4
                 };
 
-                StringLiteral(struct ::CppSharp::CppParser::AST::StringLiteral* native);
-                StringLiteral(struct ::CppSharp::CppParser::AST::StringLiteral* native, bool ownNativeInstance);
+                StringLiteral(class ::CppSharp::CppParser::AST::StringLiteral* native);
+                StringLiteral(class ::CppSharp::CppParser::AST::StringLiteral* native, bool ownNativeInstance);
                 static StringLiteral^ __CreateInstance(::System::IntPtr native);
                 static StringLiteral^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 StringLiteral();
@@ -1040,8 +1040,8 @@ namespace CppSharp
                     PrettyFunctionNoVirtual = 7
                 };
 
-                PredefinedExpr(struct ::CppSharp::CppParser::AST::PredefinedExpr* native);
-                PredefinedExpr(struct ::CppSharp::CppParser::AST::PredefinedExpr* native, bool ownNativeInstance);
+                PredefinedExpr(class ::CppSharp::CppParser::AST::PredefinedExpr* native);
+                PredefinedExpr(class ::CppSharp::CppParser::AST::PredefinedExpr* native, bool ownNativeInstance);
                 static PredefinedExpr^ __CreateInstance(::System::IntPtr native);
                 static PredefinedExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 PredefinedExpr();
@@ -1067,8 +1067,8 @@ namespace CppSharp
             {
             public:
 
-                ParenExpr(struct ::CppSharp::CppParser::AST::ParenExpr* native);
-                ParenExpr(struct ::CppSharp::CppParser::AST::ParenExpr* native, bool ownNativeInstance);
+                ParenExpr(class ::CppSharp::CppParser::AST::ParenExpr* native);
+                ParenExpr(class ::CppSharp::CppParser::AST::ParenExpr* native, bool ownNativeInstance);
                 static ParenExpr^ __CreateInstance(::System::IntPtr native);
                 static ParenExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ParenExpr();
@@ -1100,8 +1100,8 @@ namespace CppSharp
             {
             public:
 
-                UnaryOperator(struct ::CppSharp::CppParser::AST::UnaryOperator* native);
-                UnaryOperator(struct ::CppSharp::CppParser::AST::UnaryOperator* native, bool ownNativeInstance);
+                UnaryOperator(class ::CppSharp::CppParser::AST::UnaryOperator* native);
+                UnaryOperator(class ::CppSharp::CppParser::AST::UnaryOperator* native, bool ownNativeInstance);
                 static UnaryOperator^ __CreateInstance(::System::IntPtr native);
                 static UnaryOperator^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 UnaryOperator();
@@ -1181,8 +1181,8 @@ namespace CppSharp
             {
             public:
 
-                OffsetOfExpr(struct ::CppSharp::CppParser::AST::OffsetOfExpr* native);
-                OffsetOfExpr(struct ::CppSharp::CppParser::AST::OffsetOfExpr* native, bool ownNativeInstance);
+                OffsetOfExpr(class ::CppSharp::CppParser::AST::OffsetOfExpr* native);
+                OffsetOfExpr(class ::CppSharp::CppParser::AST::OffsetOfExpr* native, bool ownNativeInstance);
                 static OffsetOfExpr^ __CreateInstance(::System::IntPtr native);
                 static OffsetOfExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 OffsetOfExpr();
@@ -1220,8 +1220,8 @@ namespace CppSharp
             {
             public:
 
-                UnaryExprOrTypeTraitExpr(struct ::CppSharp::CppParser::AST::UnaryExprOrTypeTraitExpr* native);
-                UnaryExprOrTypeTraitExpr(struct ::CppSharp::CppParser::AST::UnaryExprOrTypeTraitExpr* native, bool ownNativeInstance);
+                UnaryExprOrTypeTraitExpr(class ::CppSharp::CppParser::AST::UnaryExprOrTypeTraitExpr* native);
+                UnaryExprOrTypeTraitExpr(class ::CppSharp::CppParser::AST::UnaryExprOrTypeTraitExpr* native, bool ownNativeInstance);
                 static UnaryExprOrTypeTraitExpr^ __CreateInstance(::System::IntPtr native);
                 static UnaryExprOrTypeTraitExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 UnaryExprOrTypeTraitExpr();
@@ -1277,8 +1277,8 @@ namespace CppSharp
             {
             public:
 
-                ArraySubscriptExpr(struct ::CppSharp::CppParser::AST::ArraySubscriptExpr* native);
-                ArraySubscriptExpr(struct ::CppSharp::CppParser::AST::ArraySubscriptExpr* native, bool ownNativeInstance);
+                ArraySubscriptExpr(class ::CppSharp::CppParser::AST::ArraySubscriptExpr* native);
+                ArraySubscriptExpr(class ::CppSharp::CppParser::AST::ArraySubscriptExpr* native, bool ownNativeInstance);
                 static ArraySubscriptExpr^ __CreateInstance(::System::IntPtr native);
                 static ArraySubscriptExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ArraySubscriptExpr();
@@ -1322,8 +1322,8 @@ namespace CppSharp
             {
             public:
 
-                CallExpr(struct ::CppSharp::CppParser::AST::CallExpr* native);
-                CallExpr(struct ::CppSharp::CppParser::AST::CallExpr* native, bool ownNativeInstance);
+                CallExpr(class ::CppSharp::CppParser::AST::CallExpr* native);
+                CallExpr(class ::CppSharp::CppParser::AST::CallExpr* native, bool ownNativeInstance);
                 static CallExpr^ __CreateInstance(::System::IntPtr native);
                 static CallExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CallExpr();
@@ -1406,8 +1406,8 @@ namespace CppSharp
             {
             public:
 
-                MemberExpr(struct ::CppSharp::CppParser::AST::MemberExpr* native);
-                MemberExpr(struct ::CppSharp::CppParser::AST::MemberExpr* native, bool ownNativeInstance);
+                MemberExpr(class ::CppSharp::CppParser::AST::MemberExpr* native);
+                MemberExpr(class ::CppSharp::CppParser::AST::MemberExpr* native, bool ownNativeInstance);
                 static MemberExpr^ __CreateInstance(::System::IntPtr native);
                 static MemberExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 MemberExpr();
@@ -1499,8 +1499,8 @@ namespace CppSharp
             {
             public:
 
-                CompoundLiteralExpr(struct ::CppSharp::CppParser::AST::CompoundLiteralExpr* native);
-                CompoundLiteralExpr(struct ::CppSharp::CppParser::AST::CompoundLiteralExpr* native, bool ownNativeInstance);
+                CompoundLiteralExpr(class ::CppSharp::CppParser::AST::CompoundLiteralExpr* native);
+                CompoundLiteralExpr(class ::CppSharp::CppParser::AST::CompoundLiteralExpr* native, bool ownNativeInstance);
                 static CompoundLiteralExpr^ __CreateInstance(::System::IntPtr native);
                 static CompoundLiteralExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CompoundLiteralExpr();
@@ -1532,8 +1532,8 @@ namespace CppSharp
             {
             public:
 
-                CastExpr(struct ::CppSharp::CppParser::AST::CastExpr* native);
-                CastExpr(struct ::CppSharp::CppParser::AST::CastExpr* native, bool ownNativeInstance);
+                CastExpr(class ::CppSharp::CppParser::AST::CastExpr* native);
+                CastExpr(class ::CppSharp::CppParser::AST::CastExpr* native, bool ownNativeInstance);
                 static CastExpr^ __CreateInstance(::System::IntPtr native);
                 static CastExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CastExpr();
@@ -1598,8 +1598,8 @@ namespace CppSharp
                     OnStack = 0
                 };
 
-                ImplicitCastExpr(struct ::CppSharp::CppParser::AST::ImplicitCastExpr* native);
-                ImplicitCastExpr(struct ::CppSharp::CppParser::AST::ImplicitCastExpr* native, bool ownNativeInstance);
+                ImplicitCastExpr(class ::CppSharp::CppParser::AST::ImplicitCastExpr* native);
+                ImplicitCastExpr(class ::CppSharp::CppParser::AST::ImplicitCastExpr* native, bool ownNativeInstance);
                 static ImplicitCastExpr^ __CreateInstance(::System::IntPtr native);
                 static ImplicitCastExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ImplicitCastExpr();
@@ -1619,8 +1619,8 @@ namespace CppSharp
             {
             public:
 
-                ExplicitCastExpr(struct ::CppSharp::CppParser::AST::ExplicitCastExpr* native);
-                ExplicitCastExpr(struct ::CppSharp::CppParser::AST::ExplicitCastExpr* native, bool ownNativeInstance);
+                ExplicitCastExpr(class ::CppSharp::CppParser::AST::ExplicitCastExpr* native);
+                ExplicitCastExpr(class ::CppSharp::CppParser::AST::ExplicitCastExpr* native, bool ownNativeInstance);
                 static ExplicitCastExpr^ __CreateInstance(::System::IntPtr native);
                 static ExplicitCastExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ExplicitCastExpr();
@@ -1644,8 +1644,8 @@ namespace CppSharp
             {
             public:
 
-                CStyleCastExpr(struct ::CppSharp::CppParser::AST::CStyleCastExpr* native);
-                CStyleCastExpr(struct ::CppSharp::CppParser::AST::CStyleCastExpr* native, bool ownNativeInstance);
+                CStyleCastExpr(class ::CppSharp::CppParser::AST::CStyleCastExpr* native);
+                CStyleCastExpr(class ::CppSharp::CppParser::AST::CStyleCastExpr* native, bool ownNativeInstance);
                 static CStyleCastExpr^ __CreateInstance(::System::IntPtr native);
                 static CStyleCastExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CStyleCastExpr();
@@ -1671,8 +1671,8 @@ namespace CppSharp
             {
             public:
 
-                BinaryOperator(struct ::CppSharp::CppParser::AST::BinaryOperator* native);
-                BinaryOperator(struct ::CppSharp::CppParser::AST::BinaryOperator* native, bool ownNativeInstance);
+                BinaryOperator(class ::CppSharp::CppParser::AST::BinaryOperator* native);
+                BinaryOperator(class ::CppSharp::CppParser::AST::BinaryOperator* native, bool ownNativeInstance);
                 static BinaryOperator^ __CreateInstance(::System::IntPtr native);
                 static BinaryOperator^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 BinaryOperator();
@@ -1804,8 +1804,8 @@ namespace CppSharp
             {
             public:
 
-                CompoundAssignOperator(struct ::CppSharp::CppParser::AST::CompoundAssignOperator* native);
-                CompoundAssignOperator(struct ::CppSharp::CppParser::AST::CompoundAssignOperator* native, bool ownNativeInstance);
+                CompoundAssignOperator(class ::CppSharp::CppParser::AST::CompoundAssignOperator* native);
+                CompoundAssignOperator(class ::CppSharp::CppParser::AST::CompoundAssignOperator* native, bool ownNativeInstance);
                 static CompoundAssignOperator^ __CreateInstance(::System::IntPtr native);
                 static CompoundAssignOperator^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CompoundAssignOperator();
@@ -1831,8 +1831,8 @@ namespace CppSharp
             {
             public:
 
-                AbstractConditionalOperator(struct ::CppSharp::CppParser::AST::AbstractConditionalOperator* native);
-                AbstractConditionalOperator(struct ::CppSharp::CppParser::AST::AbstractConditionalOperator* native, bool ownNativeInstance);
+                AbstractConditionalOperator(class ::CppSharp::CppParser::AST::AbstractConditionalOperator* native);
+                AbstractConditionalOperator(class ::CppSharp::CppParser::AST::AbstractConditionalOperator* native, bool ownNativeInstance);
                 static AbstractConditionalOperator^ __CreateInstance(::System::IntPtr native);
                 static AbstractConditionalOperator^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 AbstractConditionalOperator();
@@ -1880,8 +1880,8 @@ namespace CppSharp
             {
             public:
 
-                ConditionalOperator(struct ::CppSharp::CppParser::AST::ConditionalOperator* native);
-                ConditionalOperator(struct ::CppSharp::CppParser::AST::ConditionalOperator* native, bool ownNativeInstance);
+                ConditionalOperator(class ::CppSharp::CppParser::AST::ConditionalOperator* native);
+                ConditionalOperator(class ::CppSharp::CppParser::AST::ConditionalOperator* native, bool ownNativeInstance);
                 static ConditionalOperator^ __CreateInstance(::System::IntPtr native);
                 static ConditionalOperator^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ConditionalOperator();
@@ -1907,8 +1907,8 @@ namespace CppSharp
             {
             public:
 
-                BinaryConditionalOperator(struct ::CppSharp::CppParser::AST::BinaryConditionalOperator* native);
-                BinaryConditionalOperator(struct ::CppSharp::CppParser::AST::BinaryConditionalOperator* native, bool ownNativeInstance);
+                BinaryConditionalOperator(class ::CppSharp::CppParser::AST::BinaryConditionalOperator* native);
+                BinaryConditionalOperator(class ::CppSharp::CppParser::AST::BinaryConditionalOperator* native, bool ownNativeInstance);
                 static BinaryConditionalOperator^ __CreateInstance(::System::IntPtr native);
                 static BinaryConditionalOperator^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 BinaryConditionalOperator();
@@ -1934,8 +1934,8 @@ namespace CppSharp
             {
             public:
 
-                AddrLabelExpr(struct ::CppSharp::CppParser::AST::AddrLabelExpr* native);
-                AddrLabelExpr(struct ::CppSharp::CppParser::AST::AddrLabelExpr* native, bool ownNativeInstance);
+                AddrLabelExpr(class ::CppSharp::CppParser::AST::AddrLabelExpr* native);
+                AddrLabelExpr(class ::CppSharp::CppParser::AST::AddrLabelExpr* native, bool ownNativeInstance);
                 static AddrLabelExpr^ __CreateInstance(::System::IntPtr native);
                 static AddrLabelExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 AddrLabelExpr();
@@ -1961,8 +1961,8 @@ namespace CppSharp
             {
             public:
 
-                StmtExpr(struct ::CppSharp::CppParser::AST::StmtExpr* native);
-                StmtExpr(struct ::CppSharp::CppParser::AST::StmtExpr* native, bool ownNativeInstance);
+                StmtExpr(class ::CppSharp::CppParser::AST::StmtExpr* native);
+                StmtExpr(class ::CppSharp::CppParser::AST::StmtExpr* native, bool ownNativeInstance);
                 static StmtExpr^ __CreateInstance(::System::IntPtr native);
                 static StmtExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 StmtExpr();
@@ -1994,8 +1994,8 @@ namespace CppSharp
             {
             public:
 
-                ShuffleVectorExpr(struct ::CppSharp::CppParser::AST::ShuffleVectorExpr* native);
-                ShuffleVectorExpr(struct ::CppSharp::CppParser::AST::ShuffleVectorExpr* native, bool ownNativeInstance);
+                ShuffleVectorExpr(class ::CppSharp::CppParser::AST::ShuffleVectorExpr* native);
+                ShuffleVectorExpr(class ::CppSharp::CppParser::AST::ShuffleVectorExpr* native, bool ownNativeInstance);
                 static ShuffleVectorExpr^ __CreateInstance(::System::IntPtr native);
                 static ShuffleVectorExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ShuffleVectorExpr();
@@ -2027,8 +2027,8 @@ namespace CppSharp
             {
             public:
 
-                ConvertVectorExpr(struct ::CppSharp::CppParser::AST::ConvertVectorExpr* native);
-                ConvertVectorExpr(struct ::CppSharp::CppParser::AST::ConvertVectorExpr* native, bool ownNativeInstance);
+                ConvertVectorExpr(class ::CppSharp::CppParser::AST::ConvertVectorExpr* native);
+                ConvertVectorExpr(class ::CppSharp::CppParser::AST::ConvertVectorExpr* native, bool ownNativeInstance);
                 static ConvertVectorExpr^ __CreateInstance(::System::IntPtr native);
                 static ConvertVectorExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ConvertVectorExpr();
@@ -2060,8 +2060,8 @@ namespace CppSharp
             {
             public:
 
-                ChooseExpr(struct ::CppSharp::CppParser::AST::ChooseExpr* native);
-                ChooseExpr(struct ::CppSharp::CppParser::AST::ChooseExpr* native, bool ownNativeInstance);
+                ChooseExpr(class ::CppSharp::CppParser::AST::ChooseExpr* native);
+                ChooseExpr(class ::CppSharp::CppParser::AST::ChooseExpr* native, bool ownNativeInstance);
                 static ChooseExpr^ __CreateInstance(::System::IntPtr native);
                 static ChooseExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ChooseExpr();
@@ -2123,8 +2123,8 @@ namespace CppSharp
             {
             public:
 
-                GNUNullExpr(struct ::CppSharp::CppParser::AST::GNUNullExpr* native);
-                GNUNullExpr(struct ::CppSharp::CppParser::AST::GNUNullExpr* native, bool ownNativeInstance);
+                GNUNullExpr(class ::CppSharp::CppParser::AST::GNUNullExpr* native);
+                GNUNullExpr(class ::CppSharp::CppParser::AST::GNUNullExpr* native, bool ownNativeInstance);
                 static GNUNullExpr^ __CreateInstance(::System::IntPtr native);
                 static GNUNullExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 GNUNullExpr();
@@ -2144,8 +2144,8 @@ namespace CppSharp
             {
             public:
 
-                VAArgExpr(struct ::CppSharp::CppParser::AST::VAArgExpr* native);
-                VAArgExpr(struct ::CppSharp::CppParser::AST::VAArgExpr* native, bool ownNativeInstance);
+                VAArgExpr(class ::CppSharp::CppParser::AST::VAArgExpr* native);
+                VAArgExpr(class ::CppSharp::CppParser::AST::VAArgExpr* native, bool ownNativeInstance);
                 static VAArgExpr^ __CreateInstance(::System::IntPtr native);
                 static VAArgExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 VAArgExpr();
@@ -2183,8 +2183,8 @@ namespace CppSharp
             {
             public:
 
-                InitListExpr(struct ::CppSharp::CppParser::AST::InitListExpr* native);
-                InitListExpr(struct ::CppSharp::CppParser::AST::InitListExpr* native, bool ownNativeInstance);
+                InitListExpr(class ::CppSharp::CppParser::AST::InitListExpr* native);
+                InitListExpr(class ::CppSharp::CppParser::AST::InitListExpr* native, bool ownNativeInstance);
                 static InitListExpr^ __CreateInstance(::System::IntPtr native);
                 static InitListExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 InitListExpr();
@@ -2274,15 +2274,15 @@ namespace CppSharp
                 {
                 public:
 
-                    property struct ::CppSharp::CppParser::AST::DesignatedInitExpr::Designator* NativePtr;
+                    property class ::CppSharp::CppParser::AST::DesignatedInitExpr::Designator* NativePtr;
                     property ::System::IntPtr __Instance
                     {
                         virtual ::System::IntPtr get();
                         virtual void set(::System::IntPtr instance);
                     }
 
-                    Designator(struct ::CppSharp::CppParser::AST::DesignatedInitExpr::Designator* native);
-                    Designator(struct ::CppSharp::CppParser::AST::DesignatedInitExpr::Designator* native, bool ownNativeInstance);
+                    Designator(class ::CppSharp::CppParser::AST::DesignatedInitExpr::Designator* native);
+                    Designator(class ::CppSharp::CppParser::AST::DesignatedInitExpr::Designator* native, bool ownNativeInstance);
                     static Designator^ __CreateInstance(::System::IntPtr native);
                     static Designator^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                     Designator();
@@ -2366,15 +2366,15 @@ namespace CppSharp
                 {
                 public:
 
-                    property struct ::CppSharp::CppParser::AST::DesignatedInitExpr::FieldDesignator* NativePtr;
+                    property class ::CppSharp::CppParser::AST::DesignatedInitExpr::FieldDesignator* NativePtr;
                     property ::System::IntPtr __Instance
                     {
                         virtual ::System::IntPtr get();
                         virtual void set(::System::IntPtr instance);
                     }
 
-                    FieldDesignator(struct ::CppSharp::CppParser::AST::DesignatedInitExpr::FieldDesignator* native);
-                    FieldDesignator(struct ::CppSharp::CppParser::AST::DesignatedInitExpr::FieldDesignator* native, bool ownNativeInstance);
+                    FieldDesignator(class ::CppSharp::CppParser::AST::DesignatedInitExpr::FieldDesignator* native);
+                    FieldDesignator(class ::CppSharp::CppParser::AST::DesignatedInitExpr::FieldDesignator* native, bool ownNativeInstance);
                     static FieldDesignator^ __CreateInstance(::System::IntPtr native);
                     static FieldDesignator^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                     FieldDesignator();
@@ -2392,15 +2392,15 @@ namespace CppSharp
                 {
                 public:
 
-                    property struct ::CppSharp::CppParser::AST::DesignatedInitExpr::ArrayOrRangeDesignator* NativePtr;
+                    property class ::CppSharp::CppParser::AST::DesignatedInitExpr::ArrayOrRangeDesignator* NativePtr;
                     property ::System::IntPtr __Instance
                     {
                         virtual ::System::IntPtr get();
                         virtual void set(::System::IntPtr instance);
                     }
 
-                    ArrayOrRangeDesignator(struct ::CppSharp::CppParser::AST::DesignatedInitExpr::ArrayOrRangeDesignator* native);
-                    ArrayOrRangeDesignator(struct ::CppSharp::CppParser::AST::DesignatedInitExpr::ArrayOrRangeDesignator* native, bool ownNativeInstance);
+                    ArrayOrRangeDesignator(class ::CppSharp::CppParser::AST::DesignatedInitExpr::ArrayOrRangeDesignator* native);
+                    ArrayOrRangeDesignator(class ::CppSharp::CppParser::AST::DesignatedInitExpr::ArrayOrRangeDesignator* native, bool ownNativeInstance);
                     static ArrayOrRangeDesignator^ __CreateInstance(::System::IntPtr native);
                     static ArrayOrRangeDesignator^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                     ArrayOrRangeDesignator();
@@ -2414,8 +2414,8 @@ namespace CppSharp
                     bool __ownsNativeInstance;
                 };
 
-                DesignatedInitExpr(struct ::CppSharp::CppParser::AST::DesignatedInitExpr* native);
-                DesignatedInitExpr(struct ::CppSharp::CppParser::AST::DesignatedInitExpr* native, bool ownNativeInstance);
+                DesignatedInitExpr(class ::CppSharp::CppParser::AST::DesignatedInitExpr* native);
+                DesignatedInitExpr(class ::CppSharp::CppParser::AST::DesignatedInitExpr* native, bool ownNativeInstance);
                 static DesignatedInitExpr^ __CreateInstance(::System::IntPtr native);
                 static DesignatedInitExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 DesignatedInitExpr();
@@ -2465,8 +2465,8 @@ namespace CppSharp
             {
             public:
 
-                NoInitExpr(struct ::CppSharp::CppParser::AST::NoInitExpr* native);
-                NoInitExpr(struct ::CppSharp::CppParser::AST::NoInitExpr* native, bool ownNativeInstance);
+                NoInitExpr(class ::CppSharp::CppParser::AST::NoInitExpr* native);
+                NoInitExpr(class ::CppSharp::CppParser::AST::NoInitExpr* native, bool ownNativeInstance);
                 static NoInitExpr^ __CreateInstance(::System::IntPtr native);
                 static NoInitExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 NoInitExpr();
@@ -2480,8 +2480,8 @@ namespace CppSharp
             {
             public:
 
-                DesignatedInitUpdateExpr(struct ::CppSharp::CppParser::AST::DesignatedInitUpdateExpr* native);
-                DesignatedInitUpdateExpr(struct ::CppSharp::CppParser::AST::DesignatedInitUpdateExpr* native, bool ownNativeInstance);
+                DesignatedInitUpdateExpr(class ::CppSharp::CppParser::AST::DesignatedInitUpdateExpr* native);
+                DesignatedInitUpdateExpr(class ::CppSharp::CppParser::AST::DesignatedInitUpdateExpr* native, bool ownNativeInstance);
                 static DesignatedInitUpdateExpr^ __CreateInstance(::System::IntPtr native);
                 static DesignatedInitUpdateExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 DesignatedInitUpdateExpr();
@@ -2507,8 +2507,8 @@ namespace CppSharp
             {
             public:
 
-                ArrayInitLoopExpr(struct ::CppSharp::CppParser::AST::ArrayInitLoopExpr* native);
-                ArrayInitLoopExpr(struct ::CppSharp::CppParser::AST::ArrayInitLoopExpr* native, bool ownNativeInstance);
+                ArrayInitLoopExpr(class ::CppSharp::CppParser::AST::ArrayInitLoopExpr* native);
+                ArrayInitLoopExpr(class ::CppSharp::CppParser::AST::ArrayInitLoopExpr* native, bool ownNativeInstance);
                 static ArrayInitLoopExpr^ __CreateInstance(::System::IntPtr native);
                 static ArrayInitLoopExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ArrayInitLoopExpr();
@@ -2534,8 +2534,8 @@ namespace CppSharp
             {
             public:
 
-                ArrayInitIndexExpr(struct ::CppSharp::CppParser::AST::ArrayInitIndexExpr* native);
-                ArrayInitIndexExpr(struct ::CppSharp::CppParser::AST::ArrayInitIndexExpr* native, bool ownNativeInstance);
+                ArrayInitIndexExpr(class ::CppSharp::CppParser::AST::ArrayInitIndexExpr* native);
+                ArrayInitIndexExpr(class ::CppSharp::CppParser::AST::ArrayInitIndexExpr* native, bool ownNativeInstance);
                 static ArrayInitIndexExpr^ __CreateInstance(::System::IntPtr native);
                 static ArrayInitIndexExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ArrayInitIndexExpr();
@@ -2549,8 +2549,8 @@ namespace CppSharp
             {
             public:
 
-                ImplicitValueInitExpr(struct ::CppSharp::CppParser::AST::ImplicitValueInitExpr* native);
-                ImplicitValueInitExpr(struct ::CppSharp::CppParser::AST::ImplicitValueInitExpr* native, bool ownNativeInstance);
+                ImplicitValueInitExpr(class ::CppSharp::CppParser::AST::ImplicitValueInitExpr* native);
+                ImplicitValueInitExpr(class ::CppSharp::CppParser::AST::ImplicitValueInitExpr* native, bool ownNativeInstance);
                 static ImplicitValueInitExpr^ __CreateInstance(::System::IntPtr native);
                 static ImplicitValueInitExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ImplicitValueInitExpr();
@@ -2564,8 +2564,8 @@ namespace CppSharp
             {
             public:
 
-                ParenListExpr(struct ::CppSharp::CppParser::AST::ParenListExpr* native);
-                ParenListExpr(struct ::CppSharp::CppParser::AST::ParenListExpr* native, bool ownNativeInstance);
+                ParenListExpr(class ::CppSharp::CppParser::AST::ParenListExpr* native);
+                ParenListExpr(class ::CppSharp::CppParser::AST::ParenListExpr* native, bool ownNativeInstance);
                 static ParenListExpr^ __CreateInstance(::System::IntPtr native);
                 static ParenListExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ParenListExpr();
@@ -2597,8 +2597,8 @@ namespace CppSharp
             {
             public:
 
-                GenericSelectionExpr(struct ::CppSharp::CppParser::AST::GenericSelectionExpr* native);
-                GenericSelectionExpr(struct ::CppSharp::CppParser::AST::GenericSelectionExpr* native, bool ownNativeInstance);
+                GenericSelectionExpr(class ::CppSharp::CppParser::AST::GenericSelectionExpr* native);
+                GenericSelectionExpr(class ::CppSharp::CppParser::AST::GenericSelectionExpr* native, bool ownNativeInstance);
                 static GenericSelectionExpr^ __CreateInstance(::System::IntPtr native);
                 static GenericSelectionExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 GenericSelectionExpr();
@@ -2660,8 +2660,8 @@ namespace CppSharp
             {
             public:
 
-                ExtVectorElementExpr(struct ::CppSharp::CppParser::AST::ExtVectorElementExpr* native);
-                ExtVectorElementExpr(struct ::CppSharp::CppParser::AST::ExtVectorElementExpr* native, bool ownNativeInstance);
+                ExtVectorElementExpr(class ::CppSharp::CppParser::AST::ExtVectorElementExpr* native);
+                ExtVectorElementExpr(class ::CppSharp::CppParser::AST::ExtVectorElementExpr* native, bool ownNativeInstance);
                 static ExtVectorElementExpr^ __CreateInstance(::System::IntPtr native);
                 static ExtVectorElementExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ExtVectorElementExpr();
@@ -2705,8 +2705,8 @@ namespace CppSharp
             {
             public:
 
-                BlockExpr(struct ::CppSharp::CppParser::AST::BlockExpr* native);
-                BlockExpr(struct ::CppSharp::CppParser::AST::BlockExpr* native, bool ownNativeInstance);
+                BlockExpr(class ::CppSharp::CppParser::AST::BlockExpr* native);
+                BlockExpr(class ::CppSharp::CppParser::AST::BlockExpr* native, bool ownNativeInstance);
                 static BlockExpr^ __CreateInstance(::System::IntPtr native);
                 static BlockExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 BlockExpr();
@@ -2732,8 +2732,8 @@ namespace CppSharp
             {
             public:
 
-                AsTypeExpr(struct ::CppSharp::CppParser::AST::AsTypeExpr* native);
-                AsTypeExpr(struct ::CppSharp::CppParser::AST::AsTypeExpr* native, bool ownNativeInstance);
+                AsTypeExpr(class ::CppSharp::CppParser::AST::AsTypeExpr* native);
+                AsTypeExpr(class ::CppSharp::CppParser::AST::AsTypeExpr* native, bool ownNativeInstance);
                 static AsTypeExpr^ __CreateInstance(::System::IntPtr native);
                 static AsTypeExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 AsTypeExpr();
@@ -2765,8 +2765,8 @@ namespace CppSharp
             {
             public:
 
-                PseudoObjectExpr(struct ::CppSharp::CppParser::AST::PseudoObjectExpr* native);
-                PseudoObjectExpr(struct ::CppSharp::CppParser::AST::PseudoObjectExpr* native, bool ownNativeInstance);
+                PseudoObjectExpr(class ::CppSharp::CppParser::AST::PseudoObjectExpr* native);
+                PseudoObjectExpr(class ::CppSharp::CppParser::AST::PseudoObjectExpr* native, bool ownNativeInstance);
                 static PseudoObjectExpr^ __CreateInstance(::System::IntPtr native);
                 static PseudoObjectExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 PseudoObjectExpr();
@@ -2854,8 +2854,8 @@ namespace CppSharp
                     AtomicFetchMax = 45
                 };
 
-                AtomicExpr(struct ::CppSharp::CppParser::AST::AtomicExpr* native);
-                AtomicExpr(struct ::CppSharp::CppParser::AST::AtomicExpr* native, bool ownNativeInstance);
+                AtomicExpr(class ::CppSharp::CppParser::AST::AtomicExpr* native);
+                AtomicExpr(class ::CppSharp::CppParser::AST::AtomicExpr* native, bool ownNativeInstance);
                 static AtomicExpr^ __CreateInstance(::System::IntPtr native);
                 static AtomicExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 AtomicExpr();
@@ -2959,8 +2959,8 @@ namespace CppSharp
             {
             public:
 
-                TypoExpr(struct ::CppSharp::CppParser::AST::TypoExpr* native);
-                TypoExpr(struct ::CppSharp::CppParser::AST::TypoExpr* native, bool ownNativeInstance);
+                TypoExpr(class ::CppSharp::CppParser::AST::TypoExpr* native);
+                TypoExpr(class ::CppSharp::CppParser::AST::TypoExpr* native, bool ownNativeInstance);
                 static TypoExpr^ __CreateInstance(::System::IntPtr native);
                 static TypoExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 TypoExpr();
@@ -2974,8 +2974,8 @@ namespace CppSharp
             {
             public:
 
-                CXXOperatorCallExpr(struct ::CppSharp::CppParser::AST::CXXOperatorCallExpr* native);
-                CXXOperatorCallExpr(struct ::CppSharp::CppParser::AST::CXXOperatorCallExpr* native, bool ownNativeInstance);
+                CXXOperatorCallExpr(class ::CppSharp::CppParser::AST::CXXOperatorCallExpr* native);
+                CXXOperatorCallExpr(class ::CppSharp::CppParser::AST::CXXOperatorCallExpr* native, bool ownNativeInstance);
                 static CXXOperatorCallExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXOperatorCallExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXOperatorCallExpr();
@@ -3013,8 +3013,8 @@ namespace CppSharp
             {
             public:
 
-                CXXMemberCallExpr(struct ::CppSharp::CppParser::AST::CXXMemberCallExpr* native);
-                CXXMemberCallExpr(struct ::CppSharp::CppParser::AST::CXXMemberCallExpr* native, bool ownNativeInstance);
+                CXXMemberCallExpr(class ::CppSharp::CppParser::AST::CXXMemberCallExpr* native);
+                CXXMemberCallExpr(class ::CppSharp::CppParser::AST::CXXMemberCallExpr* native, bool ownNativeInstance);
                 static CXXMemberCallExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXMemberCallExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXMemberCallExpr();
@@ -3040,8 +3040,8 @@ namespace CppSharp
             {
             public:
 
-                CUDAKernelCallExpr(struct ::CppSharp::CppParser::AST::CUDAKernelCallExpr* native);
-                CUDAKernelCallExpr(struct ::CppSharp::CppParser::AST::CUDAKernelCallExpr* native, bool ownNativeInstance);
+                CUDAKernelCallExpr(class ::CppSharp::CppParser::AST::CUDAKernelCallExpr* native);
+                CUDAKernelCallExpr(class ::CppSharp::CppParser::AST::CUDAKernelCallExpr* native, bool ownNativeInstance);
                 static CUDAKernelCallExpr^ __CreateInstance(::System::IntPtr native);
                 static CUDAKernelCallExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CUDAKernelCallExpr();
@@ -3061,8 +3061,8 @@ namespace CppSharp
             {
             public:
 
-                CXXNamedCastExpr(struct ::CppSharp::CppParser::AST::CXXNamedCastExpr* native);
-                CXXNamedCastExpr(struct ::CppSharp::CppParser::AST::CXXNamedCastExpr* native, bool ownNativeInstance);
+                CXXNamedCastExpr(class ::CppSharp::CppParser::AST::CXXNamedCastExpr* native);
+                CXXNamedCastExpr(class ::CppSharp::CppParser::AST::CXXNamedCastExpr* native, bool ownNativeInstance);
                 static CXXNamedCastExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXNamedCastExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXNamedCastExpr();
@@ -3104,8 +3104,8 @@ namespace CppSharp
             {
             public:
 
-                CXXStaticCastExpr(struct ::CppSharp::CppParser::AST::CXXStaticCastExpr* native);
-                CXXStaticCastExpr(struct ::CppSharp::CppParser::AST::CXXStaticCastExpr* native, bool ownNativeInstance);
+                CXXStaticCastExpr(class ::CppSharp::CppParser::AST::CXXStaticCastExpr* native);
+                CXXStaticCastExpr(class ::CppSharp::CppParser::AST::CXXStaticCastExpr* native, bool ownNativeInstance);
                 static CXXStaticCastExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXStaticCastExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXStaticCastExpr();
@@ -3119,8 +3119,8 @@ namespace CppSharp
             {
             public:
 
-                CXXDynamicCastExpr(struct ::CppSharp::CppParser::AST::CXXDynamicCastExpr* native);
-                CXXDynamicCastExpr(struct ::CppSharp::CppParser::AST::CXXDynamicCastExpr* native, bool ownNativeInstance);
+                CXXDynamicCastExpr(class ::CppSharp::CppParser::AST::CXXDynamicCastExpr* native);
+                CXXDynamicCastExpr(class ::CppSharp::CppParser::AST::CXXDynamicCastExpr* native, bool ownNativeInstance);
                 static CXXDynamicCastExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXDynamicCastExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXDynamicCastExpr();
@@ -3140,8 +3140,8 @@ namespace CppSharp
             {
             public:
 
-                CXXReinterpretCastExpr(struct ::CppSharp::CppParser::AST::CXXReinterpretCastExpr* native);
-                CXXReinterpretCastExpr(struct ::CppSharp::CppParser::AST::CXXReinterpretCastExpr* native, bool ownNativeInstance);
+                CXXReinterpretCastExpr(class ::CppSharp::CppParser::AST::CXXReinterpretCastExpr* native);
+                CXXReinterpretCastExpr(class ::CppSharp::CppParser::AST::CXXReinterpretCastExpr* native, bool ownNativeInstance);
                 static CXXReinterpretCastExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXReinterpretCastExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXReinterpretCastExpr();
@@ -3155,8 +3155,8 @@ namespace CppSharp
             {
             public:
 
-                CXXConstCastExpr(struct ::CppSharp::CppParser::AST::CXXConstCastExpr* native);
-                CXXConstCastExpr(struct ::CppSharp::CppParser::AST::CXXConstCastExpr* native, bool ownNativeInstance);
+                CXXConstCastExpr(class ::CppSharp::CppParser::AST::CXXConstCastExpr* native);
+                CXXConstCastExpr(class ::CppSharp::CppParser::AST::CXXConstCastExpr* native, bool ownNativeInstance);
                 static CXXConstCastExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXConstCastExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXConstCastExpr();
@@ -3180,8 +3180,8 @@ namespace CppSharp
                     Character = 5
                 };
 
-                UserDefinedLiteral(struct ::CppSharp::CppParser::AST::UserDefinedLiteral* native);
-                UserDefinedLiteral(struct ::CppSharp::CppParser::AST::UserDefinedLiteral* native, bool ownNativeInstance);
+                UserDefinedLiteral(class ::CppSharp::CppParser::AST::UserDefinedLiteral* native);
+                UserDefinedLiteral(class ::CppSharp::CppParser::AST::UserDefinedLiteral* native, bool ownNativeInstance);
                 static UserDefinedLiteral^ __CreateInstance(::System::IntPtr native);
                 static UserDefinedLiteral^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 UserDefinedLiteral();
@@ -3213,8 +3213,8 @@ namespace CppSharp
             {
             public:
 
-                CXXBoolLiteralExpr(struct ::CppSharp::CppParser::AST::CXXBoolLiteralExpr* native);
-                CXXBoolLiteralExpr(struct ::CppSharp::CppParser::AST::CXXBoolLiteralExpr* native, bool ownNativeInstance);
+                CXXBoolLiteralExpr(class ::CppSharp::CppParser::AST::CXXBoolLiteralExpr* native);
+                CXXBoolLiteralExpr(class ::CppSharp::CppParser::AST::CXXBoolLiteralExpr* native, bool ownNativeInstance);
                 static CXXBoolLiteralExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXBoolLiteralExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXBoolLiteralExpr();
@@ -3240,8 +3240,8 @@ namespace CppSharp
             {
             public:
 
-                CXXNullPtrLiteralExpr(struct ::CppSharp::CppParser::AST::CXXNullPtrLiteralExpr* native);
-                CXXNullPtrLiteralExpr(struct ::CppSharp::CppParser::AST::CXXNullPtrLiteralExpr* native, bool ownNativeInstance);
+                CXXNullPtrLiteralExpr(class ::CppSharp::CppParser::AST::CXXNullPtrLiteralExpr* native);
+                CXXNullPtrLiteralExpr(class ::CppSharp::CppParser::AST::CXXNullPtrLiteralExpr* native, bool ownNativeInstance);
                 static CXXNullPtrLiteralExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXNullPtrLiteralExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXNullPtrLiteralExpr();
@@ -3261,8 +3261,8 @@ namespace CppSharp
             {
             public:
 
-                CXXStdInitializerListExpr(struct ::CppSharp::CppParser::AST::CXXStdInitializerListExpr* native);
-                CXXStdInitializerListExpr(struct ::CppSharp::CppParser::AST::CXXStdInitializerListExpr* native, bool ownNativeInstance);
+                CXXStdInitializerListExpr(class ::CppSharp::CppParser::AST::CXXStdInitializerListExpr* native);
+                CXXStdInitializerListExpr(class ::CppSharp::CppParser::AST::CXXStdInitializerListExpr* native, bool ownNativeInstance);
                 static CXXStdInitializerListExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXStdInitializerListExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXStdInitializerListExpr();
@@ -3282,8 +3282,8 @@ namespace CppSharp
             {
             public:
 
-                CXXTypeidExpr(struct ::CppSharp::CppParser::AST::CXXTypeidExpr* native);
-                CXXTypeidExpr(struct ::CppSharp::CppParser::AST::CXXTypeidExpr* native, bool ownNativeInstance);
+                CXXTypeidExpr(class ::CppSharp::CppParser::AST::CXXTypeidExpr* native);
+                CXXTypeidExpr(class ::CppSharp::CppParser::AST::CXXTypeidExpr* native, bool ownNativeInstance);
                 static CXXTypeidExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXTypeidExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXTypeidExpr();
@@ -3315,8 +3315,8 @@ namespace CppSharp
             {
             public:
 
-                MSPropertyRefExpr(struct ::CppSharp::CppParser::AST::MSPropertyRefExpr* native);
-                MSPropertyRefExpr(struct ::CppSharp::CppParser::AST::MSPropertyRefExpr* native, bool ownNativeInstance);
+                MSPropertyRefExpr(class ::CppSharp::CppParser::AST::MSPropertyRefExpr* native);
+                MSPropertyRefExpr(class ::CppSharp::CppParser::AST::MSPropertyRefExpr* native, bool ownNativeInstance);
                 static MSPropertyRefExpr^ __CreateInstance(::System::IntPtr native);
                 static MSPropertyRefExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 MSPropertyRefExpr();
@@ -3354,8 +3354,8 @@ namespace CppSharp
             {
             public:
 
-                MSPropertySubscriptExpr(struct ::CppSharp::CppParser::AST::MSPropertySubscriptExpr* native);
-                MSPropertySubscriptExpr(struct ::CppSharp::CppParser::AST::MSPropertySubscriptExpr* native, bool ownNativeInstance);
+                MSPropertySubscriptExpr(class ::CppSharp::CppParser::AST::MSPropertySubscriptExpr* native);
+                MSPropertySubscriptExpr(class ::CppSharp::CppParser::AST::MSPropertySubscriptExpr* native, bool ownNativeInstance);
                 static MSPropertySubscriptExpr^ __CreateInstance(::System::IntPtr native);
                 static MSPropertySubscriptExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 MSPropertySubscriptExpr();
@@ -3387,8 +3387,8 @@ namespace CppSharp
             {
             public:
 
-                CXXUuidofExpr(struct ::CppSharp::CppParser::AST::CXXUuidofExpr* native);
-                CXXUuidofExpr(struct ::CppSharp::CppParser::AST::CXXUuidofExpr* native, bool ownNativeInstance);
+                CXXUuidofExpr(class ::CppSharp::CppParser::AST::CXXUuidofExpr* native);
+                CXXUuidofExpr(class ::CppSharp::CppParser::AST::CXXUuidofExpr* native, bool ownNativeInstance);
                 static CXXUuidofExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXUuidofExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXUuidofExpr();
@@ -3420,8 +3420,8 @@ namespace CppSharp
             {
             public:
 
-                CXXThisExpr(struct ::CppSharp::CppParser::AST::CXXThisExpr* native);
-                CXXThisExpr(struct ::CppSharp::CppParser::AST::CXXThisExpr* native, bool ownNativeInstance);
+                CXXThisExpr(class ::CppSharp::CppParser::AST::CXXThisExpr* native);
+                CXXThisExpr(class ::CppSharp::CppParser::AST::CXXThisExpr* native, bool ownNativeInstance);
                 static CXXThisExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXThisExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXThisExpr();
@@ -3447,8 +3447,8 @@ namespace CppSharp
             {
             public:
 
-                CXXThrowExpr(struct ::CppSharp::CppParser::AST::CXXThrowExpr* native);
-                CXXThrowExpr(struct ::CppSharp::CppParser::AST::CXXThrowExpr* native, bool ownNativeInstance);
+                CXXThrowExpr(class ::CppSharp::CppParser::AST::CXXThrowExpr* native);
+                CXXThrowExpr(class ::CppSharp::CppParser::AST::CXXThrowExpr* native, bool ownNativeInstance);
                 static CXXThrowExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXThrowExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXThrowExpr();
@@ -3480,8 +3480,8 @@ namespace CppSharp
             {
             public:
 
-                CXXDefaultArgExpr(struct ::CppSharp::CppParser::AST::CXXDefaultArgExpr* native);
-                CXXDefaultArgExpr(struct ::CppSharp::CppParser::AST::CXXDefaultArgExpr* native, bool ownNativeInstance);
+                CXXDefaultArgExpr(class ::CppSharp::CppParser::AST::CXXDefaultArgExpr* native);
+                CXXDefaultArgExpr(class ::CppSharp::CppParser::AST::CXXDefaultArgExpr* native, bool ownNativeInstance);
                 static CXXDefaultArgExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXDefaultArgExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXDefaultArgExpr();
@@ -3507,8 +3507,8 @@ namespace CppSharp
             {
             public:
 
-                CXXDefaultInitExpr(struct ::CppSharp::CppParser::AST::CXXDefaultInitExpr* native);
-                CXXDefaultInitExpr(struct ::CppSharp::CppParser::AST::CXXDefaultInitExpr* native, bool ownNativeInstance);
+                CXXDefaultInitExpr(class ::CppSharp::CppParser::AST::CXXDefaultInitExpr* native);
+                CXXDefaultInitExpr(class ::CppSharp::CppParser::AST::CXXDefaultInitExpr* native, bool ownNativeInstance);
                 static CXXDefaultInitExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXDefaultInitExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXDefaultInitExpr();
@@ -3534,8 +3534,8 @@ namespace CppSharp
             {
             public:
 
-                CXXBindTemporaryExpr(struct ::CppSharp::CppParser::AST::CXXBindTemporaryExpr* native);
-                CXXBindTemporaryExpr(struct ::CppSharp::CppParser::AST::CXXBindTemporaryExpr* native, bool ownNativeInstance);
+                CXXBindTemporaryExpr(class ::CppSharp::CppParser::AST::CXXBindTemporaryExpr* native);
+                CXXBindTemporaryExpr(class ::CppSharp::CppParser::AST::CXXBindTemporaryExpr* native, bool ownNativeInstance);
                 static CXXBindTemporaryExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXBindTemporaryExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXBindTemporaryExpr();
@@ -3563,8 +3563,8 @@ namespace CppSharp
                     Delegating = 3
                 };
 
-                CXXConstructExpr(struct ::CppSharp::CppParser::AST::CXXConstructExpr* native);
-                CXXConstructExpr(struct ::CppSharp::CppParser::AST::CXXConstructExpr* native, bool ownNativeInstance);
+                CXXConstructExpr(class ::CppSharp::CppParser::AST::CXXConstructExpr* native);
+                CXXConstructExpr(class ::CppSharp::CppParser::AST::CXXConstructExpr* native, bool ownNativeInstance);
                 static CXXConstructExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXConstructExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXConstructExpr();
@@ -3647,8 +3647,8 @@ namespace CppSharp
             {
             public:
 
-                CXXInheritedCtorInitExpr(struct ::CppSharp::CppParser::AST::CXXInheritedCtorInitExpr* native);
-                CXXInheritedCtorInitExpr(struct ::CppSharp::CppParser::AST::CXXInheritedCtorInitExpr* native, bool ownNativeInstance);
+                CXXInheritedCtorInitExpr(class ::CppSharp::CppParser::AST::CXXInheritedCtorInitExpr* native);
+                CXXInheritedCtorInitExpr(class ::CppSharp::CppParser::AST::CXXInheritedCtorInitExpr* native, bool ownNativeInstance);
                 static CXXInheritedCtorInitExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXInheritedCtorInitExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXInheritedCtorInitExpr();
@@ -3680,8 +3680,8 @@ namespace CppSharp
             {
             public:
 
-                CXXFunctionalCastExpr(struct ::CppSharp::CppParser::AST::CXXFunctionalCastExpr* native);
-                CXXFunctionalCastExpr(struct ::CppSharp::CppParser::AST::CXXFunctionalCastExpr* native, bool ownNativeInstance);
+                CXXFunctionalCastExpr(class ::CppSharp::CppParser::AST::CXXFunctionalCastExpr* native);
+                CXXFunctionalCastExpr(class ::CppSharp::CppParser::AST::CXXFunctionalCastExpr* native, bool ownNativeInstance);
                 static CXXFunctionalCastExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXFunctionalCastExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXFunctionalCastExpr();
@@ -3713,8 +3713,8 @@ namespace CppSharp
             {
             public:
 
-                CXXTemporaryObjectExpr(struct ::CppSharp::CppParser::AST::CXXTemporaryObjectExpr* native);
-                CXXTemporaryObjectExpr(struct ::CppSharp::CppParser::AST::CXXTemporaryObjectExpr* native, bool ownNativeInstance);
+                CXXTemporaryObjectExpr(class ::CppSharp::CppParser::AST::CXXTemporaryObjectExpr* native);
+                CXXTemporaryObjectExpr(class ::CppSharp::CppParser::AST::CXXTemporaryObjectExpr* native, bool ownNativeInstance);
                 static CXXTemporaryObjectExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXTemporaryObjectExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXTemporaryObjectExpr();
@@ -3728,8 +3728,8 @@ namespace CppSharp
             {
             public:
 
-                LambdaExpr(struct ::CppSharp::CppParser::AST::LambdaExpr* native);
-                LambdaExpr(struct ::CppSharp::CppParser::AST::LambdaExpr* native, bool ownNativeInstance);
+                LambdaExpr(class ::CppSharp::CppParser::AST::LambdaExpr* native);
+                LambdaExpr(class ::CppSharp::CppParser::AST::LambdaExpr* native, bool ownNativeInstance);
                 static LambdaExpr^ __CreateInstance(::System::IntPtr native);
                 static LambdaExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 LambdaExpr();
@@ -3814,8 +3814,8 @@ namespace CppSharp
             {
             public:
 
-                CXXScalarValueInitExpr(struct ::CppSharp::CppParser::AST::CXXScalarValueInitExpr* native);
-                CXXScalarValueInitExpr(struct ::CppSharp::CppParser::AST::CXXScalarValueInitExpr* native, bool ownNativeInstance);
+                CXXScalarValueInitExpr(class ::CppSharp::CppParser::AST::CXXScalarValueInitExpr* native);
+                CXXScalarValueInitExpr(class ::CppSharp::CppParser::AST::CXXScalarValueInitExpr* native, bool ownNativeInstance);
                 static CXXScalarValueInitExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXScalarValueInitExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXScalarValueInitExpr();
@@ -3842,8 +3842,8 @@ namespace CppSharp
                     ListInit = 2
                 };
 
-                CXXNewExpr(struct ::CppSharp::CppParser::AST::CXXNewExpr* native);
-                CXXNewExpr(struct ::CppSharp::CppParser::AST::CXXNewExpr* native, bool ownNativeInstance);
+                CXXNewExpr(class ::CppSharp::CppParser::AST::CXXNewExpr* native);
+                CXXNewExpr(class ::CppSharp::CppParser::AST::CXXNewExpr* native, bool ownNativeInstance);
                 static CXXNewExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXNewExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXNewExpr();
@@ -3958,8 +3958,8 @@ namespace CppSharp
             {
             public:
 
-                CXXDeleteExpr(struct ::CppSharp::CppParser::AST::CXXDeleteExpr* native);
-                CXXDeleteExpr(struct ::CppSharp::CppParser::AST::CXXDeleteExpr* native, bool ownNativeInstance);
+                CXXDeleteExpr(class ::CppSharp::CppParser::AST::CXXDeleteExpr* native);
+                CXXDeleteExpr(class ::CppSharp::CppParser::AST::CXXDeleteExpr* native, bool ownNativeInstance);
                 static CXXDeleteExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXDeleteExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXDeleteExpr();
@@ -4009,8 +4009,8 @@ namespace CppSharp
             {
             public:
 
-                CXXPseudoDestructorExpr(struct ::CppSharp::CppParser::AST::CXXPseudoDestructorExpr* native);
-                CXXPseudoDestructorExpr(struct ::CppSharp::CppParser::AST::CXXPseudoDestructorExpr* native, bool ownNativeInstance);
+                CXXPseudoDestructorExpr(class ::CppSharp::CppParser::AST::CXXPseudoDestructorExpr* native);
+                CXXPseudoDestructorExpr(class ::CppSharp::CppParser::AST::CXXPseudoDestructorExpr* native, bool ownNativeInstance);
                 static CXXPseudoDestructorExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXPseudoDestructorExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXPseudoDestructorExpr();
@@ -4072,8 +4072,8 @@ namespace CppSharp
             {
             public:
 
-                TypeTraitExpr(struct ::CppSharp::CppParser::AST::TypeTraitExpr* native);
-                TypeTraitExpr(struct ::CppSharp::CppParser::AST::TypeTraitExpr* native, bool ownNativeInstance);
+                TypeTraitExpr(class ::CppSharp::CppParser::AST::TypeTraitExpr* native);
+                TypeTraitExpr(class ::CppSharp::CppParser::AST::TypeTraitExpr* native, bool ownNativeInstance);
                 static TypeTraitExpr^ __CreateInstance(::System::IntPtr native);
                 static TypeTraitExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 TypeTraitExpr();
@@ -4099,8 +4099,8 @@ namespace CppSharp
             {
             public:
 
-                ArrayTypeTraitExpr(struct ::CppSharp::CppParser::AST::ArrayTypeTraitExpr* native);
-                ArrayTypeTraitExpr(struct ::CppSharp::CppParser::AST::ArrayTypeTraitExpr* native, bool ownNativeInstance);
+                ArrayTypeTraitExpr(class ::CppSharp::CppParser::AST::ArrayTypeTraitExpr* native);
+                ArrayTypeTraitExpr(class ::CppSharp::CppParser::AST::ArrayTypeTraitExpr* native, bool ownNativeInstance);
                 static ArrayTypeTraitExpr^ __CreateInstance(::System::IntPtr native);
                 static ArrayTypeTraitExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ArrayTypeTraitExpr();
@@ -4132,8 +4132,8 @@ namespace CppSharp
             {
             public:
 
-                ExpressionTraitExpr(struct ::CppSharp::CppParser::AST::ExpressionTraitExpr* native);
-                ExpressionTraitExpr(struct ::CppSharp::CppParser::AST::ExpressionTraitExpr* native, bool ownNativeInstance);
+                ExpressionTraitExpr(class ::CppSharp::CppParser::AST::ExpressionTraitExpr* native);
+                ExpressionTraitExpr(class ::CppSharp::CppParser::AST::ExpressionTraitExpr* native, bool ownNativeInstance);
                 static ExpressionTraitExpr^ __CreateInstance(::System::IntPtr native);
                 static ExpressionTraitExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ExpressionTraitExpr();
@@ -4163,15 +4163,15 @@ namespace CppSharp
                 {
                 public:
 
-                    property struct ::CppSharp::CppParser::AST::OverloadExpr::FindResult* NativePtr;
+                    property class ::CppSharp::CppParser::AST::OverloadExpr::FindResult* NativePtr;
                     property ::System::IntPtr __Instance
                     {
                         virtual ::System::IntPtr get();
                         virtual void set(::System::IntPtr instance);
                     }
 
-                    FindResult(struct ::CppSharp::CppParser::AST::OverloadExpr::FindResult* native);
-                    FindResult(struct ::CppSharp::CppParser::AST::OverloadExpr::FindResult* native, bool ownNativeInstance);
+                    FindResult(class ::CppSharp::CppParser::AST::OverloadExpr::FindResult* native);
+                    FindResult(class ::CppSharp::CppParser::AST::OverloadExpr::FindResult* native, bool ownNativeInstance);
                     static FindResult^ __CreateInstance(::System::IntPtr native);
                     static FindResult^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                     FindResult();
@@ -4185,8 +4185,8 @@ namespace CppSharp
                     bool __ownsNativeInstance;
                 };
 
-                OverloadExpr(struct ::CppSharp::CppParser::AST::OverloadExpr* native);
-                OverloadExpr(struct ::CppSharp::CppParser::AST::OverloadExpr* native, bool ownNativeInstance);
+                OverloadExpr(class ::CppSharp::CppParser::AST::OverloadExpr* native);
+                OverloadExpr(class ::CppSharp::CppParser::AST::OverloadExpr* native, bool ownNativeInstance);
                 static OverloadExpr^ __CreateInstance(::System::IntPtr native);
                 static OverloadExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 OverloadExpr();
@@ -4252,8 +4252,8 @@ namespace CppSharp
             {
             public:
 
-                UnresolvedLookupExpr(struct ::CppSharp::CppParser::AST::UnresolvedLookupExpr* native);
-                UnresolvedLookupExpr(struct ::CppSharp::CppParser::AST::UnresolvedLookupExpr* native, bool ownNativeInstance);
+                UnresolvedLookupExpr(class ::CppSharp::CppParser::AST::UnresolvedLookupExpr* native);
+                UnresolvedLookupExpr(class ::CppSharp::CppParser::AST::UnresolvedLookupExpr* native, bool ownNativeInstance);
                 static UnresolvedLookupExpr^ __CreateInstance(::System::IntPtr native);
                 static UnresolvedLookupExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 UnresolvedLookupExpr();
@@ -4279,8 +4279,8 @@ namespace CppSharp
             {
             public:
 
-                DependentScopeDeclRefExpr(struct ::CppSharp::CppParser::AST::DependentScopeDeclRefExpr* native);
-                DependentScopeDeclRefExpr(struct ::CppSharp::CppParser::AST::DependentScopeDeclRefExpr* native, bool ownNativeInstance);
+                DependentScopeDeclRefExpr(class ::CppSharp::CppParser::AST::DependentScopeDeclRefExpr* native);
+                DependentScopeDeclRefExpr(class ::CppSharp::CppParser::AST::DependentScopeDeclRefExpr* native, bool ownNativeInstance);
                 static DependentScopeDeclRefExpr^ __CreateInstance(::System::IntPtr native);
                 static DependentScopeDeclRefExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 DependentScopeDeclRefExpr();
@@ -4336,8 +4336,8 @@ namespace CppSharp
             {
             public:
 
-                ExprWithCleanups(struct ::CppSharp::CppParser::AST::ExprWithCleanups* native);
-                ExprWithCleanups(struct ::CppSharp::CppParser::AST::ExprWithCleanups* native, bool ownNativeInstance);
+                ExprWithCleanups(class ::CppSharp::CppParser::AST::ExprWithCleanups* native);
+                ExprWithCleanups(class ::CppSharp::CppParser::AST::ExprWithCleanups* native, bool ownNativeInstance);
                 static ExprWithCleanups^ __CreateInstance(::System::IntPtr native);
                 static ExprWithCleanups^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ExprWithCleanups();
@@ -4363,8 +4363,8 @@ namespace CppSharp
             {
             public:
 
-                CXXUnresolvedConstructExpr(struct ::CppSharp::CppParser::AST::CXXUnresolvedConstructExpr* native);
-                CXXUnresolvedConstructExpr(struct ::CppSharp::CppParser::AST::CXXUnresolvedConstructExpr* native, bool ownNativeInstance);
+                CXXUnresolvedConstructExpr(class ::CppSharp::CppParser::AST::CXXUnresolvedConstructExpr* native);
+                CXXUnresolvedConstructExpr(class ::CppSharp::CppParser::AST::CXXUnresolvedConstructExpr* native, bool ownNativeInstance);
                 static CXXUnresolvedConstructExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXUnresolvedConstructExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXUnresolvedConstructExpr();
@@ -4425,8 +4425,8 @@ namespace CppSharp
             {
             public:
 
-                CXXDependentScopeMemberExpr(struct ::CppSharp::CppParser::AST::CXXDependentScopeMemberExpr* native);
-                CXXDependentScopeMemberExpr(struct ::CppSharp::CppParser::AST::CXXDependentScopeMemberExpr* native, bool ownNativeInstance);
+                CXXDependentScopeMemberExpr(class ::CppSharp::CppParser::AST::CXXDependentScopeMemberExpr* native);
+                CXXDependentScopeMemberExpr(class ::CppSharp::CppParser::AST::CXXDependentScopeMemberExpr* native, bool ownNativeInstance);
                 static CXXDependentScopeMemberExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXDependentScopeMemberExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXDependentScopeMemberExpr();
@@ -4518,8 +4518,8 @@ namespace CppSharp
             {
             public:
 
-                UnresolvedMemberExpr(struct ::CppSharp::CppParser::AST::UnresolvedMemberExpr* native);
-                UnresolvedMemberExpr(struct ::CppSharp::CppParser::AST::UnresolvedMemberExpr* native, bool ownNativeInstance);
+                UnresolvedMemberExpr(class ::CppSharp::CppParser::AST::UnresolvedMemberExpr* native);
+                UnresolvedMemberExpr(class ::CppSharp::CppParser::AST::UnresolvedMemberExpr* native, bool ownNativeInstance);
                 static UnresolvedMemberExpr^ __CreateInstance(::System::IntPtr native);
                 static UnresolvedMemberExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 UnresolvedMemberExpr();
@@ -4575,8 +4575,8 @@ namespace CppSharp
             {
             public:
 
-                CXXNoexceptExpr(struct ::CppSharp::CppParser::AST::CXXNoexceptExpr* native);
-                CXXNoexceptExpr(struct ::CppSharp::CppParser::AST::CXXNoexceptExpr* native, bool ownNativeInstance);
+                CXXNoexceptExpr(class ::CppSharp::CppParser::AST::CXXNoexceptExpr* native);
+                CXXNoexceptExpr(class ::CppSharp::CppParser::AST::CXXNoexceptExpr* native, bool ownNativeInstance);
                 static CXXNoexceptExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXNoexceptExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXNoexceptExpr();
@@ -4602,8 +4602,8 @@ namespace CppSharp
             {
             public:
 
-                PackExpansionExpr(struct ::CppSharp::CppParser::AST::PackExpansionExpr* native);
-                PackExpansionExpr(struct ::CppSharp::CppParser::AST::PackExpansionExpr* native, bool ownNativeInstance);
+                PackExpansionExpr(class ::CppSharp::CppParser::AST::PackExpansionExpr* native);
+                PackExpansionExpr(class ::CppSharp::CppParser::AST::PackExpansionExpr* native, bool ownNativeInstance);
                 static PackExpansionExpr^ __CreateInstance(::System::IntPtr native);
                 static PackExpansionExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 PackExpansionExpr();
@@ -4629,8 +4629,8 @@ namespace CppSharp
             {
             public:
 
-                SizeOfPackExpr(struct ::CppSharp::CppParser::AST::SizeOfPackExpr* native);
-                SizeOfPackExpr(struct ::CppSharp::CppParser::AST::SizeOfPackExpr* native, bool ownNativeInstance);
+                SizeOfPackExpr(class ::CppSharp::CppParser::AST::SizeOfPackExpr* native);
+                SizeOfPackExpr(class ::CppSharp::CppParser::AST::SizeOfPackExpr* native, bool ownNativeInstance);
                 static SizeOfPackExpr^ __CreateInstance(::System::IntPtr native);
                 static SizeOfPackExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 SizeOfPackExpr();
@@ -4680,8 +4680,8 @@ namespace CppSharp
             {
             public:
 
-                SubstNonTypeTemplateParmExpr(struct ::CppSharp::CppParser::AST::SubstNonTypeTemplateParmExpr* native);
-                SubstNonTypeTemplateParmExpr(struct ::CppSharp::CppParser::AST::SubstNonTypeTemplateParmExpr* native, bool ownNativeInstance);
+                SubstNonTypeTemplateParmExpr(class ::CppSharp::CppParser::AST::SubstNonTypeTemplateParmExpr* native);
+                SubstNonTypeTemplateParmExpr(class ::CppSharp::CppParser::AST::SubstNonTypeTemplateParmExpr* native, bool ownNativeInstance);
                 static SubstNonTypeTemplateParmExpr^ __CreateInstance(::System::IntPtr native);
                 static SubstNonTypeTemplateParmExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 SubstNonTypeTemplateParmExpr();
@@ -4707,8 +4707,8 @@ namespace CppSharp
             {
             public:
 
-                SubstNonTypeTemplateParmPackExpr(struct ::CppSharp::CppParser::AST::SubstNonTypeTemplateParmPackExpr* native);
-                SubstNonTypeTemplateParmPackExpr(struct ::CppSharp::CppParser::AST::SubstNonTypeTemplateParmPackExpr* native, bool ownNativeInstance);
+                SubstNonTypeTemplateParmPackExpr(class ::CppSharp::CppParser::AST::SubstNonTypeTemplateParmPackExpr* native);
+                SubstNonTypeTemplateParmPackExpr(class ::CppSharp::CppParser::AST::SubstNonTypeTemplateParmPackExpr* native, bool ownNativeInstance);
                 static SubstNonTypeTemplateParmPackExpr^ __CreateInstance(::System::IntPtr native);
                 static SubstNonTypeTemplateParmPackExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 SubstNonTypeTemplateParmPackExpr();
@@ -4734,8 +4734,8 @@ namespace CppSharp
             {
             public:
 
-                FunctionParmPackExpr(struct ::CppSharp::CppParser::AST::FunctionParmPackExpr* native);
-                FunctionParmPackExpr(struct ::CppSharp::CppParser::AST::FunctionParmPackExpr* native, bool ownNativeInstance);
+                FunctionParmPackExpr(class ::CppSharp::CppParser::AST::FunctionParmPackExpr* native);
+                FunctionParmPackExpr(class ::CppSharp::CppParser::AST::FunctionParmPackExpr* native, bool ownNativeInstance);
                 static FunctionParmPackExpr^ __CreateInstance(::System::IntPtr native);
                 static FunctionParmPackExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 FunctionParmPackExpr();
@@ -4765,15 +4765,15 @@ namespace CppSharp
                 {
                 public:
 
-                    property struct ::CppSharp::CppParser::AST::MaterializeTemporaryExpr::ExtraState* NativePtr;
+                    property class ::CppSharp::CppParser::AST::MaterializeTemporaryExpr::ExtraState* NativePtr;
                     property ::System::IntPtr __Instance
                     {
                         virtual ::System::IntPtr get();
                         virtual void set(::System::IntPtr instance);
                     }
 
-                    ExtraState(struct ::CppSharp::CppParser::AST::MaterializeTemporaryExpr::ExtraState* native);
-                    ExtraState(struct ::CppSharp::CppParser::AST::MaterializeTemporaryExpr::ExtraState* native, bool ownNativeInstance);
+                    ExtraState(class ::CppSharp::CppParser::AST::MaterializeTemporaryExpr::ExtraState* native);
+                    ExtraState(class ::CppSharp::CppParser::AST::MaterializeTemporaryExpr::ExtraState* native, bool ownNativeInstance);
                     static ExtraState^ __CreateInstance(::System::IntPtr native);
                     static ExtraState^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                     ExtraState();
@@ -4787,8 +4787,8 @@ namespace CppSharp
                     bool __ownsNativeInstance;
                 };
 
-                MaterializeTemporaryExpr(struct ::CppSharp::CppParser::AST::MaterializeTemporaryExpr* native);
-                MaterializeTemporaryExpr(struct ::CppSharp::CppParser::AST::MaterializeTemporaryExpr* native, bool ownNativeInstance);
+                MaterializeTemporaryExpr(class ::CppSharp::CppParser::AST::MaterializeTemporaryExpr* native);
+                MaterializeTemporaryExpr(class ::CppSharp::CppParser::AST::MaterializeTemporaryExpr* native, bool ownNativeInstance);
                 static MaterializeTemporaryExpr^ __CreateInstance(::System::IntPtr native);
                 static MaterializeTemporaryExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 MaterializeTemporaryExpr();
@@ -4826,8 +4826,8 @@ namespace CppSharp
             {
             public:
 
-                CXXFoldExpr(struct ::CppSharp::CppParser::AST::CXXFoldExpr* native);
-                CXXFoldExpr(struct ::CppSharp::CppParser::AST::CXXFoldExpr* native, bool ownNativeInstance);
+                CXXFoldExpr(class ::CppSharp::CppParser::AST::CXXFoldExpr* native);
+                CXXFoldExpr(class ::CppSharp::CppParser::AST::CXXFoldExpr* native, bool ownNativeInstance);
                 static CXXFoldExpr^ __CreateInstance(::System::IntPtr native);
                 static CXXFoldExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXFoldExpr();
@@ -4898,8 +4898,8 @@ namespace CppSharp
                     Count = 4
                 };
 
-                CoroutineSuspendExpr(struct ::CppSharp::CppParser::AST::CoroutineSuspendExpr* native);
-                CoroutineSuspendExpr(struct ::CppSharp::CppParser::AST::CoroutineSuspendExpr* native, bool ownNativeInstance);
+                CoroutineSuspendExpr(class ::CppSharp::CppParser::AST::CoroutineSuspendExpr* native);
+                CoroutineSuspendExpr(class ::CppSharp::CppParser::AST::CoroutineSuspendExpr* native, bool ownNativeInstance);
                 static CoroutineSuspendExpr^ __CreateInstance(::System::IntPtr native);
                 static CoroutineSuspendExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CoroutineSuspendExpr();
@@ -4953,8 +4953,8 @@ namespace CppSharp
             {
             public:
 
-                CoawaitExpr(struct ::CppSharp::CppParser::AST::CoawaitExpr* native);
-                CoawaitExpr(struct ::CppSharp::CppParser::AST::CoawaitExpr* native, bool ownNativeInstance);
+                CoawaitExpr(class ::CppSharp::CppParser::AST::CoawaitExpr* native);
+                CoawaitExpr(class ::CppSharp::CppParser::AST::CoawaitExpr* native, bool ownNativeInstance);
                 static CoawaitExpr^ __CreateInstance(::System::IntPtr native);
                 static CoawaitExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CoawaitExpr();
@@ -4980,8 +4980,8 @@ namespace CppSharp
             {
             public:
 
-                DependentCoawaitExpr(struct ::CppSharp::CppParser::AST::DependentCoawaitExpr* native);
-                DependentCoawaitExpr(struct ::CppSharp::CppParser::AST::DependentCoawaitExpr* native, bool ownNativeInstance);
+                DependentCoawaitExpr(class ::CppSharp::CppParser::AST::DependentCoawaitExpr* native);
+                DependentCoawaitExpr(class ::CppSharp::CppParser::AST::DependentCoawaitExpr* native, bool ownNativeInstance);
                 static DependentCoawaitExpr^ __CreateInstance(::System::IntPtr native);
                 static DependentCoawaitExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 DependentCoawaitExpr();
@@ -5013,8 +5013,8 @@ namespace CppSharp
             {
             public:
 
-                CoyieldExpr(struct ::CppSharp::CppParser::AST::CoyieldExpr* native);
-                CoyieldExpr(struct ::CppSharp::CppParser::AST::CoyieldExpr* native, bool ownNativeInstance);
+                CoyieldExpr(class ::CppSharp::CppParser::AST::CoyieldExpr* native);
+                CoyieldExpr(class ::CppSharp::CppParser::AST::CoyieldExpr* native, bool ownNativeInstance);
                 static CoyieldExpr^ __CreateInstance(::System::IntPtr native);
                 static CoyieldExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CoyieldExpr();

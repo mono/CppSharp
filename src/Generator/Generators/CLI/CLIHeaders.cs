@@ -4,7 +4,6 @@ using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators.C;
-using CppSharp.Generators.CSharp;
 
 namespace CppSharp.Generators.CLI
 {
@@ -262,7 +261,7 @@ namespace CppSharp.Generators.CLI
             GenerateDeclContext(@class);
             Unindent();
 
-            string nativeType = $"{(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*";
+            string nativeType = $"{@class.Tag} ::{@class.QualifiedOriginalName}*";
 
             if (CLIGenerator.ShouldGenerateClassNativeField(@class))
                 GenerateClassNativeField(nativeType);

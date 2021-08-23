@@ -485,15 +485,15 @@ namespace CppSharp
         {
         public:
 
-            property struct ::CppSharp::CppParser::ClangParser* NativePtr;
+            property class ::CppSharp::CppParser::ClangParser* NativePtr;
             property ::System::IntPtr __Instance
             {
                 virtual ::System::IntPtr get();
                 virtual void set(::System::IntPtr instance);
             }
 
-            ClangParser(struct ::CppSharp::CppParser::ClangParser* native);
-            ClangParser(struct ::CppSharp::CppParser::ClangParser* native, bool ownNativeInstance);
+            ClangParser(class ::CppSharp::CppParser::ClangParser* native);
+            ClangParser(class ::CppSharp::CppParser::ClangParser* native, bool ownNativeInstance);
             static ClangParser^ __CreateInstance(::System::IntPtr native);
             static ClangParser^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
             ClangParser();

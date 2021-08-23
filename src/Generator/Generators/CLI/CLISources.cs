@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators.C;
-using CppSharp.Generators.CSharp;
 using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.CLI
@@ -147,7 +145,7 @@ namespace CppSharp.Generators.CLI
                 WriteLine("void {0}::{1}::set(::System::IntPtr object)",
                     qualifiedIdentifier, Helpers.InstanceIdentifier);
                 WriteOpenBraceAndIndent();
-                var nativeType = $"{(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*";
+                var nativeType = $"{@class.Tag} ::{@class.QualifiedOriginalName}*";
                 WriteLine("NativePtr = ({0})object.ToPointer();", nativeType);
                 UnindentAndWriteCloseBrace();
                 PopBlock(NewLineKind.BeforeNextBlock);
@@ -260,7 +258,7 @@ namespace CppSharp.Generators.CLI
                 WriteOpenBraceAndIndent();
                 WriteLine("auto __nativePtr = NativePtr;");
                 WriteLine("NativePtr = 0;");
-                WriteLine($"delete ({(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*) __nativePtr;", @class.QualifiedOriginalName);
+                WriteLine($"delete ({@class.Tag} ::{@class.QualifiedOriginalName}*) __nativePtr;", @class.QualifiedOriginalName);
                 UnindentAndWriteCloseBrace();
             }
 
@@ -398,7 +396,7 @@ namespace CppSharp.Generators.CLI
                 if (decl is Variable)
                     variable = $"::{@class.QualifiedOriginalName}::{decl.OriginalName}";
                 else
-                    variable = $"(({(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*)NativePtr)->{decl.OriginalName}";
+                    variable = $"(({@class.Tag} ::{@class.QualifiedOriginalName}*)NativePtr)->{decl.OriginalName}";
 
                 var ctx = new MarshalContext(Context, CurrentIndentation)
                 {
@@ -486,7 +484,7 @@ namespace CppSharp.Generators.CLI
                 else if (CLIGenerator.ShouldGenerateClassNativeField(@class))
                     variable = $"NativePtr->{decl.OriginalName}";
                 else
-                    variable = $"(({(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*)NativePtr)->{decl.OriginalName}";
+                    variable = $"(({@class.Tag} ::{@class.QualifiedOriginalName}*)NativePtr)->{decl.OriginalName}";
 
                 var ctx = new MarshalContext(Context, CurrentIndentation)
                 {
@@ -545,7 +543,7 @@ namespace CppSharp.Generators.CLI
             WriteLine("auto _fptr = (void (*)({0}))Marshal::GetFunctionPointerForDelegate({1}Instance).ToPointer();",
                 args, delegateName);
 
-            WriteLine($"(({(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*)NativePtr)->{@event.OriginalName}.Connect(_fptr);");
+            WriteLine($"(({@class.Tag} ::{@class.QualifiedOriginalName}*)NativePtr)->{@event.OriginalName}.Connect(_fptr);");
 
             UnindentAndWriteCloseBrace();
 
@@ -631,7 +629,7 @@ namespace CppSharp.Generators.CLI
 
             Write("{0}::{1}(", qualifiedIdentifier, @class.Name);
 
-            string nativeType = $"{(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*";
+            string nativeType = $"{@class.Tag} ::{@class.QualifiedOriginalName}*";
             WriteLine(!withOwnNativeInstanceParam ? "{0} native)" : "{0} native, bool ownNativeInstance)", nativeType);
 
             var hasBase = GenerateClassConstructorBase(@class, null, withOwnNativeInstanceParam);
@@ -785,7 +783,7 @@ namespace CppSharp.Generators.CLI
                     if (!@class.IsAbstract)
                     {
                         var @params = GenerateFunctionParamsMarshal(method.Parameters, method);
-                        Write($@"NativePtr = new {(@class.IsUnion ? "union" : "struct")} ::{
+                        Write($@"NativePtr = new {@class.Tag} ::{
                             @class.QualifiedOriginalName}(");
                         GenerateFunctionParams(@params);
                         WriteLine(");");
@@ -869,7 +867,7 @@ namespace CppSharp.Generators.CLI
                 names.Add(marshal.Context.Return);
             }
 
-            WriteLine($@"{(@class.IsUnion ? "union" : "struct")} ::{
+            WriteLine($@"{@class.Tag} ::{
                 @class.QualifiedOriginalName} _native({string.Join(", ", names)});");
 
             GenerateValueTypeConstructorCallProperties(@class);
@@ -961,7 +959,7 @@ namespace CppSharp.Generators.CLI
             var isValueType = @class != null && @class.IsValueType;
             if (isValueType && !IsNativeFunctionOrStaticMethod(function))
             {
-                WriteLine($"auto {valueMarshalName} = {(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}();");
+                WriteLine($"auto {valueMarshalName} = {@class.Tag} ::{@class.QualifiedOriginalName}();");
 
                 var param = new Parameter { Name = "(*this)" , Namespace = function.Namespace };
                 var ctx = new MarshalContext(Context, CurrentIndentation)
@@ -1020,7 +1018,7 @@ namespace CppSharp.Generators.CLI
                     if (isValueType)
                         Write($"{valueMarshalName}.");
                     else if (IsNativeMethod(function))
-                        Write($"(({(@class.IsUnion ? "union" : "struct")} ::{@class.QualifiedOriginalName}*)NativePtr)->");
+                        Write($"(({@class.Tag} ::{@class.QualifiedOriginalName}*)NativePtr)->");
                     Write("{0}(", function.OriginalName);
                 }
 
