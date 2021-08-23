@@ -561,6 +561,15 @@ struct CS_API ClassLayout
     VECTOR(LayoutBase, Bases)
 };
 
+enum class TagKind
+{
+    Struct,
+    Interface,
+    Union,
+    Class,
+    Enum
+};
+
 class CS_API Class : public DeclarationContext
 {
 public:
@@ -582,6 +591,7 @@ public:
     bool hasNonTrivialDestructor;
     bool isExternCContext;
     bool isInjected;
+    TagKind tagKind;
 
     ClassLayout* layout;
 };

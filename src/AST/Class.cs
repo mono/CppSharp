@@ -14,6 +14,15 @@ namespace CppSharp.AST
         Internal
     }
 
+    public enum TagKind
+    {
+        Struct,
+        Interface,
+        Union,
+        Class,
+        Enum
+    }
+
     // A C++ access specifier declaration.
     public class AccessSpecifierDecl : Declaration
     {
@@ -85,6 +94,8 @@ namespace CppSharp.AST
 
         // True if the type is to be treated as a union.
         public bool IsUnion;
+
+        public TagKind TagKind { get; set; }
 
         // True if the class is final / sealed.
         public bool IsFinal { get; set; }

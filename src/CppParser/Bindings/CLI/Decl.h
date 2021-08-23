@@ -28,6 +28,7 @@ namespace CppSharp
             enum class RecordArgABI;
             enum class RefQualifierKind;
             enum class StatementClassObsolete;
+            enum class TagKind;
             enum class TemplateSpecializationKind;
             enum class VTableComponentKind;
             ref class ASTContext;
@@ -238,6 +239,15 @@ namespace CppSharp
                 None = 0,
                 LValue = 1,
                 RValue = 2
+            };
+
+            public enum class TagKind
+            {
+                Struct = 0,
+                Interface = 1,
+                Union = 2,
+                Class = 3,
+                Enum = 4
             };
 
             public enum class CppAbi
@@ -1839,6 +1849,12 @@ namespace CppSharp
                 {
                     bool get();
                     void set(bool);
+                }
+
+                property CppSharp::Parser::AST::TagKind TagKind
+                {
+                    CppSharp::Parser::AST::TagKind get();
+                    void set(CppSharp::Parser::AST::TagKind);
                 }
 
                 property CppSharp::Parser::AST::ClassLayout^ Layout

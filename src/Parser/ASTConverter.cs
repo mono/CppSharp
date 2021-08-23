@@ -882,7 +882,7 @@ namespace CppSharp
             return base.Visit(decl);
         }
 
-        AST.AccessSpecifier VisitAccessSpecifier(AccessSpecifier access)
+        private AST.AccessSpecifier VisitAccessSpecifier(AccessSpecifier access)
         {
             switch (access)
             {
@@ -895,6 +895,25 @@ namespace CppSharp
             }
 
             throw new ArgumentOutOfRangeException();
+        }
+
+        private AST.TagKind VisitTagKind(TagKind tagKind)
+        {
+            switch (tagKind)
+            {
+                case TagKind.Struct:
+                    return AST.TagKind.Struct;
+                case TagKind.Interface:
+                    return AST.TagKind.Interface;
+                case TagKind.Union:
+                    return AST.TagKind.Union;
+                case TagKind.Class:
+                    return AST.TagKind.Class;
+                case TagKind.Enum:
+                    return AST.TagKind.Enum;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         AST.BaseClassSpecifier VisitBaseClassSpecifier(BaseClassSpecifier @base)
@@ -1594,6 +1613,7 @@ namespace CppSharp
             _class.IsPOD = @class.IsPOD;
             _class.IsAbstract = @class.IsAbstract;
             _class.IsUnion = @class.IsUnion;
+            _class.TagKind = VisitTagKind(@class.TagKind);
             _class.IsDynamic = @class.IsDynamic;
             _class.IsPolymorphic = @class.IsPolymorphic;
             _class.HasNonTrivialDefaultConstructor = @class.HasNonTrivialDefaultConstructor;

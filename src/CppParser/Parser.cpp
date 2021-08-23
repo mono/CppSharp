@@ -931,6 +931,25 @@ static RecordArgABI GetRecordArgABI(
     }
 }
 
+static TagKind ConvertToTagKind(clang::TagTypeKind AS)
+{
+    switch (AS)
+    {
+    case clang::TagTypeKind::TTK_Struct:
+        return TagKind::Struct;
+    case clang::TagTypeKind::TTK_Interface:
+        return TagKind::Interface;
+    case clang::TagTypeKind::TTK_Union:
+        return TagKind::Union;
+    case clang::TagTypeKind::TTK_Class:
+        return TagKind::Class;
+    case clang::TagTypeKind::TTK_Enum:
+        return TagKind::Enum;
+    }
+
+    llvm_unreachable("Unknown TagKind");
+}
+
 void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
 {
     using namespace clang;
@@ -956,6 +975,7 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
     RC->isUnion = Record->isUnion();
     RC->isDependent = Record->isDependentType();
     RC->isExternCContext = Record->isExternCContext();
+    RC->tagKind = ConvertToTagKind(Record->getTagKind());
 
     bool hasLayout = HasLayout(Record);
 

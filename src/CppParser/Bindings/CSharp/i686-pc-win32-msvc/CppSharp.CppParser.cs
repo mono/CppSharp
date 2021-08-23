@@ -6154,6 +6154,15 @@ namespace CppSharp
                 RValue = 2
             }
 
+            public enum TagKind
+            {
+                Struct = 0,
+                Interface = 1,
+                Union = 2,
+                Class = 3,
+                Enum = 4
+            }
+
             public enum CppAbi
             {
                 Itanium = 0,
@@ -11499,7 +11508,7 @@ namespace CppSharp
 
             public unsafe partial class Class : global::CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 336)]
+                [StructLayout(LayoutKind.Sequential, Size = 340)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -11549,6 +11558,7 @@ namespace CppSharp
                     internal byte hasNonTrivialDestructor;
                     internal byte isExternCContext;
                     internal byte isInjected;
+                    internal global::CppSharp.Parser.AST.TagKind tagKind;
                     internal __IntPtr layout;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "??0Class@AST@CppParser@CppSharp@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
@@ -11897,6 +11907,19 @@ namespace CppSharp
                     set
                     {
                         ((__Internal*)__Instance)->isInjected = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.TagKind TagKind
+                {
+                    get
+                    {
+                        return ((__Internal*)__Instance)->tagKind;
+                    }
+
+                    set
+                    {
+                        ((__Internal*)__Instance)->tagKind = value;
                     }
                 }
 
@@ -13100,7 +13123,7 @@ namespace CppSharp
 
             public unsafe partial class ClassTemplateSpecialization : global::CppSharp.Parser.AST.Class, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 356)]
+                [StructLayout(LayoutKind.Sequential, Size = 360)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -13150,6 +13173,7 @@ namespace CppSharp
                     internal byte hasNonTrivialDestructor;
                     internal byte isExternCContext;
                     internal byte isInjected;
+                    internal global::CppSharp.Parser.AST.TagKind tagKind;
                     internal __IntPtr layout;
                     internal __IntPtr templatedDecl;
                     internal global::Std.Vector.__Internalc__N_std_S_vector____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_S_allocator__S0_ Arguments;
@@ -13313,7 +13337,7 @@ namespace CppSharp
 
             public unsafe partial class ClassTemplatePartialSpecialization : global::CppSharp.Parser.AST.ClassTemplateSpecialization, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 356)]
+                [StructLayout(LayoutKind.Sequential, Size = 360)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -13363,6 +13387,7 @@ namespace CppSharp
                     internal byte hasNonTrivialDestructor;
                     internal byte isExternCContext;
                     internal byte isInjected;
+                    internal global::CppSharp.Parser.AST.TagKind tagKind;
                     internal __IntPtr layout;
                     internal __IntPtr templatedDecl;
                     internal global::Std.Vector.__Internalc__N_std_S_vector____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_S_allocator__S0_ Arguments;

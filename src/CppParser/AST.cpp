@@ -740,6 +740,7 @@ Class::Class()
     , isExternCContext(false)
     , isInjected(false)
     , layout(0)
+    , tagKind(TagKind::Struct)
 {
 }
 

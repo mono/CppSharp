@@ -3692,6 +3692,16 @@ void CppSharp::Parser::AST::Class::IsInjected::set(bool value)
     ((struct ::CppSharp::CppParser::AST::Class*)NativePtr)->isInjected = value;
 }
 
+CppSharp::Parser::AST::TagKind CppSharp::Parser::AST::Class::TagKind::get()
+{
+    return (CppSharp::Parser::AST::TagKind)((struct ::CppSharp::CppParser::AST::Class*)NativePtr)->tagKind;
+}
+
+void CppSharp::Parser::AST::Class::TagKind::set(CppSharp::Parser::AST::TagKind value)
+{
+    ((struct ::CppSharp::CppParser::AST::Class*)NativePtr)->tagKind = (enum ::CppSharp::CppParser::AST::TagKind)value;
+}
+
 CppSharp::Parser::AST::ClassLayout^ CppSharp::Parser::AST::Class::Layout::get()
 {
     return (((struct ::CppSharp::CppParser::AST::Class*)NativePtr)->layout == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::ClassLayout((struct ::CppSharp::CppParser::AST::ClassLayout*)((struct ::CppSharp::CppParser::AST::Class*)NativePtr)->layout);
