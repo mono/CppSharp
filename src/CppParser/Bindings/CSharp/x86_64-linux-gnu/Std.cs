@@ -97,15 +97,18 @@ namespace Std
 
         public void Dispose()
         {
-            Dispose(disposing: true);
+            Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
         }
 
-        public virtual void Dispose(bool disposing)
+        partial void DisposePartial(bool disposing);
+
+        internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
         {
             if (__Instance == IntPtr.Zero)
                 return;
             NativeToManagedMap.TryRemove(__Instance, out _);
-            if (disposing)
+            DisposePartial(disposing);
+            if (callNativeDtor)
             {
                 var ___Tp = typeof(_Tp);
                 if (___Tp.IsAssignableFrom(typeof(sbyte)))
@@ -768,14 +771,17 @@ namespace Std
 
         public void Dispose()
         {
-            Dispose(disposing: true);
+            Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
         }
 
-        public virtual void Dispose(bool disposing)
+        partial void DisposePartial(bool disposing);
+
+        internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
         {
             if (__Instance == IntPtr.Zero)
                 return;
             NativeToManagedMap.TryRemove(__Instance, out _);
+            DisposePartial(disposing);
             if (__ownsNativeInstance)
                 Marshal.FreeHGlobal(__Instance);
             __Instance = IntPtr.Zero;
@@ -879,15 +885,18 @@ namespace Std
 
         public void Dispose()
         {
-            Dispose(disposing: true);
+            Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
         }
 
-        public virtual void Dispose(bool disposing)
+        partial void DisposePartial(bool disposing);
+
+        internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
         {
             if (__Instance == IntPtr.Zero)
                 return;
             NativeToManagedMap.TryRemove(__Instance, out _);
-            if (disposing)
+            DisposePartial(disposing);
+            if (callNativeDtor)
             {
                 var ___CharT = typeof(_CharT);
                 var ___Traits = typeof(_Traits);

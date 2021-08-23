@@ -1004,6 +1004,7 @@ BlockCommandComment::Argument::Argument() {}
 
 BlockCommandComment::Argument::Argument(const Argument& rhs) : text(rhs.text) {}
 
+BlockCommandComment::Argument::~Argument() {}
 
 BlockCommandComment::BlockCommandComment() : BlockContentComment(CommentKind::BlockCommandComment), commandId(0), paragraphComment(0) {}
 
@@ -1090,6 +1091,8 @@ TextComment::TextComment() : InlineContentComment(CommentKind::TextComment) {}
 InlineCommandComment::Argument::Argument() {}
 
 InlineCommandComment::Argument::Argument(const Argument& rhs) : text(rhs.text) {}
+
+InlineCommandComment::Argument::~Argument() {}
 
 InlineCommandComment::InlineCommandComment()
     : InlineContentComment(CommentKind::InlineCommandComment), commandId(0), commentRenderKind(RenderNormal) {}

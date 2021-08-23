@@ -612,14 +612,26 @@ namespace Std
 
         public void Dispose()
         {
-            Dispose(disposing: true);
+            Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
         }
 
-        public virtual void Dispose(bool disposing)
+        partial void DisposePartial(bool disposing);
+
+        internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
         {
             if (__Instance == IntPtr.Zero)
                 return;
             NativeToManagedMap.TryRemove(__Instance, out _);
+            DisposePartial(disposing);
+            if (callNativeDtor)
+            {
+                var ___Ty = typeof(_Ty);
+                if (___Ty.IsAssignableFrom(typeof(sbyte)))
+                {
+                    return;
+                }
+                throw new ArgumentOutOfRangeException("_Ty", string.Join(", ", new[] { typeof(_Ty).FullName }), "global::Std.Allocator<_Ty> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte>.");
+            }
             if (__ownsNativeInstance)
                 Marshal.FreeHGlobal(__Instance);
             __Instance = IntPtr.Zero;
@@ -742,15 +754,18 @@ namespace Std
 
         public void Dispose()
         {
-            Dispose(disposing: true);
+            Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
         }
 
-        public virtual void Dispose(bool disposing)
+        partial void DisposePartial(bool disposing);
+
+        internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
         {
             if (__Instance == IntPtr.Zero)
                 return;
             NativeToManagedMap.TryRemove(__Instance, out _);
-            if (disposing)
+            DisposePartial(disposing);
+            if (callNativeDtor)
             {
                 var ___Elem = typeof(_Elem);
                 var ___Traits = typeof(_Traits);
@@ -857,14 +872,17 @@ namespace Std
 
         public void Dispose()
         {
-            Dispose(disposing: true);
+            Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
         }
 
-        public virtual void Dispose(bool disposing)
+        partial void DisposePartial(bool disposing);
+
+        internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
         {
             if (__Instance == IntPtr.Zero)
                 return;
             NativeToManagedMap.TryRemove(__Instance, out _);
+            DisposePartial(disposing);
             if (__ownsNativeInstance)
                 Marshal.FreeHGlobal(__Instance);
             __Instance = IntPtr.Zero;

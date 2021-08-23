@@ -171,15 +171,18 @@ namespace CppSharp
 
                 public void Dispose()
                 {
-                    Dispose(disposing: true);
+                    Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                 }
 
-                public virtual void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -345,14 +348,17 @@ namespace CppSharp
 
                 public void Dispose()
                 {
-                    Dispose(disposing: true);
+                    Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                 }
 
-                public virtual void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
+                    DisposePartial(disposing);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
                     __Instance = IntPtr.Zero;
@@ -560,12 +566,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -801,12 +810,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -979,15 +991,18 @@ namespace CppSharp
 
                     public void Dispose()
                     {
-                        Dispose(disposing: true);
+                        Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                     }
 
-                    public virtual void Dispose(bool disposing)
+                    partial void DisposePartial(bool disposing);
+
+                    internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                     {
                         if (__Instance == IntPtr.Zero)
                             return;
                         NativeToManagedMap.TryRemove(__Instance, out _);
-                        if (disposing)
+                        DisposePartial(disposing);
+                        if (callNativeDtor)
                             __Internal.dtor(__Instance);
                         if (__ownsNativeInstance)
                             Marshal.FreeHGlobal(__Instance);
@@ -1080,12 +1095,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -1096,7 +1114,9 @@ namespace CppSharp
                 {
                     var __ret = new global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal();
                     __Internal.GetArguments(new IntPtr(&__ret), __Instance, i);
-                    return global::CppSharp.Parser.AST.BlockCommandComment.Argument.__CreateInstance(__ret);
+                    var ____ret = global::CppSharp.Parser.AST.BlockCommandComment.Argument.__CreateInstance(__ret);
+                    global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal.dtor(new __IntPtr(&__ret));
+                    return ____ret;
                 }
 
                 public void AddArguments(global::CppSharp.Parser.AST.BlockCommandComment.Argument s)
@@ -1245,12 +1265,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -1379,12 +1402,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -1501,12 +1527,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -1623,12 +1652,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -1749,12 +1781,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -1905,15 +1940,18 @@ namespace CppSharp
 
                     public void Dispose()
                     {
-                        Dispose(disposing: true);
+                        Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                     }
 
-                    public virtual void Dispose(bool disposing)
+                    partial void DisposePartial(bool disposing);
+
+                    internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                     {
                         if (__Instance == IntPtr.Zero)
                             return;
                         NativeToManagedMap.TryRemove(__Instance, out _);
-                        if (disposing)
+                        DisposePartial(disposing);
+                        if (callNativeDtor)
                             __Internal.dtor(__Instance);
                         if (__ownsNativeInstance)
                             Marshal.FreeHGlobal(__Instance);
@@ -1997,12 +2035,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -2013,7 +2054,9 @@ namespace CppSharp
                 {
                     var __ret = new global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal();
                     __Internal.GetArguments(new IntPtr(&__ret), __Instance, i);
-                    return global::CppSharp.Parser.AST.InlineCommandComment.Argument.__CreateInstance(__ret);
+                    var ____ret = global::CppSharp.Parser.AST.InlineCommandComment.Argument.__CreateInstance(__ret);
+                    global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal.dtor(new __IntPtr(&__ret));
+                    return ____ret;
                 }
 
                 public void AddArguments(global::CppSharp.Parser.AST.InlineCommandComment.Argument s)
@@ -2277,15 +2320,18 @@ namespace CppSharp
 
                     public void Dispose()
                     {
-                        Dispose(disposing: true);
+                        Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                     }
 
-                    public virtual void Dispose(bool disposing)
+                    partial void DisposePartial(bool disposing);
+
+                    internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                     {
                         if (__Instance == IntPtr.Zero)
                             return;
                         NativeToManagedMap.TryRemove(__Instance, out _);
-                        if (disposing)
+                        DisposePartial(disposing);
+                        if (callNativeDtor)
                             __Internal.dtor(__Instance);
                         if (__ownsNativeInstance)
                             Marshal.FreeHGlobal(__Instance);
@@ -2383,12 +2429,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -2399,7 +2448,9 @@ namespace CppSharp
                 {
                     var __ret = new global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal();
                     __Internal.GetAttributes(new IntPtr(&__ret), __Instance, i);
-                    return global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__CreateInstance(__ret);
+                    var ____ret = global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__CreateInstance(__ret);
+                    global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal.dtor(new __IntPtr(&__ret));
+                    return ____ret;
                 }
 
                 public void AddAttributes(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute s)
@@ -2520,12 +2571,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -2628,12 +2682,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -2745,15 +2802,18 @@ namespace CppSharp
 
                 public void Dispose()
                 {
-                    Dispose(disposing: true);
+                    Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                 }
 
-                public virtual void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -2985,14 +3045,17 @@ namespace CppSharp
 
             public void Dispose()
             {
-                Dispose(disposing: true);
+                Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
             }
 
-            public virtual void Dispose(bool disposing)
+            partial void DisposePartial(bool disposing);
+
+            internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
             {
                 if (__Instance == IntPtr.Zero)
                     return;
                 NativeToManagedMap.TryRemove(__Instance, out _);
+                DisposePartial(disposing);
                 if (__ownsNativeInstance)
                     Marshal.FreeHGlobal(__Instance);
                 __Instance = IntPtr.Zero;
@@ -3195,14 +3258,17 @@ namespace CppSharp
 
                 public void Dispose()
                 {
-                    Dispose(disposing: true);
+                    Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                 }
 
-                public virtual void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
+                    DisposePartial(disposing);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
                     __Instance = IntPtr.Zero;
@@ -3319,14 +3385,17 @@ namespace CppSharp
 
                 public void Dispose()
                 {
-                    Dispose(disposing: true);
+                    Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                 }
 
-                public virtual void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
+                    DisposePartial(disposing);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
                     __Instance = IntPtr.Zero;
@@ -3454,14 +3523,17 @@ namespace CppSharp
 
                 public void Dispose()
                 {
-                    Dispose(disposing: true);
+                    Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                 }
 
-                public virtual void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
+                    DisposePartial(disposing);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
                     __Instance = IntPtr.Zero;
@@ -3830,12 +3902,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -4549,14 +4624,17 @@ namespace CppSharp
 
                 public void Dispose()
                 {
-                    Dispose(disposing: true);
+                    Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                 }
 
-                public virtual void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
+                    DisposePartial(disposing);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
                     __Instance = IntPtr.Zero;
@@ -4713,12 +4791,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -4878,12 +4959,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -5019,12 +5103,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -5385,12 +5472,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -6236,15 +6326,18 @@ namespace CppSharp
 
                 public void Dispose()
                 {
-                    Dispose(disposing: true);
+                    Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                 }
 
-                public virtual void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -6802,12 +6895,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -7204,12 +7300,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -7338,12 +7437,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -7453,12 +7555,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -7581,12 +7686,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -7702,15 +7810,18 @@ namespace CppSharp
 
                 public void Dispose()
                 {
-                    Dispose(disposing: true);
+                    Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                 }
 
-                public virtual void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -7845,12 +7956,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -7952,12 +8066,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -8106,12 +8223,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -8248,12 +8368,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -8397,12 +8520,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -8635,12 +8761,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -9089,12 +9218,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -9442,12 +9574,15 @@ namespace CppSharp
                         __Internal.cctor(__Instance, __arg0);
                     }
 
-                    public override void Dispose(bool disposing)
+                    partial void DisposePartial(bool disposing);
+
+                    internal protected override void Dispose(bool disposing, bool callNativeDtor )
                     {
                         if (__Instance == IntPtr.Zero)
                             return;
                         NativeToManagedMap.TryRemove(__Instance, out _);
-                        if (disposing)
+                        DisposePartial(disposing);
+                        if (callNativeDtor)
                             __Internal.dtor(__Instance);
                         if (__ownsNativeInstance)
                             Marshal.FreeHGlobal(__Instance);
@@ -9544,12 +9679,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -9743,12 +9881,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -9896,14 +10037,17 @@ namespace CppSharp
 
                 public void Dispose()
                 {
-                    Dispose(disposing: true);
+                    Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                 }
 
-                public virtual void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
+                    DisposePartial(disposing);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
                     __Instance = IntPtr.Zero;
@@ -10067,12 +10211,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -10235,12 +10382,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -10331,14 +10481,17 @@ namespace CppSharp
 
                 public void Dispose()
                 {
-                    Dispose(disposing: true);
+                    Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                 }
 
-                public virtual void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
+                    DisposePartial(disposing);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
                     __Instance = IntPtr.Zero;
@@ -10484,15 +10637,18 @@ namespace CppSharp
 
                 public void Dispose()
                 {
-                    Dispose(disposing: true);
+                    Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                 }
 
-                public virtual void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -10618,15 +10774,18 @@ namespace CppSharp
 
                 public void Dispose()
                 {
-                    Dispose(disposing: true);
+                    Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                 }
 
-                public virtual void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -10778,15 +10937,18 @@ namespace CppSharp
 
                 public void Dispose()
                 {
-                    Dispose(disposing: true);
+                    Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                 }
 
-                public virtual void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -10937,15 +11099,18 @@ namespace CppSharp
 
                 public void Dispose()
                 {
-                    Dispose(disposing: true);
+                    Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                 }
 
-                public virtual void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -11113,15 +11278,18 @@ namespace CppSharp
 
                 public void Dispose()
                 {
-                    Dispose(disposing: true);
+                    Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                 }
 
-                public virtual void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -11132,7 +11300,9 @@ namespace CppSharp
                 {
                     var __ret = new global::CppSharp.Parser.AST.VFTableInfo.__Internal();
                     __Internal.GetVFTables(new IntPtr(&__ret), __Instance, i);
-                    return global::CppSharp.Parser.AST.VFTableInfo.__CreateInstance(__ret);
+                    var ____ret = global::CppSharp.Parser.AST.VFTableInfo.__CreateInstance(__ret);
+                    global::CppSharp.Parser.AST.VFTableInfo.__Internal.dtor(new __IntPtr(&__ret));
+                    return ____ret;
                 }
 
                 public void AddVFTables(global::CppSharp.Parser.AST.VFTableInfo s)
@@ -11152,7 +11322,9 @@ namespace CppSharp
                 {
                     var __ret = new global::CppSharp.Parser.AST.LayoutField.__Internal();
                     __Internal.GetFields(new IntPtr(&__ret), __Instance, i);
-                    return global::CppSharp.Parser.AST.LayoutField.__CreateInstance(__ret);
+                    var ____ret = global::CppSharp.Parser.AST.LayoutField.__CreateInstance(__ret);
+                    global::CppSharp.Parser.AST.LayoutField.__Internal.dtor(new __IntPtr(&__ret));
+                    return ____ret;
                 }
 
                 public void AddFields(global::CppSharp.Parser.AST.LayoutField s)
@@ -11172,7 +11344,9 @@ namespace CppSharp
                 {
                     var __ret = new global::CppSharp.Parser.AST.LayoutBase.__Internal();
                     __Internal.GetBases(new IntPtr(&__ret), __Instance, i);
-                    return global::CppSharp.Parser.AST.LayoutBase.__CreateInstance(__ret);
+                    var ____ret = global::CppSharp.Parser.AST.LayoutBase.__CreateInstance(__ret);
+                    global::CppSharp.Parser.AST.LayoutBase.__Internal.dtor(new __IntPtr(&__ret));
+                    return ____ret;
                 }
 
                 public void AddBases(global::CppSharp.Parser.AST.LayoutBase s)
@@ -11496,12 +11670,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -11899,12 +12076,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -12063,12 +12243,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -12179,12 +12362,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -12341,12 +12527,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -12497,12 +12686,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -12633,12 +12825,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -12834,12 +13029,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -13040,12 +13238,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -13238,12 +13439,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -13369,12 +13573,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -13525,15 +13732,18 @@ namespace CppSharp
 
                 public void Dispose()
                 {
-                    Dispose(disposing: true);
+                    Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                 }
 
-                public virtual void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -13732,12 +13942,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -13916,12 +14129,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -14092,12 +14308,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -14205,12 +14424,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -14330,12 +14552,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -14439,14 +14664,17 @@ namespace CppSharp
 
                 public void Dispose()
                 {
-                    Dispose(disposing: true);
+                    Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                 }
 
-                public virtual void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
+                    DisposePartial(disposing);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
                     __Instance = IntPtr.Zero;
@@ -14577,12 +14805,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -14728,12 +14959,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -14910,12 +15144,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -15082,15 +15319,18 @@ namespace CppSharp
 
                 public void Dispose()
                 {
-                    Dispose(disposing: true);
+                    Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                 }
 
-                public virtual void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -15103,7 +15343,7 @@ namespace CppSharp
                     global::Std.BasicStringExtensions.Assign(__basicString0, File);
                     var __arg0 = __basicString0.__Instance;
                     var __ret = __Internal.FindOrCreateModule(__Instance, __arg0);
-                    __basicString0.Dispose(false);
+                    __basicString0.Dispose(disposing: true, callNativeDtor:false);
                     var __result0 = global::CppSharp.Parser.AST.TranslationUnit.__GetOrCreateInstance(__ret, false);
                     return __result0;
                 }
@@ -15373,14 +15613,17 @@ namespace CppSharp
 
                 public void Dispose()
                 {
-                    Dispose(disposing: true);
+                    Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                 }
 
-                public virtual void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
+                    DisposePartial(disposing);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
                     __Instance = IntPtr.Zero;
@@ -15543,12 +15786,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -15819,12 +16065,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -16440,11 +16689,16 @@ namespace CppSharp
 
                     set
                     {
-                        byte[] __bytes0 = global::System.Text.Encoding.UTF8.GetBytes(value);
-                        fixed (byte* __bytePtr0 = __bytes0)
+                        if (value == null)
                         {
-                            ((__Internal*)__Instance)->name = (__IntPtr) new global::System.IntPtr(__bytePtr0);
+                            ((__Internal*)__Instance)->name = global::System.IntPtr.Zero;
+                            return;
                         }
+                        var __bytes0 = global::System.Text.Encoding.UTF8.GetBytes(value);
+                        var __bytePtr0 = Marshal.AllocHGlobal(__bytes0.Length + 1);
+                        Marshal.Copy(__bytes0, 0, __bytePtr0, __bytes0.Length);
+                        Marshal.WriteByte(__bytePtr0 + __bytes0.Length, 0);
+                        ((__Internal*)__Instance)->name = (__IntPtr) __bytePtr0;
                     }
                 }
             }
@@ -18131,12 +18385,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -18427,15 +18684,18 @@ namespace CppSharp
 
                     public void Dispose()
                     {
-                        Dispose(disposing: true);
+                        Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                     }
 
-                    public virtual void Dispose(bool disposing)
+                    partial void DisposePartial(bool disposing);
+
+                    internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                     {
                         if (__Instance == IntPtr.Zero)
                             return;
                         NativeToManagedMap.TryRemove(__Instance, out _);
-                        if (disposing)
+                        DisposePartial(disposing);
+                        if (callNativeDtor)
                             __Internal.dtor(__Instance);
                         if (__ownsNativeInstance)
                             Marshal.FreeHGlobal(__Instance);
@@ -18571,12 +18831,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -18692,12 +18955,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -19370,14 +19636,17 @@ namespace CppSharp
 
                     public void Dispose()
                     {
-                        Dispose(disposing: true);
+                        Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                     }
 
-                    public virtual void Dispose(bool disposing)
+                    partial void DisposePartial(bool disposing);
+
+                    internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                     {
                         if (__Instance == IntPtr.Zero)
                             return;
                         NativeToManagedMap.TryRemove(__Instance, out _);
+                        DisposePartial(disposing);
                         if (__ownsNativeInstance)
                             Marshal.FreeHGlobal(__Instance);
                         __Instance = IntPtr.Zero;
@@ -19524,12 +19793,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -20364,14 +20636,17 @@ namespace CppSharp
 
                     public void Dispose()
                     {
-                        Dispose(disposing: true);
+                        Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                     }
 
-                    public virtual void Dispose(bool disposing)
+                    partial void DisposePartial(bool disposing);
+
+                    internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                     {
                         if (__Instance == IntPtr.Zero)
                             return;
                         NativeToManagedMap.TryRemove(__Instance, out _);
+                        DisposePartial(disposing);
                         if (__ownsNativeInstance)
                             Marshal.FreeHGlobal(__Instance);
                         __Instance = IntPtr.Zero;
@@ -21171,14 +21446,17 @@ namespace CppSharp
 
                     public void Dispose()
                     {
-                        Dispose(disposing: true);
+                        Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                     }
 
-                    public virtual void Dispose(bool disposing)
+                    partial void DisposePartial(bool disposing);
+
+                    internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                     {
                         if (__Instance == IntPtr.Zero)
                             return;
                         NativeToManagedMap.TryRemove(__Instance, out _);
+                        DisposePartial(disposing);
                         if (__ownsNativeInstance)
                             Marshal.FreeHGlobal(__Instance);
                         __Instance = IntPtr.Zero;
@@ -22897,12 +23175,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -24253,12 +24534,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -24966,11 +25250,16 @@ namespace CppSharp
 
                     set
                     {
-                        byte[] __bytes0 = global::System.Text.Encoding.UTF8.GetBytes(value);
-                        fixed (byte* __bytePtr0 = __bytes0)
+                        if (value == null)
                         {
-                            ((__Internal*)__Instance)->castKindName = (__IntPtr) new global::System.IntPtr(__bytePtr0);
+                            ((__Internal*)__Instance)->castKindName = global::System.IntPtr.Zero;
+                            return;
                         }
+                        var __bytes0 = global::System.Text.Encoding.UTF8.GetBytes(value);
+                        var __bytePtr0 = Marshal.AllocHGlobal(__bytes0.Length + 1);
+                        Marshal.Copy(__bytes0, 0, __bytePtr0, __bytes0.Length);
+                        Marshal.WriteByte(__bytePtr0 + __bytes0.Length, 0);
+                        ((__Internal*)__Instance)->castKindName = (__IntPtr) __bytePtr0;
                     }
                 }
 
@@ -25531,12 +25820,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -25916,12 +26208,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -27762,14 +28057,17 @@ namespace CppSharp
 
                     public void Dispose()
                     {
-                        Dispose(disposing: true);
+                        Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                     }
 
-                    public virtual void Dispose(bool disposing)
+                    partial void DisposePartial(bool disposing);
+
+                    internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                     {
                         if (__Instance == IntPtr.Zero)
                             return;
                         NativeToManagedMap.TryRemove(__Instance, out _);
+                        DisposePartial(disposing);
                         if (__ownsNativeInstance)
                             Marshal.FreeHGlobal(__Instance);
                         __Instance = IntPtr.Zero;
@@ -28001,14 +28299,17 @@ namespace CppSharp
 
                     public void Dispose()
                     {
-                        Dispose(disposing: true);
+                        Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                     }
 
-                    public virtual void Dispose(bool disposing)
+                    partial void DisposePartial(bool disposing);
+
+                    internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                     {
                         if (__Instance == IntPtr.Zero)
                             return;
                         NativeToManagedMap.TryRemove(__Instance, out _);
+                        DisposePartial(disposing);
                         if (__ownsNativeInstance)
                             Marshal.FreeHGlobal(__Instance);
                         __Instance = IntPtr.Zero;
@@ -28094,14 +28395,17 @@ namespace CppSharp
 
                     public void Dispose()
                     {
-                        Dispose(disposing: true);
+                        Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                     }
 
-                    public virtual void Dispose(bool disposing)
+                    partial void DisposePartial(bool disposing);
+
+                    internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                     {
                         if (__Instance == IntPtr.Zero)
                             return;
                         NativeToManagedMap.TryRemove(__Instance, out _);
+                        DisposePartial(disposing);
                         if (__ownsNativeInstance)
                             Marshal.FreeHGlobal(__Instance);
                         __Instance = IntPtr.Zero;
@@ -30227,12 +30531,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -30399,12 +30706,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -30546,12 +30856,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -30701,11 +31014,16 @@ namespace CppSharp
 
                     set
                     {
-                        byte[] __bytes0 = global::System.Text.Encoding.UTF8.GetBytes(value);
-                        fixed (byte* __bytePtr0 = __bytes0)
+                        if (value == null)
                         {
-                            ((__Internal*)__Instance)->castName = (__IntPtr) new global::System.IntPtr(__bytePtr0);
+                            ((__Internal*)__Instance)->castName = global::System.IntPtr.Zero;
+                            return;
                         }
+                        var __bytes0 = global::System.Text.Encoding.UTF8.GetBytes(value);
+                        var __bytePtr0 = Marshal.AllocHGlobal(__bytes0.Length + 1);
+                        Marshal.Copy(__bytes0, 0, __bytePtr0, __bytes0.Length);
+                        Marshal.WriteByte(__bytePtr0 + __bytes0.Length, 0);
+                        ((__Internal*)__Instance)->castName = (__IntPtr) __bytePtr0;
                     }
                 }
 
@@ -31295,12 +31613,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -32194,12 +32515,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -32985,12 +33309,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -33518,12 +33845,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -33649,12 +33979,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -34048,12 +34381,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -35165,14 +35501,17 @@ namespace CppSharp
 
                     public void Dispose()
                     {
-                        Dispose(disposing: true);
+                        Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                     }
 
-                    public virtual void Dispose(bool disposing)
+                    partial void DisposePartial(bool disposing);
+
+                    internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                     {
                         if (__Instance == IntPtr.Zero)
                             return;
                         NativeToManagedMap.TryRemove(__Instance, out _);
+                        DisposePartial(disposing);
                         if (__ownsNativeInstance)
                             Marshal.FreeHGlobal(__Instance);
                         __Instance = IntPtr.Zero;
@@ -35907,12 +36246,15 @@ namespace CppSharp
                     __Internal.cctor(__Instance, __arg0);
                 }
 
-                public override void Dispose(bool disposing)
+                partial void DisposePartial(bool disposing);
+
+                internal protected override void Dispose(bool disposing, bool callNativeDtor )
                 {
                     if (__Instance == IntPtr.Zero)
                         return;
                     NativeToManagedMap.TryRemove(__Instance, out _);
-                    if (disposing)
+                    DisposePartial(disposing);
+                    if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
@@ -37384,14 +37726,17 @@ namespace CppSharp
 
                     public void Dispose()
                     {
-                        Dispose(disposing: true);
+                        Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
                     }
 
-                    public virtual void Dispose(bool disposing)
+                    partial void DisposePartial(bool disposing);
+
+                    internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
                     {
                         if (__Instance == IntPtr.Zero)
                             return;
                         NativeToManagedMap.TryRemove(__Instance, out _);
+                        DisposePartial(disposing);
                         if (__ownsNativeInstance)
                             Marshal.FreeHGlobal(__Instance);
                         __Instance = IntPtr.Zero;
@@ -38447,15 +38792,18 @@ namespace CppSharp
 
             public void Dispose()
             {
-                Dispose(disposing: true);
+                Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
             }
 
-            public virtual void Dispose(bool disposing)
+            partial void DisposePartial(bool disposing);
+
+            internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
             {
                 if (__Instance == IntPtr.Zero)
                     return;
                 NativeToManagedMap.TryRemove(__Instance, out _);
-                if (disposing)
+                DisposePartial(disposing);
+                if (callNativeDtor)
                     __Internal.dtor(__Instance);
                 if (__ownsNativeInstance)
                     Marshal.FreeHGlobal(__Instance);
@@ -39276,15 +39624,18 @@ namespace CppSharp
 
             public void Dispose()
             {
-                Dispose(disposing: true);
+                Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
             }
 
-            public virtual void Dispose(bool disposing)
+            partial void DisposePartial(bool disposing);
+
+            internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
             {
                 if (__Instance == IntPtr.Zero)
                     return;
                 NativeToManagedMap.TryRemove(__Instance, out _);
-                if (disposing)
+                DisposePartial(disposing);
+                if (callNativeDtor)
                     __Internal.dtor(__Instance);
                 if (__ownsNativeInstance)
                     Marshal.FreeHGlobal(__Instance);
@@ -39750,15 +40101,18 @@ namespace CppSharp
 
             public void Dispose()
             {
-                Dispose(disposing: true);
+                Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
             }
 
-            public virtual void Dispose(bool disposing)
+            partial void DisposePartial(bool disposing);
+
+            internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
             {
                 if (__Instance == IntPtr.Zero)
                     return;
                 NativeToManagedMap.TryRemove(__Instance, out _);
-                if (disposing)
+                DisposePartial(disposing);
+                if (callNativeDtor)
                     __Internal.dtor(__Instance);
                 if (__ownsNativeInstance)
                     Marshal.FreeHGlobal(__Instance);
@@ -39932,15 +40286,18 @@ namespace CppSharp
 
             public void Dispose()
             {
-                Dispose(disposing: true);
+                Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
             }
 
-            public virtual void Dispose(bool disposing)
+            partial void DisposePartial(bool disposing);
+
+            internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
             {
                 if (__Instance == IntPtr.Zero)
                     return;
                 NativeToManagedMap.TryRemove(__Instance, out _);
-                if (disposing)
+                DisposePartial(disposing);
+                if (callNativeDtor)
                     __Internal.dtor(__Instance);
                 if (__ownsNativeInstance)
                     Marshal.FreeHGlobal(__Instance);
@@ -40129,15 +40486,18 @@ namespace CppSharp
 
             public void Dispose()
             {
-                Dispose(disposing: true);
+                Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
             }
 
-            public virtual void Dispose(bool disposing)
+            partial void DisposePartial(bool disposing);
+
+            internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
             {
                 if (__Instance == IntPtr.Zero)
                     return;
                 NativeToManagedMap.TryRemove(__Instance, out _);
-                if (disposing)
+                DisposePartial(disposing);
+                if (callNativeDtor)
                     __Internal.dtor(__Instance);
                 if (__ownsNativeInstance)
                     Marshal.FreeHGlobal(__Instance);
@@ -40148,7 +40508,9 @@ namespace CppSharp
             {
                 var __ret = new global::CppSharp.Parser.ParserDiagnostic.__Internal();
                 __Internal.GetDiagnostics(new IntPtr(&__ret), __Instance, i);
-                return global::CppSharp.Parser.ParserDiagnostic.__CreateInstance(__ret);
+                var ____ret = global::CppSharp.Parser.ParserDiagnostic.__CreateInstance(__ret);
+                global::CppSharp.Parser.ParserDiagnostic.__Internal.dtor(new __IntPtr(&__ret));
+                return ____ret;
             }
 
             public void AddDiagnostics(global::CppSharp.Parser.ParserDiagnostic s)
@@ -40312,14 +40674,17 @@ namespace CppSharp
 
             public void Dispose()
             {
-                Dispose(disposing: true);
+                Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
             }
 
-            public virtual void Dispose(bool disposing)
+            partial void DisposePartial(bool disposing);
+
+            internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
             {
                 if (__Instance == IntPtr.Zero)
                     return;
                 NativeToManagedMap.TryRemove(__Instance, out _);
+                DisposePartial(disposing);
                 if (__ownsNativeInstance)
                     Marshal.FreeHGlobal(__Instance);
                 __Instance = IntPtr.Zero;

@@ -77,6 +77,7 @@ struct CS_API ParserDiagnostic
 {
     ParserDiagnostic();
     ParserDiagnostic(const ParserDiagnostic&);
+    ~ParserDiagnostic();
     std::string fileName;
     std::string message;
     ParserDiagnosticLevel level;

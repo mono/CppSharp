@@ -78,4 +78,6 @@ ParserDiagnostic::ParserDiagnostic(const ParserDiagnostic& rhs)
     , columnNumber(rhs.columnNumber)
 {}
 
+ParserDiagnostic::~ParserDiagnostic() {}
+
 } }

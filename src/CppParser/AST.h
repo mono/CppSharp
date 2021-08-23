@@ -107,6 +107,7 @@ public:
     public:
         Argument();
         Argument(const Argument&);
+        ~Argument();
         std::string text;
     };
     BlockCommandComment();
@@ -176,6 +177,7 @@ public:
     public:
         Argument();
         Argument(const Argument&);
+        ~Argument();
         std::string text;
     };
     InlineCommandComment();
