@@ -282,7 +282,48 @@ namespace CppSharp.Generators.CSharp
             if (returnType.IsAddress())
                 Context.Return.Write(HandleReturnedPointer(@class, qualifiedClass));
             else
-                Context.Return.Write($"{qualifiedClass}.{Helpers.CreateInstanceIdentifier}({Context.ReturnVarName})");
+            {
+                if (Context.MarshalKind == MarshalKind.NativeField ||
+                    Context.MarshalKind == MarshalKind.Variable ||
+                    !originalClass.HasNonTrivialDestructor)
+                {
+                    Context.Return.Write($"{qualifiedClass}.{Helpers.CreateInstanceIdentifier}({Context.ReturnVarName})");
+                }
+                else
+                {
+                    Context.Before.WriteLine($@"var __{Context.ReturnVarName} = {
+                        qualifiedClass}.{Helpers.CreateInstanceIdentifier}({Context.ReturnVarName});");
+                    Method dtor = originalClass.Destructors.First();
+                    if (dtor.IsVirtual)
+                    {
+                        var i = VTables.GetVTableIndex(dtor);
+                        int vtableIndex = 0;
+                        if (Context.Context.ParserOptions.IsMicrosoftAbi)
+                            vtableIndex = @class.Layout.VFTables.IndexOf(@class.Layout.VFTables.First(
+                                v => v.Layout.Components.Any(c => c.Method == dtor)));
+                        Context.Before.WriteLine($@"var __vtables = new IntPtr[] {{ {
+                            string.Join(", ", originalClass.Layout.VTablePointers.Select(
+                                x => $" * (IntPtr*) ({ Helpers.InstanceIdentifier} + {x.Offset})"))} }};");
+                        Context.Before.WriteLine($"var __slot = *(IntPtr*) (__vtables[{vtableIndex}] + {i} * sizeof(IntPtr));");
+                        Context.Before.Write($"Marshal.GetDelegateForFunctionPointer<{dtor.FunctionType}>(__slot)({Helpers.InstanceIdentifier}");
+                        if (dtor.GatherInternalParams(Context.Context.ParserOptions.IsItaniumLikeAbi).Count > 1)
+                        {
+                            Context.Before.WriteLine(", 0");
+                        }
+                        Context.Before.WriteLine(");");
+                    }
+                    else
+                    {
+                        string suffix = string.Empty;
+                        var specialization = @class as ClassTemplateSpecialization;
+                        if (specialization != null)
+                            suffix = Helpers.GetSuffixFor(specialization);
+                        Context.Before.WriteLine($@"{typePrinter.PrintNative(originalClass)}.dtor{
+                            suffix}(new {typePrinter.IntPtrType}(&{Context.ReturnVarName}));");
+                    }
+                    Context.Return.Write($"__{Context.ReturnVarName}");
+                }
+            }
 
             return true;
         }

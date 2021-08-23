@@ -1334,8 +1334,15 @@ namespace CppSharp.Generators.CSharp
                 AddBlock(new Block(BlockKind.Unreachable));
                 return;
             }
-            GenerateFunctionInProperty(@class, actualProperty.GetMethod, actualProperty,
-                property.QualifiedType);
+            QualifiedType type = default;
+            if (actualProperty != property ||
+                // indexers
+                (property.QualifiedType.Type.IsPrimitiveType() && 
+                 actualProperty.GetMethod.ReturnType.Type.IsPointerToPrimitiveType()))
+            {
+                type = property.QualifiedType;
+            }
+            GenerateFunctionInProperty(@class, actualProperty.GetMethod, actualProperty, type);
         }
 
         private static Property GetActualProperty(Property property, Class c)
@@ -2180,10 +2187,8 @@ namespace CppSharp.Generators.CSharp
 
                 // ensure any virtual dtor in the chain is called
                 var dtor = @class.Destructors.FirstOrDefault(d => d.Access != AccessSpecifier.Private);
-                var baseDtor = @class.BaseClass == null ? null :
-                    @class.BaseClass.Destructors.FirstOrDefault(d => !d.IsVirtual);
                 if (ShouldGenerateClassNativeField(@class) ||
-                    ((dtor != null && (dtor.IsVirtual || @class.HasNonTrivialDestructor)) && baseDtor != null) ||
+                    (dtor != null && (dtor.IsVirtual || @class.HasNonTrivialDestructor)) ||
                     // virtual destructors in abstract classes may lack a pointer in the v-table
                     // so they have to be called by symbol; thus we need an explicit Dispose override
                     @class.IsAbstract)
@@ -3463,11 +3468,6 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
         {
             if (function.IsPure)
                 return;
-
-            if (function.OriginalName == "system_do_it")
-            {
-                System.Diagnostics.Debugger.Break();
-            }
 
             PushBlock(BlockKind.InternalsClassMethod);
             var callConv = function.CallingConvention.ToInteropCallConv();

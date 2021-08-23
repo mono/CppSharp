@@ -1127,6 +1127,15 @@ This is a very long string. This is a very long string. This is a very long stri
         }
     }
 
+    [Test]
+    public void TestReturnByValueWithReturnParam()
+    {
+        using (var returnByValueWithReturnParam = ReturnByValueWithReturnParamFactory.Generate())
+        {
+            Assert.That(returnByValueWithReturnParam.UseCount, Is.EqualTo(1));
+        }
+    }
+
     [Test, Ignore("This was exposed by another bug and doesn't work yet.")]
     public void TestFreeFunctionReturnByValue()
     {
