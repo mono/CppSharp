@@ -534,7 +534,6 @@ namespace CppSharp.Generators.CLI
             WriteLine("if (!{0}Instance)", delegateName);
             WriteOpenBraceAndIndent();
 
-            var typePrinter = new CppTypePrinter(Context);
             var args = typePrinter.VisitParameters(@event.Parameters, hasNames: false);
 
             WriteLine("{0}Instance = gcnew {0}(this, &{1}::_{2}Raise);",
@@ -583,7 +582,6 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateEventRaiseWrapper(Event @event, Class @class)
         {
-            var typePrinter = new CppTypePrinter(Context);
             var args = typePrinter.VisitParameters(@event.Parameters, hasNames: true);
 
             WriteLine("void {0}::_{1}Raise({2})", QualifiedIdentifier(@class),
@@ -988,8 +986,7 @@ namespace CppSharp.Generators.CLI
                 function.OperatorKind == CXXOperatorKind.ExplicitConversion)
             {
                 var method = function as Method;
-                var typePrinter = new CppTypePrinter(Context);
-                var typeName = method.ConversionType.Visit(typePrinter);
+                var typeName = method.ConversionType.Visit(new CppTypePrinter(Context));
                 WriteLine("({0}) {1};", typeName, @params[0].Name);
             }
             else if (function.IsOperator &&

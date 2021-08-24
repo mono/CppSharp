@@ -9,7 +9,7 @@ using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.Cpp
 {
-    public class CppMarshalNativeToManagedPrinter : MarshalPrinter<MarshalContext>
+    public class CppMarshalNativeToManagedPrinter : MarshalPrinter<MarshalContext, CppTypePrinter>
     {
         public CppMarshalNativeToManagedPrinter(MarshalContext marshalContext)
             : base(marshalContext)
@@ -60,17 +60,15 @@ namespace CppSharp.Generators.Cpp
                 return false;
 
             var pointee = pointer.Pointee.Desugar();
-
-            PrimitiveType primitive;
             var param = Context.Parameter;
             if (param != null && (param.IsOut || param.IsInOut) &&
-                pointee.IsPrimitiveType(out primitive))
+                pointee.IsPrimitiveType())
             {
                 Context.Return.Write(Context.ReturnVarName);
                 return true;
             }
 
-            if (pointee.IsPrimitiveType(out primitive))
+            if (pointee.IsPrimitiveType())
             {
                 var returnVarName = Context.ReturnVarName;
 
@@ -99,8 +97,7 @@ namespace CppSharp.Generators.Cpp
                         Modifier = pointer.Modifier,
                         QualifiedPointee = new QualifiedType(pointee)
                     };
-                    var nativeTypePrinter = new CppTypePrinter(Context.Context);
-                    var nativeTypeName = desugaredPointer.Visit(nativeTypePrinter, quals);
+                    var nativeTypeName = desugaredPointer.Visit(typePrinter, quals);
                     Context.Return.Write("reinterpret_cast<{0}>({1})", nativeTypeName,
                         returnVarName);
                 }
@@ -272,7 +269,7 @@ namespace CppSharp.Generators.Cpp
                 Context.Return.Write($"({instance} == nullptr) ? nullptr : {MemoryAllocOperator} ");
 
             Context.Return.Write($"{QualifiedIdentifier(@class)}(");
-            Context.Return.Write($"({@class.Tag} ::{@class.QualifiedOriginalName}*)");
+            Context.Return.Write($"({typePrinter.PrintTag(@class)}::{@class.QualifiedOriginalName}*)");
             Context.Return.Write($"{instance})");
         }
 
@@ -307,9 +304,9 @@ namespace CppSharp.Generators.Cpp
 
         public override bool VisitEnumDecl(Enumeration @enum)
         {
-            var typePrinter = new CppTypePrinter(Context.Context);
             typePrinter.PushContext(TypePrinterContextKind.Managed);
             var typeName = typePrinter.VisitDeclaration(@enum);
+            typePrinter.PopContext();
             Context.Return.Write($"({typeName}){Context.ReturnVarName}");
 
             return true;
@@ -331,7 +328,7 @@ namespace CppSharp.Generators.Cpp
         }
     }
 
-    public class CppMarshalManagedToNativePrinter : MarshalPrinter<MarshalContext>
+    public class CppMarshalManagedToNativePrinter : MarshalPrinter<MarshalContext, CppTypePrinter>
     {
         public CppMarshalManagedToNativePrinter(MarshalContext ctx) 
             : base(ctx)
@@ -395,9 +392,9 @@ namespace CppSharp.Generators.Cpp
 
             if (pointee is FunctionType)
             {
-                var cppTypePrinter = new CppTypePrinter(Context.Context);
-                cppTypePrinter.PushContext(TypePrinterContextKind.Managed);
-                var cppTypeName = pointer.Visit(cppTypePrinter, quals);
+                typePrinter.PushContext(TypePrinterContextKind.Managed);
+                var cppTypeName = pointer.Visit(typePrinter, quals);
+                typePrinter.PopContext();
 
                 return VisitDelegateType(cppTypeName);
             }
@@ -425,8 +422,7 @@ namespace CppSharp.Generators.Cpp
             var finalPointee = pointer.GetFinalPointee();
             if (finalPointee.IsPrimitiveType())
             {
-                var cppTypePrinter = new CppTypePrinter(Context.Context);
-                var cppTypeName = pointer.Visit(cppTypePrinter, quals);
+                var cppTypeName = pointer.Visit(typePrinter, quals);
 
                 Context.Return.Write($"({cppTypeName})");
                 Context.Return.Write(Context.Parameter.Name);
@@ -489,10 +485,6 @@ namespace CppSharp.Generators.Cpp
             FunctionType func;
             if (decl.Type.IsPointerTo(out func))
             {
-                var typePrinter = new CppTypePrinter(Context.Context);
-                typePrinter.PushContext(TypePrinterContextKind.Native);
-                var declName = decl.Visit(typePrinter);
-                typePrinter.PopContext();
                 // Use the original typedef name if available, otherwise just use the function pointer type
                 string cppTypeName;
                 if (!decl.IsSynthetized)
@@ -588,7 +580,7 @@ namespace CppSharp.Generators.Cpp
                 && method.Conversion == MethodConversionKind.FunctionToInstanceMethod
                 && Context.ParameterIndex == 0)
             {
-                Context.Return.Write($"({@class.Tag} ::{@class.QualifiedOriginalName}*)");
+                Context.Return.Write($"({typePrinter.PrintTag(@class)}::{@class.QualifiedOriginalName}*)");
                 Context.Return.Write(Helpers.InstanceIdentifier);
                 return;
             }
@@ -596,7 +588,7 @@ namespace CppSharp.Generators.Cpp
             var paramType = Context.Parameter.Type.Desugar();
             var isPointer = paramType.SkipPointerRefs().IsPointer();
             var deref = isPointer ? "->" : ".";
-            var instance = $"({@class.Tag} ::{@class.QualifiedOriginalName}*)" +
+            var instance = $"({typePrinter.PrintTag(@class)}::{@class.QualifiedOriginalName}*)" +
                 $"{Context.Parameter.Name}{deref}{Helpers.InstanceIdentifier}";
 
             if (isPointer)

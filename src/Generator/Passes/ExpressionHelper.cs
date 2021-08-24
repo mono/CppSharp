@@ -244,7 +244,7 @@ namespace CppSharp.Internal
             {
                 var typePrinterContext = new TypePrinterContext()
                 {
-                    Kind = typePrinter.Kind,
+                    Kind = typePrinter.ContextKind,
                     MarshalKind = typePrinter.MarshalKind,
                     Type = type
                 };

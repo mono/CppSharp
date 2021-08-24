@@ -10,7 +10,7 @@ using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.NAPI
 {
-    public class NAPIMarshalNativeToManagedPrinter : MarshalPrinter<MarshalContext>
+    public class NAPIMarshalNativeToManagedPrinter : MarshalPrinter<MarshalContext, CppTypePrinter>
     {
         public NAPIMarshalNativeToManagedPrinter(MarshalContext marshalContext)
             : base(marshalContext)
@@ -198,15 +198,10 @@ namespace CppSharp.Generators.NAPI
                 return typeMap.IsValueType;
             }
 
-            FunctionType function;
-            if (decl.Type.IsPointerTo(out function))
+            if (decl.Type.IsPointerTo(out FunctionType _))
             {
-                var typePrinter = new CppTypePrinter(Context.Context);
                 var typeName = typePrinter.VisitDeclaration(decl);
-                var typeName2 = decl.Type.Visit(typePrinter);
                 Context.Return.Write(typeName);
-                //return typeName;
-                //throw new System.NotImplementedException();
             }
 
             return decl.Type.Visit(this);
@@ -335,7 +330,7 @@ namespace CppSharp.Generators.NAPI
         }
     }
 
-    public class NAPIMarshalManagedToNativePrinter : MarshalPrinter<MarshalContext>
+    public class NAPIMarshalManagedToNativePrinter : MarshalPrinter<MarshalContext, CppTypePrinter>
     {
         public NAPIMarshalManagedToNativePrinter(MarshalContext ctx) 
             : base(ctx)
@@ -402,9 +397,9 @@ namespace CppSharp.Generators.NAPI
 
             if (pointee is FunctionType)
             {
-                var cppTypePrinter = new CppTypePrinter(Context.Context);
-                cppTypePrinter.PushContext(TypePrinterContextKind.Managed);
-                var cppTypeName = pointer.Visit(cppTypePrinter, quals);
+                typePrinter.PushContext(TypePrinterContextKind.Managed);
+                var cppTypeName = pointer.Visit(typePrinter, quals);
+                typePrinter.PopContext();
 
                 return VisitDelegateType(cppTypeName);
             }
@@ -432,8 +427,7 @@ namespace CppSharp.Generators.NAPI
             var finalPointee = pointer.GetFinalPointee();
             if (finalPointee.IsPrimitiveType())
             {
-                var cppTypePrinter = new CppTypePrinter(Context.Context);
-                var cppTypeName = pointer.Visit(cppTypePrinter, quals);
+                var cppTypeName = pointer.Visit(typePrinter, quals);
 
                 Context.Return.Write($"({cppTypeName})");
                 Context.Return.Write(Context.Parameter.Name);
@@ -601,14 +595,8 @@ namespace CppSharp.Generators.NAPI
                 return typeMap.IsValueType;
             }
 
-            FunctionType func;
-            if (decl.Type.IsPointerTo(out func))
+            if (decl.Type.IsPointerTo(out FunctionType _))
             {
-                var typePrinter = new CppTypePrinter(Context.Context);
-                typePrinter.PushContext(TypePrinterContextKind.Native);
-                var declName = decl.Visit(typePrinter);
-                typePrinter.PopContext();
-
                 // Use the original typedef name if available, otherwise just use the function pointer type
                 string cppTypeName;
                 if (!decl.IsSynthetized)
