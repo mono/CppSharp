@@ -97,28 +97,6 @@ namespace CppSharp.AST
 
         public TagKind TagKind { get; set; }
 
-        public string Tag
-        {
-            get
-            {
-                switch (TagKind)
-                {
-                    case TagKind.Struct:
-                        return "struct";
-                    case TagKind.Interface:
-                        return "__interface";
-                    case TagKind.Union:
-                        return "union";
-                    case TagKind.Class:
-                        return "class";
-                    case TagKind.Enum:
-                        return "enum";
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(TagKind));
-                }
-            }
-        }
-
         // True if the class is final / sealed.
         public bool IsFinal { get; set; }
 
