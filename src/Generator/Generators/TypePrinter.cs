@@ -55,9 +55,8 @@ namespace CppSharp.Generators
         private readonly Stack<MarshalKind> marshalKinds;
         private readonly Stack<TypePrintScopeKind> scopeKinds;
 
+        public BindingContext Context { get; set; }
         public TypePrinterContextKind ContextKind => contexts.Peek();
-
-        public TypePrinterContextKind Kind => ContextKind;
 
         public MarshalKind MarshalKind => marshalKinds.Peek();
 

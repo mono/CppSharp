@@ -25,15 +25,18 @@ namespace CppSharp.Generators.C
 
         public TypePrintScopeKind MethodScopeKind = TypePrintScopeKind.Qualified;
 
-        public CppTypePrinter(BindingContext context) : base(TypePrinterContextKind.Native)
+        public CppTypePrinter() : base(TypePrinterContextKind.Native)
         {
-            Context = context;
             PrintFlavorKind = CppTypePrintFlavorKind.Cpp;
             PrintTypeQualifiers = true;
             PrintTypeModifiers = true;
         }
 
-        public BindingContext Context { get; private set; }
+        public CppTypePrinter(BindingContext context) : this()
+        {
+            Context = context;
+        }
+
         public TypeMapDatabase TypeMapDatabase => Context.TypeMaps;
         public DriverOptions Options => Context.Options;
 
@@ -53,7 +56,7 @@ namespace CppSharp.Generators.C
             var typePrinterContext = new TypePrinterContext
             {
                 Type = type,
-                Kind = Kind,
+                Kind = ContextKind,
                 MarshalKind = MarshalKind
             };
 
@@ -101,13 +104,11 @@ namespace CppSharp.Generators.C
                 throw new NotImplementedException();
             }
 
-            var result = new TypePrinterResult
+            return new TypePrinterResult
             {
                 Type = array.Type.Visit(this),
                 NameSuffix = new System.Text.StringBuilder(arraySuffix)
             };
-
-            return result;
         }
 
         private static string ConvertModifierToString(PointerType.TypeModifier modifier)
@@ -601,7 +602,7 @@ namespace CppSharp.Generators.C
                 $"operator {method.OriginalReturnType.Visit(this)}" :
                 method.OriginalName;
 
-            string exceptionType = GetExceptionType(functionType);
+            string exceptionType = Print(functionType.ExceptionSpecType);
 
             if (!string.IsNullOrEmpty(@return.Type))
                 @return.NamePrefix.Append(' ');
@@ -753,9 +754,9 @@ namespace CppSharp.Generators.C
             return string.Join(" ", stringQuals) + (appendSpace ? " " : string.Empty);
         }
 
-        private static string GetExceptionType(FunctionType functionType)
+        private static string Print(ExceptionSpecType exceptionSpecType)
         {
-            switch (functionType.ExceptionSpecType)
+            switch (exceptionSpecType)
             {
                 case ExceptionSpecType.BasicNoexcept:
                     return " noexcept";

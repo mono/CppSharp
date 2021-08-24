@@ -16,12 +16,14 @@ namespace CppSharp.Generators.CSharp
     {
         public string IntPtrType => "__IntPtr";
 
-        public BindingContext Context { get; set; }
-
         public DriverOptions Options => Context.Options;
         public TypeMapDatabase TypeMapDatabase => Context.TypeMaps;
 
         public bool PrintModuleOutputNamespace = true;
+
+        public CSharpTypePrinter()
+        {
+        }
 
         public CSharpTypePrinter(BindingContext context)
         {
@@ -45,7 +47,7 @@ namespace CppSharp.Generators.CSharp
 
                 var typePrinterContext = new TypePrinterContext()
                 {
-                    Kind = Kind,
+                    Kind = ContextKind,
                     MarshalKind = MarshalKind,
                     Type = tag
                 };
@@ -135,7 +137,7 @@ namespace CppSharp.Generators.CSharp
             {
                 var typePrinterContext = new TypePrinterContext()
                 {
-                    Kind = Kind,
+                    Kind = ContextKind,
                     MarshalKind = MarshalKind,
                     Type = builtin,
                     Parameter = Parameter
@@ -167,7 +169,7 @@ namespace CppSharp.Generators.CSharp
                 TypeMapDatabase.FindTypeMap(pointer, out typeMap);
                 var typePrinterContext = new TypePrinterContext()
                 {
-                    Kind = Kind,
+                    Kind = ContextKind,
                     MarshalKind = MarshalKind,
                     Type = pointer.Pointee,
                     Parameter = Parameter

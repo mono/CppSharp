@@ -338,8 +338,7 @@ namespace CppSharp.Generators.Cpp
 
             // We cast the value to the base class type since otherwise there
             // could be ambiguous call to overloaded constructors.
-            var cppTypePrinter = new CppTypePrinter(Context);
-            var nativeTypeName = @class.BaseClass.Visit(cppTypePrinter);
+            var nativeTypeName = @class.BaseClass.Visit(typePrinter);
 
             Write($"({nativeTypeName}*)");
             WriteLine("{0}{1})", method != null ? "nullptr" : ClassCtorInstanceParamIdentifier,

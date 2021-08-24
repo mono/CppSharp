@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators.C;
 using CppSharp.Generators.NAPI;
-using CppSharp.Passes;
 
 namespace CppSharp.Generators.Cpp
 {
@@ -94,12 +92,12 @@ namespace CppSharp.Generators.Cpp
             }
         }
 
-        public virtual MarshalPrinter<MarshalContext> GetMarshalManagedToNativePrinter(MarshalContext ctx)
+        public virtual MarshalPrinter<MarshalContext, CppTypePrinter> GetMarshalManagedToNativePrinter(MarshalContext ctx)
         {
             return new NAPIMarshalManagedToNativePrinter(ctx);
         }
 
-        public virtual MarshalPrinter<MarshalContext> GetMarshalNativeToManagedPrinter(MarshalContext ctx)
+        public virtual MarshalPrinter<MarshalContext, CppTypePrinter> GetMarshalNativeToManagedPrinter(MarshalContext ctx)
         {
             return new NAPIMarshalNativeToManagedPrinter(ctx);
         }
@@ -220,7 +218,7 @@ namespace CppSharp.Generators.Cpp
 
         public virtual void GenerateFunctionParamsMarshalCleanups(List<ParamMarshal> @params)
         {
-            var marshalers = new List<MarshalPrinter<MarshalContext>>();
+            var marshalers = new List<MarshalPrinter<MarshalContext, CppTypePrinter>>();
 
             PushBlock();
             {

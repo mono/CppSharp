@@ -17,7 +17,7 @@ namespace CppSharp.Generators.CSharp
         public bool HasCodeBlock { get; set; }
     }
 
-    public abstract class CSharpMarshalPrinter : MarshalPrinter<CSharpMarshalContext>
+    public abstract class CSharpMarshalPrinter : MarshalPrinter<CSharpMarshalContext, CSharpTypePrinter>
     {
         protected CSharpMarshalPrinter(CSharpMarshalContext context)
             : base(context)
@@ -38,7 +38,6 @@ namespace CppSharp.Generators.CSharp
         public CSharpMarshalNativeToManagedPrinter(CSharpMarshalContext context)
             : base(context)
         {
-            typePrinter = new CSharpTypePrinter(context.Context);
         }
 
         public override bool VisitType(Type type, TypeQualifiers quals)
@@ -87,7 +86,7 @@ namespace CppSharp.Generators.CSharp
                         supportBefore.WriteLine($"for (int i = 0; i < {array.Size}; i++)");
                         var finalArrayType = arrayType.GetPointee() ?? arrayType;
                         Class @class;
-                        if ((finalArrayType.TryGetClass(out @class)) && @class.IsRefType)
+                        if (finalArrayType.TryGetClass(out @class) && @class.IsRefType)
                         {
                             if (arrayType == finalArrayType)
                                 supportBefore.WriteLineIndent(
@@ -101,11 +100,11 @@ namespace CppSharp.Generators.CSharp
                         }
                         else
                         {
-                            supportBefore.WriteLineIndent($@"{value}[i] = {Context.ReturnVarName}[i];");
+                            supportBefore.WriteLineIndent($"{value}[i] = {Context.ReturnVarName}[i];");
                         }
                         supportBefore.UnindentAndWriteCloseBrace();
                         Context.Return.Write(value);
-                    }                    
+                    }
                     break;
                 case ArrayType.ArraySize.Incomplete:
                     // const char* and const char[] are the same so we can use a string
@@ -448,8 +447,6 @@ namespace CppSharp.Generators.CSharp
             return array.Type.IsPrimitiveType(out var primitive) &&
                 (!Context.Context.Options.MarshalCharAsManagedChar || primitive != PrimitiveType.Char);
         }
-
-        private readonly CSharpTypePrinter typePrinter;
     }
 
     public class CSharpMarshalManagedToNativePrinter : CSharpMarshalPrinter
@@ -457,7 +454,6 @@ namespace CppSharp.Generators.CSharp
         public CSharpMarshalManagedToNativePrinter(CSharpMarshalContext context)
             : base(context)
         {
-            typePrinter = new CSharpTypePrinter(context.Context);
         }
 
         public override bool VisitType(Type type, TypeQualifiers quals)
@@ -930,7 +926,5 @@ namespace CppSharp.Generators.CSharp
                 marshal.Context.Return};");
             Context.Return.StringBuilder.Clear();
         }
-
-        private readonly CSharpTypePrinter typePrinter;
     }
 }

@@ -17,12 +17,12 @@ namespace CppSharp.Generators.Cpp
         {
         }
 
-        public override MarshalPrinter<MarshalContext> GetMarshalManagedToNativePrinter(MarshalContext ctx)
+        public override MarshalPrinter<MarshalContext, CppTypePrinter> GetMarshalManagedToNativePrinter(MarshalContext ctx)
         {
             return new QuickJSMarshalManagedToNativePrinter(ctx);
         }
 
-        public override MarshalPrinter<MarshalContext> GetMarshalNativeToManagedPrinter(MarshalContext ctx)
+        public override MarshalPrinter<MarshalContext, CppTypePrinter> GetMarshalNativeToManagedPrinter(MarshalContext ctx)
         {
             return new QuickJSMarshalNativeToManagedPrinter(ctx);
         }
@@ -247,12 +247,12 @@ namespace CppSharp.Generators.Cpp
         {
         }
 
-        public override MarshalPrinter<MarshalContext> GetMarshalManagedToNativePrinter(MarshalContext ctx)
+        public override MarshalPrinter<MarshalContext, CppTypePrinter> GetMarshalManagedToNativePrinter(MarshalContext ctx)
         {
             return new QuickJSMarshalManagedToNativePrinter(ctx);
         }
 
-        public override MarshalPrinter<MarshalContext> GetMarshalNativeToManagedPrinter(MarshalContext ctx)
+        public override MarshalPrinter<MarshalContext, CppTypePrinter> GetMarshalNativeToManagedPrinter(MarshalContext ctx)
         {
             return new QuickJSMarshalNativeToManagedPrinter(ctx);
         }
@@ -426,7 +426,7 @@ namespace CppSharp.Generators.Cpp
                 NewLine();
 
                 // Marshal the arguments.
-                var marshalers = new List<MarshalPrinter<MarshalContext>>();
+                var marshalers = new List<MarshalPrinter<MarshalContext, CppTypePrinter>>();
                 foreach (var param in @event.Parameters)
                 {
                     var ctx = new MarshalContext(Context, CurrentIndentation)
@@ -721,12 +721,12 @@ namespace CppSharp.Generators.Cpp
         {
         }
 
-        public override MarshalPrinter<MarshalContext> GetMarshalManagedToNativePrinter(MarshalContext ctx)
+        public override MarshalPrinter<MarshalContext, CppTypePrinter> GetMarshalManagedToNativePrinter(MarshalContext ctx)
         {
             return new QuickJSMarshalManagedToNativePrinter(ctx);
         }
 
-        public override MarshalPrinter<MarshalContext> GetMarshalNativeToManagedPrinter(MarshalContext ctx)
+        public override MarshalPrinter<MarshalContext, CppTypePrinter> GetMarshalNativeToManagedPrinter(MarshalContext ctx)
         {
             return new QuickJSMarshalNativeToManagedPrinter(ctx);
         }

@@ -10,7 +10,7 @@ using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.CLI
 {
-    public class CLIMarshalNativeToManagedPrinter : MarshalPrinter<MarshalContext>
+    public class CLIMarshalNativeToManagedPrinter : MarshalPrinter<MarshalContext, CppTypePrinter>
     {
         public CLIMarshalNativeToManagedPrinter(MarshalContext marshalContext)
             : base(marshalContext)
@@ -139,8 +139,7 @@ namespace CppSharp.Generators.CLI
                         Modifier = pointer.Modifier,
                         QualifiedPointee = new QualifiedType(pointee)
                     };
-                    var nativeTypePrinter = new CppTypePrinter(Context.Context);
-                    var nativeTypeName = desugaredPointer.Visit(nativeTypePrinter, quals);
+                    var nativeTypeName = desugaredPointer.Visit(typePrinter, quals);
                     Context.Return.Write("reinterpret_cast<{0}>({1})", nativeTypeName,
                         returnVarName);
                 }
@@ -387,7 +386,7 @@ namespace CppSharp.Generators.CLI
         }
     }
 
-    public class CLIMarshalManagedToNativePrinter : MarshalPrinter<MarshalContext>
+    public class CLIMarshalManagedToNativePrinter : MarshalPrinter<MarshalContext, CppTypePrinter>
     {
         public readonly TextGenerator VarPrefix;
         public readonly TextGenerator ArgumentPrefix;
@@ -510,8 +509,7 @@ namespace CppSharp.Generators.CLI
 
             if (pointee is FunctionType)
             {
-                var cppTypePrinter = new CppTypePrinter(Context.Context);
-                var cppTypeName = pointer.Visit(cppTypePrinter, quals);
+                var cppTypeName = pointer.Visit(typePrinter, quals);
 
                 return VisitDelegateType(cppTypeName);
             }
@@ -544,8 +542,7 @@ namespace CppSharp.Generators.CLI
             var finalPointee = pointer.GetFinalPointee();
             if (finalPointee.IsPrimitiveType())
             {
-                var cppTypePrinter = new CppTypePrinter(Context.Context);
-                var cppTypeName = pointer.Visit(cppTypePrinter, quals);
+                var cppTypeName = pointer.Visit(typePrinter, quals);
 
                 Context.Return.Write("({0})", cppTypeName);
                 Context.Return.Write(Context.Parameter.Name);
@@ -620,8 +617,7 @@ namespace CppSharp.Generators.CLI
                     cppTypeName = "::" + typedef.Declaration.QualifiedOriginalName;
                 else
                 {
-                    var cppTypePrinter = new CppTypePrinter(Context.Context);
-                    cppTypeName = decl.Type.Visit(cppTypePrinter, quals);
+                    cppTypeName = decl.Type.Visit(typePrinter, quals);
                 }
 
                 VisitDelegateType(cppTypeName);
