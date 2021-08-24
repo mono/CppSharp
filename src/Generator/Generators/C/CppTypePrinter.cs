@@ -21,6 +21,7 @@ namespace CppSharp.Generators.C
         public bool PrintLogicalNames { get; set; }
         public bool PrintTypeQualifiers { get; set; }
         public bool PrintTypeModifiers { get; set; }
+        public bool PrintTags { get; set; }
         public bool PrintVariableArrayAsPointers { get; set; }
 
         public TypePrintScopeKind MethodScopeKind = TypePrintScopeKind.Qualified;
@@ -499,7 +500,11 @@ namespace CppSharp.Generators.C
                 if (declaration.Namespace is Class)
                 {
                     var declName = GetDeclName(declaration, TypePrintScopeKind.Local);
-                    return $"{declaration.Namespace.Visit(this)}{NamespaceSeparator}{declName}";
+                    bool printTags = PrintTags;
+                    PrintTags = false;
+                    TypePrinterResult declContext = declaration.Namespace.Visit(this);
+                    PrintTags = printTags;
+                    return $"{declContext}{NamespaceSeparator}{declName}";
                 }
 
                 return PrintLogicalNames ? declaration.QualifiedLogicalOriginalName
@@ -547,7 +552,8 @@ namespace CppSharp.Generators.C
             if (@class.CompleteDeclaration != null)
                 return VisitClassDecl(@class.CompleteDeclaration as Class);
 
-            return VisitDeclaration(@class);
+            string printed = VisitDeclaration(@class);
+            return PrintTags ? PrintTag(@class) + printed : printed;
         }
 
         public override TypePrinterResult VisitClassTemplateSpecializationDecl(
