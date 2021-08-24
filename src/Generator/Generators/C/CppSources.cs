@@ -294,7 +294,7 @@ namespace CppSharp.Generators.Cpp
         {
             Write($"{QualifiedIdentifier(@class)}::{@class.Name}(");
 
-            var nativeType = $"{@class.Tag} ::{@class.QualifiedOriginalName}*";
+            var nativeType = $"{typePrinter.PrintTag(@class)}::{@class.QualifiedOriginalName}*";
             //WriteLine($"{nativeType} {ClassCtorInstanceParamIdentifier})");
             WriteLine(!withOwnNativeInstanceParam ? $"{nativeType} {ClassCtorInstanceParamIdentifier})" :
                 $"{nativeType} {ClassCtorInstanceParamIdentifier}, bool ownNativeInstance)");
@@ -412,7 +412,7 @@ namespace CppSharp.Generators.Cpp
                         PushBlock(BlockKind.ConstructorBody, @class);
 
                         var @params = GenerateFunctionParamsMarshal(method.Parameters, method);
-                        Write($@"{Helpers.InstanceIdentifier} = new {@class.Tag} ::{
+                        Write($@"{Helpers.InstanceIdentifier} = new {typePrinter.PrintTag(@class)}::{
                             method.Namespace.QualifiedOriginalName}(");
                         GenerateFunctionParams(@params);
                         WriteLine(");");
@@ -492,7 +492,8 @@ namespace CppSharp.Generators.Cpp
             var field = property?.Field;
             if (field != null)
             {
-                Write($"(({@class.Tag} ::{@class.QualifiedOriginalName}*){Helpers.InstanceIdentifier})->");
+                Write($@"(({typePrinter.PrintTag(@class)}::{
+                    @class.QualifiedOriginalName}*){Helpers.InstanceIdentifier})->");
                 Write($"{field.OriginalName}");
 
                 var isGetter = property.GetMethod == method;
@@ -510,7 +511,8 @@ namespace CppSharp.Generators.Cpp
                 else
                 {
                     if (IsNativeMethod(function))
-                        Write($"(({@class.Tag} ::{@class.QualifiedOriginalName}*){Helpers.InstanceIdentifier})->");
+                        Write($@"(({typePrinter.PrintTag(@class)}::{
+                            @class.QualifiedOriginalName}*){Helpers.InstanceIdentifier})->");
 
                     Write($"{base.GetMethodIdentifier(function, TypePrinterContextKind.Native)}(");
                 }

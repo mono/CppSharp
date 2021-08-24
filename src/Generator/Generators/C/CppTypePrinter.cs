@@ -739,19 +739,27 @@ namespace CppSharp.Generators.C
             return VisitDeclaration(template);
         }
 
-        private string GetStringQuals(TypeQualifiers quals, bool appendSpace = true)
+        public string PrintTag(Class @class)
         {
-            var stringQuals = new List<string>();
-            if (PrintTypeQualifiers)
+            if (@class.Namespace.Typedefs.Any(t => t.Name == @class.Name))
             {
-                if (quals.IsConst)
-                    stringQuals.Add("const");
-                if (quals.IsVolatile)
-                    stringQuals.Add("volatile");
-            }
-            if (stringQuals.Count == 0)
                 return string.Empty;
-            return string.Join(" ", stringQuals) + (appendSpace ? " " : string.Empty);
+            }
+            switch (@class.TagKind)
+            {
+                case TagKind.Struct:
+                    return "struct ";
+                case TagKind.Interface:
+                    return "__interface ";
+                case TagKind.Union:
+                    return "union ";
+                case TagKind.Class:
+                    return "class ";
+                case TagKind.Enum:
+                    return "enum ";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(@class.TagKind));
+            }
         }
 
         private static string Print(ExceptionSpecType exceptionSpecType)
@@ -768,6 +776,21 @@ namespace CppSharp.Generators.C
                 default:
                     return string.Empty;
             }
+        }
+
+        private string GetStringQuals(TypeQualifiers quals, bool appendSpace = true)
+        {
+            var stringQuals = new List<string>();
+            if (PrintTypeQualifiers)
+            {
+                if (quals.IsConst)
+                    stringQuals.Add("const");
+                if (quals.IsVolatile)
+                    stringQuals.Add("volatile");
+            }
+            if (stringQuals.Count == 0)
+                return string.Empty;
+            return string.Join(" ", stringQuals) + (appendSpace ? " " : string.Empty);
         }
     }
 }

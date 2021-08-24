@@ -261,7 +261,7 @@ namespace CppSharp.Generators.CLI
             GenerateDeclContext(@class);
             Unindent();
 
-            string nativeType = $"{@class.Tag} ::{@class.QualifiedOriginalName}*";
+            string nativeType = $"{typePrinter.PrintTag(@class)}::{@class.QualifiedOriginalName}*";
 
             if (CLIGenerator.ShouldGenerateClassNativeField(@class))
                 GenerateClassNativeField(nativeType);

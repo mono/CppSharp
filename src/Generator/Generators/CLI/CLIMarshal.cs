@@ -279,7 +279,7 @@ namespace CppSharp.Generators.CLI
             if (@class.IsRefType && needsCopy)
             {
                 var name = Generator.GeneratedIdentifier(Context.ReturnVarName);
-                Context.Before.WriteLine($"auto {name} = new {@class.Tag} ::{@class.QualifiedOriginalName}({Context.ReturnVarName});");
+                Context.Before.WriteLine($"auto {name} = new {typePrinter.PrintTag(@class)}::{@class.QualifiedOriginalName}({Context.ReturnVarName});");
                 instance = name;
 
                 ownNativeInstance = true;
@@ -304,7 +304,7 @@ namespace CppSharp.Generators.CLI
                     instance);
 
             Context.Return.Write("::{0}(", QualifiedIdentifier(@class));
-            Context.Return.Write($"({@class.Tag} ::{@class.QualifiedOriginalName}*)");
+            Context.Return.Write($"({typePrinter.PrintTag(@class)}::{@class.QualifiedOriginalName}*)");
             Context.Return.Write("{0}{1})", instance, ownNativeInstance ? ", true" : "");
         }
 
@@ -723,12 +723,12 @@ namespace CppSharp.Generators.CLI
                 && method.Conversion == MethodConversionKind.FunctionToInstanceMethod
                 && Context.ParameterIndex == 0)
             {
-                Context.Return.Write($"({@class.Tag} ::{@class.QualifiedOriginalName}*)");
+                Context.Return.Write($"({typePrinter.PrintTag(@class)}::{@class.QualifiedOriginalName}*)");
                 Context.Return.Write("NativePtr");
                 return;
             }
 
-            Context.Return.Write($"({@class.Tag} ::{@class.QualifiedOriginalName}*)");
+            Context.Return.Write($"({typePrinter.PrintTag(@class)}::{@class.QualifiedOriginalName}*)");
             Context.Return.Write("{0}->NativePtr", Context.Parameter.Name);
         }
 
