@@ -1442,6 +1442,9 @@ DLL_API char* takeConstCharRef(const char& c);
 DLL_API const char*& takeConstCharStarRef(const char*& c);
 DLL_API const void*& rValueReferenceToPointer(void*&& v);
 DLL_API const Foo*& takeReturnReferenceToPointer(const Foo*& foo);
+typedef QFlags<TestFlag> TestFlags;
+DLL_API void takeMappedEnum(TestFlag value);
+DLL_API void takeMappedEnum(TestFlags value);
 
 struct {
     struct {

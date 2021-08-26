@@ -86,6 +86,7 @@ public unsafe class CSharpTests
         }
 
         CSharp.CSharp.FunctionInsideInlineNamespace();
+        CSharp.CSharp.TakeMappedEnum(TestFlag.Flag1);
         using (CSharpTemplates.SpecialiseReturnOnly())
         {
         }

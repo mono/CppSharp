@@ -80,15 +80,17 @@ namespace CppSharp.Passes
             var i = 0;
             for (; i < commonParameters; ++i)
             {
-                AST.Type funcType = functionParams[i].Type.GetMappedType(
+                AST.Type funcOriginalType = functionParams[i].Type.Desugar();
+                AST.Type funcType = funcOriginalType.GetMappedType(
                     TypeMaps, Options.GeneratorKind);
-                AST.Type overloadType = overloadParams[i].Type.GetMappedType(
+                AST.Type overloadOriginalType = overloadParams[i].Type.Desugar();
+                AST.Type overloadType = overloadOriginalType.GetMappedType(
                     TypeMaps, Options.GeneratorKind);
 
-                if (!funcType.Equals(functionParams[i].Type.Desugar()))
+                if (!funcType.Equals(funcOriginalType))
                     functionMappedParams++;
 
-                if (!overloadType.Equals(overloadParams[i].Type.Desugar()))
+                if (!overloadType.Equals(overloadOriginalType))
                     overloadMappedParams++;
 
                 AST.Type funcPointee = funcType.GetFinalPointee() ?? funcType;

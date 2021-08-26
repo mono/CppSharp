@@ -1860,6 +1860,14 @@ const Foo*& takeReturnReferenceToPointer(const Foo*& foo)
     return foo;
 }
 
+void takeMappedEnum(TestFlag value)
+{
+}
+
+void takeMappedEnum(TestFlags value)
+{
+}
+
 boolean_t takeTypemapTypedefParam(boolean_t b)
 {
     return b;
