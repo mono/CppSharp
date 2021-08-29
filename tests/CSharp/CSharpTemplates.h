@@ -120,6 +120,12 @@ T IndependentFields<T>::staticDependent(const T& t)
 }
 
 template <typename T>
+template <typename AdditionalDependentType>
+void IndependentFields<T>::usesAdditionalDependentType(AdditionalDependentType additionalDependentType)
+{
+}
+
+template <typename T>
 float IndependentFields<T>::getIndependent()
 {
     return independent;
@@ -176,7 +182,7 @@ private:
 };
 
 template <typename T>
-DependentValueFields<T>::DependentValueFields()
+DependentValueFields<T>::DependentValueFields() : unionField(0), dependentFunctionPointerField(0)
 {
 }
 
@@ -186,7 +192,7 @@ DependentValueFields<T>::~DependentValueFields()
 }
 
 template <typename T>
-DependentValueFields<T>::DependentValueFields(IndependentFields<T> i)
+DependentValueFields<T>::DependentValueFields(IndependentFields<T> i) : DependentValueFields()
 {
 }
 
