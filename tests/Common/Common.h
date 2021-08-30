@@ -561,10 +561,10 @@ public:
     void set(int value);
 
     int setterReturnsBoolean();
-    bool setSetterReturnsBoolean(int value);
+    bool setSetterReturnsBoolean(int newValue);
 
     virtual int virtualSetterReturnsBoolean();
-    virtual bool setVirtualSetterReturnsBoolean(int value);
+    virtual bool setVirtualSetterReturnsBoolean(int newValue);
 
     int nestedEnum();
     int nestedEnum(int i);

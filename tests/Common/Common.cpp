@@ -709,10 +709,10 @@ int TestProperties::setterReturnsBoolean()
     return _setterReturnsBoolean;
 }
 
-bool TestProperties::setSetterReturnsBoolean(int value)
+bool TestProperties::setSetterReturnsBoolean(int newValue)
 {
-    bool changed = _setterReturnsBoolean != value;
-    _setterReturnsBoolean = value;
+    bool changed = _setterReturnsBoolean != newValue;
+    _setterReturnsBoolean = newValue;
     return changed;
 }
 
@@ -721,10 +721,10 @@ int TestProperties::virtualSetterReturnsBoolean()
     return _virtualSetterReturnsBoolean;
 }
 
-bool TestProperties::setVirtualSetterReturnsBoolean(int value)
+bool TestProperties::setVirtualSetterReturnsBoolean(int newValue)
 {
-    bool changed = _virtualSetterReturnsBoolean != value;
-    _virtualSetterReturnsBoolean = value;
+    bool changed = _virtualSetterReturnsBoolean != newValue;
+    _virtualSetterReturnsBoolean = newValue;
     return changed;
 }
 

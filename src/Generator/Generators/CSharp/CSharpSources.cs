@@ -3270,8 +3270,8 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
             var name = param.Name;
             var function = (Function) param.Namespace;
             param.Name = param.Kind == ParameterKind.ImplicitDestructorParameter ? "0" :
-                function.IsGenerated || function.OperatorKind == CXXOperatorKind.Subscript ?
-                name : "value";
+                ActiveBlock.Parent.Kind != BlockKind.Property ||
+                function.OperatorKind == CXXOperatorKind.Subscript ? name : "value";
 
             var argName = Generator.GeneratedIdentifier("arg") + paramIndex.ToString(CultureInfo.InvariantCulture);
             var paramMarshal = new ParamMarshal { Name = argName, Param = param };
