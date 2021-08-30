@@ -38,7 +38,6 @@ namespace CppSharp
         Event,
         Variable,
         Property,
-        Unreachable,
         Field,
         VTableDelegate,
         Region,

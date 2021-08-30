@@ -898,7 +898,7 @@ namespace CppSharp.Generators.CSharp
                 NewLine();
                 WriteOpenBraceAndIndent();
 
-                this.GenerateMember(@class, c => GenerateFunctionSetter(c, property), true);
+                this.GenerateMember(@class, c => GenerateFunctionSetter(c, property));
             }
             else if (decl is Variable)
             {
@@ -907,8 +907,7 @@ namespace CppSharp.Generators.CSharp
                 var var = decl as Variable;
                 this.GenerateMember(@class, c => GenerateVariableSetter(
                     c is ClassTemplateSpecialization ?
-                        c.Variables.First(v => v.Name == decl.Name) : var),
-                    true);
+                        c.Variables.First(v => v.Name == decl.Name) : var));
             }
             else if (decl is Field)
             {
@@ -925,7 +924,7 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateVariableSetter(Variable var)
+        private bool GenerateVariableSetter(Variable var)
         {
             string ptr = GeneratePointerTo(var);
 
@@ -957,6 +956,8 @@ namespace CppSharp.Generators.CSharp
 
             if (ctx.HasCodeBlock)
                 UnindentAndWriteCloseBrace();
+
+            return true;
         }
 
         private string GeneratePointerTo(Variable var)
@@ -991,7 +992,7 @@ namespace CppSharp.Generators.CSharp
             return ptr;
         }
 
-        private void GenerateFunctionSetter(Class @class, Property property)
+        private bool GenerateFunctionSetter(Class @class, Property property)
         {
             var actualProperty = GetActualProperty(property, @class);
             if (actualProperty == null)
@@ -1000,8 +1001,7 @@ namespace CppSharp.Generators.CSharp
                     property.Name} missing from explicit specialization {
                     @class.Visit(TypePrinter)}."");");
 
-                AddBlock(new Block(BlockKind.Unreachable));
-                return;
+                return false;
             }
             property = actualProperty;
 
@@ -1010,6 +1010,7 @@ namespace CppSharp.Generators.CSharp
             else
                 GenerateFunctionInProperty(@class, property.SetMethod, actualProperty,
                     new QualifiedType(new BuiltinType(PrimitiveType.Void)));
+            return true;
         }
 
         private void GenerateFieldSetter(Field field, Class @class, QualifiedType fieldType)
@@ -1283,7 +1284,7 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateVariableGetter(Variable var)
+        private bool GenerateVariableGetter(Variable var)
         {
             string ptr = GeneratePointerTo(var);
 
@@ -1320,9 +1321,11 @@ namespace CppSharp.Generators.CSharp
 
             if (ctx.HasCodeBlock)
                 UnindentAndWriteCloseBrace();
+
+            return true;
         }
 
-        private void GenerateFunctionGetter(Class @class, Property property)
+        private bool GenerateFunctionGetter(Class @class, Property property)
         {
             var actualProperty = GetActualProperty(property, @class);
             if (actualProperty == null)
@@ -1331,8 +1334,7 @@ namespace CppSharp.Generators.CSharp
                     property.Name} missing from explicit specialization {
                     @class.Visit(TypePrinter)}."");");
 
-                AddBlock(new Block(BlockKind.Unreachable));
-                return;
+                return false;
             }
             QualifiedType type = default;
             if (actualProperty != property ||
@@ -1343,6 +1345,7 @@ namespace CppSharp.Generators.CSharp
                 type = property.QualifiedType;
             }
             GenerateFunctionInProperty(@class, actualProperty.GetMethod, actualProperty, type);
+            return false;
         }
 
         private static Property GetActualProperty(Property property, Class c)
@@ -2307,9 +2310,9 @@ namespace CppSharp.Generators.CSharp
                     if (dtor.IsVirtual)
                         this.GenerateMember(@class, c => GenerateDestructorCall(
                             c is ClassTemplateSpecialization ?
-                                c.Methods.First(m => m.InstantiatedFrom == dtor) : dtor), true);
+                                c.Methods.First(m => m.InstantiatedFrom == dtor) : dtor));
                     else
-                        this.GenerateMember(@class, c => GenerateMethodBody(c, dtor), true);
+                        this.GenerateMember(@class, c => GenerateMethodBody(c, dtor));
                     if (@class.IsDependent || dtor.IsVirtual)
                         UnindentAndWriteCloseBrace();
                     else
@@ -2337,7 +2340,7 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateDestructorCall(Method dtor)
+        private bool GenerateDestructorCall(Method dtor)
         {
             var @class = (Class) dtor.Namespace;
             GenerateVirtualFunctionCall(dtor, true);
@@ -2349,6 +2352,7 @@ namespace CppSharp.Generators.CSharp
                 GenerateInternalFunctionCall(dtor);
                 Unindent();
             }
+            return true;
         }
 
         private void GenerateNativeConstructor(Class @class)
@@ -2669,7 +2673,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                 var isVoid = method.OriginalReturnType.Type.Desugar().IsPrimitiveType(PrimitiveType.Void) ||
                     method.IsConstructor;
                 this.GenerateMember(@class, c => GenerateMethodBody(
-                    c, method, method.OriginalReturnType), isVoid);
+                    c, method, method.OriginalReturnType));
             }
 
             SkipImpl:
@@ -2684,7 +2688,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateMethodBody(Class @class, Method method,
+        private bool GenerateMethodBody(Class @class, Method method,
             QualifiedType returnType = default(QualifiedType))
         {
             var specialization = @class as ClassTemplateSpecialization;
@@ -2698,8 +2702,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                         method.Name} missing from explicit specialization {
                         @class.Visit(TypePrinter)}."");");
 
-                    AddBlock(new Block(BlockKind.Unreachable));
-                    return;
+                    return false;
                 }
                 if (specializedMethod.Ignore)
                 {
@@ -2707,8 +2710,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                         method.Name} ignored in specialization {
                         @class.Visit(TypePrinter)}."");");
 
-                    AddBlock(new Block(BlockKind.Unreachable));
-                    return;
+                    return false;
                 }
 
                 method = specializedMethod;
@@ -2718,8 +2720,9 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                 if (method.IsConstructor)
                 {
                     GenerateClassConstructor(method, @class);
+                    return true;
                 }
-                else if (method.IsOperator)
+                if (method.IsOperator)
                 {
                     GenerateOperator(method, returnType);
                 }
@@ -2755,6 +2758,8 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                     GenerateInternalFunctionCall(method);
                 }
             }
+
+            return method.OriginalReturnType.Type.Desugar().IsPrimitiveType(PrimitiveType.Void);
         }
 
         private string OverloadParamNameWithDefValue(Parameter p, ref int index)
@@ -2843,12 +2848,13 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
             }
         }
 
-        private void GenerateGetHashCode(Class @class)
+        private bool GenerateGetHashCode(Class @class)
         {
             WriteLine($"if ({Helpers.InstanceIdentifier} == {TypePrinter.IntPtrType}.Zero)");
             WriteLineIndent($"return {TypePrinter.IntPtrType}.Zero.GetHashCode();");
             WriteLine($@"return (*({TypePrinter.PrintNative(@class)}*) {
                 Helpers.InstanceIdentifier}).GetHashCode();");
+            return false;
         }
 
         private void GenerateVirtualFunctionCall(Method method,
