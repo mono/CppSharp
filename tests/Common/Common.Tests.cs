@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define MarshalCharAsManagedSByte // Tests need to behave differently when char is mapped to sbyte
+
+using System;
 using System.Reflection;
 using CommonTest;
 using NUnit.Framework;
@@ -396,8 +398,13 @@ public class CommonTests
             Assert.That(testNestedTypes.ToVerifyCorrectLayoutBefore, Is.EqualTo(5));
             testNestedTypes.I = 10;
             Assert.That(testNestedTypes.I, Is.EqualTo(10));
+#if MarshalCharAsManagedSByte
+            testNestedTypes.C = Convert.ToSByte('D');
+            Assert.That(Convert.ToChar(testNestedTypes.C), Is.EqualTo('D'));
+#else
             testNestedTypes.C = 'D';
             Assert.That(testNestedTypes.C, Is.EqualTo('D'));
+#endif
             testNestedTypes.ToVerifyCorrectLayoutAfter = 15;
             Assert.That(testNestedTypes.ToVerifyCorrectLayoutAfter, Is.EqualTo(15));
         }
@@ -459,9 +466,19 @@ public class CommonTests
     {
         using (Foo2 foo2 = new Foo2())
         {
+#if MarshalCharAsManagedSByte
+            for (Int32 c = sbyte.MinValue; c <= sbyte.MaxValue; c++)
+            {
+                sbyte cSbyte = Convert.ToSByte(c);
+                sbyte charMarshalled = foo2.TestCharMarshalling(cSbyte);
+                Int32 charBackConverted = Convert.ToInt32(charMarshalled);
+                Assert.That(charBackConverted, Is.EqualTo(c));
+            }
+#else
             for (char c = char.MinValue; c <= sbyte.MaxValue; c++)
                 Assert.That(foo2.TestCharMarshalling(c), Is.EqualTo(c));
             Assert.Catch<OverflowException>(() => foo2.TestCharMarshalling('ж'));
+#endif
         }
     }
 
@@ -511,7 +528,11 @@ public class CommonTests
     {
         using (var @class = new ClassWithOverloadedOperators())
         {
+#if MarshalCharAsManagedSByte
+            sbyte @char = @class;
+#else
             char @char = @class;
+#endif
             Assert.That(@char, Is.EqualTo(1));
             short @short = @class;
             Assert.That(@short, Is.EqualTo(3));
@@ -573,7 +594,12 @@ public class CommonTests
             Assert.That(prop.StartWithVerb, Is.EqualTo(25));
             prop.StartWithVerb = 5;
 
+#if MarshalCharAsManagedSByte
+            sbyte cSByte = Convert.ToSByte('a');
+            Assert.That(prop.Contains(cSByte), Is.EqualTo(prop.Contains("a")));
+#else
             Assert.That(prop.Contains('a'), Is.EqualTo(prop.Contains("a")));
+#endif
 
             Assert.That(prop.conflict, Is.EqualTo(CommonTest.TestProperties.Conflict.Value1));
             prop.conflict = CommonTest.TestProperties.Conflict.Value2;
@@ -849,8 +875,14 @@ public class CommonTests
             hasProblematicFields.B = true;
             Assert.That(hasProblematicFields.B, Is.EqualTo(true));
             Assert.That(hasProblematicFields.C, Is.EqualTo(char.MinValue));
+#if MarshalCharAsManagedSByte
+			hasProblematicFields.C = Convert.ToSByte('a');
+			Assert.That(Convert.ToChar(hasProblematicFields.C), Is.EqualTo('a'));
+#else
             hasProblematicFields.C = 'a';
             Assert.That(hasProblematicFields.C, Is.EqualTo('a'));
+#endif
+
         }
     }
 
@@ -897,10 +929,17 @@ public class CommonTests
     {
         using (var foo = new Foo())
         {
+#if MarshalCharAsManagedSByte
+            foo.FixedCharArray = new sbyte[] { Convert.ToSByte('a'), Convert.ToSByte('b'), Convert.ToSByte('c') };
+            Assert.That(foo.FixedCharArray[0], Is.EqualTo('a'));
+            Assert.That(foo.FixedCharArray[1], Is.EqualTo('b'));
+            Assert.That(foo.FixedCharArray[2], Is.EqualTo('c'));
+#else
             foo.FixedCharArray = new char[] { 'a', 'b', 'c' };
             Assert.That(foo.FixedCharArray[0], Is.EqualTo('a'));
             Assert.That(foo.FixedCharArray[1], Is.EqualTo('b'));
             Assert.That(foo.FixedCharArray[2], Is.EqualTo('c'));
+#endif
         }
     }
 
@@ -963,6 +1002,39 @@ This is a very long string. This is a very long string. This is a very long stri
             Assert.That(() => hasStdString.TestStdString(null), Throws.ArgumentNullException);
         }
     }
+
+	[Test]
+	public void TestStdWString()
+	{
+        // when C++ memory is deleted, it's only marked as free but not immediadely freed
+        // this can hide memory bugs while marshalling
+        // so let's use a long string to increase the chance of a crash right away
+        const string t = @"This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string.
+This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string.
+This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string.
+This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string.
+This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string.
+This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string. This is a very long string.";
+        const string unicodeString1 = "你好";
+        const string unicodeString2 = "Ÿ‰ϰ";
+
+        using (var hasStdWString = new HasStdWString())
+		{
+            Assert.That(hasStdWString.TestStdWString(t), Is.EqualTo(t + "_test"));
+            hasStdWString.S = t;
+            Assert.That(hasStdWString.S, Is.EqualTo(t));
+            Assert.That(hasStdWString.StdWString, Is.EqualTo(t));
+            Assert.That(hasStdWString.StdWString, Is.EqualTo(t)            
+            Assert.That(hasStdWString.TestStdWString(unicodeString1), Is.EqualTo(unicodeString1 + "_test"));
+            hasStdWString.S = unicodeString1;
+            Assert.That(hasStdWString.S, Is.EqualTo(unicodeString1));
+            Assert.That(hasStdWString.StdWString, Is.EqualTo(unicodeString1)            
+            Assert.That(hasStdWString.TestStdWString(unicodeString2), Is.EqualTo(unicodeString2 + "_test"));
+            hasStdWString.S = unicodeString2;
+            Assert.That(hasStdWString.S, Is.EqualTo(unicodeString2));
+            Assert.That(hasStdWString.StdWString, Is.EqualTo(unicodeString2));
+		}
+	}
 
     [Test]
     public void TestUTF8()
