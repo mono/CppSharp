@@ -260,7 +260,7 @@ template <typename T>
 class DependentPointerFields
 {
 public:
-    DependentPointerFields(T t = 0);
+    DependentPointerFields(T* t = 0);
     ~DependentPointerFields();
     T property();
     T takeField(T t);
@@ -268,7 +268,7 @@ public:
 };
 
 template <typename T>
-DependentPointerFields<T>::DependentPointerFields(T t)
+DependentPointerFields<T>::DependentPointerFields(T* t) : field(t)
 {
 }
 

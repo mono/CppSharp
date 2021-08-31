@@ -1334,8 +1334,10 @@ public unsafe class CSharpTests
     [Test]
     public void TestFieldWithDependentPointerType()
     {
-        using (var dependentPointerFields = new DependentPointerFields<float>(0))
+        float f = 0.5f;
+        using (var dependentPointerFields = DependentPointerFieldsExtensions.DependentPointerFields(ref f))
         {
+            Assert.That(dependentPointerFields.Property, Is.EqualTo(f));
         }
     }
 

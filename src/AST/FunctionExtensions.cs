@@ -95,7 +95,7 @@ namespace CppSharp.AST
 
         public static bool NeedsSymbol(this Method method)
         {
-            Class @class = (Class) method.Namespace;
+            Class @class = (Class) (method.OriginalFunction ?? method).Namespace;
             // virtual functions cannot really be inlined and
             // we don't need their symbols anyway as we call them through the v-table
             return (!method.IsVirtual && !method.IsSynthetized &&
