@@ -1020,15 +1020,16 @@ This is a very long string. This is a very long string. This is a very long stri
 
         using (var hasStdWString = new HasStdWString())
 		{
+            Assert.That(hasStdWString.TestStdWStringPassedByValue(t), Is.EqualTo(t + "_test"));
             Assert.That(hasStdWString.TestStdWString(t), Is.EqualTo(t + "_test"));
             hasStdWString.S = t;
             Assert.That(hasStdWString.S, Is.EqualTo(t));
             Assert.That(hasStdWString.StdWString, Is.EqualTo(t));
-            Assert.That(hasStdWString.StdWString, Is.EqualTo(t)            
+			Assert.That(hasStdWString.StdWString, Is.EqualTo(t));            
             Assert.That(hasStdWString.TestStdWString(unicodeString1), Is.EqualTo(unicodeString1 + "_test"));
             hasStdWString.S = unicodeString1;
             Assert.That(hasStdWString.S, Is.EqualTo(unicodeString1));
-            Assert.That(hasStdWString.StdWString, Is.EqualTo(unicodeString1)            
+			Assert.That(hasStdWString.StdWString, Is.EqualTo(unicodeString1));
             Assert.That(hasStdWString.TestStdWString(unicodeString2), Is.EqualTo(unicodeString2 + "_test"));
             hasStdWString.S = unicodeString2;
             Assert.That(hasStdWString.S, Is.EqualTo(unicodeString2));
