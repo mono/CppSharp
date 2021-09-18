@@ -151,7 +151,8 @@ namespace CppSharp.AST
             ClassTemplateSpecialization specialization, TemplateArgument a, ITypeMapDatabase typeMaps)
         {
             if (a.Type.Type == null ||
-                IsTypeExternal(specialization.TranslationUnit.Module, a.Type.Type))
+                IsTypeExternal(
+                    specialization.TemplatedDecl.TemplatedDecl.TranslationUnit.Module, a.Type.Type))
                 return true;
 
             var typeIgnoreChecker = new TypeIgnoreChecker(typeMaps);
@@ -178,7 +179,7 @@ namespace CppSharp.AST
         {
             if (type.TryGetDeclaration(out Declaration declaration))
             {
-                ClassTemplateSpecialization specialization = null;
+                ClassTemplateSpecialization specialization;
                 do
                 {
                     specialization = declaration as ClassTemplateSpecialization;

@@ -80,7 +80,21 @@ class DLL_API TemplateWithIndependentFields
 {
 public:
     void useDependentPointer(const T* t);
+    const T& constField() const;
+private:
+    T* t = new T;
 };
+
+template <typename T>
+const T& TemplateWithIndependentFields<T>::constField() const
+{
+    return *t;
+}
+
+template <typename T>
+void TemplateWithIndependentFields<T>::useDependentPointer(const T* t)
+{
+}
 
 class DLL_API HasVirtualInCore
 {

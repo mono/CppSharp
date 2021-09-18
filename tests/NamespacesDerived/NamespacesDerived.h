@@ -1,5 +1,6 @@
 #include "../Tests.h"
 #include "../NamespacesBase/NamespacesBase.h"
+#include "Independent.h"
 
 // Namespace clashes with NamespacesBase.OverlappingNamespace
 // Test whether qualified names turn out right.
@@ -168,3 +169,5 @@ public:
      */
     class LinphoneAddress {};
 };
+
+DLL_API void forceUseSpecializations(ForwardedInIndependentHeader value);

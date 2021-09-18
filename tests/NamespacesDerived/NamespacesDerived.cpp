@@ -110,3 +110,7 @@ bool operator<<(const Base& b, const char* str)
 {
     return false;
 }
+
+void forceUseSpecializations(ForwardedInIndependentHeader value)
+{
+}
