@@ -300,14 +300,16 @@ namespace CppSharp.Generators.CSharp
                         if (Context.Context.ParserOptions.IsMicrosoftAbi)
                             vtableIndex = @class.Layout.VFTables.IndexOf(@class.Layout.VFTables.First(
                                 v => v.Layout.Components.Any(c => c.Method == dtor)));
+                        string instance = $"new {typePrinter.IntPtrType}(&{Context.ReturnVarName})";
                         Context.Before.WriteLine($@"var __vtables = new IntPtr[] {{ {
                             string.Join(", ", originalClass.Layout.VTablePointers.Select(
-                                x => $" * (IntPtr*) ({ Helpers.InstanceIdentifier} + {x.Offset})"))} }};");
-                        Context.Before.WriteLine($"var __slot = *(IntPtr*) (__vtables[{vtableIndex}] + {i} * sizeof(IntPtr));");
-                        Context.Before.Write($"Marshal.GetDelegateForFunctionPointer<{dtor.FunctionType}>(__slot)({Helpers.InstanceIdentifier}");
+                                x => $"*({typePrinter.IntPtrType}*) ({instance} + {x.Offset})"))} }};");
+                        Context.Before.WriteLine($@"var __slot = *({typePrinter.IntPtrType}*) (__vtables[{
+                            vtableIndex}] + {i} * sizeof({typePrinter.IntPtrType}));");
+                        Context.Before.Write($"Marshal.GetDelegateForFunctionPointer<{dtor.FunctionType}>(__slot)({instance}");
                         if (dtor.GatherInternalParams(Context.Context.ParserOptions.IsItaniumLikeAbi).Count > 1)
                         {
-                            Context.Before.WriteLine(", 0");
+                            Context.Before.Write(", 0");
                         }
                         Context.Before.WriteLine(");");
                     }

@@ -2689,7 +2689,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
         }
 
         private bool GenerateMethodBody(Class @class, Method method,
-            QualifiedType returnType = default(QualifiedType))
+            QualifiedType returnType = default)
         {
             var specialization = @class as ClassTemplateSpecialization;
             if (specialization != null)

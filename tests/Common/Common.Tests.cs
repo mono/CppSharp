@@ -52,6 +52,9 @@ public class CommonTests
         {
             hasPropertyNamedAsParent.hasPropertyNamedAsParent.GetHashCode();
         }
+        using (Common.FreeFunctionReturnsVirtualDtor)
+        {
+        }
         EnumWithUnderscores.lOWER_BEFORE_CAPITAL.GetHashCode();
         EnumWithUnderscores.UnderscoreAtEnd.GetHashCode();
         EnumWithUnderscores.CAPITALS_More.GetHashCode();

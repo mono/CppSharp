@@ -268,6 +268,9 @@ public:
 class DLL_API ImplementsAbstractFoo : public AbstractFoo
 {
 public:
+    ImplementsAbstractFoo();
+    ImplementsAbstractFoo(const ImplementsAbstractFoo& other);
+    ~ImplementsAbstractFoo();
     typedef int typedefInOverride;
     virtual int pureFunction(typedefInOverride i = 0);
     virtual int pureFunction1();
@@ -1455,6 +1458,7 @@ template<int N> using TypeAlias = InvokeGenSeq<DerivedTypeAlias<N>>;
 template<int N>
 struct DerivedTypeAlias : TypeAlias<N / 2> {};
 
+DLL_API ImplementsAbstractFoo freeFunctionReturnsVirtualDtor();
 DLL_API void integerOverload(int i);
 DLL_API void integerOverload(unsigned int i);
 DLL_API void integerOverload(long i);

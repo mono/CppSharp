@@ -386,6 +386,18 @@ AbstractFoo::~AbstractFoo()
 {
 }
 
+ImplementsAbstractFoo::ImplementsAbstractFoo()
+{
+}
+
+ImplementsAbstractFoo::ImplementsAbstractFoo(const ImplementsAbstractFoo& other)
+{
+}
+
+ImplementsAbstractFoo::~ImplementsAbstractFoo()
+{
+}
+
 int ImplementsAbstractFoo::pureFunction(typedefInOverride i)
 {
     return 5;
@@ -1347,6 +1359,11 @@ int ReturnByValueWithReturnParam::getUseCount() { return _ptr.use_count(); }
 ReturnByValueWithReturnParam ReturnByValueWithReturnParamFactory::generate()
 {
     return ReturnByValueWithReturnParam();
+}
+
+ImplementsAbstractFoo freeFunctionReturnsVirtualDtor()
+{
+    return ImplementsAbstractFoo();
 }
 
 void integerOverload(int i)
