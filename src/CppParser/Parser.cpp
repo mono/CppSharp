@@ -33,6 +33,7 @@
 #include <clang/AST/Comment.h>
 #include <clang/AST/DeclFriend.h>
 #include <clang/AST/ExprCXX.h>
+#include <clang/CodeGen/CodeGenAction.h>
 #include <clang/Lex/DirectoryLookup.h>
 #include <clang/Lex/HeaderSearch.h>
 #include <clang/Lex/Preprocessor.h>
@@ -235,7 +236,7 @@ ConvertToClangTargetCXXABI(CppSharp::CppParser::AST::CppAbi abi)
     llvm_unreachable("Unsupported C++ ABI.");
 }
 
-void Parser::Setup()
+void Parser::Setup(bool Compile)
 {
     llvm::InitializeAllTargets();
     llvm::InitializeAllTargetMCs();
@@ -245,6 +246,16 @@ void Parser::Setup()
 
     std::vector<const char*> args;
     args.push_back("-cc1");
+    if (Compile)
+    {
+        for (const std::string& CompilationOption : opts->CompilationOptions)
+        {
+            args.push_back(CompilationOption.c_str());
+
+            if (opts->verbose)
+                printf("Compiler argument: %s\n", CompilationOption.c_str());
+        }
+    }
 
     for (unsigned I = 0, E = opts->Arguments.size(); I != E; ++I)
     {
@@ -4577,7 +4588,7 @@ ParserResultKind Parser::ReadSymbols(llvm::StringRef File,
     return ParserResultKind::Success;
 }
 
-ParserResult* Parser::ParseLibrary(const LinkerOptions* Opts)
+ParserResult* Parser::ParseLibrary(const CppLinkerOptions* Opts)
 {
     auto res = new ParserResult();
 
@@ -4651,6 +4662,22 @@ ParserResult* Parser::ParseLibrary(const LinkerOptions* Opts)
     return res;
 }
 
+ParserResult* Parser::Build(const CppLinkerOptions* LinkerOptions, const std::string& File, bool Last)
+{
+    ParserResult* error = Compile(File);
+    if (error)
+        return error;
+
+    Link(File, LinkerOptions);
+
+    if (Last)
+        llvm::llvm_shutdown();
+
+    auto res = new ParserResult();
+    HandleDiagnostics(res);
+    return res;
+}
+
 ParserResult* ClangParser::ParseHeader(CppParserOptions* Opts)
 {
     if (!Opts)
@@ -4682,12 +4709,74 @@ ParserResult* ClangParser::ParseHeader(CppParserOptions* Opts)
     return res;
 }
 
-ParserResult* ClangParser::ParseLibrary(LinkerOptions* Opts)
+ParserResult* ClangParser::ParseLibrary(CppLinkerOptions* Opts)
 {
     if (!Opts)
         return nullptr;
 
     return Parser::ParseLibrary(Opts);
+}
+
+ParserResult* ClangParser::Build(CppParserOptions* Opts,
+    const CppLinkerOptions* LinkerOptions, const std::string& File, bool Last)
+{
+    if (!Opts)
+        return 0;
+
+    Parser Parser(Opts);
+    return Parser.Build(LinkerOptions, File, Last);
+}
+
+ParserResult* ClangParser::Compile(CppParserOptions* Opts,
+    const std::string& File)
+{
+    if (!Opts)
+        return 0;
+
+    Parser Parser(Opts);
+    return Parser.Compile(File);
+}
+
+ParserResult* ClangParser::Link(CppParserOptions* Opts,
+    const CppLinkerOptions* LinkerOptions, const std::string& File, bool Last)
+{
+    if (!Opts)
+        return 0;
+
+    Parser Parser(Opts);
+    Parser.Link(File, LinkerOptions);
+
+    if (Last)
+        llvm::llvm_shutdown();
+}
+
+ParserResult* Parser::Compile(const std::string& File)
+{
+    llvm::InitializeAllAsmPrinters();
+    llvm::StringRef Stem = llvm::sys::path::stem(File);
+    Setup(/* Compile */ true);
+
+    c->getDiagnostics().setClient(new ::DiagnosticConsumer());
+
+    c->getFrontendOpts().Inputs.clear();
+    c->getFrontendOpts().Inputs.push_back(clang::FrontendInputFile(File, clang::Language::CXX));
+
+    const llvm::Triple Triple = c->getTarget().getTriple();
+    llvm::StringRef Dir(llvm::sys::path::parent_path(File));
+    llvm::SmallString<1024> Object(Dir);
+    llvm::sys::path::append(Object,
+        (Triple.isOSWindows() ? "" : "lib") + Stem + ".o");
+    c->getFrontendOpts().OutputFile = std::string(Object);
+
+    llvm::LLVMContext context;
+    auto action = std::make_unique<clang::EmitObjAction>(&context);
+    if (!c->ExecuteAction(*action))
+    {
+        auto res = new ParserResult();
+        HandleDiagnostics(res);
+        return res;
+    }
+    return 0;
 }
 
 ParserTargetInfo* Parser::GetTargetInfo()

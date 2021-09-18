@@ -26,6 +26,7 @@ struct CS_API CppParserOptions
     std::string getClangVersion();
 
     VECTOR_STRING(Arguments)
+    VECTOR_STRING(CompilationOptions)
     // C/C++ header file names.
     VECTOR_STRING(SourceFiles)
 
@@ -54,10 +55,10 @@ private:
     std::string clangVersion;
 };
 
-struct CS_API LinkerOptions
+struct CS_API CppLinkerOptions
 {
-    LinkerOptions();
-    ~LinkerOptions();
+    CppLinkerOptions();
+    ~CppLinkerOptions();
 
     VECTOR_STRING(Arguments)
     VECTOR_STRING(LibraryDirs)
@@ -120,7 +121,12 @@ class CS_API ClangParser
 public:
 
     static ParserResult* ParseHeader(CppParserOptions* Opts);
-    static ParserResult* ParseLibrary(LinkerOptions* Opts);
+    static ParserResult* ParseLibrary(CppLinkerOptions* Opts);
+    static ParserResult* Build(CppParserOptions* Opts,
+        const CppLinkerOptions* LinkerOptions, const std::string& File, bool Last);
+    static ParserResult* Compile(CppParserOptions* Opts, const std::string& File);
+    static ParserResult* Link(CppParserOptions* Opts,
+        const CppLinkerOptions* LinkerOptions, const std::string& File, bool Last);
 };
 
 } }

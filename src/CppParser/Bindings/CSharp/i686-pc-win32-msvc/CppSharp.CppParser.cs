@@ -39489,10 +39489,11 @@ namespace CppSharp
 
         public unsafe partial class CppParserOptions : IDisposable
         {
-            [StructLayout(LayoutKind.Sequential, Size = 148)]
+            [StructLayout(LayoutKind.Sequential, Size = 160)]
             public partial struct __Internal
             {
                 internal global::Std.Vector.__Internalc__N_std_S_vector____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S_allocator__S0_ Arguments;
+                internal global::Std.Vector.__Internalc__N_std_S_vector____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S_allocator__S0_ CompilationOptions;
                 internal global::Std.Vector.__Internalc__N_std_S_vector____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S_allocator__S0_ SourceFiles;
                 internal global::Std.Vector.__Internalc__N_std_S_vector____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S_allocator__S0_ IncludeDirs;
                 internal global::Std.Vector.__Internalc__N_std_S_vector____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S_allocator__S0_ SystemIncludeDirs;
@@ -39529,6 +39530,15 @@ namespace CppSharp
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?clearArguments@CppParserOptions@CppParser@CppSharp@@QAEXXZ", CallingConvention = __CallingConvention.ThisCall)]
                 internal static extern void ClearArguments(__IntPtr __instance);
+
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?getCompilationOptions@CppParserOptions@CppParser@CppSharp@@QAEPBDI@Z", CallingConvention = __CallingConvention.ThisCall)]
+                internal static extern __IntPtr GetCompilationOptions(__IntPtr __instance, uint i);
+
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?addCompilationOptions@CppParserOptions@CppParser@CppSharp@@QAEXPBD@Z", CallingConvention = __CallingConvention.ThisCall)]
+                internal static extern void AddCompilationOptions(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
+
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?clearCompilationOptions@CppParserOptions@CppParser@CppSharp@@QAEXXZ", CallingConvention = __CallingConvention.ThisCall)]
+                internal static extern void ClearCompilationOptions(__IntPtr __instance);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?getSourceFiles@CppParserOptions@CppParser@CppSharp@@QAEPBDI@Z", CallingConvention = __CallingConvention.ThisCall)]
                 internal static extern __IntPtr GetSourceFiles(__IntPtr __instance, uint i);
@@ -39589,6 +39599,9 @@ namespace CppSharp
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?getArgumentsCount@CppParserOptions@CppParser@CppSharp@@QAEIXZ", CallingConvention = __CallingConvention.ThisCall)]
                 internal static extern uint GetArgumentsCount(__IntPtr __instance);
+
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?getCompilationOptionsCount@CppParserOptions@CppParser@CppSharp@@QAEIXZ", CallingConvention = __CallingConvention.ThisCall)]
+                internal static extern uint GetCompilationOptionsCount(__IntPtr __instance);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?getSourceFilesCount@CppParserOptions@CppParser@CppSharp@@QAEIXZ", CallingConvention = __CallingConvention.ThisCall)]
                 internal static extern uint GetSourceFilesCount(__IntPtr __instance);
@@ -39711,6 +39724,22 @@ namespace CppSharp
             public void ClearArguments()
             {
                 __Internal.ClearArguments(__Instance);
+            }
+
+            public string GetCompilationOptions(uint i)
+            {
+                var __ret = __Internal.GetCompilationOptions(__Instance, i);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
+            }
+
+            public void AddCompilationOptions(string s)
+            {
+                __Internal.AddCompilationOptions(__Instance, s);
+            }
+
+            public void ClearCompilationOptions()
+            {
+                __Internal.ClearCompilationOptions(__Instance);
             }
 
             public string GetSourceFiles(uint i)
@@ -39976,6 +40005,15 @@ namespace CppSharp
                 }
             }
 
+            public uint CompilationOptionsCount
+            {
+                get
+                {
+                    var __ret = __Internal.GetCompilationOptionsCount(__Instance);
+                    return __ret;
+                }
+            }
+
             public uint SourceFilesCount
             {
                 get
@@ -40031,7 +40069,7 @@ namespace CppSharp
             }
         }
 
-        public unsafe partial class LinkerOptions : IDisposable
+        public unsafe partial class CppLinkerOptions : IDisposable
         {
             [StructLayout(LayoutKind.Sequential, Size = 36)]
             public partial struct __Internal
@@ -40040,112 +40078,112 @@ namespace CppSharp
                 internal global::Std.Vector.__Internalc__N_std_S_vector____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S_allocator__S0_ LibraryDirs;
                 internal global::Std.Vector.__Internalc__N_std_S_vector____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S_allocator__S0_ Libraries;
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "??0LinkerOptions@CppParser@CppSharp@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "??0CppLinkerOptions@CppParser@CppSharp@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
                 internal static extern __IntPtr ctor(__IntPtr __instance);
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "??0LinkerOptions@CppParser@CppSharp@@QAE@ABU012@@Z", CallingConvention = __CallingConvention.ThisCall)]
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "??0CppLinkerOptions@CppParser@CppSharp@@QAE@ABU012@@Z", CallingConvention = __CallingConvention.ThisCall)]
                 internal static extern __IntPtr cctor(__IntPtr __instance, __IntPtr _0);
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "??1LinkerOptions@CppParser@CppSharp@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "??1CppLinkerOptions@CppParser@CppSharp@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
                 internal static extern void dtor(__IntPtr __instance);
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?getArguments@LinkerOptions@CppParser@CppSharp@@QAEPBDI@Z", CallingConvention = __CallingConvention.ThisCall)]
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?getArguments@CppLinkerOptions@CppParser@CppSharp@@QAEPBDI@Z", CallingConvention = __CallingConvention.ThisCall)]
                 internal static extern __IntPtr GetArguments(__IntPtr __instance, uint i);
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?addArguments@LinkerOptions@CppParser@CppSharp@@QAEXPBD@Z", CallingConvention = __CallingConvention.ThisCall)]
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?addArguments@CppLinkerOptions@CppParser@CppSharp@@QAEXPBD@Z", CallingConvention = __CallingConvention.ThisCall)]
                 internal static extern void AddArguments(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?clearArguments@LinkerOptions@CppParser@CppSharp@@QAEXXZ", CallingConvention = __CallingConvention.ThisCall)]
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?clearArguments@CppLinkerOptions@CppParser@CppSharp@@QAEXXZ", CallingConvention = __CallingConvention.ThisCall)]
                 internal static extern void ClearArguments(__IntPtr __instance);
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?getLibraryDirs@LinkerOptions@CppParser@CppSharp@@QAEPBDI@Z", CallingConvention = __CallingConvention.ThisCall)]
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?getLibraryDirs@CppLinkerOptions@CppParser@CppSharp@@QAEPBDI@Z", CallingConvention = __CallingConvention.ThisCall)]
                 internal static extern __IntPtr GetLibraryDirs(__IntPtr __instance, uint i);
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?addLibraryDirs@LinkerOptions@CppParser@CppSharp@@QAEXPBD@Z", CallingConvention = __CallingConvention.ThisCall)]
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?addLibraryDirs@CppLinkerOptions@CppParser@CppSharp@@QAEXPBD@Z", CallingConvention = __CallingConvention.ThisCall)]
                 internal static extern void AddLibraryDirs(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?clearLibraryDirs@LinkerOptions@CppParser@CppSharp@@QAEXXZ", CallingConvention = __CallingConvention.ThisCall)]
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?clearLibraryDirs@CppLinkerOptions@CppParser@CppSharp@@QAEXXZ", CallingConvention = __CallingConvention.ThisCall)]
                 internal static extern void ClearLibraryDirs(__IntPtr __instance);
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?getLibraries@LinkerOptions@CppParser@CppSharp@@QAEPBDI@Z", CallingConvention = __CallingConvention.ThisCall)]
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?getLibraries@CppLinkerOptions@CppParser@CppSharp@@QAEPBDI@Z", CallingConvention = __CallingConvention.ThisCall)]
                 internal static extern __IntPtr GetLibraries(__IntPtr __instance, uint i);
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?addLibraries@LinkerOptions@CppParser@CppSharp@@QAEXPBD@Z", CallingConvention = __CallingConvention.ThisCall)]
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?addLibraries@CppLinkerOptions@CppParser@CppSharp@@QAEXPBD@Z", CallingConvention = __CallingConvention.ThisCall)]
                 internal static extern void AddLibraries(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?clearLibraries@LinkerOptions@CppParser@CppSharp@@QAEXXZ", CallingConvention = __CallingConvention.ThisCall)]
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?clearLibraries@CppLinkerOptions@CppParser@CppSharp@@QAEXXZ", CallingConvention = __CallingConvention.ThisCall)]
                 internal static extern void ClearLibraries(__IntPtr __instance);
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?getArgumentsCount@LinkerOptions@CppParser@CppSharp@@QAEIXZ", CallingConvention = __CallingConvention.ThisCall)]
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?getArgumentsCount@CppLinkerOptions@CppParser@CppSharp@@QAEIXZ", CallingConvention = __CallingConvention.ThisCall)]
                 internal static extern uint GetArgumentsCount(__IntPtr __instance);
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?getLibraryDirsCount@LinkerOptions@CppParser@CppSharp@@QAEIXZ", CallingConvention = __CallingConvention.ThisCall)]
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?getLibraryDirsCount@CppLinkerOptions@CppParser@CppSharp@@QAEIXZ", CallingConvention = __CallingConvention.ThisCall)]
                 internal static extern uint GetLibraryDirsCount(__IntPtr __instance);
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?getLibrariesCount@LinkerOptions@CppParser@CppSharp@@QAEIXZ", CallingConvention = __CallingConvention.ThisCall)]
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?getLibrariesCount@CppLinkerOptions@CppParser@CppSharp@@QAEIXZ", CallingConvention = __CallingConvention.ThisCall)]
                 internal static extern uint GetLibrariesCount(__IntPtr __instance);
             }
 
             public __IntPtr __Instance { get; protected set; }
 
-            internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.LinkerOptions> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.LinkerOptions>();
+            internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.CppLinkerOptions> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::CppSharp.Parser.CppLinkerOptions>();
 
             protected bool __ownsNativeInstance;
 
-            internal static LinkerOptions __CreateInstance(__IntPtr native, bool skipVTables = false)
+            internal static CppLinkerOptions __CreateInstance(__IntPtr native, bool skipVTables = false)
             {
-                return new LinkerOptions(native.ToPointer(), skipVTables);
+                return new CppLinkerOptions(native.ToPointer(), skipVTables);
             }
 
-            internal static LinkerOptions __GetOrCreateInstance(__IntPtr native, bool saveInstance = false, bool skipVTables = false)
+            internal static CppLinkerOptions __GetOrCreateInstance(__IntPtr native, bool saveInstance = false, bool skipVTables = false)
             {
                 if (native == __IntPtr.Zero)
                     return null;
                 if (NativeToManagedMap.TryGetValue(native, out var managed))
-                    return (LinkerOptions)managed;
+                    return (CppLinkerOptions)managed;
                 var result = __CreateInstance(native, skipVTables);
                 if (saveInstance)
                     NativeToManagedMap[native] = result;
                 return result;
             }
 
-            internal static LinkerOptions __CreateInstance(__Internal native, bool skipVTables = false)
+            internal static CppLinkerOptions __CreateInstance(__Internal native, bool skipVTables = false)
             {
-                return new LinkerOptions(native, skipVTables);
+                return new CppLinkerOptions(native, skipVTables);
             }
 
             private static void* __CopyValue(__Internal native)
             {
                 var ret = Marshal.AllocHGlobal(sizeof(__Internal));
-                global::CppSharp.Parser.LinkerOptions.__Internal.cctor(ret, new __IntPtr(&native));
+                global::CppSharp.Parser.CppLinkerOptions.__Internal.cctor(ret, new __IntPtr(&native));
                 return ret.ToPointer();
             }
 
-            private LinkerOptions(__Internal native, bool skipVTables = false)
+            private CppLinkerOptions(__Internal native, bool skipVTables = false)
                 : this(__CopyValue(native), skipVTables)
             {
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
             }
 
-            protected LinkerOptions(void* native, bool skipVTables = false)
+            protected CppLinkerOptions(void* native, bool skipVTables = false)
             {
                 if (native == null)
                     return;
                 __Instance = new __IntPtr(native);
             }
 
-            public LinkerOptions()
+            public CppLinkerOptions()
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.LinkerOptions.__Internal));
+                __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.CppLinkerOptions.__Internal));
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
                 __Internal.ctor(__Instance);
             }
 
-            public LinkerOptions(global::CppSharp.Parser.LinkerOptions _0)
+            public CppLinkerOptions(global::CppSharp.Parser.CppLinkerOptions _0)
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.LinkerOptions.__Internal));
+                __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.CppLinkerOptions.__Internal));
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
                 if (ReferenceEquals(_0, null))
@@ -40659,8 +40697,17 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?ParseHeader@ClangParser@CppParser@CppSharp@@SAPAUParserResult@23@PAUCppParserOptions@23@@Z", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern __IntPtr ParseHeader(__IntPtr Opts);
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?ParseLibrary@ClangParser@CppParser@CppSharp@@SAPAUParserResult@23@PAULinkerOptions@23@@Z", CallingConvention = __CallingConvention.Cdecl)]
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?ParseLibrary@ClangParser@CppParser@CppSharp@@SAPAUParserResult@23@PAUCppLinkerOptions@23@@Z", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern __IntPtr ParseLibrary(__IntPtr Opts);
+
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?Build@ClangParser@CppParser@CppSharp@@SAPAUParserResult@23@PAUCppParserOptions@23@PBUCppLinkerOptions@23@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@_N@Z", CallingConvention = __CallingConvention.Cdecl)]
+                internal static extern __IntPtr Build(__IntPtr Opts, __IntPtr LinkerOptions, __IntPtr File, bool Last);
+
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?Compile@ClangParser@CppParser@CppSharp@@SAPAUParserResult@23@PAUCppParserOptions@23@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z", CallingConvention = __CallingConvention.Cdecl)]
+                internal static extern __IntPtr Compile(__IntPtr Opts, __IntPtr File);
+
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?Link@ClangParser@CppParser@CppSharp@@SAPAUParserResult@23@PAUCppParserOptions@23@PBUCppLinkerOptions@23@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@_N@Z", CallingConvention = __CallingConvention.Cdecl)]
+                internal static extern __IntPtr Link(__IntPtr Opts, __IntPtr LinkerOptions, __IntPtr File, bool Last);
             }
 
             public __IntPtr __Instance { get; protected set; }
@@ -40753,10 +40800,48 @@ namespace CppSharp
                 return __result0;
             }
 
-            public static global::CppSharp.Parser.ParserResult ParseLibrary(global::CppSharp.Parser.LinkerOptions Opts)
+            public static global::CppSharp.Parser.ParserResult ParseLibrary(global::CppSharp.Parser.CppLinkerOptions Opts)
             {
                 var __arg0 = Opts is null ? __IntPtr.Zero : Opts.__Instance;
                 var __ret = __Internal.ParseLibrary(__arg0);
+                var __result0 = global::CppSharp.Parser.ParserResult.__GetOrCreateInstance(__ret, false);
+                return __result0;
+            }
+
+            public static global::CppSharp.Parser.ParserResult Build(global::CppSharp.Parser.CppParserOptions Opts, global::CppSharp.Parser.CppLinkerOptions LinkerOptions, string File, bool Last)
+            {
+                var __arg0 = Opts is null ? __IntPtr.Zero : Opts.__Instance;
+                var __arg1 = LinkerOptions is null ? __IntPtr.Zero : LinkerOptions.__Instance;
+                var __basicString2 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
+                global::Std.BasicStringExtensions.Assign(__basicString2, File);
+                var __arg2 = __basicString2.__Instance;
+                var __ret = __Internal.Build(__arg0, __arg1, __arg2, Last);
+                __basicString2.Dispose();
+                var __result0 = global::CppSharp.Parser.ParserResult.__GetOrCreateInstance(__ret, false);
+                return __result0;
+            }
+
+            public static global::CppSharp.Parser.ParserResult Compile(global::CppSharp.Parser.CppParserOptions Opts, string File)
+            {
+                var __arg0 = Opts is null ? __IntPtr.Zero : Opts.__Instance;
+                var __basicString1 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
+                global::Std.BasicStringExtensions.Assign(__basicString1, File);
+                var __arg1 = __basicString1.__Instance;
+                var __ret = __Internal.Compile(__arg0, __arg1);
+                __basicString1.Dispose();
+                var __result0 = global::CppSharp.Parser.ParserResult.__GetOrCreateInstance(__ret, false);
+                return __result0;
+            }
+
+            public static global::CppSharp.Parser.ParserResult Link(global::CppSharp.Parser.CppParserOptions Opts, global::CppSharp.Parser.CppLinkerOptions LinkerOptions, string File, bool Last)
+            {
+                var __arg0 = Opts is null ? __IntPtr.Zero : Opts.__Instance;
+                var __arg1 = LinkerOptions is null ? __IntPtr.Zero : LinkerOptions.__Instance;
+                var __basicString2 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
+                global::Std.BasicStringExtensions.Assign(__basicString2, File);
+                var __arg2 = __basicString2.__Instance;
+                var __ret = __Internal.Link(__arg0, __arg1, __arg2, Last);
+                __basicString2.Dispose();
                 var __result0 = global::CppSharp.Parser.ParserResult.__GetOrCreateInstance(__ret, false);
                 return __result0;
             }

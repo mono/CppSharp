@@ -110,7 +110,9 @@ namespace CppSharp.Passes
 
         private string GetExporting()
         {
-            return Context.ParserOptions.IsMicrosoftAbi ?
+            return Context.ParserOptions.IsMicrosoftAbi ||
+                (Context.ParserOptions.TargetTriple.IsWindows() &&
+                 TranslationUnit.Module == Options.SystemModule) ?
                 "__declspec(dllexport) " : string.Empty;
         }
 

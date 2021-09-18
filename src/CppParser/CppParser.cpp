@@ -7,6 +7,7 @@
 
 #include "CppParser.h"
 #include "Parser.h"
+#include <llvm/Support/Host.h>
 #include <clang/Basic/Version.inc>
 
 namespace CppSharp { namespace CppParser {
@@ -31,6 +32,7 @@ CppParserOptions::~CppParserOptions() {}
 std::string CppParserOptions::getClangVersion() { return clangVersion; }
 
 DEF_VECTOR_STRING(CppParserOptions, Arguments)
+DEF_VECTOR_STRING(CppParserOptions, CompilationOptions)
 DEF_VECTOR_STRING(CppParserOptions, SourceFiles)
 DEF_VECTOR_STRING(CppParserOptions, IncludeDirs)
 DEF_VECTOR_STRING(CppParserOptions, SystemIncludeDirs)
@@ -61,12 +63,15 @@ ParserResult::~ParserResult()
 DEF_VECTOR(ParserResult, ParserDiagnostic, Diagnostics)
 DEF_VECTOR(ParserResult, NativeLibrary*, Libraries)
 
-LinkerOptions::LinkerOptions() {}
-LinkerOptions::~LinkerOptions() {}
+CppLinkerOptions::CppLinkerOptions()
+{
+}
 
-DEF_VECTOR_STRING(LinkerOptions, Arguments)
-DEF_VECTOR_STRING(LinkerOptions, LibraryDirs)
-DEF_VECTOR_STRING(LinkerOptions, Libraries)
+CppLinkerOptions::~CppLinkerOptions() {}
+
+DEF_VECTOR_STRING(CppLinkerOptions, Arguments)
+DEF_VECTOR_STRING(CppLinkerOptions, LibraryDirs)
+DEF_VECTOR_STRING(CppLinkerOptions, Libraries)
 
 ParserDiagnostic::ParserDiagnostic() {}
 

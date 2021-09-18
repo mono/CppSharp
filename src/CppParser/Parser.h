@@ -53,10 +53,12 @@ class Parser
 public:
     Parser(CppParserOptions* Opts);
 
-    void Setup();
+    void Setup(bool Compile = false);
     ParserResult* Parse(const std::vector<std::string>& SourceFiles);
-    static ParserResult* ParseLibrary(const LinkerOptions* Opts);
-
+    static ParserResult* ParseLibrary(const CppLinkerOptions* Opts);
+    ParserResult* Build(const CppLinkerOptions* LinkerOptions, const std::string& File, bool Last);
+    ParserResult* Compile(const std::string& File);
+    void Link(const std::string& File, const CppLinkerOptions* LinkerOptions);
     void WalkAST(clang::TranslationUnitDecl* TU);
     void HandleDeclaration(const clang::Decl* D, Declaration* Decl);
     CppParserOptions* opts;
@@ -168,6 +170,13 @@ private:
     static ParserResultKind ParseSharedLib(const std::string& File,
         llvm::object::ObjectFile* ObjectFile, std::vector<CppSharp::CppParser::NativeLibrary*>& NativeLibs);
     ParserTargetInfo* GetTargetInfo();
+
+    void LinkWindows(const CppLinkerOptions* LinkerOptions, std::vector<const char*>& args,
+        const llvm::StringRef& Dir, llvm::StringRef& Stem, bool MinGW = false);
+    void LinkELF(const CppLinkerOptions* LinkerOptions, std::vector<const char*>& args,
+        llvm::StringRef& Dir, llvm::StringRef& Stem);
+    void LinkMachO(const CppLinkerOptions* LinkerOptions, std::vector<const char*>& args,
+        llvm::StringRef& Dir, llvm::StringRef& Stem);
 
     int index;
     std::unique_ptr<clang::CompilerInstance> c;

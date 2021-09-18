@@ -17,8 +17,8 @@ namespace CppSharp
         enum class ParserResultKind;
         enum class SourceLocationKind;
         ref class ClangParser;
+        ref class CppLinkerOptions;
         ref class CppParserOptions;
-        ref class LinkerOptions;
         ref class Parser;
         ref class ParserDiagnostic;
         ref class ParserResult;
@@ -82,6 +82,12 @@ namespace CppSharp
             ~CppParserOptions();
 
             property ::System::Collections::Generic::List<::System::String^>^ Arguments
+            {
+                ::System::Collections::Generic::List<::System::String^>^ get();
+                void set(::System::Collections::Generic::List<::System::String^>^);
+            }
+
+            property ::System::Collections::Generic::List<::System::String^>^ CompilationOptions
             {
                 ::System::Collections::Generic::List<::System::String^>^ get();
                 void set(::System::Collections::Generic::List<::System::String^>^);
@@ -199,6 +205,11 @@ namespace CppSharp
                 unsigned int get();
             }
 
+            property unsigned int CompilationOptionsCount
+            {
+                unsigned int get();
+            }
+
             property unsigned int SourceFilesCount
             {
                 unsigned int get();
@@ -234,6 +245,12 @@ namespace CppSharp
             void AddArguments(::System::String^ s);
 
             void ClearArguments();
+
+            ::System::String^ GetCompilationOptions(unsigned int i);
+
+            void AddCompilationOptions(::System::String^ s);
+
+            void ClearCompilationOptions();
 
             ::System::String^ GetSourceFiles(unsigned int i);
 
@@ -276,26 +293,26 @@ namespace CppSharp
             bool __ownsNativeInstance;
         };
 
-        public ref class LinkerOptions : ICppInstance
+        public ref class CppLinkerOptions : ICppInstance
         {
         public:
 
-            property struct ::CppSharp::CppParser::LinkerOptions* NativePtr;
+            property struct ::CppSharp::CppParser::CppLinkerOptions* NativePtr;
             property ::System::IntPtr __Instance
             {
                 virtual ::System::IntPtr get();
                 virtual void set(::System::IntPtr instance);
             }
 
-            LinkerOptions(struct ::CppSharp::CppParser::LinkerOptions* native);
-            LinkerOptions(struct ::CppSharp::CppParser::LinkerOptions* native, bool ownNativeInstance);
-            static LinkerOptions^ __CreateInstance(::System::IntPtr native);
-            static LinkerOptions^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
-            LinkerOptions();
+            CppLinkerOptions(struct ::CppSharp::CppParser::CppLinkerOptions* native);
+            CppLinkerOptions(struct ::CppSharp::CppParser::CppLinkerOptions* native, bool ownNativeInstance);
+            static CppLinkerOptions^ __CreateInstance(::System::IntPtr native);
+            static CppLinkerOptions^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
+            CppLinkerOptions();
 
-            LinkerOptions(CppSharp::Parser::LinkerOptions^ _0);
+            CppLinkerOptions(CppSharp::Parser::CppLinkerOptions^ _0);
 
-            ~LinkerOptions();
+            ~CppLinkerOptions();
 
             property ::System::Collections::Generic::List<::System::String^>^ Arguments
             {
@@ -504,7 +521,13 @@ namespace CppSharp
 
             static CppSharp::Parser::ParserResult^ ParseHeader(CppSharp::Parser::CppParserOptions^ Opts);
 
-            static CppSharp::Parser::ParserResult^ ParseLibrary(CppSharp::Parser::LinkerOptions^ Opts);
+            static CppSharp::Parser::ParserResult^ ParseLibrary(CppSharp::Parser::CppLinkerOptions^ Opts);
+
+            static CppSharp::Parser::ParserResult^ Build(CppSharp::Parser::CppParserOptions^ Opts, CppSharp::Parser::CppLinkerOptions^ LinkerOptions, ::System::String^ File, bool Last);
+
+            static CppSharp::Parser::ParserResult^ Compile(CppSharp::Parser::CppParserOptions^ Opts, ::System::String^ File);
+
+            static CppSharp::Parser::ParserResult^ Link(CppSharp::Parser::CppParserOptions^ Opts, CppSharp::Parser::CppLinkerOptions^ LinkerOptions, ::System::String^ File, bool Last);
 
         protected:
 

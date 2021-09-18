@@ -9,8 +9,6 @@ public:
 
     };
 
-    Foo();
-    ~Foo();
     virtual int vfoo();
     virtual int vbar();
 
@@ -25,8 +23,6 @@ DLL_API int FooCallFoo(Foo* foo);
 class DLL_API BaseClassVirtual
 {
 public:
-    BaseClassVirtual();
-    BaseClassVirtual(const BaseClassVirtual& other);
     static int virtualCallRetInt(BaseClassVirtual* base);
     virtual int retInt();
     static BaseClassVirtual getBase();
@@ -37,6 +33,5 @@ public:
 class DLL_API DerivedClassVirtual : public BaseClassVirtual
 {
 public:
-    DerivedClassVirtual();
     virtual int retInt() override;
 };

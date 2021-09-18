@@ -65,7 +65,13 @@ namespace CppSharp.Parser
 
     public class ParserOptions : CppParserOptions
     {
-        public ParserOptions() => MicrosoftMode = !Platform.IsUnixPlatform;
+        public ParserOptions()
+        {
+            MicrosoftMode = !Platform.IsUnixPlatform;
+            AddCompilationOptions("-flto");
+            AddCompilationOptions("-O3");
+            AddCompilationOptions("-fno-use-cxa-atexit");
+        }
 
         public bool IsItaniumLikeAbi => !IsMicrosoftAbi;
         public bool IsMicrosoftAbi => TargetTriple.Contains("win32") ||
@@ -349,7 +355,7 @@ namespace CppSharp.Parser
                 AddArguments("-fno-rtti");
         }
 
-        public string BuiltinsDir 
+        public string BuiltinsDir
         {
             get
             {
