@@ -23,22 +23,6 @@ void T2::setField(int value)
     field = value;
 }
 
-DerivedFromSpecializationOfUnsupportedTemplate::DerivedFromSpecializationOfUnsupportedTemplate()
-{
-}
-
-DerivedFromSpecializationOfUnsupportedTemplate::~DerivedFromSpecializationOfUnsupportedTemplate()
-{
-}
-
-HasDefaultTemplateArgument<bool, bool>::HasDefaultTemplateArgument()
-{
-}
-
-HasDefaultTemplateArgument<bool, bool>::~HasDefaultTemplateArgument()
-{
-}
-
 bool HasDefaultTemplateArgument<bool, bool>::property()
 {
     return field;
@@ -61,22 +45,6 @@ void HasDefaultTemplateArgument<bool, bool>::setStaticProperty(const bool& t)
 
 bool HasDefaultTemplateArgument<bool, bool>::staticField;
 
-DerivesFromExplicitSpecialization::DerivesFromExplicitSpecialization()
-{
-}
-
-DerivesFromExplicitSpecialization::~DerivesFromExplicitSpecialization()
-{
-}
-
-HasVirtualTemplate::HasVirtualTemplate()
-{
-}
-
-HasVirtualTemplate::~HasVirtualTemplate()
-{
-}
-
 VirtualTemplate<int> HasVirtualTemplate::getVCopy()
 {
     return *v;
@@ -90,26 +58,6 @@ void HasVirtualTemplate::setV(VirtualTemplate<int>* value)
 int HasVirtualTemplate::function()
 {
     return v->function();
-}
-
-SpecializedInterfaceForMap::SpecializedInterfaceForMap()
-{
-}
-
-SpecializedInterfaceForMap::~SpecializedInterfaceForMap()
-{
-}
-
-HasSpecializationForSecondaryBase::HasSpecializationForSecondaryBase()
-{
-}
-
-HasSpecializationForSecondaryBase::~HasSpecializationForSecondaryBase()
-{
-}
-
-TemplateSpecializer::TemplateSpecializer()
-{
 }
 
 IndependentFields<bool> TemplateSpecializer::getIndependentFields()
@@ -139,14 +87,6 @@ void TemplateSpecializer::completeSpecializationInParameter(TwoTemplateArgs<cons
 VirtualTemplate<void> TemplateSpecializer::returnSpecializedWithVoid()
 {
     return VirtualTemplate<void>();
-}
-
-RegularDynamic::RegularDynamic()
-{
-}
-
-RegularDynamic::~RegularDynamic()
-{
 }
 
 void RegularDynamic::virtualFunction()

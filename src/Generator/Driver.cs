@@ -179,7 +179,7 @@ namespace CppSharp
             ClangParser.LibraryParsed += OnFileParsed;
             foreach (var module in Options.Modules)
             {
-                using (var linkerOptions = new LinkerOptions())
+                using (var linkerOptions = new LinkerOptions(Context.LinkerOptions))
                 {
                     foreach (var libraryDir in module.LibraryDirs)
                         linkerOptions.AddLibraryDirs(libraryDir);
@@ -399,6 +399,7 @@ namespace CppSharp
             Generator?.Dispose();
             Context?.TargetInfo?.Dispose();
             ParserOptions.Dispose();
+            Context?.LinkerOptions.Dispose();
         }
 
         private bool hasParsingErrors;

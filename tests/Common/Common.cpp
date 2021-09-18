@@ -1,42 +1,6 @@
 #include "Common.h"
 #include <string.h>
 
-TestPacking::TestPacking()
-{
-}
-
-TestPacking1::TestPacking1()
-{
-}
-
-TestPacking1::~TestPacking1()
-{
-}
-
-TestPacking2::TestPacking2()
-{
-}
-
-TestPacking2::~TestPacking2()
-{
-}
-
-TestPacking4::TestPacking4()
-{
-}
-
-TestPacking4::~TestPacking4()
-{
-}
-
-TestPacking8::TestPacking8()
-{
-}
-
-TestPacking8::~TestPacking8()
-{
-}
-
 Foo::NestedAbstract::~NestedAbstract()
 {
 }
@@ -76,7 +40,7 @@ void Foo::TakesTypedefedPtr(FooPtr date)
 {
 }
 
-int Foo::TakesRef(const Foo &other)
+int Foo::TakesRef(const Foo& other)
 {
     return other.A;
 }
@@ -111,7 +75,7 @@ Foo2 Foo2::operator<<(signed int i)
 
 Foo2 Foo2::operator<<(signed long l)
 {
-    return *this << (signed int) l;
+    return *this << (signed int)l;
 }
 
 char Foo2::testCharMarshalling(char c)
@@ -155,10 +119,6 @@ bool operator ==(Bar::Item item, const Bar& bar)
     return item == bar.RetItem1();
 }
 
-Bar2::Nested::Nested()
-{
-}
-
 Bar2::Nested::operator int() const
 {
     return 300;
@@ -187,16 +147,6 @@ Foo2 Bar2::needFixedInstance() const
     f.C = C;
 
     return f;
-}
-
-Hello::Hello ()
-{
-    //cout << "Ctor!" << "\n";
-}
-
-Hello::Hello(const Hello& hello)
-{
-
 }
 
 void Hello::PrintHello(const char* s)
@@ -315,28 +265,28 @@ void Hello::EnumInOutRef(Enum& e)
 
 void Hello::StringOut(CS_OUT const char** str)
 {
-        *str = "HelloStringOut";
+    *str = "HelloStringOut";
 }
 
 void Hello::StringOutRef(CS_OUT const char*& str)
 {
-        str = "HelloStringOutRef";
+    str = "HelloStringOutRef";
 }
 
 void Hello::StringInOut(CS_IN_OUT const char** str)
 {
-        if (strcmp(*str, "Hello") == 0)
-                *str = "StringInOut";
-        else
-                *str = "Failed";
+    if (strcmp(*str, "Hello") == 0)
+        *str = "StringInOut";
+    else
+        *str = "Failed";
 }
 
 void Hello::StringInOutRef(CS_IN_OUT const char*& str)
 {
-        if (strcmp(str, "Hello") == 0)
-                str = "StringInOutRef";
-        else
-                str = "Failed";
+    if (strcmp(str, "Hello") == 0)
+        str = "StringInOutRef";
+    else
+        str = "Failed";
 }
 
 void Hello::StringTypedef(const TypedefChar* str)
@@ -386,18 +336,6 @@ AbstractFoo::~AbstractFoo()
 {
 }
 
-ImplementsAbstractFoo::ImplementsAbstractFoo()
-{
-}
-
-ImplementsAbstractFoo::ImplementsAbstractFoo(const ImplementsAbstractFoo& other)
-{
-}
-
-ImplementsAbstractFoo::~ImplementsAbstractFoo()
-{
-}
-
 int ImplementsAbstractFoo::pureFunction(typedefInOverride i)
 {
     return 5;
@@ -413,10 +351,6 @@ int ImplementsAbstractFoo::pureFunction2(bool* ok)
     return 15;
 }
 
-ReturnsAbstractFoo::ReturnsAbstractFoo() {}
-
-ReturnsAbstractFoo::~ReturnsAbstractFoo() {}
-
 const AbstractFoo& ReturnsAbstractFoo::getFoo()
 {
     return i;
@@ -429,10 +363,6 @@ Exception::~Exception()
 Ex2* DerivedException::clone()
 {
     return 0;
-}
-
-DefaultParameters::DefaultParameters()
-{
 }
 
 void DefaultParameters::Foo(int a, int b)
@@ -451,10 +381,6 @@ void DefaultParameters::Bar()
 {
 }
 
-common::common()
-{
-}
-
 int test(common& s)
 {
     return 5;
@@ -465,7 +391,7 @@ int operator *(TestMoveOperatorToClass klass, int b)
     return klass.A * b;
 }
 
-TestMoveOperatorToClass::TestMoveOperatorToClass() 
+TestMoveOperatorToClass::TestMoveOperatorToClass()
 {
 }
 
@@ -492,14 +418,6 @@ int operator==(const Foo2& a, const Foo2& b)
 }
 
 void va_listFunction(va_list v)
-{
-}
-
-TestNestedTypes::TestNestedTypes()
-{
-}
-
-TestNestedTypes::~TestNestedTypes()
 {
 }
 
@@ -530,12 +448,12 @@ int (*TestDelegates::MarshalAnonymousDelegate4())(int n)
     return f;
 }
 
-int TestDelegates::MarshalAnonymousDelegate5(int (STDCALL *del)(int))
+int TestDelegates::MarshalAnonymousDelegate5(int (STDCALL* del)(int))
 {
     return del(2);
 }
 
-int TestDelegates::MarshalAnonymousDelegate6(int (STDCALL *del)(int))
+int TestDelegates::MarshalAnonymousDelegate6(int (STDCALL* del)(int))
 {
     return del(3);
 }
@@ -545,17 +463,17 @@ ClassA::ClassA(int value)
     Value = value;
 }
 
-ClassB::ClassB(const ClassA &x)
+ClassB::ClassB(const ClassA& x)
 {
     Value = x.Value;
 }
 
-ClassC::ClassC(const ClassA *x)
+ClassC::ClassC(const ClassA* x)
 {
     Value = x->Value;
 }
 
-ClassC::ClassC(const ClassB &x)
+ClassC::ClassC(const ClassB& x)
 {
     Value = x.Value;
 }
@@ -596,14 +514,6 @@ void DelegateNamespace::f2(void (*)())
 {
 }
 
-HasStdString::HasStdString()
-{
-}
-
-HasStdString::~HasStdString()
-{
-}
-
 std::string HasStdString::testStdString(const std::string& s)
 {
     return s + "_test";
@@ -629,10 +539,10 @@ int Function()
 }
 
 TestProperties::TestProperties() : Field(0), ArchiveName(0),
-    FieldValue(0), _refToPrimitiveInSetter(0),
-    _getterAndSetterWithTheSameName(0), _setterReturnsBoolean(0),
-    _virtualSetterReturnsBoolean(0), _conflict(Conflict::Value1),
-    ConstRefField(Field)
+FieldValue(0), _refToPrimitiveInSetter(0),
+_getterAndSetterWithTheSameName(0), _setterReturnsBoolean(0),
+_virtualSetterReturnsBoolean(0), _conflict(Conflict::Value1),
+ConstRefField(Field)
 {
 }
 
@@ -822,11 +732,6 @@ int TestProperties::GetArchiveName() const
 {
     return 20;
 }
-
-HasOverridenSetter::HasOverridenSetter()
-{
-}
-
 void HasOverridenSetter::setVirtual(bool value)
 {
 }
@@ -885,22 +790,12 @@ Bar& TestIndexedProperties::operator[](const Foo& key)
     return bar;
 }
 
-TestVariables::TestVariables()
-{
-}
-
 int TestVariables::VALUE;
 void TestVariables::SetValue(int value) { VALUE = value; }
-
-TestWideStrings::TestWideStrings()
-{
-}
 
 LPCWSTR TestWideStrings::GetWidePointer() { return L"Hello"; }
 
 LPCWSTR TestWideStrings::GetWideNullPointer() { return 0; }
-
-TestFixedArrays::TestFixedArrays() {}
 
 InternalCtorAmbiguity::InternalCtorAmbiguity(void* param)
 {
@@ -989,10 +884,6 @@ void HasVirtualProperty::setProtectedProperty(int value)
 {
 }
 
-ChangedAccessOfInheritedProperty::ChangedAccessOfInheritedProperty()
-{
-}
-
 int ChangedAccessOfInheritedProperty::getProperty()
 {
     return 2;
@@ -1011,17 +902,9 @@ void ChangedAccessOfInheritedProperty::setProtectedProperty(int value)
 {
 }
 
-ReturnsEmpty::ReturnsEmpty()
-{
-}
-
 Empty ReturnsEmpty::getEmpty()
 {
     return Empty();
-}
-
-RefTypeClassPassTry::RefTypeClassPassTry()
-{
 }
 
 void funcTryRefTypePtrOut(CS_OUT RefTypeClassPassTry* classTry)
@@ -1044,10 +927,6 @@ HasProblematicFields::HasProblematicFields() : b(false), c(0)
 {
 }
 
-HasVirtualReturningHasProblematicFields::HasVirtualReturningHasProblematicFields()
-{
-}
-
 HasProblematicFields HasVirtualReturningHasProblematicFields::returnsProblematicFields()
 {
     return HasProblematicFields();
@@ -1067,26 +946,9 @@ int DerivedClassVirtual::retInt(const Foo2& foo)
 {
     return 2;
 }
-
-DerivedClassAbstractVirtual::~DerivedClassAbstractVirtual()
-{
-}
-
-DerivedClassOverrideAbstractVirtual::DerivedClassOverrideAbstractVirtual()
-{
-}
-
 int DerivedClassOverrideAbstractVirtual::retInt(const Foo& foo)
 {
     return 1;
-}
-
-BufferForVirtualFunction::BufferForVirtualFunction()
-{
-}
-
-OverridesNonDirectVirtual::OverridesNonDirectVirtual()
-{
 }
 
 int OverridesNonDirectVirtual::retInt(const Foo& foo)
@@ -1094,15 +956,7 @@ int OverridesNonDirectVirtual::retInt(const Foo& foo)
     return 3;
 }
 
-AbstractWithVirtualDtor::AbstractWithVirtualDtor()
-{
-}
-
 AbstractWithVirtualDtor::~AbstractWithVirtualDtor()
-{
-}
-
-NonTrivialDtorBase::NonTrivialDtorBase()
 {
 }
 
@@ -1132,17 +986,9 @@ void NonTrivialDtor::setDtorCalled(bool value)
 
 bool NonTrivialDtor::dtorCalled = false;
 
-DerivedFromTemplateInstantiationWithVirtual::DerivedFromTemplateInstantiationWithVirtual()
-{
-}
-
 int func_union(union_t u)
 {
     return u.c;
-}
-
-HasProtectedEnum::HasProtectedEnum()
-{
 }
 
 void HasProtectedEnum::function(ProtectedEnum param)
@@ -1154,18 +1000,6 @@ void FuncWithTypeAlias(custom_int_t i)
 }
 
 void FuncWithTemplateTypeAlias(TypeAliasTemplate<int> i)
-{
-}
-
-HasAbstractOperator::~HasAbstractOperator()
-{
-}
-
-HasOverloadsWithDifferentPointerKindsToSameType::HasOverloadsWithDifferentPointerKindsToSameType()
-{
-}
-
-HasOverloadsWithDifferentPointerKindsToSameType::~HasOverloadsWithDifferentPointerKindsToSameType()
 {
 }
 
@@ -1239,7 +1073,7 @@ HasCopyAndMoveConstructor::HasCopyAndMoveConstructor(int value)
     field = value;
 }
 
-HasCopyAndMoveConstructor::HasCopyAndMoveConstructor(const HasCopyAndMoveConstructor &other)
+HasCopyAndMoveConstructor::HasCopyAndMoveConstructor(const HasCopyAndMoveConstructor& other)
 {
     field = other.field;
 }
@@ -1249,29 +1083,9 @@ HasCopyAndMoveConstructor::HasCopyAndMoveConstructor(HasCopyAndMoveConstructor&&
     field = other.field;
 }
 
-HasCopyAndMoveConstructor::~HasCopyAndMoveConstructor()
-{
-}
-
 int HasCopyAndMoveConstructor::getField()
 {
     return field;
-}
-
-HasVirtualFunctionsWithStringParams::HasVirtualFunctionsWithStringParams()
-{
-}
-
-HasVirtualFunctionsWithStringParams::~HasVirtualFunctionsWithStringParams()
-{
-}
-
-ImplementsVirtualFunctionsWithStringParams::ImplementsVirtualFunctionsWithStringParams()
-{
-}
-
-ImplementsVirtualFunctionsWithStringParams::~ImplementsVirtualFunctionsWithStringParams()
-{
 }
 
 void ImplementsVirtualFunctionsWithStringParams::PureVirtualFunctionWithStringParams(std::string testString1, std::string testString2)
@@ -1283,24 +1097,12 @@ int HasVirtualFunctionsWithStringParams::VirtualFunctionWithStringParam(std::str
     return 5;
 }
 
-HasVirtualFunctionWithBoolParams::HasVirtualFunctionWithBoolParams()
-{
-}
-
-HasVirtualFunctionWithBoolParams::~HasVirtualFunctionWithBoolParams()
-{
-}
-
 bool HasVirtualFunctionWithBoolParams::virtualFunctionWithBoolParamAndReturnsBool(bool testBool)
 {
     return testBool;
 }
 
 HasProtectedCtorWithProtectedParam::HasProtectedCtorWithProtectedParam(ProtectedEnum protectedParam)
-{
-}
-
-SecondaryBaseWithIgnoredVirtualMethod::SecondaryBaseWithIgnoredVirtualMethod()
 {
 }
 
@@ -1313,10 +1115,6 @@ void SecondaryBaseWithIgnoredVirtualMethod::generated()
 }
 
 void SecondaryBaseWithIgnoredVirtualMethod::ignored(const IgnoredType& ignoredParam)
-{
-}
-
-DerivedFromSecondaryBaseWithIgnoredVirtualMethod::DerivedFromSecondaryBaseWithIgnoredVirtualMethod()
 {
 }
 
@@ -1335,24 +1133,6 @@ void DerivedFromSecondaryBaseWithIgnoredVirtualMethod::ignored(const IgnoredType
 AmbiguousParamNames::AmbiguousParamNames(int instance, int in)
 {
 }
-
-AmbiguousParamNames::~AmbiguousParamNames()
-{
-}
-
-HasPropertyNamedAsParent::HasPropertyNamedAsParent()
-{
-}
-
-HasPropertyNamedAsParent::~HasPropertyNamedAsParent()
-{
-}
-
-ReturnByValueWithReturnParam::ReturnByValueWithReturnParam() {}
-
-ReturnByValueWithReturnParam::ReturnByValueWithReturnParam(const ReturnByValueWithReturnParam& other) : _ptr(other._ptr) {}
-
-ReturnByValueWithReturnParam::~ReturnByValueWithReturnParam() {}
 
 int ReturnByValueWithReturnParam::getUseCount() { return _ptr.use_count(); }
 
@@ -1410,7 +1190,7 @@ LPCSTR TakeTypedefedMappedType(LPCSTR string)
     return UTF8.data();
 }
 
-StructWithCopyCtor::StructWithCopyCtor() {}
+StructWithCopyCtor::StructWithCopyCtor() : mBits(0) {}
 StructWithCopyCtor::StructWithCopyCtor(const StructWithCopyCtor& other) : mBits(other.mBits) {}
 
 uint16_t TestStructWithCopyCtorByValue(StructWithCopyCtor s)
@@ -1426,29 +1206,13 @@ DerivedCovariant::~DerivedCovariant()
 {
 }
 
-NonPrimitiveType::NonPrimitiveType()
-{
-}
-
 int NonPrimitiveType::GetFoo()
 {
     return foo;
 }
 
-TestFixedNonPrimitiveArrays::TestFixedNonPrimitiveArrays() 
-{
-}
-
-TestGetterSetterToProperties::TestGetterSetterToProperties()
-{
-}
-
 int TestGetterSetterToProperties::getWidth() { return 640; }
 int TestGetterSetterToProperties::getHeight() { return 480; }
-
-PointerToTypedefPointerTest::PointerToTypedefPointerTest()
-{
-}
 
 void DLL_API PointerToTypedefPointerTestMethod(LPPointerToTypedefPointerTest* lp, int valToSet)
 {
@@ -1465,7 +1229,7 @@ TestArraysPointers::TestArraysPointers(MyEnum* values, int count)
     if (values && count) Value = values[0];
 }
 
-TestCopyConstructorRef::TestCopyConstructorRef()
+TestCopyConstructorRef::TestCopyConstructorRef() : A(0), B(0)
 {
 }
 
@@ -1477,10 +1241,6 @@ TestCopyConstructorRef::TestCopyConstructorRef(const TestCopyConstructorRef& oth
 
 
 SomeStruct::SomeStruct() : p(1) {}
-
-ClassWithOverloadedOperators::ClassWithOverloadedOperators() {
-
-}
 
 ClassWithOverloadedOperators::ClassWithOverloadedOperators::operator char() { return 1; }
 ClassWithOverloadedOperators::operator int() { return 2; }

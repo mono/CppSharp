@@ -10,7 +10,8 @@ namespace CppSharp.AST
         {
             var parts = targetTriple.Split('-');
             return parts.Contains("windows") ||
-                parts.Contains("win32") || parts.Contains("win64");
+                parts.Contains("win32") || parts.Contains("win64") ||
+                parts.Any(p => p.StartsWith("mingw"));
         }
 
         public static bool IsMacOS(this string targetTriple)

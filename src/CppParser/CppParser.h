@@ -56,7 +56,8 @@ private:
 
 struct CS_API LinkerOptions
 {
-    LinkerOptions();
+    LinkerOptions(const char* Triple);
+    LinkerOptions(const LinkerOptions& Other);
     ~LinkerOptions();
 
     VECTOR_STRING(Arguments)
@@ -121,6 +122,8 @@ public:
 
     static ParserResult* ParseHeader(CppParserOptions* Opts);
     static ParserResult* ParseLibrary(LinkerOptions* Opts);
+    static ParserResult* Build(CppParserOptions* Opts,
+        const LinkerOptions* LinkerOptions, const std::string& File, bool Last);
 };
 
 } }

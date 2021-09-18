@@ -33,10 +33,6 @@ Foo::Foo(const Foo& other) : A(other.A), P(other.P),
 {
 }
 
-Foo::~Foo()
-{
-}
-
 int Foo::method()
 {
     return 1;
@@ -178,11 +174,6 @@ void Quux::setSetterWithDefaultOverload(Foo* value)
     _setterWithDefaultOverload = value;
 }
 
-QColor::QColor()
-{
-
-}
-
 QColor::QColor(Qt::GlobalColor color)
 {
 
@@ -241,15 +232,15 @@ int Qux::type() const
     return 0;
 }
 
+Bar::Bar() : index(0)
+{
+}
+
 Bar::Bar(Qux qux)
 {
 }
 
 Bar::Bar(Items item)
-{
-}
-
-Bar::~Bar()
 {
 }
 
@@ -302,21 +293,9 @@ int Bar::type() const
     return 1;
 }
 
-ForceCreationOfInterface::ForceCreationOfInterface()
-{
-}
+Baz::Baz() : P(5), functionTypedef(0) {}
 
-ForceCreationOfInterface::~ForceCreationOfInterface()
-{
-}
-
-Baz::Baz() : P(5) {}
-
-Baz::Baz(Bar::Items item)
-{
-}
-
-Baz::~Baz()
+Baz::Baz(Bar::Items item) : Baz()
 {
 }
 
@@ -363,17 +342,18 @@ int AbstractProprietor::parent() const
     return 0;
 }
 
-AbstractProprietor::AbstractProprietor()
+AbstractProprietor::AbstractProprietor() : m_value(0), m_property(0)
 {
 }
 
-AbstractProprietor::AbstractProprietor(int i)
+AbstractProprietor::AbstractProprietor(int i) : AbstractProprietor()
 {
 }
 
 Proprietor::Proprietor() : _items(Bar::Items::Item1), _itemsByValue(Bar::Items::Item1) {}
 
-Proprietor::Proprietor(int i) : AbstractProprietor(i)
+Proprietor::Proprietor(int i) : AbstractProprietor(i),
+    _items(Bar::Items::Item1), _itemsByValue(Bar::Items::Item1)
 {
 }
 
@@ -510,7 +490,7 @@ TestDestructors::~TestDestructors() { Marker = 0xcafe; }
 
 int TestDestructors::Marker = 0;
 
-TestCopyConstructorVal::TestCopyConstructorVal()
+TestCopyConstructorVal::TestCopyConstructorVal() : A(0), B(0)
 {
 }
 
@@ -518,14 +498,6 @@ TestCopyConstructorVal::TestCopyConstructorVal(const TestCopyConstructorVal& oth
 {
     A = other.A;
     B = other.B;
-}
-
-TestRenaming::TestRenaming()
-{
-}
-
-TestRenaming::~TestRenaming()
-{
 }
 
 void TestRenaming::name()
@@ -541,15 +513,7 @@ int TestRenaming::property()
     return 1;
 }
 
-UsesPointerToEnum::UsesPointerToEnum()
-{
-}
-
 void UsesPointerToEnum::hasPointerToEnumInParam(Flags* flag)
-{
-}
-
-UsesPointerToEnumInParamOfVirtual::UsesPointerToEnumInParamOfVirtual()
 {
 }
 
@@ -578,7 +542,8 @@ UntypedFlags operator|(UntypedFlags lhs, UntypedFlags rhs)
     return static_cast<UntypedFlags>(static_cast<int>(lhs) | static_cast<int>(rhs));
 }
 
-QGenericArgument::QGenericArgument(const char *name, const void* data)
+QGenericArgument::QGenericArgument(const char* name, const void* data) :
+    fixedArrayInValueType { 0 }
 {
     _name = name;
 }
@@ -844,10 +809,6 @@ int MethodsWithDefaultValues::getA()
     return m_foo.A;
 }
 
-HasOverridesWithChangedAccessBase::HasOverridesWithChangedAccessBase()
-{
-}
-
 void HasOverridesWithChangedAccessBase::privateOverride(int i)
 {
 }
@@ -860,10 +821,6 @@ void HasOverridesWithChangedAccessBase::differentIncreasedAccessOverride()
 {
 }
 
-HasOverridesWithChangedAccess::HasOverridesWithChangedAccess()
-{
-}
-
 void HasOverridesWithChangedAccess::privateOverride(int i)
 {
 }
@@ -872,15 +829,7 @@ void HasOverridesWithChangedAccess::publicOverride()
 {
 }
 
-HasOverridesWithIncreasedProtectedAccess::HasOverridesWithIncreasedProtectedAccess()
-{
-}
-
 void HasOverridesWithIncreasedProtectedAccess::differentIncreasedAccessOverride()
-{
-}
-
-HasOverridesWithIncreasedAccess::HasOverridesWithIncreasedAccess()
 {
 }
 
@@ -893,14 +842,6 @@ void HasOverridesWithIncreasedAccess::differentIncreasedAccessOverride()
 }
 
 AbstractWithProperty::~AbstractWithProperty()
-{
-}
-
-HasOverriddenInManaged::HasOverriddenInManaged()
-{
-}
-
-HasOverriddenInManaged::~HasOverriddenInManaged()
 {
 }
 
@@ -1015,10 +956,6 @@ void TestNativeToManagedMap::setPropertyWithNoVirtualDtor(Bar* bar)
     this->bar = bar;
 }
 
-CallDtorVirtually::CallDtorVirtually()
-{
-}
-
 CallDtorVirtually::~CallDtorVirtually()
 {
     Destroyed = true;
@@ -1035,14 +972,6 @@ CallDtorVirtually nonOwnedInstance;
 CallDtorVirtually* CallDtorVirtually::getNonOwnedInstance()
 {
     return &nonOwnedInstance;
-}
-
-TestOverrideFromSecondaryBase::TestOverrideFromSecondaryBase()
-{
-}
-
-TestOverrideFromSecondaryBase::~TestOverrideFromSecondaryBase()
-{
 }
 
 void TestOverrideFromSecondaryBase::VirtualMember()
@@ -1099,27 +1028,7 @@ TestParamToInterfacePass::TestParamToInterfacePass() : TestParamToInterfacePassB
 {
 }
 
-HasProtectedVirtual::HasProtectedVirtual()
-{
-}
-
 void HasProtectedVirtual::protectedVirtual()
-{
-}
-
-InheritanceBuffer::InheritanceBuffer()
-{
-}
-
-InheritanceBuffer::~InheritanceBuffer()
-{
-}
-
-InheritsProtectedVirtualFromSecondaryBase::InheritsProtectedVirtualFromSecondaryBase()
-{
-}
-
-InheritsProtectedVirtualFromSecondaryBase::~InheritsProtectedVirtualFromSecondaryBase()
 {
 }
 
@@ -1131,24 +1040,12 @@ void freeFunctionWithUnsupportedDefaultArg(Foo foo)
 {
 }
 
-TypeMappedWithOperator::TypeMappedWithOperator()
-{
-}
-
 int TypeMappedWithOperator::operator |(int i)
 {
    return 0;
 }
 
-HasPropertyWithDerivedType::HasPropertyWithDerivedType()
-{
-}
-
 void HasPropertyWithDerivedType::causeRenamingError()
-{
-}
-
-HasOverrideOfHasPropertyWithDerivedType::HasOverrideOfHasPropertyWithDerivedType()
 {
 }
 
@@ -1185,30 +1082,14 @@ void MultiOverloadPtrToRef::TakePrimTypePtr(int* ptr)
     ptr[2] = 300;
 }
 
-OverrideFromIndirectSecondaryBaseBase::OverrideFromIndirectSecondaryBaseBase()
-{
-}
-
 int OverrideFromIndirectSecondaryBaseBase::property()
 {
     return 0;
 }
 
-OverrideFromDirectSecondaryBase::OverrideFromDirectSecondaryBase()
-{
-}
-
-OverrideFromIndirectSecondaryBase::OverrideFromIndirectSecondaryBase()
-{
-}
-
 int OverrideFromIndirectSecondaryBase::property()
 {
     return 1;
-}
-
-TestOutTypeInterfaces::TestOutTypeInterfaces()
-{
 }
 
 void TestOutTypeInterfaces::funcTryInterfaceTypePtrOut(CS_OUT TestParamToInterfacePassBaseTwo* classTry)
@@ -1219,17 +1100,9 @@ void TestOutTypeInterfaces::funcTryInterfaceTypeOut(CS_OUT TestParamToInterfaceP
 {
 }
 
-DerivesFromTemplateInstantiation::DerivesFromTemplateInstantiation()
-{
-}
-
 int PassConstantArrayRef(int(&arr)[2])
 {
     return arr[0];
-}
-
-TestComparison::TestComparison()
-{
 }
 
 bool TestComparison::operator ==(const TestComparison& other) const
@@ -1237,23 +1110,11 @@ bool TestComparison::operator ==(const TestComparison& other) const
     return A == other.A && B == other.B;
 }
 
-OverridePropertyFromIndirectPrimaryBaseBase::OverridePropertyFromIndirectPrimaryBaseBase()
-{
-}
-
 OverridePropertyFromIndirectPrimaryBaseBase::~OverridePropertyFromIndirectPrimaryBaseBase()
 {
 }
 
-OverridePropertyFromDirectPrimaryBase::OverridePropertyFromDirectPrimaryBase()
-{
-}
-
 void OverridePropertyFromDirectPrimaryBase::setProperty(int value)
-{
-}
-
-OverridePropertyFromIndirectPrimaryBase::OverridePropertyFromIndirectPrimaryBase()
 {
 }
 
@@ -1262,15 +1123,7 @@ int OverridePropertyFromIndirectPrimaryBase::property()
     return 5;
 }
 
-AbstractOverrideFromSecondaryBase::AbstractOverrideFromSecondaryBase()
-{
-}
-
 AbstractOverrideFromSecondaryBase::~AbstractOverrideFromSecondaryBase()
-{
-}
-
-QObject::QObject()
 {
 }
 
@@ -1286,10 +1139,6 @@ QPaintDevice::QPaintDevice() : test(0)
 {
 }
 
-QPaintDevice::~QPaintDevice()
-{
-}
-
 void QPaintDevice::changeVTableLayout()
 {
 }
@@ -1297,10 +1146,6 @@ void QPaintDevice::changeVTableLayout()
 QWidget::QWidget()
 {
     QApplication::instance->notify(this);
-}
-
-QWidget::~QWidget()
-{
 }
 
 void QWidget::event()
@@ -1311,10 +1156,6 @@ void QWidget::event()
 QPainter::QPainter(QPaintDevice& paintDevice)
 {
     paintDevice.test = 5;
-}
-
-QPainter::~QPainter()
-{
 }
 
 QApplication::QApplication()
@@ -1338,10 +1179,6 @@ char* HasSamePropertyInDerivedAbstractType::property()
     return 0;
 }
 
-InheritsFromHasSamePropertyInDerivedAbstractType::InheritsFromHasSamePropertyInDerivedAbstractType()
-{
-}
-
 InheritsFromHasSamePropertyInDerivedAbstractType::~InheritsFromHasSamePropertyInDerivedAbstractType()
 {
 }
@@ -1355,10 +1192,6 @@ MultipleInheritanceFieldOffsetsPrimaryBase::MultipleInheritanceFieldOffsetsPrima
 }
 
 MultipleInheritanceFieldOffsets::MultipleInheritanceFieldOffsets() : own(3)
-{
-}
-
-VirtualDtorAddedInDerived::VirtualDtorAddedInDerived()
 {
 }
 
@@ -1423,14 +1256,6 @@ int HasConflictWithAbstractProperty::conflictWithProperty()
     return 0;
 }
 
-HasVirtualTakesReturnsProblematicTypes::HasVirtualTakesReturnsProblematicTypes()
-{
-}
-
-HasVirtualTakesReturnsProblematicTypes::~HasVirtualTakesReturnsProblematicTypes()
-{
-}
-
 const char* HasVirtualTakesReturnsProblematicTypes::virtualTakesAndReturnsString(const char* c)
 {
     return c;
@@ -1467,10 +1292,6 @@ const bool StaticVariables::BoolArray[2] { false, true };
 const void* StaticVariables::VoidPtrArray[2] { (void*)0x10203040, (void*)0x40302010 };
 
 TestString::TestString() : unicodeConst(L"ქართული ენა"), unicode(0)
-{
-}
-
-TestString::~TestString()
 {
 }
 
@@ -1511,30 +1332,6 @@ void decltypeFunctionPointer() {}
 
 void usesDecltypeFunctionPointer(funcPtr func) {}
 
-PrimaryBaseWithAbstractWithDefaultArg::PrimaryBaseWithAbstractWithDefaultArg()
-{
-}
-
-PrimaryBaseWithAbstractWithDefaultArg::~PrimaryBaseWithAbstractWithDefaultArg()
-{
-}
-
-SecondaryBaseWithAbstractWithDefaultArg::SecondaryBaseWithAbstractWithDefaultArg()
-{
-}
-
-SecondaryBaseWithAbstractWithDefaultArg::~SecondaryBaseWithAbstractWithDefaultArg()
-{
-}
-
-HasSecondaryBaseWithAbstractWithDefaultArg::HasSecondaryBaseWithAbstractWithDefaultArg()
-{
-}
-
-HasSecondaryBaseWithAbstractWithDefaultArg::~HasSecondaryBaseWithAbstractWithDefaultArg()
-{
-}
-
 void HasSecondaryBaseWithAbstractWithDefaultArg::abstract(const Foo& foo)
 {
 }
@@ -1543,26 +1340,14 @@ void HasSecondaryBaseWithAbstractWithDefaultArg::abstractWithNoDefaultArg(const 
 {
 }
 
-MissingObjectOnVirtualCallSecondaryBase::MissingObjectOnVirtualCallSecondaryBase()
-{
-}
-
 int MissingObjectOnVirtualCallSecondaryBase::f()
 {
     return 5;
 }
 
-MissingObjectOnVirtualCall::MissingObjectOnVirtualCall()
-{
-}
-
 int MissingObjectOnVirtualCall::f()
 {
     return 15;
-}
-
-HasMissingObjectOnVirtualCall::HasMissingObjectOnVirtualCall()
-{
 }
 
 int HasMissingObjectOnVirtualCall::makeMissingObjectOnVirtualCall()
@@ -1611,23 +1396,7 @@ int ImplementsAbstractsFromPrimaryAndSecondary::abstractReturnsFieldInSecondaryB
     return field + 2;
 }
 
-HasBaseSetter::HasBaseSetter()
-{
-}
-
-HasBaseSetter::~HasBaseSetter()
-{
-}
-
 void HasBaseSetter::setBaseSetter(int value)
-{
-}
-
-HasGetterAndOverriddenSetter::HasGetterAndOverriddenSetter()
-{
-}
-
-HasGetterAndOverriddenSetter::~HasGetterAndOverriddenSetter()
 {
 }
 
@@ -1689,10 +1458,6 @@ ComplexArrayElement::ComplexArrayElement() : BoolField(false), IntField(0), Floa
 {
 }
 
-HasComplexArray::HasComplexArray()
-{
-}
-
 TestIndexedProperties::TestIndexedProperties() : field(0)
 {
 }
@@ -1725,14 +1490,6 @@ typedefedFuncPtr* TestDuplicateDelegate::testDuplicateDelegate(int a)
 }
 
 void InlineNamespace::FunctionInsideInlineNamespace()
-{
-}
-
-TestArrays::TestArrays()
-{
-}
-
-TestArrays::~TestArrays()
 {
 }
 
@@ -1787,27 +1544,7 @@ int TestArrays::virtualTakeArrays(Foo *fixedArrayOfPointersToObjects[], int fixe
     return takeArrays(fixedArrayOfPointersToObjects, fixedArrayOfPrimitives, fixedArrayOfPointersToPrimitives);
 }
 
-HasFixedArrayOfPointers::HasFixedArrayOfPointers()
-{
-}
-
-HasFixedArrayOfPointers::~HasFixedArrayOfPointers()
-{
-}
-
-SimpleInterface::SimpleInterface()
-{
-}
-
-SimpleInterface::~SimpleInterface()
-{
-}
-
 InterfaceTester::InterfaceTester() : interface(0)
-{
-}
-
-InterfaceTester::~InterfaceTester()
 {
 }
 
@@ -1829,14 +1566,6 @@ void* InterfaceTester::get(int n)
 void InterfaceTester::setInterface(SimpleInterface* i)
 {
     interface = i;
-}
-
-HasFunctionPtrField::HasFunctionPtrField()
-{
-}
-
-HasFunctionPtrField::~HasFunctionPtrField()
-{
 }
 
 void va_listFunction(va_list v)
@@ -1918,7 +1647,6 @@ const char32_t* TestCSharpString32(const char32_t* in, const char32_t** out)
     return ret.data();
 }
 
-ConversionFunctions::ConversionFunctions() = default;
 ConversionFunctions::operator short* () { return &field; }
 ConversionFunctions::operator short& () { return field; }
 ConversionFunctions::operator short() { return field; }

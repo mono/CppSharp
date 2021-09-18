@@ -6,6 +6,12 @@
 #include <string>
 #include <map>
 
+class DeriveProtectedDtor
+{
+protected:
+    ~DeriveProtectedDtor() {}
+};
+
 class DLL_API QString
 {
 };
@@ -249,9 +255,6 @@ DependentValueFields<T> DependentValueFields<T>::operator+(const DependentValueF
 
 class DLL_API DerivedFromSpecializationOfUnsupportedTemplate : public DependentValueFields<int>
 {
-public:
-    DerivedFromSpecializationOfUnsupportedTemplate();
-    ~DerivedFromSpecializationOfUnsupportedTemplate();
 };
 
 template <typename T>
@@ -346,8 +349,6 @@ template <>
 class DLL_API HasDefaultTemplateArgument<bool, bool>
 {
 public:
-    HasDefaultTemplateArgument();
-    ~HasDefaultTemplateArgument();
     bool property();
     void setProperty(const bool& t);
     static bool staticProperty();
@@ -432,9 +433,6 @@ DerivesFromTemplateWithExplicitSpecialization<T, D>::~DerivesFromTemplateWithExp
 
 class DLL_API DerivesFromExplicitSpecialization : public DerivesFromTemplateWithExplicitSpecialization<bool, bool>
 {
-public:
-    DerivesFromExplicitSpecialization();
-    ~DerivesFromExplicitSpecialization();
 };
 
 template <typename T>
@@ -455,6 +453,7 @@ class TemplateWithIndexer
 {
 public:
     TemplateWithIndexer();
+    ~TemplateWithIndexer();
     T& operator[](int i);
     T& operator[](const T& key);
     T& operator[](const char* string);
@@ -467,6 +466,11 @@ private:
 
 template <typename T>
 TemplateWithIndexer<T>::TemplateWithIndexer()
+{
+}
+
+template <typename T>
+TemplateWithIndexer<T>::~TemplateWithIndexer<T>()
 {
 }
 
@@ -542,8 +546,6 @@ T* VirtualTemplate<T>::function(T* t)
 class DLL_API HasVirtualTemplate
 {
 public:
-    HasVirtualTemplate();
-    ~HasVirtualTemplate();
     VirtualTemplate<int> getVCopy();
     void setV(VirtualTemplate<int>* value);
     int function();
@@ -554,18 +556,12 @@ private:
 
 class DLL_API SpecializedInterfaceForMap : public InternalWithExtension<char>
 {
-public:
-    SpecializedInterfaceForMap();
-    ~SpecializedInterfaceForMap();
 };
 
 class DLL_API HasSpecializationForSecondaryBase : public DependentValueFields<int>,
                                                   public IndependentFields<int>,
                                                   public InternalWithExtension<float>
 {
-public:
-    HasSpecializationForSecondaryBase();
-    ~HasSpecializationForSecondaryBase();
 };
 
 template <typename T>
@@ -574,7 +570,6 @@ class TemplateInAnotherUnit;
 class DLL_API TemplateSpecializer
 {
 public:
-    TemplateSpecializer();
     template <typename T>
     class NestedTemplate
     {
@@ -652,8 +647,6 @@ struct MapResultType<InputSequence<T>, MapFunctor>
 class DLL_API RegularDynamic
 {
 public:
-    RegularDynamic();
-    ~RegularDynamic();
     virtual void virtualFunction();
 };
 
@@ -788,37 +781,6 @@ template<> inline void* qbswap<1>(const void *source, size_t count, void *dest) 
 {
     return 0;
 }
-
-// force the symbols for the template instantiations because we do not have the auto-compilation for the generated C++ source
-template class DLL_API IndependentFields<int>;
-template class DLL_API IndependentFields<bool>;
-template class DLL_API IndependentFields<T1>;
-template class DLL_API IndependentFields<const T1>;
-template class DLL_API IndependentFields<std::string>;
-template class DLL_API Base<int>;
-template class DLL_API DependentValueFields<int>;
-template class DLL_API DependentValueFields<int*>;
-template class DLL_API DependentValueFields<float>;
-template class DLL_API DependentValueFields<double>;
-template class DLL_API DependentPointerFields<float>;
-template class DLL_API VirtualTemplate<int>;
-template class DLL_API VirtualTemplate<bool>;
-template class DLL_API HasDefaultTemplateArgument<int, int>;
-template class DLL_API DerivedChangesTypeName<T1>;
-template class DLL_API TemplateWithIndexer<int>;
-template class DLL_API TemplateWithIndexer<void*>;
-template class DLL_API TemplateWithIndexer<UsedInTemplatedIndexer>;
-template class DLL_API TemplateWithIndexer<T1>;
-template class DLL_API TemplateWithIndexer<T2*>;
-template class DLL_API TemplateWithIndexer<float>;
-template class DLL_API TemplateWithIndexer<const char*>;
-template class DLL_API TemplateDerivedFromRegularDynamic<RegularDynamic>;
-template class DLL_API HasCtorWithMappedToEnum<TestFlag>;
-template class DLL_API TwoTemplateArgs<int*, int*>;
-template class DLL_API TwoTemplateArgs<int*, int>;
-template class DLL_API TwoTemplateArgs<int*, float>;
-template class DLL_API TwoTemplateArgs<const char*, int>;
-template class DLL_API TwoTemplateArgs<QString, int>;
 
 class TestForwardedClassInAnotherUnit;
 

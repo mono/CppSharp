@@ -9,6 +9,7 @@ namespace CppSharp.Generators
     {
         public DriverOptions Options { get; }
         public ParserOptions ParserOptions { get; set; }
+        public LinkerOptions LinkerOptions { get; set; }
 
         public ASTContext ASTContext { get; set; }
         public ParserTargetInfo TargetInfo { get; set; }
@@ -25,6 +26,7 @@ namespace CppSharp.Generators
         {
             Options = options;
             ParserOptions = parserOptions;
+            LinkerOptions = new LinkerOptions(ParserOptions.TargetTriple);
 
             Symbols = new SymbolContext();
 

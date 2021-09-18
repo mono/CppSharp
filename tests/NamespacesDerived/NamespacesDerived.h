@@ -48,8 +48,6 @@ template <typename T> class TemplateClass;
 class DLL_API Derived2 : public Base3
 {
 public:
-    Derived2();
-    ~Derived2();
     Base3 baseComponent;
     Base3 getBase();
     void setBase(Base3);
@@ -71,7 +69,6 @@ private:
 class DLL_API HasVirtualInDependency : public HasVirtualInCore
 {
 public:
-    HasVirtualInDependency();
     HasVirtualInDependency* managedObject;
     int callManagedOverride();
 };
@@ -82,15 +79,11 @@ public:
     DerivedFromExternalSpecialization(int i,
                                       TemplateWithIndependentFields<HasVirtualInDependency> defaultExternalSpecialization =
                                           TemplateWithIndependentFields<HasVirtualInDependency>());
-    ~DerivedFromExternalSpecialization();
     TemplateWithIndependentFields<Base3> returnExternalSpecialization();
 };
 
 class DLL_API DerivedFromSecondaryBaseInDependency : public Derived, public SecondaryBase
 {
-public:
-    DerivedFromSecondaryBaseInDependency();
-    ~DerivedFromSecondaryBaseInDependency();
 };
 
 DLL_API bool operator<<(const Base& b, const char* str);

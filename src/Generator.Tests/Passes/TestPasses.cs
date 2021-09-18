@@ -4,24 +4,24 @@ using CppSharp.Generators.CSharp;
 using CppSharp.Passes;
 using NUnit.Framework;
 using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 
 namespace CppSharp.Generator.Tests.Passes
 {
     [TestFixture]
     public class TestPasses : ASTTestFixture
     {
-        private PassBuilder<TranslationUnitPass> passBuilder;
-
         [SetUp]
         public void Setup()
         {
             ParseLibrary("Passes.h");
             passBuilder = new PassBuilder<TranslationUnitPass>(Driver.Context);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            Driver.Dispose();
         }
 
         [Test]
@@ -451,5 +451,7 @@ namespace CppSharp.Generator.Tests.Passes
             Assert.IsNotNull(@protected);
             Assert.AreEqual(AccessSpecifier.Protected, @protected.Access);
         }
+
+        private PassBuilder<TranslationUnitPass> passBuilder;
     }
 }

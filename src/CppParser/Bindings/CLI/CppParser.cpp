@@ -543,10 +543,21 @@ CppSharp::Parser::LinkerOptions::~LinkerOptions()
     delete NativePtr;
 }
 
-CppSharp::Parser::LinkerOptions::LinkerOptions()
+CppSharp::Parser::LinkerOptions::LinkerOptions(::System::String^ Triple)
 {
     __ownsNativeInstance = true;
-    NativePtr = new struct ::CppSharp::CppParser::LinkerOptions();
+    auto ___arg0 = clix::marshalString<clix::E_UTF8>(Triple);
+    auto __arg0 = ___arg0.c_str();
+    NativePtr = new struct ::CppSharp::CppParser::LinkerOptions(__arg0);
+}
+
+CppSharp::Parser::LinkerOptions::LinkerOptions(CppSharp::Parser::LinkerOptions^ Other)
+{
+    __ownsNativeInstance = true;
+    if (ReferenceEquals(Other, nullptr))
+        throw gcnew ::System::ArgumentNullException("Other", "Cannot be null because it is a C++ reference (&).");
+    auto &__arg0 = *(struct ::CppSharp::CppParser::LinkerOptions*)Other->NativePtr;
+    NativePtr = new struct ::CppSharp::CppParser::LinkerOptions(__arg0);
 }
 
 ::System::String^ CppSharp::Parser::LinkerOptions::GetArguments(unsigned int i)
@@ -604,15 +615,6 @@ void CppSharp::Parser::LinkerOptions::AddLibraries(::System::String^ s)
 void CppSharp::Parser::LinkerOptions::ClearLibraries()
 {
     ((struct ::CppSharp::CppParser::LinkerOptions*)NativePtr)->clearLibraries();
-}
-
-CppSharp::Parser::LinkerOptions::LinkerOptions(CppSharp::Parser::LinkerOptions^ _0)
-{
-    __ownsNativeInstance = true;
-    if (ReferenceEquals(_0, nullptr))
-        throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
-    auto &__arg0 = *(struct ::CppSharp::CppParser::LinkerOptions*)_0->NativePtr;
-    NativePtr = new struct ::CppSharp::CppParser::LinkerOptions(__arg0);
 }
 
 ::System::IntPtr CppSharp::Parser::LinkerOptions::__Instance::get()
@@ -1026,6 +1028,16 @@ CppSharp::Parser::ParserResult^ CppSharp::Parser::ClangParser::ParseLibrary(CppS
 {
     auto __arg0 = (struct ::CppSharp::CppParser::LinkerOptions*)Opts->NativePtr;
     auto __ret = ::CppSharp::CppParser::ClangParser::ParseLibrary(__arg0);
+    if (__ret == nullptr) return nullptr;
+    return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::ParserResult((struct ::CppSharp::CppParser::ParserResult*)__ret);
+}
+
+CppSharp::Parser::ParserResult^ CppSharp::Parser::ClangParser::Build(CppSharp::Parser::CppParserOptions^ Opts, CppSharp::Parser::LinkerOptions^ LinkerOptions, ::System::String^ File, bool Last)
+{
+    auto __arg0 = (struct ::CppSharp::CppParser::CppParserOptions*)Opts->NativePtr;
+    auto __arg1 = (struct ::CppSharp::CppParser::LinkerOptions*)LinkerOptions->NativePtr;
+    auto __arg2 = clix::marshalString<clix::E_UTF8>(File);
+    auto __ret = ::CppSharp::CppParser::ClangParser::Build(__arg0, __arg1, __arg2, Last);
     if (__ret == nullptr) return nullptr;
     return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::ParserResult((struct ::CppSharp::CppParser::ParserResult*)__ret);
 }

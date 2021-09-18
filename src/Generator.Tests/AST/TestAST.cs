@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
-using CppSharp.Generators;
 using CppSharp.Generators.C;
 using CppSharp.Generators.CSharp;
 using CppSharp.Passes;
@@ -13,26 +12,8 @@ namespace CppSharp.Generator.Tests.AST
     [TestFixture]
     public class TestAST : ASTTestFixture
     {
-        private BindingContext Context;
-
-        [OneTimeSetUp]
-        public void Init()
+        public TestAST() : base("AST.h", "ASTExtensions.h")
         {
-            Context = new BindingContext(new DriverOptions());
-            Context.TypeMaps = new Types.TypeMapDatabase(Context);
-
-            CppSharp.AST.Type.TypePrinterDelegate = type =>
-            {
-                PrimitiveType primitiveType;
-                return type.IsPrimitiveType(out primitiveType) ? primitiveType.ToString() : string.Empty;
-            };
-            ParseLibrary("AST.h", "ASTExtensions.h");
-        }
-
-        [OneTimeTearDown]
-        public void CleanUp()
-        {
-            Driver.Dispose();
         }
 
         [Test]
