@@ -401,7 +401,10 @@ namespace CppSharp.Passes
             WriteLine(" };");
             if (abstractDtor != null && !implementedDtors.Contains(abstractDtor))
             {
-                WriteLine($"{abstractDtor.Namespace.Name}::{abstractDtor.Name}() {{}}");
+                if (string.IsNullOrEmpty(abstractDtor.Body))
+                {
+                    WriteLine($"{abstractDtor.Namespace.Name}::{abstractDtor.Name}() {{}}");
+                }
                 implementedDtors.Add(abstractDtor);
             }
         }

@@ -785,6 +785,16 @@ public:
     virtual ~PureDtor() = 0;
 };
 
+class PureImplementedDtor
+{
+public:
+    virtual ~PureImplementedDtor() = 0;
+};
+
+PureImplementedDtor::~PureImplementedDtor()
+{
+}
+
 DLL_API void va_listFunction(va_list v);
 
 struct DLL_API TestNestedTypes
