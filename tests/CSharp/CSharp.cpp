@@ -818,6 +818,10 @@ void MethodsWithDefaultValues::defaultWithParamRequiringRename(_ClassWithLeading
 {
 }
 
+void MethodsWithDefaultValues::defaultWithSpecialization(IndependentFields<int> specialization)
+{
+}
+
 int MethodsWithDefaultValues::DefaultWithParamNamedSameAsMethod(int DefaultWithParamNamedSameAsMethod, const Foo& defaultArg)
 {
     return 1;

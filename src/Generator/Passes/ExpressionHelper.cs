@@ -237,7 +237,7 @@ namespace CppSharp.Internal
             var typePrinter = new CSharpTypePrinter(context);
             typePrinter.PushMarshalKind(MarshalKind.DefaultExpression);
 
-            var typePrinterResult = type.Visit(typePrinter).Type;
+            var typePrinterResult = type.Visit(typePrinter);
 
             TypeMap typeMap;
             if (context.TypeMaps.FindTypeMap(type, out typeMap))

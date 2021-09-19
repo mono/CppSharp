@@ -341,6 +341,7 @@ public unsafe class CSharpTests
             methodsWithDefaultValues.DefaultWithCharFromInt();
             methodsWithDefaultValues.DefaultWithFreeConstantInNameSpace();
             methodsWithDefaultValues.DefaultWithStdNumericLimits(10, 5);
+            methodsWithDefaultValues.DefaultWithSpecialization();
             methodsWithDefaultValues.DefaultWithParamNamedSameAsMethod(5);
         }
     }
