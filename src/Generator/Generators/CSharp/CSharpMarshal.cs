@@ -278,7 +278,9 @@ namespace CppSharp.Generators.CSharp
             if (finalType.TryGetClass(out returnedClass) && returnedClass.IsDependent)
                 Context.Return.Write($"({returnType.Visit(typePrinter)}) (object) ");
 
-            if (returnType.IsAddress())
+            // these two aren't the same for members of templates
+            if (Context.Function?.OriginalReturnType.Type.Desugar().IsAddress() == true ||
+                returnType.IsAddress())
                 Context.Return.Write(HandleReturnedPointer(@class, qualifiedClass));
             else
             {

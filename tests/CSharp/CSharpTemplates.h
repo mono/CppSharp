@@ -12,20 +12,18 @@ class DLL_API QString
 
 class DLL_API T1
 {
-public:
-    T1();
-    T1(const T1& other);
-    T1(int f);
-    ~T1();
-    int getField() const;
-private:
-    int field;
 };
 
 class DLL_API T2
 {
 public:
     T2();
+    T2(int f);
+    virtual ~T2();
+    int getField() const;
+    void setField(int value);
+private:
+    int field;
 };
 
 class DLL_API Ignored
@@ -92,7 +90,7 @@ IndependentFields<T>::IndependentFields(float f)
 }
 
 template <typename T>
-IndependentFields<T>::IndependentFields(const std::map<T, T> &v)
+IndependentFields<T>::IndependentFields(const std::map<T, T> &v) : independent(1)
 {
 }
 

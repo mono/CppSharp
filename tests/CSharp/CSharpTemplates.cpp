@@ -1,29 +1,26 @@
 #include "CSharpTemplates.h"
 
-T1::T1()
+T2::T2() : field(0)
 {
 }
 
-T1::T1(const T1& other) : field(other.field)
-{
-}
-
-T1::T1(int f)
+T2::T2(int f)
 {
     field = f;
 }
 
-T1::~T1()
+T2::~T2()
 {
 }
 
-int T1::getField() const
+int T2::getField() const
 {
     return field;
 }
 
-T2::T2()
+void T2::setField(int value)
 {
+    field = value;
 }
 
 DerivedFromSpecializationOfUnsupportedTemplate::DerivedFromSpecializationOfUnsupportedTemplate()

@@ -1176,17 +1176,20 @@ public unsafe class CSharpTests
             templateWithIndexer["test"] = 15;
             Assert.That(templateWithIndexer["test"], Is.EqualTo(15));
         }
-        using (var templateWithIndexer = new TemplateWithIndexer<T1>())
+        using (var templateWithIndexer = new TemplateWithIndexer<T2>())
         {
-            using (var t1 = new T1(10))
+            using (var t2 = new T2())
             {
-                templateWithIndexer[0] = t1;
-                Assert.That(templateWithIndexer[0].Field, Is.EqualTo(t1.Field));
+                templateWithIndexer[0] = t2;
+                var item = templateWithIndexer[0];
+                Assert.That(item.Field, Is.EqualTo(t2.Field));
+                item.Field = 5;
+                Assert.That(templateWithIndexer[0].Field, Is.EqualTo(5));
             }
-            using (var t1 = new T1(15))
+            using (var t2 = new T2(15))
             {
-                templateWithIndexer["test"] = t1;
-                Assert.That(templateWithIndexer["test"].Field, Is.EqualTo(t1.Field));
+                templateWithIndexer["test"] = t2;
+                Assert.That(templateWithIndexer["test"].Field, Is.EqualTo(t2.Field));
             }
         }
     }
