@@ -13,6 +13,8 @@ public class NamespaceDerivedTests
     public void TestCodeGeneration()
     {
         using (new DerivedFromSecondaryBaseInDependency()) { }
+        using (var der2 = new Derived2())
+        using (der2.ExplicitExternalSpecialization) { }
     }
 
     [Test]

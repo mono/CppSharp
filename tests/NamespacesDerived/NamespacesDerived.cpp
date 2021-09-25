@@ -70,6 +70,11 @@ TemplateClass<int> Derived2::getTemplate()
     return t;
 }
 
+TemplateWithIndependentFields<int> Derived2::getExplicitExternalSpecialization()
+{
+    return TemplateWithIndependentFields<int>();
+}
+
 Abstract* Derived2::getAbstract()
 {
     return 0;

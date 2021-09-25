@@ -76,7 +76,7 @@ void TemplateClass<T>::setField(const T& value)
 }
 
 template <typename T>
-class DLL_API TemplateWithIndependentFields
+class TemplateWithIndependentFields
 {
 public:
     void useDependentPointer(const T* t);

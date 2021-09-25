@@ -45,6 +45,11 @@ class Base3
 
 template <typename T> class TemplateClass;
 
+template<>
+class DLL_API TemplateWithIndependentFields<int>
+{
+};
+
 class DLL_API Derived2 : public Base3
 {
 public:
@@ -60,6 +65,7 @@ public:
     void defaultEnumValueFromDependency(OverlappingNamespace::ColorsEnum c = OverlappingNamespace::ColorsEnum::black);
 
     TemplateClass<int> getTemplate();
+    TemplateWithIndependentFields<int> getExplicitExternalSpecialization();
     Abstract* getAbstract();
 private:
     TemplateClass<int> t;

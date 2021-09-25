@@ -537,11 +537,11 @@ namespace CppSharp.Generators.CSharp
             var names = new Stack<string>();
 
             Declaration ctx;
-            var specialization = decl as ClassTemplateSpecialization;
-            if (specialization != null && ContextKind == TypePrinterContextKind.Native)
+            if (decl is ClassTemplateSpecialization specialization)
             {
                 ctx = specialization.TemplatedDecl.TemplatedClass.Namespace;
-                if (specialization.OriginalNamespace is Class &&
+                if (ContextKind == TypePrinterContextKind.Native &&
+                    specialization.OriginalNamespace is Class &&
                     !(specialization.OriginalNamespace is ClassTemplateSpecialization))
                 {
                     names.Push(string.Format("{0}_{1}", decl.OriginalNamespace.Name, decl.Name));
