@@ -967,7 +967,7 @@ namespace CppSharp.Generators.CSharp
             var libraryPath = GetLibraryOf(var);
 
             if (!LibrarySymbols.TryGetValue(libraryPath, out var lib))
-                LibrarySymbols[libraryPath] = lib = new LibrarySymbolInfo(libraryPath, Module.OutputNamespace + ".__Symbols");
+                LibrarySymbols[libraryPath] = lib = new LibrarySymbolInfo(libraryPath, Module.OutputNamespace);
 
             var location = lib.GetFullVariablePath(var.Mangled);
 
@@ -976,9 +976,9 @@ namespace CppSharp.Generators.CSharp
             if (arrayType != null)
             {
                 if (arrayType.Type.IsPrimitiveType(PrimitiveType.Char) && arrayType.SizeType != ArrayType.ArraySize.Constant)
-                    WriteLine($@"var {ptr} = {location};");
+                    WriteLine($"var {ptr} = {location};");
                 else
-                    WriteLine($@"var {ptr} = ({arrayType.Type.Visit(TypePrinter)}*){location};");
+                    WriteLine($"var {ptr} = ({arrayType.Type.Visit(TypePrinter)}*){location};");
             }
             else
             {
@@ -3567,9 +3567,9 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
 
             public LibrarySymbolInfo(string path, string @namespace)
             {
-                this.path = path;                
-                this.@namespace = @namespace;
+                this.path = path;
                 @class = identifierCleanerRegex.Replace(path, "_");
+                this.@namespace = (!string.IsNullOrEmpty(@namespace) ? @namespace : @class) + ".__Symbols";
             }
 
             public string Generate()
