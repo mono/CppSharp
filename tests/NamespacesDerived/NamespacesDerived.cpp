@@ -70,9 +70,9 @@ TemplateClass<int> Derived2::getTemplate()
     return t;
 }
 
-TemplateWithIndependentFields<int> Derived2::getExplicitExternalSpecialization()
+Derived2::LocalTypedefSpecialization Derived2::getLocalTypedefSpecialization()
 {
-    return TemplateWithIndependentFields<int>();
+    return LocalTypedefSpecialization();
 }
 
 Abstract* Derived2::getAbstract()
@@ -114,6 +114,20 @@ DerivedFromSecondaryBaseInDependency::~DerivedFromSecondaryBaseInDependency()
 bool operator<<(const Base& b, const char* str)
 {
     return false;
+}
+
+const char* TestComments::GetIOHandlerControlSequence(char ch)
+{
+    return 0;
+}
+
+int TestComments::SBAttachInfo(const char* path, bool wait_for)
+{
+    return 0;
+}
+
+void TestComments::glfwDestroyWindow(int *window)
+{
 }
 
 void forceUseSpecializations(ForwardedInIndependentHeader value)

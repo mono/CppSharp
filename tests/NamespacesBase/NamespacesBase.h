@@ -79,10 +79,14 @@ template <typename T>
 class TemplateWithIndependentFields
 {
 public:
-    void useDependentPointer(const T* t);
+    class Nested
+    {
+    };
+    Nested useDependentPointer(const T* t);
     const T& constField() const;
 private:
     T* t = new T;
+    Nested nested;
 };
 
 template <typename T>
@@ -92,8 +96,9 @@ const T& TemplateWithIndependentFields<T>::constField() const
 }
 
 template <typename T>
-void TemplateWithIndependentFields<T>::useDependentPointer(const T* t)
+typename TemplateWithIndependentFields<T>::Nested TemplateWithIndependentFields<T>::useDependentPointer(const T* t)
 {
+    return Nested();
 }
 
 class DLL_API HasVirtualInCore

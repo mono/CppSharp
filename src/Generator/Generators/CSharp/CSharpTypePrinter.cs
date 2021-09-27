@@ -532,30 +532,22 @@ namespace CppSharp.Generators.CSharp
             return ret;
         }
 
-        string GetName(Declaration decl)
+        private string GetName(Declaration decl)
         {
             var names = new Stack<string>();
 
-            Declaration ctx;
-            if (decl is ClassTemplateSpecialization specialization)
+            Declaration ctx = decl;
+            if (decl is ClassTemplateSpecialization specialization &&
+                ContextKind == TypePrinterContextKind.Native &&
+                specialization.OriginalNamespace is Class &&
+                !(specialization.OriginalNamespace is ClassTemplateSpecialization))
             {
-                ctx = specialization.TemplatedDecl.TemplatedClass.Namespace;
-                if (ContextKind == TypePrinterContextKind.Native &&
-                    specialization.OriginalNamespace is Class &&
-                    !(specialization.OriginalNamespace is ClassTemplateSpecialization))
-                {
-                    names.Push(string.Format("{0}_{1}", decl.OriginalNamespace.Name, decl.Name));
-                    ctx = ctx.Namespace ?? ctx;
-                }
-                else
-                {
-                    names.Push(decl.Name);
-                }
+                names.Push(string.Format("{0}_{1}", decl.OriginalNamespace.Name, decl.Name));
+                ctx = ctx.Namespace ?? ctx;
             }
             else
             {
                 names.Push(decl.Name);
-                ctx = decl.Namespace;
             }
 
             if (decl is Variable && !(decl.Namespace is Class))
@@ -563,9 +555,11 @@ namespace CppSharp.Generators.CSharp
 
             while (!(ctx is TranslationUnit))
             {
-                AddContextName(names, ctx);
+                if (ctx is ClassTemplateSpecialization parentSpecialization)
+                    ctx = parentSpecialization.TemplatedDecl.TemplatedDecl;
 
                 ctx = ctx.Namespace;
+                AddContextName(names, ctx);
             }
 
             if (PrintModuleOutputNamespace)

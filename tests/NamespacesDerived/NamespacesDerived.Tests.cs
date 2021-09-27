@@ -14,7 +14,7 @@ public class NamespaceDerivedTests
     {
         using (new DerivedFromSecondaryBaseInDependency()) { }
         using (var der2 = new Derived2())
-        using (der2.ExplicitExternalSpecialization) { }
+        using (der2.LocalTypedefSpecialization) { }
     }
 
     [Test]

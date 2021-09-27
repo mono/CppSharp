@@ -45,11 +45,6 @@ class Base3
 
 template <typename T> class TemplateClass;
 
-template<>
-class DLL_API TemplateWithIndependentFields<int>
-{
-};
-
 class DLL_API Derived2 : public Base3
 {
 public:
@@ -65,7 +60,8 @@ public:
     void defaultEnumValueFromDependency(OverlappingNamespace::ColorsEnum c = OverlappingNamespace::ColorsEnum::black);
 
     TemplateClass<int> getTemplate();
-    TemplateWithIndependentFields<int> getExplicitExternalSpecialization();
+    typedef TemplateWithIndependentFields<int> LocalTypedefSpecialization;
+    LocalTypedefSpecialization getLocalTypedefSpecialization();
     Abstract* getAbstract();
 private:
     TemplateClass<int> t;
@@ -112,7 +108,7 @@ namespace NamespacesBase
 /** Note that to prevent extra memory use due to vtable pointer, %HashBase intentionally does not declare a virtual destructor
 and therefore %HashBase pointers should never be used.
 */
-class TestComments
+class DLL_API TestComments
 {
 public:
     //----------------------------------------------------------------------
