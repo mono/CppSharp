@@ -483,6 +483,8 @@ public:
     void defaultWithStdNumericLimits(double d = 1.0, int i = std::numeric_limits<double>::infinity());
     void defaultWithParamRequiringRename(_ClassWithLeadingUnderscore* ptr = nullptr);
     void defaultWithSpecialization(IndependentFields<int> specialization = IndependentFields<int>());
+    void defaultOverloadedImplicitCtor(P p);
+    void defaultOverloadedImplicitCtor(Qux q = Qux());
     int DefaultWithParamNamedSameAsMethod(int DefaultWithParamNamedSameAsMethod, const Foo& defaultArg = Foo());
     int getA();
 private:

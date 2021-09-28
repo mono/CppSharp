@@ -31,19 +31,8 @@ namespace CppSharp.Generators.CSharp
                 return $"({desugared.Visit(typePrinter)}) {expression}";
             var finalType = (desugared.GetFinalPointee() ?? desugared).Desugar();
             if (finalType.TryGetClass(out var @class) && @class.IsInterface)
-            {
-                string cast;
-                if (parameter.DefaultArgument.Declaration is Method method &&
-                    method.IsConstructor && method.Namespace == @class.OriginalClass)
-                {
-                    cast = string.Empty;
-                }
-                else
-                {
-                    cast = $"({@class.OriginalClass.Visit(typePrinter)}) ";
-                }
-                return cast + expression;
-            }
+                return $@"({@class.Visit(typePrinter)}) ({
+                    @class.OriginalClass.Visit(typePrinter)}) {expression}";
             return expression;
         }
 

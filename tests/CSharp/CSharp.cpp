@@ -822,6 +822,14 @@ void MethodsWithDefaultValues::defaultWithSpecialization(IndependentFields<int> 
 {
 }
 
+void MethodsWithDefaultValues::defaultOverloadedImplicitCtor(P p)
+{
+}
+
+void MethodsWithDefaultValues::defaultOverloadedImplicitCtor(Qux q)
+{
+}
+
 int MethodsWithDefaultValues::DefaultWithParamNamedSameAsMethod(int DefaultWithParamNamedSameAsMethod, const Foo& defaultArg)
 {
     return 1;
