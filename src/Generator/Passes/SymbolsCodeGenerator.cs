@@ -157,12 +157,12 @@ namespace CppSharp.Passes
                 Write("extern \"C\" ");
             Write($"{GetExporting()}void {wrapper}({signature}) ");
 
-            if (method.Access == AccessSpecifier.Protected ||
-                ((Class) method.Namespace).IsAbstract)
+            bool isAbstract = ((Class) method.Namespace).IsAbstract;
+            if (method.Access == AccessSpecifier.Protected || isAbstract)
             {
                 Write($@"{{ ::new ({Helpers.InstanceField}) {
                     wrapper}{method.Namespace.Name}({@params}); }}");
-                WriteLine(method.Access == AccessSpecifier.Protected ? " };" : string.Empty);
+                WriteLine(!isAbstract ? " };" : string.Empty);
             }
             else
             {

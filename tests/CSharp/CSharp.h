@@ -489,11 +489,14 @@ private:
     Foo m_foo;
 };
 
-class DLL_API HasPureVirtualWithDefaultArg
+// don't export this one or the bug doesn't reproduce on windows
+class HasPureVirtualWithDefaultArg
 {
 public:
-    virtual ~HasPureVirtualWithDefaultArg();
+    virtual ~HasPureVirtualWithDefaultArg() {}
     virtual void pureVirtualWithDefaultArg(Foo* foo = nullptr) = 0;
+protected:
+    HasPureVirtualWithDefaultArg() {}
 };
 
 class DLL_API HasOverridesWithChangedAccessBase
