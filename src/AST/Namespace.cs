@@ -160,33 +160,33 @@ namespace CppSharp.AST
             return Enums.FirstOrDefault(f => f.OriginalPtr == ptr);
         }
 
-        public Function FindFunction(string name, bool createDecl = false)
+        public IEnumerable<Function> FindFunction(string name, bool createDecl = false)
         {
             if (string.IsNullOrEmpty(name)) 
-                return null;
+                return Enumerable.Empty<Function>();
 
             var entries = name.Split(new string[] { "::" },
                 StringSplitOptions.RemoveEmptyEntries).ToList();
 
             if (entries.Count <= 1)
             {
-                var function = Functions.FirstOrDefault(e => e.Name.Equals(name));
+                var functions = Functions.Where(e => e.Name.Equals(name));
 
-                if (function == null && createDecl)
+                if (!functions.Any() && createDecl)
                 {
-                    function = new Function() { Name = name, Namespace = this };
+                    var function = new Function() { Name = name, Namespace = this };
                     Declarations.Add(function);
                 }
             
-                return function;
+                return functions;
             }
 
-            var funcName = entries[entries.Count - 1];
+            var funcName = entries[^1];
             var namespaces = entries.Take(entries.Count - 1);
 
             var @namespace = FindNamespace(namespaces);
             if (@namespace == null)
-                return null;
+                return Enumerable.Empty<Function>();
 
             return @namespace.FindFunction(funcName, createDecl);
         }
@@ -201,14 +201,12 @@ namespace CppSharp.AST
 
         Class CreateClass(string name, bool isComplete)
         {
-            var  @class = new Class
+            return new Class
             {
                 Name = name,
                 Namespace = this,
                 IsIncomplete = !isComplete
             };
-
-            return @class;
         }
 
         public Class FindClass(string name,
@@ -316,7 +314,7 @@ namespace CppSharp.AST
         public T FindType<T>(string name) where T : Declaration
         {
             var type = FindEnum(name)
-                ?? FindFunction(name)
+                ?? FindFunction(name).FirstOrDefault()
                 ?? (Declaration)FindClass(name)
                 ?? FindTypedef(name);
 

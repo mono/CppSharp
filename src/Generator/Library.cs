@@ -533,7 +533,7 @@ namespace CppSharp
         public static IEnumerable<Function> FindFunction(this ASTContext context, string name)
         {
             return context.TranslationUnits
-                .Select(module => module.FindFunction(name))
+                .SelectMany(module => module.FindFunction(name))
                 .Where(function => function != null);
         }
 

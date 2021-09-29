@@ -92,8 +92,7 @@ namespace CppSharp.AST
         /// Finds an existing function in the library modules.
         public IEnumerable<Function> FindFunction(string name)
         {
-            return TranslationUnits.Select(module => module.FindFunction(name))
-                .Where(type => type != null);
+            return TranslationUnits.SelectMany(module => module.FindFunction(name));
         }
 
         /// Finds an existing typedef in the library modules.
