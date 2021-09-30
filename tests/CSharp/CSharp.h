@@ -452,6 +452,8 @@ public:
     QFlags<Flags> defaultMappedToEnum(const QFlags<Flags>& qFlags = Flags::Flag3);
     void defaultMappedToZeroEnum(QFlags<Flags> qFlags = 0);
     void defaultMappedToEnumAssignedWithCtor(QFlags<Flags> qFlags = QFlags<Flags>());
+    typedef QFlags<Flags> TypedefedFlags;
+    void defaultTypedefMappedToEnumRefAssignedWithCtor(const TypedefedFlags& qFlags = TypedefedFlags());
     void defaultZeroMappedToEnumAssignedWithCtor(DefaultZeroMappedToEnum defaultZeroMappedToEnum = DefaultZeroMappedToEnum());
     Quux defaultImplicitCtorInt(Quux arg = 0);
     void defaultImplicitCtorChar(Quux arg = 'a');

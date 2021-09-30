@@ -713,6 +713,10 @@ void MethodsWithDefaultValues::defaultMappedToEnumAssignedWithCtor(QFlags<Flags>
 {
 }
 
+void MethodsWithDefaultValues::defaultTypedefMappedToEnumRefAssignedWithCtor(const TypedefedFlags& qFlags)
+{
+}
+
 void MethodsWithDefaultValues::defaultZeroMappedToEnumAssignedWithCtor(DefaultZeroMappedToEnum defaultZeroMappedToEnum)
 {
 }

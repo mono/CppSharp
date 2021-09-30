@@ -698,10 +698,11 @@ template <typename T>
 class QFlags
 {
     typedef int Int;
-    typedef int (*Zero);
+    struct Private;
+    typedef int (Private::*Zero);
 public:
     QFlags(T t);
-    QFlags(Zero = 0);
+    QFlags(Zero = nullptr);
     operator Int();
 private:
     int flag;

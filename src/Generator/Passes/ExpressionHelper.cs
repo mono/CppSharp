@@ -19,7 +19,8 @@ namespace CppSharp.Internal
         private static readonly Regex regexDoubleColon = new Regex(@"\w+::", RegexOptions.Compiled);
         private static readonly Regex regexName = new Regex(@"(\w+)", RegexOptions.Compiled);
 
-        public static bool? PrintExpression(BindingContext context, Function function, Type type, ExpressionObsolete expression, bool allowDefaultLiteral, ref string result)
+        public static bool? PrintExpression(BindingContext context, Function function, Type type,
+            ExpressionObsolete expression, bool allowDefaultLiteral, ref string result)
         {
             var desugared = type.Desugar();
 
@@ -226,7 +227,7 @@ namespace CppSharp.Internal
         private static bool? CheckForDefaultConstruct(BindingContext context, Type desugared, ExpressionObsolete expression,
             ref string result)
         {
-            var type = desugared.GetFinalPointee() ?? desugared;
+            var type = (desugared.GetFinalPointee() ?? desugared).Desugar();
 
             Class decl;
             if (!type.TryGetClass(out decl))

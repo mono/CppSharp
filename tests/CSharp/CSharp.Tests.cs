@@ -318,6 +318,7 @@ public unsafe class CSharpTests
             Assert.That(methodsWithDefaultValues.DefaultMappedToEnum(), Is.EqualTo(Flags.Flag3));
             methodsWithDefaultValues.DefaultMappedToZeroEnum();
             methodsWithDefaultValues.DefaultMappedToEnumAssignedWithCtor();
+            methodsWithDefaultValues.DefaultTypedefMappedToEnumRefAssignedWithCtor();
             methodsWithDefaultValues.DefaultZeroMappedToEnumAssignedWithCtor();
             Assert.That(methodsWithDefaultValues.DefaultImplicitCtorInt().Priv, Is.EqualTo(0));
             methodsWithDefaultValues.DefaultImplicitCtorChar();
