@@ -103,7 +103,7 @@ namespace CppSharp.Types.Std
                 // This is not really right. ASCII is 7-bit only - the 8th bit is stripped; ANSI has
                 // multi-byte support via a code page. MarshalAs(UnmanagedType.LPStr) marshals as ANSI.
                 // Perhaps we need a CppSharp.Runtime.ASCIIMarshaller?
-                return new CustomType("[MarshalAs(UnmanagedType.LPStr)] string");   
+                return new CustomType("[MarshalAs(UnmanagedType.LPStr)] string");
             else if (encoding == Encoding.UTF8)
                 return new CustomType("[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string");
             else if (encoding == Encoding.Unicode || encoding == Encoding.BigEndianUnicode)

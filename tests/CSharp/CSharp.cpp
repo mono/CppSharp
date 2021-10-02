@@ -1489,6 +1489,7 @@ void TestChar32String::UpdateString(const char32_t* s)
 }
 
 const char32_t* TestChar32String::RetrieveString() { return thirtyTwoBitConst; }
+void TestChar32String::functionPointerUTF32(void(*ptr)(const char32_t*)) {}
 
 TestChar16String::TestChar16String() : 
     sixteenBitConst(u"ქართული ენა") 

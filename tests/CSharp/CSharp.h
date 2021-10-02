@@ -1165,6 +1165,7 @@ public:
 
     void UpdateString(const char32_t* s);
     const char32_t* RetrieveString();
+    void functionPointerUTF32(void(*ptr)(const char32_t*));
 };
 
 class DLL_API TestChar16String
