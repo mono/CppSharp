@@ -276,7 +276,9 @@ namespace CppSharp.Passes
             // TODO: all of this needs proper general fixing by only leaving type names
             return types.Replace("global::System.", string.Empty)
                 .Replace("[MarshalAs(UnmanagedType.LPUTF8Str)] ", string.Empty)
-                .Replace("[MarshalAs(UnmanagedType.LPWStr)] ", string.Empty)
+                .Replace("[MarshalAs(UnmanagedType.LPWStr)] string", "wstring")
+                .Replace("[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string", "string8")
+                .Replace("[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF32Marshaller))] string", "string32")
                 .Replace("global::", string.Empty).Replace("*", "Ptr")
                 .Replace('.', '_').Replace(' ', '_').Replace("::", "_")
                 .Replace("[]", "Array");
