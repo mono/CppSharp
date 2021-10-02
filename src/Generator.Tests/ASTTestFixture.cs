@@ -18,10 +18,10 @@ namespace CppSharp.Generator.Tests
             var parserOptions = new ParserOptions();
 
             var testsPath = GeneratorTest.GetTestsDirectory("Native");
-            parserOptions.AddIncludeDirs(testsPath);
             parserOptions.SkipPrivateDeclarations = true;
 
             var module = options.AddModule("Test");
+            module.IncludeDirs.Add(testsPath);
             module.Headers.AddRange(files);
 
             Driver = new Driver(options)

@@ -31,9 +31,14 @@ namespace CppSharp.Passes
                 includeDir = ".";
             includeDir = Path.GetFullPath(includeDir);
 
-            return Options.Modules.FirstOrDefault(
-                m => m.IncludeDirs.Any(i => Path.GetFullPath(i) == includeDir)) ??
-                    Options.Modules[1];
+            Module module = Options.Modules.Find(
+                m => m.IncludeDirs.Any(i => Path.GetFullPath(i) == includeDir));
+            if (module == null)
+            {
+                unit.ExplicitlyIgnore();
+                module = Options.Modules[1];
+            }
+            return module;
         }
 
         public override bool VisitDeclarationContext(DeclarationContext context)
@@ -41,10 +46,9 @@ namespace CppSharp.Passes
             return false;
         }
 
-        string GetIncludePath(string filePath)
+        private string GetIncludePath(string filePath)
         {
             var includePath = filePath;
-            var shortestIncludePath = filePath;
 
             for (uint i = 0; i < Context.ParserOptions.IncludeDirsCount; ++i)
             {
@@ -57,16 +61,15 @@ namespace CppSharp.Passes
                     idx = filePath.IndexOf(path, System.StringComparison.Ordinal);
                 }
 
-                if (idx == -1) continue;
-
-                string inc = filePath.Substring(path.Length);
-
-                if (inc.Length < includePath.Length && inc.Length < shortestIncludePath.Length)
-                    shortestIncludePath = inc;
+                if (idx != -1)
+                {
+                    includePath = filePath[path.Length..];
+                    break;
+                }
             }
 
             includePath = Options.IncludePrefix
-                + shortestIncludePath.TrimStart(new char[] { '\\', '/' });
+                + includePath.TrimStart(new char[] { '\\', '/' });
 
             return includePath.Replace('\\', '/');
         }

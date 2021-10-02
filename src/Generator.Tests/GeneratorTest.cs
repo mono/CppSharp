@@ -42,9 +42,16 @@ namespace CppSharp.Utils
             testModule.IncludeDirs.Add(path);
 
             Diagnostics.Message("Looking for tests in: {0}", path);
-            var files = Directory.EnumerateFiles(path, "*.h");
+            var files = Directory.EnumerateFiles(path, "*.h", SearchOption.AllDirectories);
             foreach (var file in files)
+            {
+                string includeDir = Path.GetDirectoryName(file);
+                if (!testModule.IncludeDirs.Contains(includeDir))
+                {
+                    testModule.IncludeDirs.Add(includeDir);
+                }
                 testModule.Headers.Add(Path.GetFileName(file));
+            }
         }
 
         public virtual void Preprocess(Driver driver, ASTContext ctx)
