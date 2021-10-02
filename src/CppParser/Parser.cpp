@@ -3051,10 +3051,14 @@ void Parser::CompleteIfSpecializationType(const clang::QualType& QualType)
     SemaDiagnostics->Decl = CTS;
     c->getSema().getDiagnostics().setClient(SemaDiagnostics.get(), false);
 
+    Scope Scope(nullptr, Scope::ScopeFlags::ClassScope, c->getSema().getDiagnostics());
+    c->getSema().TUScope = &Scope;
+
     c->getSema().InstantiateClassTemplateSpecialization(CTS->getBeginLoc(),
         CTS, TSK_ImplicitInstantiation, false);
 
     c->getSema().getDiagnostics().setClient(existingClient, false);
+    c->getSema().TUScope = nullptr;
 
     auto CT = WalkClassTemplate(CTS->getSpecializedTemplate());
     auto USR = GetDeclUSR(CTS);
@@ -3178,6 +3182,9 @@ void Parser::MarkValidity(Function* F)
     SemaDiagnostics->Decl = FD;
     c->getSema().getDiagnostics().setClient(SemaDiagnostics.get(), false);
 
+    Scope Scope(nullptr, Scope::ScopeFlags::FnScope, c->getSema().getDiagnostics());
+    c->getSema().TUScope = &Scope;
+
     c->getSema().InstantiateFunctionDefinition(FD->getBeginLoc(), FD,
         /*Recursive*/true);
     F->isInvalid = FD->isInvalidDecl();
@@ -3188,6 +3195,7 @@ void Parser::MarkValidity(Function* F)
     }
 
     c->getSema().getDiagnostics().setClient(existingClient, false);
+    c->getSema().TUScope = nullptr;
 }
 
 void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F)
