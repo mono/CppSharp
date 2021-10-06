@@ -242,6 +242,10 @@ namespace CppSharp.AST
                 b => b.Class).Any(HasDependentValueFieldInLayout);
         }
 
+        public static IEnumerable<Property> GetConstCharFieldProperties(this Class @class) =>
+            @class.Properties.Where(p => p.HasGetter && p.HasSetter &&
+                p.Field?.QualifiedType.Type.IsConstCharString() == true);
+
         private static bool IsValueDependent(Type type)
         {
             var desugared = type.Desugar();

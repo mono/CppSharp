@@ -455,14 +455,14 @@ namespace CppSharp.Generators.CSharp
                     var dict = $@"global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {
                         printedClass}>";
                     WriteLine("internal static readonly {0} NativeToManagedMap = new {0}();", dict);
-
-                    // Add booleans to track who owns unmanaged memory for string fields
-                    foreach (var field in @class.Layout.Fields.Where(f => f.QualifiedType.Type.IsConstCharString()))
-                    {
-                        WriteLine($"private bool __{field.Name}_OwnsNativeMemory = false;");
-                    }
                 }
                 PopBlock(NewLineKind.BeforeNextBlock);
+            }
+
+            // Add booleans to track who owns unmanaged memory for string fields
+            foreach (var prop in @class.GetConstCharFieldProperties())
+            {
+                WriteLine($"private bool __{prop.Field.OriginalName}_OwnsNativeMemory = false;");
             }
 
             GenerateClassConstructors(@class);
@@ -2302,7 +2302,7 @@ namespace CppSharp.Generators.CSharp
                     // }
                     // 
                     // IDisposable.Dispose() and Object.Finalize() set callNativeDtor = Helpers.OwnsNativeInstanceIdentifier
-                    WriteLine($"if (callNativeDtor)");
+                    WriteLine("if (callNativeDtor)");
                     if (@class.IsDependent || dtor.IsVirtual)
                         WriteOpenBraceAndIndent();
                     else
@@ -2325,10 +2325,11 @@ namespace CppSharp.Generators.CSharp
             // unmanaged memory isn't always initialized and/or a reference may be owned by the
             // native side.
             //
-            foreach (var field in @class.Layout.Fields.Where(f => f.QualifiedType.Type.IsConstCharString()))
+            foreach (var prop in @class.GetConstCharFieldProperties())
             {
-                var ptr = $"(({Helpers.InternalStruct}*){Helpers.InstanceIdentifier})->{field.Name}";
-                WriteLine($"if (__{field.Name}_OwnsNativeMemory)");
+                string name = prop.Field.OriginalName;
+                var ptr = $"(({Helpers.InternalStruct}*){Helpers.InstanceIdentifier})->{name}";
+                WriteLine($"if (__{name}_OwnsNativeMemory)");
                 WriteLineIndent($"Marshal.FreeHGlobal({ptr});");
             }
 
@@ -2978,17 +2979,13 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
 
                     // Copy any string references owned by the source to the new instance so we
                     // don't have to ref count them.
-                    foreach (var field in @class.Fields.Where(f => f.QualifiedType.Type.IsConstCharString()))
+                    // If there is no property or no setter then this instance can never own the native
+                    // memory. Worry about the case where there's only a setter (write-only) when we 
+                    // understand the use case and how it can occur.
+                    foreach (var prop in @class.GetConstCharFieldProperties())
                     {
-                        var prop = @class.Properties.Where(p => p.Field == field).FirstOrDefault();
-                        // If there is no property or no setter then this instance can never own the native
-                        // memory. Worry about the case where there's only a setter (write-only) when we 
-                        // understand the use case and how it can occur.
-                        if (prop != null && prop.HasGetter && prop.HasSetter)
-                        {
-                            WriteLine($"if ({method.Parameters[0].Name}.__{field.OriginalName}_OwnsNativeMemory)");
-                            WriteLineIndent($@"this.{prop.Name} = {method.Parameters[0].Name}.{prop.Name};");
-                        }
+                        WriteLine($"if ({method.Parameters[0].Name}.__{prop.Field.OriginalName}_OwnsNativeMemory)");
+                        WriteLineIndent($"this.{prop.Name} = {method.Parameters[0].Name}.{prop.Name};");
                     }
                 }
             }
@@ -3005,7 +3002,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
         }
 
         public void GenerateInternalFunctionCall(Function function,
-            QualifiedType returnType = default(QualifiedType))
+            QualifiedType returnType = default)
         {
             var @class = function.Namespace as Class;
 

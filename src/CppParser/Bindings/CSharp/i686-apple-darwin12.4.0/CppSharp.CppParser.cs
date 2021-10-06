@@ -16620,6 +16620,7 @@ namespace CppSharp
                     internal static extern void cctor(__IntPtr __instance, __IntPtr _0);
                 }
 
+                private bool __name_OwnsNativeMemory = false;
                 internal static new LabelStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
                     return new LabelStmt(native.ToPointer(), skipVTables);
@@ -16677,6 +16678,8 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     *((global::CppSharp.Parser.AST.LabelStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.LabelStmt.__Internal*) _0.__Instance);
+                    if (_0.__name_OwnsNativeMemory)
+                        this.Name = _0.Name;
                 }
 
                 public global::CppSharp.Parser.SourceLocation IdentLoc
@@ -16715,6 +16718,9 @@ namespace CppSharp
 
                     set
                     {
+                        if (__name_OwnsNativeMemory)
+                            Marshal.FreeHGlobal(((__Internal*)__Instance)->name);
+                        __name_OwnsNativeMemory = true;
                         if (value == null)
                         {
                             ((__Internal*)__Instance)->name = global::System.IntPtr.Zero;
@@ -25167,6 +25173,7 @@ namespace CppSharp
                     internal static extern void cctor(__IntPtr __instance, __IntPtr _0);
                 }
 
+                private bool __castKindName_OwnsNativeMemory = false;
                 internal static new CastExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
                     return new CastExpr(native.ToPointer(), skipVTables);
@@ -25233,6 +25240,8 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     *((global::CppSharp.Parser.AST.CastExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CastExpr.__Internal*) _0.__Instance);
+                    if (_0.__castKindName_OwnsNativeMemory)
+                        this.CastKindName = _0.CastKindName;
                 }
 
                 public static implicit operator global::CppSharp.Parser.AST.CastExpr(global::CppSharp.Parser.AST.StmtClass klass)
@@ -25276,6 +25285,9 @@ namespace CppSharp
 
                     set
                     {
+                        if (__castKindName_OwnsNativeMemory)
+                            Marshal.FreeHGlobal(((__Internal*)__Instance)->castKindName);
+                        __castKindName_OwnsNativeMemory = true;
                         if (value == null)
                         {
                             ((__Internal*)__Instance)->castKindName = global::System.IntPtr.Zero;
@@ -30958,6 +30970,7 @@ namespace CppSharp
                     internal static extern void cctor(__IntPtr __instance, __IntPtr _0);
                 }
 
+                private bool __castName_OwnsNativeMemory = false;
                 internal static new CXXNamedCastExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
                     return new CXXNamedCastExpr(native.ToPointer(), skipVTables);
@@ -31024,6 +31037,8 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     *((global::CppSharp.Parser.AST.CXXNamedCastExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXNamedCastExpr.__Internal*) _0.__Instance);
+                    if (_0.__castName_OwnsNativeMemory)
+                        this.CastName = _0.CastName;
                 }
 
                 public static implicit operator global::CppSharp.Parser.AST.CXXNamedCastExpr(global::CppSharp.Parser.AST.StmtClass klass)
@@ -31040,6 +31055,9 @@ namespace CppSharp
 
                     set
                     {
+                        if (__castName_OwnsNativeMemory)
+                            Marshal.FreeHGlobal(((__Internal*)__Instance)->castName);
+                        __castName_OwnsNativeMemory = true;
                         if (value == null)
                         {
                             ((__Internal*)__Instance)->castName = global::System.IntPtr.Zero;
