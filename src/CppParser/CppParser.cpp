@@ -95,12 +95,16 @@ LinkerOptions::LinkerOptions(const char* Triple)
 
     case llvm::Triple::OSType::Darwin:
     case llvm::Triple::OSType::MacOSX:
+        addArguments("-arch");
+        addArguments("x86_64");
+        addArguments("-platform_version");
+        addArguments("macos");
+        addArguments("10.12.0");
+        addArguments("10.12.0");
+        addArguments("-dylib");
+        addArguments("-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib");
         addArguments("-lc++");
         addArguments("-lSystem");
-        addArguments("-dylib");
-        addArguments("-sdk_version");
-        addArguments("10.12.0");
-        addArguments("-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib");
         addArguments("-rpath");
         addArguments(".");
         break;
