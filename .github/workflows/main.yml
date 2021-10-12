@@ -64,7 +64,7 @@ jobs:
     runs-on: windows-2019
     needs: build
     if: |
-      (github.event_name == 'push' && (github.ref == 'refs/heads/master' || contains(github.ref, 'nuget'))) ||
+      (github.event_name == 'push' && (github.ref == 'refs/heads/main' || contains(github.ref, 'nuget'))) ||
       (github.event.pull_request.head.repo.full_name != github.repository && contains(github.event.pull_request.head.ref, 'nuget'))
 
     env:
