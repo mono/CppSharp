@@ -1,3 +1,126 @@
+## [1.0.0] - 2021-10-12
+
+- Add built-in compilation of extra symbols
+
+- Fix naming for function pointers with strings
+
+- Ignore external (no module) translation units
+
+- Fix instantiation of specializations not to crash
+
+- Generate valid C# for default args: typedefed refs to enums assigned empty ctors
+
+- Extend finding of functions to also get overloads
+
+- Ensure valid C# for default args assigned secondary bases
+
+- Generate valid C++ for protected ctors of pure classes
+
+- Generate valid C# for constants in namespaceless modules
+
+- Generate valid C# for types nested in external typedef-ed specializations
+
+- Generate valid C# with explicit external specializations
+
+- Fix templated indexers returning objects
+
+- Generate valid C# for specializations in default args
+
+- Generate valid C++ for pure implemented dtors
+
+- Free returned by value instances, not object ones
+
+- Generate valid C# for forwarded specializations
+
+- Bind default constructors with dependent pointers
+
+- Generate valid C# for setters returning Booleans
+
+- Place returns as needed without an extra block
+
+- Generate valid C# for default params in specialisations
+
+- Resolve overloads with typedef-ed mapped params
+
+- Generate C++ deconflicted with system functions (#1626)
+
+- Don't print tags for nameless and typedef classes
+
+- Fix C4099 (class as struct) in generated C++/CLI
+
+- Bind the tag kind (struct, class, enum) of a type
+
+- Regenerate the parser bindings
+
+- Delete the C++ copy when returning by value (#1623)
+
+- Delete the longer needed patching of msvc headers
+
+- Don't evaluate dependent variables
+
+- Delete the longer needed patching of msvc headers
+
+- Update LLVM to the latest version
+
+- Fix for "vector subscript out of range" exception (#1621)
+
+- Fix incorrect dtor call for non-owned instances (#1615)
+
+- Fix regressed marshalling of lists in C++/CLI
+
+- Fix for Visual Studio 2019 16.10 (#1614)
+
+- Generate valid C# for public fields of typedef-ed primitive pointer
+
+- Resolve names matching those of system functions
+
+- Add a mechanism to selectively initialize allocated unmanaged memory in the default constructor.
+
+- Much improved support for marshaling const char* to string
+
+- Enhanced ExpressionEvaluator to return implicitly typed uint, long, and ulong values from EvaluateNumber when there is no literal type suffix applied to a numeric expression string.
+
+- Attempt to resolve a GitHub CI Actions isue: CI is currently failing because restore can't find NUnit and friends. The error message and google search indicate that GitHub Actions is only looking in the "Microsoft Visual Studio Offline Packages" cache. Add a nuget.config file to in an attempt to tell GitHub Actions to query nuget.org in addition to the offline cache.
+
+- bug fix: When generating the get accessor for a field composed of an embedded array of structs use __GetOrCreateInstance to initialize the managed array wrapper rather than __CreateInstance so that __Instance holds a pointer to the memory allocated for the array in the outer struct rather than an independent copy of that memory.
+
+- Repaired broken alignment padding generation for structs with embedded arrays of structs
+
+- Generate comments for field
+
+- Fix the regressed generation of C++ for variables
+
+- Add work-in-progress TypeScript interface bindings generator.
+
+- Add MarkEventsWithUniqueIdPass pass for global event handling.
+
+- Maintain DeclarationsList integrity by clearing item offsets.
+
+- Add CppSharp VS Code workspace.
+
+- Implement two-step initialization for QuickJS.
+
+- Add QuickJS runtime project and initial features.
+
+- Improve support for default arguments in NAPI generator.
+
+- Add support for generation of default argument expressions in C generator.
+
+- Add experimental GenerateExternalDataFields option and supporting code.
+
+- Add C code generator GenerateClassEvents for common event handling.
+
+- Introduce a scope kind stack for type printers.
+
+- Rework C enum generation for more accurate handling.
+
+- Add convenience constructor to ArrayType.
+
+- Create target directory when generating files.
+
+- Add new pass to convert C++ FastDelegate types into CppSharp delegates.
+
+
 ## [0.11.1] - 2021-2-3
 
 - Restore backwards compatibility with .NET Framework
