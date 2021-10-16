@@ -232,7 +232,7 @@ namespace CppSharp.Passes
             string signature = GetSignature(function);
             cppTypePrinter.PrintTags = false;
 
-            string functionName = GetFunctionName(function, @namespace);
+            string functionName = GetFunctionName(function);
             if (function.FriendKind != FriendKind.None)
                 WriteRedeclaration(function, returnType, signature, functionName);
 
@@ -282,27 +282,14 @@ namespace CppSharp.Passes
             return $"({paramTypes}{variadicType}){@const}{refQualifier}";
         }
 
-        private string GetFunctionName(Function function, string @namespace)
+        private string GetFunctionName(Function function)
         {
             var nameBuilder = new StringBuilder();
-            if (function.Access != AccessSpecifier.Protected &&
-                !string.IsNullOrEmpty(@namespace))
-                nameBuilder.Append(@namespace).Append("::");
-
-            bool isConversionToSpecialization =
-                (function.OperatorKind == CXXOperatorKind.Conversion ||
-                 function.OperatorKind == CXXOperatorKind.ExplicitConversion) &&
-                function.OriginalReturnType.Type.Desugar(
-                    ).TryGetDeclaration(out ClassTemplateSpecialization specialization);
-
-            nameBuilder.Append(isConversionToSpecialization ?
-                "operator " : function.OriginalName);
+            nameBuilder.Append(function.Visit(cppTypePrinter).Name);
 
             if (function.SpecializationInfo != null)
                 nameBuilder.Append('<').Append(string.Join(", ",
                     GetTemplateArguments(function.SpecializationInfo.Arguments))).Append('>');
-            else if (isConversionToSpecialization)
-                nameBuilder.Append(function.OriginalReturnType.Visit(cppTypePrinter));
 
             return nameBuilder.ToString();
         }

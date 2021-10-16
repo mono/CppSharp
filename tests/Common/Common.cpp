@@ -529,10 +529,6 @@ std::string& HasStdString::getStdString()
     return s;
 }
 
-SomeNamespace::AbstractClass::~AbstractClass()
-{
-}
-
 int Function()
 {
     return 5;
@@ -1241,6 +1237,10 @@ TestCopyConstructorRef::TestCopyConstructorRef(const TestCopyConstructorRef& oth
 
 
 SomeStruct::SomeStruct() : p(1) {}
+
+void SomeNamespace::NamespacedAbstractImpl::AbstractMethod()
+{
+}
 
 ClassWithOverloadedOperators::ClassWithOverloadedOperators::operator char() { return 1; }
 ClassWithOverloadedOperators::operator int() { return 2; }

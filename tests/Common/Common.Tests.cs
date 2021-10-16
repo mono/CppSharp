@@ -70,6 +70,7 @@ public class CommonTests
         Common.TakeVoidStarStar(null);
         Common.OverloadPointer(IntPtr.Zero, 1);
         using (new DerivedFromSecondaryBaseWithIgnoredVirtualMethod()) { }
+        using (new CommonTest.SomeNamespace.NamespacedAbstractImpl()) { }
 
 #pragma warning restore 0168
 #pragma warning restore 0219

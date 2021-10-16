@@ -43,7 +43,8 @@ namespace CppSharp.Generators
             if (hasPlaceholder)
                 return string.Format(Type, $"{NamePrefix}{Name}{NameSuffix}");
 
-            var namePrefix = (Name.Length > 0) ? $"{NamePrefix} " : NamePrefix.ToString();
+            var namePrefix = (Name.Length > 0 && NamePrefix.Length > 0) ?
+                $"{NamePrefix} " : NamePrefix.ToString();
             return $"{Type}{namePrefix}{Name}{NameSuffix}";
         }
     }

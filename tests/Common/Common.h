@@ -474,11 +474,22 @@ class DLL_API SomeClassExtendingTheStruct : public SomeStruct
 
 namespace SomeNamespace
 {
-    class DLL_API AbstractClass
+    class DLL_API NamespacedAbstractClass
     {
     public:
-        ~AbstractClass();
         virtual void AbstractMethod() = 0;
+    };
+
+    class DLL_API NamespacedAbstractImpl
+    {
+    public:
+        virtual void AbstractMethod();
+    };
+
+    class DLL_API Inlines
+    {
+    public:
+        inline operator NamespacedAbstractImpl () const { return NamespacedAbstractImpl(); }
     };
 }
 

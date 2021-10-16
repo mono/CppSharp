@@ -571,50 +571,54 @@ namespace CppSharp.Generators.C
 
         public override TypePrinterResult VisitFunctionDecl(Function function)
         {
-            return VisitDeclaration(function);
-        }
-
-        public override TypePrinterResult VisitMethodDecl(Method method)
-        {
-            // HACK: this should never happen but there's an inexplicable crash
-            // with the 32-bit Windows CI - needs investigation.
-            var functionType = method.FunctionType.Type.Desugar() as FunctionType;
-            if (functionType == null)
-                return string.Empty;
-
-            var @return = method.IsConstructor || method.IsDestructor ||
-                method.OperatorKind == CXXOperatorKind.Conversion ||
-                method.OperatorKind == CXXOperatorKind.ExplicitConversion ?
-                new TypePrinterResult() : method.OriginalReturnType.Visit(this);
-
             string @class;
             switch (MethodScopeKind)
             {
                 case TypePrintScopeKind.Qualified:
-                    @class = $"{method.Namespace.Visit(this)}::";
+                    @class = $"{function.Namespace.Visit(this)}::";
                     break;
                 case TypePrintScopeKind.GlobalQualified:
-                    @class = $"::{method.Namespace.Visit(this)}::";
+                    @class = $"::{function.Namespace.Visit(this)}::";
                     break;
                 default:
                     @class = string.Empty;
                     break;
             }
 
-            var @params = string.Join(", ", method.Parameters.Select(p => p.Visit(this)));
-            var @const = method.IsConst ? " const" : string.Empty;
-            var name = method.OperatorKind == CXXOperatorKind.Conversion ||
-                method.OperatorKind == CXXOperatorKind.ExplicitConversion ?
-                $"operator {method.OriginalReturnType.Visit(this)}" :
-                method.OriginalName;
+            var @params = string.Join(", ", function.Parameters.Select(p => p.Visit(this)));
+            var @const = function is Method method && method.IsConst ? " const" : string.Empty;
+            var name = function.OperatorKind == CXXOperatorKind.Conversion ||
+                function.OperatorKind == CXXOperatorKind.ExplicitConversion ?
+                $"operator {function.OriginalReturnType.Visit(this)}" :
+                function.OriginalName;
 
+            FunctionType functionType;
+            CppSharp.AST.Type desugared = function.FunctionType.Type.Desugar();
+            if (!desugared.IsPointerTo(out functionType))
+                functionType = (FunctionType) desugared;
             string exceptionType = Print(functionType.ExceptionSpecType);
 
+            var @return = function.OriginalReturnType.Visit(this);
             if (!string.IsNullOrEmpty(@return.Type))
                 @return.NamePrefix.Append(' ');
-            @return.NamePrefix.Append(@class).Append(name).Append('(').Append(@params).Append(')');
-            @return.NameSuffix.Append(@const).Append(exceptionType);
-            return @return.ToString();
+            @return.Name = @class + name;
+            @return.NameSuffix.Append('(').Append(@params).Append(')').Append(@const).Append(exceptionType);
+            return @return;
+        }
+
+        public override TypePrinterResult VisitMethodDecl(Method method)
+        {
+            var @return = VisitFunctionDecl(method);
+
+            if (method.IsConstructor || method.IsDestructor ||
+                method.OperatorKind == CXXOperatorKind.Conversion ||
+                method.OperatorKind == CXXOperatorKind.ExplicitConversion)
+            {
+                @return.Type = string.Empty;
+                @return.NamePrefix.Clear();
+            }
+
+            return @return;
         }
 
         public override TypePrinterResult VisitParameterDecl(Parameter parameter)
