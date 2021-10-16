@@ -113,8 +113,9 @@ namespace CppSharp.Passes
                 }
             }
 
-            specializedMethod.Name = specializedMethod.OriginalName;
-            extensionMethod.Name = extensionMethod.OriginalName;
+            // If we change the Name in IgnoreSystemDeclarationsPass.cs we should not revert this change here. Otherwise we get Assign_1 instead of AssignW or AssignA for string / wstring
+            //specializedMethod.Name = specializedMethod.OriginalName;
+            //extensionMethod.Name = extensionMethod.OriginalName;
             extensionMethod.OriginalFunction = specializedMethod;
             extensionMethod.Kind = CXXMethodKind.Normal;
             extensionMethod.IsStatic = true;

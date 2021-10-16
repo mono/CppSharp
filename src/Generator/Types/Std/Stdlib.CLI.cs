@@ -103,7 +103,7 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("std::wstring", GeneratorKind = GeneratorKind.CLI)]
+    [TypeMap("basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t>>", GeneratorKind = GeneratorKind.CLI)]
     public partial class WString : TypeMap
     {
         public override Type CLISignatureType(TypePrinterContext ctx)

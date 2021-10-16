@@ -302,6 +302,7 @@ namespace CppSharp.Types.Std
     }
 
     [TypeMap("basic_string<char, char_traits<char>, allocator<char>>", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t>>", GeneratorKind = GeneratorKind.CSharp)]
     public partial class String : TypeMap
     {
         public override Type CSharpSignatureType(TypePrinterContext ctx)

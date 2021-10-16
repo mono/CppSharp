@@ -62,7 +62,7 @@ namespace CppSharp.Tests
 
         public override void SetupPasses(Driver driver)
         {
-            driver.Options.MarshalCharAsManagedChar = true;
+            driver.Options.MarshalCharAsManagedChar = false; // c++ char is mapped to sbyte. c++ wchar_t is mapped to char
             driver.Options.GenerateDefaultValuesForArguments = true;
         }
 
@@ -72,8 +72,11 @@ namespace CppSharp.Tests
             ctx.SetClassAsValueType("Bar2");
             ctx.IgnoreClassWithName("IgnoredType");
 
-            ctx.FindCompleteClass("Foo").Enums.First(
+            if (ctx.FindCompleteClass("Foo") != null)
+            {
+                ctx.FindCompleteClass("Foo").Enums.First(
                 e => string.IsNullOrEmpty(e.Name)).Name = "RenamedEmptyEnum";
+            }
         }
 
         public override void Postprocess(Driver driver, ASTContext ctx)

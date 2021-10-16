@@ -42,12 +42,36 @@ namespace CppSharp.Passes
             switch (@class.Name)
             {
                 case "basic_string":
+                    @class.GenerationKind = GenerationKind.Generate;
+                    foreach (var specialization in from s in @class.Specializations
+                                                   let arg = s.Arguments[0].Type.Type.Desugar()
+                                                   where arg.IsPrimitiveType(PrimitiveType.Char) || arg.IsPrimitiveType(PrimitiveType.WideChar)
+                                                   select s)
+                    {
+                        specialization.GenerationKind = GenerationKind.Generate;
+                        foreach (var method in specialization.Methods)
+                        {
+                            if (method.OriginalName == "assign" || method.OriginalName == "data")
+                            {
+                                if (specialization.Arguments[0].Type.Type.Desugar().IsPrimitiveType(PrimitiveType.WideChar))
+                                    method.Name = method.Name + "W";
+                                else if (specialization.Arguments[0].Type.Type.Desugar().IsPrimitiveType(PrimitiveType.Char))
+                                    method.Name = method.Name + "A";
+
+                                method.GenerationKind = GenerationKind.Generate;
+                                method.Namespace.GenerationKind = GenerationKind.Generate;
+                                method.InstantiatedFrom.GenerationKind = GenerationKind.Generate;
+                                method.InstantiatedFrom.Namespace.GenerationKind = GenerationKind.Generate;
+                            }
+                        }
+                    }
+                    break;
                 case "allocator":
                 case "char_traits":
                     @class.GenerationKind = GenerationKind.Generate;
                     foreach (var specialization in from s in @class.Specializations
                                                    let arg = s.Arguments[0].Type.Type.Desugar()
-                                                   where arg.IsPrimitiveType(PrimitiveType.Char)
+                                                   where arg.IsPrimitiveType(PrimitiveType.Char) || arg.IsPrimitiveType(PrimitiveType.WideChar)
                                                    select s)
                     {
                         specialization.GenerationKind = GenerationKind.Generate;
