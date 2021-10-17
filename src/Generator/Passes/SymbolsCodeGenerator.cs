@@ -248,7 +248,7 @@ namespace CppSharp.Passes
 
             if (function.Access == AccessSpecifier.Protected)
             {
-                Write($" = &{wrapper}{function.Namespace.Name}::{functionName};");
+                Write($" = &{wrapper}{function.Namespace.Name}::{function.OriginalName};");
                 WriteLine(" };");
                 Write($"auto {wrapper}Protected = {wrapper}{function.Namespace.Name}::{wrapper};");
             }

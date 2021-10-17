@@ -491,6 +491,8 @@ namespace SomeNamespace
     public:
         Inlines(int param) {}
         inline operator NamespacedAbstractImpl () const { return NamespacedAbstractImpl(); }
+    protected:
+        void protectedInlined() {}
     };
 }
 
