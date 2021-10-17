@@ -486,9 +486,10 @@ namespace SomeNamespace
         virtual void AbstractMethod();
     };
 
-    class DLL_API Inlines
+    class Inlines
     {
     public:
+        Inlines(int param) {}
         inline operator NamespacedAbstractImpl () const { return NamespacedAbstractImpl(); }
     };
 }

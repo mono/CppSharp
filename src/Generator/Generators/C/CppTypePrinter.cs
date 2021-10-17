@@ -442,7 +442,7 @@ namespace CppSharp.Generators.C
                 }
             }
 
-            return $"{result}";
+            return result;
         }
 
         public override TypePrinterResult VisitDelegate(FunctionType function)
