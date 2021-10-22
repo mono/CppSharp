@@ -233,6 +233,20 @@ namespace CppSharp.AST
             return @interface;
         }
 
+        public static ClassTemplateSpecialization GetParentSpecialization(this Class @class)
+        {
+            Class currentClass = @class;
+            do
+            {
+                if (currentClass is ClassTemplateSpecialization specialization)
+                {
+                    return specialization;
+                }
+                currentClass = currentClass.Namespace as Class;
+            } while (currentClass != null);
+            return null;
+        }
+
         public static bool HasDependentValueFieldInLayout(this Class @class)
         {
             if (@class.Fields.Any(f => IsValueDependent(f.Type)))

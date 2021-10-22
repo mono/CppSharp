@@ -137,6 +137,7 @@ private:
     std::string GetTypeName(const clang::Type* Type);
     bool CanCheckCodeGenInfo(clang::Sema & S, const clang::Type * Ty);
     void CompleteIfSpecializationType(const clang::QualType& QualType);
+    void InstantiateSpecialization(clang::ClassTemplateSpecializationDecl* CTS);
     Parameter* WalkParameter(const clang::ParmVarDecl* PVD,
         const clang::SourceLocation& ParamStartLoc);
     void SetBody(const clang::FunctionDecl* FD, Function* F);

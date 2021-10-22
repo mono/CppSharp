@@ -361,13 +361,11 @@ namespace CppSharp.Generators.CSharp
         private IEnumerable<Class> GetGeneratedClasses(
             Class dependentClass, IEnumerable<Class> specializedClasses)
         {
-            var specialization = specializedClasses.FirstOrDefault(s => s.IsGenerated) ??
-                specializedClasses.First();
-
             if (dependentClass.HasDependentValueFieldInLayout())
-                return specializedClasses;
+                return specializedClasses.KeepSingleAllPointersSpecialization();
 
-            return new[] { specialization };
+            return new[] { specializedClasses.FirstOrDefault(s => s.IsGenerated) ??
+                specializedClasses.First()};
         }
 
         public override void GenerateDeclarationCommon(Declaration decl)

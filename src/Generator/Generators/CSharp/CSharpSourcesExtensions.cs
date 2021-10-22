@@ -24,11 +24,9 @@ namespace CppSharp.Generators.CSharp
             var printedClass = @class.Visit(gen.TypePrinter);
             if (@class.IsDependent)
             {
-                IEnumerable<Class> specializations =
-                    @class.GetSpecializedClassesToGenerate().Where(s => s.IsGenerated);
-                if (@class.IsTemplate)
-                    specializations = specializations.KeepSingleAllPointersSpecialization();
-                foreach (var specialization in specializations)
+                foreach (var specialization in (from s in @class.GetSpecializedClassesToGenerate()
+                                                where s.IsGenerated
+                                                select s).KeepSingleAllPointersSpecialization())
                     gen.GenerateNativeConstructorByValue(specialization, printedClass);
             }
             else
@@ -40,10 +38,10 @@ namespace CppSharp.Generators.CSharp
         public static IEnumerable<Class> KeepSingleAllPointersSpecialization(
             this IEnumerable<Class> specializations)
         {
-            Func<TemplateArgument, bool> allPointers = (TemplateArgument a) =>
-                a.Type.Type?.Desugar().IsAddress() == true;
-            var groups = (from ClassTemplateSpecialization spec in specializations
-                          group spec by spec.Arguments.All(allPointers)
+            static bool allPointers(TemplateArgument a) => a.Type.Type?.Desugar().IsAddress() == true;
+            var groups = (from @class in specializations
+                          let spec = @class.GetParentSpecialization()
+                          group @class by spec.Arguments.All(allPointers)
                           into @group
                           select @group).ToList();
             foreach (var group in groups)
