@@ -56,7 +56,12 @@ public:
     template <typename AdditionalDependentType>
     void usesAdditionalDependentType(AdditionalDependentType additionalDependentType);
     static const int independentConst;
+
 private:
+    struct
+    {
+        int fieldInAnonType;
+    };
     float independent;
 };
 

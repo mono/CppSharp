@@ -16,15 +16,14 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (!base.VisitClassDecl(@class) || @class.Ignore || @class.IsDependent)
+            if (!base.VisitClassDecl(@class) || @class.Ignore)
                 return false;
 
             for (int i = @class.Fields.Count - 1; i >= 0; i--)
             {
                 Field field = @class.Fields[i];
-                Class fieldType;
                 if (!string.IsNullOrEmpty(field.OriginalName) ||
-                    !field.Type.Desugar().TryGetClass(out fieldType) ||
+                    !field.Type.Desugar().TryGetClass(out Class fieldType) ||
                     !string.IsNullOrEmpty(fieldType.OriginalName))
                     continue;
 
@@ -39,12 +38,11 @@ namespace CppSharp.Passes
             for (int i = @class.Layout.Fields.Count - 1; i >= 0; i--)
             {
                 LayoutField field = @class.Layout.Fields[i];
-                Class fieldType;
                 if (!string.IsNullOrEmpty(field.Name) ||
-                    !field.QualifiedType.Type.Desugar().TryGetClass(out fieldType) ||
+                    !field.QualifiedType.Type.Desugar().TryGetClass(out Class fieldType) ||
                     !string.IsNullOrEmpty(fieldType.OriginalName))
                     continue;
-                
+
                 ReplaceLayoutField(@class, i, fieldType);
                 fieldType.Fields.Clear();
                 fieldType.ExplicitlyIgnore();
