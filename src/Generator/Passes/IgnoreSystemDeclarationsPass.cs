@@ -35,7 +35,7 @@ namespace CppSharp.Passes
             if (!@class.IsDependent || @class.Specializations.Count == 0)
                 return false;
 
-            foreach (var specialization in @class.Specializations)
+            foreach (var specialization in @class.Specializations.Where(s => s.IsGenerated))
                 specialization.ExplicitlyIgnore();
 
             // we only need a few members for marshalling so strip the rest
@@ -46,11 +46,14 @@ namespace CppSharp.Passes
                 case "char_traits":
                     @class.GenerationKind = GenerationKind.Generate;
                     foreach (var specialization in from s in @class.Specializations
+                                                   where !s.Arguments.Any(a =>
+                                                       s.UnsupportedTemplateArgument(a, Context.TypeMaps))
                                                    let arg = s.Arguments[0].Type.Type.Desugar()
                                                    where arg.IsPrimitiveType(PrimitiveType.Char)
                                                    select s)
                     {
                         specialization.GenerationKind = GenerationKind.Generate;
+                        InternalizeSpecializationsInFields(specialization);
                     }
                     break;
             }
@@ -99,6 +102,23 @@ namespace CppSharp.Passes
                 variable.ExplicitlyIgnore();
 
             return true;
+        }
+
+        private void InternalizeSpecializationsInFields(ClassTemplateSpecialization specialization)
+        {
+            foreach (Field field in specialization.Fields)
+            {
+                ASTUtils.CheckTypeForSpecialization(field.Type, specialization,
+                    specialization =>
+                    {
+                        if (!specialization.IsExplicitlyGenerated &&
+                            specialization.GenerationKind != GenerationKind.Internal)
+                        {
+                            specialization.GenerationKind = GenerationKind.Internal;
+                            InternalizeSpecializationsInFields(specialization);
+                        }
+                    }, Context.TypeMaps, true);
+            }
         }
     }
 }

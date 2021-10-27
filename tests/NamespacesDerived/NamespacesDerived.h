@@ -1,6 +1,7 @@
 #include "../Tests.h"
 #include "../NamespacesBase/NamespacesBase.h"
 #include "Independent.h"
+#include <string>
 
 // Namespace clashes with NamespacesBase.OverlappingNamespace
 // Test whether qualified names turn out right.
@@ -84,6 +85,27 @@ public:
 
 class DLL_API DerivedFromSecondaryBaseInDependency : public Derived, public SecondaryBase
 {
+};
+
+template<typename T>
+class CustomAllocator
+{
+public:
+    typedef T value_type;
+
+    T* allocate(size_t cnt, const void* = 0)
+    {
+        return 0;
+    }
+    void deallocate(T* p, size_t cnt)
+    {
+    }
+};
+
+class DLL_API Ignored
+{
+private:
+    std::basic_string<char, std::char_traits<char>, CustomAllocator<char>> f;
 };
 
 DLL_API bool operator<<(const Base& b, const char* str);

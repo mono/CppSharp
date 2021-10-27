@@ -147,8 +147,8 @@ namespace CppSharp.AST
             });
         }
 
-        private static bool UnsupportedTemplateArgument(
-            ClassTemplateSpecialization specialization, TemplateArgument a, ITypeMapDatabase typeMaps)
+        public static bool UnsupportedTemplateArgument(this ClassTemplateSpecialization specialization,
+            TemplateArgument a, ITypeMapDatabase typeMaps)
         {
             if (a.Type.Type == null ||
                 IsTypeExternal(
@@ -168,8 +168,7 @@ namespace CppSharp.AST
 
             return (!internalOnly && (((specialization.Ignore ||
                 specialization.TemplatedDecl.TemplatedClass.Ignore) && typeMap == null) ||
-                specialization.Arguments.Any(a => UnsupportedTemplateArgument(
-                    specialization, a, typeMaps)) ||
+                specialization.Arguments.Any(a => specialization.UnsupportedTemplateArgument(a, typeMaps)) ||
                 container.Namespace == specialization)) ||
                 (!internalOnly && specialization.TemplatedDecl.TemplatedClass.IsIncomplete) ||
                 specialization is ClassTemplatePartialSpecialization;

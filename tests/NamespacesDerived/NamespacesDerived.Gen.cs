@@ -27,6 +27,11 @@ namespace CppSharp.Tests
             module.Libraries.Add($"{@base}.Native");
             driver.Options.Modules[1].Dependencies.Add(module);
         }
+
+        public override void Preprocess(Driver driver, AST.ASTContext ctx)
+        {
+            ctx.IgnoreClassWithName("Ignored");
+        }
     }
 
     public static class NamespacesDerived

@@ -83,6 +83,16 @@ namespace CppSharp.Passes
             }
         }
 
+        public override bool VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
+        {
+            if (!specialization.IsGenerated ||
+                specialization.Arguments.Any(
+                    a => specialization.UnsupportedTemplateArgument(a, Context.TypeMaps)))
+                return false;
+
+            return base.VisitClassTemplateSpecializationDecl(specialization);
+        }
+
         public override bool VisitClassDecl(Class @class)
         {
             if (!base.VisitClassDecl(@class))

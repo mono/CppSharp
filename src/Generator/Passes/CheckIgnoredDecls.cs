@@ -52,7 +52,9 @@ namespace CppSharp.Passes
                 return false;
 
             TypeMap typeMap;
-            if (!Options.GenerateClassTemplates && !specialization.IsExplicitlyGenerated &&
+            if (!Options.GenerateClassTemplates &&
+                !specialization.IsExplicitlyGenerated &&
+                specialization.GenerationKind != GenerationKind.Internal &&
                 !Context.TypeMaps.FindTypeMap(specialization, out typeMap))
             {
                 specialization.ExplicitlyIgnore();
@@ -578,7 +580,7 @@ namespace CppSharp.Passes
         private void IgnoreUnsupportedTemplates(Class @class)
         {
             if (@class.TemplateParameters.Any(param => param is NonTypeTemplateParameter))
-                foreach (var specialization in @class.Specializations)
+                foreach (var specialization in @class.Specializations.Where(s => s.IsGenerated))
                     specialization.ExplicitlyIgnore();
 
             if (!Options.IsCLIGenerator && !@class.TranslationUnit.IsSystemHeader &&
@@ -589,7 +591,7 @@ namespace CppSharp.Passes
             foreach (var specialization in @class.Specializations)
                 if (specialization.IsExplicitlyGenerated)
                     hasExplicitlyGeneratedSpecializations = true;
-                else
+                else if (specialization.GenerationKind != GenerationKind.Internal)
                     specialization.ExplicitlyIgnore();
 
             if (!hasExplicitlyGeneratedSpecializations)

@@ -22,7 +22,7 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (!base.VisitClassDecl(@class))
+            if (!@class.Ignore && !base.VisitClassDecl(@class))
                 return false;
 
             if (@class.IsTemplate)
@@ -124,7 +124,7 @@ namespace CppSharp.Passes
                 specialization.ExplicitlyIgnore();
 
             foreach (var specialization in template.Specializations.Where(
-                s => !s.IsExplicitlyGenerated && internalSpecializations.Contains(s)))
+                s => !s.IsExplicitlyGenerated && !s.Ignore && internalSpecializations.Contains(s)))
                 specialization.GenerationKind = GenerationKind.Internal;
 
             for (int i = template.Specializations.Count - 1; i >= 0; i--)
