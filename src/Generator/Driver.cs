@@ -221,6 +221,8 @@ namespace CppSharp
                 TranslationUnitPasses.AddPass(new EqualiseAccessOfOverrideAndBasePass());
 
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
+            TranslationUnitPasses.AddPass(new FlattenAnonymousTypesToFields());
+            TranslationUnitPasses.AddPass(new MarkUsedClassInternalsPass());
 
             if (Options.IsCSharpGenerator)
             {
@@ -260,7 +262,6 @@ namespace CppSharp
 
             Generator.SetupPasses();
 
-            TranslationUnitPasses.AddPass(new FlattenAnonymousTypesToFields());
             TranslationUnitPasses.AddPass(new CleanInvalidDeclNamesPass());
             TranslationUnitPasses.AddPass(new FastDelegateToDelegatesPass());
             TranslationUnitPasses.AddPass(new FieldToPropertyPass());
@@ -289,8 +290,6 @@ namespace CppSharp
             }
 
             TranslationUnitPasses.AddPass(new CheckDuplicatedNamesPass());
-
-            TranslationUnitPasses.AddPass(new MarkUsedClassInternalsPass());
 
             if (Options.IsCLIGenerator || Options.IsCSharpGenerator)
             {

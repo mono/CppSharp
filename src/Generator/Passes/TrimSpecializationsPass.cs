@@ -151,6 +151,10 @@ namespace CppSharp.Passes
             for (int i = template.Specializations.Count - 1; i >= 0; i--)
             {
                 var specialization = template.Specializations[i];
+                if (specialization.Ignore)
+                {
+                    continue;
+                }
                 var modules = (from arg in specialization.Arguments
                                where arg.Type.Type != null
                                    && ASTUtils.IsTypeExternal(

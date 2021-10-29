@@ -41,6 +41,7 @@ namespace CppSharp.Generators.CSharp
             static bool allPointers(TemplateArgument a) => a.Type.Type?.Desugar().IsAddress() == true;
             var groups = (from @class in specializations
                           let spec = @class.GetParentSpecialization()
+                          where !spec.Ignore
                           orderby spec.IsGenerated descending
                           group @class by spec.Arguments.All(allPointers)
                           into @group

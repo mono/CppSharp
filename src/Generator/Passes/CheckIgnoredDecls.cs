@@ -51,10 +51,12 @@ namespace CppSharp.Passes
             if (!base.VisitClassTemplateSpecializationDecl(specialization))
                 return false;
 
+            if (specialization.GenerationKind == GenerationKind.Internal)
+                return false;
+
             TypeMap typeMap;
             if (!Options.GenerateClassTemplates &&
                 !specialization.IsExplicitlyGenerated &&
-                specialization.GenerationKind != GenerationKind.Internal &&
                 !Context.TypeMaps.FindTypeMap(specialization, out typeMap))
             {
                 specialization.ExplicitlyIgnore();
@@ -594,7 +596,8 @@ namespace CppSharp.Passes
                 else if (specialization.GenerationKind != GenerationKind.Internal)
                     specialization.ExplicitlyIgnore();
 
-            if (!hasExplicitlyGeneratedSpecializations)
+            if (!hasExplicitlyGeneratedSpecializations &&
+                @class.GenerationKind != GenerationKind.Internal)
                 @class.ExplicitlyIgnore();
         }
 
