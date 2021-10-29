@@ -114,7 +114,9 @@ void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> 
                              IndependentFields<OnlySpecialisedInTypeArg<double>> _15,
                              DependentPointerFields<float> _16, IndependentFields<const T1&> _17,
                              TemplateWithIndexer<T2*> _18, IndependentFields<int(*)(int)> _19,
-                             TemplateWithIndexer<const char*> _20, std::string s)
+                             TemplateWithIndexer<const char*> _20, VirtualDependentValueFields<int> _21,
+                             VirtualDependentValueFields<float> _22, VirtualDependentValueFields<const char*> _23,
+                             std::string s)
 {
 }
 

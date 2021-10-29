@@ -2257,13 +2257,15 @@ namespace CppSharp.Generators.CSharp
 
                 // The local var must be of the exact type in the object map because of TryRemove
                 WriteLine("NativeToManagedMap.TryRemove({0}, out _);", Helpers.InstanceIdentifier);
-                var classInternal = TypePrinter.PrintNative(@class);
-                if (@class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count != 0)
+                var realClass = @class.IsTemplate ? @class.Specializations[0] : @class;
+                var classInternal = TypePrinter.PrintNative(realClass);
+                if (@class.IsDynamic && GetUniqueVTableMethodEntries(realClass).Count != 0)
                 {
-                    ClassLayout layout = (@class.IsDependent ? @class.Specializations[0] : @class).Layout;
-                    for (var i = 0; i < layout.VTablePointers.Count; i++)
-                        WriteLine($@"(({classInternal}*) {Helpers.InstanceIdentifier})->{
-                            layout.VTablePointers[i].Name} = __VTables.Tables[{i}];");
+                    for (int i = 0; i < realClass.Layout.VTablePointers.Count; i++)
+                    {
+                        var offset = realClass.Layout.VTablePointers[i].Offset;
+                        WriteLine($"*(IntPtr*)({Helpers.InstanceIdentifier} + {offset}) = __VTables.Tables[{i}];");
+                    }
                 }
             }
 

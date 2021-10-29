@@ -1128,6 +1128,15 @@ public unsafe class CSharpTests
             bool b = true;
             Assert.That(*virtualTemplate.Function(ref b), Is.EqualTo(true));
         }
+        using (var virtualTemplate = new VirtualDependentValueFields<int>())
+        {
+        }
+        using (var virtualTemplate = new VirtualDependentValueFields<float>())
+        {
+        }
+        using (var virtualTemplate = new VirtualDependentValueFields<string>())
+        {
+        }
     }
 
     [Test]
