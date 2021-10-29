@@ -1294,9 +1294,12 @@ namespace CppSharp.Generators.CSharp
             ctx.PushMarshalKind(MarshalKind.ReturnVariableArray);
 
             var arrayType = var.Type.Desugar() as ArrayType;
-            var isRefTypeArray = arrayType != null && var.Namespace is Class @class && @class.IsRefType;
+            var isRefTypeArray = arrayType != null && var.Namespace is Class context && context.IsRefType;
             var elementType = arrayType?.Type.Desugar();
-            if (!isRefTypeArray && elementType == null)
+            Type type = (var.QualifiedType.Type.GetFinalPointee() ?? var.QualifiedType.Type).Desugar();
+            if (type.TryGetClass(out Class @class) && @class.IsRefType)
+                ctx.ReturnVarName = $"new {TypePrinter.IntPtrType}({ptr})";
+            else if (!isRefTypeArray && elementType == null)
                 ctx.ReturnVarName = $"*{ptr}";
             else if (elementType == null || elementType.IsPrimitiveType() ||
                 arrayType.SizeType == ArrayType.ArraySize.Constant)

@@ -105,6 +105,8 @@ public:
 
     int fooPtr();
     char16_t returnChar16();
+
+    static Foo staticField;
 };
 
 struct DLL_API Bar

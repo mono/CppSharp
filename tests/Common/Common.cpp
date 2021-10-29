@@ -60,6 +60,8 @@ char16_t Foo::returnChar16()
     return 'a';
 }
 
+Foo Foo::staticField;
+
 Foo2::Foo2() {}
 
 Foo2::Foo2(const Foo2& other) : Foo(other), C(other.C), valueTypeField(other.valueTypeField) {}

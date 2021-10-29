@@ -914,6 +914,8 @@ public class CommonTests
         Assert.That(Foo.ReadWrite, Is.EqualTo(15));
         Foo.ReadWrite = 25;
         Assert.That(Foo.ReadWrite, Is.EqualTo(25));
+        Foo.StaticField.A = 20;
+        Assert.That(Foo.StaticField.A, Is.EqualTo(20));
     }
 
     [Test]

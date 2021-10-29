@@ -286,6 +286,7 @@ namespace CppSharp.Generators.CSharp
             {
                 if (Context.MarshalKind == MarshalKind.NativeField ||
                     Context.MarshalKind == MarshalKind.Variable ||
+                    Context.MarshalKind == MarshalKind.ReturnVariableArray ||
                     !originalClass.HasNonTrivialDestructor)
                 {
                     Context.Return.Write($"{qualifiedClass}.{Helpers.CreateInstanceIdentifier}({Context.ReturnVarName})");
