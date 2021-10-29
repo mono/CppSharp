@@ -8,6 +8,9 @@ namespace CppSharp.Extensions
     {
         public static int GetWidth(this Type type, ParserTargetInfo targetInfo)
         {
+            if (type is TemplateSpecializationType specializationType)
+                type = specializationType.Desugared.Type;
+
             if (type.IsPrimitiveType(out var primitiveType))
                 return (int)primitiveType.GetInfo(targetInfo, out _).Width;
 
@@ -26,6 +29,9 @@ namespace CppSharp.Extensions
 
         public static int GetAlignment(this Type type, ParserTargetInfo targetInfo)
         {
+            if (type is TemplateSpecializationType specializationType)
+                type = specializationType.Desugared.Type;
+
             if (type.IsPrimitiveType(out var primitiveType))
                 return (int)primitiveType.GetInfo(targetInfo, out _).Alignment;
 

@@ -2,6 +2,7 @@
 #include "../NamespacesBase/NamespacesBase.h"
 #include "Independent.h"
 #include <string>
+#include <vector>
 
 // Namespace clashes with NamespacesBase.OverlappingNamespace
 // Test whether qualified names turn out right.
@@ -105,7 +106,13 @@ public:
 class DLL_API Ignored
 {
 private:
-    std::basic_string<char, std::char_traits<char>, CustomAllocator<char>> f;
+    std::basic_string<char, std::char_traits<char>, CustomAllocator<char>> customAllocatedString;
+};
+
+class DLL_API StdFields
+{
+private:
+    std::vector<unsigned int, CustomAllocator<unsigned int>> customAllocatedVector;
 };
 
 DLL_API bool operator<<(const Base& b, const char* str);

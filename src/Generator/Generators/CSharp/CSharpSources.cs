@@ -128,7 +128,8 @@ namespace CppSharp.Generators.CSharp
                     var declarationContexts = new Stack<DeclarationContext>();
                     while (!(declContext is TranslationUnit))
                     {
-                        declarationContexts.Push(declContext);
+                        if (!(declContext is Namespace @namespace) || !@namespace.IsInline)
+                            declarationContexts.Push(declContext);
                         declContext = declContext.Namespace;
                     }
 

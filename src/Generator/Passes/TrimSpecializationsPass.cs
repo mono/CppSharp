@@ -138,8 +138,7 @@ namespace CppSharp.Passes
                 template.Specializations.All(s => s.Ignore))
                 template.ExplicitlyIgnore();
 
-            if (template.Fields.Any(f => f.Type.Desugar() is TemplateParameterType))
-                MoveExternalSpecializations(template);
+            TryMoveExternalSpecializations(template);
         }
 
         /// <summary>
@@ -147,7 +146,7 @@ namespace CppSharp.Passes
         /// the library their template is located in, to the module of said external types.
         /// </summary>
         /// <param name="template">The template to check for external specializations.</param>
-        private static void MoveExternalSpecializations(Class template)
+        private static void TryMoveExternalSpecializations(Class template)
         {
             for (int i = template.Specializations.Count - 1; i >= 0; i--)
             {

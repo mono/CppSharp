@@ -1,4 +1,6 @@
 using System.IO;
+using System.Linq;
+using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Utils;
 
@@ -28,9 +30,15 @@ namespace CppSharp.Tests
             driver.Options.Modules[1].Dependencies.Add(module);
         }
 
-        public override void Preprocess(Driver driver, AST.ASTContext ctx)
+        public override void Preprocess(Driver driver, ASTContext ctx)
         {
             ctx.IgnoreClassWithName("Ignored");
+            // operator= for this type isn't necessary for testing
+            // while also requiring a large amount of C++ to get valid symbols; better ignore
+            foreach (Method @operator in ctx.FindCompleteClass("StdFields").Operators)
+            {
+                @operator.ExplicitlyIgnore();
+            }
         }
     }
 
