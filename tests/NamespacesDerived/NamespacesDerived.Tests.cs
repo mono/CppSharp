@@ -15,6 +15,7 @@ public class NamespaceDerivedTests
         using (new DerivedFromSecondaryBaseInDependency()) { }
         using (var der2 = new Derived2())
         using (der2.LocalTypedefSpecialization) { }
+        Assert.That(typeof(Derived2).Assembly.GetTypes().Any(t => t.FullName.Contains("Std.Vector")), Is.True);
     }
 
     [Test]

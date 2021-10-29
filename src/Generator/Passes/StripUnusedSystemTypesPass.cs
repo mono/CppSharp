@@ -59,8 +59,16 @@ namespace CppSharp.Passes
             var templateType = desugared as TemplateSpecializationType;
             if (templateType != null)
             {
-                MarkAsUsed(templateType.Template);
-                MarkAsUsed(templateType.Template.TemplatedDecl);
+                var template = templateType.Template;
+                if (template.TemplatedDecl is TypeAlias typeAlias &&
+                    typeAlias.Type.Desugar() is TemplateSpecializationType specializationType)
+                {
+                    MarkAsUsed(template);
+                    MarkAsUsed(template.TemplatedDecl);
+                    template = specializationType.Template;
+                }
+                MarkAsUsed(template);
+                MarkAsUsed(template.TemplatedDecl);
                 return true;
             }
 
@@ -90,6 +98,6 @@ namespace CppSharp.Passes
             }
         }
 
-        private HashSet<Declaration> usedStdTypes = new HashSet<Declaration>();
+        private readonly HashSet<Declaration> usedStdTypes = new HashSet<Declaration>();
     }
 }

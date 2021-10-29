@@ -109,10 +109,13 @@ private:
     std::basic_string<char, std::char_traits<char>, CustomAllocator<char>> customAllocatedString;
 };
 
+template<class T, class Alloc = CustomAllocator<T>>
+using vector = ::std::vector<T, Alloc>;
+
 class DLL_API StdFields
 {
 private:
-    std::vector<unsigned int, CustomAllocator<unsigned int>> customAllocatedVector;
+   vector<unsigned int, CustomAllocator<unsigned int>> customAllocatedVector;
 };
 
 DLL_API bool operator<<(const Base& b, const char* str);

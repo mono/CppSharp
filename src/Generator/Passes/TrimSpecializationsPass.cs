@@ -158,7 +158,7 @@ namespace CppSharp.Passes
                                let module = arg.Type.Type.GetModule()
                                where module != null
                                select module).ToList().TopologicalSort(m => m.Dependencies);
-                if (modules.Any())
+                if (modules.Count > 0)
                 {
                     var module = modules.Last();
                     module.ExternalClassTemplateSpecializations.Add(specialization);
