@@ -602,7 +602,9 @@ namespace CppSharp.Generators.C
             if (!string.IsNullOrEmpty(@return.Type))
                 @return.NamePrefix.Append(' ');
             @return.Name = @class + name;
-            @return.NameSuffix.Append('(').Append(@params).Append(')').Append(@const).Append(exceptionType);
+            @return.NameSuffix.Append('(').Append(@params)
+                .Append(function.IsVariadic ? ", ..." : string.Empty).Append(')')
+                .Append(@const).Append(exceptionType);
             return @return;
         }
 

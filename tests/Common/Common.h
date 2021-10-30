@@ -496,6 +496,12 @@ namespace SomeNamespace
     protected:
         void protectedInlined() {}
     };
+
+    class AbstractInlines
+    {
+    public:
+        virtual void hasVariadicArgs(int regular, ...) = 0;
+    };
 }
 
 // Test operator overloads
