@@ -792,7 +792,7 @@ namespace CppSharp.Generators.CSharp
 
         private bool CanUseSequentialLayout(Class @class)
         {
-            if (@class.IsUnion)
+            if (@class.IsUnion || @class.HasUnionFields)
                 return false;
 
             foreach (var field in @class.Fields)

@@ -389,6 +389,11 @@ public class CommonTests
         nestedPublic.J = 5;
         Assert.That(nestedPublic.L, Is.EqualTo(5));
         Assert.That(nestedPublic.G, Is.Not.EqualTo(0));
+        using (var nestedUnionWithNested = new NestedUnionWithNested())
+        {
+            nestedUnionWithNested.NestedField1 = 50;
+            Assert.That(nestedUnionWithNested.UnionField, Is.EqualTo(50));
+        }
     }
 
     [Test]

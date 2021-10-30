@@ -31,6 +31,8 @@ namespace CppSharp.Passes
                 ReplaceField(@class, i, fieldType);
                 fieldType.Fields.Clear();
                 fieldType.ExplicitlyIgnore();
+                if (fieldType.IsUnion)
+                    @class.HasUnionFields = true;
             }
 
             if (@class.Layout == null)

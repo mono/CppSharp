@@ -181,6 +181,8 @@ namespace CppSharp.AST
 
         public bool IsInterface => Type == ClassType.Interface;
 
+        public bool HasUnionFields { get; set; }
+
         public bool IsAbstractImpl
         {
             get { return Methods.Any(m => m.SynthKind == FunctionSynthKind.AbstractImplCall); }

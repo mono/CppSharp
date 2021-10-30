@@ -1333,6 +1333,19 @@ public:
     static ReturnByValueWithReturnParam generate();
 };
 
+struct DLL_API NestedUnionWithNested
+{
+    union
+    {
+        struct
+        {
+            int nestedField1;
+            int nestedField2;
+        };
+        int unionField;
+    };
+};
+
 template<typename T> void TemplatedFunction(T type)
 {
 
