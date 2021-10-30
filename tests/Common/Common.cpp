@@ -465,6 +465,11 @@ ClassA::ClassA(int value)
     Value = value;
 }
 
+ClassA::ClassA(const ClassA& other, bool param)
+{
+    Value = other.Value;
+}
+
 ClassB::ClassB(const ClassA& x)
 {
     Value = x.Value;

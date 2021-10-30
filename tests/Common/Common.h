@@ -713,6 +713,7 @@ class DLL_API ClassA
 {
 public:
     ClassA(int value);
+    ClassA(const ClassA& other, bool param = true);
     int Value;
 };
 class DLL_API ClassB

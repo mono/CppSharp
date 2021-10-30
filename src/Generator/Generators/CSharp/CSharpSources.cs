@@ -2501,7 +2501,11 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                     // Allocate memory for a new native object and call the ctor.
                     WriteLine($"var ret = Marshal.AllocHGlobal(sizeof({@internal}));");
                     var printed = TypePrinter.PrintNative(@class);
-                    WriteLine($"{printed}.{GetFunctionNativeIdentifier(copyCtorMethod)}(ret, new {TypePrinter.IntPtrType}(&native));",
+                    string defaultValue = string.Empty;
+                    if (copyCtorMethod.Parameters.Count > 1)
+                        defaultValue = $", {ExpressionPrinter.VisitParameter(copyCtorMethod.Parameters.Last())}";
+                    WriteLine($@"{printed}.{GetFunctionNativeIdentifier(copyCtorMethod)}(ret, new {
+                        TypePrinter.IntPtrType}(&native){defaultValue});",
                         printed, GetFunctionNativeIdentifier(copyCtorMethod));
                     WriteLine("return ret.ToPointer();");
                 }
