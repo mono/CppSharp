@@ -1218,12 +1218,19 @@ namespace CppSharp.Generators.CSharp
             }
             else
             {
-                var systemType = Internal.ExpressionHelper.GetSystemType(Context, type);
-                if (!Internal.ExpressionHelper.TryParseExactLiteralExpression(ref initializerString, systemType))
-                    Write(type.IsPrimitiveType() || type.IsEnum() ? $"({type}) {initializerString}" :
-                        $"new {type}({initializerString})");
-                else
+                if (Internal.ExpressionHelper.PrintExpression(Context, null, type,
+                   variable.Initializer, false, ref initializerString) == null)
+                {
                     Write(initializerString);
+                }
+                else
+                {
+                    var systemType = Internal.ExpressionHelper.GetSystemType(Context, type);
+                    if (!Internal.ExpressionHelper.TryParseExactLiteralExpression(ref initializerString, systemType))
+                        Write($"({type}) {initializerString}");
+                    else
+                        Write(initializerString);
+                }
             }
             WriteLine(";");
         }

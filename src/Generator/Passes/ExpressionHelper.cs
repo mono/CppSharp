@@ -1,12 +1,10 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators;
 using CppSharp.Generators.CSharp;
-using CppSharp.Parser;
 using CppSharp.Types;
 
 using TypeCode = System.TypeCode;
@@ -40,8 +38,7 @@ namespace CppSharp.Internal
 
             if (desugared.IsPrimitiveTypeConvertibleToRef())
             {
-                var method = function as Method;
-                if (method != null && method.IsConstructor)
+                if (function is Method method && method.IsConstructor)
                 {
                     result = string.Empty;
                     return false;
@@ -282,7 +279,8 @@ namespace CppSharp.Internal
             var method = (Method)expression.Declaration;
             var expressionSupported = decl.IsValueType && method.Parameters.Count == 0;
 
-            if (expression.String.Contains('(') || expression.String.StartsWith("{"))
+            if (expression.String.Contains('(') || expression.String.StartsWith("{") ||
+                ctor.Arguments.Count > 1)
             {
                 var argsBuilder = new StringBuilder("new ");
                 argsBuilder.Append(typePrinterResult);
@@ -312,14 +310,14 @@ namespace CppSharp.Internal
                 switch (builtin.Type)
                 {
                     case PrimitiveType.Float:
-                        if (statement.String.EndsWith(".F", System.StringComparison.Ordinal))
+                        if (statement.String.EndsWith(".F", System.StringComparison.OrdinalIgnoreCase))
                         {
                             result = statement.String.Replace(".F", ".0F");
                             return true;
                         }
                         break;
                     case PrimitiveType.Double:
-                        if (statement.String.EndsWith(".", System.StringComparison.Ordinal))
+                        if (statement.String.EndsWith(".", System.StringComparison.OrdinalIgnoreCase))
                         {
                             result = statement.String + '0';
                             return true;
