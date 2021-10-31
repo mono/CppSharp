@@ -1185,8 +1185,9 @@ namespace CppSharp.Generators.CSharp
         {
             var initializerString = variable.Initializer.String;
             Write($"{signature} {{ get; }} = ");
+            Type type = variable.Type.Desugar();
 
-            if (variable.Type.Desugar() is ArrayType arrayType)
+            if (type is ArrayType arrayType)
             {
                 var systemType = Internal.ExpressionHelper.GetSystemType(Context, arrayType.Type.Desugar());
                 Write($"new {arrayType.Type}[{arrayType.Size}] ");
@@ -1217,12 +1218,13 @@ namespace CppSharp.Generators.CSharp
             }
             else
             {
-                var systemType = Internal.ExpressionHelper.GetSystemType(Context, variable.Type.Desugar());
+                var systemType = Internal.ExpressionHelper.GetSystemType(Context, type);
                 if (!Internal.ExpressionHelper.TryParseExactLiteralExpression(ref initializerString, systemType))
-                    Write($"({variable.Type})");
-                Write(initializerString);
+                    Write(type.IsPrimitiveType() || type.IsEnum() ? $"({type}) {initializerString}" :
+                        $"new {type}({initializerString})");
+                else
+                    Write(initializerString);
             }
-
             WriteLine(";");
         }
 

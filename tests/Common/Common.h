@@ -491,11 +491,13 @@ namespace SomeNamespace
     class Inlines
     {
     public:
-        Inlines(int param) {}
+        constexpr Inlines(int param, const char* name) {}
         inline operator NamespacedAbstractImpl () const { return NamespacedAbstractImpl(); }
     protected:
         void protectedInlined() {}
     };
+
+    constexpr Inlines constWithParams(5, "test");
 
     class AbstractInlines
     {

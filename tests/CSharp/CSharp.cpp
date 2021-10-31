@@ -1539,7 +1539,7 @@ int TestArrays::virtualTakeArrays(Foo* arrayOfPointersToObjects[], int arrayOfPr
     return takeArrays(arrayOfPointersToObjects, arrayOfPrimitives, arrayOfObjects);
 }
 
-int TestArrays::virtualTakeArrays(Foo *fixedArrayOfPointersToObjects[], int fixedArrayOfPrimitives[], int *fixedArrayOfPointersToPrimitives[]) const
+int TestArrays::virtualTakeArrays(Foo *fixedArrayOfPointersToObjects[3], int fixedArrayOfPrimitives[4], int *fixedArrayOfPointersToPrimitives[5]) const
 {
     return takeArrays(fixedArrayOfPointersToObjects, fixedArrayOfPrimitives, fixedArrayOfPointersToPrimitives);
 }
