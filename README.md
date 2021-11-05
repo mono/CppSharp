@@ -13,9 +13,9 @@ rich declaration and type information model.
 
 ## Releases/Build Status
 
-| NuGet Packages            | GitHub Releases           | Continuous Integration    |
-|---------------------------|---------------------------|---------------------------|
-| [![NuGet](https://img.shields.io/nuget/v/CppSharp.svg)](https://www.nuget.org/packages/CppSharp/) | [![GitHub release](https://img.shields.io/github/release/mono/CppSharp.svg)](https://github.com/mono/CppSharp/releases) | [![GitHub-actions](https://github.com/mono/CppSharp/workflows/CI/badge.svg)](https://github.com/mono/CppSharp/actions?query=workflow%3ACI) 
+| NuGet Packages            | Continuous Integration    |
+|---------------------------|---------------------------|
+| [![NuGet](https://img.shields.io/nuget/v/CppSharp.svg)](https://www.nuget.org/packages/CppSharp/) | [![GitHub-actions](https://github.com/mono/CppSharp/workflows/CI/badge.svg)](https://github.com/mono/CppSharp/actions?query=workflow%3ACI) 
 
 1. [Libraries](#libraries)
 2. [Documentation](#documentation)
