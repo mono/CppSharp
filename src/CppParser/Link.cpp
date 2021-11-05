@@ -154,7 +154,7 @@ void Parser::LinkMachO(const CppLinkerOptions* LinkerOptions,
 #ifdef __APPLE__
     using namespace llvm;
 
-    args.push_back("-flavor darwinnew");
+    args.push_back("-flavor darwin");
     for (const std::string& Arg : LinkerOptions->Arguments)
     {
         args.push_back(Arg.data());
@@ -182,6 +182,6 @@ void Parser::LinkMachO(const CppLinkerOptions* LinkerOptions,
     std::string Out(Output);
     args.push_back(Out.data());
 
-    lld::mach_o::link(args, false, outs(), errs());
+    lld::macho::link(args, false, outs(), errs());
 #endif
 }

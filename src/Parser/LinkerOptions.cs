@@ -29,12 +29,12 @@ namespace CppSharp.Parser
 
         public void Setup(string triple, LanguageVersion? languageVersion)
         {
+            string[] parts = triple.Split('-');
             switch (Platform.Host)
             {
                 case TargetPlatform.Windows:
                     AddArguments("-dll");
                     AddArguments("libcmt.lib");
-                    string[] parts = triple.Split('-');
                     if (parts.Any(p => p.StartsWith("mingw") || p.StartsWith("gnu")))
                     {
                         AddArguments("libstdc++-6.dll");
@@ -42,7 +42,7 @@ namespace CppSharp.Parser
                     break;
                 case TargetPlatform.Linux:
                 case TargetPlatform.Android:
-                    AddArguments(SystemLibraryPath ?? "-L/usr/lib/x86_64-linux-gnu");
+                    AddArguments("-L" + (SystemLibraryPath ?? "/usr/lib/x86_64-linux-gnu"));
                     AddArguments("-lc");
                     AddArguments("--shared");
                     AddArguments("-rpath");
@@ -58,9 +58,13 @@ namespace CppSharp.Parser
                     }
                     AddArguments("-lSystem");
                     AddArguments("-dylib");
-                    AddArguments("-sdk_version");
+                    AddArguments("-arch");
+                    AddArguments(parts.Length > 0 ? parts[0] : "x86_64");
+                    AddArguments("-platform_version");
+                    AddArguments("macos");
                     AddArguments(MacOSSDKVersion.ToString());
-                    AddArguments(SystemLibraryPath ?? "-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib");
+                    AddArguments(MacOSSDKVersion.ToString());
+                    AddArguments("-L" + (SystemLibraryPath ?? "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib"));
                     AddArguments("-rpath");
                     AddArguments(".");
                     break;

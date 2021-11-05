@@ -350,6 +350,7 @@ function cmake(gen, conf, builddir, options)
 		.. ' -DLLVM_TOOL_VFABI_DEMANGLE_FUZZER_BUILD=false'
 		.. ' -DLLVM_TOOL_XCODE_TOOLCHAIN_BUILD=false'
 		.. ' -DLLVM_TOOL_YAML2OBJ_BUILD=false'
+		.. ' -DLLVM_HAVE_LIBXAR=false'
 		.. ' -DCLANG_BUILD_EXAMPLES=false '
 		.. ' -DCLANG_BUILD_TOOLS=false'
 		.. ' -DCLANG_ENABLE_ARCMT=false'

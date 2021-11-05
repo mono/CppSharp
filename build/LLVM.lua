@@ -206,8 +206,7 @@ function SetupLLVMLibs()
       "lldDriver",
       "lldReaderWriter",
       "lldYAML",
-      "lldMachO",
-      "lldMachOOld"
+      "lldMachO"
     }
     
   filter(c)
