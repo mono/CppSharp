@@ -11,7 +11,7 @@ using TypeCode = System.TypeCode;
 
 namespace CppSharp.Internal
 {
-    internal class ExpressionHelper
+    internal static class ExpressionHelper
     {
         private static readonly Regex regexFunctionParams = new Regex(@"\(?(.+)\)?", RegexOptions.Compiled);
         private static readonly Regex regexDoubleColon = new Regex(@"\w+::", RegexOptions.Compiled);
@@ -200,7 +200,8 @@ namespace CppSharp.Internal
         {
             return CheckFloatSyntax(desugared, expression, ref result) ||
                 CheckForEnumValue(context, desugared, expression, ref result) ||
-                CheckForDefaultChar(context, desugared, ref result);
+                CheckForChar(context, desugared, ref result) ||
+                CheckForString(context, desugared, ref result);
         }
 
         private static bool CheckForDefaultPointer(BindingContext context, Type desugared, ref string result)
@@ -390,10 +391,9 @@ namespace CppSharp.Internal
                 ((BuiltinTypeExpressionObsolete)defaultArgument).Value == 0;
         }
 
-        private static bool CheckForDefaultChar(BindingContext context, Type desugared, ref string result)
+        private static bool CheckForChar(BindingContext context, Type desugared, ref string result)
         {
-            int value;
-            if (int.TryParse(result, out value) &&
+            if (int.TryParse(result, out int value) &&
                 ((context.Options.MarshalCharAsManagedChar &&
                  desugared.IsPrimitiveType(PrimitiveType.Char)) ||
                  desugared.IsPrimitiveType(PrimitiveType.WideChar)))
@@ -401,7 +401,36 @@ namespace CppSharp.Internal
                 result = value == 0 ? "'\\0'" : ("(char) " + result);
                 return true;
             }
+            if (context.Options.MarshalCharAsManagedChar &&
+                desugared.IsPrimitiveType(PrimitiveType.UChar))
+            {
+                result = "(byte) " + result;
+                return true;
+            }
 
+            return false;
+        }
+
+        private static bool CheckForString(BindingContext context, Type desugared, ref string result)
+        {
+            if (context.TypeMaps.FindTypeMap(desugared, out TypeMap typeMap))
+            {
+                var typePrinterContext = new TypePrinterContext()
+                {
+                    Kind = TypePrinterContextKind.Managed,
+                    MarshalKind = MarshalKind.DefaultExpression,
+                    Type = desugared
+                };
+
+                var typeInSignature = typeMap.CSharpSignatureType(typePrinterContext)
+                    .SkipPointerRefs().Desugar();
+
+                if (typeInSignature is CILType managed && managed.Type == typeof(string))
+                {
+                    result = result[result.IndexOf("\"")..];
+                    return true;
+                }
+            }
             return false;
         }
     }

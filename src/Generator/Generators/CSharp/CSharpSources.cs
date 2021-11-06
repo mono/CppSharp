@@ -1192,11 +1192,11 @@ namespace CppSharp.Generators.CSharp
                 var systemType = Internal.ExpressionHelper.GetSystemType(Context, arrayType.Type.Desugar());
                 Write($"new {arrayType.Type}[{arrayType.Size}] ");
                 Write("{ ");
-  
+
                 List<string> elements = Internal.ExpressionHelper.SplitInitListExpr(initializerString);
 
                 while (elements.Count < arrayType.Size)
-                    elements.Add(systemType == typeof(string) ? "\"\"" : null);                
+                    elements.Add(systemType == typeof(string) ? "\"\"" : null);
 
                 for (int i = 0; i < elements.Count; ++i)
                 {
@@ -1204,7 +1204,8 @@ namespace CppSharp.Generators.CSharp
 
                     if (e == null)
                         Write("default");
-                    else { 
+                    else
+                    {
                         if (!Internal.ExpressionHelper.TryParseExactLiteralExpression(ref e, systemType))
                             Write($"({arrayType.Type})");
                         Write(e);
@@ -1218,19 +1219,7 @@ namespace CppSharp.Generators.CSharp
             }
             else
             {
-                if (Internal.ExpressionHelper.PrintExpression(Context, null, type,
-                   variable.Initializer, false, ref initializerString) == null)
-                {
-                    Write(initializerString);
-                }
-                else
-                {
-                    var systemType = Internal.ExpressionHelper.GetSystemType(Context, type);
-                    if (!Internal.ExpressionHelper.TryParseExactLiteralExpression(ref initializerString, systemType))
-                        Write($"({type}) {initializerString}");
-                    else
-                        Write(initializerString);
-                }
+                Write(initializerString);
             }
             WriteLine(";");
         }

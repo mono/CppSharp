@@ -613,7 +613,11 @@ void MethodsWithDefaultValues::defaultValueType(QGenericArgument valueType)
 {
 }
 
-void MethodsWithDefaultValues::defaultChar(char c, char uc, char Uc, char Lc)
+void MethodsWithDefaultValues::defaultChar(char c, char uc, char Uc, char Lc, unsigned char b)
+{
+}
+
+void MethodsWithDefaultValues::defaultString(const wchar_t* wideString)
 {
 }
 
