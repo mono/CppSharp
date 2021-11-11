@@ -57,6 +57,11 @@ namespace CppSharp.Passes
 
                 MarkUsedFieldTypes(decl, visitedDeclarationContexts);
             }
+            foreach (var @base in @class.Bases.Where(
+                b => b.IsClass && b.Class.Ignore && b.Class.Fields.Count > 0))
+            {
+                @base.Class.GenerationKind = GenerationKind.Internal;
+            }
         }
     }
 }

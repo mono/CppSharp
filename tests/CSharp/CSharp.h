@@ -5,6 +5,7 @@
 #include <vector>
 #include <limits>
 #include <string>
+#include <mutex>
 #include "AnotherUnit.h"
 #include "ExcludedUnit.hpp"
 #include "CSharpTemplates.h"
@@ -201,6 +202,7 @@ protected:
     AbstractProprietor(int i);
     int m_value;
     long m_property;
+    std::mutex m_mutex;
 };
 
 class DLL_API Proprietor : public AbstractProprietor

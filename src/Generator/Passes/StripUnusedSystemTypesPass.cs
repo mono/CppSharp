@@ -40,7 +40,8 @@ namespace CppSharp.Passes
 
         private bool TryMarkType(Type desugared)
         {
-            var tagType = desugared as TagType;
+            var templateType = desugared as TemplateSpecializationType;
+            var tagType = desugared as TagType ?? templateType?.Desugared.Type as TagType;
             if (tagType != null)
             {
                 var specialization = tagType.Declaration as ClassTemplateSpecialization;
@@ -56,7 +57,6 @@ namespace CppSharp.Passes
                 return true;
             }
 
-            var templateType = desugared as TemplateSpecializationType;
             if (templateType != null)
             {
                 var template = templateType.Template;
