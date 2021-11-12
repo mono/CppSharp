@@ -1038,7 +1038,11 @@ namespace CppSharp
             {
                 var decl = ctx.GetNamespaces(i);
                 var _decl = Visit(decl) as AST.Namespace;
-                _ctx.Declarations.Add(_decl);
+                // HACK: we have an irreproducible case where an STD name-space is added to a custom header
+                if (_decl.Namespace == _ctx)
+                {
+                    _ctx.Declarations.Add(_decl);
+                }
             }
 
             for (uint i = 0; i < ctx.EnumsCount; ++i)
