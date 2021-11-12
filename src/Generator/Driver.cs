@@ -216,6 +216,7 @@ namespace CppSharp
 
             TranslationUnitPasses.AddPass(new ResolveIncompleteDeclsPass());
             TranslationUnitPasses.AddPass(new IgnoreSystemDeclarationsPass());
+            TranslationUnitPasses.AddPass(new MatchParamNamesWithInstantiatedFromPass());
 
             if (Options.IsCSharpGenerator)
                 TranslationUnitPasses.AddPass(new EqualiseAccessOfOverrideAndBasePass());
