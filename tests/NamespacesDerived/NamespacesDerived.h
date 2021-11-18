@@ -94,13 +94,9 @@ class CustomAllocator
 public:
     typedef T value_type;
 
-    T* allocate(size_t cnt, const void* = 0)
-    {
-        return 0;
-    }
-    void deallocate(T* p, size_t cnt)
-    {
-    }
+    T* allocate(size_t cnt, const void* = 0) { return 0; }
+    void deallocate(T* p, size_t cnt) {}
+    bool operator==(const CustomAllocator&) { return true; }
 };
 
 class DLL_API Ignored
