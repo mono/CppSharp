@@ -832,6 +832,12 @@ class ClassWithNonTypeTemplateArgument
 {
 public:
     ClassWithNonTypeTemplateArgument() { }
+private:
+    union
+    {
+        int i;
+        DependentValueFields<TestFlag> d;
+    };
 };
 
 class SpecializationOfClassWithNonTypeTemplateArgument : public ClassWithNonTypeTemplateArgument<0>

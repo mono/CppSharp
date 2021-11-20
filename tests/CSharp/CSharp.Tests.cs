@@ -38,6 +38,7 @@ public unsafe class CSharpTests
         new HasProtectedVirtual().Dispose();
         new Proprietor(5).Dispose();
         new HasCtorWithMappedToEnum<TestFlag>(TestFlag.Flag1).Dispose();
+        new TestAnonymousMemberNameCollision().Dispose();
         using (var testOverrideFromSecondaryBase = new TestOverrideFromSecondaryBase())
         {
             testOverrideFromSecondaryBase.function();
@@ -1747,12 +1748,6 @@ public unsafe class CSharpTests
     public void TestTypemapTypedefParam()
     {
         Assert.That(CSharp.CSharp.TakeTypemapTypedefParam(false), Is.False);
-    }
-
-    [Test]
-    public void TestAnonymousMemberNameCollision()
-    {
-        StringAssert.EndsWith(nameof(CSharp.TestAnonymousMemberNameCollision._0.__0), "__0");
     }
 
     [Test]

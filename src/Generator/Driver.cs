@@ -221,8 +221,8 @@ namespace CppSharp
             if (Options.IsCSharpGenerator)
                 TranslationUnitPasses.AddPass(new EqualiseAccessOfOverrideAndBasePass());
 
-            TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
             TranslationUnitPasses.AddPass(new FlattenAnonymousTypesToFields());
+            TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
             TranslationUnitPasses.AddPass(new MarkUsedClassInternalsPass());
 
             if (Options.IsCSharpGenerator)
