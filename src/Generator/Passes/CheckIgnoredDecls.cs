@@ -65,8 +65,9 @@ namespace CppSharp.Passes
 
             Declaration decl = null;
             if (specialization.Arguments.Any(a =>
-                a.Type.Type?.TryGetDeclaration(out decl) == true) &&
-                decl.Ignore)
+                a.Kind != TemplateArgument.ArgumentKind.Type ||
+                (a.Type.Type.TryGetDeclaration(out decl) == true) &&
+                 decl.Ignore))
             {
                 specialization.ExplicitlyIgnore();
                 return false;
@@ -157,7 +158,7 @@ namespace CppSharp.Passes
 
         public override bool VisitFunctionDecl(Function function)
         {
-            if (!VisitDeclaration(function) || function.IsSynthetized
+            if (!base.VisitFunctionDecl(function) || function.IsSynthetized
                 || function.IsExplicitlyGenerated)
                 return false;
 
