@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
@@ -559,8 +560,31 @@ namespace CppSharp.Generators.C
         public override TypePrinterResult VisitClassTemplateSpecializationDecl(
             ClassTemplateSpecialization specialization)
         {
-            var args = specialization.Arguments.Where(a => a.Type.Type != null &&
-                         !(a.Type.Type is DependentNameType)).Select(a => a.Type.Visit(this));
+            var args = new List<string>();
+            for (int i = 0; i < specialization.Arguments.Count; i++)
+            {
+                TemplateArgument arg = specialization.Arguments[i];
+                switch (arg.Kind)
+                {
+                    case TemplateArgument.ArgumentKind.Type:
+                        args.Add(arg.Type.Visit(this));
+                        break;
+                    case TemplateArgument.ArgumentKind.Declaration:
+                        args.Add(arg.Declaration.Visit(this));
+                        break;
+                    case TemplateArgument.ArgumentKind.Integral:
+                        Class template = specialization.TemplatedDecl.TemplatedClass;
+                        var nonTypeTemplateParameter = template.TemplateParameters[i]
+                            as NonTypeTemplateParameter;
+                        if (!(nonTypeTemplateParameter?.DefaultArgument is
+                              BuiltinTypeExpressionObsolete builtinExpression) ||
+                            builtinExpression.Value != arg.Integral)
+                        {
+                            args.Add(arg.Integral.ToString(CultureInfo.InvariantCulture));
+                        }
+                        break;
+                }
+            }
             return $"{specialization.TemplatedDecl.Visit(this)}<{string.Join(", ", args)}>";
         }
 
