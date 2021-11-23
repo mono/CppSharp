@@ -4693,13 +4693,20 @@ ParserResult* Parser::Build(const CppLinkerOptions* LinkerOptions, const std::st
     if (error)
         return error;
 
-    Link(File, LinkerOptions);
+    bool LinkingError = !Link(File, LinkerOptions);
 
     if (Last)
         llvm::llvm_shutdown();
 
     auto res = new ParserResult();
     HandleDiagnostics(res);
+    if (LinkingError)
+    {
+        ParserDiagnostic PD;
+        PD.level = ParserDiagnosticLevel::Error;
+        PD.lineNumber = PD.columnNumber = -1;
+        res->addDiagnostics(PD);
+    }
     return res;
 }
 
@@ -4769,10 +4776,20 @@ ParserResult* ClangParser::Link(CppParserOptions* Opts,
         return 0;
 
     Parser Parser(Opts);
-    Parser.Link(File, LinkerOptions);
+    bool LinkingError = !Parser.Link(File, LinkerOptions);
 
     if (Last)
         llvm::llvm_shutdown();
+
+    auto res = new ParserResult();
+    if (LinkingError)
+    {
+        ParserDiagnostic PD;
+        PD.level = ParserDiagnosticLevel::Error;
+        PD.lineNumber = PD.columnNumber = -1;
+        res->addDiagnostics(PD);
+    }
+    return res;
 }
 
 ParserResult* Parser::Compile(const std::string& File)

@@ -13,7 +13,7 @@
 
 using namespace CppSharp::CppParser;
 
-void Parser::Link(const std::string& File, const CppLinkerOptions* LinkerOptions)
+bool Parser::Link(const std::string& File, const CppLinkerOptions* LinkerOptions)
 {
     std::vector<const char*> args;
     llvm::StringRef Dir(llvm::sys::path::parent_path(File));
@@ -27,12 +27,10 @@ void Parser::Link(const std::string& File, const CppLinkerOptions* LinkerOptions
         switch (Triple.getEnvironment())
         {
         case llvm::Triple::EnvironmentType::MSVC:
-            LinkWindows(LinkerOptions, args, Dir, Stem);
-            break;
+            return LinkWindows(LinkerOptions, args, Dir, Stem);
 
         case llvm::Triple::EnvironmentType::GNU:
-            LinkWindows(LinkerOptions, args, Dir, Stem, true);
-            break;
+            return LinkWindows(LinkerOptions, args, Dir, Stem, true);
 
         default:
             throw std::invalid_argument("Target triple environment");
@@ -40,20 +38,18 @@ void Parser::Link(const std::string& File, const CppLinkerOptions* LinkerOptions
         break;
 
     case llvm::Triple::OSType::Linux:
-        LinkELF(LinkerOptions, args, Dir, Stem);
-        break;
+        return LinkELF(LinkerOptions, args, Dir, Stem);
 
     case llvm::Triple::OSType::Darwin:
     case llvm::Triple::OSType::MacOSX:
-        LinkMachO(LinkerOptions, args, Dir, Stem);
-        break;
+        return LinkMachO(LinkerOptions, args, Dir, Stem);
 
     default:
         throw std::invalid_argument("Target triple operating system");
     }
 }
 
-void Parser::LinkWindows(const CppLinkerOptions* LinkerOptions,
+bool Parser::LinkWindows(const CppLinkerOptions* LinkerOptions,
     std::vector<const char*>& args,
     const llvm::StringRef& Dir, llvm::StringRef& Stem, bool MinGW)
 {
@@ -104,11 +100,13 @@ void Parser::LinkWindows(const CppLinkerOptions* LinkerOptions,
     std::string Out("-out:" + std::string(Output));
     args.push_back(Out.data());
 
-    lld::coff::link(args, false, outs(), errs());
+    return lld::coff::link(args, false, outs(), errs());
+#else
+    return false;
 #endif
 }
 
-void Parser::LinkELF(const CppLinkerOptions* LinkerOptions,
+bool Parser::LinkELF(const CppLinkerOptions* LinkerOptions,
     std::vector<const char*>& args,
     llvm::StringRef& Dir, llvm::StringRef& Stem)
 {
@@ -143,11 +141,13 @@ void Parser::LinkELF(const CppLinkerOptions* LinkerOptions,
     std::string Out(Output);
     args.push_back(Out.data());
 
-    lld::elf::link(args, false, outs(), errs());
+    return lld::elf::link(args, false, outs(), errs());
+#else
+    return false;
 #endif
 }
 
-void Parser::LinkMachO(const CppLinkerOptions* LinkerOptions,
+bool Parser::LinkMachO(const CppLinkerOptions* LinkerOptions,
     std::vector<const char*>& args,
     llvm::StringRef& Dir, llvm::StringRef& Stem)
 {
@@ -182,6 +182,8 @@ void Parser::LinkMachO(const CppLinkerOptions* LinkerOptions,
     std::string Out(Output);
     args.push_back(Out.data());
 
-    lld::macho::link(args, false, outs(), errs());
+    return lld::macho::link(args, false, outs(), errs());
+#else
+    return false;
 #endif
 }

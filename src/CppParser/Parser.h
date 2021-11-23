@@ -58,7 +58,7 @@ public:
     static ParserResult* ParseLibrary(const CppLinkerOptions* Opts);
     ParserResult* Build(const CppLinkerOptions* LinkerOptions, const std::string& File, bool Last);
     ParserResult* Compile(const std::string& File);
-    void Link(const std::string& File, const CppLinkerOptions* LinkerOptions);
+    bool Link(const std::string& File, const CppLinkerOptions* LinkerOptions);
     void WalkAST(clang::TranslationUnitDecl* TU);
     void HandleDeclaration(const clang::Decl* D, Declaration* Decl);
     CppParserOptions* opts;
@@ -172,11 +172,11 @@ private:
         llvm::object::ObjectFile* ObjectFile, std::vector<CppSharp::CppParser::NativeLibrary*>& NativeLibs);
     ParserTargetInfo* GetTargetInfo();
 
-    void LinkWindows(const CppLinkerOptions* LinkerOptions, std::vector<const char*>& args,
+    bool LinkWindows(const CppLinkerOptions* LinkerOptions, std::vector<const char*>& args,
         const llvm::StringRef& Dir, llvm::StringRef& Stem, bool MinGW = false);
-    void LinkELF(const CppLinkerOptions* LinkerOptions, std::vector<const char*>& args,
+    bool LinkELF(const CppLinkerOptions* LinkerOptions, std::vector<const char*>& args,
         llvm::StringRef& Dir, llvm::StringRef& Stem);
-    void LinkMachO(const CppLinkerOptions* LinkerOptions, std::vector<const char*>& args,
+    bool LinkMachO(const CppLinkerOptions* LinkerOptions, std::vector<const char*>& args,
         llvm::StringRef& Dir, llvm::StringRef& Stem);
 
     int index;
