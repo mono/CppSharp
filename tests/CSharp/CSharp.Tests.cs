@@ -1691,7 +1691,7 @@ public unsafe class CSharpTests
     public void TestRValueReferenceToPointer()
     {
         int value = 5;
-        IntPtr intPtr = CSharp.CSharp.RValueReferenceToPointer((void**) &value);
+        IntPtr intPtr = CSharp.CSharp.RValueReferenceToPointer((IntPtr*) &value);
         Assert.That((int) intPtr, Is.EqualTo(value));
     }
 

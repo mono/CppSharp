@@ -191,8 +191,7 @@ namespace CppSharp.Generators.CSharp
             // * Any pointer type.
             // * Any user-defined struct type that contains fields of unmanaged types only.
             var finalPointee = (pointee.GetFinalPointee() ?? pointee).Desugar();
-            Enumeration @enum;
-            if (finalPointee.IsPrimitiveType() || finalPointee.TryGetEnum(out @enum))
+            if (finalPointee.IsPrimitiveType() || finalPointee.IsEnum())
             {
                 // Skip one indirection if passed by reference
                 bool isRefParam = Parameter != null && (Parameter.IsOut || Parameter.IsInOut);
@@ -212,11 +211,10 @@ namespace CppSharp.Generators.CSharp
                 allowStrings = true;
 
                 string @ref = Parameter != null && Parameter.IsIndirect ? string.Empty : "*";
-                return !isRefParam && result.Type == this.IntPtrType ? "void**" : result + @ref;
+                return result + @ref;
             }
 
-            Class @class;
-            if ((pointee.IsDependent || pointee.TryGetClass(out @class))
+            if ((pointee.IsDependent || pointee.IsClass())
                 && ContextKind == TypePrinterContextKind.Native)
             {
                 return IntPtrType;

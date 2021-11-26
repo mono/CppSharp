@@ -184,11 +184,6 @@ namespace CppSharp.Generators.CSharp
 
             if (new QualifiedType(pointer, quals).IsConstRefToPrimitive())
             {
-                if (finalPointee.IsPrimitiveType(PrimitiveType.Void))
-                {
-                    Context.Return.Write($"new {typePrinter.IntPtrType}(*{Context.ReturnVarName})");
-                    return true;
-                }
                 Context.Return.Write("*");
                 if (Context.MarshalKind == MarshalKind.NativeField)
                     Context.Return.Write($"({pointer.QualifiedPointee.Visit(typePrinter)}*) ");
@@ -612,9 +607,7 @@ namespace CppSharp.Generators.CSharp
                 {
                     var local = Generator.GeneratedIdentifier($@"{
                         param.Name}{Context.ParameterIndex}");
-                    string cast = isVoid ? $@"({pointee.Visit(
-                        new CppTypePrinter(Context.Context) { PrintTypeQualifiers = false })}) " : string.Empty;
-                    Context.Before.WriteLine($"var {local} = {cast}{Context.Return};");
+                    Context.Before.WriteLine($"var {local} = {Context.Return};");
                     Context.Return.StringBuilder.Clear();
                     Context.Return.Write(local);
                 }
