@@ -6,6 +6,7 @@
 #include <string>
 #include <map>
 #include <array>
+
 class DeriveProtectedDtor
 {
 protected:
@@ -845,14 +846,9 @@ class SpecializationOfClassWithNonTypeTemplateArgument : public ClassWithNonType
 template<std::size_t N>
 class DLL_API FloatArrayF
 {
-protected:
-    std::array< double, N > values;
 public:
-    FloatArrayF(const FloatArrayF<N>& x) : values{ x.values } { }
-
     template<typename... V, class = typename std::enable_if_t<sizeof...(V) == N>>
-    FloatArrayF(V... x) : values{ x... } { }
-    FloatArrayF() : values{} { }
+    FloatArrayF(V... x)  { }
 
 };
 const FloatArrayF<6> I6{ 1., 1., 1., 0., 0., 0. };
