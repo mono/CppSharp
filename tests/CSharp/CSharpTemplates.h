@@ -5,7 +5,7 @@
 
 #include <string>
 #include <map>
-
+#include <array>
 class DeriveProtectedDtor
 {
 protected:
@@ -842,3 +842,17 @@ private:
 
 class SpecializationOfClassWithNonTypeTemplateArgument : public ClassWithNonTypeTemplateArgument<0>
 { };
+template<std::size_t N>
+class DLL_API FloatArrayF
+{
+protected:
+    std::array< double, N > values;
+public:
+    FloatArrayF(const FloatArrayF<N>& x) : values{ x.values } { }
+
+    template<typename... V, class = typename std::enable_if_t<sizeof...(V) == N>>
+    FloatArrayF(V... x) : values{ x... } { }
+    FloatArrayF() : values{} { }
+
+};
+const FloatArrayF<6> I6{ 1., 1., 1., 0., 0., 0. };

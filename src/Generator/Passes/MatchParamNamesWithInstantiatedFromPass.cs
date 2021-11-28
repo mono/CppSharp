@@ -1,4 +1,5 @@
 ﻿using CppSharp.AST;
+using System;
 
 namespace CppSharp.Passes
 {
@@ -18,8 +19,8 @@ namespace CppSharp.Passes
                 (function.Namespace is ClassTemplateSpecialization specialization &&
                  specialization.SpecializationKind == TemplateSpecializationKind.ExplicitSpecialization))
                 return false;
-
-            for (int i = 0; i < function.Parameters.Count; i++)
+            int parameters = Math.Min(function.Parameters.Count, function.InstantiatedFrom.Parameters.Count);
+            for (int i = 0; i < parameters; i++)
                 function.InstantiatedFrom.Parameters[i].Name = function.Parameters[i].Name;
 
             return true;
