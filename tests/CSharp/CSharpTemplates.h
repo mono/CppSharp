@@ -842,3 +842,12 @@ private:
 
 class SpecializationOfClassWithNonTypeTemplateArgument : public ClassWithNonTypeTemplateArgument<0>
 { };
+template<std::size_t N>
+class DLL_API FloatArrayF
+{
+public:
+    template<typename... V, class = typename std::enable_if_t<sizeof...(V) == N>>
+    FloatArrayF(V... x)  { }
+
+};
+const FloatArrayF<6> I6{ 1., 1., 1., 0., 0., 0. };
