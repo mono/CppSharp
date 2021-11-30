@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 
 namespace CppSharp.Passes
 {
@@ -72,6 +73,12 @@ namespace CppSharp.Passes
                     };
                 impl.OverriddenMethods.Clear();
                 impl.OverriddenMethods.Add(abstractMethod);
+                if (abstractMethod.OriginalReturnType.Type.IsDependentPointer() ||
+                    abstractMethod.Parameters.Any(p => p.Type.IsDependentPointer()))
+                {
+                    // this is an extension but marks the class as an abstract impl
+                    impl.ExplicitlyIgnore();
+                }
                 internalImpl.Methods.Add(impl);
             }
 

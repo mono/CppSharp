@@ -1676,7 +1676,7 @@ namespace CppSharp.Generators.CSharp
             NewLine();
 
             // Generate a delegate type for each method.
-            foreach (var method in wrappedEntries.Select(e => e.Method))
+            foreach (var method in wrappedEntries.Select(e => e.Method).Where(m => !m.Ignore))
                 GenerateVTableMethodDelegates(containingClass, method.Namespace.IsDependent ?
                    (Method) method.InstantiatedFrom : method);
 
@@ -1701,7 +1701,7 @@ namespace CppSharp.Generators.CSharp
                 WriteLine($"static VTableLoader()");
                 {
                     WriteOpenBraceAndIndent();
-                    foreach (var entry in wrappedEntries.Distinct())
+                    foreach (var entry in wrappedEntries.Distinct().Where(e => !e.Method.Ignore))
                     {
                         var name = GetVTableMethodDelegateName(entry.Method);
                         WriteLine($"{name + "Instance"} += {name}Hook;");
@@ -1709,8 +1709,11 @@ namespace CppSharp.Generators.CSharp
                     for (var i = 0; i < wrappedEntries.Count; ++i)
                     {
                         var entry = wrappedEntries[i];
-                        var name = GetVTableMethodDelegateName(entry.Method);
-                        WriteLine($"Thunks[{i}] = Marshal.GetFunctionPointerForDelegate({name + "Instance"});");
+                        if (!entry.Method.Ignore)
+                        {
+                            var name = GetVTableMethodDelegateName(entry.Method);
+                            WriteLine($"Thunks[{i}] = Marshal.GetFunctionPointerForDelegate({name + "Instance"});");
+                        }
                     }
                     UnindentAndWriteCloseBrace();
                 }

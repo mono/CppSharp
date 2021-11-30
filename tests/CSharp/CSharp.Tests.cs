@@ -1329,6 +1329,18 @@ public unsafe class CSharpTests
     }
 
     [Test]
+    public void TestAbstractImplTemplate()
+    {
+        using (var returnsPointer = new DependentValueFields<int>())
+        {
+            using (var value = returnsPointer.AbstractReturnPointer)
+            {
+                Assert.That(new IntPtr(value.AbstractReturnPointer()), Is.EqualTo(IntPtr.Zero));
+            }
+        }
+    }
+
+    [Test]
     public void TestSpecializationForSecondaryBase()
     {
         using (var hasSpecializationForSecondaryBase = new HasSpecializationForSecondaryBase())

@@ -37,6 +37,50 @@ class DLL_API Ignored
 };
 
 template <typename T>
+class HasAbstractReturnPointer
+{
+public:
+    HasAbstractReturnPointer();
+    ~HasAbstractReturnPointer();
+    virtual const T* abstractReturnPointer() = 0;
+};
+
+template <typename T>
+HasAbstractReturnPointer<T>::HasAbstractReturnPointer()
+{
+}
+
+template <typename T>
+HasAbstractReturnPointer<T>::~HasAbstractReturnPointer()
+{
+}
+
+template <typename T>
+class ImplReturnPointer : public HasAbstractReturnPointer<T>
+{
+public:
+    ImplReturnPointer();
+    ~ImplReturnPointer();
+    virtual const T* abstractReturnPointer() override;
+};
+
+template <typename T>
+ImplReturnPointer<T>::ImplReturnPointer()
+{
+}
+
+template <typename T>
+ImplReturnPointer<T>::~ImplReturnPointer()
+{
+}
+
+template <typename T>
+const T* ImplReturnPointer<T>::abstractReturnPointer()
+{
+    return 0;
+}
+
+template <typename T>
 class IndependentFields : public T1
 {
     typedef T Type;
@@ -176,6 +220,7 @@ public:
     const T* returnTakeDependentPointer(const T* p);
     const T* propertyReturnDependentPointer();
     void hasDefaultDependentParam(T* ptr, const T& refT = T());
+    HasAbstractReturnPointer<T>* getAbstractReturnPointer();
     typedef void (*DependentFunctionPointer)(T);
     DependentFunctionPointer dependentFunctionPointerField;
 private:
@@ -233,6 +278,12 @@ const T* DependentValueFields<T>::propertyReturnDependentPointer()
 template <typename T>
 void DependentValueFields<T>::hasDefaultDependentParam(T* ptr, const T& refT)
 {
+}
+
+template <typename T>
+HasAbstractReturnPointer<T>* DependentValueFields<T>::getAbstractReturnPointer()
+{
+    return new ImplReturnPointer<T>();
 }
 
 template <typename T>

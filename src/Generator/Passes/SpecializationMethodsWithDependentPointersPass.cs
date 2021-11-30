@@ -118,6 +118,11 @@ namespace CppSharp.Passes
             extensionMethod.OriginalFunction = specializedMethod;
             extensionMethod.Kind = CXXMethodKind.Normal;
             extensionMethod.IsStatic = true;
+            if (extensionMethod.IsPure)
+            {
+                extensionMethod.IsPure = false;
+                extensionMethod.SynthKind = FunctionSynthKind.AbstractImplCall;
+            }
 
             var qualReturnType = extensionMethod.OriginalReturnType;
             RemoveTemplateSubstitution(ref qualReturnType);
