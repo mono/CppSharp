@@ -200,12 +200,8 @@ function SetupLLVMLibs()
       "LLVMSupport",
       "LLVMDemangle",
       "lldCommon",
-      "lldCore",
       "lldCOFF",
       "lldELF",
-      "lldDriver",
-      "lldReaderWriter",
-      "lldYAML",
       "lldMachO"
     }
     
