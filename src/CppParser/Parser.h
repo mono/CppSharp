@@ -135,7 +135,7 @@ private:
     bool IsValidDeclaration(const clang::SourceLocation& Loc);
     std::string GetDeclMangledName(const clang::Decl* D);
     std::string GetTypeName(const clang::Type* Type);
-    bool CanCheckCodeGenInfo(clang::Sema & S, const clang::Type * Ty);
+    bool CanCheckCodeGenInfo(const clang::Type* Ty);
     void CompleteIfSpecializationType(const clang::QualType& QualType);
     void InstantiateSpecialization(clang::ClassTemplateSpecializationDecl* CTS);
     Parameter* WalkParameter(const clang::ParmVarDecl* PVD,

@@ -365,7 +365,10 @@ namespace CppSharp.Generators.CSharp
             if (dependentClass.HasDependentValueFieldInLayout())
                 return specializedClasses.KeepSingleAllPointersSpecialization();
 
-            return new[] { specializedClasses.FirstOrDefault(s => s.IsGenerated) ??
+            return new[] {
+                specializedClasses.FirstOrDefault(
+                    s => s.IsGenerated && s.Classes.All(c => !c.IsIncomplete)) ??
+                specializedClasses.FirstOrDefault(s => s.IsGenerated) ??
                 specializedClasses.First()};
         }
 

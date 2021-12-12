@@ -2978,18 +2978,19 @@ static const clang::CodeGen::CGFunctionInfo& GetCodeGenFunctionInfo(
         FTy.castAs<clang::FunctionProtoType>());
 }
 
-bool Parser::CanCheckCodeGenInfo(clang::Sema& S, const clang::Type* Ty)
+bool Parser::CanCheckCodeGenInfo(const clang::Type* Ty)
 {
     auto FinalType = GetFinalType(Ty);
 
     if (FinalType->isDependentType() ||
-        FinalType->isInstantiationDependentType() || FinalType->isUndeducedType())
+        FinalType->isInstantiationDependentType() ||
+        FinalType->isUndeducedType())
         return false;
 
     if (FinalType->isFunctionType())
     {
         auto FTy = FinalType->getAs<clang::FunctionType>();
-        auto CanCheck = CanCheckCodeGenInfo(S, FTy->getReturnType().getTypePtr());
+        auto CanCheck = CanCheckCodeGenInfo(FTy->getReturnType().getTypePtr());
         if (!CanCheck)
             return false;
 
@@ -2998,7 +2999,7 @@ bool Parser::CanCheckCodeGenInfo(clang::Sema& S, const clang::Type* Ty)
             auto FPTy = FinalType->getAs<clang::FunctionProtoType>();
             for (const auto& ParamType : FPTy->getParamTypes())
             {
-                auto CanCheck = CanCheckCodeGenInfo(S, ParamType.getTypePtr());
+                auto CanCheck = CanCheckCodeGenInfo(ParamType.getTypePtr());
                 if (!CanCheck)
                     return false;
             }
@@ -3015,7 +3016,8 @@ bool Parser::CanCheckCodeGenInfo(clang::Sema& S, const clang::Type* Ty)
     {
         if (auto MPT = Ty->getAs<clang::MemberPointerType>())
             if (!MPT->isDependentType())
-                S.RequireCompleteType(clang::SourceLocation(), clang::QualType(Ty, 0), 1);
+                c->getSema().RequireCompleteType(clang::SourceLocation(),
+                    clang::QualType(Ty, 0), 1);
     }
 
     return true;
@@ -3088,7 +3090,7 @@ void Parser::InstantiateSpecialization(clang::ClassTemplateSpecializationDecl* C
     if (!CTS->isCompleteDefinition())
     {
         c->getSema().InstantiateClassTemplateSpecialization(CTS->getBeginLoc(),
-            CTS, TSK_ImplicitInstantiation, false);
+            CTS, clang::TemplateSpecializationKind::TSK_ImplicitInstantiation, false);
     }
 
     for (auto Decl : CTS->decls())
@@ -3101,7 +3103,7 @@ void Parser::InstantiateSpecialization(clang::ClassTemplateSpecializationDecl* C
             {
                 c->getSema().InstantiateClass(Nested->getBeginLoc(), Nested, Template,
                     MultiLevelTemplateArgumentList(CTS->getTemplateArgs()),
-                    TSK_ImplicitInstantiation, false);
+                    clang::TemplateSpecializationKind::TSK_ImplicitInstantiation, false);
             }
         }
     }
@@ -3210,7 +3212,8 @@ void Parser::MarkValidity(Function* F)
 
     auto FD = static_cast<FunctionDecl*>(F->originalPtr);
 
-    if (!FD->getTemplateInstantiationPattern() || !FD->isExternallyVisible())
+    if (!FD->isImplicit() &&
+        (!FD->getTemplateInstantiationPattern() || !FD->isExternallyVisible()))
         return;
 
     auto existingClient = c->getSema().getDiagnostics().getClient();
@@ -3228,6 +3231,18 @@ void Parser::MarkValidity(Function* F)
     {
         std::unordered_set<clang::Stmt*> Bodies{ 0 };
         F->isInvalid = IsInvalid(FD->getBody(), Bodies);
+    }
+
+    if (!F->isInvalid)
+    {
+        DeclContext* Context = FD->getDeclContext();
+        while (Context)
+        {
+            F->isInvalid = cast<Decl>(Context)->isInvalidDecl();
+            if (F->isInvalid)
+                break;
+            Context = Context->getParent();
+        }
     }
 
     c->getSema().getDiagnostics().setClient(existingClient, false);
@@ -3332,13 +3347,10 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F)
         ParamStartLoc = VD->getEndLoc();
     }
 
-    if (!opts->skipFunctionBodies)
+    if (!opts->skipFunctionBodies && FD->hasBody())
     {
-        if (FD->hasBody())
-        {
-            if (auto Body = FD->getBody())
-                F->bodyStmt = WalkStatement(Body);
-        }
+        if (auto Body = FD->getBody())
+            F->bodyStmt = WalkStatement(Body);
     }
 
     auto& CXXABI = codeGenTypes->getCXXABI();
@@ -3355,15 +3367,17 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F)
     if (auto FTSI = FD->getTemplateSpecializationInfo())
         F->specializationInfo = WalkFunctionTemplateSpec(FTSI, F);
 
+    MarkValidity(F);
+    F->qualifiedType = GetQualifiedType(FD->getType(), &FTL);
+
     const CXXMethodDecl* MD;
     if (FD->isDependentContext() ||
         ((MD = dyn_cast<CXXMethodDecl>(FD)) && !MD->isStatic() &&
             !HasLayout(cast<CXXRecordDecl>(MD->getDeclContext()))) ||
-        !CanCheckCodeGenInfo(c->getSema(), FD->getReturnType().getTypePtr()) ||
+        !CanCheckCodeGenInfo(FD->getReturnType().getTypePtr()) ||
         std::any_of(FD->parameters().begin(), FD->parameters().end(),
-            [this](auto* P) { return !CanCheckCodeGenInfo(c->getSema(), P->getType().getTypePtr()); }))
+            [this](auto* P) { return !CanCheckCodeGenInfo(P->getType().getTypePtr()); }))
     {
-        F->qualifiedType = GetQualifiedType(FD->getType(), &FTL);
         return;
     }
 
@@ -3377,9 +3391,6 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F)
         F->Parameters[Index++]->isIndirect =
             Arg.info.isIndirect() && !Arg.info.getIndirectByVal();
     }
-
-    MarkValidity(F);
-    F->qualifiedType = GetQualifiedType(FD->getType(), &FTL);
 }
 
 Function* Parser::WalkFunction(const clang::FunctionDecl* FD)

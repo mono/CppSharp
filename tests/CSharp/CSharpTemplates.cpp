@@ -120,7 +120,7 @@ void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> 
 {
 }
 
-void hasIgnoredParam(DependentValueFields<IndependentFields<Ignored>> ii)
+void hasIgnoredParam(DependentValueFields<IndependentFields<Ignored>> ii, Base<void> _24)
 {
 }
 

@@ -195,8 +195,26 @@ template <typename T>
 class Base
 {
 public:
+    class Nested
+    {
+    public:
+        void f(const T& t);
+        friend void f(Nested& n) {}
+    };
+    void invokeFriend();
     typedef T* typedefT;
 };
+
+template <typename T>
+void Base<T>::Nested::f(const T& t)
+{
+}
+
+template <typename T>
+void Base<T>::invokeFriend()
+{
+    f(Nested());
+}
 
 template <typename T>
 class DependentValueFields : public Base<T>
@@ -844,7 +862,7 @@ void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> 
                              VirtualDependentValueFields<float> _22, VirtualDependentValueFields<const char*> _23,
                              std::string s);
 
-void hasIgnoredParam(DependentValueFields<IndependentFields<Ignored>> ii);
+void hasIgnoredParam(DependentValueFields<IndependentFields<Ignored>> ii, Base<void> _24);
 
 std::map<int, int> usesValidSpecialisationOfIgnoredTemplate();
 
