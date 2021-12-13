@@ -322,10 +322,7 @@ namespace CppSharp.Passes
             Write($"{string.Concat(parentsOpen)}");
             if (function.IsConstExpr)
                 Write("constexpr ");
-            Write(returnType);
-            Write(" ");
-            Write(parentsOpen.Count > 0 ? function.OriginalName : functionName);
-            Write(paramTypes);
+            Write($"{returnType} {function.OriginalName}{paramTypes}");
             if (functionType.ExceptionSpecType == ExceptionSpecType.BasicNoexcept)
                 Write(" noexcept");
             WriteLine($";{string.Concat(parentsOpen.Select(_ => " }"))}");
