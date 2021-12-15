@@ -85,6 +85,11 @@ class IndependentFields : public T1
 {
     typedef T Type;
 public:
+    class Nested
+    {
+    private:
+        T field;
+    };
     IndependentFields();
     IndependentFields(const IndependentFields<T>& other);
     IndependentFields(const T& t);

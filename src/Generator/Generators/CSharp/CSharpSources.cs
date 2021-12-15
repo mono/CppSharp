@@ -333,7 +333,7 @@ namespace CppSharp.Generators.CSharp
             foreach (var specialization in generated.KeepSingleAllPointersSpecialization())
                 GenerateClassInternals(specialization);
 
-            foreach (var group in generated.SelectMany(s => s.Classes).Where(
+            foreach (var group in specializations.SelectMany(s => s.Classes).Where(
                 c => !c.IsIncomplete).GroupBy(c => c.Name))
             {
                 var nested = classTemplate.Classes.FirstOrDefault(c => c.Name == group.Key);
