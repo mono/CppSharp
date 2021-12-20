@@ -274,7 +274,7 @@ namespace CppSharp.Generators.CSharp
             WriteOpenBraceAndIndent();
 
             PushBlock(BlockKind.InternalsClass);
-            GenerateClassInternalHead();
+            GenerateClassInternalHead(new Class { Name = parentName });
             WriteOpenBraceAndIndent();
 
             // Generate all the internal function declarations.
@@ -704,7 +704,7 @@ namespace CppSharp.Generators.CSharp
             return @params;
         }
 
-        private void GenerateClassInternalHead(Class @class = null)
+        private void GenerateClassInternalHead(Class @class)
         {
             Write("public ");
 
@@ -3143,7 +3143,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                 if (operatorParam == null)
                 {
                     WriteLine($@"fixed ({Helpers.InternalStruct}{
-                        Helpers.GetSuffixForInternal(originalFunction.Namespace)}* __instancePtr = &{
+                        Helpers.GetSuffixForInternal((Class) originalFunction.Namespace)}* __instancePtr = &{
                         Helpers.InstanceField})");
                     WriteOpenBraceAndIndent();
                 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Tests.h"
+#include <atomic>
 #include <cstdint>
 #include <vector>
 #include <limits>
@@ -224,6 +225,8 @@ public:
 private:
     Bar::Items _items;
     Bar::Items _itemsByValue;
+    std::atomic<int> atomicPrimitive;
+    std::atomic<SmallPOD> atomicCustom;
 };
 
 class DLL_API ComplexType

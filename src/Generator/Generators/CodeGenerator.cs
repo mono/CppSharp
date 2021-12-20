@@ -1303,29 +1303,30 @@ namespace CppSharp.Generators
         public static readonly string CreateInstanceIdentifier = Generator.GeneratedIdentifier("CreateInstance");
         public static readonly string GetOrCreateInstanceIdentifier = Generator.GeneratedIdentifier("GetOrCreateInstance");
 
-        public static string GetSuffixForInternal(DeclarationContext @class)
+        public static string GetSuffixForInternal(Class @class)
         {
-            if (@class == null)
-                return string.Empty;
-
-            Class template = null;
             var specialization = @class as ClassTemplateSpecialization ??
                 @class.Namespace as ClassTemplateSpecialization;
-            if (specialization != null)
-            {
-                template = specialization.TemplatedDecl.TemplatedClass;
-                if (@class != specialization)
-                    template = template.Classes.FirstOrDefault(c => c.Name == @class.Name);
-            }
 
-            if (template == null || !template.HasDependentValueFieldInLayout())
+            if (specialization == null)
                 return string.Empty;
 
-            if (specialization.Arguments.All(
-                a => a.Type.Type?.IsAddress() == true))
-                return "_Ptr";
+            Class template = specialization.TemplatedDecl.TemplatedClass;
+            if (@class != specialization)
+                template = template.Classes.FirstOrDefault(c => c.Name == @class.Name);
 
-            return GetSuffixFor(specialization);
+            if (template.HasDependentValueFieldInLayout())
+            {
+                if (specialization.Arguments.All(
+                    a => a.Type.Type?.IsAddress() == true))
+                    return "_Ptr";
+                return GetSuffixFor(specialization);
+            }
+            // HACK: Clang can't always resolve complex templates such as the base of std::atomic in msvc
+            return (from @base in @class.Bases
+                    let suffix = GetSuffixForInternal(@base.Class)
+                    where suffix.Length > 0
+                    select suffix).DefaultIfEmpty(string.Empty).First();
         }
 
         public static string GetSuffixFor(Declaration decl)
