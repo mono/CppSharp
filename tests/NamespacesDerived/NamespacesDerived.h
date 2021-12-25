@@ -66,6 +66,7 @@ public:
 private:
     TemplateClass<int> t;
     TemplateClass<Derived> d;
+    TemplateClass<TemplateWithIndependentFields<Derived>> nestedSpecialization;
 };
 
 class DLL_API HasVirtualInDependency : public HasVirtualInCore

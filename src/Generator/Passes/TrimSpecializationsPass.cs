@@ -155,20 +155,39 @@ namespace CppSharp.Passes
                 {
                     continue;
                 }
-                var modules = (from arg in specialization.Arguments
-                               where arg.Type.Type != null
-                                   && ASTUtils.IsTypeExternal(
-                                          template.TranslationUnit.Module, arg.Type.Type)
-                               let module = arg.Type.Type.GetModule()
-                               where module != null
-                               select module).ToList().TopologicalSort(m => m.Dependencies);
-                if (modules.Count > 0)
+                Module module = GetExternalModule(specialization);
+                if (module != null)
                 {
-                    var module = modules.Last();
                     module.ExternalClassTemplateSpecializations.Add(specialization);
                     template.Specializations.RemoveAt(i);
                 }
             }
+        }
+
+        private static Module GetExternalModule(ClassTemplateSpecialization specialization)
+        {
+            Module currentModule = specialization.TemplatedDecl.TemplatedClass.TranslationUnit.Module;
+            List<Module> modules = new List<Module>();
+            foreach (TemplateArgument arg in specialization.Arguments.Where(arg => arg.Type.Type != null))
+            {
+                if (ASTUtils.IsTypeExternal(currentModule, arg.Type.Type))
+                {
+                    Module module = arg.Type.Type.GetModule();
+                    if (module != null)
+                    {
+                        modules.Add(module);
+                    }
+                }
+                if (arg.Type.Type.TryGetDeclaration(out ClassTemplateSpecialization nestedSpecialization))
+                {
+                    Module module = GetExternalModule(nestedSpecialization);
+                    if (module != null)
+                    {
+                        modules.Add(module);
+                    }
+                }
+            }
+            return modules.TopologicalSort(m => m.Dependencies).LastOrDefault();
         }
 
         private void CheckForInternalSpecialization(Declaration container, AST.Type type)
