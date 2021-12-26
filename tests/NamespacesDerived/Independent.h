@@ -1,3 +1,3 @@
 class Derived;
-template<typename T> class TemplateWithIndependentFields;
-typedef TemplateWithIndependentFields<Derived*> ForwardedInIndependentHeader;
+template<typename T> class DependentFields;
+typedef DependentFields<Derived*> ForwardedInIndependentHeader;

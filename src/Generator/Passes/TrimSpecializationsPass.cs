@@ -138,7 +138,8 @@ namespace CppSharp.Passes
                 template.Specializations.All(s => s.Ignore))
                 template.ExplicitlyIgnore();
 
-            TryMoveExternalSpecializations(template);
+            if (template.Specializations.Any() && template.HasDependentValueFieldInLayout())
+                TryMoveExternalSpecializations(template);
         }
 
         /// <summary>
@@ -174,17 +175,13 @@ namespace CppSharp.Passes
                 {
                     Module module = arg.Type.Type.GetModule();
                     if (module != null)
-                    {
                         modules.Add(module);
-                    }
                 }
                 if (arg.Type.Type.TryGetDeclaration(out ClassTemplateSpecialization nestedSpecialization))
                 {
                     Module module = GetExternalModule(nestedSpecialization);
                     if (module != null)
-                    {
                         modules.Add(module);
-                    }
                 }
             }
             return modules.TopologicalSort(m => m.Dependencies).LastOrDefault();

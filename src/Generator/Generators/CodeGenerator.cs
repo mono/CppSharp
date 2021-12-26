@@ -1322,11 +1322,7 @@ namespace CppSharp.Generators
                     return "_Ptr";
                 return GetSuffixFor(specialization);
             }
-            // HACK: Clang can't always resolve complex templates such as the base of std::atomic in msvc
-            return (from @base in @class.Bases
-                    let suffix = GetSuffixForInternal(@base.Class)
-                    where suffix.Length > 0
-                    select suffix).DefaultIfEmpty(string.Empty).First();
+            return string.Empty;
         }
 
         public static string GetSuffixFor(Declaration decl)

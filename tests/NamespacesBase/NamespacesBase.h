@@ -71,7 +71,12 @@ void TemplateClass<T>::setField(const T& value)
 }
 
 template <typename T>
-class TemplateWithIndependentFields
+class IndependentFields
+{
+};
+
+template <typename T>
+class DependentFields
 {
 public:
     class Nested
@@ -85,13 +90,13 @@ private:
 };
 
 template <typename T>
-const T& TemplateWithIndependentFields<T>::constField() const
+const T& DependentFields<T>::constField() const
 {
     return *t;
 }
 
 template <typename T>
-typename TemplateWithIndependentFields<T>::Nested TemplateWithIndependentFields<T>::useDependentPointer(const T* t)
+typename DependentFields<T>::Nested DependentFields<T>::useDependentPointer(const T* t)
 {
     return Nested();
 }

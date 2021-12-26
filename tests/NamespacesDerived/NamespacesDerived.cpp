@@ -62,6 +62,11 @@ TemplateClass<int> Derived2::getTemplate()
     return t;
 }
 
+IndependentFields<int> Derived2::getIndependentSpecialization()
+{
+    return independentSpecialization;
+}
+
 Derived2::LocalTypedefSpecialization Derived2::getLocalTypedefSpecialization()
 {
     return LocalTypedefSpecialization();
@@ -73,13 +78,13 @@ Abstract* Derived2::getAbstract()
 }
 
 DerivedFromExternalSpecialization::DerivedFromExternalSpecialization(int i,
-                                                                     TemplateWithIndependentFields<HasVirtualInDependency> defaultExternalSpecialization)
+                                                                     DependentFields<HasVirtualInDependency> defaultExternalSpecialization)
 {
 }
 
-TemplateWithIndependentFields<Base3> DerivedFromExternalSpecialization::returnExternalSpecialization()
+DependentFields<Base3> DerivedFromExternalSpecialization::returnExternalSpecialization()
 {
-    return TemplateWithIndependentFields<Base3>();
+    return DependentFields<Base3>();
 }
 
 int HasVirtualInDependency::callManagedOverride()

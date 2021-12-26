@@ -60,13 +60,16 @@ public:
     void defaultEnumValueFromDependency(OverlappingNamespace::ColorsEnum c = OverlappingNamespace::ColorsEnum::black);
 
     TemplateClass<int> getTemplate();
-    typedef TemplateWithIndependentFields<int> LocalTypedefSpecialization;
+    IndependentFields<int> getIndependentSpecialization();
+    typedef DependentFields<int> LocalTypedefSpecialization;
     LocalTypedefSpecialization getLocalTypedefSpecialization();
     Abstract* getAbstract();
 private:
     TemplateClass<int> t;
     TemplateClass<Derived> d;
-    TemplateClass<TemplateWithIndependentFields<Derived>> nestedSpecialization;
+    TemplateClass<DependentFields<Derived>> nestedSpecialization;
+    IndependentFields<int> independentSpecialization;
+    IndependentFields<Derived> independentExternalSpecialization;
 };
 
 class DLL_API HasVirtualInDependency : public HasVirtualInCore
@@ -76,13 +79,13 @@ public:
     int callManagedOverride();
 };
 
-class DLL_API DerivedFromExternalSpecialization : public TemplateWithIndependentFields<Derived>
+class DLL_API DerivedFromExternalSpecialization : public DependentFields<Derived>
 {
 public:
     DerivedFromExternalSpecialization(int i,
-                                      TemplateWithIndependentFields<HasVirtualInDependency> defaultExternalSpecialization =
-                                          TemplateWithIndependentFields<HasVirtualInDependency>());
-    TemplateWithIndependentFields<Base3> returnExternalSpecialization();
+                                      DependentFields<HasVirtualInDependency> defaultExternalSpecialization =
+                                          DependentFields<HasVirtualInDependency>());
+    DependentFields<Base3> returnExternalSpecialization();
 };
 
 class DLL_API DerivedFromSecondaryBaseInDependency : public Derived, public SecondaryBase
