@@ -138,7 +138,9 @@ namespace CppSharp.Passes
                 template.Specializations.All(s => s.Ignore))
                 template.ExplicitlyIgnore();
 
-            if (template.Specializations.Any() && template.HasDependentValueFieldInLayout())
+            if (template.Specializations.Any() &&
+                (template.HasDependentValueFieldInLayout() ||
+                 template.Classes.Any(c => c.HasDependentValueFieldInLayout())))
                 TryMoveExternalSpecializations(template);
         }
 

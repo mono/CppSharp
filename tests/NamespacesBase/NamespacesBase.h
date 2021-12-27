@@ -73,6 +73,12 @@ void TemplateClass<T>::setField(const T& value)
 template <typename T>
 class IndependentFields
 {
+public:
+    class Nested
+    {
+    private:
+        T field;
+    };
 };
 
 template <typename T>

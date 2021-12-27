@@ -70,6 +70,7 @@ private:
     TemplateClass<DependentFields<Derived>> nestedSpecialization;
     IndependentFields<int> independentSpecialization;
     IndependentFields<Derived> independentExternalSpecialization;
+    IndependentFields<Derived>::Nested nestedInExternalSpecialization;
 };
 
 class DLL_API HasVirtualInDependency : public HasVirtualInCore

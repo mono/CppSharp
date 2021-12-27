@@ -313,30 +313,32 @@ namespace CppSharp.Generators.CSharp
                 classTemplate.Specializations);
         }
 
-        private void GenerateClassTemplateSpecializationsInternals(Class classTemplate,
+        private void GenerateClassTemplateSpecializationsInternals(Class template,
             IList<ClassTemplateSpecialization> specializations)
         {
             PushBlock(BlockKind.Namespace);
-            var generated = GetGeneratedClasses(classTemplate, specializations);
+            var generated = GetGeneratedClasses(template, specializations);
             WriteLine("namespace {0}{1}",
-                classTemplate.OriginalNamespace is Class &&
-                !classTemplate.OriginalNamespace.IsDependent ?
-                    classTemplate.OriginalNamespace.Name + '_' : string.Empty,
-                classTemplate.Name);
+                template.OriginalNamespace is Class &&
+                !template.OriginalNamespace.IsDependent ?
+                    template.OriginalNamespace.Name + '_' : string.Empty,
+                template.Name);
             WriteOpenBraceAndIndent();
 
-            foreach (var nestedTemplate in classTemplate.Classes.Where(
+            foreach (var nestedTemplate in template.Classes.Where(
                 c => c.IsDependent && !c.Ignore && c.Specializations.Any(s => !s.Ignore)))
                 GenerateClassTemplateSpecializationsInternals(
                     nestedTemplate, nestedTemplate.Specializations);
 
-            foreach (var specialization in generated.KeepSingleAllPointersSpecialization())
-                GenerateClassInternals(specialization);
+            if (template.HasDependentValueFieldInLayout() ||
+                template.Specializations.Intersect(specializations).Count() == specializations.Count)
+                foreach (var specialization in generated)
+                    GenerateClassInternals(specialization);
 
             foreach (var group in specializations.SelectMany(s => s.Classes).Where(
                 c => !c.IsIncomplete).GroupBy(c => c.Name))
             {
-                var nested = classTemplate.Classes.FirstOrDefault(c => c.Name == group.Key);
+                var nested = template.Classes.FirstOrDefault(c => c.Name == group.Key);
                 if (nested != null)
                     GenerateNestedInternals(group.Key, GetGeneratedClasses(nested, group));
             }
