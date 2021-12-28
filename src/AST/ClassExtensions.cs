@@ -247,25 +247,17 @@ namespace CppSharp.AST
             return null;
         }
 
-        public static bool HasDependentValueFieldInLayout(this Class @class)
-        {
-            if (@class.Fields.Any(f => IsValueDependent(f.Type)))
-                return true;
-
-            if (@class.Bases.Where(b => b.IsClass).Select(
-                b => b.Class).Any(HasDependentValueFieldInLayout))
-                return true;
-
+        public static bool HasDependentValueFieldInLayout(this Class @class,
+            IEnumerable<ClassTemplateSpecialization> specializations = null) =>
+            @class.Fields.Any(f => IsValueDependent(f.Type)) ||
+            @class.Bases.Where(b => b.IsClass).Select(
+                b => b.Class).Any(c => c.HasDependentValueFieldInLayout()) ||
             // HACK: Clang can't always resolve complex templates such as the base of std::atomic in msvc
-            if (@class.IsTemplate && @class.Specializations.Any(
-                s => s.Layout.Fields.Any(
-                    f => f.QualifiedType.Type.TryGetDeclaration(
-                        out ClassTemplateSpecialization specialization) &&
-                        specialization.TemplatedDecl.TemplatedClass.HasDependentValueFieldInLayout())))
-                return true;
-
-            return false;
-        }
+            (@class.IsTemplate && (specializations ?? @class.Specializations).Any(
+            s => s.Layout.Fields.Any(
+                f => f.QualifiedType.Type.TryGetDeclaration(
+                    out ClassTemplateSpecialization specialization) &&
+                    specialization.TemplatedDecl.TemplatedClass.HasDependentValueFieldInLayout())));
 
         public static IEnumerable<Property> GetConstCharFieldProperties(this Class @class) =>
             @class.Properties.Where(p => p.HasGetter && p.HasSetter &&

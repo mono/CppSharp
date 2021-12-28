@@ -2,6 +2,7 @@
 #include "../NamespacesBase/NamespacesBase.h"
 #include "Independent.h"
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 // Namespace clashes with NamespacesBase.OverlappingNamespace
@@ -71,6 +72,7 @@ private:
     IndependentFields<int> independentSpecialization;
     IndependentFields<Derived> independentExternalSpecialization;
     IndependentFields<Derived>::Nested nestedInExternalSpecialization;
+    std::unordered_map<int, Derived> externalSpecializationOnly;
 };
 
 class DLL_API HasVirtualInDependency : public HasVirtualInCore

@@ -3067,7 +3067,9 @@ void Parser::CompleteIfSpecializationType(const clang::QualType& QualType)
     Scope Scope(nullptr, Scope::ScopeFlags::ClassScope, c->getSema().getDiagnostics());
     c->getSema().TUScope = &Scope;
 
-    InstantiateSpecialization(CTS);
+    if (!CTS->isCompleteDefinition())
+        c->getSema().InstantiateClassTemplateSpecialization(CTS->getBeginLoc(),
+            CTS, clang::TemplateSpecializationKind::TSK_ImplicitInstantiation, false);
 
     c->getSema().getDiagnostics().setClient(existingClient, false);
     c->getSema().TUScope = nullptr;
@@ -3080,32 +3082,6 @@ void Parser::CompleteIfSpecializationType(const clang::QualType& QualType)
         TS->isIncomplete = false;
         TS->specializationKind = WalkTemplateSpecializationKind(CTS->getSpecializationKind());
         WalkRecordCXX(CTS, TS);
-    }
-}
-
-void Parser::InstantiateSpecialization(clang::ClassTemplateSpecializationDecl* CTS)
-{
-    using namespace clang;
-
-    if (!CTS->isCompleteDefinition())
-    {
-        c->getSema().InstantiateClassTemplateSpecialization(CTS->getBeginLoc(),
-            CTS, clang::TemplateSpecializationKind::TSK_ImplicitInstantiation, false);
-    }
-
-    for (auto Decl : CTS->decls())
-    {
-        if (Decl->getKind() == Decl::Kind::CXXRecord)
-        {
-            CXXRecordDecl* Nested = cast<CXXRecordDecl>(Decl);
-            CXXRecordDecl* Template = Nested->getInstantiatedFromMemberClass();
-            if (Template && !Nested->isCompleteDefinition() && !Nested->hasDefinition())
-            {
-                c->getSema().InstantiateClass(Nested->getBeginLoc(), Nested, Template,
-                    MultiLevelTemplateArgumentList(CTS->getTemplateArgs()),
-                    clang::TemplateSpecializationKind::TSK_ImplicitInstantiation, false);
-            }
-        }
     }
 }
 

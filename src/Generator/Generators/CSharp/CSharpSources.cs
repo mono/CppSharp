@@ -330,7 +330,7 @@ namespace CppSharp.Generators.CSharp
                 GenerateClassTemplateSpecializationsInternals(
                     nestedTemplate, nestedTemplate.Specializations);
 
-            if (template.HasDependentValueFieldInLayout() ||
+            if (template.HasDependentValueFieldInLayout(specializations) ||
                 template.Specializations.Intersect(specializations).Count() == specializations.Count)
                 foreach (var specialization in generated)
                     GenerateClassInternals(specialization);
