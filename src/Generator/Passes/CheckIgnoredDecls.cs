@@ -9,6 +9,9 @@ namespace CppSharp.Passes
 {
     public class CheckIgnoredDeclsPass : TranslationUnitPass
     {
+        public CheckIgnoredDeclsPass()
+            => VisitOptions.ClearFlags(VisitFlags.FunctionParameters);
+
         public bool CheckDecayedTypes { get; set; } = true;
 
         public bool CheckDeclarationAccess(Declaration decl)
