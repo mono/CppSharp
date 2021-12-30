@@ -79,6 +79,12 @@ public:
     private:
         T field;
     };
+private:
+    union
+    {
+        int i;
+        float* f;
+    };
 };
 
 template <typename T>

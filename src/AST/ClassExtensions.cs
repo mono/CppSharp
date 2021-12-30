@@ -269,7 +269,7 @@ namespace CppSharp.AST
             if (desugared is TemplateParameterType)
                 return true;
             var tagType = desugared as TagType;
-            if (tagType?.IsDependent == true)
+            if (tagType?.Declaration is Class @class && @class.HasDependentValueFieldInLayout())
                 return true;
             var templateType = desugared as TemplateSpecializationType;
             if (templateType?.Arguments.Any(

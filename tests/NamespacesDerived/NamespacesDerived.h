@@ -62,6 +62,7 @@ public:
 
     TemplateClass<int> getTemplate();
     IndependentFields<int> getIndependentSpecialization();
+    IndependentFields<void*> getPointerOnlySpecialization() { return IndependentFields<void*>(); }
     typedef DependentFields<int> LocalTypedefSpecialization;
     LocalTypedefSpecialization getLocalTypedefSpecialization();
     Abstract* getAbstract();
@@ -71,6 +72,7 @@ private:
     TemplateClass<DependentFields<Derived>> nestedSpecialization;
     IndependentFields<int> independentSpecialization;
     IndependentFields<Derived> independentExternalSpecialization;
+    IndependentFields<Derived*> independentExternalSpecializationPointer;
     IndependentFields<Derived>::Nested nestedInExternalSpecialization;
     std::unordered_map<int, Derived> externalSpecializationOnly;
 };
