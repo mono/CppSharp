@@ -1,3 +1,80 @@
+## [1.0.1] - 2021-12-30
+
+- Generate valid C# for independent specialisations with nested fields
+
+- Don't revisit parameters when checking to ignore
+
+- Generate valid C# for templates with external specializations only
+
+- Drop CI with windows 32-bit because of premake
+
+- Generate valid C# for nested in external specializations
+
+- Generate valid C# for independent external specializations
+
+- Generate valid C# for nested external specializations
+
+- Generate valid C# for unresolvable base templates
+
+- Generate valid C# for classes with dependent fields nested in templates with independent fields
+
+- Generate valid C++ for redeclaration of friends
+
+- Generate valid C++ for specialisations with void
+
+- Generate valid C# for pure functions returning or taking dependent pointers
+
+- Fix a crash when processing templates with variable arguments (#1641)
+
+- Report errors when linking of generated C++ fails
+
+- Ensure complete classes in class templates
+
+- Print C++ for some kinds of non-type template parameters
+
+- Always ignore functions returning unsupported specializations
+
+- Generate valid C# for unions in templates with non-type args
+
+- Fix a test for the new msvc in vs 2022
+
+- Match names of parameters in templates to their specializations
+
+- Work around adding an STD name-space to a custom header
+
+- Generate valid C# for fields with types system template specializations
+
+- Generate valid C# for variables which use float
+
+- Generate valid C# for variables with > 1 arg
+
+- Generate valid C++ for variadic functions
+
+- Fix C# layouts for classes with nameless unions
+
+- Generate valid C# for copy ctors with extra args
+
+- Generate valid C# for destructors of templates with dependent fields
+
+- Don't generate or move ignored specializations
+
+- Rename templates only used through aliases
+
+- Generate valid C# for internal fields of type external specialization
+
+- Generate valid C# for static object-typed fields
+
+- Trim specializations only used in ignored types
+
+- Instantiate specialized classes nested in templates
+
+- Generate valid C++ for protected inline functions
+
+- Generate valid C++ for parameters by value
+
+- Generate valid C++ for conversion operators in name-spaced classes
+
+
 ## [1.0.0] - 2021-10-12
 
 - Add built-in compilation of extra symbols
