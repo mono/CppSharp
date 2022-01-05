@@ -2828,6 +2828,12 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
         Ty = UTT;
         break;
     }
+    case clang::Type::TypeClass::Using:
+    {
+        auto U = Type->getAs<clang::UsingType>();
+        Ty = WalkType(U->getUnderlyingType(), TL);
+        break;
+    }
     case clang::Type::Vector:
     {
         auto V = Type->getAs<clang::VectorType>();
