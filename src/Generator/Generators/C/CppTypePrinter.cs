@@ -623,8 +623,6 @@ namespace CppSharp.Generators.C
             string exceptionType = Print(functionType.ExceptionSpecType);
 
             var @return = function.OriginalReturnType.Visit(this);
-            if (!string.IsNullOrEmpty(@return.Type))
-                @return.NamePrefix.Append(' ');
             @return.Name = @class + name;
             @return.NameSuffix.Append('(').Append(@params)
                 .Append(function.IsVariadic ? ", ..." : string.Empty).Append(')')
