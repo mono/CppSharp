@@ -124,6 +124,7 @@ namespace CppSharp
             module.Headers.AddRange(options.HeaderFiles);
             module.Libraries.AddRange(options.Libraries);
             module.IncludeDirs.AddRange(options.IncludeDirs);
+            module.LibraryDirs.AddRange(options.LibraryDirs);
             module.OutputNamespace = options.OutputNamespace;
 
             if (abi == CppAbi.Microsoft)
