@@ -66,6 +66,10 @@ namespace CppSharp.Tests
                     Namespace = ctx.TranslationUnits.First(u => u.IsValid && !u.IsSystemHeader)
                 };
 
+            // Generate a finalizer for just the one test case.
+            driver.Options.GenerateFinalizers = true;
+            driver.Options.GenerateFinalizersFilter = (@class) => @class.Name == "TestFinalizer";
+
             // Preserve the original semantics except for our one test class.
             driver.Options.ZeroAllocatedMemory = (@class) => @class.Name == "ClassZeroAllocatedMemoryTest";
         }

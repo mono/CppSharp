@@ -400,7 +400,7 @@ namespace CppSharp.Generators.CLI
                 if (destructor != null)
                 {
                     GenerateClassDestructor(@class);
-                    if (Options.GenerateFinalizers)
+                    if (Options.GenerateFinalizerFor(@class))
                         GenerateClassFinalizer(@class);
                 }
             }
