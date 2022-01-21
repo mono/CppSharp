@@ -456,9 +456,44 @@ namespace CppSharp.Generators.CSharp
                     var @interface = @class.Namespace.Classes.FirstOrDefault(
                         c => c.IsInterface && c.OriginalClass == @class);
                     var printedClass = (@interface ?? @class).Visit(TypePrinter);
-                    var dict = $@"global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {
-                        printedClass}>";
+                    var valueType = Options.GenerateFinalizerFor(@class) ? $"global::System.WeakReference<{printedClass}>" : $"{printedClass}";
+                    var dict = $@"global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {valueType}>";
+
                     WriteLine("internal static readonly {0} NativeToManagedMap = new {0}();", dict);
+                    PopBlock(NewLineKind.BeforeNextBlock);
+
+                    // Create a method to record/recover a mapping to make it easier to call from template instantiation
+                    // implementations. If finalizers are in play, use weak references; otherwise, the finalizer
+                    // will never get invoked: unless the managed object is Disposed, there will always be a reference
+                    // in the dictionary.
+                    PushBlock(BlockKind.Method);
+                    if (Options.GenerateFinalizerFor(@class))
+                    {
+                        WriteLines($@"
+internal static void {Helpers.RecordNativeToManagedMappingIdentifier}(IntPtr native, {printedClass} managed)
+{{
+    NativeToManagedMap[native] = new global::System.WeakReference<{printedClass}>(managed);
+}}
+
+internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr native, out {printedClass} managed)
+{{
+    managed = default;
+    return NativeToManagedMap.TryGetValue(native, out var wr) && wr.TryGetTarget(out managed);
+}}");
+                    } 
+                    else
+                    {
+                        WriteLines($@"
+internal static void {Helpers.RecordNativeToManagedMappingIdentifier}(IntPtr native, {printedClass} managed)
+{{
+    NativeToManagedMap[native] = managed;
+}}
+
+internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr native, out {printedClass} managed)
+{{
+    return NativeToManagedMap.TryGetValue(native, out managed);
+}}");
+                    }
                 }
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
@@ -2194,7 +2229,9 @@ namespace CppSharp.Generators.CSharp
 
             if (@class.IsRefType)
             {
-                GenerateClassFinalizer(@class);
+                // We used to always call GenerateClassFinalizer here. However, the
+                // finalizer calls Dispose which is conditionally implemented below.
+                // Instead, generate the finalizer only if Dispose is also implemented.
 
                 // ensure any virtual dtor in the chain is called
                 var dtor = @class.Destructors.FirstOrDefault(d => d.Access != AccessSpecifier.Private);
@@ -2203,13 +2240,17 @@ namespace CppSharp.Generators.CSharp
                     // virtual destructors in abstract classes may lack a pointer in the v-table
                     // so they have to be called by symbol; thus we need an explicit Dispose override
                     @class.IsAbstract)
-                    if(!@class.IsOpaque)GenerateDisposeMethods(@class);
+                    if (!@class.IsOpaque)
+                    {
+                        GenerateClassFinalizer(@class);
+                        GenerateDisposeMethods(@class);
+                    }
             }
         }
 
-        private void GenerateClassFinalizer(INamedDecl @class)
+        private void GenerateClassFinalizer(Class @class)
         {
-            if (!Options.GenerateFinalizers)
+            if (!Options.GenerateFinalizerFor(@class))
                 return;
 
             PushBlock(BlockKind.Finalizer);
@@ -2234,7 +2275,7 @@ namespace CppSharp.Generators.CSharp
                 WriteOpenBraceAndIndent();
 
                 WriteLine($"Dispose(disposing: true, callNativeDtor : { Helpers.OwnsNativeInstanceIdentifier} );");
-                if (Options.GenerateFinalizers)
+                if (Options.GenerateFinalizerFor(@class))
                     WriteLine("GC.SuppressFinalize(this);");
 
                 UnindentAndWriteCloseBrace();
@@ -2401,11 +2442,11 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetOrCreateInst
 {{
     if (native == {TypePrinter.IntPtrType}.Zero)
         return null;
-    if (NativeToManagedMap.TryGetValue(native, out var managed))
+    if ({Helpers.TryGetNativeToManagedMappingIdentifier}(native, out var managed))
         return ({printedClass})managed;
     var result = {Helpers.CreateInstanceIdentifier}(native, skipVTables);
     if (saveInstance)
-        NativeToManagedMap[native] = result;
+        {Helpers.RecordNativeToManagedMappingIdentifier}(native, result);
     return result;
 }}");
                     NewLine();
@@ -2417,7 +2458,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetOrCreateInst
                         WriteLines($@"
 internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({TypePrinter.IntPtrType} native)
 {{
-    if (!NativeToManagedMap.TryGetValue(native, out var managed))
+    if (!{Helpers.TryGetNativeToManagedMappingIdentifier}(native, out var managed))
         throw new global::System.Exception(""No managed instance was found"");
     var result = ({printedClass})managed;
     if (result.{Helpers.OwnsNativeInstanceIdentifier})
@@ -2534,7 +2575,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                 if (@class.IsRefType)
                 {
                     WriteLine($"{Helpers.OwnsNativeInstanceIdentifier} = true;");
-                    WriteLine($"NativeToManagedMap[{Helpers.InstanceIdentifier}] = this;");
+                    WriteLine($"{Helpers.RecordNativeToManagedMappingIdentifier}({Helpers.InstanceIdentifier}, this);");
                 }
                 else
                 {
@@ -2979,7 +3020,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                 @class.IsAbstractImpl ? @class.BaseClass : @class);
             WriteLine($"{Helpers.InstanceIdentifier} = Marshal.AllocHGlobal(sizeof({@internal}));");
             WriteLine($"{Helpers.OwnsNativeInstanceIdentifier} = true;");
-            WriteLine($"NativeToManagedMap[{Helpers.InstanceIdentifier}] = this;");
+            WriteLine($"{Helpers.RecordNativeToManagedMappingIdentifier}({Helpers.InstanceIdentifier}, this);");
 
             if (method.IsCopyConstructor)
             {

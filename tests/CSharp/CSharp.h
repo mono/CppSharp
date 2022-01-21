@@ -1131,6 +1131,11 @@ public:
     const char16_t* RetrieveString();
 };
 
+class DLL_API TestFinalizer
+{
+public:
+    const int Data[1024];
+};
 
 DLL_API void decltypeFunctionPointer();
 

@@ -520,6 +520,67 @@ public unsafe class CSharpTests
         Assert.That(CallDtorVirtually.Destroyed, Is.False);
     }
 
+    // Verify that the finalizer gets called if an instance is not disposed. Note that
+    // we've arranged to have the generator turn on finalizers for (just) the
+    // TestFinalizer class.
+    [Test]
+    public void TestFinalizerGetsCalledWhenNotDisposed()
+    {
+        using var callbackRegistration = new TestFinalizerDisposeCallbackRegistration();
+        var nativeAddr = CreateAndReleaseTestFinalizerInstance(false);
+
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+
+        Assert.That(callbackRegistration.NativeAddr, Is.EqualTo(nativeAddr));
+        Assert.That(callbackRegistration.IsDisposing, Is.False);
+    }
+
+    // Verify that the finalizer is not called if an instance is disposed. Note that we've
+    // arranged to have the generator turn on finalizers for (just) the TestFinalizer
+    // class.
+    [Test]
+    public void TestFinalizerNotCalledWhenDisposed()
+    {
+        using var callbackRegistration = new TestFinalizerDisposeCallbackRegistration();
+        var nativeAddr = CreateAndReleaseTestFinalizerInstance(true);
+
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+
+        Assert.That(callbackRegistration.NativeAddr, Is.EqualTo(nativeAddr));
+        Assert.That(callbackRegistration.IsDisposing, Is.True);
+    }
+
+    // Empirically, the finalizer won't release a reference until the stack frame in which
+    // the reference was created has been released. Use this method to create/release the
+    // instance.
+    private Int64 CreateAndReleaseTestFinalizerInstance(bool dispose)
+    {
+        var instance = new TestFinalizer();
+        Assert.That(instance.__Instance, !Is.EqualTo(IntPtr.Zero));
+        var nativeAddr = instance.__Instance.ToInt64();
+        if (dispose) instance.Dispose();
+        return nativeAddr;
+    }
+
+    class TestFinalizerDisposeCallbackRegistration : IDisposable
+    {
+        public bool? IsDisposing = null;
+        public long? NativeAddr = null;
+
+        public TestFinalizerDisposeCallbackRegistration()
+        {
+            TestFinalizer.DisposeCallback = (isDisposing, intPtr) =>
+            {
+                IsDisposing = isDisposing;
+                NativeAddr = intPtr.ToInt64();
+            };
+        }
+
+        public void Dispose() => TestFinalizer.DisposeCallback = null;
+    }
+
     [Test]
     public void TestParamTypeToInterfacePass()
     {

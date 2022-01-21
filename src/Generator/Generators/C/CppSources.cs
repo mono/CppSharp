@@ -173,7 +173,7 @@ namespace CppSharp.Generators.Cpp
                 {
                     GenerateClassDestructor(@class);
 
-                    if (Options.GenerateFinalizers)
+                    if (Options.GenerateFinalizerFor(@class))
                         GenerateClassFinalizer(@class);
                 }
             }

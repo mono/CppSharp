@@ -114,10 +114,42 @@ namespace CppSharp
         public List<string> NoGenIncludeDirs;
 
         /// <summary>
-        /// Enable this option to enable generation of finalizers.
-        /// Works in both CLI and C# backends.
+        /// Enable this option to enable generation of finalizers. Works in both CLI and
+        /// C# backends. 
         /// </summary>
+        /// <remarks>
+        /// Use <see cref="GenerateFinalizersFilter"/> to specify a filter so that
+        /// finalizers are generated for only a subset of classes.
+        /// </remarks>
         public bool GenerateFinalizers;
+
+        /// <summary>
+        /// A filter that can restrict the classes for which finalizers are generated when
+        /// <see cref="GenerateFinalizers"/> is <c>true</c>. 
+        /// </summary>
+        /// <remarks>
+        /// The default filter performs no filtering so that whenever <see
+        /// cref="GenerateFinalizers"/> is <c>true</c>, finalizers will be generated for
+        /// all classes. If finalizers should be generated selectively, inspect the
+        /// supplied <see cref="Class"/> parameter and return <c>true</c> if a finalizer
+        /// should be generated and <c>false</c> if a finalizer should not be generated.
+        /// </remarks>
+        public Func<Class, bool> GenerateFinalizersFilter = (@class) => true;
+
+        /// <summary>
+        /// An internal convenience method that combines the effect of <see
+        /// cref="GenerateFinalizers"/> and <see cref="GenerateFinalizersFilter"/>.
+        /// </summary>
+        /// <param name="class">
+        /// The <see cref="Class"/> to be filtered by <see
+        /// cref="GenerateFinalizersFilter"/>.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if a finalizer should be generated for <paramref name="class"/>.
+        /// <c>false</c> if a finalizer should not be generated for <paramref
+        /// name="class"/>.
+        /// </returns>
+        internal bool GenerateFinalizerFor(Class @class) => GenerateFinalizers && GenerateFinalizersFilter(@class);
 
         /// <summary>
         /// If <see cref="ZeroAllocatedMemory"/> returns <c>true</c> for a given <see cref="Class"/>,
