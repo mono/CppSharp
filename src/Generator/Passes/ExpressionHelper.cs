@@ -427,8 +427,17 @@ namespace CppSharp.Internal
 
                 if (typeInSignature is CILType managed && managed.Type == typeof(string))
                 {
-                    result = result[result.IndexOf("\"")..];
-                    return true;
+                    // It is possible that "result" is not a string literal. See, for
+                    // example, the test case MoreVariablesWithInitializer in CSharp.h.
+                    // Test for presence of a quote first to avoid
+                    // ArgumentOutOfRangeException.
+                    var initialQuoteIndex = result.IndexOf("\"");
+                    if (initialQuoteIndex >= 0)
+                    { 
+                        result = result[initialQuoteIndex..];
+                        return true;
+                    }
+                    return false;
                 }
             }
             return false;

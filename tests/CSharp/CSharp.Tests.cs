@@ -935,6 +935,15 @@ public unsafe class CSharpTests
     }
 
     [Test]
+    public void TestIndirectVariableInitializer()
+    {
+        // The actual test is that the generator doesn't throw when generating
+        // IndependentStringVariable. If we're running the test, we must have
+        // generated CSharp.cs without crashing the generator.
+        Assert.That(MoreVariablesWithInitializer.DependentStringVariable, Is.EqualTo(MoreVariablesWithInitializer.IndependentStringVariable));
+    }
+
+    [Test]
     public void TestPointerPassedAsItsSecondaryBase()
     {
         using (QApplication application = new QApplication())

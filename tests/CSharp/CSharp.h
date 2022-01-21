@@ -1096,6 +1096,18 @@ public:
    static constexpr float FloatArray[2] { 0.5020f, 0.6020f };
 };
 
+// Try to precipitate an ArgumentOutOfRangeException in ExpressionHelper.CheckForString.
+//
+// Note that uncommenting DLL_API below results in different behavior in
+// ExpressionHelper.PrintExpression. In particular, ExpressionHelper.CheckForString is not
+// called and no ArgumentOutOfRangeException is generated.
+#define STRING_INITIALIZER "The quick brown fox"
+struct /*DLL_API*/ MoreVariablesWithInitializer
+{
+    static constexpr const char* IndependentStringVariable = STRING_INITIALIZER;
+    static constexpr const char* DependentStringVariable = IndependentStringVariable;
+};
+
 typedef void (*ALLCAPS_UNDERSCORES)(int i);
 
 class DLL_API TestString
