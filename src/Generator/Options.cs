@@ -184,6 +184,9 @@ namespace CppSharp
         public readonly List<string> DependentNameSpaces = new List<string>();
         public bool MarshalCharAsManagedChar { get; set; }
 
+        public bool UseSpan { get; set; }
+
+
         /// <summary>
         /// Generates a single C# file.
         /// </summary>

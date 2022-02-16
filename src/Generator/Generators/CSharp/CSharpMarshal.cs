@@ -69,11 +69,18 @@ namespace CppSharp.Generators.CSharp
                     var arrayType = array.Type.Desugar();
 
                     if (CheckIfArrayCanBeCopiedUsingMemoryCopy(array))
-                        Context.Return.Write($"CppSharp.Runtime.MarshalUtil.GetArray<{arrayType}>({Context.ReturnVarName}, {array.Size})");
+                        if (Context.Context.Options.UseSpan)
+                            Context.Return.Write($"new Span<{arrayType}>({Context.ReturnVarName}, {array.Size})");
+
+                        else
+                            Context.Return.Write($"CppSharp.Runtime.MarshalUtil.GetArray<{arrayType}>({Context.ReturnVarName}, {array.Size})");
                     else if (array.Type.IsPrimitiveType(PrimitiveType.Char) && Context.Context.Options.MarshalCharAsManagedChar)
                         Context.Return.Write($"CppSharp.Runtime.MarshalUtil.GetCharArray({Context.ReturnVarName}, {array.Size})");
                     else if (array.Type.IsPointerToPrimitiveType(PrimitiveType.Void))
-                        Context.Return.Write($"CppSharp.Runtime.MarshalUtil.GetIntPtrArray({Context.ReturnVarName}, {array.Size})");
+                        if (Context.Context.Options.UseSpan)
+                            Context.Return.Write($"Span<IntPtr>({Context.ReturnVarName}, {array.Size})");
+                        else
+                            Context.Return.Write($"CppSharp.Runtime.MarshalUtil.GetIntPtrArray({Context.ReturnVarName}, {array.Size})");
                     else
                     {
                         string value = Generator.GeneratedIdentifier("value");
@@ -884,8 +891,10 @@ namespace CppSharp.Generators.CSharp
             var intermediateArrayType = typePrinter.PrintNative(elementType);
 
             Context.Before.WriteLine($"{intermediateArrayType}[] {intermediateArray};");
-
-            Context.Before.WriteLine($"if ({Context.Parameter.Name} is null)");
+            if (Context.Context.Options.UseSpan)
+                Context.Before.WriteLine($"if ({Context.Parameter.Name} == null)");
+            else
+                Context.Before.WriteLine($"if ({Context.Parameter.Name} is null)");
                 Context.Before.WriteLineIndent($"{intermediateArray} = null;");
             Context.Before.WriteLine("else");
 

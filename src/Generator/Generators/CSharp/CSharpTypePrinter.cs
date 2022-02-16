@@ -122,7 +122,11 @@ namespace CppSharp.Generators.CSharp
                     "[MarshalAs(UnmanagedType.LPArray)] ";
                 return $"{prefix}string[]";
             }
+            if (!(array.SizeType != ArrayType.ArraySize.Constant &&  MarshalKind == MarshalKind.ReturnVariableArray) && Context.Options.UseSpan)
+            {
+                return $"Span<{arrayType.Visit(this)}>";
 
+            }
             var arraySuffix = array.SizeType != ArrayType.ArraySize.Constant &&
                 MarshalKind == MarshalKind.ReturnVariableArray ?
                 (ContextKind == TypePrinterContextKind.Managed &&
