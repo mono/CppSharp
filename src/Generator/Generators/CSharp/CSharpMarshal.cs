@@ -69,11 +69,12 @@ namespace CppSharp.Generators.CSharp
                     var arrayType = array.Type.Desugar();
 
                     if (CheckIfArrayCanBeCopiedUsingMemoryCopy(array))
+                    {
                         if (Context.Context.Options.UseSpan)
                             Context.Return.Write($"new Span<{arrayType}>({Context.ReturnVarName}, {array.Size})");
-
                         else
                             Context.Return.Write($"CppSharp.Runtime.MarshalUtil.GetArray<{arrayType}>({Context.ReturnVarName}, {array.Size})");
+                    }                   
                     else if (array.Type.IsPrimitiveType(PrimitiveType.Char) && Context.Context.Options.MarshalCharAsManagedChar)
                         Context.Return.Write($"CppSharp.Runtime.MarshalUtil.GetCharArray({Context.ReturnVarName}, {array.Size})");
                     else if (array.Type.IsPointerToPrimitiveType(PrimitiveType.Void))
@@ -883,19 +884,29 @@ namespace CppSharp.Generators.CSharp
             if (elementType.IsPrimitiveType() ||
                 elementType.IsPointerToPrimitiveType())
             {
-                Context.Return.Write(Context.Parameter.Name);
+                if (Context.Context.Options.UseSpan && !elementType.IsConstCharString())
+                {
+                    var local = Generator.GeneratedIdentifier($@"{
+                      Context.Parameter.Name}{Context.ParameterIndex}");
+                    Context.Before.WriteLine($@"fixed ({
+                        typePrinter.PrintNative(elementType)}* {local} = &MemoryMarshal.GetReference({Context.Parameter.Name}))");
+                    Context.HasCodeBlock = true;
+                    Context.Before.WriteOpenBraceAndIndent();
+                    Context.Return.Write(local);
+                }
+                else
+                    Context.Return.Write(Context.Parameter.Name);
                 return;
             }
 
             var intermediateArray = Generator.GeneratedIdentifier(Context.Parameter.Name);
             var intermediateArrayType = typePrinter.PrintNative(elementType);
-
-            Context.Before.WriteLine($"{intermediateArrayType}[] {intermediateArray};");
             if (Context.Context.Options.UseSpan)
-                Context.Before.WriteLine($"if ({Context.Parameter.Name} == null)");
+                Context.Before.WriteLine($"Span<{intermediateArrayType}> {intermediateArray};");
             else
-                Context.Before.WriteLine($"if ({Context.Parameter.Name} is null)");
-                Context.Before.WriteLineIndent($"{intermediateArray} = null;");
+                Context.Before.WriteLine($"{intermediateArrayType}[] {intermediateArray};");
+            Context.Before.WriteLine($"if ({Context.Parameter.Name} == null)");
+            Context.Before.WriteLineIndent($"{intermediateArray} = null;");
             Context.Before.WriteLine("else");
 
             Context.Before.WriteOpenBraceAndIndent();
@@ -920,7 +931,18 @@ namespace CppSharp.Generators.CSharp
 
             Context.Before.UnindentAndWriteCloseBrace();
 
-            Context.Return.Write(intermediateArray);
+            if (Context.Context.Options.UseSpan)
+            {
+                var local = Generator.GeneratedIdentifier($@"{
+                  intermediateArray}{Context.ParameterIndex}");
+                Context.Before.WriteLine($@"fixed ({
+                    typePrinter.PrintNative(elementType)}* {local} = &MemoryMarshal.GetReference({intermediateArray}))");
+                Context.HasCodeBlock = true;
+                Context.Before.WriteOpenBraceAndIndent();
+                Context.Return.Write(local);
+            }
+            else
+                Context.Return.Write(intermediateArray);
         }
 
         private void MarshalString(Type pointee)

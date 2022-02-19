@@ -184,6 +184,9 @@ namespace CppSharp
         public readonly List<string> DependentNameSpaces = new List<string>();
         public bool MarshalCharAsManagedChar { get; set; }
 
+        /// <summary>
+        /// Use Span Struct instead of Managed Array
+        /// </summary>
         public bool UseSpan { get; set; }
 
 
