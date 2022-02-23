@@ -185,6 +185,12 @@ namespace CppSharp
         public bool MarshalCharAsManagedChar { get; set; }
 
         /// <summary>
+        /// Use Span Struct instead of Managed Array
+        /// </summary>
+        public bool UseSpan { get; set; }
+
+
+        /// <summary>
         /// Generates a single C# file.
         /// </summary>
         [Obsolete("Use the more general GenerationOutputMode property instead.")]

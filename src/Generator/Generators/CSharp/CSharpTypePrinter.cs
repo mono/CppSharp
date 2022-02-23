@@ -123,6 +123,20 @@ namespace CppSharp.Generators.CSharp
                 return $"{prefix}string[]";
             }
 
+            if (Context.Options.UseSpan && !(array.SizeType != ArrayType.ArraySize.Constant &&
+                MarshalKind == MarshalKind.ReturnVariableArray))
+            {
+                if (ContextKind == TypePrinterContextKind.Managed)
+                {
+                    return $"Span<{arrayType.Visit(this)}>";
+                }
+                else
+                {
+                    return $"{arrayType.Visit(this)}*"; ;
+
+                }
+            }
+           
             var arraySuffix = array.SizeType != ArrayType.ArraySize.Constant &&
                 MarshalKind == MarshalKind.ReturnVariableArray ?
                 (ContextKind == TypePrinterContextKind.Managed &&
