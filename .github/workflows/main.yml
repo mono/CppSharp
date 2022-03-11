@@ -24,6 +24,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+
+      - name: Install nbgv
+        if: startsWith(matrix.config.os, 'macos')
+        run: |
+          dotnet tool install -g nbgv
+
+      - name: Set version
+        run: nbgv cloud --all-vars
 
       - name: Environment
         if: matrix.config.vs
@@ -72,6 +82,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+
+      - name: Set version
+        run: nbgv cloud --all-vars
 
       - uses: actions/download-artifact@v2
         with:

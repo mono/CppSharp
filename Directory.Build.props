@@ -11,7 +11,10 @@
     <RepositoryCommit>$(GITHUB_SHA)</RepositoryCommit>
     <Authors>João Matos, Dimitar Dobrev, Jose Torres</Authors>
     <Copyright>João Matos, Dimitar Dobrev</Copyright>
-    <Version>0.10.6</Version>
+    <Version>$(NBGV_Version)</Version>
+    <AssemblyVersion>$(NBGV_AssemblyVersion)</AssemblyVersion>
+    <AssemblyFileVersion>$(NBGV_AssemblyFileVersion)</AssemblyFileVersion>
+    <AssemblyInformationalVersion>$(NBGV_AssemblyInformationalVersion)</AssemblyInformationalVersion>
     <IsPackable>false</IsPackable>
     <BuildDir>$(RootDir)build\</BuildDir>
     <ObjDir>$(BuildDir)obj\</ObjDir>
