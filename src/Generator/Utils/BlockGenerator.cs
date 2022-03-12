@@ -298,6 +298,42 @@ namespace CppSharp
             return FindBlocks(kind).SingleOrDefault();
         }
 
+        internal PushedBlock PushWriteBlock(BlockKind kind, string msg, NewLineKind next)
+        {
+            PushBlock(kind);
+            WriteLine(msg);
+            WriteOpenBraceAndIndent();
+            return new PushedBlock(this, next);
+        }
+
+        internal TextBlock WriteBlock(string msg)
+        {
+            WriteLine(msg);
+            WriteOpenBraceAndIndent();
+            return new TextBlock(this);
+        }
+
+        internal ref struct PushedBlock
+        {
+            private readonly BlockGenerator generator;
+            private readonly NewLineKind next;
+
+            public PushedBlock(BlockGenerator generator, NewLineKind next) 
+            {
+                this.generator = generator;
+                this.next = next;
+            }
+
+            public void Dispose()
+            {
+                if (generator == null)
+                    return;
+
+                generator.UnindentAndWriteCloseBrace();
+                generator.PopBlock(next);
+            }
+        }
+
         #endregion
 
         #region ITextGenerator implementation

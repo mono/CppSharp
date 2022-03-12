@@ -113,42 +113,36 @@ namespace CppSharp.Generators.CSharp
                                   group spec by module.OutputNamespace into @group
                                   select @group)
             {
-                PushBlock(BlockKind.Namespace);
-                if (!string.IsNullOrEmpty(group.Key))
+                using (!string.IsNullOrEmpty(group.Key) 
+                    ? PushWriteBlock(BlockKind.Namespace, $"namespace {group.Key}", NewLineKind.BeforeNextBlock) 
+                    : default)
                 {
-                    WriteLine($"namespace {group.Key}");
-                    WriteOpenBraceAndIndent();
-                }
-
-                foreach (var template in from s in @group
-                                         group s by s.TemplatedDecl.TemplatedClass into template
-                                         select template)
-                {
-                    var declContext = template.Key.Namespace;
-                    var declarationContexts = new Stack<DeclarationContext>();
-                    while (!(declContext is TranslationUnit))
+                    foreach (var template in from s in @group
+                                             group s by s.TemplatedDecl.TemplatedClass into template
+                                             select template)
                     {
-                        if (!(declContext is Namespace @namespace) || !@namespace.IsInline)
-                            declarationContexts.Push(declContext);
-                        declContext = declContext.Namespace;
+                        var declContext = template.Key.Namespace;
+                        var declarationContexts = new Stack<DeclarationContext>();
+                        while (!(declContext is TranslationUnit))
+                        {
+                            if (!(declContext is Namespace @namespace) || !@namespace.IsInline)
+                                declarationContexts.Push(declContext);
+                            declContext = declContext.Namespace;
+                        }
+
+                        foreach (var declarationContext in declarationContexts)
+                        {
+                            WriteLine($"namespace {declarationContext.Name}");
+                            WriteOpenBraceAndIndent();
+                        }
+
+                        GenerateClassTemplateSpecializationsInternals(
+                            template.Key, template.ToList());
+
+                        foreach (var declarationContext in declarationContexts)
+                            UnindentAndWriteCloseBrace();
                     }
-
-                    foreach (var declarationContext in declarationContexts)
-                    {
-                        WriteLine($"namespace {declarationContext.Name}");
-                        WriteOpenBraceAndIndent();
-                    }
-
-                    GenerateClassTemplateSpecializationsInternals(
-                        template.Key, template.ToList());
-
-                    foreach (var declarationContext in declarationContexts)
-                        UnindentAndWriteCloseBrace();
                 }
-
-                if (!string.IsNullOrEmpty(group.Key))
-                    UnindentAndWriteCloseBrace();
-                PopBlock(NewLineKind.BeforeNextBlock);
             }
 
             if (Options.GenerationOutputMode == GenerationOutputMode.FilePerUnit)
@@ -194,22 +188,11 @@ namespace CppSharp.Generators.CSharp
             var shouldGenerateNamespace = !@namespace.IsInline && !isTranslationUnit &&
                 context.Declarations.Any(d => d.IsGenerated || (d is Class && !d.IsIncomplete));
 
-            if (shouldGenerateNamespace)
-            {
-                PushBlock(BlockKind.Namespace);
-                WriteLine("namespace {0}", context.Name);
-                WriteOpenBraceAndIndent();
-            }
+            using var _ = shouldGenerateNamespace 
+                ? PushWriteBlock(BlockKind.Namespace, $"namespace {context.Name}", NewLineKind.BeforeNextBlock) 
+                : default;
 
-            var ret = base.VisitNamespace(@namespace);
-
-            if (shouldGenerateNamespace)
-            {
-                UnindentAndWriteCloseBrace();
-                PopBlock(NewLineKind.BeforeNextBlock);
-            }
-
-            return ret;
+            return base.VisitNamespace(@namespace);
         }
 
         public override bool VisitDeclContext(DeclarationContext context)
@@ -316,14 +299,13 @@ namespace CppSharp.Generators.CSharp
         private void GenerateClassTemplateSpecializationsInternals(Class template,
             IList<ClassTemplateSpecialization> specializations)
         {
-            PushBlock(BlockKind.Namespace);
-            var generated = GetGeneratedClasses(template, specializations);
-            WriteLine("namespace {0}{1}",
+            var namespaceName = string.Format("namespace {0}{1}",
                 template.OriginalNamespace is Class &&
                 !template.OriginalNamespace.IsDependent ?
                     template.OriginalNamespace.Name + '_' : string.Empty,
                 template.Name);
-            WriteOpenBraceAndIndent();
+            using var _ = PushWriteBlock(BlockKind.Namespace, namespaceName, NewLineKind.BeforeNextBlock);
+            var generated = GetGeneratedClasses(template, specializations);
 
             foreach (var nestedTemplate in template.Classes.Where(
                 c => c.IsDependent && !c.Ignore && c.Specializations.Any(s => !s.Ignore)))
@@ -342,22 +324,19 @@ namespace CppSharp.Generators.CSharp
                 if (nested != null)
                     GenerateNestedInternals(group.Key, GetGeneratedClasses(nested, group));
             }
-
-            UnindentAndWriteCloseBrace();
-            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
         private void GenerateNestedInternals(string name, IEnumerable<Class> nestedClasses)
         {
-            WriteLine($"namespace {name}");
-            WriteOpenBraceAndIndent();
-            foreach (var nestedClass in nestedClasses)
+            using (WriteBlock($"namespace {name}"))
             {
-                GenerateClassInternals(nestedClass);
-                foreach (var nestedInNested in nestedClass.Classes)
-                    GenerateNestedInternals(nestedInNested.Name, new[] { nestedInNested });
+                foreach (var nestedClass in nestedClasses)
+                {
+                    GenerateClassInternals(nestedClass);
+                    foreach (var nestedInNested in nestedClass.Classes)
+                        GenerateNestedInternals(nestedInNested.Name, new[] { nestedInNested });
+                }
             }
-            UnindentAndWriteCloseBrace();
             NewLine();
         }
 
@@ -2256,14 +2235,8 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             if (!Options.GenerateFinalizerFor(@class))
                 return;
 
-            PushBlock(BlockKind.Finalizer);
-
-            WriteLine("~{0}()", @class.Name);
-            WriteOpenBraceAndIndent();
-            WriteLine($"Dispose(false, callNativeDtor : { Helpers.OwnsNativeInstanceIdentifier} );");
-            UnindentAndWriteCloseBrace();
-
-            PopBlock(NewLineKind.BeforeNextBlock);
+            using (PushWriteBlock(BlockKind.Finalizer, $"~{@class.Name}()", NewLineKind.BeforeNextBlock))
+                WriteLine($"Dispose(false, callNativeDtor : { Helpers.OwnsNativeInstanceIdentifier} );");
         }
 
         private void GenerateDisposeMethods(Class @class)
@@ -2273,16 +2246,12 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             // Generate the IDispose Dispose() method.
             if (!hasBaseClass)
             {
-                PushBlock(BlockKind.Method);
-                WriteLine("public void Dispose()");
-                WriteOpenBraceAndIndent();
-
-                WriteLine($"Dispose(disposing: true, callNativeDtor : { Helpers.OwnsNativeInstanceIdentifier} );");
-                if (Options.GenerateFinalizerFor(@class))
-                    WriteLine("GC.SuppressFinalize(this);");
-
-                UnindentAndWriteCloseBrace();
-                PopBlock(NewLineKind.BeforeNextBlock);
+                using (PushWriteBlock(BlockKind.Method, "public void Dispose()", NewLineKind.BeforeNextBlock))
+                {
+                    WriteLine($"Dispose(disposing: true, callNativeDtor : { Helpers.OwnsNativeInstanceIdentifier} );");
+                    if (Options.GenerateFinalizerFor(@class))
+                        WriteLine("GC.SuppressFinalize(this);");
+                }
             }
 
             // Declare partial method that the partial class can implement to participate
@@ -2292,13 +2261,8 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             PopBlock(NewLineKind.BeforeNextBlock);
 
             // Generate Dispose(bool, bool) method
-            PushBlock(BlockKind.Method);
-            Write("internal protected ");
-            if (!@class.IsValueType)
-                Write(hasBaseClass ? "override " : "virtual ");
-
-            WriteLine("void Dispose(bool disposing, bool callNativeDtor )");
-            WriteOpenBraceAndIndent();
+            var ext = !@class.IsValueType ? (hasBaseClass ? "override " : "virtual ") : string.Empty;
+            using var _ = PushWriteBlock(BlockKind.Method, $"internal protected {ext}void Dispose(bool disposing, bool callNativeDtor )", NewLineKind.BeforeNextBlock);
 
             if (@class.IsRefType)
             {
@@ -2391,8 +2355,6 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             WriteLineIndent("Marshal.FreeHGlobal({0});", Helpers.InstanceIdentifier);
 
             WriteLine("{0} = IntPtr.Zero;", Helpers.InstanceIdentifier);
-            UnindentAndWriteCloseBrace();
-            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
         private bool GenerateDestructorCall(Method dtor)
