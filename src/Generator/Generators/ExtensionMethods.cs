@@ -10,6 +10,21 @@ namespace CppSharp.Generators
 {
     public static class ExtensionMethods
     {
+        private static PrimitiveType[] allowedToHaveDefaultPtrVals =
+        {
+            PrimitiveType.Bool,
+            PrimitiveType.Double,
+            PrimitiveType.Float,
+            PrimitiveType.Int,
+            PrimitiveType.Long,
+            PrimitiveType.LongLong,
+            PrimitiveType.Short,
+            PrimitiveType.UInt,
+            PrimitiveType.ULong,
+            PrimitiveType.ULongLong,
+            PrimitiveType.UShort
+        };
+
         public static Interop.CallingConvention ToInteropCallConv(this CallingConvention convention)
         {
             switch (convention)
@@ -31,20 +46,6 @@ namespace CppSharp.Generators
 
         public static bool IsPrimitiveTypeConvertibleToRef(this Type type)
         {
-            var allowedToHaveDefaultPtrVals = new List<PrimitiveType>
-            {
-                PrimitiveType.Bool,
-                PrimitiveType.Double,
-                PrimitiveType.Float,
-                PrimitiveType.Int,
-                PrimitiveType.Long,
-                PrimitiveType.LongLong,
-                PrimitiveType.Short,
-                PrimitiveType.UInt,
-                PrimitiveType.ULong,
-                PrimitiveType.ULongLong,
-                PrimitiveType.UShort
-            };
             return (type.IsPointerToPrimitiveType() &&
                 allowedToHaveDefaultPtrVals.Any(type.IsPointerToPrimitiveType)) ||
                 (type.IsAddress() && type.GetPointee().IsEnum());
