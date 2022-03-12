@@ -25,7 +25,7 @@ namespace CppSharp
                 throw new Exception("Could not find a valid Xcode toolchain");
 
             return toolchainPath;
-        }   
+        }
 
         public static string GetXcodeCppIncludesFolder()
         {
@@ -68,30 +68,33 @@ namespace CppSharp
             return Path.Combine(sdkPath, "usr/include");
         }
 
-        private static string GetXcodePathFromXcodeSelect() 
+        private static string GetXcodePathFromXcodeSelect()
         {
-            try 
+            try
             {
-                var xcodeSelect = Process.Start(new ProcessStartInfo("xcode-select", "--print-path") {
+                var xcodeSelect = Process.Start(new ProcessStartInfo("xcode-select", "--print-path")
+                {
                     RedirectStandardOutput = true,
                     UseShellExecute = false
                 });
 
                 var result = xcodeSelect.StandardOutput.ReadToEnd();
 
-                if(!string.IsNullOrEmpty(result)) 
+                if (!string.IsNullOrEmpty(result))
                 {
                     var extraStuffIndex = result.LastIndexOf("/Contents/Developer");
-                    if(extraStuffIndex >= 0)
+                    if (extraStuffIndex >= 0)
                         return result.Remove(extraStuffIndex);
                 }
-            } catch {
+            }
+            catch
+            {
                 // TODO: Log exception?
             }
             return null;
         }
 
-        private static string GetXcodePathFromFileSystem() 
+        private static string GetXcodePathFromFileSystem()
         {
             var toolchains = Directory.EnumerateDirectories("/Applications", "Xcode*")
                 .ToList();

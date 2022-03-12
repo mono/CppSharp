@@ -27,7 +27,7 @@ namespace CppSharp.Utils
 
                 if (source.Contains(item))
                 {
-                    sorted.Add(item);                    
+                    sorted.Add(item);
                 }
             }
             else

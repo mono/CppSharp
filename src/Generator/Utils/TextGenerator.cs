@@ -55,7 +55,7 @@ namespace CppSharp
 
             if (IsStartOfLine && !string.IsNullOrWhiteSpace(msg))
                 StringBuilder.Append(new string(' ',
-                    (int) (CurrentIndentation * DefaultIndentation)));
+                    (int)(CurrentIndentation * DefaultIndentation)));
 
             if (msg.Length > 0)
                 IsStartOfLine = msg.EndsWith(Environment.NewLine);

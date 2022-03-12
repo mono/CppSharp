@@ -29,5 +29,5 @@ namespace CppSharp
         // If true, will force the generation of debug metadata for the native
         // and managed code.
         public bool DebugMode;
-	}
+    }
 }

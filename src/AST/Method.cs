@@ -112,7 +112,7 @@ namespace CppSharp.AST
         public Method(Function function)
             : base(function)
         {
-            
+
         }
 
         public bool IsVirtual { get; set; }

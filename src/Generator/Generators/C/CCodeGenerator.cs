@@ -402,15 +402,15 @@ namespace CppSharp.Generators.C
             if (isDeclaration)
             {
                 if (method.IsPure)
-                  Write(" = 0");
+                    Write(" = 0");
                 else if (method.IsOverride)
-                  Write(" override");
+                    Write(" override");
             }
         }
 
         public virtual void GenerateMethodParameters(Function function)
         {
-            Write(CTypePrinter.VisitParameters(function.Parameters)); 
+            Write(CTypePrinter.VisitParameters(function.Parameters));
         }
 
         public override bool VisitMethodDecl(Method method)
@@ -440,7 +440,7 @@ namespace CppSharp.Generators.C
                 GeneratePropertySetter(property.SetMethod);
 
             //if (Options.GenerateMSDeclspecProperties)
-                //GenerateMSDeclspecProperty(property);
+            //GenerateMSDeclspecProperty(property);
 
             return true;
         }

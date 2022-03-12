@@ -39,7 +39,7 @@ namespace CppSharp.AST
             foreach (var @base in @class.Bases)
             {
                 if (!@base.IsClass) continue;
-                foreach(var elem in @base.Class.FindHierarchy(func))
+                foreach (var elem in @base.Class.FindHierarchy(func))
                     yield return elem;
             }
         }

@@ -123,7 +123,7 @@ namespace CppSharp.Generators.CLI
 
             // Find a type map for the declaration and use it if it exists.
             TypeMap typeMap;
-            if (TypeMapDatabase.FindTypeMap(record.Value, out typeMap) 
+            if (TypeMapDatabase.FindTypeMap(record.Value, out typeMap)
                 || (typedefType != null && TypeMapDatabase.FindTypeMap(typedefType.Type.Desugar(), out typeMap)))
             {
                 typeMap.CLITypeReference(this, record);
@@ -131,7 +131,7 @@ namespace CppSharp.Generators.CLI
             }
 
             var typeRef = GetTypeReference(decl);
-            if(typeRef != null)
+            if (typeRef != null)
             {
                 typeRef.Include.InHeader |= IsIncludeInHeader(record);
             }
@@ -176,7 +176,7 @@ namespace CppSharp.Generators.CLI
                 return false;
 
             if (@class.IsIncomplete && @class.CompleteDeclaration != null)
-                @class = (Class) @class.CompleteDeclaration;
+                @class = (Class)@class.CompleteDeclaration;
 
             if (@class.TranslationUnit == TranslationUnit)
                 GeneratedDeclarations.Add(@class);

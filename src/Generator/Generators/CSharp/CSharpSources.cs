@@ -228,7 +228,7 @@ namespace CppSharp.Generators.CSharp
 
             GenerateNamespaceFunctionsAndVariables(context);
 
-            foreach(var childNamespace in context.Namespaces)
+            foreach (var childNamespace in context.Namespaces)
                 childNamespace.Visit(this);
 
             return true;
@@ -411,7 +411,7 @@ namespace CppSharp.Generators.CSharp
 
             if (@class.IsDependent && !@class.IsGenerated)
                 return true;
-            
+
             // disable the type maps, if any, for this class because of copy ctors, operators and others
             this.DisableTypeMap(@class);
 
@@ -480,7 +480,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
     managed = default;
     return NativeToManagedMap.TryGetValue(native, out var wr) && wr.TryGetTarget(out managed);
 }}");
-                    } 
+                    }
                     else
                     {
                         WriteLines($@"
@@ -512,7 +512,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
 
             if (@class.IsDynamic)
                 GenerateVTable(@class);
-        exit:
+            exit:
             UnindentAndWriteCloseBrace();
             PopBlock(NewLineKind.BeforeNextBlock);
 
@@ -542,7 +542,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             foreach (var method in @class.Methods.Where(m =>
                 (m.OriginalFunction == null ||
                  !ASTUtils.CheckIgnoreFunction(m.OriginalFunction)) &&
-                m.Access == AccessSpecifier.Public && 
+                m.Access == AccessSpecifier.Public &&
                 (!shouldInheritFromIDisposable || !IsDisposeMethod(m))))
             {
                 PushBlock(BlockKind.Method);
@@ -568,7 +568,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                 PushBlock(BlockKind.Property);
                 var type = prop.Type;
                 if (prop.Parameters.Count > 0 && prop.Type.IsPointerToPrimitiveType())
-                    type = ((PointerType) prop.Type).Pointee;
+                    type = ((PointerType)prop.Type).Pointee;
                 GenerateDeclarationCommon(prop);
                 Write($"{type} {GetPropertyName(prop)} {{ ");
                 if (prop.HasGetter)
@@ -596,7 +596,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             PushBlock(BlockKind.InternalsClass);
 
             if (@class.Layout.Size > 0)
-            { 
+            {
                 var layout = sequentialLayout ? "Sequential" : "Explicit";
                 var pack = @class.MaxFieldAlignment > 0 ? $", Pack = {@class.MaxFieldAlignment}" : string.Empty;
                 WriteLine($"[StructLayout(LayoutKind.{layout}, Size = {@class.Layout.Size}{pack})]");
@@ -847,7 +847,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             var fields = @class.Layout.Fields;
 
             if (fields.Count > 1)
-            { 
+            {
                 for (var i = 1; i < fields.Count; ++i)
                 {
                     if (fields[i].Offset == fields[i - 1].Offset)
@@ -916,7 +916,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-#endregion
+        #endregion
 
         private void GeneratePropertySetter<T>(T decl,
             Class @class, bool isAbstract = false, Property property = null)
@@ -1063,11 +1063,12 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             }
             else
             {
-                var name = ((Class) field.Namespace).Layout.Fields.First(
+                var name = ((Class)field.Namespace).Layout.Fields.First(
                     f => f.FieldPtr == field.OriginalPtr).Name;
                 if (@class.IsValueType)
                     returnVar = $"{Helpers.InstanceField}.{name}";
-                else {
+                else
+                {
                     var typeName = TypePrinter.PrintNative(@class);
                     if (IsInternalClassNested(field.Class))
                         typeName.RemoveNamespace();
@@ -1141,7 +1142,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             else
                 type = originalType.ToString();
 
-            var name = ((Class) field.Namespace).Layout.Fields.First(
+            var name = ((Class)field.Namespace).Layout.Fields.First(
                 f => f.FieldPtr == field.OriginalPtr).Name;
             WriteLine(string.Format("fixed ({0} {1} = {2}.{3})",
                 type, arrPtr, Helpers.InstanceField, name));
@@ -1276,7 +1277,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             {
                 NewLine();
                 WriteOpenBraceAndIndent();
-                var to = ((Class) property.OriginalNamespace).OriginalClass;
+                var to = ((Class)property.OriginalNamespace).OriginalClass;
                 var baseOffset = GetOffsetToBase(@class, to);
                 WriteLine("return {0} + {1};", Helpers.InstanceIdentifier, baseOffset);
                 UnindentAndWriteCloseBrace();
@@ -1379,7 +1380,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             QualifiedType type = default;
             if (actualProperty != property ||
                 // indexers
-                (property.QualifiedType.Type.IsPrimitiveType() && 
+                (property.QualifiedType.Type.IsPrimitiveType() &&
                  actualProperty.GetMethod.ReturnType.Type.IsPointerToPrimitiveType()))
             {
                 type = property.QualifiedType;
@@ -1415,7 +1416,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
 
         private void GenerateFieldGetter(Field field, Class @class, QualifiedType returnType)
         {
-            var name = ((Class) field.Namespace).Layout.Fields.First(
+            var name = ((Class)field.Namespace).Layout.Fields.First(
                 f => f.FieldPtr == field.OriginalPtr).Name;
             string returnVar;
             Type fieldType = field.Type.Desugar();
@@ -1473,11 +1474,11 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                       !final.IsPrimitiveType(PrimitiveType.Char16) &&
                       !final.IsPrimitiveType(PrimitiveType.Char32)) ||
                      (!Context.Options.MarshalCharAsManagedChar &&
-                      !((PointerType) fieldType).QualifiedPointee.Qualifiers.IsConst)) &&
+                      !((PointerType)fieldType).QualifiedPointee.Qualifiers.IsConst)) &&
                     templateSubstitution == null) ||
-                    (!((PointerType) fieldType).QualifiedPointee.Qualifiers.IsConst &&
-                      (final.IsPrimitiveType(PrimitiveType.WideChar) || 
-                       final.IsPrimitiveType(PrimitiveType.Char16) || 
+                    (!((PointerType)fieldType).QualifiedPointee.Qualifiers.IsConst &&
+                      (final.IsPrimitiveType(PrimitiveType.WideChar) ||
+                       final.IsPrimitiveType(PrimitiveType.Char16) ||
                        final.IsPrimitiveType(PrimitiveType.Char32))))
                     Write($"({fieldType.GetPointee().Desugar()}*) ");
             }
@@ -1512,7 +1513,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             if (methods.Count == 0)
                 return;
 
-            var @class = (Class) methods[0].Namespace;
+            var @class = (Class)methods[0].Namespace;
 
             if (@class.IsValueType)
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
@@ -1649,7 +1650,8 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             if (!isIndexer)
                 return prop.Name;
 
-            var @params = prop.Parameters.Select(param => {
+            var @params = prop.Parameters.Select(param =>
+            {
                 var p = new Parameter(param);
                 p.Usage = ParameterUsage.In;
                 return p;
@@ -1671,7 +1673,8 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
 
             if (variable.Initializer != null && !string.IsNullOrWhiteSpace(variable.Initializer.String))
                 GeneratePropertyGetterForVariableWithInitializer(variable, signature);
-            else {
+            else
+            {
                 WriteLine(signature);
                 WriteOpenBraceAndIndent();
 
@@ -1687,7 +1690,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-#region Virtual Tables
+        #region Virtual Tables
 
         public List<VTableComponent> GetUniqueVTableMethodEntries(Class @class)
         {
@@ -1718,7 +1721,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             // Generate a delegate type for each method.
             foreach (var method in wrappedEntries.Select(e => e.Method).Where(m => !m.Ignore))
                 GenerateVTableMethodDelegates(containingClass, method.Namespace.IsDependent ?
-                   (Method) method.InstantiatedFrom : method);
+                   (Method)method.InstantiatedFrom : method);
 
             var hasVirtualDtor = wrappedEntries.Any(e => e.Method.IsDestructor);
             bool hasDynamicBase = @class.NeedsBase && @class.BaseClass.IsDynamic;
@@ -1839,7 +1842,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             {{
                 if (__VTables.IsTransient)
                     __VTables = VTableLoader.SetupVTables(__Instance, destructorOnly);
-            }}", trimIndentation : true);
+            }}", trimIndentation: true);
 
             WriteLine("#endregion");
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -1865,7 +1868,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
 
         private void AllocateNewVTablesMS(Class @class, IList<VTableComponent> wrappedEntries,
             bool destructorOnly, string table)
-        {        
+        {
             for (int i = 0; i < @class.Layout.VFTables.Count; i++)
             {
                 VFTableInfo vftable = @class.Layout.VFTables[i];
@@ -1892,9 +1895,9 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
         {
             string suffix = (destructorOnly ? "_dtor" : string.Empty) +
                 (tableIndex == 0 ? string.Empty : tableIndex.ToString(CultureInfo.InvariantCulture));
-     
+
             WriteLine($"{table}[{tableIndex}] = CppSharp.Runtime.VTables.CloneTable(SafeHandles, instance, {vptrOffset}, {entries.Count});");
-      
+
             // fill the newly allocated v-table
             for (var i = 0; i < entries.Count; i++)
             {
@@ -1908,7 +1911,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                     // patch with pointers to managed code where needed
                     WriteLine("{0}[{1}][{2}] = Thunks[{3}];", table, tableIndex, i - offsetRTTI, wrappedEntries.IndexOf(entry));
             }
-       
+
             if (!destructorOnly)
                 WriteLine($"VTables.Methods[{tableIndex}] = new Delegate[{entries.Count}];");
         }
@@ -1974,7 +1977,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             Type returnType = method.OriginalReturnType.Type.Desugar();
             bool isPrimitive = returnType.IsPrimitiveType();
             bool isVoid = returnType.IsPrimitiveType(PrimitiveType.Void);
-            var property = ((Class) method.Namespace).Properties.Find(
+            var property = ((Class)method.Namespace).Properties.Find(
                 p => p.GetMethod == method || p.SetMethod == method);
             bool isSetter = property != null && property.SetMethod == method;
             var hasReturn = !isVoid && !isSetter;
@@ -2097,9 +2100,9 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             return @class.IsGenerated && @class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count > 0;
         }
 
-#endregion
+        #endregion
 
-#region Events
+        #region Events
 
         public override bool VisitEvent(Event @event)
         {
@@ -2207,9 +2210,9 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             UnindentAndWriteCloseBrace();
         }
 
-#endregion
+        #endregion
 
-#region Constructors
+        #region Constructors
 
         public void GenerateClassConstructors(Class @class)
         {
@@ -2394,7 +2397,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
 
         private bool GenerateDestructorCall(Method dtor)
         {
-            var @class = (Class) dtor.Namespace;
+            var @class = (Class)dtor.Namespace;
             GenerateVirtualFunctionCall(dtor, true);
             if (@class.IsAbstract)
             {
@@ -2518,7 +2521,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
         public void GenerateNativeConstructorByValue(Class @class, TypePrinterResult returnType)
         {
             var @internal = TypePrinter.PrintNative(@class.IsAbstractImpl ? @class.BaseClass : @class);
-            
+
             if (IsInternalClassNested(@class))
                 @internal.RemoveNamespace();
 
@@ -2605,9 +2608,9 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                 WriteLineIndent(": this()");
         }
 
-#endregion
+        #endregion
 
-#region Methods / Functions
+        #region Methods / Functions
 
         public void GenerateFunction(Function function, string parentName)
         {
@@ -2732,7 +2735,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                     c, method, method.OriginalReturnType));
             }
 
-            SkipImpl:
+        SkipImpl:
 
             UnindentAndWriteCloseBrace();
 
@@ -2829,7 +2832,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
         {
             if (function.OriginalFunction.GenerationKind == GenerationKind.Internal)
             {
-                var property = ((Class) function.Namespace).Properties.First(
+                var property = ((Class)function.Namespace).Properties.First(
                     p => p.SetMethod == function.OriginalFunction);
                 WriteLine($@"{property.Name} = {ExpressionPrinter.VisitParameter(
                     function.Parameters.First(p => p.Kind == ParameterKind.Regular))};");
@@ -2844,7 +2847,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                     parameter.Type.IsPointerToPrimitiveType(out primitiveType) &&
                     parameter.Usage == ParameterUsage.InOut && parameter.HasDefaultValue)
                 {
-                    var pointeeType = ((PointerType) parameter.Type).Pointee.ToString();
+                    var pointeeType = ((PointerType)parameter.Type).Pointee.ToString();
                     WriteLine($@"{pointeeType} param{j++} = {
                         (primitiveType == PrimitiveType.Bool ? "false" : "0")};");
                 }
@@ -2927,16 +2930,16 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
         {
             Function @virtual = method;
             if (method.OriginalFunction != null &&
-                !((Class) method.OriginalFunction.Namespace).IsInterface)
+                !((Class)method.OriginalFunction.Namespace).IsInterface)
                 @virtual = method.OriginalFunction;
 
             var i = VTables.GetVTableIndex(@virtual);
             int vtableIndex = 0;
-            var @class = (Class) method.Namespace;
+            var @class = (Class)method.Namespace;
             var thisParam = method.Parameters.Find(
                 p => p.Kind == ParameterKind.Extension);
             if (thisParam != null)
-                @class = (Class) method.OriginalFunction.Namespace;
+                @class = (Class)method.OriginalFunction.Namespace;
 
             if (Context.ParserOptions.IsMicrosoftAbi)
                 vtableIndex = @class.Layout.VFTables.IndexOf(@class.Layout.VFTables.First(
@@ -3094,7 +3097,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
             Parameter operatorParam = null;
             if (method != null)
             {
-                var @class = (Class) method.Namespace;
+                var @class = (Class)method.Namespace;
                 isValueType = @class.IsValueType;
 
                 operatorParam = method.Parameters.FirstOrDefault(
@@ -3186,7 +3189,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                 if (operatorParam == null)
                 {
                     WriteLine($@"fixed ({Helpers.InternalStruct}{
-                        Helpers.GetSuffixForInternal((Class) originalFunction.Namespace)}* __instancePtr = &{
+                        Helpers.GetSuffixForInternal((Class)originalFunction.Namespace)}* __instancePtr = &{
                         Helpers.InstanceField})");
                     WriteOpenBraceAndIndent();
                 }
@@ -3200,10 +3203,10 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                 Write("var {0} = ", Helpers.ReturnIdentifier);
 
             if (method != null && !method.IsConstructor && method.OriginalFunction != null &&
-                ((Method) method.OriginalFunction).IsConstructor)
+                ((Method)method.OriginalFunction).IsConstructor)
             {
                 WriteLine($@"Marshal.AllocHGlobal({
-                    ((Class) method.OriginalNamespace).Layout.Size});");
+                    ((Class)method.OriginalNamespace).Layout.Size});");
                 names.Insert(0, Helpers.ReturnIdentifier);
             }
             WriteLine("{0}({1});", functionName, string.Join(", ", names));
@@ -3241,19 +3244,19 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                 UnindentAndWriteCloseBrace();
 
             var numFixedBlocks = @params.Count(param => param.HasUsingBlock);
-            for(var i = 0; i < numFixedBlocks; ++i)
+            for (var i = 0; i < numFixedBlocks; ++i)
                 UnindentAndWriteCloseBrace();
         }
 
         private string GetInstanceParam(Function function)
         {
-            var from = (Class) function.Namespace;
+            var from = (Class)function.Namespace;
             var to = (function.OriginalFunction == null ||
                 // we don't need to offset the instance with Itanium if there's an existing interface impl
                 (Context.ParserOptions.IsItaniumLikeAbi &&
-                 !((Class) function.OriginalNamespace).IsInterface)) &&
+                 !((Class)function.OriginalNamespace).IsInterface)) &&
                  function.SynthKind != FunctionSynthKind.AbstractImplCall ?
-                @from.BaseClass : (Class) function.OriginalFunction.Namespace;
+                @from.BaseClass : (Class)function.OriginalFunction.Namespace;
 
             var baseOffset = 0u;
             if (to != null)
@@ -3320,7 +3323,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
         {
             // Do not delete instance in MS ABI.
             var name = param.Name;
-            var function = (Function) param.Namespace;
+            var function = (Function)param.Namespace;
             param.Name = param.Kind == ParameterKind.ImplicitDestructorParameter ? "0" :
                 ActiveBlock.Parent.Kind != BlockKind.Property ||
                 function.OperatorKind == CXXOperatorKind.Subscript ? name : "value";
@@ -3377,7 +3380,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
             return TypePrinter.VisitParameters(@params, true).Type;
         }
 
-#endregion
+        #endregion
 
         public override bool VisitTypedefNameDecl(TypedefNameDecl typedef)
         {
@@ -3394,7 +3397,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                 var attributedType = typedef.Type.GetPointee() as AttributedType;
                 var callingConvention = attributedType == null
                     ? functionType.CallingConvention
-                    : ((FunctionType) attributedType.Equivalent.Type).CallingConvention;
+                    : ((FunctionType)attributedType.Equivalent.Type).CallingConvention;
                 TypePrinter.PushContext(TypePrinterContextKind.Native);
                 var interopCallConv = callingConvention.ToInteropCallConv();
                 if (interopCallConv == System.Runtime.InteropServices.CallingConvention.Winapi)
@@ -3530,7 +3533,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
             PushBlock(BlockKind.InternalsClassMethod);
             var callConv = function.CallingConvention.ToInteropCallConv();
 
-            WriteLine("[SuppressUnmanagedCodeSecurity, DllImport(\"{0}\", EntryPoint = \"{1}\", CallingConvention = __CallingConvention.{2})]", 
+            WriteLine("[SuppressUnmanagedCodeSecurity, DllImport(\"{0}\", EntryPoint = \"{1}\", CallingConvention = __CallingConvention.{2})]",
                 GetLibraryOf(function),
                 function.Mangled,
                 callConv);
@@ -3555,7 +3558,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
             string libName = declaration.TranslationUnit.Module.SharedLibraryName;
 
             NativeLibrary library;
-            Context.Symbols.FindLibraryBySymbol(((IMangledDecl) declaration).Mangled, out library);
+            Context.Symbols.FindLibraryBySymbol(((IMangledDecl)declaration).Mangled, out library);
 
             if (library != null)
                 libName = Path.GetFileNameWithoutExtension(library.FileName);

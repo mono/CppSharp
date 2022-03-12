@@ -29,64 +29,64 @@ namespace CppSharp.Generators.Cpp
             var arg = $"argv[{ParameterIndex}]";
             switch (primitive)
             {
-            case PrimitiveType.Bool:
-                condition = $"JS_IsBool({arg})";
-                break;
-            case PrimitiveType.Char:
-            case PrimitiveType.SChar:
-                condition = $"JS_IsInt8({arg})";
-                break;
-            case PrimitiveType.UChar:
-                condition = $"JS_IsUInt8({arg})";
-                break;
-            case PrimitiveType.WideChar:
-                condition = $"JS_IsUInt16({arg})";
-                break;
-            case PrimitiveType.Short:
-                condition = $"JS_IsInt16({arg})";
-                break;
-            case PrimitiveType.UShort:
-                condition = $"JS_IsUInt16({arg})";
-                break;
-            case PrimitiveType.Int:
-            case PrimitiveType.Long:
-                condition = $"JS_IsInt32({arg})";
-                break;
-            case PrimitiveType.ULong:
-            case PrimitiveType.UInt:
-                condition = $"JS_IsUInt32({arg})";
-                break;
-            case PrimitiveType.LongLong:
-            case PrimitiveType.ULongLong:
-            case PrimitiveType.Int128:
-            case PrimitiveType.UInt128:
-                condition = $"JS_IsBigInt(ctx, {arg})";
-                break;
-            case PrimitiveType.Half:
-            case PrimitiveType.Float:
-            case PrimitiveType.Double:
-                condition = $"JS_IsFloat({arg})";
-                break;
-            case PrimitiveType.LongDouble:
-            case PrimitiveType.Float128:
-                condition = $"JS_IsBigFloat({arg})";
-                break;
-            case PrimitiveType.String:
-                condition = $"JS_IsString({arg}) || JS_IsNull({arg})";
-                break;
-            case PrimitiveType.Decimal:
-                condition = $"JS_IsBigDecimal({arg})";
-                break;
-            case PrimitiveType.Null:
-                condition = $"JS_IsNull({arg})";
-                break;
-            case PrimitiveType.Void:
-            case PrimitiveType.Char16:
-            case PrimitiveType.Char32:
-            case PrimitiveType.IntPtr:
-            case PrimitiveType.UIntPtr:
-            default:
-                throw new NotImplementedException();
+                case PrimitiveType.Bool:
+                    condition = $"JS_IsBool({arg})";
+                    break;
+                case PrimitiveType.Char:
+                case PrimitiveType.SChar:
+                    condition = $"JS_IsInt8({arg})";
+                    break;
+                case PrimitiveType.UChar:
+                    condition = $"JS_IsUInt8({arg})";
+                    break;
+                case PrimitiveType.WideChar:
+                    condition = $"JS_IsUInt16({arg})";
+                    break;
+                case PrimitiveType.Short:
+                    condition = $"JS_IsInt16({arg})";
+                    break;
+                case PrimitiveType.UShort:
+                    condition = $"JS_IsUInt16({arg})";
+                    break;
+                case PrimitiveType.Int:
+                case PrimitiveType.Long:
+                    condition = $"JS_IsInt32({arg})";
+                    break;
+                case PrimitiveType.ULong:
+                case PrimitiveType.UInt:
+                    condition = $"JS_IsUInt32({arg})";
+                    break;
+                case PrimitiveType.LongLong:
+                case PrimitiveType.ULongLong:
+                case PrimitiveType.Int128:
+                case PrimitiveType.UInt128:
+                    condition = $"JS_IsBigInt(ctx, {arg})";
+                    break;
+                case PrimitiveType.Half:
+                case PrimitiveType.Float:
+                case PrimitiveType.Double:
+                    condition = $"JS_IsFloat({arg})";
+                    break;
+                case PrimitiveType.LongDouble:
+                case PrimitiveType.Float128:
+                    condition = $"JS_IsBigFloat({arg})";
+                    break;
+                case PrimitiveType.String:
+                    condition = $"JS_IsString({arg}) || JS_IsNull({arg})";
+                    break;
+                case PrimitiveType.Decimal:
+                    condition = $"JS_IsBigDecimal({arg})";
+                    break;
+                case PrimitiveType.Null:
+                    condition = $"JS_IsNull({arg})";
+                    break;
+                case PrimitiveType.Void:
+                case PrimitiveType.Char16:
+                case PrimitiveType.Char32:
+                case PrimitiveType.IntPtr:
+                case PrimitiveType.UIntPtr:
+                default:
+                    throw new NotImplementedException();
             }
 
             Write(condition);

@@ -131,17 +131,17 @@ namespace CppSharp.AST
         {
             switch (kind)
             {
-            case CommentKind.BCPL:
-            case CommentKind.BCPLExcl:
-                return "//";
-            case CommentKind.C:
-            case CommentKind.JavaDoc:
-            case CommentKind.Qt:
-                return " *";
-            case CommentKind.BCPLSlash:
-                return "///";
-            default:
-                throw new ArgumentOutOfRangeException();
+                case CommentKind.BCPL:
+                case CommentKind.BCPLExcl:
+                    return "//";
+                case CommentKind.C:
+                case CommentKind.JavaDoc:
+                case CommentKind.Qt:
+                    return " *";
+                case CommentKind.BCPLSlash:
+                    return "///";
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -149,19 +149,19 @@ namespace CppSharp.AST
         {
             switch (kind)
             {
-            case CommentKind.BCPL:
-            case CommentKind.BCPLSlash:
-                return string.Empty;
-            case CommentKind.C:
-                return "/*";
-            case CommentKind.BCPLExcl:
-                return "//!";
-            case CommentKind.JavaDoc:
-                return "/**";
-            case CommentKind.Qt:
-                return "/*!";
-            default:
-                throw new ArgumentOutOfRangeException();
+                case CommentKind.BCPL:
+                case CommentKind.BCPLSlash:
+                    return string.Empty;
+                case CommentKind.C:
+                    return "/*";
+                case CommentKind.BCPLExcl:
+                    return "//!";
+                case CommentKind.JavaDoc:
+                    return "/**";
+                case CommentKind.Qt:
+                    return "/*!";
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -169,16 +169,16 @@ namespace CppSharp.AST
         {
             switch (kind)
             {
-            case CommentKind.BCPL:
-            case CommentKind.BCPLSlash:
-            case CommentKind.BCPLExcl:
-                return string.Empty;
-            case CommentKind.C:
-            case CommentKind.JavaDoc:
-            case CommentKind.Qt:
-                return " */";
-            default:
-                throw new ArgumentOutOfRangeException();
+                case CommentKind.BCPL:
+                case CommentKind.BCPLSlash:
+                case CommentKind.BCPLExcl:
+                    return string.Empty;
+                case CommentKind.C:
+                case CommentKind.JavaDoc:
+                case CommentKind.Qt:
+                    return " */";
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
     }
@@ -227,7 +227,7 @@ namespace CppSharp.AST
 
         public CommentCommandKind CommandKind
         {
-            get { return (CommentCommandKind) CommandId; }
+            get { return (CommentCommandKind)CommandId; }
         }
 
         public ParagraphComment ParagraphComment { get; set; }
@@ -310,7 +310,7 @@ namespace CppSharp.AST
             Kind = DocumentationCommentKind.TParamCommandComment;
             Position = new List<uint>();
         }
-  
+
         public override void Visit<T>(ICommentVisitor<T> visitor)
         {
             visitor.VisitTParamCommand(this);
@@ -364,7 +364,7 @@ namespace CppSharp.AST
     public class ParagraphComment : BlockContentComment
     {
         public List<InlineContentComment> Content;
- 
+
         public bool IsWhitespace;
 
         public ParagraphComment()
@@ -489,7 +489,7 @@ namespace CppSharp.AST
 
         public CommentCommandKind CommandKind
         {
-            get { return (CommentCommandKind) CommandId; }
+            get { return (CommentCommandKind)CommandId; }
         }
 
         public RenderKind CommentRenderKind;

@@ -74,7 +74,7 @@ namespace CppSharp.Generators.CSharp
                             Context.Return.Write($"new Span<{arrayType}>({Context.ReturnVarName}, {array.Size})");
                         else
                             Context.Return.Write($"CppSharp.Runtime.MarshalUtil.GetArray<{arrayType}>({Context.ReturnVarName}, {array.Size})");
-                    }                   
+                    }
                     else if (array.Type.IsPrimitiveType(PrimitiveType.Char) && Context.Context.Options.MarshalCharAsManagedChar)
                         Context.Return.Write($"CppSharp.Runtime.MarshalUtil.GetCharArray({Context.ReturnVarName}, {array.Size})");
                     else if (array.Type.IsPointerToPrimitiveType(PrimitiveType.Void))
@@ -386,7 +386,7 @@ namespace CppSharp.Generators.CSharp
         {
             var originalClass = @class.OriginalClass ?? @class;
             var ret = Generator.GeneratedIdentifier("result") + Context.ParameterIndex;
-        
+
             if (originalClass.IsRefType)
             {
                 var dtor = originalClass.Destructors.FirstOrDefault();

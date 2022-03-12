@@ -34,10 +34,10 @@ namespace CppSharp.Generators
             {
                 if (!Options.CommentKind.HasValue)
                     return CommentKind.BCPL;
-                
+
                 return Options.CommentKind.Value;
             }
-        } 
+        }
 
         /// <summary>
         /// Gets the comment style kind for documentation comments.
@@ -164,7 +164,7 @@ namespace CppSharp.Generators
         public virtual void GenerateMultiLineComment(List<string> lines, CommentKind kind)
         {
             PushBlock(BlockKind.BlockComment);
-        
+
             var lineCommentPrologue = Comment.GetLineCommentPrologue(kind);
             if (!string.IsNullOrWhiteSpace(lineCommentPrologue))
                 WriteLine("{0}", lineCommentPrologue);
@@ -410,7 +410,7 @@ namespace CppSharp.Generators
             {
                 if (property.GetMethod != null)
                     property.GetMethod.Visit(this);
-        
+
                 if (property.SetMethod != null)
                     property.SetMethod.Visit(this);
             }

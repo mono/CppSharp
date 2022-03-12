@@ -45,7 +45,7 @@ namespace CppSharp
 
             if (options.Architecture == TargetArchitecture.x64)
                 tripleBuilder.Append("x86_64-");
-            else if(options.Architecture == TargetArchitecture.x86)
+            else if (options.Architecture == TargetArchitecture.x86)
                 tripleBuilder.Append("i686-");
 
             if (options.Platform == TargetPlatform.Windows)
@@ -63,7 +63,7 @@ namespace CppSharp
                 tripleBuilder.Append("linux-gnu");
                 abi = CppAbi.Itanium;
 
-                if(options.Cpp11ABI)
+                if (options.Cpp11ABI)
                     tripleBuilder.Append("-cxx11abi");
             }
 
@@ -118,7 +118,7 @@ namespace CppSharp
             driverOptions.GeneratorKind = options.Kind;
             var module = driverOptions.AddModule(options.OutputFileName);
 
-            if(!string.IsNullOrEmpty(options.InputLibraryName))
+            if (!string.IsNullOrEmpty(options.InputLibraryName))
                 module.SharedLibraryName = options.InputLibraryName;
 
             module.Headers.AddRange(options.HeaderFiles);
@@ -143,7 +143,7 @@ namespace CppSharp
 
             foreach (KeyValuePair<string, string> d in options.Defines)
             {
-                if(string.IsNullOrEmpty(d.Value))
+                if (string.IsNullOrEmpty(d.Value))
                     parserOptions.AddDefines(d.Key);
                 else
                     parserOptions.AddDefines(d.Key + "=" + d.Value);

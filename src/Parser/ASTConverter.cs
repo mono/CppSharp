@@ -41,100 +41,100 @@ namespace CppSharp
             switch (type.Kind)
             {
                 case TypeKind.Tag:
-                {
-                    var _type = TagType.__CreateInstance(type.__Instance);
-                    return VisitTag(_type);
-                }
+                    {
+                        var _type = TagType.__CreateInstance(type.__Instance);
+                        return VisitTag(_type);
+                    }
                 case TypeKind.Array:
-                {
-                    var _type = ArrayType.__CreateInstance(type.__Instance);
-                    return VisitArray(_type);
-                }
+                    {
+                        var _type = ArrayType.__CreateInstance(type.__Instance);
+                        return VisitArray(_type);
+                    }
                 case TypeKind.Function:
-                {
-                    var _type = FunctionType.__CreateInstance(type.__Instance);
-                    return VisitFunction(_type);
-                }
+                    {
+                        var _type = FunctionType.__CreateInstance(type.__Instance);
+                        return VisitFunction(_type);
+                    }
                 case TypeKind.Pointer:
-                {
-                    var _type = PointerType.__CreateInstance(type.__Instance);
-                    return VisitPointer(_type);
-                }
+                    {
+                        var _type = PointerType.__CreateInstance(type.__Instance);
+                        return VisitPointer(_type);
+                    }
                 case TypeKind.MemberPointer:
-                {
-                    var _type = MemberPointerType.__CreateInstance(type.__Instance);
-                    return VisitMemberPointer(_type);
-                }
+                    {
+                        var _type = MemberPointerType.__CreateInstance(type.__Instance);
+                        return VisitMemberPointer(_type);
+                    }
                 case TypeKind.Typedef:
-                {
-                    var _type = TypedefType.__CreateInstance(type.__Instance);
-                    return VisitTypedef(_type);
-                }
+                    {
+                        var _type = TypedefType.__CreateInstance(type.__Instance);
+                        return VisitTypedef(_type);
+                    }
                 case TypeKind.Attributed:
-                {
-                    var _type = AttributedType.__CreateInstance(type.__Instance);
-                    return VisitAttributed(_type);
-                }
+                    {
+                        var _type = AttributedType.__CreateInstance(type.__Instance);
+                        return VisitAttributed(_type);
+                    }
                 case TypeKind.Decayed:
-                {
-                    var _type = DecayedType.__CreateInstance(type.__Instance);
-                    return VisitDecayed(_type);
-                }
+                    {
+                        var _type = DecayedType.__CreateInstance(type.__Instance);
+                        return VisitDecayed(_type);
+                    }
                 case TypeKind.TemplateSpecialization:
-                {
-                    var _type = TemplateSpecializationType.__CreateInstance(type.__Instance);
-                    return VisitTemplateSpecialization(_type);
-                }
+                    {
+                        var _type = TemplateSpecializationType.__CreateInstance(type.__Instance);
+                        return VisitTemplateSpecialization(_type);
+                    }
                 case TypeKind.DependentTemplateSpecialization:
-                {
-                    var _type = DependentTemplateSpecializationType.__CreateInstance(type.__Instance);
-                    return VisitDependentTemplateSpecialization(_type);
-                }
+                    {
+                        var _type = DependentTemplateSpecializationType.__CreateInstance(type.__Instance);
+                        return VisitDependentTemplateSpecialization(_type);
+                    }
                 case TypeKind.TemplateParameter:
-                {
-                    var _type = TemplateParameterType.__CreateInstance(type.__Instance);
-                    return VisitTemplateParameter(_type);
-                }
+                    {
+                        var _type = TemplateParameterType.__CreateInstance(type.__Instance);
+                        return VisitTemplateParameter(_type);
+                    }
                 case TypeKind.TemplateParameterSubstitution:
-                {
-                    var _type = TemplateParameterSubstitutionType.__CreateInstance(type.__Instance);
-                    return VisitTemplateParameterSubstitution(_type);
-                }
+                    {
+                        var _type = TemplateParameterSubstitutionType.__CreateInstance(type.__Instance);
+                        return VisitTemplateParameterSubstitution(_type);
+                    }
                 case TypeKind.InjectedClassName:
-                {
-                    var _type = InjectedClassNameType.__CreateInstance(type.__Instance);
-                    return VisitInjectedClassName(_type);
-                }
+                    {
+                        var _type = InjectedClassNameType.__CreateInstance(type.__Instance);
+                        return VisitInjectedClassName(_type);
+                    }
                 case TypeKind.DependentName:
-                {
-                    var _type = DependentNameType.__CreateInstance(type.__Instance);
-                    return VisitDependentName(_type);
-                }
+                    {
+                        var _type = DependentNameType.__CreateInstance(type.__Instance);
+                        return VisitDependentName(_type);
+                    }
                 case TypeKind.Builtin:
-                {
-                    var _type = BuiltinType.__CreateInstance(type.__Instance);
-                    return VisitBuiltin(_type);
-                }
+                    {
+                        var _type = BuiltinType.__CreateInstance(type.__Instance);
+                        return VisitBuiltin(_type);
+                    }
                 case TypeKind.PackExpansion:
-                {
-                    var _type = PackExpansionType.__CreateInstance(type.__Instance);
-                    return VisitPackExpansion(_type);
-                }
+                    {
+                        var _type = PackExpansionType.__CreateInstance(type.__Instance);
+                        return VisitPackExpansion(_type);
+                    }
                 case TypeKind.UnaryTransform:
-                {
-                    var _type = UnaryTransformType.__CreateInstance(type.__Instance);
-                    return VisitUnaryTransform(_type);
-                }
+                    {
+                        var _type = UnaryTransformType.__CreateInstance(type.__Instance);
+                        return VisitUnaryTransform(_type);
+                    }
                 case TypeKind.UnresolvedUsing:
-                {
-                    var _type = UnresolvedUsingType.__CreateInstance(type.__Instance);
-                    return VisitUnresolvedUsing(_type);
-                }
+                    {
+                        var _type = UnresolvedUsingType.__CreateInstance(type.__Instance);
+                        return VisitUnresolvedUsing(_type);
+                    }
                 case TypeKind.Vector:
-                {
-                    var _type = VectorType.__CreateInstance(type.__Instance);
-                    return VisitVector(_type);
-                }
+                    {
+                        var _type = VectorType.__CreateInstance(type.__Instance);
+                        return VisitVector(_type);
+                    }
             }
 
             throw new ArgumentOutOfRangeException();
@@ -176,7 +176,7 @@ namespace CppSharp
         public abstract TRet VisitTypeTemplateParameter(TypeTemplateParameter decl);
         public abstract TRet VisitNonTypeTemplateParameter(NonTypeTemplateParameter decl);
         public abstract TRet VisitUnresolvedUsingTypename(UnresolvedUsingTypename decl);
-        
+
         public virtual TRet Visit(Parser.AST.Declaration decl)
         {
             switch (decl.Kind)
@@ -421,14 +421,14 @@ namespace CppSharp
             for (uint i = 0; i < Context.TranslationUnitsCount; ++i)
             {
                 var unit = Context.GetTranslationUnits(i);
-                var _unit = (AST.TranslationUnit) declConverter.Visit(unit);
+                var _unit = (AST.TranslationUnit)declConverter.Visit(unit);
                 _ctx.TranslationUnits.Add(_unit);
             }
 
             for (uint i = 0; i < Context.TranslationUnitsCount; i++)
             {
                 var unit = Context.GetTranslationUnits(i);
-                var _unit = (AST.TranslationUnit) declConverter.Visit(unit);
+                var _unit = (AST.TranslationUnit)declConverter.Visit(unit);
                 declConverter.VisitDeclContext(unit, _unit);
             }
 
@@ -604,7 +604,7 @@ namespace CppSharp
         {
             var _type = new AST.TypedefType();
             VisitType(type, _type);
-            _type.Declaration = (AST.TypedefNameDecl) declConverter.Visit(type.Declaration);
+            _type.Declaration = (AST.TypedefNameDecl)declConverter.Visit(type.Declaration);
             return _type;
         }
 
@@ -705,7 +705,7 @@ namespace CppSharp
         {
             var _type = new AST.TemplateParameterType();
             if (type.Parameter != null)
-                _type.Parameter = (AST.TypeTemplateParameter) declConverter.Visit(type.Parameter);
+                _type.Parameter = (AST.TypeTemplateParameter)declConverter.Visit(type.Parameter);
             _type.Depth = type.Depth;
             _type.Index = type.Index;
             _type.IsParameterPack = type.IsParameterPack;
@@ -717,7 +717,7 @@ namespace CppSharp
         {
             var _type = new AST.TemplateParameterSubstitutionType();
             _type.Replacement = VisitQualified(type.Replacement);
-            _type.ReplacedParameter = (AST.TemplateParameterType) Visit(type.ReplacedParameter);
+            _type.ReplacedParameter = (AST.TemplateParameterType)Visit(type.ReplacedParameter);
             VisitType(type, _type);
             return _type;
         }
@@ -976,7 +976,7 @@ namespace CppSharp
 
         bool CheckForDuplicates(Declaration decl)
         {
-            return decl.OriginalPtr.ToPointer() != (void*) (0x1);
+            return decl.OriginalPtr.ToPointer() != (void*)(0x1);
         }
 
         void VisitDeclaration(Declaration decl, AST.Declaration _decl)
@@ -1105,14 +1105,14 @@ namespace CppSharp
             for (uint i = 0; i < ctx.NamespacesCount; ++i)
             {
                 var decl = ctx.GetNamespaces(i);
-                var _decl = (AST.Namespace) Visit(decl);
+                var _decl = (AST.Namespace)Visit(decl);
                 VisitDeclContext(decl, _decl);
             }
 
             for (uint i = 0; i < ctx.ClassesCount; ++i)
             {
                 var decl = ctx.GetClasses(i);
-                var _decl = (AST.Class) Visit(decl);
+                var _decl = (AST.Class)Visit(decl);
                 if (!_decl.IsIncomplete || _decl.IsOpaque)
                     VisitClass(decl, _decl);
             }
@@ -1161,7 +1161,7 @@ namespace CppSharp
             VisitDeclaration(decl, _typeAlias);
             _typeAlias.QualifiedType = typeConverter.VisitQualified(decl.QualifiedType);
             if (decl.DescribedAliasTemplate != null)
-                _typeAlias.DescribedAliasTemplate = (AST.TypeAliasTemplate) Visit(decl.DescribedAliasTemplate);
+                _typeAlias.DescribedAliasTemplate = (AST.TypeAliasTemplate)Visit(decl.DescribedAliasTemplate);
 
             return _typeAlias;
         }
@@ -1267,7 +1267,7 @@ namespace CppSharp
             _function.Body = function.Body;
             _function.CallingConvention = VisitCallingConvention(function.CallingConvention);
             if (function.InstantiatedFrom != null)
-                _function.InstantiatedFrom = (AST.Function) Visit(function.InstantiatedFrom);
+                _function.InstantiatedFrom = (AST.Function)Visit(function.InstantiatedFrom);
 
             for (uint i = 0; i < function.ParametersCount; ++i)
             {
@@ -1331,7 +1331,7 @@ namespace CppSharp
             for (uint i = 0; i < decl.OverriddenMethodsCount; i++)
             {
                 var @override = decl.GetOverriddenMethods(i);
-                _method.OverriddenMethods.Add((AST.Method) Visit(@override));
+                _method.OverriddenMethods.Add((AST.Method)Visit(@override));
             }
 
             return _method;
@@ -1517,7 +1517,7 @@ namespace CppSharp
         private AST.Enumeration.EnumModifiers VisitEnumModifiers(
             Enumeration.EnumModifiers modifiers)
         {
-            return (AST.Enumeration.EnumModifiers) modifiers;
+            return (AST.Enumeration.EnumModifiers)modifiers;
         }
 
         public override AST.Declaration VisitEnumerationItem(Enumeration.Item decl)
@@ -1650,12 +1650,12 @@ namespace CppSharp
         {
             switch (argAbi)
             {
-            case RecordArgABI.Default:
-                return AST.RecordArgABI.Default;
-            case RecordArgABI.DirectInMemory:
-                return AST.RecordArgABI.DirectInMemory;
-            case RecordArgABI.Indirect:
-                return AST.RecordArgABI.Indirect;
+                case RecordArgABI.Default:
+                    return AST.RecordArgABI.Default;
+                case RecordArgABI.DirectInMemory:
+                    return AST.RecordArgABI.DirectInMemory;
+                case RecordArgABI.Indirect:
+                    return AST.RecordArgABI.Indirect;
             }
 
             throw new NotImplementedException();
@@ -1698,7 +1698,7 @@ namespace CppSharp
                 var @base = layout.GetBases(i);
                 var _base = new AST.LayoutBase();
                 _base.Offset = @base.Offset;
-                _base.Class = (AST.Class) Visit(@base.Class);
+                _base.Class = (AST.Class)Visit(@base.Class);
                 _layout.Bases.Add(_base);
             }
 
@@ -1821,7 +1821,7 @@ namespace CppSharp
             for (uint i = 0; i < decl.SpecializationsCount; ++i)
             {
                 var spec = decl.GetSpecializations(i);
-                var _spec = (AST.ClassTemplateSpecialization) Visit(spec);
+                var _spec = (AST.ClassTemplateSpecialization)Visit(spec);
                 _decl.Specializations.Add(_spec);
             }
             return _decl;
@@ -1841,7 +1841,7 @@ namespace CppSharp
             VisitDeclaration(decl, _decl);
             VisitClass(decl, _decl);
             _decl.SpecializationKind = VisitSpecializationKind(decl.SpecializationKind);
-            _decl.TemplatedDecl = (AST.ClassTemplate) Visit(decl.TemplatedDecl);
+            _decl.TemplatedDecl = (AST.ClassTemplate)Visit(decl.TemplatedDecl);
             for (uint i = 0; i < decl.ArgumentsCount; ++i)
             {
                 var arg = decl.GetArguments(i);
@@ -1935,8 +1935,8 @@ namespace CppSharp
 
             var _spec = new AST.FunctionTemplateSpecialization();
             FunctionTemplateSpecializations.Add(spec.__Instance, _spec);
-            _spec.Template = (AST.FunctionTemplate) Visit(spec.Template);
-            _spec.SpecializedFunction = (AST.Function) Visit(spec.SpecializedFunction);
+            _spec.Template = (AST.FunctionTemplate)Visit(spec.Template);
+            _spec.SpecializedFunction = (AST.Function)Visit(spec.SpecializedFunction);
             _spec.SpecializationKind = VisitSpecializationKind(spec.SpecializationKind);
             for (uint i = 0; i < spec.ArgumentsCount; ++i)
             {
@@ -1954,7 +1954,7 @@ namespace CppSharp
             for (uint i = 0; i < decl.SpecializationsCount; ++i)
             {
                 var spec = decl.GetSpecializations(i);
-                var _spec = (AST.VarTemplateSpecialization) Visit(spec);
+                var _spec = (AST.VarTemplateSpecialization)Visit(spec);
                 _decl.Specializations.Add(_spec);
             }
             return _decl;
@@ -1973,7 +1973,7 @@ namespace CppSharp
         {
             VisitVariable(decl, _decl);
             _decl.SpecializationKind = VisitSpecializationKind(decl.SpecializationKind);
-            _decl.TemplatedDecl = (AST.VarTemplate) Visit(decl.TemplatedDecl);
+            _decl.TemplatedDecl = (AST.VarTemplate)Visit(decl.TemplatedDecl);
             for (uint i = 0; i < decl.ArgumentsCount; ++i)
             {
                 var arg = decl.GetArguments(i);
@@ -2108,7 +2108,7 @@ namespace CppSharp
         {
             var fullComment = new AST.FullComment();
             for (uint i = 0; i < comment.BlocksCount; i++)
-                fullComment.Blocks.Add((AST.BlockContentComment) Visit(comment.GetBlocks(i)));
+                fullComment.Blocks.Add((AST.BlockContentComment)Visit(comment.GetBlocks(i)));
             return fullComment;
         }
 
@@ -2152,7 +2152,7 @@ namespace CppSharp
         {
             var verbatimBlockComment = new AST.VerbatimBlockComment();
             for (uint i = 0; i < comment.LinesCount; i++)
-                verbatimBlockComment.Lines.Add((AST.VerbatimBlockLineComment) Visit(comment.GetLines(i)));
+                verbatimBlockComment.Lines.Add((AST.VerbatimBlockLineComment)Visit(comment.GetLines(i)));
             VisitBlockCommandComment(verbatimBlockComment, comment);
             return verbatimBlockComment;
         }
@@ -2168,7 +2168,7 @@ namespace CppSharp
         {
             var paragraphComment = new AST.ParagraphComment();
             for (uint i = 0; i < comment.ContentCount; i++)
-                paragraphComment.Content.Add((AST.InlineContentComment) Visit(comment.GetContent(i)));
+                paragraphComment.Content.Add((AST.InlineContentComment)Visit(comment.GetContent(i)));
             paragraphComment.IsWhitespace = comment.IsWhitespace;
             return paragraphComment;
         }
@@ -2249,7 +2249,7 @@ namespace CppSharp
         {
             blockCommandComment.CommandId = comment.CommandId;
             if (comment.ParagraphComment != null)
-                blockCommandComment.ParagraphComment = (AST.ParagraphComment) Visit(comment.ParagraphComment);
+                blockCommandComment.ParagraphComment = (AST.ParagraphComment)Visit(comment.ParagraphComment);
             for (uint i = 0; i < comment.ArgumentsCount; i++)
             {
                 var argument = new AST.BlockCommandComment.Argument { Text = comment.GetArguments(i).Text };

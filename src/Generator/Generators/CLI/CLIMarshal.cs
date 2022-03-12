@@ -391,7 +391,7 @@ namespace CppSharp.Generators.CLI
         public readonly TextGenerator VarPrefix;
         public readonly TextGenerator ArgumentPrefix;
 
-        public CLIMarshalManagedToNativePrinter(MarshalContext ctx) 
+        public CLIMarshalManagedToNativePrinter(MarshalContext ctx)
             : base(ctx)
         {
             VarPrefix = new TextGenerator();
@@ -466,7 +466,7 @@ namespace CppSharp.Generators.CLI
                         isPointerToPrimitive || isPrimitive ? string.Empty : "*",
                         Context.Parameter.Name,
                         nativeVal);
-                    supportBefore.UnindentAndWriteCloseBrace();                       
+                    supportBefore.UnindentAndWriteCloseBrace();
                     break;
                 default:
                     Context.Return.Write("null");
@@ -521,7 +521,7 @@ namespace CppSharp.Generators.CLI
                     Context.Parameter.Usage == ParameterUsage.Out ||
                     Context.Parameter.Usage == ParameterUsage.InOut;
 
-                if(!isRef)
+                if (!isRef)
                 {
                     ArgumentPrefix.Write("&");
                 }
@@ -759,7 +759,7 @@ namespace CppSharp.Generators.CLI
                 MarshalValueClassProperties(@base.Class, marshalVar);
             }
 
-            foreach (var property in @class.Properties.Where( p => !ASTUtils.CheckIgnoreProperty(p)))
+            foreach (var property in @class.Properties.Where(p => !ASTUtils.CheckIgnoreProperty(p)))
             {
                 if (property.Field == null)
                     continue;
@@ -773,11 +773,11 @@ namespace CppSharp.Generators.CLI
             var fieldRef = $"{Context.Parameter.Name}.{property.Name}";
 
             var marshalCtx = new MarshalContext(Context.Context, Context.Indentation)
-                                 {
-                                     ArgName = fieldRef,
-                                     ParameterIndex = Context.ParameterIndex++,
-                                     ReturnVarName = $"{marshalVar}.{property.Field.OriginalName}"
-                                 };
+            {
+                ArgName = fieldRef,
+                ParameterIndex = Context.ParameterIndex++,
+                ReturnVarName = $"{marshalVar}.{property.Field.OriginalName}"
+            };
 
             var marshal = new CLIMarshalManagedToNativePrinter(marshalCtx);
             property.Visit(marshal);
@@ -812,10 +812,10 @@ namespace CppSharp.Generators.CLI
         public override bool VisitFieldDecl(Field field)
         {
             Context.Parameter = new Parameter
-                {
-                    Name = Context.ArgName,
-                    QualifiedType = field.QualifiedType
-                };
+            {
+                Name = Context.ArgName,
+                QualifiedType = field.QualifiedType
+            };
 
             return field.Type.Visit(this);
         }
@@ -823,10 +823,10 @@ namespace CppSharp.Generators.CLI
         public override bool VisitProperty(Property property)
         {
             Context.Parameter = new Parameter
-                {
-                    Name = Context.ArgName,
-                    QualifiedType = property.QualifiedType
-                };
+            {
+                Name = Context.ArgName,
+                QualifiedType = property.QualifiedType
+            };
 
             return base.VisitProperty(property);
         }

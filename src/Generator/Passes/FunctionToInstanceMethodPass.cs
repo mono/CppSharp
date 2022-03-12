@@ -46,21 +46,21 @@ namespace CppSharp.Passes
 
             // Create a new fake method so it acts as an instance method.
             var method = new Method
-                {
-                    Namespace = @class,
-                    OriginalNamespace = function.Namespace,
-                    Name = function.Name,
-                    OriginalName = function.OriginalName,
-                    Mangled = function.Mangled,
-                    Access = AccessSpecifier.Public,
-                    Kind = CXXMethodKind.Normal,
-                    ReturnType = function.ReturnType,
-                    CallingConvention = function.CallingConvention,
-                    IsVariadic = function.IsVariadic,
-                    IsInline = function.IsInline,
-                    Conversion = MethodConversionKind.FunctionToInstanceMethod,
-                    FunctionType = function.FunctionType
-                };
+            {
+                Namespace = @class,
+                OriginalNamespace = function.Namespace,
+                Name = function.Name,
+                OriginalName = function.OriginalName,
+                Mangled = function.Mangled,
+                Access = AccessSpecifier.Public,
+                Kind = CXXMethodKind.Normal,
+                ReturnType = function.ReturnType,
+                CallingConvention = function.CallingConvention,
+                IsVariadic = function.IsVariadic,
+                IsInline = function.IsInline,
+                Conversion = MethodConversionKind.FunctionToInstanceMethod,
+                FunctionType = function.FunctionType
+            };
 
             method.Parameters.AddRange(function.Parameters.Select(
                 p => new Parameter(p) { Namespace = method }));

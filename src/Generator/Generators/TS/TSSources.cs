@@ -146,7 +146,7 @@ namespace CppSharp.Generators.TS
                 return false;
 
             //if (@class.IsOpaque)
-             //   return false;
+            //   return false;
 
             PushBlock(BlockKind.Class, @class);
 
@@ -240,7 +240,7 @@ namespace CppSharp.Generators.TS
 
             Indent();
 
-            var @class = (Class) methods[0].Namespace;
+            var @class = (Class)methods[0].Namespace;
 
             if (@class.IsValueType)
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
@@ -267,7 +267,7 @@ namespace CppSharp.Generators.TS
                 method.Visit(this);
             }
 
-            foreach(var method in staticMethods)
+            foreach (var method in staticMethods)
                 method.Visit(this);
 
             Unindent();

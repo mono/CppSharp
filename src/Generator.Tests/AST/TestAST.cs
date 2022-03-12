@@ -251,11 +251,11 @@ namespace CppSharp.Generator.Tests.AST
             Assert.IsInstanceOf<TemplateParameterType>(twoParamMethod.Parameters[0].Type);
             Assert.IsInstanceOf<TemplateParameterType>(twoParamMethod.Parameters[1].Type);
             Assert.AreEqual(twoParamMethodTemplate.Parameters[0],
-                ((TemplateParameterType) twoParamMethod.Parameters[0].Type).Parameter);
+                ((TemplateParameterType)twoParamMethod.Parameters[0].Type).Parameter);
             Assert.AreEqual(twoParamMethodTemplate.Parameters[1],
-                ((TemplateParameterType) twoParamMethod.Parameters[1].Type).Parameter);
-            Assert.AreEqual(0, ((TemplateParameterType) twoParamMethod.Parameters[0].Type).Index);
-            Assert.AreEqual(1, ((TemplateParameterType) twoParamMethod.Parameters[1].Type).Index);
+                ((TemplateParameterType)twoParamMethod.Parameters[1].Type).Parameter);
+            Assert.AreEqual(0, ((TemplateParameterType)twoParamMethod.Parameters[0].Type).Index);
+            Assert.AreEqual(1, ((TemplateParameterType)twoParamMethod.Parameters[1].Type).Index);
         }
 
         [Test]
@@ -436,20 +436,20 @@ namespace CppSharp.Generator.Tests.AST
             Assert.IsTrue(constExpr.IsConstExpr);
 
             var noExcept = AstContext.FindFunction("noExcept").First();
-            Assert.That(((FunctionType) noExcept.FunctionType.Type).ExceptionSpecType,
+            Assert.That(((FunctionType)noExcept.FunctionType.Type).ExceptionSpecType,
                 Is.EqualTo(ExceptionSpecType.BasicNoexcept));
 
             var noExceptTrue = AstContext.FindFunction("noExceptTrue").First();
-            Assert.That(((FunctionType) noExceptTrue.FunctionType.Type).ExceptionSpecType,
+            Assert.That(((FunctionType)noExceptTrue.FunctionType.Type).ExceptionSpecType,
                 Is.EqualTo(ExceptionSpecType.NoexceptTrue));
 
             var noExceptFalse = AstContext.FindFunction("noExceptFalse").First();
-            Assert.That(((FunctionType) noExceptFalse.FunctionType.Type).ExceptionSpecType,
+            Assert.That(((FunctionType)noExceptFalse.FunctionType.Type).ExceptionSpecType,
                 Is.EqualTo(ExceptionSpecType.NoexceptFalse));
 
             var regular = AstContext.FindFunction("testSignature").First();
             Assert.IsFalse(regular.IsConstExpr);
-            var regularFunctionType = (FunctionType) regular.FunctionType.Type;
+            var regularFunctionType = (FunctionType)regular.FunctionType.Type;
             Assert.That(regularFunctionType.ExceptionSpecType,
                 Is.EqualTo(ExceptionSpecType.None));
         }

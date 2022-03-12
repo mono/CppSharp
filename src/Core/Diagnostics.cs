@@ -120,11 +120,11 @@ namespace CppSharp
             var currentIndentation = Indents.Sum();
             var message = new string(' ', currentIndentation) + info.Message;
 
-            if(info.Kind == DiagnosticKind.Error)
+            if (info.Kind == DiagnosticKind.Error)
             {
                 Console.Error.WriteLine(message);
             }
-            else 
+            else
             {
                 Console.WriteLine(message);
             }

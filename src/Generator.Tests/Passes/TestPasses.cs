@@ -273,7 +273,7 @@ namespace CppSharp.Generator.Tests.Passes
 
         static IEnumerable GetExpressionEvaluatorTestCases()
         {
-            var testNumber = 100;   
+            var testNumber = 100;
             foreach (var tc in TestExpressionEvaluatorTestCases)
             {
                 // "testNumber" is just used to cause the test runner to show the tests in the order

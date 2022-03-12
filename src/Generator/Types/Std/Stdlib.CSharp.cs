@@ -145,8 +145,8 @@ namespace CppSharp.Types.Std
                 // would be really helpful to have ctx hold a Decl property representing the
                 // "appropriate" Decl when we get here. When MarshalKind == NativeField, Decl would
                 // be set to the Field we're operating on.
-                var fieldName = ctx.ReturnVarName.Substring(ctx.ReturnVarName.LastIndexOf("->") + 2); 
-                
+                var fieldName = ctx.ReturnVarName.Substring(ctx.ReturnVarName.LastIndexOf("->") + 2);
+
                 ctx.Before.WriteLine($"if (__{fieldName}_OwnsNativeMemory)");
                 ctx.Before.WriteLineIndent($"Marshal.FreeHGlobal({ctx.ReturnVarName});");
                 ctx.Before.WriteLine($"__{fieldName}_OwnsNativeMemory = true;");
@@ -355,7 +355,7 @@ namespace CppSharp.Types.Std
             var typePrinter = new CSharpTypePrinter(ctx.Context);
             string qualifiedBasicString = GetQualifiedBasicString(basicString);
             string varBasicString = $"__basicStringRet{ctx.ParameterIndex}";
-            bool usePointer = type.IsAddress() || ctx.MarshalKind == MarshalKind.NativeField  ||
+            bool usePointer = type.IsAddress() || ctx.MarshalKind == MarshalKind.NativeField ||
                 ctx.MarshalKind == MarshalKind.ReturnVariableArray;
             ctx.Before.WriteLine($@"var {varBasicString} = {
                 basicString.Visit(typePrinter)}.{Helpers.CreateInstanceIdentifier}({
@@ -397,7 +397,7 @@ namespace CppSharp.Types.Std
             var templateSpecializationType = template as TemplateSpecializationType;
             if (templateSpecializationType != null)
                 return templateSpecializationType.GetClassTemplateSpecialization();
-            return (ClassTemplateSpecialization) ((TagType) template).Declaration;
+            return (ClassTemplateSpecialization)((TagType)template).Declaration;
         }
     }
 

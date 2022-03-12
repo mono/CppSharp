@@ -74,14 +74,14 @@ namespace CppSharp.Generators.CLI
             Parameter = null;
 
             var str = string.Empty;
-            if(param.Usage == ParameterUsage.Out)
+            if (param.Usage == ParameterUsage.Out)
                 str += "[::System::Runtime::InteropServices::Out] ";
             else if (param.Usage == ParameterUsage.InOut)
                 str += "[::System::Runtime::InteropServices::In, ::System::Runtime::InteropServices::Out] ";
 
             str += type;
 
-            if(param.Usage == ParameterUsage.Out ||
+            if (param.Usage == ParameterUsage.Out ||
                param.Usage == ParameterUsage.InOut)
                 str += "%";
 
@@ -110,7 +110,7 @@ namespace CppSharp.Generators.CLI
                     MarshalKind = MarshalKind,
                     Type = pointer
                 };
-                
+
                 return typeMap.CLISignatureType(typePrinterContext).Visit(this);
             }
 
@@ -150,7 +150,7 @@ namespace CppSharp.Generators.CLI
                 var typeName = VisitDeclaration(@enum, quals);
 
                 // Skip one indirection if passed by reference
-                if (Parameter != null && (Parameter.Type.IsReference() 
+                if (Parameter != null && (Parameter.Type.IsReference()
                     || ((Parameter.IsOut || Parameter.IsInOut)
                     && pointee == finalPointee)))
                     return typeName;

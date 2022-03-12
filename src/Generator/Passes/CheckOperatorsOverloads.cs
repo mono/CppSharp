@@ -81,24 +81,24 @@ namespace CppSharp.Passes
         private void CreateIndexer(Class @class, Method @operator)
         {
             var property = new Property
-                {
-                    Name = "Item",
-                    QualifiedType = @operator.ReturnType,
-                    Access = @operator.Access,
-                    Namespace = @class,
-                    GetMethod = @operator
-                };
+            {
+                Name = "Item",
+                QualifiedType = @operator.ReturnType,
+                Access = @operator.Access,
+                Namespace = @class,
+                GetMethod = @operator
+            };
 
             var returnType = @operator.Type;
             if (returnType.IsAddress() &&
                 !returnType.GetQualifiedPointee().Type.Desugar().IsPrimitiveType(PrimitiveType.Void))
             {
-                var pointer = (PointerType) returnType;
+                var pointer = (PointerType)returnType;
                 var qualifiedPointee = pointer.QualifiedPointee;
                 if (!qualifiedPointee.Qualifiers.IsConst)
                     property.SetMethod = @operator;
             }
-            
+
             // If we've a setter use the pointee as the type of the property.
             var pointerType = property.Type as PointerType;
             if (pointerType != null && property.HasSetter)
@@ -130,14 +130,14 @@ namespace CppSharp.Passes
                     continue;
 
                 var method = new Method()
-                    {
-                        Name = Operators.GetOperatorIdentifier(missingKind),
-                        Namespace = @class,
-                        SynthKind = FunctionSynthKind.ComplementOperator,
-                        Kind = CXXMethodKind.Operator,
-                        OperatorKind = missingKind,
-                        ReturnType = op.ReturnType
-                    };
+                {
+                    Name = Operators.GetOperatorIdentifier(missingKind),
+                    Namespace = @class,
+                    SynthKind = FunctionSynthKind.ComplementOperator,
+                    Kind = CXXMethodKind.Operator,
+                    OperatorKind = missingKind,
+                    ReturnType = op.ReturnType
+                };
 
                 method.Parameters.AddRange(op.Parameters.Select(
                     p => new Parameter(p) { Namespace = method }));

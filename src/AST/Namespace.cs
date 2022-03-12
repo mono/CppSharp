@@ -31,7 +31,7 @@ namespace CppSharp.AST
         public IEnumerable<Event> Events => Declarations.Events;
 
         // Used to keep track of anonymous declarations.
-        public Dictionary<ulong, Declaration> Anonymous; 
+        public Dictionary<ulong, Declaration> Anonymous;
 
         // True if the context is inside an extern "C" context.
         public bool IsExternCContext;
@@ -116,10 +116,10 @@ namespace CppSharp.AST
             if (@namespace == null)
             {
                 @namespace = new Namespace
-                    {
-                        Name = name,
-                        Namespace = this,
-                    };
+                {
+                    Name = name,
+                    Namespace = this,
+                };
 
                 Declarations.Add(@namespace);
             }
@@ -162,7 +162,7 @@ namespace CppSharp.AST
 
         public IEnumerable<Function> FindFunction(string name, bool createDecl = false)
         {
-            if (string.IsNullOrEmpty(name)) 
+            if (string.IsNullOrEmpty(name))
                 return Enumerable.Empty<Function>();
 
             var entries = name.Split(new string[] { "::" },
@@ -177,7 +177,7 @@ namespace CppSharp.AST
                     var function = new Function() { Name = name, Namespace = this };
                     Declarations.Add(function);
                 }
-            
+
                 return functions;
             }
 
@@ -218,7 +218,7 @@ namespace CppSharp.AST
                 Namespaces.Select(n => n.FindClass(name, stringComparison)).FirstOrDefault(c => c != null);
             if (@class != null)
                 return @class.CompleteDeclaration == null ?
-                    @class : (Class) @class.CompleteDeclaration;
+                    @class : (Class)@class.CompleteDeclaration;
             return null;
         }
 

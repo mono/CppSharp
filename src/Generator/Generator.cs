@@ -85,7 +85,7 @@ namespace CppSharp.Generators
             // TODO: Remove this once file per module works for C++ backend
             if (!Context.Options.IsCSharpGenerator)
                 outputMode = GenerationOutputMode.FilePerUnit;
-            
+
             var outputs = new List<GeneratorOutput>();
 
             if (outputMode == GenerationOutputMode.FilePerModule)
@@ -115,7 +115,7 @@ namespace CppSharp.Generators
                     }
                 }
 
-                var generateSystemModule = Context.Options.SystemModule != null  &&
+                var generateSystemModule = Context.Options.SystemModule != null &&
                     Context.Options.GeneratorKind == GeneratorKind.CSharp;
                 if (generateSystemModule)
                 {

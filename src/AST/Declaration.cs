@@ -115,7 +115,7 @@ namespace CppSharp.AST
         public int LineNumberEnd { get; set; }
         public bool IsImplicit { get; set; }
         public int AlignAs { get; set; }
-        public int MaxFieldAlignment { get; set; }        
+        public int MaxFieldAlignment { get; set; }
 
         private DeclarationContext @namespace;
         public DeclarationContext OriginalNamespace;
@@ -213,7 +213,7 @@ namespace CppSharp.AST
             var currentNamespace = @namespace;
             while (currentNamespace != null)
             {
-                var isInlineNamespace = currentNamespace is Namespace {IsInline: true};
+                var isInlineNamespace = currentNamespace is Namespace { IsInline: true };
                 if (!isInlineNamespace)
                     namespaces.Push(currentNamespace);
                 currentNamespace = currentNamespace.Namespace;
@@ -242,7 +242,7 @@ namespace CppSharp.AST
         public string QualifiedLogicalName
         {
             get
-            { 
+            {
                 return GetQualifiedName(
                     decl => GetDeclName(decl, decl.LogicalName), decl => decl.Namespace);
             }
@@ -295,7 +295,7 @@ namespace CppSharp.AST
         public ISet<System.Type> ExcludeFromPasses;
 
         // List of preprocessed entities attached to this declaration.
-        public IList<PreprocessedEntity> PreprocessedEntities; 
+        public IList<PreprocessedEntity> PreprocessedEntities;
 
         // Pointer to the original declaration from Clang.
         public IntPtr OriginalPtr;

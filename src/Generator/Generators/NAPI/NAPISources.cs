@@ -804,9 +804,9 @@ namespace CppSharp.Generators.Cpp
                 .Select(p => p.Type).Distinct().ToList();
 
             // Consider the alphabet as sequential ordered numbers, one per type.
-            var Sigma = Enumerable.Range(0, uniqueTypes.Count).Select(i => (char) i).ToArray();
+            var Sigma = Enumerable.Range(0, uniqueTypes.Count).Select(i => (char)i).ToArray();
 
-            var Q = new List<string> {"S"};
+            var Q = new List<string> { "S" };
 
             var overloadStates = Enumerable.Range(0, functionGroup.Count).Select(i => $"F{i}")
                 .ToArray();
@@ -831,12 +831,12 @@ namespace CppSharp.Generators.Cpp
                     if (!isLastTransition)
                         Q.Add(nextState);
 
-                    Delta.Add(new Transition(curState, (char) typeIndex, nextState));
+                    Delta.Add(new Transition(curState, (char)typeIndex, nextState));
                     curState = nextState;
                 }
             }
 
-            var Q0 = new List<string> {"S"};
+            var Q0 = new List<string> { "S" };
             var F = overloadStates;
 
             var NDFSM = new NDFSM(Q, Sigma, Delta, Q0, F);

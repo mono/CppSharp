@@ -20,11 +20,11 @@ namespace CppSharp.AST
                 (!isItaniumLikeAbi || !function.HasIndirectReturnTypeParameter))
             {
                 @params.Add(new Parameter
-                    {
-                        QualifiedType = pointer,
-                        Name = "__instance",
-                        Namespace = function
-                    });
+                {
+                    QualifiedType = pointer,
+                    Name = "__instance",
+                    Namespace = function
+                });
             }
 
             var i = 0;
@@ -32,40 +32,40 @@ namespace CppSharp.AST
                 p => p.Kind != ParameterKind.OperatorParameter && p.Kind != ParameterKind.Extension))
             {
                 @params.Add(new Parameter
-                    {
-                        QualifiedType = universalDelegate &&
+                {
+                    QualifiedType = universalDelegate &&
                             (param.Kind == ParameterKind.IndirectReturnType ||
                              param.Type.Desugar().IsPointerTo(out FunctionType functionType)) ?
                             pointer : param.QualifiedType,
-                        Kind = param.Kind,
-                        Usage = param.Usage,
-                        Name = universalDelegate ? $"arg{++i}": param.Name,
-                        Namespace = param.Namespace
-                    });
+                    Kind = param.Kind,
+                    Usage = param.Usage,
+                    Name = universalDelegate ? $"arg{++i}" : param.Name,
+                    Namespace = param.Namespace
+                });
 
                 if (param.Kind == ParameterKind.IndirectReturnType &&
                     isInstanceMethod && isItaniumLikeAbi)
                 {
                     @params.Add(new Parameter
-                        {
-                            QualifiedType = pointer,
-                            Name = "__instance",
-                            Namespace = function
-                        });
+                    {
+                        QualifiedType = pointer,
+                        Name = "__instance",
+                        Namespace = function
+                    });
                 }
             }
 
             if (method != null && method.IsConstructor)
             {
-                var @class = (Class) method.Namespace;
+                var @class = (Class)method.Namespace;
                 if (!isItaniumLikeAbi && @class.Layout.HasVirtualBases)
                 {
                     @params.Add(new Parameter
-                        {
-                            QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.Int)),
-                            Name = "__forBases",
-                            Namespace = function
-                        });
+                    {
+                        QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.Int)),
+                        Name = "__forBases",
+                        Namespace = function
+                    });
                 }
             }
 
@@ -95,7 +95,7 @@ namespace CppSharp.AST
 
         public static bool NeedsSymbol(this Method method)
         {
-            Class @class = (Class) (method.OriginalFunction ?? method).Namespace;
+            Class @class = (Class)(method.OriginalFunction ?? method).Namespace;
             // virtual functions cannot really be inlined and
             // we don't need their symbols anyway as we call them through the v-table
             return (!method.IsVirtual && !method.IsSynthetized &&

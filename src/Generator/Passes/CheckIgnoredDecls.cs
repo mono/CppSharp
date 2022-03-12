@@ -145,8 +145,8 @@ namespace CppSharp.Passes
 
         public override bool VisitFunctionTemplateDecl(FunctionTemplate decl)
         {
-             if (!base.VisitFunctionTemplateDecl(decl))
-                 return false;
+            if (!base.VisitFunctionTemplateDecl(decl))
+                return false;
 
             if (decl.TemplatedFunction.IsDependent && !decl.IsExplicitlyGenerated)
             {
@@ -454,7 +454,7 @@ namespace CppSharp.Passes
         /// </summary>
         private bool HasInvalidType(ITypedDecl decl, out string msg)
         {
-            return HasInvalidType(decl.Type, (Declaration) decl, out msg);
+            return HasInvalidType(decl.Type, (Declaration)decl, out msg);
         }
 
         private bool HasInvalidType(Type type, Declaration decl, out string msg)
@@ -506,7 +506,7 @@ namespace CppSharp.Passes
             }
 
             var @class = decl as Class;
-            if (@class != null && @class.IsOpaque && !@class.IsDependent && 
+            if (@class != null && @class.IsOpaque && !@class.IsDependent &&
                 !(@class is ClassTemplateSpecialization))
             {
                 msg = null;

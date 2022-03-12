@@ -24,7 +24,7 @@ namespace CppSharp.Generators.TS
             return declaration.TranslationUnit?.Module?.LibraryName;
         }
 
-        public override TypePrinterResult GetDeclName(Declaration declaration,  TypePrintScopeKind scope)
+        public override TypePrinterResult GetDeclName(Declaration declaration, TypePrintScopeKind scope)
         {
             var result = base.GetDeclName(declaration, scope);
             result.Type = result.Type.Replace("::", NamespaceSeparator);
@@ -41,7 +41,7 @@ namespace CppSharp.Generators.TS
             return VisitPrimitiveType(builtin.Type);
         }
 
-        public override TypePrinterResult VisitPrimitiveType(PrimitiveType primitive,  TypeQualifiers quals)
+        public override TypePrinterResult VisitPrimitiveType(PrimitiveType primitive, TypeQualifiers quals)
         {
             return VisitPrimitiveType(primitive);
         }
@@ -142,23 +142,23 @@ namespace CppSharp.Generators.TS
 
             result.Name = param.Name;
 
-/*
-            if (param.DefaultArgument != null && Options.GenerateDefaultValuesForArguments)
-            {
-                try
-                {
-                    var expressionPrinter = new CSharpExpressionPrinter(this);
-                    var defaultValue = expressionPrinter.VisitParameter(param);
-                    return $"{result} = {defaultValue}";
-                }
-                catch (Exception)
-                {
-                    var function = param.Namespace as Function;
-                    Diagnostics.Warning($"Error printing default argument expression: " +
-                                        $"{function.QualifiedOriginalName}({param.OriginalName})");
-                }
-            }
-*/
+            /*
+                        if (param.DefaultArgument != null && Options.GenerateDefaultValuesForArguments)
+                        {
+                            try
+                            {
+                                var expressionPrinter = new CSharpExpressionPrinter(this);
+                                var defaultValue = expressionPrinter.VisitParameter(param);
+                                return $"{result} = {defaultValue}";
+                            }
+                            catch (Exception)
+                            {
+                                var function = param.Namespace as Function;
+                                Diagnostics.Warning($"Error printing default argument expression: " +
+                                                    $"{function.QualifiedOriginalName}({param.OriginalName})");
+                            }
+                        }
+            */
 
             return $"{result}";
         }

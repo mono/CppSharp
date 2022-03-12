@@ -136,7 +136,7 @@ namespace CppSharp.Generators.CSharp
 
                 }
             }
-           
+
             var arraySuffix = array.SizeType != ArrayType.ArraySize.Constant &&
                 MarshalKind == MarshalKind.ReturnVariableArray ?
                 (ContextKind == TypePrinterContextKind.Managed &&
@@ -303,7 +303,7 @@ namespace CppSharp.Generators.CSharp
                     template.Arguments.All(IsValid))
                 {
                     List<TemplateArgument> args = template.Arguments;
-                    var @class = (Class) template.Template.TemplatedDecl;
+                    var @class = (Class)template.Template.TemplatedDecl;
                     TemplateArgument lastArg = args.Last();
                     TypePrinterResult typePrinterResult = VisitDeclaration(decl);
                     typePrinterResult.NameSuffix.Append($@"<{string.Join(", ",
@@ -467,16 +467,20 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.LongLong:
                 case PrimitiveType.ULongLong:
                     return GetIntString(primitive, Context.TargetInfo);
-                case PrimitiveType.Int128: return new TypePrinterResult("fixed byte",
-                    "[16]"); // The type is always 128 bits wide
-                case PrimitiveType.UInt128: return new TypePrinterResult("fixed byte",
-                    "[16]"); // The type is always 128 bits wide
-                case PrimitiveType.Half: return new TypePrinterResult("fixed byte",
-                    $"[{Context.TargetInfo.HalfWidth}]");
+                case PrimitiveType.Int128:
+                    return new TypePrinterResult("fixed byte",
+"[16]"); // The type is always 128 bits wide
+                case PrimitiveType.UInt128:
+                    return new TypePrinterResult("fixed byte",
+"[16]"); // The type is always 128 bits wide
+                case PrimitiveType.Half:
+                    return new TypePrinterResult("fixed byte",
+$"[{Context.TargetInfo.HalfWidth}]");
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
-                case PrimitiveType.LongDouble: return new TypePrinterResult("fixed byte",
-                    $"[{Context.TargetInfo.LongDoubleWidth}]");
+                case PrimitiveType.LongDouble:
+                    return new TypePrinterResult("fixed byte",
+$"[{Context.TargetInfo.LongDoubleWidth}]");
                 case PrimitiveType.IntPtr: return IntPtrType;
                 case PrimitiveType.UIntPtr: return QualifiedType("System.UIntPtr");
                 case PrimitiveType.Null: return "void*";
@@ -692,7 +696,7 @@ namespace CppSharp.Generators.CSharp
             var returnTypePrinter = new TypePrinterResult();
             returnTypePrinter.NameSuffix.Append(fieldTypePrinted.NameSuffix);
 
-            returnTypePrinter.Type = $"{fieldTypePrinted.Type} {field.Name}"; 
+            returnTypePrinter.Type = $"{fieldTypePrinted.Type} {field.Name}";
 
             return returnTypePrinter;
         }
@@ -766,7 +770,7 @@ namespace CppSharp.Generators.CSharp
 
         private void AddContextName(Stack<string> names, Declaration ctx)
         {
-            var isInlineNamespace = ctx is Namespace && ((Namespace) ctx).IsInline;
+            var isInlineNamespace = ctx is Namespace && ((Namespace)ctx).IsInline;
             if (string.IsNullOrWhiteSpace(ctx.Name) || isInlineNamespace)
                 return;
 

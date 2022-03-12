@@ -57,4 +57,3 @@ public class StandardLibTests
         Assert.AreEqual(testString, stringWriter.ToString());
     }
 }
- 

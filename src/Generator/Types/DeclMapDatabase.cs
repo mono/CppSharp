@@ -44,7 +44,7 @@ namespace CppSharp.Types
                     if (attr.GeneratorKind == 0 ||
                         attr.GeneratorKind == bindingContext.Options.GeneratorKind)
                     {
-                        var declMap = (DeclMap) Activator.CreateInstance(type);
+                        var declMap = (DeclMap)Activator.CreateInstance(type);
                         declMap.Context = bindingContext;
                         declMap.DeclMapDatabase = this;
 

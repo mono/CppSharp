@@ -14,7 +14,7 @@ namespace CppSharp.Generator.Tests
         protected Driver Driver;
         protected ASTContext AstContext;
         protected BindingContext Context;
-        
+
         public ASTTestFixture(params string[] files)
         {
             this.files = files;

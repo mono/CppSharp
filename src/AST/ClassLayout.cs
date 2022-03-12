@@ -99,7 +99,7 @@ namespace CppSharp.AST
 
         /// Provides native argument ABI information.
         public RecordArgABI ArgABI { get; set; }
-        
+
         /// Virtual function tables in Microsoft mode.
         public List<VFTableInfo> VFTables { get; set; }
 

@@ -60,26 +60,26 @@ namespace CppSharp.Passes
 
         public virtual void HandleBlock(Block block)
         {
-            switch(block.Kind)
+            switch (block.Kind)
             {
-            case BlockKind.Class:
-                VisitClass(block);
-                break;
-            case BlockKind.Method:
-                VisitMethod(block);
-                break;
-            case BlockKind.Constructor:
-                VisitConstructor(block);
-                break;
-            case BlockKind.ConstructorBody:
-                VisitConstructorBody(block);
-                break;
-            case BlockKind.Namespace:
-                VisitNamespace(block);
-                break;
-            case BlockKind.Includes:
-                VisitIncludes(block);
-                break;
+                case BlockKind.Class:
+                    VisitClass(block);
+                    break;
+                case BlockKind.Method:
+                    VisitMethod(block);
+                    break;
+                case BlockKind.Constructor:
+                    VisitConstructor(block);
+                    break;
+                case BlockKind.ConstructorBody:
+                    VisitConstructorBody(block);
+                    break;
+                case BlockKind.Namespace:
+                    VisitNamespace(block);
+                    break;
+                case BlockKind.Includes:
+                    VisitIncludes(block);
+                    break;
             }
 
             foreach (var childBlock in block.Blocks)

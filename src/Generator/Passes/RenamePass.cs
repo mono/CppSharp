@@ -47,7 +47,7 @@ namespace CppSharp.Passes
             {
                 Method rootBaseMethod;
                 if (method.OriginalNamespace is Class @class && @class.IsInterface)
-                    rootBaseMethod = (Method) method.OriginalFunction;
+                    rootBaseMethod = (Method)method.OriginalFunction;
                 else
                     rootBaseMethod = method.GetRootBaseMethod();
                 if (rootBaseMethod != null && rootBaseMethod != method)
@@ -59,7 +59,7 @@ namespace CppSharp.Passes
 
             if (decl is Property property && !property.IsStatic)
             {
-                var rootBaseProperty = ((Class) property.Namespace).GetBasePropertyByName(property);
+                var rootBaseProperty = ((Class)property.Namespace).GetBasePropertyByName(property);
                 if (rootBaseProperty != null && rootBaseProperty != property)
                 {
                     newName = rootBaseProperty.Name;
@@ -121,7 +121,7 @@ namespace CppSharp.Passes
             {
                 if (!Targets.HasFlag(RenameTargets.Field))
                     return false;
-                var fieldProperty = ((Class) field.Namespace).Properties.FirstOrDefault(
+                var fieldProperty = ((Class)field.Namespace).Properties.FirstOrDefault(
                     p => p.Field == field);
                 return (fieldProperty != null &&
                     fieldProperty.IsInRefTypeAndBackedByValueClassField());
@@ -217,7 +217,7 @@ namespace CppSharp.Passes
 
             var enumItem = decl as Enumeration.Item;
             if (enumItem != null)
-                return ((Enumeration) enumItem.Namespace).Items.Any(
+                return ((Enumeration)enumItem.Namespace).Items.Any(
                     i => i != decl && i.Name == newName);
 
             return false;
@@ -228,7 +228,7 @@ namespace CppSharp.Passes
             var method = function as Method;
             if (method != null)
             {
-                return ((Class) method.Namespace).Methods.Where(
+                return ((Class)method.Namespace).Methods.Where(
                     m => !m.Ignore && m.Parameters.SequenceEqual(function.Parameters, new ParameterComparer()));
             }
             return function.Namespace.Functions.Where(
@@ -295,17 +295,17 @@ namespace CppSharp.Passes
     [Flags]
     public enum RenameTargets
     {
-        Class     = 1 << 0,
-        Field     = 1 << 1,
-        Method    = 1 << 2,
-        Function  = 1 << 3,
+        Class = 1 << 0,
+        Field = 1 << 1,
+        Method = 1 << 2,
+        Function = 1 << 3,
         Parameter = 1 << 4,
-        Enum      = 1 << 5,
-        EnumItem  = 1 << 6,
-        Event     = 1 << 7,
-        Property  = 1 << 8,
-        Delegate  = 1 << 9,
-        Variable  = 1 << 10,
+        Enum = 1 << 5,
+        EnumItem = 1 << 6,
+        Event = 1 << 7,
+        Property = 1 << 8,
+        Delegate = 1 << 9,
+        Variable = 1 << 10,
         Any = Function | Method | Parameter | Class | Field | Enum | EnumItem | Event | Property | Delegate | Variable
     }
 
@@ -466,7 +466,7 @@ namespace CppSharp.Passes
             decl.Visit(pass);
         }
 
-        public static void RenameDeclsCase(this PassBuilder<TranslationUnitPass> builder, 
+        public static void RenameDeclsCase(this PassBuilder<TranslationUnitPass> builder,
             RenameTargets targets, RenameCasePattern pattern)
         {
             builder.AddPass(new CaseRenamePass(targets, pattern));

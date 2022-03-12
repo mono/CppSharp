@@ -140,8 +140,8 @@ namespace CppSharp.AST
         public override string Name
         {
             get => TemplatedDecl != null ? TemplatedDecl.Name : base.Name;
-            set 
-            { 
+            set
+            {
                 base.Name = value;
                 if (TemplatedDecl != null)
                     TemplatedDecl.Name = value;
@@ -208,9 +208,9 @@ namespace CppSharp.AST
         public override string Name
         {
             get => TemplatedDecl != null ? TemplatedClass.Name : base.Name;
-            set 
-            { 
-                if(TemplatedDecl != null) 
+            set
+            {
+                if (TemplatedDecl != null)
                     TemplatedClass.Name = value;
                 else
                     base.Name = value;
@@ -220,9 +220,9 @@ namespace CppSharp.AST
         public override string OriginalName
         {
             get => TemplatedDecl != null ? TemplatedClass.OriginalName : base.OriginalName;
-            set 
-            { 
-                if(TemplatedDecl != null) 
+            set
+            {
+                if (TemplatedDecl != null)
                     TemplatedClass.OriginalName = value;
                 else
                     base.OriginalName = value;

@@ -10,18 +10,18 @@ namespace CppSharp
     {
         public static string ReadMonoPathFromWindowsRegistry(bool prefer64bits = false)
         {
-            using (var baseKey = RegistryKey.OpenBaseKey (RegistryHive.LocalMachine,
+            using (var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine,
                 prefer64bits ? RegistryView.Registry64 : RegistryView.Registry32))
             {
                 if (baseKey == null)
                     return null;
 
-                using (var subKey = baseKey.OpenSubKey (@"SOFTWARE\Mono"))
+                using (var subKey = baseKey.OpenSubKey(@"SOFTWARE\Mono"))
                 {
                     if (subKey == null)
                         return null;
 
-                    return (string)subKey.GetValue ("SdkInstallRoot", "");
+                    return (string)subKey.GetValue("SdkInstallRoot", "");
                 }
             }
         }
@@ -33,7 +33,7 @@ namespace CppSharp
                 // Try to lookup the Mono SDK path from registry.
                 string path = ReadMonoPathFromWindowsRegistry(prefer64bits);
                 if (!string.IsNullOrEmpty(path))
-                   return path;
+                    return path;
 
                 // If that fails, then lets try a default location.
                 return @"C:\Program Files (x86)\Mono";

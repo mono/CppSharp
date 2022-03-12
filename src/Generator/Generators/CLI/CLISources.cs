@@ -64,7 +64,7 @@ namespace CppSharp.Generators.CLI
                     continue;
 
                 var include = typeRef.Include;
-                if(!string.IsNullOrEmpty(include.File) && !include.InHeader)
+                if (!string.IsNullOrEmpty(include.File) && !include.InHeader)
                     includes.Add(include.ToString());
             }
 
@@ -113,7 +113,7 @@ namespace CppSharp.Generators.CLI
                 }
             }
 
-            foreach(var childNamespace in @namespace.Namespaces)
+            foreach (var childNamespace in @namespace.Namespaces)
                 GenerateDeclContext(childNamespace);
 
             PopBlock();
@@ -305,7 +305,7 @@ namespace CppSharp.Generators.CLI
                 typeNames = "typename " + string.Join(", typename ", paramNames);
 
             WriteLine("generic<{0}>", typeNames);
-            WriteLine("{0} {1}::{2}({3})", retType, 
+            WriteLine("{0} {1}::{2}({3})", retType,
                 QualifiedIdentifier(function.Namespace), function.Name,
                 GenerateParametersList(function.Parameters));
 
@@ -348,7 +348,7 @@ namespace CppSharp.Generators.CLI
                         GeneratePropertySetter(property.SetMethod, realOwner, property.Name,
                             property.Type);
             }
-            PopBlock(); 
+            PopBlock();
         }
 
         private void GeneratePropertySetter<T>(T decl, Class @class, string name, Type type, Parameter indexParameter = null)
@@ -502,7 +502,7 @@ namespace CppSharp.Generators.CLI
 
                 WriteLine($"return {marshal.Context.Return};");
             }
-            
+
 
             UnindentAndWriteCloseBrace();
             NewLine();
@@ -593,10 +593,10 @@ namespace CppSharp.Generators.CLI
             foreach (var param in @event.Parameters)
             {
                 var ctx = new MarshalContext(Context, CurrentIndentation)
-                    {
-                        ReturnVarName = param.Name,
-                        ReturnType = param.QualifiedType
-                    };
+                {
+                    ReturnVarName = param.Name,
+                    ReturnType = param.QualifiedType
+                };
 
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
                 param.Visit(marshal);
@@ -685,7 +685,7 @@ namespace CppSharp.Generators.CLI
             }
 
             int paramIndex = 0;
-            foreach (var property in @class.Properties.Where( 
+            foreach (var property in @class.Properties.Where(
                 p => !ASTUtils.CheckIgnoreProperty(p) && !CLIHeaders.TypeIgnored(p.Type)))
             {
                 if (property.Field == null)
@@ -849,12 +849,12 @@ namespace CppSharp.Generators.CLI
             foreach (var param in method.Parameters)
             {
                 var ctx = new MarshalContext(Context, CurrentIndentation)
-                              {
-                                  Function = method,
-                                  Parameter = param,
-                                  ArgName = param.Name,
-                                  ParameterIndex = paramIndex++
-                              };
+                {
+                    Function = method,
+                    Parameter = param,
+                    ArgName = param.Name,
+                    ParameterIndex = paramIndex++
+                };
 
                 var marshal = new CLIMarshalManagedToNativePrinter(ctx);
                 param.Visit(marshal);
@@ -885,10 +885,10 @@ namespace CppSharp.Generators.CLI
                 var varName = $"_native.{property.Field.OriginalName}";
 
                 var ctx = new MarshalContext(Context, CurrentIndentation)
-                    {
-                        ReturnVarName = varName,
-                        ReturnType = property.QualifiedType
-                    };
+                {
+                    ReturnVarName = varName,
+                    ReturnType = property.QualifiedType
+                };
 
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
                 property.Visit(marshal);
@@ -959,11 +959,11 @@ namespace CppSharp.Generators.CLI
             {
                 WriteLine($"auto {valueMarshalName} = {typePrinter.PrintTag(@class)}::{@class.QualifiedOriginalName}();");
 
-                var param = new Parameter { Name = "(*this)" , Namespace = function.Namespace };
+                var param = new Parameter { Name = "(*this)", Namespace = function.Namespace };
                 var ctx = new MarshalContext(Context, CurrentIndentation)
-                    {
-                        Parameter = param
-                    };
+                {
+                    Parameter = param
+                };
                 ctx.VarPrefix.Write(valueMarshalName);
 
                 var marshal = new CLIMarshalManagedToNativePrinter(ctx);
@@ -982,7 +982,7 @@ namespace CppSharp.Generators.CLI
                 else
                     Write("auto {0} = ", returnIdentifier);
 
-            if (function.OperatorKind == CXXOperatorKind.Conversion || 
+            if (function.OperatorKind == CXXOperatorKind.Conversion ||
                 function.OperatorKind == CXXOperatorKind.ExplicitConversion)
             {
                 var method = function as Method;
@@ -996,12 +996,12 @@ namespace CppSharp.Generators.CLI
 
                 switch (Operators.ClassifyOperator(function))
                 {
-                case CXXOperatorArity.Unary:
-                    WriteLine("{0} {1};", opName, @params[0].Name);
-                    break;
-                case CXXOperatorArity.Binary:
-                    WriteLine("{0} {1} {2};", @params[0].Name, opName, @params[1].Name);
-                    break;
+                    case CXXOperatorArity.Unary:
+                        WriteLine("{0} {1};", opName, @params[0].Name);
+                        break;
+                    case CXXOperatorArity.Binary:
+                        WriteLine("{0} {1} {2};", @params[0].Name, opName, @params[1].Name);
+                        break;
                 }
             }
             else
@@ -1023,10 +1023,10 @@ namespace CppSharp.Generators.CLI
                 WriteLine(");");
             }
 
-            foreach(var paramInfo in @params)
+            foreach (var paramInfo in @params)
             {
                 var param = paramInfo.Param;
-                if(param.Usage != ParameterUsage.Out && param.Usage != ParameterUsage.InOut)
+                if (param.Usage != ParameterUsage.Out && param.Usage != ParameterUsage.InOut)
                     continue;
 
                 if (param.Type.IsPointer() && !param.Type.GetFinalPointee().IsPrimitiveType())
@@ -1035,19 +1035,19 @@ namespace CppSharp.Generators.CLI
                 var nativeVarName = paramInfo.Name;
 
                 var ctx = new MarshalContext(Context, CurrentIndentation)
-                    {
-                        ArgName = nativeVarName,
-                        ReturnVarName = nativeVarName,
-                        ReturnType = param.QualifiedType
-                    };
+                {
+                    ArgName = nativeVarName,
+                    ReturnVarName = nativeVarName,
+                    ReturnType = param.QualifiedType
+                };
 
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
                 param.Visit(marshal);
-                
+
                 if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
                     Write(marshal.Context.Before);
 
-                WriteLine("{0} = {1};",param.Name,marshal.Context.Return);
+                WriteLine("{0} = {1};", param.Name, marshal.Context.Return);
             }
 
             if (isValueType && !IsNativeFunctionOrStaticMethod(function))
@@ -1082,7 +1082,7 @@ namespace CppSharp.Generators.CLI
 
                 // Special case for indexer - needs to dereference if the internal
                 // function is a pointer type and the property is not.
-                if (retType.Type.IsPointer() && 
+                if (retType.Type.IsPointer() &&
                     retType.Type.GetPointee().Equals(publicRetType) &&
                     publicRetType.IsPrimitiveType())
                     WriteLine("return *({0});", marshal.Context.Return);
@@ -1104,7 +1104,7 @@ namespace CppSharp.Generators.CLI
                     // C++/CLI can actually handle char -> sbyte in all case, this is for compatibility with the C# generator
                     WriteLineIndent(
                         "throw gcnew ::System::OverflowException(\"{0} must be in the range {1} - {2}.\");",
-                        param.Name, (int) char.MinValue, sbyte.MaxValue);
+                        param.Name, (int)char.MinValue, sbyte.MaxValue);
                 }
             }
         }
@@ -1112,7 +1112,7 @@ namespace CppSharp.Generators.CLI
         private static bool IsNativeMethod(Function function)
         {
             var method = function as Method;
-            if (method == null) 
+            if (method == null)
                 return false;
 
             return method.Conversion == MethodConversionKind.None;
@@ -1121,7 +1121,7 @@ namespace CppSharp.Generators.CLI
         private static bool IsNativeFunctionOrStaticMethod(Function function)
         {
             var method = function as Method;
-            if (method == null) 
+            if (method == null)
                 return true;
 
             if (method.IsOperator && Operators.IsBuiltinOperator(method.OperatorKind))
@@ -1136,7 +1136,7 @@ namespace CppSharp.Generators.CLI
             public string Prefix;
 
             public Parameter Param;
-        } 
+        }
 
         public List<ParamMarshal> GenerateFunctionParamsMarshal(IEnumerable<Parameter> @params,
             Function function = null)

@@ -28,7 +28,7 @@ namespace CppSharp.AST
             Access = access;
         }
 
-        public Field(Field field): base(field)
+        public Field(Field field) : base(field)
         {
             QualifiedType = field.QualifiedType;
             Class = field.Class;

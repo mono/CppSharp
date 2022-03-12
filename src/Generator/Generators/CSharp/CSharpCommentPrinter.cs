@@ -23,12 +23,12 @@ namespace CppSharp.Generators.CSharp
             switch (comment.Kind)
             {
                 case DocumentationCommentKind.FullComment:
-                    var fullComment = (FullComment) comment;
+                    var fullComment = (FullComment)comment;
                     foreach (var block in fullComment.Blocks)
                         block.GetCommentSections(sections);
                     break;
                 case DocumentationCommentKind.BlockCommandComment:
-                    var blockCommandComment = (BlockCommandComment) comment;
+                    var blockCommandComment = (BlockCommandComment)comment;
                     if (blockCommandComment.ParagraphComment == null)
                         break;
                     switch (blockCommandComment.CommandKind)
@@ -58,7 +58,7 @@ namespace CppSharp.Generators.CSharp
 
                     break;
                 case DocumentationCommentKind.ParamCommandComment:
-                    var paramCommandComment = (ParamCommandComment) comment;
+                    var paramCommandComment = (ParamCommandComment)comment;
                     var param = new Section(CommentElement.Param);
                     sections.Add(param);
                     if (paramCommandComment.Arguments.Count > 0)
@@ -82,7 +82,7 @@ namespace CppSharp.Generators.CSharp
                     break;
                 case DocumentationCommentKind.ParagraphComment:
                     var summaryParagraph = sections.Count == 1;
-                    var paragraphComment = (ParagraphComment) comment;
+                    var paragraphComment = (ParagraphComment)comment;
                     var lastParagraphSection = sections.Last();
                     foreach (var inlineContentComment in paragraphComment.Content)
                     {
@@ -117,7 +117,7 @@ namespace CppSharp.Generators.CSharp
                     break;
                 case DocumentationCommentKind.InlineCommandComment:
                     var lastInlineSection = sections.Last();
-                    var inlineCommand = (InlineCommandComment) comment;
+                    var inlineCommand = (InlineCommandComment)comment;
 
                     if (inlineCommand.CommandKind == CommentCommandKind.B)
                     {
@@ -132,7 +132,7 @@ namespace CppSharp.Generators.CSharp
 
         private static string GetText(Comment comment, bool trim = false)
         {
-            var textComment = ((TextComment) comment);
+            var textComment = ((TextComment)comment);
             var text = textComment.Text;
             if (trim)
                 text = text.Trim();

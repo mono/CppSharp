@@ -141,7 +141,7 @@ namespace CppSharp.Passes
                 var type = qualType.Type.Desugar();
                 while (type.IsAddress())
                 {
-                    var pointee = ((PointerType) type).Pointee.Desugar(
+                    var pointee = ((PointerType)type).Pointee.Desugar(
                         resolveTemplateSubstitution: false);
                     if (pointee.IsAddress())
                         type = pointee;
@@ -149,7 +149,7 @@ namespace CppSharp.Passes
                     {
                         substitution = pointee as TemplateParameterSubstitutionType;
                         if (substitution != null)
-                            ((PointerType) type).QualifiedPointee.Type = substitution.Replacement.Type;
+                            ((PointerType)type).QualifiedPointee.Type = substitution.Replacement.Type;
                         break;
                     }
                 }

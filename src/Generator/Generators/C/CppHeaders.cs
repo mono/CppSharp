@@ -302,7 +302,7 @@ namespace CppSharp.Generators.Cpp
                 return false;
 
             //if (@class.IsOpaque)
-             //   return false;
+            //   return false;
 
             PushBlock(BlockKind.Class, @class);
 
@@ -392,8 +392,8 @@ namespace CppSharp.Generators.Cpp
                 Name = Generator.GeneratedIdentifier("ExternalData"),
                 QualifiedType = new QualifiedType(new ArrayType
                 {
-                    QualifiedType =  new QualifiedType(voidPtrType),
-                    SizeType =  ArrayType.ArraySize.Constant,
+                    QualifiedType = new QualifiedType(voidPtrType),
+                    SizeType = ArrayType.ArraySize.Constant,
                     Size = 2
                 }),
                 Namespace = @class
@@ -567,7 +567,7 @@ namespace CppSharp.Generators.Cpp
 
             Indent();
 
-            var @class = (Class) methods[0].Namespace;
+            var @class = (Class)methods[0].Namespace;
 
             if (@class.IsValueType)
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
@@ -591,7 +591,7 @@ namespace CppSharp.Generators.Cpp
                 method.Visit(this);
             }
 
-            foreach(var method in staticMethods)
+            foreach (var method in staticMethods)
                 method.Visit(this);
 
             Unindent();
@@ -686,7 +686,7 @@ namespace CppSharp.Generators.Cpp
 
                 var @delegate = string.Format(CTypePrinter.VisitDelegate(functionType), typedef.Name);
                 WriteLine($"{@delegate};");
-                    
+
                 PopBlock(NewLineKind.BeforeNextBlock);
 
                 return true;

@@ -46,7 +46,7 @@ namespace CppSharp.Passes
 
                 if (!overload.IsGenerated) continue;
 
-                var ambiguous = 
+                var ambiguous =
                     function.OperatorKind == CXXOperatorKind.Conversion ||
                     function.OperatorKind == CXXOperatorKind.ExplicitConversion
                     ? CheckConversionAmbiguity(function, overload)
@@ -185,7 +185,7 @@ namespace CppSharp.Passes
             var type1 = method1.ReturnType.Type.Desugar();
             var type2 = method2.ReturnType.Type.Desugar();
 
-            if (type1 is PointerType pointerType1 && 
+            if (type1 is PointerType pointerType1 &&
                 type2 is PointerType pointerType2)
             {
                 type1 = pointerType1.GetPointee();

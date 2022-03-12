@@ -31,7 +31,7 @@ namespace CppSharp.Passes
         {
             if (decl.Access != AccessSpecifier.Protected)
                 return false;
-            
+
             var @class = decl.Namespace as Class;
             return @class != null && @class.IsStatic;
         }
@@ -58,7 +58,7 @@ namespace CppSharp.Passes
             if (tag == null)
                 return false;
 
-            var @class = (Class) function.Namespace;
+            var @class = (Class)function.Namespace;
             var decl = tag.Declaration;
 
             if (!(decl is Class))

@@ -92,7 +92,7 @@ namespace CppSharp.AST
         {
             if (!(obj is QualifiedType)) return false;
 
-            var type = (QualifiedType) obj;
+            var type = (QualifiedType)obj;
             return Type.Equals(type.Type) && Qualifiers.Equals(type.Qualifiers);
         }
 
@@ -190,7 +190,7 @@ namespace CppSharp.AST
         public ArrayType(ArrayType type)
             : base(type)
         {
-            QualifiedType = new QualifiedType((Type) type.QualifiedType.Type.Clone(),
+            QualifiedType = new QualifiedType((Type)type.QualifiedType.Type.Clone(),
                 type.QualifiedType.Qualifiers);
             SizeType = type.SizeType;
             Size = type.Size;
@@ -264,7 +264,7 @@ namespace CppSharp.AST
         public FunctionType(FunctionType type)
             : base(type)
         {
-            ReturnType = new QualifiedType((Type) type.ReturnType.Type.Clone(), type.ReturnType.Qualifiers);
+            ReturnType = new QualifiedType((Type)type.ReturnType.Type.Clone(), type.ReturnType.Qualifiers);
             Parameters.AddRange(type.Parameters.Select(p => new Parameter(p)));
             CallingConvention = type.CallingConvention;
             IsDependent = type.IsDependent;
@@ -326,7 +326,7 @@ namespace CppSharp.AST
         public PointerType(PointerType type)
             : base(type)
         {
-            QualifiedPointee = new QualifiedType((Type) type.QualifiedPointee.Type.Clone(),
+            QualifiedPointee = new QualifiedType((Type)type.QualifiedPointee.Type.Clone(),
                 type.QualifiedPointee.Qualifiers);
             Modifier = type.Modifier;
         }
@@ -341,7 +341,7 @@ namespace CppSharp.AST
         }
 
         public QualifiedType QualifiedPointee;
-        public Type Pointee { get { return QualifiedPointee.Type;  } }
+        public Type Pointee { get { return QualifiedPointee.Type; } }
 
         public TypeModifier Modifier;
 
@@ -382,7 +382,7 @@ namespace CppSharp.AST
         public MemberPointerType(MemberPointerType type)
             : base(type)
         {
-            QualifiedPointee = new QualifiedType((Type) type.QualifiedPointee.Type.Clone(),
+            QualifiedPointee = new QualifiedType((Type)type.QualifiedPointee.Type.Clone(),
                 type.QualifiedPointee.Qualifiers);
         }
 
@@ -481,8 +481,8 @@ namespace CppSharp.AST
         public AttributedType(AttributedType type)
             : base(type)
         {
-            Modified = new QualifiedType((Type) type.Modified.Type.Clone(), type.Modified.Qualifiers);
-            Equivalent = new QualifiedType((Type) type.Equivalent.Type.Clone(), type.Equivalent.Qualifiers);
+            Modified = new QualifiedType((Type)type.Modified.Type.Clone(), type.Modified.Qualifiers);
+            Equivalent = new QualifiedType((Type)type.Equivalent.Type.Clone(), type.Equivalent.Qualifiers);
         }
 
         public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals = new TypeQualifiers())
@@ -495,8 +495,8 @@ namespace CppSharp.AST
             return new AttributedType
             {
                 IsDependent = IsDependent,
-                Modified = new QualifiedType((Type) Modified.Type.Clone(), Modified.Qualifiers),
-                Equivalent = new QualifiedType((Type) Equivalent.Type.Clone(), Equivalent.Qualifiers)
+                Modified = new QualifiedType((Type)Modified.Type.Clone(), Modified.Qualifiers),
+                Equivalent = new QualifiedType((Type)Equivalent.Type.Clone(), Equivalent.Qualifiers)
             };
         }
 
@@ -529,11 +529,11 @@ namespace CppSharp.AST
         public DecayedType(DecayedType type)
             : base(type)
         {
-            Decayed = new QualifiedType((Type) type.Decayed.Type.Clone(),
+            Decayed = new QualifiedType((Type)type.Decayed.Type.Clone(),
                 type.Decayed.Qualifiers);
-            Original = new QualifiedType((Type) type.Original.Type.Clone(),
+            Original = new QualifiedType((Type)type.Original.Type.Clone(),
                 type.Original.Qualifiers);
-            Pointee = new QualifiedType((Type) type.Pointee.Type.Clone(),
+            Pointee = new QualifiedType((Type)type.Pointee.Type.Clone(),
                 type.Pointee.Qualifiers);
         }
 
@@ -608,22 +608,22 @@ namespace CppSharp.AST
         public override bool Equals(object obj)
         {
             if (!(obj is TemplateArgument)) return false;
-            var arg = (TemplateArgument) obj;
+            var arg = (TemplateArgument)obj;
 
             if (Kind != arg.Kind) return false;
 
             switch (Kind)
             {
-            case ArgumentKind.Type:
-                return Type.Equals(arg.Type);
-            case ArgumentKind.Declaration:
-                return Declaration.Equals(arg.Declaration);
-            case ArgumentKind.Integral:
-                return Integral.Equals(arg.Integral);
-            case ArgumentKind.Expression:
-                return true;
-            default:
-                throw new Exception("Unknown TemplateArgument Kind");
+                case ArgumentKind.Type:
+                    return Type.Equals(arg.Type);
+                case ArgumentKind.Declaration:
+                    return Declaration.Equals(arg.Declaration);
+                case ArgumentKind.Integral:
+                    return Integral.Equals(arg.Integral);
+                case ArgumentKind.Expression:
+                    return true;
+                default:
+                    throw new Exception("Unknown TemplateArgument Kind");
             }
         }
 
@@ -669,11 +669,11 @@ namespace CppSharp.AST
                     Declaration = t.Declaration,
                     Integral = t.Integral,
                     Kind = t.Kind,
-                    Type = new QualifiedType((Type) t.Type.Type.Clone(), t.Type.Qualifiers)
+                    Type = new QualifiedType((Type)t.Type.Type.Clone(), t.Type.Qualifiers)
                 }).ToList();
             Template = type.Template;
             if (type.Desugared.Type != null)
-                Desugared = new QualifiedType((Type) type.Desugared.Type.Clone(),
+                Desugared = new QualifiedType((Type)type.Desugared.Type.Clone(),
                     type.Desugared.Qualifiers);
         }
 
@@ -749,9 +749,9 @@ namespace CppSharp.AST
                     Declaration = t.Declaration,
                     Integral = t.Integral,
                     Kind = t.Kind,
-                    Type = new QualifiedType((Type) t.Type.Type.Clone(), t.Type.Qualifiers)
+                    Type = new QualifiedType((Type)t.Type.Type.Clone(), t.Type.Qualifiers)
                 }).ToList();
-            Desugared = new QualifiedType((Type) type.Desugared.Type.Clone(), type.Desugared.Qualifiers);
+            Desugared = new QualifiedType((Type)type.Desugared.Type.Clone(), type.Desugared.Qualifiers);
         }
 
         public List<TemplateArgument> Arguments;
@@ -860,8 +860,8 @@ namespace CppSharp.AST
         public TemplateParameterSubstitutionType(TemplateParameterSubstitutionType type)
             : base(type)
         {
-            Replacement = new QualifiedType((Type) type.Replacement.Type.Clone(), type.Replacement.Qualifiers);
-            ReplacedParameter = (TemplateParameterType) type.ReplacedParameter.Clone();
+            Replacement = new QualifiedType((Type)type.Replacement.Type.Clone(), type.Replacement.Qualifiers);
+            ReplacedParameter = (TemplateParameterType)type.ReplacedParameter.Clone();
         }
 
         public override T Visit<T>(ITypeVisitor<T> visitor,
@@ -905,9 +905,9 @@ namespace CppSharp.AST
             : base(type)
         {
             if (type.TemplateSpecialization != null)
-                TemplateSpecialization = (TemplateSpecializationType) type.TemplateSpecialization.Clone();
+                TemplateSpecialization = (TemplateSpecializationType)type.TemplateSpecialization.Clone();
             InjectedSpecializationType = new QualifiedType(
-                (Type) type.InjectedSpecializationType.Type.Clone(),
+                (Type)type.InjectedSpecializationType.Type.Clone(),
                 type.InjectedSpecializationType.Qualifiers);
             Class = type.Class;
         }
@@ -1227,13 +1227,13 @@ namespace CppSharp.AST
             {
                 switch (Type)
                 {
-                case PrimitiveType.Bool:
-                case PrimitiveType.UChar:
-                case PrimitiveType.UShort:
-                case PrimitiveType.UInt:
-                case PrimitiveType.ULong:
-                case PrimitiveType.ULongLong:
-                    return true;
+                    case PrimitiveType.Bool:
+                    case PrimitiveType.UChar:
+                    case PrimitiveType.UShort:
+                    case PrimitiveType.UInt:
+                    case PrimitiveType.ULong:
+                    case PrimitiveType.ULongLong:
+                        return true;
                 }
 
                 return false;

@@ -33,20 +33,20 @@ namespace CppSharp.Passes
             var isReturnIndirect = function.IsReturnIndirect || (
                     Context.ParserOptions.IsMicrosoftAbi &&
                     function is Method &&
-                    !function.ReturnType.Type.Desugar().IsAddress()  &&
-                    function.ReturnType.Type.Desugar().TryGetDeclaration(out Class returnTypeDecl) && 
-                    returnTypeDecl.IsPOD && 
+                    !function.ReturnType.Type.Desugar().IsAddress() &&
+                    function.ReturnType.Type.Desugar().TryGetDeclaration(out Class returnTypeDecl) &&
+                    returnTypeDecl.IsPOD &&
                     returnTypeDecl.Layout.Size <= 8);
 
             if (isReturnIndirect)
             {
                 var indirectParam = new Parameter()
-                    {
-                        Kind = ParameterKind.IndirectReturnType,
-                        QualifiedType = function.ReturnType,
-                        Name = "return",
-                        Namespace = function
-                    };
+                {
+                    Kind = ParameterKind.IndirectReturnType,
+                    QualifiedType = function.ReturnType,
+                    Name = "return",
+                    Namespace = function
+                };
 
                 function.Parameters.Insert(0, indirectParam);
                 function.ReturnType = new QualifiedType(new BuiltinType(
@@ -59,7 +59,7 @@ namespace CppSharp.Passes
             {
                 // This flag should only be true on methods.
                 var classType = new QualifiedType(new TagType(method.Namespace),
-                    new TypeQualifiers {IsConst = true});
+                    new TypeQualifiers { IsConst = true });
                 function.ReturnType = new QualifiedType(new PointerType(classType));
             }
 

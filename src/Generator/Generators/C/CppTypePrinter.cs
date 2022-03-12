@@ -94,16 +94,16 @@ namespace CppSharp.Generators.C
             string arraySuffix;
             switch (array.SizeType)
             {
-            case ArrayType.ArraySize.Constant:
-                arraySuffix = $"[{array.Size}]";
-                break;
-            case ArrayType.ArraySize.Variable:
-            case ArrayType.ArraySize.Dependent:
-            case ArrayType.ArraySize.Incomplete:
-                arraySuffix = $"{(PrintVariableArrayAsPointers ? "*" : "[]")}";
-                break;
-            default:
-                throw new NotImplementedException();
+                case ArrayType.ArraySize.Constant:
+                    arraySuffix = $"[{array.Size}]";
+                    break;
+                case ArrayType.ArraySize.Variable:
+                case ArrayType.ArraySize.Dependent:
+                case ArrayType.ArraySize.Incomplete:
+                    arraySuffix = $"{(PrintVariableArrayAsPointers ? "*" : "[]")}";
+                    break;
+                default:
+                    throw new NotImplementedException();
             }
 
             return new TypePrinterResult
@@ -199,32 +199,32 @@ namespace CppSharp.Generators.C
                     return PrintFlavorKind == CppTypePrintFlavorKind.Cpp ?
                         "std::nullptr_t" : "NULL";
                 case PrimitiveType.String:
-                {
-                    switch (PrintFlavorKind)
                     {
-                    case CppTypePrintFlavorKind.C:
-                        return "const char*";
-                    case CppTypePrintFlavorKind.Cpp:
-                        return "std::string";
-                    case CppTypePrintFlavorKind.ObjC:
-                        return "NSString";
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                        switch (PrintFlavorKind)
+                        {
+                            case CppTypePrintFlavorKind.C:
+                                return "const char*";
+                            case CppTypePrintFlavorKind.Cpp:
+                                return "std::string";
+                            case CppTypePrintFlavorKind.ObjC:
+                                return "NSString";
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
                     }
-                }
                 case PrimitiveType.Decimal:
-                {
-                    switch (PrintFlavorKind)
                     {
-                    case CppTypePrintFlavorKind.C:
-                    case CppTypePrintFlavorKind.Cpp:
-                        return "_Decimal32";
-                    case CppTypePrintFlavorKind.ObjC:
-                        return "NSDecimalNumber";
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                        switch (PrintFlavorKind)
+                        {
+                            case CppTypePrintFlavorKind.C:
+                            case CppTypePrintFlavorKind.Cpp:
+                                return "_Decimal32";
+                            case CppTypePrintFlavorKind.ObjC:
+                                return "NSDecimalNumber";
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
                     }
-                }
             }
 
             throw new NotSupportedException();
@@ -237,8 +237,12 @@ namespace CppSharp.Generators.C
             if (ResolveTypedefs && !typedef.Declaration.Type.IsPointerTo(out FunctionType _))
             {
                 TypePrinterResult type = typedef.Declaration.QualifiedType.Visit(this);
-                return new TypePrinterResult { Type = $"{qual}{type.Type}",
-                    NamePrefix = type.NamePrefix, NameSuffix = type.NameSuffix };
+                return new TypePrinterResult
+                {
+                    Type = $"{qual}{type.Type}",
+                    NamePrefix = type.NamePrefix,
+                    NameSuffix = type.NameSuffix
+                };
             }
 
             var result = typedef.Declaration.Visit(this);
@@ -469,59 +473,59 @@ namespace CppSharp.Generators.C
         {
             switch (scope)
             {
-            case TypePrintScopeKind.Local:
-            {
-                if (ContextKind == TypePrinterContextKind.Managed)
-                {
-                    return PrintLogicalNames ? declaration.LogicalName : declaration.Name;
-                }
-
-                if (PrefixSpecialFunctions)
-                {
-                    if (declaration is Function {IsOperator: true} function)
-                        return $"operator_{function.OperatorKind}";
-                }
-
-                return PrintLogicalNames ? declaration.LogicalOriginalName
-                    : declaration.OriginalName;
-            }
-            case TypePrintScopeKind.Qualified:
-            {
-                if (ContextKind == TypePrinterContextKind.Managed)
-                {
-                    var outputNamespace = GlobalNamespace(declaration);
-                    if (!string.IsNullOrEmpty(outputNamespace))
+                case TypePrintScopeKind.Local:
                     {
-                        return $"{outputNamespace}{NamespaceSeparator}{declaration.QualifiedName}";
+                        if (ContextKind == TypePrinterContextKind.Managed)
+                        {
+                            return PrintLogicalNames ? declaration.LogicalName : declaration.Name;
+                        }
+
+                        if (PrefixSpecialFunctions)
+                        {
+                            if (declaration is Function { IsOperator: true } function)
+                                return $"operator_{function.OperatorKind}";
+                        }
+
+                        return PrintLogicalNames ? declaration.LogicalOriginalName
+                            : declaration.OriginalName;
                     }
+                case TypePrintScopeKind.Qualified:
+                    {
+                        if (ContextKind == TypePrinterContextKind.Managed)
+                        {
+                            var outputNamespace = GlobalNamespace(declaration);
+                            if (!string.IsNullOrEmpty(outputNamespace))
+                            {
+                                return $"{outputNamespace}{NamespaceSeparator}{declaration.QualifiedName}";
+                            }
 
-                    return declaration.QualifiedName;
-                }
+                            return declaration.QualifiedName;
+                        }
 
-                if (declaration.Namespace is Class)
-                {
-                    var declName = GetDeclName(declaration, TypePrintScopeKind.Local);
-                    bool printTags = PrintTags;
-                    PrintTags = false;
-                    TypePrinterResult declContext = declaration.Namespace.Visit(this);
-                    PrintTags = printTags;
-                    return $"{declContext}{NamespaceSeparator}{declName}";
-                }
+                        if (declaration.Namespace is Class)
+                        {
+                            var declName = GetDeclName(declaration, TypePrintScopeKind.Local);
+                            bool printTags = PrintTags;
+                            PrintTags = false;
+                            TypePrinterResult declContext = declaration.Namespace.Visit(this);
+                            PrintTags = printTags;
+                            return $"{declContext}{NamespaceSeparator}{declName}";
+                        }
 
-                return PrintLogicalNames ? declaration.QualifiedLogicalOriginalName
-                    : declaration.QualifiedOriginalName;
-            }
-            case TypePrintScopeKind.GlobalQualified:
-            {
-                var name = (ContextKind == TypePrinterContextKind.Managed) ?
-                            declaration.Name : declaration.OriginalName;
+                        return PrintLogicalNames ? declaration.QualifiedLogicalOriginalName
+                            : declaration.QualifiedOriginalName;
+                    }
+                case TypePrintScopeKind.GlobalQualified:
+                    {
+                        var name = (ContextKind == TypePrinterContextKind.Managed) ?
+                                    declaration.Name : declaration.OriginalName;
 
-                if (declaration.Namespace is Class)
-                    return $"{declaration.Namespace.Visit(this)}{NamespaceSeparator}{name}";
+                        if (declaration.Namespace is Class)
+                            return $"{declaration.Namespace.Visit(this)}{NamespaceSeparator}{name}";
 
-                var qualifier = HasGlobalNamespacePrefix ? NamespaceSeparator : string.Empty;
-                return qualifier + GetDeclName(declaration, TypePrintScopeKind.Qualified);
-            }
+                        var qualifier = HasGlobalNamespacePrefix ? NamespaceSeparator : string.Empty;
+                        return qualifier + GetDeclName(declaration, TypePrintScopeKind.Qualified);
+                    }
             }
 
             throw new NotSupportedException();
@@ -619,7 +623,7 @@ namespace CppSharp.Generators.C
             FunctionType functionType;
             CppSharp.AST.Type desugared = function.FunctionType.Type.Desugar();
             if (!desugared.IsPointerTo(out functionType))
-                functionType = (FunctionType) desugared;
+                functionType = (FunctionType)desugared;
             string exceptionType = Print(functionType.ExceptionSpecType);
 
             var @return = function.OriginalReturnType.Visit(this);

@@ -16,7 +16,7 @@ namespace CppSharp.Generators.Cpp
             CTypePrinter.PushContext(TypePrinterContextKind.Managed);
         }
 
-        public override bool ShouldGenerateNamespaces => false; 
+        public override bool ShouldGenerateNamespaces => false;
 
         public override void Process()
         {

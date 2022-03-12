@@ -28,7 +28,7 @@ namespace CppSharp.Generators.CLI
 
             if (method.IsConstructor || method.IsDestructor)
             {
-                var @class = (Class) method.Namespace;
+                var @class = (Class)method.Namespace;
                 return @class.Name;
             }
 

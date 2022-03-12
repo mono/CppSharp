@@ -25,7 +25,7 @@ namespace CppSharp.Runtime
                     "UTF8Marshaler must be used on a string.");
 
             // not null terminated
-            byte[] strbuf = Encoding.UTF8.GetBytes((string) managedObj);
+            byte[] strbuf = Encoding.UTF8.GetBytes((string)managedObj);
             IntPtr buffer = Marshal.AllocHGlobal(strbuf.Length + 1);
             Marshal.Copy(strbuf, 0, buffer, strbuf.Length);
 
@@ -40,10 +40,10 @@ namespace CppSharp.Runtime
                 return null;
 
             int byteCount = 0;
-            var str8 = (byte*) str;
+            var str8 = (byte*)str;
             while (*(str8++) != 0) byteCount += sizeof(byte);
 
-            return Encoding.UTF8.GetString((byte*) str, byteCount);
+            return Encoding.UTF8.GetString((byte*)str, byteCount);
         }
 
         public static ICustomMarshaler GetInstance(string pstrCookie)

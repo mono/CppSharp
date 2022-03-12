@@ -43,7 +43,7 @@ namespace CppSharp.Types
                     if (attr.GeneratorKind == 0 ||
                         attr.GeneratorKind == bindingContext.Options.GeneratorKind)
                     {
-                        var typeMap = (TypeMap) Activator.CreateInstance(type);
+                        var typeMap = (TypeMap)Activator.CreateInstance(type);
                         typeMap.Context = bindingContext;
                         typeMap.TypeMapDatabase = this;
 

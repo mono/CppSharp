@@ -135,8 +135,8 @@ namespace CppSharp.Types.Std
                 var type = finalType as TemplateSpecializationType;
                 if (type == null)
                 {
-                    var injectedClassNameType = (InjectedClassNameType) finalType;
-                    type = (TemplateSpecializationType) injectedClassNameType.InjectedSpecializationType.Type;
+                    var injectedClassNameType = (InjectedClassNameType)finalType;
+                    type = (TemplateSpecializationType)injectedClassNameType.InjectedSpecializationType.Type;
                 }
                 var checker = new TypeIgnoreChecker(TypeMapDatabase);
                 type.Arguments[0].Type.Visit(checker);
@@ -182,10 +182,10 @@ namespace CppSharp.Types.Std
                 };
 
                 var elementCtx = new MarshalContext(ctx.Context, ctx.Indentation)
-                                     {
-                                         Parameter = param,
-                                         ArgName = param.Name,
-                                     };
+                {
+                    Parameter = param,
+                    ArgName = param.Name,
+                };
 
                 var marshal = new CLIMarshalManagedToNativePrinter(elementCtx);
                 type.Type.Visit(marshal);
@@ -203,7 +203,7 @@ namespace CppSharp.Types.Std
                 ctx.Before.WriteLine("{0}.push_back(_marshalElement);",
                     tmpVarName);
             }
-            
+
             ctx.Before.UnindentAndWriteCloseBrace();
 
             ctx.Return.Write(tmpVarName);
@@ -219,7 +219,7 @@ namespace CppSharp.Types.Std
                 ? new CILType(typeof(System.IntPtr))
                 : type.Type;
             var tmpVarName = "_tmp" + ctx.ArgName;
-            
+
             ctx.Before.WriteLine(
                 "auto {0} = gcnew ::System::Collections::Generic::List<{1}>();",
                 tmpVarName, managedType);
@@ -231,10 +231,10 @@ namespace CppSharp.Types.Std
             ctx.Before.WriteOpenBraceAndIndent();
             {
                 var elementCtx = new MarshalContext(ctx.Context, ctx.Indentation)
-                                     {
-                                         ReturnVarName = "_element",
-                                         ReturnType = type
-                                     };
+                {
+                    ReturnVarName = "_element",
+                    ReturnType = type
+                };
 
                 var marshal = new CLIMarshalNativeToManagedPrinter(elementCtx);
                 type.Type.Visit(marshal);
@@ -315,7 +315,7 @@ namespace CppSharp.Types.Std
 
         public override void CLIMarshalToNative(MarshalContext ctx)
         {
-            var marshal = (CLIMarshalManagedToNativePrinter) ctx.MarshalToNative;
+            var marshal = (CLIMarshalManagedToNativePrinter)ctx.MarshalToNative;
             if (!ctx.Parameter.Type.Desugar().IsPointer())
                 marshal.ArgumentPrefix.Write("*");
             var marshalCtxName = string.Format("ctx_{0}", ctx.Parameter.Name);

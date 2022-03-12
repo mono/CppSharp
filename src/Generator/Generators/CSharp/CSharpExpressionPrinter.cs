@@ -40,7 +40,7 @@ namespace CppSharp.Generators.CSharp
             switch (expr.Class)
             {
                 case StatementClass.Call:
-                    var callExpr = (CallExprObsolete) expr;
+                    var callExpr = (CallExprObsolete)expr;
                     switch (callExpr.Declaration.GenerationKind)
                     {
                         case GenerationKind.Generate:
@@ -48,7 +48,7 @@ namespace CppSharp.Generators.CSharp
                             return $"{typePrinter.VisitDeclaration(callExpr.Declaration.Namespace)}.{callExpr.Declaration.Name}({args})";
                         case GenerationKind.Internal:
                             // a non-ctor can only be internal if it's been converted to a property
-                            var property = ((Class) callExpr.Declaration.Namespace).Properties.First(
+                            var property = ((Class)callExpr.Declaration.Namespace).Properties.First(
                                 p => p.GetMethod == callExpr.Declaration);
                             return $"{typePrinter.VisitDeclaration(callExpr.Declaration.Namespace)}.{property.Name}";
                         default:
@@ -59,7 +59,7 @@ namespace CppSharp.Generators.CSharp
                         return expr.Declaration.Visit(typePrinter).Type;
                     goto default;
                 case StatementClass.BinaryOperator:
-                    var binaryOperator = (BinaryOperatorObsolete) expr;
+                    var binaryOperator = (BinaryOperatorObsolete)expr;
 
                     var lhsResult = binaryOperator.LHS.String;
                     if (binaryOperator.LHS.Declaration is Enumeration.Item)
@@ -71,7 +71,7 @@ namespace CppSharp.Generators.CSharp
 
                     return $"{lhsResult} {binaryOperator.OpcodeStr} {rhsResult}";
                 case StatementClass.ConstructorReference:
-                    var constructorExpr = (CXXConstructExprObsolete) expr;
+                    var constructorExpr = (CXXConstructExprObsolete)expr;
                     if (constructorExpr.Arguments.Count == 1 &&
                         constructorExpr.Arguments[0].Declaration is Enumeration.Item)
                         return constructorExpr.Arguments[0].Declaration.Visit(typePrinter).Type;

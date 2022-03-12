@@ -127,7 +127,7 @@ namespace CppSharp.Passes
             if (@interface == null)
                 return;
 
-            type.Type = (Type) type.Type.Clone();
+            type.Type = (Type)type.Type.Clone();
             finalType = (type.Type.GetFinalPointee() ?? type.Type).Desugar();
             finalType.TryGetClass(out @class, @interface);
         }

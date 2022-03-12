@@ -13,19 +13,19 @@ namespace CppSharp
         /// <summary>
         /// Fired when source files are parsed.
         /// </summary>
-        public static Action<IEnumerable<string>, ParserResult> SourcesParsed = delegate {};
+        public static Action<IEnumerable<string>, ParserResult> SourcesParsed = delegate { };
 
         /// <summary>
         /// Fired when library files are parsed.
         /// </summary>
-        public static Action<string, ParserResult> LibraryParsed = delegate {};
+        public static Action<string, ParserResult> LibraryParsed = delegate { };
 
         /// <summary>
         /// Parses a C++ source file as a translation unit.
         /// </summary>
         public static ParserResult ParseSourceFile(string file, ParserOptions options)
         {
-            return ParseSourceFiles(new [] { file }, options);
+            return ParseSourceFiles(new[] { file }, options);
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace CppSharp
             var newLibrary = new AST.NativeLibrary
             {
                 FileName = library.FileName,
-                ArchType = (ArchType) library.ArchType
+                ArchType = (ArchType)library.ArchType
             };
 
             for (uint i = 0; i < library.SymbolsCount; ++i)

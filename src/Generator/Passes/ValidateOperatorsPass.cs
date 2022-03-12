@@ -74,7 +74,7 @@ namespace CppSharp.Passes
                     returnType = (returnType.GetFinalPointee() ?? returnType).Desugar();
                     return returnType.TryGetClass(out @class) &&
                         @class.GetNonIgnoredRootBase() ==
-                            ((Class) @operator.Namespace).GetNonIgnoredRootBase() &&
+                            ((Class)@operator.Namespace).GetNonIgnoredRootBase() &&
                         @operator.Parameters.Count == 0;
 
                 // Bitwise shift operators can only be overloaded if the second parameter is int

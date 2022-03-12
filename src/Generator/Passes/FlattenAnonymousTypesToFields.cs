@@ -44,7 +44,7 @@ namespace CppSharp.Passes
                     !field.QualifiedType.Type.Desugar().TryGetClass(out fieldType) ||
                     !string.IsNullOrEmpty(fieldType.OriginalName))
                     continue;
-                
+
                 ReplaceLayoutField(@class, i, fieldType);
                 fieldType.Fields.Clear();
                 fieldType.ExplicitlyIgnore();
@@ -77,13 +77,13 @@ namespace CppSharp.Passes
             {
                 LayoutField nestedLayoutField = fieldType.Layout.Fields[j];
                 var layoutField = new LayoutField
-                    {
-                        Expression = nestedLayoutField.Expression,
-                        FieldPtr = nestedLayoutField.FieldPtr,
-                        Name = nestedLayoutField.Name,
-                        Offset = nestedLayoutField.Offset + offset,
-                        QualifiedType = nestedLayoutField.QualifiedType
-                    };
+                {
+                    Expression = nestedLayoutField.Expression,
+                    FieldPtr = nestedLayoutField.FieldPtr,
+                    Name = nestedLayoutField.Name,
+                    Offset = nestedLayoutField.Offset + offset,
+                    QualifiedType = nestedLayoutField.QualifiedType
+                };
                 @class.Layout.Fields.Insert(i + j, layoutField);
             }
         }

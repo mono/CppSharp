@@ -63,11 +63,11 @@ namespace CppSharp.Passes
                 return false;
 
             var functionType = new FunctionType
-                {
-                    CallingConvention = method.CallingConvention,
-                    IsDependent = method.IsDependent,
-                    ReturnType = method.ReturnType
-                };
+            {
+                CallingConvention = method.CallingConvention,
+                IsDependent = method.IsDependent,
+                ReturnType = method.ReturnType
+            };
 
             TypePrinter.PushMarshalKind(MarshalKind.VTableReturnValue);
             functionType.Parameters.AddRange(
@@ -92,7 +92,7 @@ namespace CppSharp.Passes
 
         public override bool VisitParameterDecl(Parameter parameter)
         {
-            if(parameter.Namespace?.TranslationUnit?.Module == null && namespaces.Count > 0)
+            if (parameter.Namespace?.TranslationUnit?.Module == null && namespaces.Count > 0)
                 parameter.Namespace = namespaces.Peek();
 
             if (!base.VisitDeclaration(parameter) || parameter.Namespace == null ||
@@ -170,7 +170,7 @@ namespace CppSharp.Passes
                     existingDelegate.Access = access;
 
                 // Check if there is an existing delegate with a different calling convention
-                if (((FunctionType) existingDelegate.Type.GetPointee()).CallingConvention ==
+                if (((FunctionType)existingDelegate.Type.GetPointee()).CallingConvention ==
                     functionType.CallingConvention)
                     return existingDelegate;
 
@@ -184,13 +184,13 @@ namespace CppSharp.Passes
             var namespaceDelegates = GetDeclContextForDelegates(declarationContext);
             var delegateType = new QualifiedType(new PointerType(new QualifiedType(functionType)));
             existingDelegate = new TypedefDecl
-                {
-                    Access = access,
-                    Name = delegateName,
-                    Namespace = namespaceDelegates,
-                    QualifiedType = delegateType,
-                    IsSynthetized = true
-                };
+            {
+                Access = access,
+                Name = delegateName,
+                Namespace = namespaceDelegates,
+                QualifiedType = delegateType,
+                IsSynthetized = true
+            };
             delegates.Add(existingDelegate);
 
             return existingDelegate;
@@ -235,10 +235,10 @@ namespace CppSharp.Passes
                 parent = module.Units.Last(u => u.IsGenerated);
 
             var namespaceDelegates = new Namespace
-                {
-                    Name = "Delegates",
-                    Namespace = parent
-                };
+            {
+                Name = "Delegates",
+                Namespace = parent
+            };
             namespacesDelegates.Add(module, namespaceDelegates);
 
             return namespaceDelegates;

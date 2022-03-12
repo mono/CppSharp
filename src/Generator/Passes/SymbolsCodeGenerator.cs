@@ -45,7 +45,7 @@ namespace CppSharp.Passes
         public override bool VisitMethodDecl(Method method)
         {
             if (method.IsDestructor &&
-                (!((Class) method.Namespace).HasNonTrivialDestructor ||
+                (!((Class)method.Namespace).HasNonTrivialDestructor ||
                  method.Access == AccessSpecifier.Private))
                 return false;
 
@@ -58,7 +58,7 @@ namespace CppSharp.Passes
                 return true;
             }
 
-            Class @class = (Class) method.Namespace;
+            Class @class = (Class)method.Namespace;
             bool needSubclass = (method.Access == AccessSpecifier.Protected ||
                 @class.IsAbstract) && (method.IsConstructor || method.IsDestructor);
             string wrapper = GetWrapper(method);
@@ -159,7 +159,7 @@ namespace CppSharp.Passes
                 Write("extern \"C\" ");
             Write($"{GetExporting()}void {wrapper}({signature}) ");
 
-            bool isAbstract = ((Class) method.Namespace).IsAbstract;
+            bool isAbstract = ((Class)method.Namespace).IsAbstract;
             if (method.Access == AccessSpecifier.Protected || isAbstract)
             {
                 Write($@"{{ ::new ({Helpers.InstanceField}) {
@@ -197,7 +197,7 @@ namespace CppSharp.Passes
             }
 
             bool needSubclass = method.Access == AccessSpecifier.Protected ||
-                ((Class) method.Namespace).IsAbstract;
+                ((Class)method.Namespace).IsAbstract;
             string @namespace = method.Namespace.Visit(cppTypePrinter);
             if (!needSubclass)
                 Write("extern \"C\" ");
@@ -318,7 +318,7 @@ namespace CppSharp.Passes
             string paramTypes, string functionName)
         {
             Stack<string> parentsOpen = GenerateNamespace(function);
-            var functionType = (FunctionType) function.FunctionType.Type;
+            var functionType = (FunctionType)function.FunctionType.Type;
             Write($"{string.Concat(parentsOpen)}");
             if (function.IsConstExpr)
                 Write("constexpr ");

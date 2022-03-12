@@ -61,10 +61,10 @@ namespace CppSharp.Tests
             ctx.GenerateEnumFromMacros("TestBoolValuedEnums", "TEST_BOOL_VALUED_ENUMS_.*");
 
             enumTest.Namespace = new Namespace()
-                {
-                    Name = "MacroTest",
-                    Namespace = ctx.TranslationUnits.First(u => u.IsValid && !u.IsSystemHeader)
-                };
+            {
+                Name = "MacroTest",
+                Namespace = ctx.TranslationUnits.First(u => u.IsValid && !u.IsSystemHeader)
+            };
 
             // Generate a finalizer for just the one test case.
             driver.Options.GenerateFinalizers = true;
@@ -167,10 +167,10 @@ namespace CppSharp.Tests
             var templateSpecializationType = type as TemplateSpecializationType;
             if (templateSpecializationType != null)
                 return templateSpecializationType.Arguments[0].Type.Type;
-            var declaration = ((TagType) type).Declaration;
+            var declaration = ((TagType)type).Declaration;
             if (declaration.IsDependent)
-                return new TagType(((Class) declaration).TemplateParameters[0]);
-            classTemplateSpecialization = (ClassTemplateSpecialization) declaration;
+                return new TagType(((Class)declaration).TemplateParameters[0]);
+            classTemplateSpecialization = (ClassTemplateSpecialization)declaration;
             return classTemplateSpecialization.Arguments[0].Type.Type;
         }
     }
@@ -208,7 +208,7 @@ namespace CppSharp.Tests
         {
             get
             {
-                var type = (TemplateSpecializationType) Type;
+                var type = (TemplateSpecializationType)Type;
                 var pointeeType = type.Arguments[0].Type;
                 var checker = new TypeIgnoreChecker(TypeMapDatabase);
                 pointeeType.Visit(checker);
@@ -220,7 +220,7 @@ namespace CppSharp.Tests
         {
             if (ctx.Kind == TypePrinterContextKind.Native)
             {
-                var type = (TemplateSpecializationType) ctx.Type.Desugar();
+                var type = (TemplateSpecializationType)ctx.Type.Desugar();
                 var specialization = type.GetClassTemplateSpecialization();
                 var typePrinter = new CSharpTypePrinter(null);
                 typePrinter.PushContext(TypePrinterContextKind.Native);
@@ -239,7 +239,7 @@ namespace CppSharp.Tests
         public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
         {
             // pointless, put just so that the generated code compiles
-            var type = (TemplateSpecializationType) ctx.Parameter.Type.Desugar();
+            var type = (TemplateSpecializationType)ctx.Parameter.Type.Desugar();
             var specialization = type.GetClassTemplateSpecialization();
             var typePrinter = new CSharpTypePrinter(null);
             typePrinter.PushContext(TypePrinterContextKind.Native);

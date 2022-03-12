@@ -64,13 +64,13 @@ namespace CppSharp.Passes
             foreach (var abstractMethod in abstractMethods)
             {
                 var impl = new Method(abstractMethod)
-                    {
-                        Namespace = internalImpl,
-                        OriginalFunction = abstractMethod,
-                        IsPure = false,
-                        SynthKind = abstractMethod.SynthKind == FunctionSynthKind.DefaultValueOverload ?
+                {
+                    Namespace = internalImpl,
+                    OriginalFunction = abstractMethod,
+                    IsPure = false,
+                    SynthKind = abstractMethod.SynthKind == FunctionSynthKind.DefaultValueOverload ?
                             FunctionSynthKind.DefaultValueOverload : FunctionSynthKind.AbstractImplCall
-                    };
+                };
                 impl.OverriddenMethods.Clear();
                 impl.OverriddenMethods.Add(abstractMethod);
                 if (abstractMethod.OriginalReturnType.Type.IsDependentPointer() ||
@@ -90,11 +90,11 @@ namespace CppSharp.Passes
         private static T GetInternalImpl<T>(T @class) where T : Class, new()
         {
             var internalImpl = new T
-                                {
-                                    Name = @class.Name + "Internal",
-                                    Access = AccessSpecifier.Private,
-                                    Namespace = @class.Namespace
-                                };
+            {
+                Name = @class.Name + "Internal",
+                Access = AccessSpecifier.Private,
+                Namespace = @class.Namespace
+            };
             if (@class.IsDependent)
             {
                 internalImpl.IsDependent = true;
@@ -122,8 +122,8 @@ namespace CppSharp.Passes
             for (var i = abstractMethods.Count - 1; i >= 0; i--)
             {
                 var @abstract = abstractMethods[i];
-                var @override = overriddenMethods.Find(m => m.Name == @abstract.Name && 
-                    m.ReturnType == @abstract.ReturnType && 
+                var @override = overriddenMethods.Find(m => m.Name == @abstract.Name &&
+                    m.ReturnType == @abstract.ReturnType &&
                     m.Parameters.SequenceEqual(@abstract.Parameters, ParameterTypeComparer.Instance));
                 if (@override != null)
                 {

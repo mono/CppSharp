@@ -132,7 +132,7 @@ namespace CppSharp.AST
                 template = specialization.TemplatedDecl.TemplatedClass;
             else
             {
-                template = (Class) method.Namespace;
+                template = (Class)method.Namespace;
                 if (!template.IsDependent)
                     return false;
             }
@@ -219,7 +219,7 @@ namespace CppSharp.AST
     {
         public static CXXOperatorArity ClassifyOperator(Function function)
         {
-            switch(function.Parameters.Count)
+            switch (function.Parameters.Count)
             {
                 case 0: return CXXOperatorArity.Zero;
                 case 1: return CXXOperatorArity.Unary;

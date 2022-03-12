@@ -181,7 +181,7 @@ namespace CppSharp.Passes
         {
             if (symbolsCodeGenerators.ContainsKey(module))
                 return symbolsCodeGenerators[module];
-            
+
             var symbolsCodeGenerator = new SymbolsCodeGenerator(Context, module.Units);
             symbolsCodeGenerators[module] = symbolsCodeGenerator;
             symbolsCodeGenerator.Process();
@@ -237,7 +237,7 @@ namespace CppSharp.Passes
                         Diagnostics.Error(errorMessage);
                     else
                         compiledLibraries[module] = new CompiledLibrary
-                            { OutputDir = outputDir, Library = module.SymbolsLibraryName };
+                        { OutputDir = outputDir, Library = module.SymbolsLibraryName };
                     RemainingCompilationTasks--;
                 }).Start();
         }

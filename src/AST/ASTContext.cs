@@ -144,7 +144,7 @@ namespace CppSharp.AST
         public void SetEnumAsFlags(string name)
         {
             var enums = FindEnum(name);
-            foreach(var @enum in enums)
+            foreach (var @enum in enums)
                 @enum.SetFlags();
         }
 

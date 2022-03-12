@@ -55,7 +55,7 @@ namespace CppSharp
             switch (vsVersion)
             {
                 case VisualStudioVersion.VS2012:
-                    clVersion = new Version { Major = 17, Minor = 0};
+                    clVersion = new Version { Major = 17, Minor = 0 };
                     break;
                 case VisualStudioVersion.VS2013:
                     clVersion = new Version { Major = 18, Minor = 0 };
@@ -108,7 +108,7 @@ namespace CppSharp
             int windowsSdkMajorVer, List<ToolchainVersion> windowsSdks)
         {
             var majorWindowsSdk = windowsSdks.Find(
-                version => (int) Math.Floor(version.Version) == windowsSdkMajorVer);
+                version => (int)Math.Floor(version.Version) == windowsSdkMajorVer);
             var windowsSdkDirs = majorWindowsSdk.Directory != null ?
                 new[] { majorWindowsSdk.Directory } :
                 windowsSdks.Select(w => w.Directory).Reverse();

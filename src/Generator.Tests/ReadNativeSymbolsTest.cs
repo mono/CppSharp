@@ -106,7 +106,7 @@ namespace CppSharp.Generator.Tests
         {
             var symbols = GetSymbols("linux", "libexpat");
             Assert.That(symbols, Is.EquivalentTo(
-                new []
+                new[]
                 {
                     ".init",
                     "free",

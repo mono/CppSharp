@@ -177,7 +177,7 @@ namespace CppSharp.Passes
                 var quals = field.QualifiedType.Qualifiers;
                 quals.IsConst = true;
 
-                var qualType  = field.QualifiedType;
+                var qualType = field.QualifiedType;
                 qualType.Qualifiers = quals;
 
                 field.QualifiedType = qualType;

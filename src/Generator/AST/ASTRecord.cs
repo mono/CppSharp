@@ -21,7 +21,7 @@ namespace CppSharp.Generators.AST
             if (!(v is T))
                 return false;
 
-            @out = (T) v;
+            @out = (T)v;
             return true;
         }
 
@@ -48,14 +48,14 @@ namespace CppSharp.Generators.AST
                 return true;
             }
 
-            return Parent != null 
+            return Parent != null
                 && Parent.GetAncestors<T>(ref ancestors);
         }
     }
 
     public class ASTRecord<T> : ASTRecord
     {
-        public T Value => (T) Object;
+        public T Value => (T)Object;
 
         public override string ToString()
         {
@@ -132,7 +132,7 @@ namespace CppSharp.Generators.AST
         public static bool IsFieldValueType(this ASTRecord record)
         {
             var ancestors = new Stack<object>();
-            if(!record.GetAncestors<Field>(ref ancestors))
+            if (!record.GetAncestors<Field>(ref ancestors))
                 return false;
 
             var field = (Field)ancestors.Pop();
@@ -154,7 +154,7 @@ namespace CppSharp.Generators.AST
         public static bool FunctionReturnsClassByValue(this ASTRecord record)
         {
             var ancestors = new Stack<object>();
-            if(!record.GetAncestors<Function>(ref ancestors))
+            if (!record.GetAncestors<Function>(ref ancestors))
                 return false;
 
             var function = (Function)ancestors.Pop();
@@ -231,5 +231,5 @@ namespace CppSharp.Generators.AST
             // translation unit is encountered.
             return decl.Namespace.TranslationUnit == translationUnit;
         }
-     }
+    }
 }

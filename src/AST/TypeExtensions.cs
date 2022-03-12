@@ -33,7 +33,7 @@
         public static bool IsEnumType(this Type t)
         {
             var tag = t.Desugar() as TagType;
-            
+
             if (tag == null)
                 return false;
 
@@ -131,20 +131,20 @@
                             type.Desugared.Type.TryGetDeclaration(out decl, value);
                             return decl != null;
                         case ClassTemplate classTemplate:
-                        {
-                            var templatedClass = classTemplate.TemplatedClass;
-                            decl = templatedClass.CompleteDeclaration == null
-                                ? templatedClass as T
-                                : (T) templatedClass.CompleteDeclaration;
+                            {
+                                var templatedClass = classTemplate.TemplatedClass;
+                                decl = templatedClass.CompleteDeclaration == null
+                                    ? templatedClass as T
+                                    : (T)templatedClass.CompleteDeclaration;
 
-                            if (decl == null)
-                                return false;
+                                if (decl == null)
+                                    return false;
 
-                            if (value != null)
-                                type.Template = new ClassTemplate { TemplatedDecl = value };
+                                if (value != null)
+                                    type.Template = new ClassTemplate { TemplatedDecl = value };
 
-                            return true;
-                        }
+                                return true;
+                            }
                         case TemplateTemplateParameter templateTemplateParameter:
                             return (decl = templateTemplateParameter.TemplatedDecl as T) != null;
                     }
@@ -316,7 +316,7 @@
 
             if (type == null)
                 return null;
-            
+
             var pointee = type.Desugar().GetPointee();
 
             if (pointee.IsPointer())

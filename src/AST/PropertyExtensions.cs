@@ -6,7 +6,7 @@ namespace CppSharp.AST
     {
         public static bool IsInRefTypeAndBackedByValueClassField(this Property p)
         {
-            if (p.Field == null || ((Class) p.Namespace).IsRefType)
+            if (p.Field == null || ((Class)p.Namespace).IsRefType)
                 return false;
 
             Type type;

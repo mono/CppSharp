@@ -72,7 +72,7 @@ namespace CppSharp.Passes
         protected Class GetInterface(Class @base)
         {
             if (@base.CompleteDeclaration != null)
-                @base = (Class) @base.CompleteDeclaration;
+                @base = (Class)@base.CompleteDeclaration;
 
             return interfaces.FirstOrDefault(i => i.OriginalClass == @base) ??
                 GetNewInterface("I" + @base.Name, @base);
@@ -189,7 +189,7 @@ namespace CppSharp.Passes
                 templatedInterfaces[@base] = @interface;
                 foreach (var spec in @base.Specializations)
                     @interface.Specializations.Add(
-                        (ClassTemplateSpecialization) GetNewInterface(name, spec));
+                        (ClassTemplateSpecialization)GetNewInterface(name, spec));
             }
             return @interface;
         }

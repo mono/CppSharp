@@ -52,14 +52,14 @@ namespace CppSharp.Passes
                     i + 1 < comment.Content.Count &&
                     comment.Content[i + 1].Kind == DocumentationCommentKind.TextComment)
                 {
-                    var textComment = (TextComment) comment.Content[i + 1];
+                    var textComment = (TextComment)comment.Content[i + 1];
                     textComment.Text = Helpers.RegexCommentCommandLeftover.Replace(
                         textComment.Text, string.Empty);
                 }
             }
             foreach (var item in comment.Content.Where(c => c.Kind == DocumentationCommentKind.TextComment))
             {
-                var textComment = (TextComment) item;
+                var textComment = (TextComment)item;
 
                 if (textComment.Text.StartsWith("<", StringComparison.Ordinal))
                     textComment.Text = $"{textComment.Text}>";

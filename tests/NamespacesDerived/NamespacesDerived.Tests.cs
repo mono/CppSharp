@@ -129,7 +129,7 @@ public class NamespaceDerivedTests
             Is.EqualTo(@params[0].Name));
         Assert.That(path.Value, Is.EqualTo("A full or partial name for the process to attach to."));
 
-        XElement wait_for = (XElement) path.NextNode;
+        XElement wait_for = (XElement)path.NextNode;
         Assert.That(wait_for.Attribute("name").Value, Is.EqualTo(@params[1].Name));
         Assert.That(wait_for.Elements("para").Select(p => string.Concat(p.Nodes())),
             Is.EquivalentTo(
@@ -137,7 +137,7 @@ public class NamespaceDerivedTests
                 {
                     "If <c>false,</c> attach to an existing process whose name matches.",
                     "If <c>true,</c> then wait for the next process whose name matches."
-                })); 
+                }));
     }
 
     private static void TestGlfwDestroyWindow(Type testCommentsType, XElement members)

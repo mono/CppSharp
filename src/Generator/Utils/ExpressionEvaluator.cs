@@ -54,8 +54,8 @@ namespace CodingSeb.ExpressionEvaluator
         protected static readonly Regex initInNewBeginningRegex = new Regex(@"^(?>\s*){", RegexOptions.Compiled);
 
         // Depending on OptionInlineNamespacesEvaluationActive. Initialized in constructor
-        protected string InstanceCreationWithNewKeywordRegexPattern { get { return @"^new(?>\s*)((?<isAnonymous>[{{])|((?<name>[\p{L}_][\p{L}_0-9"+ (OptionInlineNamespacesEvaluationActive ? @"\." : string.Empty) + @"]*)(?>\s*)(?<isgeneric>[<](?>[^<>]+|(?<gentag>[<])|(?<-gentag>[>]))*(?(gentag)(?!))[>])?(?>\s*)((?<isfunction>[(])|(?<isArray>\[)|(?<isInit>[{{]))?))"; } }
-        protected string CastRegexPattern { get { return @"^\((?>\s*)(?<typeName>[\p{L}_][\p{L}_0-9"+ (OptionInlineNamespacesEvaluationActive ? @"\." : string.Empty) + @"\[\]<>]*[?]?)(?>\s*)\)"; } }
+        protected string InstanceCreationWithNewKeywordRegexPattern { get { return @"^new(?>\s*)((?<isAnonymous>[{{])|((?<name>[\p{L}_][\p{L}_0-9" + (OptionInlineNamespacesEvaluationActive ? @"\." : string.Empty) + @"]*)(?>\s*)(?<isgeneric>[<](?>[^<>]+|(?<gentag>[<])|(?<-gentag>[>]))*(?(gentag)(?!))[>])?(?>\s*)((?<isfunction>[(])|(?<isArray>\[)|(?<isInit>[{{]))?))"; } }
+        protected string CastRegexPattern { get { return @"^\((?>\s*)(?<typeName>[\p{L}_][\p{L}_0-9" + (OptionInlineNamespacesEvaluationActive ? @"\." : string.Empty) + @"\[\]<>]*[?]?)(?>\s*)\)"; } }
 
         // To remove comments in scripts based on https://stackoverflow.com/questions/3524317/regex-to-strip-line-comments-from-c-sharp/3524689#3524689
         protected const string blockComments = @"/\*(.*?)\*/";
@@ -1578,7 +1578,7 @@ namespace CodingSeb.ExpressionEvaluator
         {
             string restOfExpression = expression.Substring(i);
 
-// CPPSHARP
+            // CPPSHARP
             if (restOfExpression.StartsWith("0x", StringComparison.CurrentCultureIgnoreCase))
             {
                 // This is in case the literal contains suffix
@@ -1586,7 +1586,7 @@ namespace CodingSeb.ExpressionEvaluator
                 i += restOfExpression.Length - cleanedUp.Length;
                 restOfExpression = cleanedUp;
             }
-//
+            //
 
             Match numberMatch = Regex.Match(restOfExpression, numberRegexPattern, RegexOptions.IgnoreCase);
             Match otherBaseMatch = otherBasesNumberRegex.Match(restOfExpression);
@@ -1639,7 +1639,7 @@ namespace CodingSeb.ExpressionEvaluator
                 }
                 else
                 {
-                    string numberNoSign = numberMatch.Groups[1].Value.Replace("_", "");  
+                    string numberNoSign = numberMatch.Groups[1].Value.Replace("_", "");
                     int sign = numberMatch.Groups["sign"].Success ? -1 : 1;
                     stack.Push(ParseInteger(numberNoSign, 10, sign));
                 }
@@ -1652,7 +1652,7 @@ namespace CodingSeb.ExpressionEvaluator
             }
         }
 
-// CPPSHARP
+        // CPPSHARP
 
         /// <summary>
         /// Heuristically convert <paramref name="numberToParse"/> to an int, uint, long, or ulong
@@ -1688,7 +1688,7 @@ namespace CodingSeb.ExpressionEvaluator
             if (number <= long.MaxValue) return (long)number;
             return number;
         }
-//
+        //
 
         protected virtual bool EvaluateInstanceCreationWithNewKeyword(string expression, Stack<object> stack, ref int i)
         {

@@ -319,15 +319,15 @@ namespace CppSharp
 
             if (trimIndentation)
             {
-                foreach(var line in lines)
-                { 
+                foreach (var line in lines)
+                {
                     for (int i = 0; i < line.Length; ++i)
                     {
                         if (char.IsWhiteSpace(line[i]))
                             continue;
-                        
+
                         if (i < indentation)
-                        { 
+                        {
                             indentation = i;
                             break;
                         }

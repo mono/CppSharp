@@ -433,7 +433,7 @@ namespace CppSharp.Internal
                     // ArgumentOutOfRangeException.
                     var initialQuoteIndex = result.IndexOf("\"");
                     if (initialQuoteIndex >= 0)
-                    { 
+                    {
                         result = result[initialQuoteIndex..];
                         return true;
                     }

@@ -289,7 +289,7 @@ namespace CppSharp.Generators.Cpp
 
                     //WriteLine($"printf(\"Calling finalizer for {@class.QualifiedOriginalName}\\n\");");
 
-                    if(ClassNeedsExtraData(@class))
+                    if (ClassNeedsExtraData(@class))
                     {
                         // Remove the event connection from the delegate.
                         // var invokeId = $"event_invoke_{@event.OriginalName}";
@@ -456,19 +456,19 @@ namespace CppSharp.Generators.Cpp
 
                 //WriteLine($"{@class.QualifiedOriginalName}* instance = data->instance;");
 
-/*
+                /*
 
-                if (!isVoidReturn)
-                {
-                    CTypePrinter.PushContext(TypePrinterContextKind.Native);
-                    var returnType = function.ReturnType.Visit(CTypePrinter);
-                    CTypePrinter.PopContext();
+                                if (!isVoidReturn)
+                                {
+                                    CTypePrinter.PushContext(TypePrinterContextKind.Native);
+                                    var returnType = function.ReturnType.Visit(CTypePrinter);
+                                    CTypePrinter.PopContext();
 
-                    Write($"{returnType} {Helpers.ReturnIdentifier} = ");
-                }
+                                    Write($"{returnType} {Helpers.ReturnIdentifier} = ");
+                                }
 
-                var @class = function.Namespace as Class;
-*/
+                                var @class = function.Namespace as Class;
+                */
 
                 UnindentAndWriteCloseBrace();
             }
@@ -783,7 +783,7 @@ namespace CppSharp.Generators.Cpp
                 {
                     WriteLine($"{@class.QualifiedOriginalName}* instance;");
                 }
-                else if(QuickJSRegister.ClassNeedsExtraData(@class))
+                else if (QuickJSRegister.ClassNeedsExtraData(@class))
                 {
                     var classDataId = $"data_{GetCIdentifier(Context, @class)}";
                     WriteLine($"auto data = ({classDataId}*) JS_GetOpaque(this_val, 0);");

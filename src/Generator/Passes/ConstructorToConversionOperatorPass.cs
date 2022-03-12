@@ -82,12 +82,12 @@ namespace CppSharp.Passes
                 FunctionType = method.FunctionType
             };
             conversionOperator.Parameters.Add(new Parameter(parameter)
-                {
-                    Namespace = conversionOperator,
-                    DefaultArgument = null,
-                    OriginalDefaultArgument = null
-                });
-            ((Class) method.Namespace).Methods.Add(conversionOperator);
+            {
+                Namespace = conversionOperator,
+                DefaultArgument = null,
+                OriginalDefaultArgument = null
+            });
+            ((Class)method.Namespace).Methods.Add(conversionOperator);
             return true;
         }
 

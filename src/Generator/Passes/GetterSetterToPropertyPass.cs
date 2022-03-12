@@ -119,7 +119,7 @@ namespace CppSharp.Passes
             string name, QualifiedType type, bool isSetter = false)
         {
             Type underlyingType = GetUnderlyingType(type);
-            Class @class = (Class) method.Namespace;
+            Class @class = (Class)method.Namespace;
 
             Property property = properties.Find(
                 p => p.Field == null &&
@@ -144,10 +144,10 @@ namespace CppSharp.Passes
                 property.QualifiedType = method.OriginalReturnType;
             }
 
-            property.Access = (AccessSpecifier) Math.Max(
-                (int) (property.GetMethod ?? property.SetMethod).Access,
-                (int) method.Access);
-            
+            property.Access = (AccessSpecifier)Math.Max(
+                (int)(property.GetMethod ?? property.SetMethod).Access,
+                (int)method.Access);
+
             if (method.ExplicitInterfaceImpl != null)
                 property.ExplicitInterfaceImpl = method.ExplicitInterfaceImpl;
         }

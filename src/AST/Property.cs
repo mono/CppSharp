@@ -84,9 +84,9 @@ namespace CppSharp.AST
         {
             get
             {
-                return (SetMethod != null && 
+                return (SetMethod != null &&
                         SetMethod.GenerationKind != GenerationKind.None) ||
-                       (Field != null && 
+                       (Field != null &&
                         (!Field.QualifiedType.IsConst() ||
                          Field.Type.IsConstCharString()) &&
                         Field.GenerationKind != GenerationKind.None);
@@ -99,7 +99,7 @@ namespace CppSharp.AST
         public Class ExplicitInterfaceImpl { get; set; }
 
         private readonly List<Parameter> parameters = new List<Parameter>();
-        
+
         /// <summary>
         /// Only applicable to index ([]) properties.
         /// </summary>

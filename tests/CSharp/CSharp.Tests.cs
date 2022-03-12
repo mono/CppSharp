@@ -149,7 +149,7 @@ public unsafe class CSharpTests
             foo[0] = 250;
             Assert.That(foo[0], Is.EqualTo(250));
 
-            Assert.That(foo[(uint) 0], Is.EqualTo(15));
+            Assert.That(foo[(uint)0], Is.EqualTo(15));
         }
 
         using (var bar = new Bar())
@@ -168,7 +168,7 @@ public unsafe class CSharpTests
     {
         using (var f = new Foo())
         {
-            foreach(var pod in new[] { f.SmallPodCdecl, f.SmallPodStdcall, f.SmallPodThiscall })
+            foreach (var pod in new[] { f.SmallPodCdecl, f.SmallPodStdcall, f.SmallPodThiscall })
             {
                 Assert.That(pod.A, Is.EqualTo(10000));
                 Assert.That(pod.B, Is.EqualTo(40000));
@@ -189,7 +189,7 @@ public unsafe class CSharpTests
         using (var baz = new Baz())
         {
             Assert.That(baz.Method, Is.EqualTo(1));
-            var bar = (IBar) baz;
+            var bar = (IBar)baz;
             Assert.That(bar.Method, Is.EqualTo(2));
             Assert.That(baz[0], Is.EqualTo(50));
             using (Foo foo = new Foo { A = 1000 })
@@ -222,7 +222,7 @@ public unsafe class CSharpTests
         }
         using (var qux = new Qux())
         {
-            using (var p = new P((IQux) qux) { Value = 20 })
+            using (var p = new P((IQux)qux) { Value = 20 })
             {
                 Assert.That(p.Value, Is.EqualTo(30));
                 p.Prop = 50;
@@ -271,7 +271,7 @@ public unsafe class CSharpTests
             int i = 5;
             array[0] = new IntPtr(&i);
             bar.ArrayOfPrimitivePointers = array;
-            Assert.That(i, Is.EqualTo(*(int*) bar.ArrayOfPrimitivePointers[0]));
+            Assert.That(i, Is.EqualTo(*(int*)bar.ArrayOfPrimitivePointers[0]));
         }
     }
 
@@ -287,7 +287,7 @@ public unsafe class CSharpTests
     [Test]
     public void TestPropertiesConflictingWithMethod()
     {
-        using (var p = new P((IQux) new Qux()) { Test = true })
+        using (var p = new P((IQux)new Qux()) { Test = true })
         {
             Assert.That(p.Test, Is.True);
             p.GetTest();
@@ -463,10 +463,10 @@ public unsafe class CSharpTests
     {
         IntPtr native1;
         IntPtr native2;
-        var hasVirtualDtor1Map = (IDictionary<IntPtr, HasVirtualDtor1>) typeof(
+        var hasVirtualDtor1Map = (IDictionary<IntPtr, HasVirtualDtor1>)typeof(
             HasVirtualDtor1).GetField("NativeToManagedMap",
             BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
-        var hasVirtualDtor2Map = (IDictionary<IntPtr, HasVirtualDtor2>) typeof(
+        var hasVirtualDtor2Map = (IDictionary<IntPtr, HasVirtualDtor2>)typeof(
             HasVirtualDtor2).GetField("NativeToManagedMap",
             BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
         using (var testNativeToManagedMap = new TestNativeToManagedMap())
@@ -487,7 +487,7 @@ public unsafe class CSharpTests
     {
         using (var testNativeToManagedMap = new TestNativeToManagedMap())
         {
-            var quxMap = (IDictionary<IntPtr, IQux>) typeof(
+            var quxMap = (IDictionary<IntPtr, IQux>)typeof(
                 Qux).GetField("NativeToManagedMap",
                 BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
             var bar = new Bar();
@@ -811,7 +811,7 @@ public unsafe class CSharpTests
             })
         {
             var independentFields = internalType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
-            var fieldOffset = (FieldOffsetAttribute) independentFields[0].GetCustomAttribute(typeof(FieldOffsetAttribute));
+            var fieldOffset = (FieldOffsetAttribute)independentFields[0].GetCustomAttribute(typeof(FieldOffsetAttribute));
             if (fieldOffset != null)
                 Assert.That(fieldOffset.Value, Is.EqualTo(0));
             Assert.That((int)Marshal.OffsetOf(internalType, independentFields[0].Name), Is.EqualTo(0));
@@ -827,11 +827,11 @@ public unsafe class CSharpTests
         {
             var independentFields = internalType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
             Assert.That(independentFields.Length, Is.EqualTo(2));
-            var fieldOffsetKey = (FieldOffsetAttribute) independentFields[0].GetCustomAttribute(typeof(FieldOffsetAttribute));
+            var fieldOffsetKey = (FieldOffsetAttribute)independentFields[0].GetCustomAttribute(typeof(FieldOffsetAttribute));
             if (fieldOffsetKey != null)
-                Assert.That(fieldOffsetKey.Value, Is.EqualTo(0));    
+                Assert.That(fieldOffsetKey.Value, Is.EqualTo(0));
             Assert.That((int)Marshal.OffsetOf(internalType, independentFields[0].Name), Is.EqualTo(0));
-            var fieldOffsetValue = (FieldOffsetAttribute) independentFields[1].GetCustomAttribute(typeof(FieldOffsetAttribute));
+            var fieldOffsetValue = (FieldOffsetAttribute)independentFields[1].GetCustomAttribute(typeof(FieldOffsetAttribute));
             if (fieldOffsetValue != null)
                 Assert.That(fieldOffsetValue.Value, Is.EqualTo(Marshal.SizeOf(IntPtr.Zero)));
             Assert.That((int)Marshal.OffsetOf(internalType, independentFields[1].Name), Is.EqualTo(Marshal.SizeOf(IntPtr.Zero)));
@@ -860,7 +860,7 @@ public unsafe class CSharpTests
     [Test]
     public void TestEmbeddedArrayOfStructAccessor()
     {
-        const ulong firstLong =  0xC92EEDE87AAB4FECul;
+        const ulong firstLong = 0xC92EEDE87AAB4FECul;
         const ulong secondLong = 0xAD5FB16491935522ul;
 
         var testStruct = new StructWithEmbeddedArrayOfStructObjectAlignment();
@@ -896,8 +896,8 @@ public unsafe class CSharpTests
         Assert.That(StaticVariables.Int, Is.EqualTo(1020304050));
         Assert.That(StaticVariables.Float, Is.EqualTo(0.5020f));
         Assert.That(StaticVariables.String, Is.EqualTo("Str"));
-        Assert.That(StaticVariables.ChrArray, Is.EqualTo(new[] { 'A', 'B'}));
-        Assert.That(StaticVariables.IntArray, Is.EqualTo(new[] { 1020304050 , 1526374850 }));
+        Assert.That(StaticVariables.ChrArray, Is.EqualTo(new[] { 'A', 'B' }));
+        Assert.That(StaticVariables.IntArray, Is.EqualTo(new[] { 1020304050, 1526374850 }));
         Assert.That(StaticVariables.FloatArray, Is.EqualTo(new[] { 0.5020f, 0.6020f }));
         Assert.That(StaticVariables.BoolArray, Is.EqualTo(new[] { false, true }));
         Assert.That(StaticVariables.VoidPtrArray, Is.EqualTo(new IntPtr[] { new IntPtr(0x10203040), new IntPtr(0x40302010) }));
@@ -921,7 +921,7 @@ public unsafe class CSharpTests
         Assert.That(VariablesWithInitializer.WideString, Is.EqualTo("Str"));
         Assert.That(VariablesWithInitializer.StringArray1, Is.EqualTo(new[] { "StrF,\"or" }));
         Assert.That(VariablesWithInitializer.StringArray3, Is.EqualTo(new[] { "StrF,\"or", "C#", VariablesWithInitializer.String }));
-        Assert.That(VariablesWithInitializer.StringArray30, Is.EqualTo(new[] { 
+        Assert.That(VariablesWithInitializer.StringArray30, Is.EqualTo(new[] {
             "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str",
             "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str",
             "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str"}));
@@ -985,7 +985,7 @@ public unsafe class CSharpTests
 
         GC.Collect();
 
-        for (var i = 0; i < instanceCount; i++) 
+        for (var i = 0; i < instanceCount; i++)
         {
             if (batch[i].UnicodeConst != otherString)
             {
@@ -1036,7 +1036,7 @@ public unsafe class CSharpTests
             Assert.That(ts.ThirtyTwoBitConst, Is.EqualTo(str));
             Assert.That(OwnsNativeMemory(ts, "__thirtyTwoBitConst_OwnsNativeMemory"), Is.EqualTo(false));
 
-            var x = (uint *)ts.ThirtyTwoBitNonConst;
+            var x = (uint*)ts.ThirtyTwoBitNonConst;
             for (int i = 0; i < otherStr.Length; i++)
             {
                 Assert.That(*x++, Is.EqualTo(otherStr[i]));
@@ -1333,8 +1333,8 @@ public unsafe class CSharpTests
         using (var dependentValueFields = new DependentValueFields<IntPtr>())
         {
             int i = 10;
-            dependentValueFields.DependentValue = (IntPtr) (&i);
-            Assert.That(*(int*) dependentValueFields.DependentValue, Is.EqualTo(10));
+            dependentValueFields.DependentValue = (IntPtr)(&i);
+            Assert.That(*(int*)dependentValueFields.DependentValue, Is.EqualTo(10));
         }
     }
 
@@ -1673,7 +1673,7 @@ public unsafe class CSharpTests
         using (var indexproperty = new TestIndexedProperties())
         {
             uint n = 21;
-            Assert.That(*((int*) indexproperty[n]), Is.EqualTo(21));
+            Assert.That(*((int*)indexproperty[n]), Is.EqualTo(21));
         }
     }
 
@@ -1773,14 +1773,14 @@ public unsafe class CSharpTests
     public void TestRValueReferenceToPointer()
     {
         int value = 5;
-        IntPtr intPtr = CSharp.CSharp.RValueReferenceToPointer((IntPtr*) &value);
-        Assert.That((int) intPtr, Is.EqualTo(value));
+        IntPtr intPtr = CSharp.CSharp.RValueReferenceToPointer((IntPtr*)&value);
+        Assert.That((int)intPtr, Is.EqualTo(value));
     }
 
     [Test]
     public void TakeRefToPointerToObject()
     {
-        using (Foo foo = new Foo { A = 25  })
+        using (Foo foo = new Foo { A = 25 })
         {
             Foo returnedFoo = CSharp.CSharp.TakeReturnReferenceToPointer(foo);
             Assert.That(returnedFoo.A, Is.EqualTo(foo.A));

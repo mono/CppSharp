@@ -14,7 +14,7 @@ namespace CppSharp.Passes
             if (!base.VisitClassDecl(@class))
                 return false;
 
-            (from d in ((IEnumerable<Declaration>) @class.Classes).Concat(@class.Enums)
+            (from d in ((IEnumerable<Declaration>)@class.Classes).Concat(@class.Enums)
              where d.Access == AccessSpecifier.Protected
              select d).All(d => { d.Access = AccessSpecifier.Public; return true; });
 

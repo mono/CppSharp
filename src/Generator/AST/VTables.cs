@@ -12,10 +12,10 @@ namespace CppSharp.AST
         {
             switch (@class.Layout.ABI)
             {
-            case CppAbi.Microsoft:
-                return GatherVTableMethodsMS(@class);
-            case CppAbi.Itanium:
-                return GatherVTableMethodsItanium(@class);
+                case CppAbi.Microsoft:
+                    return GatherVTableMethodsMS(@class);
+                case CppAbi.Itanium:
+                    return GatherVTableMethodsItanium(@class);
             }
 
             throw new NotSupportedException(
@@ -57,7 +57,7 @@ namespace CppSharp.AST
 
         public static int GetVTableIndex(Function function)
         {
-            var @class = (Class) function.Namespace;
+            var @class = (Class)function.Namespace;
             switch (@class.Layout.ABI)
             {
                 case CppAbi.Microsoft:
@@ -77,7 +77,7 @@ namespace CppSharp.AST
             return entry.Method != null &&
                    (entry.Method.IsOperator ||
                     (!entry.Method.IsDeclared &&
-                     ((Class) entry.Method.Namespace).GetPropertyByConstituentMethod(entry.Method) == null));
+                     ((Class)entry.Method.Namespace).GetPropertyByConstituentMethod(entry.Method) == null));
         }
     }
 }

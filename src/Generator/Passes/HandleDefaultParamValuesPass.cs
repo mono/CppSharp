@@ -80,7 +80,7 @@ namespace CppSharp.Passes
                             overload.Parameters[i].DefaultArgument = null;
 
                 if (method != null)
-                    ((Class) function.Namespace).Methods.Add((Method) overload);
+                    ((Class)function.Namespace).Methods.Add((Method)overload);
                 else
                 {
                     List<Function> functions;

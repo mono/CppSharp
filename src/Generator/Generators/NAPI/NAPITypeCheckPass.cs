@@ -32,19 +32,19 @@ namespace CppSharp.Generators.C
         {
             switch (primitive)
             {
-            case PrimitiveType.LongDouble:
-            case PrimitiveType.Char16:
-            case PrimitiveType.Char32:
-            case PrimitiveType.Int128:
-            case PrimitiveType.UInt128:
-            case PrimitiveType.Float128:
-            case PrimitiveType.IntPtr:
-            case PrimitiveType.UIntPtr:
-            case PrimitiveType.Decimal:
-                Diagnostics.Warning($"Unsupported decl: {decl.QualifiedName}");
-                return false;
-            default:
-                return true;
+                case PrimitiveType.LongDouble:
+                case PrimitiveType.Char16:
+                case PrimitiveType.Char32:
+                case PrimitiveType.Int128:
+                case PrimitiveType.UInt128:
+                case PrimitiveType.Float128:
+                case PrimitiveType.IntPtr:
+                case PrimitiveType.UIntPtr:
+                case PrimitiveType.Decimal:
+                    Diagnostics.Warning($"Unsupported decl: {decl.QualifiedName}");
+                    return false;
+                default:
+                    return true;
             }
         }
 

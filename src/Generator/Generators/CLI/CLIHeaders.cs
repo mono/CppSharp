@@ -70,7 +70,7 @@ namespace CppSharp.Generators.CLI
                 if (unit != null && !unit.IsDeclared)
                     continue;
 
-                if(!string.IsNullOrEmpty(include.File) && include.InHeader)
+                if (!string.IsNullOrEmpty(include.File) && include.InHeader)
                     includes.Add(include.ToString());
             }
 
@@ -507,7 +507,7 @@ namespace CppSharp.Generators.CLI
 
             Indent();
 
-            var @class = (Class) methods[0].Namespace;
+            var @class = (Class)methods[0].Namespace;
 
             if (@class.IsValueType)
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
@@ -531,7 +531,7 @@ namespace CppSharp.Generators.CLI
                 GenerateMethod(method);
             }
 
-            foreach(var method in staticMethods)
+            foreach (var method in staticMethods)
                 GenerateMethod(method);
 
             Unindent();
@@ -541,7 +541,7 @@ namespace CppSharp.Generators.CLI
         {
             Indent();
 
-            foreach(var variable in @class.Variables)
+            foreach (var variable in @class.Variables)
             {
                 if (!variable.IsGenerated) continue;
 
@@ -720,7 +720,7 @@ namespace CppSharp.Generators.CLI
 
             if (method.OperatorKind == CXXOperatorKind.EqualEqual)
             {
-                GenerateEquals(method, (Class) method.Namespace);
+                GenerateEquals(method, (Class)method.Namespace);
             }
 
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -759,7 +759,7 @@ namespace CppSharp.Generators.CLI
                     : ((FunctionType)attributedType).CallingConvention;
                 var interopCallConv = callingConvention.ToInteropCallConv();
                 if (interopCallConv != System.Runtime.InteropServices.CallingConvention.Winapi)
-                    WriteLine("[::System::Runtime::InteropServices::UnmanagedFunctionPointer" + 
+                    WriteLine("[::System::Runtime::InteropServices::UnmanagedFunctionPointer" +
                         "(::System::Runtime::InteropServices::CallingConvention::{0})] ",
                         interopCallConv);
 

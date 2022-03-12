@@ -114,7 +114,7 @@ namespace CppSharp.Generators.Cpp
                 }
             }
 
-            foreach(var childNamespace in context.Namespaces)
+            foreach (var childNamespace in context.Namespaces)
                 VisitDeclContext(childNamespace);
 
             PopBlock();
@@ -521,10 +521,10 @@ namespace CppSharp.Generators.Cpp
                 WriteLine(");");
             }
 
-            foreach(var paramInfo in @params)
+            foreach (var paramInfo in @params)
             {
                 var param = paramInfo.Param;
-                if(param.Usage != ParameterUsage.Out && param.Usage != ParameterUsage.InOut)
+                if (param.Usage != ParameterUsage.Out && param.Usage != ParameterUsage.InOut)
                     continue;
 
                 if (param.Type.IsPointer() && !param.Type.GetFinalPointee().IsPrimitiveType())
@@ -541,7 +541,7 @@ namespace CppSharp.Generators.Cpp
 
                 var marshal = new CppMarshalNativeToManagedPrinter(ctx);
                 param.Visit(marshal);
-                
+
                 if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
                     Write(marshal.Context.Before);
 
@@ -575,7 +575,7 @@ namespace CppSharp.Generators.Cpp
         public static bool IsNativeMethod(Function function)
         {
             var method = function as Method;
-            if (method == null) 
+            if (method == null)
                 return false;
 
             return method.Conversion == MethodConversionKind.None;
@@ -584,7 +584,7 @@ namespace CppSharp.Generators.Cpp
         public bool IsNativeFunctionOrStaticMethod(Function function)
         {
             var method = function as Method;
-            if (method == null) 
+            if (method == null)
                 return true;
 
             if (!IsCLIGenerator && method.IsOperator)
@@ -602,7 +602,7 @@ namespace CppSharp.Generators.Cpp
             public string Prefix;
 
             public Parameter Param;
-        } 
+        }
 
         public List<ParamMarshal> GenerateFunctionParamsMarshal(IEnumerable<Parameter> @params,
             Function function = null)

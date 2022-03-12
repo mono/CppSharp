@@ -286,7 +286,7 @@ namespace CppSharp
             {
                 var units = list.Select(item => item.TranslationUnit)
                     .GroupBy(x => x)
-                    .Select(y => new {Element = y.Key, Counter = y.Count()});
+                    .Select(y => new { Element = y.Key, Counter = y.Count() });
 
                 var translationUnit = units.OrderByDescending(u => u.Counter)
                     .FirstOrDefault()?.Element ?? null;
@@ -341,7 +341,7 @@ namespace CppSharp
                 maxValue = (ulong)@enum.Items.Max(i => Math.Max(0, unchecked((long)i.Value)));
                 minValue = @enum.Items.Min(i => unchecked((long)i.Value));
             }
-            
+
             @enum.BuiltinType = new BuiltinType(GetUnderlyingTypeForEnumValue(maxValue, minValue));
             @enum.Type = @enum.BuiltinType;
 
@@ -493,8 +493,8 @@ namespace CppSharp
             string className, string methodName, int parameterCount, int parameterIndex,
             ParameterUsage usage)
         {
-            if (parameterIndex <= 0 )
-                 throw new ArgumentException("parameterIndex");
+            if (parameterIndex <= 0)
+                throw new ArgumentException("parameterIndex");
 
             var @class = context.FindCompleteClass(className);
 
@@ -635,7 +635,7 @@ namespace CppSharp
 
         public static void IgnoreHeadersWithName(this ASTContext context, IEnumerable<string> patterns)
         {
-            foreach(var pattern in patterns)
+            foreach (var pattern in patterns)
                 context.IgnoreHeadersWithName(pattern);
         }
 

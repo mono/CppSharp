@@ -82,7 +82,7 @@ namespace CppSharp.AST
             var offset = offsets[kind];
             for (var i = GetStart(kind); i < offset; i++)
             {
-                yield return (T) this[i];
+                yield return (T)this[i];
             }
         }
 
@@ -99,7 +99,7 @@ namespace CppSharp.AST
                 Variable _ => Kind.Variable,
                 Friend _ => Kind.Friend,
                 Event _ => Kind.Event,
-                _ => throw new System.ArgumentOutOfRangeException(nameof(item),  "Unsupported type of declaration.")
+                _ => throw new System.ArgumentOutOfRangeException(nameof(item), "Unsupported type of declaration.")
             };
         }
 

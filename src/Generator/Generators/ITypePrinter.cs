@@ -52,7 +52,7 @@ namespace CppSharp.AST
         {
             if (Kind == TypePrinterContextKind.Template)
             {
-                var template = (Template) Declaration;
+                var template = (Template)Declaration;
                 return string.Join(", ", template.Parameters.Select(p => p.Name));
             }
 
@@ -63,12 +63,12 @@ namespace CppSharp.AST
                 templateArgs = templateSpecializationType.Arguments;
             else
             {
-                var declaration = ((TagType) type).Declaration;
+                var declaration = ((TagType)type).Declaration;
                 var specialization = declaration as ClassTemplateSpecialization;
                 if (specialization == null)
                     return string.Join(", ",
-                        ((Class) declaration).TemplateParameters.Select(t => t.Name));
-                templateArgs = ((ClassTemplateSpecialization) declaration).Arguments;
+                        ((Class)declaration).TemplateParameters.Select(t => t.Name));
+                templateArgs = ((ClassTemplateSpecialization)declaration).Arguments;
             }
 
             var paramsList = new List<string>();

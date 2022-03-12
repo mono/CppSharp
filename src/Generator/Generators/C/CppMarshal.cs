@@ -36,13 +36,13 @@ namespace CppSharp.Generators.Cpp
         {
             switch (array.SizeType)
             {
-            case ArrayType.ArraySize.Constant:
-            case ArrayType.ArraySize.Incomplete:
-            case ArrayType.ArraySize.Variable:
-                Context.Return.Write("nullptr");
-                break;
-            default:
-                throw new System.NotImplementedException();
+                case ArrayType.ArraySize.Constant:
+                case ArrayType.ArraySize.Incomplete:
+                case ArrayType.ArraySize.Variable:
+                    Context.Return.Write("nullptr");
+                    break;
+                default:
+                    throw new System.NotImplementedException();
             }
 
             return true;
@@ -76,7 +76,7 @@ namespace CppSharp.Generators.Cpp
                     Context.ReturnType.Qualifiers.IsConst)
                 {
                     var nativeTypePrinter = new CppTypePrinter(Context.Context)
-                        { PrintTypeQualifiers = false };
+                    { PrintTypeQualifiers = false };
                     var returnType = Context.ReturnType.Type.Desugar();
                     var constlessPointer = new PointerType()
                     {
@@ -137,28 +137,28 @@ namespace CppSharp.Generators.Cpp
         {
             switch (primitive)
             {
-            case PrimitiveType.Void:
-                return true;
-            case PrimitiveType.Bool:
-            case PrimitiveType.Char:
-            case PrimitiveType.Char16:
-            case PrimitiveType.WideChar:
-            case PrimitiveType.SChar:
-            case PrimitiveType.UChar:
-            case PrimitiveType.Short:
-            case PrimitiveType.UShort:
-            case PrimitiveType.Int:
-            case PrimitiveType.UInt:
-            case PrimitiveType.Long:
-            case PrimitiveType.ULong:
-            case PrimitiveType.LongLong:
-            case PrimitiveType.ULongLong:
-            case PrimitiveType.Float:
-            case PrimitiveType.Double:
-            case PrimitiveType.LongDouble:
-            case PrimitiveType.Null:
-                Context.Return.Write(Context.ReturnVarName);
-                return true;
+                case PrimitiveType.Void:
+                    return true;
+                case PrimitiveType.Bool:
+                case PrimitiveType.Char:
+                case PrimitiveType.Char16:
+                case PrimitiveType.WideChar:
+                case PrimitiveType.SChar:
+                case PrimitiveType.UChar:
+                case PrimitiveType.Short:
+                case PrimitiveType.UShort:
+                case PrimitiveType.Int:
+                case PrimitiveType.UInt:
+                case PrimitiveType.Long:
+                case PrimitiveType.ULong:
+                case PrimitiveType.LongLong:
+                case PrimitiveType.ULongLong:
+                case PrimitiveType.Float:
+                case PrimitiveType.Double:
+                case PrimitiveType.LongDouble:
+                case PrimitiveType.Null:
+                    Context.Return.Write(Context.ReturnVarName);
+                    return true;
             }
 
             throw new NotSupportedException();
@@ -330,7 +330,7 @@ namespace CppSharp.Generators.Cpp
 
     public class CppMarshalManagedToNativePrinter : MarshalPrinter<MarshalContext, CppTypePrinter>
     {
-        public CppMarshalManagedToNativePrinter(MarshalContext ctx) 
+        public CppMarshalManagedToNativePrinter(MarshalContext ctx)
             : base(ctx)
         {
             Context.MarshalToNative = this;
@@ -363,9 +363,9 @@ namespace CppSharp.Generators.Cpp
 
             switch (array.SizeType)
             {
-            default:
-                Context.Return.Write("nullptr");
-                break;
+                default:
+                    Context.Return.Write("nullptr");
+                    break;
             }
 
             return true;
@@ -447,26 +447,26 @@ namespace CppSharp.Generators.Cpp
         {
             switch (primitive)
             {
-            case PrimitiveType.Void:
-                return true;
-            case PrimitiveType.Bool:
-            case PrimitiveType.Char:
-            case PrimitiveType.UChar:
-            case PrimitiveType.Short:
-            case PrimitiveType.UShort:
-            case PrimitiveType.Int:
-            case PrimitiveType.UInt:
-            case PrimitiveType.Long:
-            case PrimitiveType.ULong:
-            case PrimitiveType.LongLong:
-            case PrimitiveType.ULongLong:
-            case PrimitiveType.Float:
-            case PrimitiveType.Double:
-            case PrimitiveType.WideChar:
-                Context.Return.Write(Context.Parameter.Name);
-                return true;
-            default:
-                throw new NotImplementedException();
+                case PrimitiveType.Void:
+                    return true;
+                case PrimitiveType.Bool:
+                case PrimitiveType.Char:
+                case PrimitiveType.UChar:
+                case PrimitiveType.Short:
+                case PrimitiveType.UShort:
+                case PrimitiveType.Int:
+                case PrimitiveType.UInt:
+                case PrimitiveType.Long:
+                case PrimitiveType.ULong:
+                case PrimitiveType.LongLong:
+                case PrimitiveType.ULongLong:
+                case PrimitiveType.Float:
+                case PrimitiveType.Double:
+                case PrimitiveType.WideChar:
+                    Context.Return.Write(Context.Parameter.Name);
+                    return true;
+                default:
+                    throw new NotImplementedException();
             }
         }
 

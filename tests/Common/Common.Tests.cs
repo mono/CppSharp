@@ -66,7 +66,7 @@ public class CommonTests
         new AmbiguousParamNames(0, 0).Dispose();
         Common.SMallFollowedByCapital();
         Common.IntegerOverload(0);
-        Common.IntegerOverload((uint) 0);
+        Common.IntegerOverload((uint)0);
         Common.TakeVoidStarStar(null);
         Common.OverloadPointer(IntPtr.Zero, 1);
         using (new DerivedFromSecondaryBaseWithIgnoredVirtualMethod()) { }
@@ -198,7 +198,7 @@ public class CommonTests
     {
         using (var hello = new Hello())
         {
-            hello.EnumOut((int) Enum.C, out Enum e);
+            hello.EnumOut((int)Enum.C, out Enum e);
             Assert.That(e, Is.EqualTo(Enum.C));
         }
     }
@@ -208,7 +208,7 @@ public class CommonTests
     {
         using (var hello = new Hello())
         {
-            hello.EnumOutRef((int) Enum.C, out Enum e);
+            hello.EnumOutRef((int)Enum.C, out Enum e);
             Assert.That(e, Is.EqualTo(Enum.C));
         }
     }
@@ -485,16 +485,16 @@ public class CommonTests
             Assert.AreEqual(2, indexedProperties[0]);
             indexedProperties[0f] = 3;
             Assert.AreEqual(3, indexedProperties[0f]);
-            var properties = indexedProperties[(byte) 0];
+            var properties = indexedProperties[(byte)0];
             Assert.AreEqual(0, properties.Field);
             var newProperties = new TestProperties();
             newProperties.Field = 4;
-            indexedProperties[(byte) 0] = newProperties;
-            Assert.AreEqual(4, indexedProperties[(byte) 0].Field);
-            newProperties = indexedProperties[(short) 0];
+            indexedProperties[(byte)0] = newProperties;
+            Assert.AreEqual(4, indexedProperties[(byte)0].Field);
+            newProperties = indexedProperties[(short)0];
             Assert.AreEqual(4, newProperties.Field);
             newProperties.Field = 5;
-            Assert.AreEqual(5, indexedProperties[(byte) 0].Field);
+            Assert.AreEqual(5, indexedProperties[(byte)0].Field);
             newProperties.get();
             newProperties.set(0);
             newProperties.Get();
@@ -503,8 +503,8 @@ public class CommonTests
             var bar = new Bar { A = 5 };
             indexedProperties[0u] = bar;
             Assert.That(bar.A, Is.EqualTo(indexedProperties[0u].A));
-            indexedProperties[(ushort) 0] = bar;
-            Assert.That(bar.A, Is.EqualTo(indexedProperties[(ushort) 0].A));
+            indexedProperties[(ushort)0] = bar;
+            Assert.That(bar.A, Is.EqualTo(indexedProperties[(ushort)0].A));
 
             using (var foo = new Foo())
             {
@@ -649,7 +649,7 @@ public class CommonTests
         {
             ClassB classB = classA;
             Assert.AreEqual(classA.Value, classB.Value);
-            ClassC classC = (ClassC) classB;
+            ClassC classC = (ClassC)classB;
             Assert.AreEqual(classB.Value, classC.Value);
         }
     }
@@ -889,7 +889,7 @@ public class CommonTests
     [Test]
     public void TestPassingNullToValue()
     {
-        Assert.Catch<ArgumentNullException>(() => new Bar((Foo) null));
+        Assert.Catch<ArgumentNullException>(() => new Bar((Foo)null));
     }
 
     [Test]

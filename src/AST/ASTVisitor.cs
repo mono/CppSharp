@@ -438,7 +438,7 @@ namespace CppSharp.AST
             {
                 if (property.GetMethod != null)
                     property.GetMethod.Visit(this);
-        
+
                 if (property.SetMethod != null)
                     property.SetMethod.Visit(this);
             }
@@ -478,8 +478,8 @@ namespace CppSharp.AST
         public virtual bool VisitParameterDecl(Parameter parameter)
         {
             if (!VisitDeclaration(parameter))
-                return false; 
-            
+                return false;
+
             return parameter.Type.Visit(this, parameter.QualifiedType.Qualifiers);
         }
 
@@ -600,7 +600,7 @@ namespace CppSharp.AST
 
             template.TemplatedVariable.Visit(this);
 
-            return true; 
+            return true;
         }
 
         public virtual bool VisitVarTemplateSpecializationDecl(VarTemplateSpecialization specialization)
@@ -631,7 +631,7 @@ namespace CppSharp.AST
 
             if (VisitOptions.VisitNamespaceEnums)
                 foreach (var decl in context.Enums)
-                  decl.Visit(this);
+                    decl.Visit(this);
 
             if (VisitOptions.VisitNamespaceTemplates)
                 foreach (var decl in context.Templates)

@@ -803,7 +803,7 @@ namespace CppSharp
 
                 UnindentAndWriteCloseBrace();
             }
-            
+
             WriteLine($"default:");
             WriteLineIndent($"throw new System.NotImplementedException(" +
                 $"{ParamName}.StmtClass.ToString());");

@@ -37,13 +37,13 @@ namespace CppSharp.Generators.NAPI
         {
             switch (array.SizeType)
             {
-            case ArrayType.ArraySize.Constant:
-            case ArrayType.ArraySize.Incomplete:
-            case ArrayType.ArraySize.Variable:
-                Context.Return.Write("nullptr");
-                break;
-            default:
-                throw new System.NotImplementedException();
+                case ArrayType.ArraySize.Constant:
+                case ArrayType.ArraySize.Incomplete:
+                case ArrayType.ArraySize.Variable:
+                    Context.Return.Write("nullptr");
+                    break;
+                default:
+                    throw new System.NotImplementedException();
             }
 
             return true;
@@ -81,48 +81,48 @@ namespace CppSharp.Generators.NAPI
 
         public static (string type, string func) GetNAPIPrimitiveType(PrimitiveType type)
         {
-            switch(type)
+            switch (type)
             {
-            case PrimitiveType.Bool:
-                return ("napi_boolean", "napi_get_boolean");
-            case PrimitiveType.WideChar:
-            case PrimitiveType.Char:
-            case PrimitiveType.SChar:
-            case PrimitiveType.Char16:
-            case PrimitiveType.Char32:
-            case PrimitiveType.Short:
-            case PrimitiveType.Int:
-            case PrimitiveType.Long:
-                return ("napi_number", "napi_create_int32");
-            case PrimitiveType.UChar:
-            case PrimitiveType.UShort:
-            case PrimitiveType.UInt:
-            case PrimitiveType.ULong:
-                return ("napi_number", "napi_create_uint32");
-            case PrimitiveType.LongLong:
-                return ("napi_number", "napi_create_bigint_int64");
-            case PrimitiveType.ULongLong:
-                return ("napi_number", "napi_create_bigint_uint64");
-            case PrimitiveType.Half:
-            case PrimitiveType.Float:
-            case PrimitiveType.Double:
-            case PrimitiveType.LongDouble:
-                return ("napi_number", "napi_create_double");
-            case PrimitiveType.Int128:
-            case PrimitiveType.UInt128:
-            case PrimitiveType.Float128:
-                return ("napi_bigint", "napi_create_bigint_words");
-            case PrimitiveType.String:
-                return ("napi_string", "napi_create_string_latin1");
-            case PrimitiveType.Null:
-                return ("napi_null", "napi_get_null");
-            case PrimitiveType.Void:
-                return ("napi_undefined", "napi_get_undefined");
-            case PrimitiveType.IntPtr:
-            case PrimitiveType.UIntPtr:
-            case PrimitiveType.Decimal:
-            default:
-                throw new ArgumentOutOfRangeException(nameof(type), type, null);
+                case PrimitiveType.Bool:
+                    return ("napi_boolean", "napi_get_boolean");
+                case PrimitiveType.WideChar:
+                case PrimitiveType.Char:
+                case PrimitiveType.SChar:
+                case PrimitiveType.Char16:
+                case PrimitiveType.Char32:
+                case PrimitiveType.Short:
+                case PrimitiveType.Int:
+                case PrimitiveType.Long:
+                    return ("napi_number", "napi_create_int32");
+                case PrimitiveType.UChar:
+                case PrimitiveType.UShort:
+                case PrimitiveType.UInt:
+                case PrimitiveType.ULong:
+                    return ("napi_number", "napi_create_uint32");
+                case PrimitiveType.LongLong:
+                    return ("napi_number", "napi_create_bigint_int64");
+                case PrimitiveType.ULongLong:
+                    return ("napi_number", "napi_create_bigint_uint64");
+                case PrimitiveType.Half:
+                case PrimitiveType.Float:
+                case PrimitiveType.Double:
+                case PrimitiveType.LongDouble:
+                    return ("napi_number", "napi_create_double");
+                case PrimitiveType.Int128:
+                case PrimitiveType.UInt128:
+                case PrimitiveType.Float128:
+                    return ("napi_bigint", "napi_create_bigint_words");
+                case PrimitiveType.String:
+                    return ("napi_string", "napi_create_string_latin1");
+                case PrimitiveType.Null:
+                    return ("napi_null", "napi_get_null");
+                case PrimitiveType.Void:
+                    return ("napi_undefined", "napi_get_undefined");
+                case PrimitiveType.IntPtr:
+                case PrimitiveType.UIntPtr:
+                case PrimitiveType.Decimal:
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
 
@@ -133,55 +133,55 @@ namespace CppSharp.Generators.NAPI
 
             switch (primitive)
             {
-            case PrimitiveType.Bool:
-            case PrimitiveType.WideChar:
-            case PrimitiveType.Char:
-            case PrimitiveType.SChar:
-            case PrimitiveType.Char16:
-            case PrimitiveType.Char32:
-            case PrimitiveType.Short:
-            case PrimitiveType.Int:
-            case PrimitiveType.Long:
-            case PrimitiveType.UChar:
-            case PrimitiveType.UShort:
-            case PrimitiveType.UInt:
-            case PrimitiveType.ULong:
-            case PrimitiveType.LongLong:
-            case PrimitiveType.ULongLong:
-            case PrimitiveType.Half:
-            case PrimitiveType.Float:
-            case PrimitiveType.Double:
-            case PrimitiveType.LongDouble:
-                Context.Before.WriteLine($"napi_value {result};");
-                Context.Before.WriteLine($"status = {func}(env, {Context.ArgName}, &{result});");
-                Context.Before.WriteLine("assert(status == napi_ok);");
-                Context.Return.Write(result);
-                return true;
+                case PrimitiveType.Bool:
+                case PrimitiveType.WideChar:
+                case PrimitiveType.Char:
+                case PrimitiveType.SChar:
+                case PrimitiveType.Char16:
+                case PrimitiveType.Char32:
+                case PrimitiveType.Short:
+                case PrimitiveType.Int:
+                case PrimitiveType.Long:
+                case PrimitiveType.UChar:
+                case PrimitiveType.UShort:
+                case PrimitiveType.UInt:
+                case PrimitiveType.ULong:
+                case PrimitiveType.LongLong:
+                case PrimitiveType.ULongLong:
+                case PrimitiveType.Half:
+                case PrimitiveType.Float:
+                case PrimitiveType.Double:
+                case PrimitiveType.LongDouble:
+                    Context.Before.WriteLine($"napi_value {result};");
+                    Context.Before.WriteLine($"status = {func}(env, {Context.ArgName}, &{result});");
+                    Context.Before.WriteLine("assert(status == napi_ok);");
+                    Context.Return.Write(result);
+                    return true;
 
-            case PrimitiveType.Int128:
-            case PrimitiveType.UInt128:
-            case PrimitiveType.Float128:
-                return true;
+                case PrimitiveType.Int128:
+                case PrimitiveType.UInt128:
+                case PrimitiveType.Float128:
+                    return true;
 
-            case PrimitiveType.String:
-                Context.Before.WriteLine($"napi_value {result};");
-                Context.Before.WriteLine($"status = {func}(env, {Context.ArgName}, NAPI_AUTO_LENGTH, &{result});");
-                Context.Before.WriteLine("assert(status == napi_ok);");
-                Context.Return.Write(result);
-                return true;
+                case PrimitiveType.String:
+                    Context.Before.WriteLine($"napi_value {result};");
+                    Context.Before.WriteLine($"status = {func}(env, {Context.ArgName}, NAPI_AUTO_LENGTH, &{result});");
+                    Context.Before.WriteLine("assert(status == napi_ok);");
+                    Context.Return.Write(result);
+                    return true;
 
-            case PrimitiveType.Null:
-                Context.Before.WriteLine($"napi_value {result};");
-                Context.Before.WriteLine($"status = {func}(env, &{result});");
-                Context.Before.WriteLine("assert(status == napi_ok);");
-                Context.Return.Write(result);
-                return true;
+                case PrimitiveType.Null:
+                    Context.Before.WriteLine($"napi_value {result};");
+                    Context.Before.WriteLine($"status = {func}(env, &{result});");
+                    Context.Before.WriteLine("assert(status == napi_ok);");
+                    Context.Return.Write(result);
+                    return true;
 
-            case PrimitiveType.IntPtr:
-            case PrimitiveType.UIntPtr:
-            case PrimitiveType.Decimal:
-            default:
-                throw new NotImplementedException();
+                case PrimitiveType.IntPtr:
+                case PrimitiveType.UIntPtr:
+                case PrimitiveType.Decimal:
+                default:
+                    throw new NotImplementedException();
             }
         }
 
@@ -255,15 +255,15 @@ namespace CppSharp.Generators.NAPI
             Context.Before.WriteLine("assert(status == napi_ok);");
             Context.Before.NewLine();
 
-/*
-            var refId = $"__{Context.ReturnVarName}_ref";
-            Context.Before.WriteLine($"napi_ref {refId};");
+            /*
+                        var refId = $"__{Context.ReturnVarName}_ref";
+                        Context.Before.WriteLine($"napi_ref {refId};");
 
-            var dtorId = $"dtor_{NAPISources.GetCIdentifier(Context.Context, ctor)}";
-            Context.Before.WriteLine($"status = napi_wrap(env, _this, {instanceId}, {dtorId}" +
-                                     $", nullptr, &{refId});");
-            Context.Before.WriteLine("assert(status == napi_ok);");
-*/
+                        var dtorId = $"dtor_{NAPISources.GetCIdentifier(Context.Context, ctor)}";
+                        Context.Before.WriteLine($"status = napi_wrap(env, _this, {instanceId}, {dtorId}" +
+                                                 $", nullptr, &{refId});");
+                        Context.Before.WriteLine("assert(status == napi_ok);");
+            */
             Context.Return.Write($"{instanceId}");
 
             return true;
@@ -332,7 +332,7 @@ namespace CppSharp.Generators.NAPI
 
     public class NAPIMarshalManagedToNativePrinter : MarshalPrinter<MarshalContext, CppTypePrinter>
     {
-        public NAPIMarshalManagedToNativePrinter(MarshalContext ctx) 
+        public NAPIMarshalManagedToNativePrinter(MarshalContext ctx)
             : base(ctx)
         {
             Context.MarshalToNative = this;
@@ -365,9 +365,9 @@ namespace CppSharp.Generators.NAPI
 
             switch (array.SizeType)
             {
-            default:
-                Context.Return.Write("nullptr");
-                break;
+                default:
+                    Context.Return.Write("nullptr");
+                    break;
             }
 
             return true;
@@ -450,54 +450,54 @@ namespace CppSharp.Generators.NAPI
 
         public static (string func, string type, string cast) GetNAPIPrimitiveGetter(PrimitiveType type)
         {
-            switch(type)
+            switch (type)
             {
-            case PrimitiveType.Bool:
-                return ("napi_get_value_bool", "bool", "bool");
-            case PrimitiveType.WideChar:
-                return ("napi_get_value_int32", "int32_t", "wchar_t");
-            case PrimitiveType.Char:
-            case PrimitiveType.SChar:
-                return ("napi_get_value_int32", "int32_t", "char");
-            case PrimitiveType.Char16:
-                return ("napi_get_value_int32", "int32_t", "char16_t");
-            case PrimitiveType.Char32:
-                return ("napi_get_value_int32", "int32_t", "char32_t");
-            case PrimitiveType.Short:
-            case PrimitiveType.Int:
-            case PrimitiveType.Long:
-                return ("napi_get_value_int32", "int32_t", null);
-            case PrimitiveType.UChar:
-            case PrimitiveType.UShort:
-            case PrimitiveType.UInt:
-            case PrimitiveType.ULong:
-                return ("napi_get_value_uint32", "uint32_t", null);
-            case PrimitiveType.LongLong:
-                return ("napi_get_value_bigint_int64", "int64_t", null);
-            case PrimitiveType.ULongLong:
-                return ("napi_get_value_bigint_uint64", "uint64_t", null);
-            case PrimitiveType.Half:
-            case PrimitiveType.Float:
-                return ("napi_get_value_double", "double", "float");
-            case PrimitiveType.Double:
-            case PrimitiveType.LongDouble:
-                return ("napi_get_value_double", "double", null);
-            case PrimitiveType.Int128:
-            case PrimitiveType.UInt128:
-            case PrimitiveType.Float128:
-                return (null, null, null);
-            case PrimitiveType.String:
-                return ("napi_get_value_string_utf8", "char*", null);
-            case PrimitiveType.Null:
-                return ("napi_get_null", null, null);
-            case PrimitiveType.Void:
-                return (null, null, null);
-            case PrimitiveType.IntPtr:
-            case PrimitiveType.UIntPtr:
-                return (null, null, null);
-            case PrimitiveType.Decimal:
-            default:
-                throw new NotImplementedException();
+                case PrimitiveType.Bool:
+                    return ("napi_get_value_bool", "bool", "bool");
+                case PrimitiveType.WideChar:
+                    return ("napi_get_value_int32", "int32_t", "wchar_t");
+                case PrimitiveType.Char:
+                case PrimitiveType.SChar:
+                    return ("napi_get_value_int32", "int32_t", "char");
+                case PrimitiveType.Char16:
+                    return ("napi_get_value_int32", "int32_t", "char16_t");
+                case PrimitiveType.Char32:
+                    return ("napi_get_value_int32", "int32_t", "char32_t");
+                case PrimitiveType.Short:
+                case PrimitiveType.Int:
+                case PrimitiveType.Long:
+                    return ("napi_get_value_int32", "int32_t", null);
+                case PrimitiveType.UChar:
+                case PrimitiveType.UShort:
+                case PrimitiveType.UInt:
+                case PrimitiveType.ULong:
+                    return ("napi_get_value_uint32", "uint32_t", null);
+                case PrimitiveType.LongLong:
+                    return ("napi_get_value_bigint_int64", "int64_t", null);
+                case PrimitiveType.ULongLong:
+                    return ("napi_get_value_bigint_uint64", "uint64_t", null);
+                case PrimitiveType.Half:
+                case PrimitiveType.Float:
+                    return ("napi_get_value_double", "double", "float");
+                case PrimitiveType.Double:
+                case PrimitiveType.LongDouble:
+                    return ("napi_get_value_double", "double", null);
+                case PrimitiveType.Int128:
+                case PrimitiveType.UInt128:
+                case PrimitiveType.Float128:
+                    return (null, null, null);
+                case PrimitiveType.String:
+                    return ("napi_get_value_string_utf8", "char*", null);
+                case PrimitiveType.Null:
+                    return ("napi_get_null", null, null);
+                case PrimitiveType.Void:
+                    return (null, null, null);
+                case PrimitiveType.IntPtr:
+                case PrimitiveType.UIntPtr:
+                    return (null, null, null);
+                case PrimitiveType.Decimal:
+                default:
+                    throw new NotImplementedException();
             }
         }
 
@@ -507,79 +507,79 @@ namespace CppSharp.Generators.NAPI
 
             switch (primitive)
             {
-            case PrimitiveType.Bool:
-            case PrimitiveType.WideChar:
-            case PrimitiveType.Char:
-            case PrimitiveType.SChar:
-            case PrimitiveType.Char16:
-            case PrimitiveType.Char32:
-            case PrimitiveType.Short:
-            case PrimitiveType.Int:
-            case PrimitiveType.Long:
-            case PrimitiveType.UChar:
-            case PrimitiveType.UShort:
-            case PrimitiveType.UInt:
-            case PrimitiveType.ULong:
-            case PrimitiveType.Half:
-            case PrimitiveType.Float:
-            case PrimitiveType.Double:
-            case PrimitiveType.LongDouble:
-                Context.Before.WriteLine($"{type} {Context.Parameter.Name};");
-                Context.Before.WriteLine($"status = {func}(env, {Context.ArgName}," +
-                                         $" &{Context.Parameter.Name});");
+                case PrimitiveType.Bool:
+                case PrimitiveType.WideChar:
+                case PrimitiveType.Char:
+                case PrimitiveType.SChar:
+                case PrimitiveType.Char16:
+                case PrimitiveType.Char32:
+                case PrimitiveType.Short:
+                case PrimitiveType.Int:
+                case PrimitiveType.Long:
+                case PrimitiveType.UChar:
+                case PrimitiveType.UShort:
+                case PrimitiveType.UInt:
+                case PrimitiveType.ULong:
+                case PrimitiveType.Half:
+                case PrimitiveType.Float:
+                case PrimitiveType.Double:
+                case PrimitiveType.LongDouble:
+                    Context.Before.WriteLine($"{type} {Context.Parameter.Name};");
+                    Context.Before.WriteLine($"status = {func}(env, {Context.ArgName}," +
+                                             $" &{Context.Parameter.Name});");
 
-                if (!string.IsNullOrEmpty(cast))
-                    Context.Return.Write($"({cast})");
+                    if (!string.IsNullOrEmpty(cast))
+                        Context.Return.Write($"({cast})");
 
-                Context.Return.Write($"{Context.Parameter.Name}");
-                return true;
+                    Context.Return.Write($"{Context.Parameter.Name}");
+                    return true;
 
-            case PrimitiveType.LongLong:
-            case PrimitiveType.ULongLong:
-            case PrimitiveType.Int128:
-            case PrimitiveType.UInt128:
-            case PrimitiveType.Float128:
-                Context.Before.WriteLine($"{type} {Context.Parameter.Name};");
-                Context.Before.WriteLine("bool lossless;");
-                Context.Before.WriteLine($"status = {func}(env, {Context.ArgName}," +
-                                         $" &{Context.Parameter.Name}, &lossless);");
+                case PrimitiveType.LongLong:
+                case PrimitiveType.ULongLong:
+                case PrimitiveType.Int128:
+                case PrimitiveType.UInt128:
+                case PrimitiveType.Float128:
+                    Context.Before.WriteLine($"{type} {Context.Parameter.Name};");
+                    Context.Before.WriteLine("bool lossless;");
+                    Context.Before.WriteLine($"status = {func}(env, {Context.ArgName}," +
+                                             $" &{Context.Parameter.Name}, &lossless);");
 
-                if (!string.IsNullOrEmpty(cast))
-                    Context.Return.Write($"({cast})");
+                    if (!string.IsNullOrEmpty(cast))
+                        Context.Return.Write($"({cast})");
 
-                Context.Return.Write($"{Context.Parameter.Name}");
-                return true;
+                    Context.Return.Write($"{Context.Parameter.Name}");
+                    return true;
 
-            case PrimitiveType.String:
-                var size = $"_{Context.Parameter.Name}_size";
-                Context.Before.WriteLine($"size_t {size};");
-                Context.Before.WriteLine($"status = {func}(env, {Context.ArgName}, " +
-                                         $"nullptr, 0, &{size});");
-                Context.Before.NewLine();
+                case PrimitiveType.String:
+                    var size = $"_{Context.Parameter.Name}_size";
+                    Context.Before.WriteLine($"size_t {size};");
+                    Context.Before.WriteLine($"status = {func}(env, {Context.ArgName}, " +
+                                             $"nullptr, 0, &{size});");
+                    Context.Before.NewLine();
 
-                var buf = $"{Context.Parameter.Name}";
-                Context.Before.WriteLine($"char* {buf} = (char*) malloc({size});");
-                Context.Before.WriteLine($"status = {func}(env, {Context.ArgName}, " +
-                                         $"nullptr, 0, &{size});");
-                Context.Before.WriteLine("assert(status == napi_ok);");
+                    var buf = $"{Context.Parameter.Name}";
+                    Context.Before.WriteLine($"char* {buf} = (char*) malloc({size});");
+                    Context.Before.WriteLine($"status = {func}(env, {Context.ArgName}, " +
+                                             $"nullptr, 0, &{size});");
+                    Context.Before.WriteLine("assert(status == napi_ok);");
 
-                Context.Cleanup.WriteLine($"free({buf});");
-                Context.Return.Write($"{buf}");
-                return true;
+                    Context.Cleanup.WriteLine($"free({buf});");
+                    Context.Return.Write($"{buf}");
+                    return true;
 
-            case PrimitiveType.Null:
-                return true;
+                case PrimitiveType.Null:
+                    return true;
 
-            case PrimitiveType.Void:
-                return true;
+                case PrimitiveType.Void:
+                    return true;
 
-            case PrimitiveType.IntPtr:
-            case PrimitiveType.UIntPtr:
-                return true;
+                case PrimitiveType.IntPtr:
+                case PrimitiveType.UIntPtr:
+                    return true;
 
-            case PrimitiveType.Decimal:
-            default:
-                throw new NotImplementedException();
+                case PrimitiveType.Decimal:
+                default:
+                    throw new NotImplementedException();
             }
         }
 
@@ -672,15 +672,15 @@ namespace CppSharp.Generators.NAPI
         {
             var type = Context.Parameter.Type.Desugar();
 
-/*
-            TypeMap typeMap;
-            if (Context.Context.TypeMaps.FindTypeMap(type, out typeMap) &&
-                typeMap.DoesMarshalling)
-            {
-                typeMap.NAPIMarshalToNative(Context);
-                return;
-            }
-*/
+            /*
+                        TypeMap typeMap;
+                        if (Context.Context.TypeMaps.FindTypeMap(type, out typeMap) &&
+                            typeMap.DoesMarshalling)
+                        {
+                            typeMap.NAPIMarshalToNative(Context);
+                            return;
+                        }
+            */
             var instance = $"{Context.Parameter.Name}_instance";
             Context.Before.WriteLine($"{@class.QualifiedOriginalName}* {instance};");
             Context.Before.WriteLine($"status = napi_unwrap(env, _this, (void**) &{instance});");

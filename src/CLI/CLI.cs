@@ -10,36 +10,36 @@ namespace CppSharp
     {
         private static OptionSet optionSet = new OptionSet();
         private static Options options = new Options();
-        
+
         static bool ParseCommandLineArgs(string[] args, List<string> errorMessages, ref bool helpShown)
         {
             var showHelp = false;
 
             optionSet.Add("I=", "the {PATH} of a folder to search for include files", (i) => { AddIncludeDirs(i, errorMessages); });
-            optionSet.Add("l=", "{LIBRARY} that that contains the symbols of the generated code", l => options.Libraries.Add(l) );
-            optionSet.Add("L=", "the {PATH} of a folder to search for additional libraries", l => options.LibraryDirs.Add(l) );
-            optionSet.Add("D:", "additional define with (optional) value to add to be used while parsing the given header files", (n, v) => AddDefine(n, v, errorMessages) );
-            optionSet.Add("A=", "additional Clang arguments to pass to the compiler while parsing the given header files", (v) => AddArgument(v, errorMessages) );
+            optionSet.Add("l=", "{LIBRARY} that that contains the symbols of the generated code", l => options.Libraries.Add(l));
+            optionSet.Add("L=", "the {PATH} of a folder to search for additional libraries", l => options.LibraryDirs.Add(l));
+            optionSet.Add("D:", "additional define with (optional) value to add to be used while parsing the given header files", (n, v) => AddDefine(n, v, errorMessages));
+            optionSet.Add("A=", "additional Clang arguments to pass to the compiler while parsing the given header files", (v) => AddArgument(v, errorMessages));
 
-            optionSet.Add("o=|output=", "the {PATH} for the generated bindings file (doesn't need the extension since it will depend on the generator)", v => HandleOutputArg(v, errorMessages) );
-            optionSet.Add("on=|outputnamespace=", "the {NAMESPACE} that will be used for the generated code", on => options.OutputNamespace = on );
+            optionSet.Add("o=|output=", "the {PATH} for the generated bindings file (doesn't need the extension since it will depend on the generator)", v => HandleOutputArg(v, errorMessages));
+            optionSet.Add("on=|outputnamespace=", "the {NAMESPACE} that will be used for the generated code", on => options.OutputNamespace = on);
 
             optionSet.Add("m=|module=", "the name for the generated {MODULE}", a => { options.OutputFileName = a; });
 
-            optionSet.Add("iln=|inputlibraryname=|inputlib=", "the {NAME} of the shared library that contains the symbols of the generated code", iln => options.InputLibraryName = iln );
+            optionSet.Add("iln=|inputlibraryname=|inputlib=", "the {NAME} of the shared library that contains the symbols of the generated code", iln => options.InputLibraryName = iln);
             optionSet.Add("d|debug", "enables debug mode which generates more verbose code to aid debugging", v => options.Debug = true);
             optionSet.Add("c|compile", "enables automatic compilation of the generated code", v => options.Compile = true);
-            optionSet.Add("g=|gen=|generator=", "the {TYPE} of generated code: 'csharp' or 'cli' ('cli' supported only for Windows)", g => { GetGeneratorKind(g, errorMessages); } );
-            optionSet.Add("p=|platform=", "the {PLATFORM} that the generated code will target: 'win', 'osx' or 'linux'", p => { GetDestinationPlatform(p, errorMessages); } );
-            optionSet.Add("a=|arch=", "the {ARCHITECTURE} that the generated code will target: 'x86' or 'x64'", a => { GetDestinationArchitecture(a, errorMessages); } );
+            optionSet.Add("g=|gen=|generator=", "the {TYPE} of generated code: 'csharp' or 'cli' ('cli' supported only for Windows)", g => { GetGeneratorKind(g, errorMessages); });
+            optionSet.Add("p=|platform=", "the {PLATFORM} that the generated code will target: 'win', 'osx' or 'linux'", p => { GetDestinationPlatform(p, errorMessages); });
+            optionSet.Add("a=|arch=", "the {ARCHITECTURE} that the generated code will target: 'x86' or 'x64'", a => { GetDestinationArchitecture(a, errorMessages); });
             optionSet.Add("prefix=", "sets a string prefix to the names of generated files", a => { options.Prefix = a; });
 
             optionSet.Add("exceptions", "enables support for C++ exceptions in the parser", v => { options.EnableExceptions = true; });
             optionSet.Add("rtti", "enables support for C++ RTTI in the parser", v => { options.EnableRTTI = true; });
 
-            optionSet.Add("c++11", "enables GCC C++ 11 compilation (valid only for Linux platform)", cpp11 => { options.Cpp11ABI = (cpp11 != null); } );
-            optionSet.Add("cs|checksymbols", "enable the symbol check for the generated code", cs => { options.CheckSymbols = (cs != null); } );
-            optionSet.Add("ub|unitybuild|unity", "enable unity build", ub => { options.UnityBuild = (ub != null); } );
+            optionSet.Add("c++11", "enables GCC C++ 11 compilation (valid only for Linux platform)", cpp11 => { options.Cpp11ABI = (cpp11 != null); });
+            optionSet.Add("cs|checksymbols", "enable the symbol check for the generated code", cs => { options.CheckSymbols = (cs != null); });
+            optionSet.Add("ub|unitybuild|unity", "enable unity build", ub => { options.UnityBuild = (ub != null); });
 
             optionSet.Add("v|verbose", "enables verbose mode", v => { options.Verbose = true; });
             optionSet.Add("h|help", "shows the help", hl => { showHelp = (hl != null); });
@@ -55,7 +55,7 @@ namespace CppSharp
                 Console.WriteLine(e.Message);
                 return false;
             }
-                        
+
             if (showHelp || additionalArguments != null && additionalArguments.Count == 0)
             {
                 helpShown = true;
@@ -63,7 +63,7 @@ namespace CppSharp
                 return false;
             }
 
-            foreach(string s in additionalArguments)
+            foreach (string s in additionalArguments)
                 HandleAdditionalArgument(s, errorMessages);
 
             return true;
@@ -117,7 +117,7 @@ namespace CppSharp
                 var dir = Path.HasExtension(arg) ? Path.GetDirectoryName(arg) : Path.GetFullPath(arg);
                 options.OutputDir = dir;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 errorMessages.Add(e.Message);
 
@@ -159,7 +159,7 @@ namespace CppSharp
                     errorMessages.Add($"File '{args}' could not be found.");
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 errorMessages.Add($"Error while looking for files inside path '{args}'. Ignoring.");
             }
@@ -278,23 +278,23 @@ namespace CppSharp
             List<string> errorMessages = new List<string>();
             bool helpShown = false;
 
-                if (!ParseCommandLineArgs(args, errorMessages, ref helpShown))
-                {
-                    PrintErrorMessages(errorMessages);
-
-                    // Don't need to show the help since if ParseCommandLineArgs returns false the help has already been shown
-                    return;
-                }
-
-                Generator gen = new Generator(options);
-
-                bool validOptions = gen.ValidateOptions(errorMessages);
+            if (!ParseCommandLineArgs(args, errorMessages, ref helpShown))
+            {
                 PrintErrorMessages(errorMessages);
 
-                if (errorMessages.Any() || !validOptions)
-                    Environment.Exit(1);
+                // Don't need to show the help since if ParseCommandLineArgs returns false the help has already been shown
+                return;
+            }
 
-                gen.Run();
+            Generator gen = new Generator(options);
+
+            bool validOptions = gen.ValidateOptions(errorMessages);
+            PrintErrorMessages(errorMessages);
+
+            if (errorMessages.Any() || !validOptions)
+                Environment.Exit(1);
+
+            gen.Run();
         }
     }
 }
