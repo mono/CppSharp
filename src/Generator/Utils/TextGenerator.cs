@@ -76,6 +76,18 @@ namespace CppSharp
             Unindent();
         }
 
+        internal TextBlock WriteBlock(string msg)
+        {
+            WriteLine(msg);
+            WriteOpenBraceAndIndent();
+            return new TextBlock(this);
+        }
+
+        internal TextBlock WriteBlock((BlockKind kind, string msg) info)
+        {
+            return WriteBlock(info.msg);
+        }
+
         public void NewLine()
         {
             StringBuilder.AppendLine(string.Empty);
@@ -130,6 +142,21 @@ namespace CppSharp
         public static implicit operator string(TextGenerator tg)
         {
             return tg.ToString();
+        }
+    }
+
+    internal ref struct TextBlock
+    {
+        private readonly ITextGenerator generator;
+
+        public TextBlock(ITextGenerator generator)
+        {
+            this.generator = generator;
+        }
+
+        public void Dispose()
+        {
+            generator.UnindentAndWriteCloseBrace();
         }
     }
 }
