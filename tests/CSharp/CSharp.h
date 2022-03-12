@@ -10,12 +10,15 @@
 #include "AnotherUnit.h"
 #include "ExcludedUnit.hpp"
 #include "CSharpTemplates.h"
+#include "../CL.h"
 
 struct SmallPOD
 {
     int a;
     int b;
 };
+
+DLL_API void myfn(CL cl);
 
 class DLL_API Foo
 {

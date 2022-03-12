@@ -1,5 +1,7 @@
 ﻿#include "CSharp.h"
 
+void myfn(CL cl);
+
 Foo::Foo(const QString& name)
 {
 }
