@@ -2043,6 +2043,10 @@ DeclarationContext* Parser::GetNamespace(const clang::Decl* D,
             DC = WalkRecordCXX(RD);
             continue;
         }
+        case Decl::CXXDeductionGuide:
+        {
+            continue;
+        }
         default:
         {
             auto D = cast<Decl>(Ctx);
