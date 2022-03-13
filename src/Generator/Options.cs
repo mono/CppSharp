@@ -93,6 +93,8 @@ namespace CppSharp
         ///   <c>true</c> to generate class templates; otherwise, <c>false</c>.
         /// </value>
         public bool GenerateClassTemplates { get; set; }
+        public bool GenerateTypesOnly { get; set; } = false;
+        internal bool GenerateBindings => !GenerateTypesOnly;
         public bool AllowRenaming { get; set; } = true;
         public bool PutAllGlobalsInGlobalClass { get; set; } = false;
         public bool GenerateInternalImports;

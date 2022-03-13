@@ -113,8 +113,8 @@ namespace CppSharp.Generators.CSharp
                                   group spec by module.OutputNamespace into @group
                                   select @group)
             {
-                using (!string.IsNullOrEmpty(group.Key) 
-                    ? PushWriteBlock(BlockKind.Namespace, $"namespace {group.Key}", NewLineKind.BeforeNextBlock) 
+                using (!string.IsNullOrEmpty(group.Key)
+                    ? PushWriteBlock(BlockKind.Namespace, $"namespace {group.Key}", NewLineKind.BeforeNextBlock)
                     : default)
                 {
                     foreach (var template in from s in @group
@@ -188,8 +188,8 @@ namespace CppSharp.Generators.CSharp
             var shouldGenerateNamespace = !@namespace.IsInline && !isTranslationUnit &&
                 context.Declarations.Any(d => d.IsGenerated || (d is Class && !d.IsIncomplete));
 
-            using var _ = shouldGenerateNamespace 
-                ? PushWriteBlock(BlockKind.Namespace, $"namespace {context.Name}", NewLineKind.BeforeNextBlock) 
+            using var _ = shouldGenerateNamespace
+                ? PushWriteBlock(BlockKind.Namespace, $"namespace {context.Name}", NewLineKind.BeforeNextBlock)
                 : default;
 
             return base.VisitNamespace(@namespace);
@@ -253,30 +253,40 @@ namespace CppSharp.Generators.CSharp
             var classes = EnumerateClasses().ToList();
             if (classes.FindAll(cls => cls.IsValueType && cls.Name == parentName && context.QualifiedLogicalName == cls.Namespace.QualifiedLogicalName).Any())
                 keyword = "struct";
+
+            if (Options.GenerateTypesOnly && Options.PutAllGlobalsInGlobalClass)
+                parentName = "Globals";
+
             WriteLine($"public unsafe partial {keyword} {parentName}");
             WriteOpenBraceAndIndent();
 
-            PushBlock(BlockKind.InternalsClass);
-            GenerateClassInternalHead(new Class { Name = parentName });
-            WriteOpenBraceAndIndent();
-
-            // Generate all the internal function declarations.
-            foreach (var function in context.Functions)
+            if (Options.GenerateBindings)
             {
-                if ((!function.IsGenerated && !function.IsInternal) || function.IsSynthetized)
-                    continue;
+                PushBlock(BlockKind.InternalsClass);
+                GenerateClassInternalHead(new Class { Name = parentName });
+                WriteOpenBraceAndIndent();
 
-                GenerateInternalFunction(function);
-            }
+                if (Options.GenerateBindings)
+                {
+                    // Generate all the internal function declarations.
+                    foreach (var function in context.Functions)
+                    {
+                        if ((!function.IsGenerated && !function.IsInternal) || function.IsSynthetized)
+                            continue;
 
-            UnindentAndWriteCloseBrace();
-            PopBlock(NewLineKind.BeforeNextBlock);
+                        GenerateInternalFunction(function);
+                    }
+                }
 
-            foreach (var function in context.Functions)
-            {
-                if (!function.IsGenerated) continue;
+                UnindentAndWriteCloseBrace();
+                PopBlock(NewLineKind.BeforeNextBlock);
 
-                GenerateFunction(function, parentName);
+                foreach (var function in context.Functions)
+                {
+                    if (!function.IsGenerated) continue;
+
+                    GenerateFunction(function, parentName);
+                }
             }
 
             foreach (var variable in context.Variables.Where(
@@ -409,7 +419,7 @@ namespace CppSharp.Generators.CSharp
             if (!@class.IsGenerated)
                 goto exit;
 
-            if (ShouldGenerateClassNativeField(@class))
+            if (Options.GenerateBindings && ShouldGenerateClassNativeField(@class))
             {
                 PushBlock(BlockKind.Field);
                 if (@class.IsValueType)
@@ -483,9 +493,12 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                 WriteLine($"private bool __{prop.Field.OriginalName}_OwnsNativeMemory = false;");
             }
 
-            GenerateClassConstructors(@class);
+            if (Options.GenerateBindings)
+            {
+                GenerateClassConstructors(@class);
+                GenerateClassMethods(@class.Methods);
+            }
 
-            GenerateClassMethods(@class.Methods);
             GenerateClassVariables(@class);
             GenerateClassProperties(@class);
 
@@ -512,6 +525,9 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             GenerateClassSpecifier(@class);
 
             var shouldInheritFromIDisposable = !@class.HasBase;
+            if (Options.GenerateTypesOnly)
+                shouldInheritFromIDisposable = false;
+
             if (shouldInheritFromIDisposable)
                 Write(" : IDisposable");
 
@@ -570,6 +586,8 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
 
         public void GenerateClassInternals(Class @class)
         {
+            if (!Options.GenerateBindings)
+                return;
             var sequentialLayout = Options.GenerateSequentialLayout && CanUseSequentialLayout(@class);
 
             PushBlock(BlockKind.InternalsClass);
@@ -800,7 +818,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                 }
             }
 
-            if (@class.IsGenerated && isBindingGen && @class.IsRefType && !@class.IsOpaque)
+            if (Options.GenerateBindings && @class.IsGenerated && isBindingGen && @class.IsRefType && !@class.IsOpaque)
             {
                 bases.Add("IDisposable");
             }
@@ -1549,13 +1567,26 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                     if (prop.IsVirtual && !isOverride && !prop.IsPure)
                         Write("virtual ");
 
-                    WriteLine($"{printedType} {GetPropertyName(prop)}");
+                    Write($"{printedType} {GetPropertyName(prop)}");
                 }
                 else
                 {
-                    WriteLine($@"{printedType} {
+                    Write($@"{printedType} {
                         prop.ExplicitInterfaceImpl.Name}.{GetPropertyName(prop)}");
                 }
+
+                if (Options.GenerateTypesOnly)
+                {
+                    if (prop.HasSetter)
+                        Write(@$" {{ get; set; }}");
+                    else
+                        Write(@$" {{ get; }}");
+                    NewLine();
+                    PopBlock(NewLineKind.Never);
+                    continue;
+                }
+
+                WriteLine(String.Empty);
                 WriteOpenBraceAndIndent();
 
                 if (prop.Field != null)
