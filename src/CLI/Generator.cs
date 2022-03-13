@@ -150,7 +150,7 @@ namespace CppSharp
             }
 
             if (options.EnableExceptions)
-                parserOptions.AddArguments("-fcxx-exceptions");
+                parserOptions.EnableExceptions = true;
 
             driverOptions.GenerateDebugOutput = options.Debug;
             driverOptions.CompileCode = options.Compile;
