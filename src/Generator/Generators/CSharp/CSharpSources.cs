@@ -1201,49 +1201,6 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                 UnindentAndWriteCloseBrace();
         }
 
-        private void GeneratePropertyGetterForVariableWithInitializer(Variable variable, string signature)
-        {
-            var initializerString = variable.Initializer.String;
-            Write($"{signature} {{ get; }} = ");
-            Type type = variable.Type.Desugar();
-
-            if (type is ArrayType arrayType)
-            {
-                var systemType = Internal.ExpressionHelper.GetSystemType(Context, arrayType.Type.Desugar());
-                Write($"new {arrayType.Type}[{arrayType.Size}] ");
-                Write("{ ");
-
-                List<string> elements = Internal.ExpressionHelper.SplitInitListExpr(initializerString);
-
-                while (elements.Count < arrayType.Size)
-                    elements.Add(systemType == typeof(string) ? "\"\"" : null);
-
-                for (int i = 0; i < elements.Count; ++i)
-                {
-                    var e = elements[i];
-
-                    if (e == null)
-                        Write("default");
-                    else
-                    {
-                        if (!Internal.ExpressionHelper.TryParseExactLiteralExpression(ref e, systemType))
-                            Write($"({arrayType.Type})");
-                        Write(e);
-                    }
-
-                    if (i + 1 != elements.Count)
-                        Write(", ");
-                }
-
-                Write(" }");
-            }
-            else
-            {
-                Write(initializerString);
-            }
-            WriteLine(";");
-        }
-
         private void GeneratePropertyGetter<T>(T decl, Class @class,
             bool isAbstract = false, Property property = null)
             where T : Declaration, ITypedDecl
@@ -1644,17 +1601,16 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             PushBlock(BlockKind.Variable);
 
             GenerateDeclarationCommon(variable);
-            TypePrinter.PushMarshalKind(MarshalKind.ReturnVariableArray);
-            var variableType = variable.Type.Visit(TypePrinter);
-            TypePrinter.PopMarshalKind();
 
-            var signature = $"public static {variableType} {variable.Name}";
-
-            if (variable.Initializer != null && !string.IsNullOrWhiteSpace(variable.Initializer.String))
-                GeneratePropertyGetterForVariableWithInitializer(variable, signature);
+            if (CSharpStaticVariableWithInitializerGenerator.CanGenerate(variable))
+                Write(new CSharpStaticVariableWithInitializerGenerator(Context, variable, TypePrinter).Generate());
             else
             {
-                WriteLine(signature);
+                TypePrinter.PushMarshalKind(MarshalKind.ReturnVariableArray);
+                var variableType = variable.Type.Visit(TypePrinter);
+                TypePrinter.PopMarshalKind();
+
+                WriteLine($"public static {variableType} {variable.Name}");
                 WriteOpenBraceAndIndent();
 
                 GeneratePropertyGetter(variable, @class);
