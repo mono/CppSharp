@@ -2704,7 +2704,8 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
             assert(TL->getTypeLocClass() == TypeLoc::TemplateTypeParm);
             auto TTTL = TL->getAs<TemplateTypeParmTypeLoc>();
 
-            TPT->parameter = WalkTypeTemplateParameter(TTTL.getDecl());
+            if (TTTL.getDecl())
+                TPT->parameter = WalkTypeTemplateParameter(TTTL.getDecl());
         }
         else if (TP->getDecl())
             TPT->parameter = WalkTypeTemplateParameter(TP->getDecl());
