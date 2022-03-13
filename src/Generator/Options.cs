@@ -93,6 +93,7 @@ namespace CppSharp
         ///   <c>true</c> to generate class templates; otherwise, <c>false</c>.
         /// </value>
         public bool GenerateClassTemplates { get; set; }
+        public string GenerateTypesRootNamespace { get; set; } = String.Empty;
         public bool GenerateTypesOnly { get; set; } = false;
         internal bool GenerateBindings => !GenerateTypesOnly;
         public bool AllowRenaming { get; set; } = true;

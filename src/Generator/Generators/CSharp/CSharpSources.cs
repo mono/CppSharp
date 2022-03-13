@@ -189,7 +189,12 @@ namespace CppSharp.Generators.CSharp
                 context.Declarations.Any(d => d.IsGenerated || (d is Class && !d.IsIncomplete));
 
             using var _ = shouldGenerateNamespace
-                ? PushWriteBlock(BlockKind.Namespace, $"namespace {context.Name}", NewLineKind.BeforeNextBlock)
+                ?
+                (
+                    Options.GenerateTypesOnly && context.Name != Options.GenerateTypesRootNamespace
+                        ? PushWriteBlock(BlockKind.Class, $"public partial class {context.Name}", NewLineKind.BeforeNextBlock)
+                        : PushWriteBlock(BlockKind.Namespace, $"namespace {context.Name}", NewLineKind.BeforeNextBlock)
+                )
                 : default;
 
             return base.VisitNamespace(@namespace);
@@ -254,11 +259,26 @@ namespace CppSharp.Generators.CSharp
             if (classes.FindAll(cls => cls.IsValueType && cls.Name == parentName && context.QualifiedLogicalName == cls.Namespace.QualifiedLogicalName).Any())
                 keyword = "struct";
 
-            if (Options.GenerateTypesOnly && Options.PutAllGlobalsInGlobalClass)
-                parentName = "Globals";
+            bool generate = true;
 
-            WriteLine($"public unsafe partial {keyword} {parentName}");
-            WriteOpenBraceAndIndent();
+            if (Options.GenerateTypesOnly)
+            {
+                if (context is Namespace n)
+                {
+                    if (n.Name == Options.GenerateTypesRootNamespace)
+                        parentName = "Globals";
+                    else if (!string.IsNullOrEmpty(n.Name))
+                        generate = false;
+                    else if (Options.PutAllGlobalsInGlobalClass)
+                        parentName = "Globals";
+                }
+            }
+
+            if (generate)
+            {
+                WriteLine($"public unsafe partial {keyword} {parentName}");
+                WriteOpenBraceAndIndent();
+            }
 
             if (Options.GenerateBindings)
             {
@@ -293,8 +313,11 @@ namespace CppSharp.Generators.CSharp
                 v => v.IsGenerated && v.Access == AccessSpecifier.Public))
                 GenerateVariable(null, variable);
 
-            UnindentAndWriteCloseBrace();
-            PopBlock(NewLineKind.BeforeNextBlock);
+            if (generate)
+            {
+                UnindentAndWriteCloseBrace();
+                PopBlock(NewLineKind.BeforeNextBlock);
+            }
         }
 
         private void GenerateClassTemplateSpecializationInternal(Class classTemplate)
