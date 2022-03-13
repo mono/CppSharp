@@ -18,7 +18,7 @@ namespace CppSharp
 {
     public class Driver : IDisposable
     {
-        public DriverOptions Options { get; }
+        public DriverOptions Options { get; set; }
         public ParserOptions ParserOptions { get; set; }
         public BindingContext Context { get; private set; }
         public Generator Generator { get; private set; }
