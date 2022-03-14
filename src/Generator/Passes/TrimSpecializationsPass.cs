@@ -27,6 +27,11 @@ namespace CppSharp.Passes
 
             if (@class.IsTemplate)
             {
+                if (@class.Name == "_Func_class")
+                    return false;
+                if (@class.Name == "_Optional_destruct_base")
+                    return false;
+
                 templates.Add(@class);
                 foreach (var specialization in @class.Specializations.Where(
                     s => s.IsExplicitlyGenerated))
