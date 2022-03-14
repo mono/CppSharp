@@ -80,6 +80,8 @@ namespace CppSharp.Passes
             }
             if (method.IsConstructor)
             {
+                if (method.IsDeleted)
+                    return true;
                 WrapConstructor(method, wrapper, @params);
                 return true;
             }
@@ -222,6 +224,9 @@ namespace CppSharp.Passes
         private void TakeFunctionAddress(Function function, string wrapper)
         {
             string @namespace = function.OriginalNamespace.Visit(cppTypePrinter);
+            if (function.IsDeleted)
+                return;
+
             if (function.Access == AccessSpecifier.Protected)
             {
                 Write($"class {wrapper}{function.Namespace.Name} : public {@namespace} {{ public: ");
