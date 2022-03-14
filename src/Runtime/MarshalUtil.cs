@@ -62,5 +62,17 @@ namespace CppSharp.Runtime
             var slot = *(IntPtr*)(vtables[table] + i * sizeof(IntPtr));
             return Marshal.GetDelegateForFunctionPointer<T>(slot);
         }
+
+        public static void SetArray<T>(T[] src, void* dest, int destSize) where T : unmanaged
+        {
+            if (src == null)
+                return;
+
+            if (src.Length != destSize)
+                throw new ArgumentOutOfRangeException("The dimensions of the provided array don't match the required size.");
+
+            fixed (void* srcPtr = src)
+                Buffer.MemoryCopy(srcPtr, dest, sizeof(T) * src.Length, sizeof(T) * src.Length);
+        }
     }
 }
