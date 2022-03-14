@@ -215,8 +215,7 @@ namespace CppSharp.Passes
             Namespace parent = null;
             if (string.IsNullOrEmpty(module.OutputNamespace))
             {
-                var groups = module.Units.Where(u => u.IsGenerated).SelectMany(
-                    u => u.Declarations).OfType<Namespace>(
+                var groups = module.Units.SelectMany(u => u.Declarations).OfType<Namespace>(
                     ).GroupBy(d => d.Name).Where(g => g.Any(d => d.HasDeclarations)).ToList();
                 if (groups.Count == 1)
                     parent = groups.Last().Last();
@@ -232,7 +231,7 @@ namespace CppSharp.Passes
             }
 
             if (parent == null)
-                parent = module.Units.Last(u => u.IsGenerated);
+                parent = module.Units.Last();
 
             var namespaceDelegates = new Namespace
             {
