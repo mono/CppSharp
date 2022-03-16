@@ -4,5 +4,6 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageVersion Include="NUnit" Version="3.13.2" />
     <PackageVersion Include="NUnit3TestAdapter" Version="4.0.0" />
+    <PackageVersion Include="YamlDotNet" Version="11.2.1" />
   </ItemGroup>
 </Project>

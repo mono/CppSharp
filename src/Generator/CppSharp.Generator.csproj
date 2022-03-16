@@ -11,5 +11,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Parser\CppSharp.Parser.csproj" />
     <ProjectReference Include="$(NativeProjectsDir)Std-symbols.vcxproj" ReferenceOutputAssembly="false" Condition="$(IsWindows)" />
+    <PackageReference Include="YamlDotNet" />
   </ItemGroup>
 </Project>

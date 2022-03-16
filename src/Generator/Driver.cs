@@ -13,6 +13,7 @@ using CppSharp.Parser;
 using CppSharp.Passes;
 using CppSharp.Utils;
 using CppSharp.Types;
+using CppSharp.Config;
 
 namespace CppSharp
 {
@@ -29,6 +30,12 @@ namespace CppSharp
         {
             Options = options;
             ParserOptions = new ParserOptions();
+        }
+
+        public void LoadConfig(string path)
+        {
+            var config = CfgLoader.LoadConfig(path, this);
+            Options.Modules.Add(config.Module);
         }
 
         Generator CreateGeneratorFromKind(GeneratorKind kind)
