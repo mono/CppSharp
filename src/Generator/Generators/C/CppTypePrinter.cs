@@ -137,6 +137,8 @@ namespace CppSharp.Generators.C
                 return pointeeType;
 
             var mod = PrintTypeModifiers ? ConvertModifierToString(pointer.Modifier) : string.Empty;
+            if (pointer.QualifiedPointee.Type.Desugar() is FunctionType f)
+                pointeeType.NamePrefix.Append($"__{f.CallingConvention.ToString().ToLowerInvariant()}");
             pointeeType.NamePrefix.Append(mod);
 
             var qual = GetStringQuals(quals, false);
@@ -620,6 +622,13 @@ namespace CppSharp.Generators.C
                 $"operator {function.OriginalReturnType.Visit(this)}" :
                 function.OriginalName;
 
+            string conventionString = string.Empty;
+            if (function.CallingConvention != CallingConvention.Default &&
+                function.CallingConvention != CallingConvention.C)
+            {
+                conventionString = " __" + function.CallingConvention.ToString().ToLower();
+            }
+
             FunctionType functionType;
             CppSharp.AST.Type desugared = function.FunctionType.Type.Desugar();
             if (!desugared.IsPointerTo(out functionType))
@@ -628,6 +637,7 @@ namespace CppSharp.Generators.C
 
             var @return = function.OriginalReturnType.Visit(this);
             @return.Name = @class + name;
+            @return.NamePrefix.Append(conventionString);
             @return.NameSuffix.Append('(').Append(@params)
                 .Append(function.IsVariadic ? ", ..." : string.Empty).Append(')')
                 .Append(@const).Append(exceptionType);
