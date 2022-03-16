@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -218,7 +217,12 @@ namespace CppSharp.Types.Std
 
         private (Encoding Encoding, string Name) GetEncoding()
         {
-            switch (GetCharWidth())
+            return GetEncoding(Context, GetCharWidth());
+        }
+
+        public static (Encoding Encoding, string Name) GetEncoding(BindingContext Context, uint charWidth)
+        {
+            switch (charWidth)
             {
                 case 8:
                     if (Context.Options.Encoding == Encoding.Default)   // aka ANSI with system default code page
@@ -312,19 +316,19 @@ namespace CppSharp.Types.Std
             typePrinter.PushContext(TypePrinterContextKind.Native);
             if (ctx.Type.Desugar().IsAddress())
                 return new CustomType(typePrinter.IntPtrType);
-            ClassTemplateSpecialization basicString = GetBasicString(ctx.Type);
+            ClassTemplateSpecialization basicString = ctx.Type.GetClassTemplateSpecialization();
             return new CustomType(basicString.Visit(typePrinter).Type);
         }
 
         public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
         {
             Type type = ctx.Parameter.Type.Desugar();
-            ClassTemplateSpecialization basicString = GetBasicString(type);
+            ClassTemplateSpecialization basicString = type.GetClassTemplateSpecialization();
             var typePrinter = new CSharpTypePrinter(ctx.Context);
             if (!ctx.Parameter.Type.Desugar().IsAddress() &&
                 ctx.MarshalKind != MarshalKind.NativeField)
                 ctx.Return.Write($"*({typePrinter.PrintNative(basicString)}*) ");
-            string qualifiedBasicString = GetQualifiedBasicString(basicString);
+            string qualifiedBasicString = basicString.GetQualifiedName();
             var assign = basicString.Methods.First(m => m.OriginalName == "assign");
             if (ctx.MarshalKind == MarshalKind.NativeField)
             {
@@ -350,10 +354,10 @@ namespace CppSharp.Types.Std
         public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)
         {
             var type = Type.Desugar(resolveTemplateSubstitution: false);
-            ClassTemplateSpecialization basicString = GetBasicString(type);
+            ClassTemplateSpecialization basicString = type.GetClassTemplateSpecialization();
             var data = basicString.Methods.First(m => m.OriginalName == "data");
             var typePrinter = new CSharpTypePrinter(ctx.Context);
-            string qualifiedBasicString = GetQualifiedBasicString(basicString);
+            string qualifiedBasicString = basicString.GetQualifiedName();
             string varBasicString = $"__basicStringRet{ctx.ParameterIndex}";
             bool usePointer = type.IsAddress() || ctx.MarshalKind == MarshalKind.NativeField ||
                 ctx.MarshalKind == MarshalKind.ReturnVariableArray;
@@ -374,31 +378,6 @@ namespace CppSharp.Types.Std
                 ctx.Return.Write(retString);
             }
         }
-
-        private static string GetQualifiedBasicString(ClassTemplateSpecialization basicString)
-        {
-            var declContext = basicString.TemplatedDecl.TemplatedDecl;
-            var names = new Stack<string>();
-            while (!(declContext is TranslationUnit))
-            {
-                var isInlineNamespace = declContext is Namespace && ((Namespace)declContext).IsInline;
-                if (!isInlineNamespace)
-                    names.Push(declContext.Name);
-                declContext = declContext.Namespace;
-            }
-            var qualifiedBasicString = string.Join(".", names);
-            return $"global::{qualifiedBasicString}";
-        }
-
-        private static ClassTemplateSpecialization GetBasicString(Type type)
-        {
-            var desugared = type.Desugar();
-            var template = (desugared.GetFinalPointee() ?? desugared).Desugar();
-            var templateSpecializationType = template as TemplateSpecializationType;
-            if (templateSpecializationType != null)
-                return templateSpecializationType.GetClassTemplateSpecialization();
-            return (ClassTemplateSpecialization)((TagType)template).Declaration;
-        }
     }
 
     [TypeMap("FILE", GeneratorKind = GeneratorKind.CSharp)]
@@ -407,6 +386,61 @@ namespace CppSharp.Types.Std
         public override Type CSharpSignatureType(TypePrinterContext ctx)
         {
             return new CILType(typeof(System.IntPtr));
+        }
+    }
+
+
+    [TypeMap("basic_string_view<char, char_traits<char>>", GeneratorKind = GeneratorKind.CSharp)]
+    public class StringView : TypeMap
+    {
+        public override Type CSharpSignatureType(TypePrinterContext ctx)
+        {
+            if (ctx.Kind == TypePrinterContextKind.Managed)
+                return new CILType(typeof(string));
+            var specialization = ctx.Type.GetClassTemplateSpecialization();
+            var typePrinter = new CSharpTypePrinter(null);
+            typePrinter.PushContext(TypePrinterContextKind.Native);
+            return new CustomType(specialization.Visit(typePrinter).Type);
+        }
+
+        public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
+        {
+            if (ctx.MarshalKind == MarshalKind.NativeField)
+            {
+                ctx.Before.WriteLine($"throw new {typeof(System.NotImplementedException).FullName}();");
+                ctx.Return.Write("default");
+                return;
+            }
+
+            var type = ctx.Parameter.Type.Desugar();
+            var name = ctx.Parameter.Name;
+            var specialization = type.GetClassTemplateSpecialization();
+            var typePrinter = new CSharpTypePrinter(ctx.Context);
+            var bytes = Generator.GeneratedIdentifier($"{name}Bytes");
+            var bytesPtr = Generator.GeneratedIdentifier($"{name}BytesPtr");
+            var view = Generator.GeneratedIdentifier($"{name}StringView");
+            var viewPtr = $"new IntPtr(&{view})";
+            var encoding = ConstCharPointer.GetEncoding(Context, Context.TargetInfo.CharWidth);
+            var extensionClass = $"{specialization.GetQualifiedName()}Extensions";
+            ctx.HasCodeBlock = true;
+            ctx.Before.WriteLine($"var {view} = new {specialization.Visit(typePrinter)}();");
+            ctx.Before.WriteLine($"var {bytes} = {name} != null ? global::{typeof(Encoding).FullName}.{encoding.Name}.GetBytes({name}) : null;");
+            ctx.Before.WriteLine($"fixed (byte* {bytesPtr} = {bytes})");
+            ctx.Before.WriteOpenBraceAndIndent();
+            ctx.Before.WriteLine($"{extensionClass}.{Helpers.InternalStruct}.{specialization.Name}({viewPtr}, new {typePrinter.IntPtrType}({bytesPtr}), (uint)({bytes}?.Length ?? 0));");
+            ctx.Return.Write(type.IsAddress() || ctx.Parameter.IsIndirect ? viewPtr : $"{view}.{Helpers.InstanceIdentifier}");
+        }
+
+        public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)
+        {
+            var type = Type.Desugar(resolveTemplateSubstitution: false);
+            var specialization = type.GetClassTemplateSpecialization();
+            var data = specialization.Methods.First(m => m.OriginalName == "data");
+            var typePrinter = new CSharpTypePrinter(ctx.Context);
+            var qualifiedBasicString = specialization.GetQualifiedName();
+            var view = Generator.GeneratedIdentifier($"{ctx.ReturnVarName}StringView");
+            var returnvarNameOrPtr = type.IsAddress() ? $"new {typePrinter.IntPtrType}(&{ctx.ReturnVarName})" : ctx.ReturnVarName;
+            ctx.Return.Write($"{qualifiedBasicString}Extensions.{data.Name}({specialization.Visit(typePrinter)}.{Helpers.CreateInstanceIdentifier}({returnvarNameOrPtr}))");
         }
     }
 }

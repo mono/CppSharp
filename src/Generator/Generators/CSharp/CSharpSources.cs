@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Security.Permissions;
 using System.Text;
 using System.Text.RegularExpressions;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Extensions;
-using CppSharp.Parser;
 using CppSharp.Types;
 using CppSharp.Utils;
 using Attribute = CppSharp.AST.Attribute;
@@ -635,6 +633,12 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
 
                 foreach (var function in functions)
                     GenerateInternalFunction(function);
+
+                if (@class.QualifiedName == "Std::BasicStringViewExtensions")
+                {
+                    foreach (var function in functions.Where(x => x.Name == "BasicStringView"))
+                        GenerateInternalFunction(function, false);
+                }
             }
 
             TypePrinter.PopContext();
@@ -747,14 +751,14 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             }
         }
 
-        private IEnumerable<string> GatherInternalParams(Function function, out TypePrinterResult retType)
+        private IEnumerable<string> GatherInternalParams(Function function, out TypePrinterResult retType, bool marshalParams = true)
         {
             TypePrinter.PushContext(TypePrinterContextKind.Native);
 
             retType = function.ReturnType.Visit(TypePrinter);
 
             var @params = function.GatherInternalParams(Context.ParserOptions.IsItaniumLikeAbi).Select(p =>
-                $"{p.Visit(TypePrinter)} {p.Name}").ToList();
+                $"{(marshalParams ? p.Visit(TypePrinter) : p.Type.Desugar().ToString())} {p.Name}").ToList();
 
             TypePrinter.PopContext();
 
@@ -3497,7 +3501,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
             return identifier.ToString();
         }
 
-        public void GenerateInternalFunction(Function function)
+        public void GenerateInternalFunction(Function function, bool marshalParams = true)
         {
             if (function.IsPure)
                 return;
@@ -3514,7 +3518,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                 WriteLine("[return: MarshalAs(UnmanagedType.I1)]");
 
             TypePrinterResult retType;
-            var @params = GatherInternalParams(function, out retType);
+            var @params = GatherInternalParams(function, out retType, marshalParams);
 
             WriteLine("internal static extern {0} {1}({2});", retType,
                       GetFunctionNativeIdentifier(function),

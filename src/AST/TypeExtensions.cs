@@ -1,5 +1,7 @@
 ﻿namespace CppSharp.AST.Extensions
 {
+    using System.Collections.Generic;
+
     public static class TypeExtensions
     {
         public static bool IsPrimitiveType(this Type t)
@@ -441,6 +443,31 @@
         public static long GetSizeInBits(this ArrayType array)
         {
             return array.Size * array.ElementSize;
+        }
+
+        public static string GetQualifiedName(this ClassTemplateSpecialization specialization)
+        {
+            var declContext = specialization.TemplatedDecl.TemplatedDecl;
+            var names = new Stack<string>();
+            while (!(declContext is TranslationUnit))
+            {
+                var isInlineNamespace = declContext is Namespace && ((Namespace)declContext).IsInline;
+                if (!isInlineNamespace)
+                    names.Push(declContext.Name);
+                declContext = declContext.Namespace;
+            }
+            var qualifiedBasicString = string.Join(".", names);
+            return $"global::{qualifiedBasicString}";
+        }
+
+        public static ClassTemplateSpecialization GetClassTemplateSpecialization(this Type type)
+        {
+            var desugared = type.Desugar();
+            var template = (desugared.GetFinalPointee() ?? desugared).Desugar();
+            var templateSpecializationType = template as TemplateSpecializationType;
+            if (templateSpecializationType != null)
+                return templateSpecializationType.GetClassTemplateSpecialization();
+            return (ClassTemplateSpecialization)((TagType)template).Declaration;
         }
     }
 }
