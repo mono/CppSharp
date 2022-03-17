@@ -578,13 +578,16 @@ namespace CppSharp.Generators.C
                         break;
                     case TemplateArgument.ArgumentKind.Integral:
                         Class template = specialization.TemplatedDecl.TemplatedClass;
-                        var nonTypeTemplateParameter = template.TemplateParameters[i]
-                            as NonTypeTemplateParameter;
-                        if (!(nonTypeTemplateParameter?.DefaultArgument is
-                              BuiltinTypeExpressionObsolete builtinExpression) ||
-                            builtinExpression.Value != arg.Integral)
+                        if (i < template.TemplateParameters.Count)
                         {
-                            args.Add(arg.Integral.ToString(CultureInfo.InvariantCulture));
+                            var nonTypeTemplateParameter = template.TemplateParameters[i]
+                                as NonTypeTemplateParameter;
+                            if (!(nonTypeTemplateParameter?.DefaultArgument is
+                                  BuiltinTypeExpressionObsolete builtinExpression) ||
+                                builtinExpression.Value != arg.Integral)
+                            {
+                                args.Add(arg.Integral.ToString(CultureInfo.InvariantCulture));
+                            }
                         }
                         break;
                 }
