@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Extensions;
 using CppSharp.Generators.C;
 using CppSharp.Generators.CLI;
 using CppSharp.Types;
@@ -510,7 +511,7 @@ namespace CppSharp.Generators.Cpp
                 }
                 else
                 {
-                    if (IsNativeMethod(function))
+                    if (function.IsNativeMethod())
                         Write($@"(({typePrinter.PrintTag(@class)}::{
                             @class.QualifiedOriginalName}*){Helpers.InstanceIdentifier})->");
 
@@ -570,15 +571,6 @@ namespace CppSharp.Generators.Cpp
                 Write(marshal.Context.Before);
 
             WriteLine($"return {marshal.Context.Return};");
-        }
-
-        public static bool IsNativeMethod(Function function)
-        {
-            var method = function as Method;
-            if (method == null)
-                return false;
-
-            return method.Conversion == MethodConversionKind.None;
         }
 
         public bool IsNativeFunctionOrStaticMethod(Function function)
