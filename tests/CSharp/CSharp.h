@@ -1534,3 +1534,5 @@ DLL_API int TestFunctionToInstanceMethodStruct(FTIStruct* bb, FTIStruct defaultV
 DLL_API int TestFunctionToInstanceMethodRefStruct(FTIStruct* bb, FTIStruct& defaultValue);
 DLL_API int TestFunctionToInstanceMethodConstStruct(FTIStruct* bb, const FTIStruct defaultValue);
 DLL_API int TestFunctionToInstanceMethodConstRefStruct(FTIStruct* bb, const FTIStruct& defaultValue);
+
+class ClassWithoutNativeToManaged { };

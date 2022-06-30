@@ -438,7 +438,9 @@ namespace CppSharp.Generators.CSharp
                     var valueType = Options.GenerateFinalizerFor(@class) ? $"global::System.WeakReference<{printedClass}>" : $"{printedClass}";
                     var dict = $@"global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {valueType}>";
 
-                    WriteLine("internal static readonly {0} NativeToManagedMap = new {0}();", dict);
+                    var generateNativeToManaged = Options.GenerateNativeToManagedFor(@class);
+                    if (generateNativeToManaged)
+                        WriteLine("internal static readonly {0} NativeToManagedMap = new {0}();", dict);
                     PopBlock(NewLineKind.BeforeNextBlock);
 
                     // Create a method to record/recover a mapping to make it easier to call from template instantiation
@@ -446,32 +448,35 @@ namespace CppSharp.Generators.CSharp
                     // will never get invoked: unless the managed object is Disposed, there will always be a reference
                     // in the dictionary.
                     PushBlock(BlockKind.Method);
-                    if (Options.GenerateFinalizerFor(@class))
-                    {
-                        WriteLines($@"
-internal static void {Helpers.RecordNativeToManagedMappingIdentifier}(IntPtr native, {printedClass} managed)
-{{
-    NativeToManagedMap[native] = new global::System.WeakReference<{printedClass}>(managed);
-}}
+                    if (generateNativeToManaged)
+                    { 
+                        if (Options.GenerateFinalizerFor(@class))
+                        {
+                            WriteLines($@"
+    internal static void {Helpers.RecordNativeToManagedMappingIdentifier}(IntPtr native, {printedClass} managed)
+    {{
+        NativeToManagedMap[native] = new global::System.WeakReference<{printedClass}>(managed);
+    }}
 
-internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr native, out {printedClass} managed)
-{{
-    managed = default;
-    return NativeToManagedMap.TryGetValue(native, out var wr) && wr.TryGetTarget(out managed);
-}}");
-                    }
-                    else
-                    {
-                        WriteLines($@"
-internal static void {Helpers.RecordNativeToManagedMappingIdentifier}(IntPtr native, {printedClass} managed)
-{{
-    NativeToManagedMap[native] = managed;
-}}
+    internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr native, out {printedClass} managed)
+    {{
+        managed = default;
+        return NativeToManagedMap.TryGetValue(native, out var wr) && wr.TryGetTarget(out managed);
+    }}");
+                        }
+                        else
+                        {
+                            WriteLines($@"
+    internal static void {Helpers.RecordNativeToManagedMappingIdentifier}(IntPtr native, {printedClass} managed)
+    {{
+        NativeToManagedMap[native] = managed;
+    }}
 
-internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr native, out {printedClass} managed)
-{{
-    return NativeToManagedMap.TryGetValue(native, out managed);
-}}");
+    internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr native, out {printedClass} managed)
+    {{
+        return NativeToManagedMap.TryGetValue(native, out managed);
+    }}");
+                        }
                     }
                 }
                 PopBlock(NewLineKind.BeforeNextBlock);
@@ -2270,7 +2275,8 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                 WriteLineIndent("return;");
 
                 // The local var must be of the exact type in the object map because of TryRemove
-                WriteLine("NativeToManagedMap.TryRemove({0}, out _);", Helpers.InstanceIdentifier);
+                if (Options.GenerateNativeToManagedFor(@class))
+                    WriteLine("NativeToManagedMap.TryRemove({0}, out _);", Helpers.InstanceIdentifier);
                 var realClass = @class.IsTemplate ? @class.Specializations[0] : @class;
                 var classInternal = TypePrinter.PrintNative(realClass);
                 if (@class.IsDynamic && GetUniqueVTableMethodEntries(realClass).Count != 0)
@@ -2402,7 +2408,10 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                 {
                     var @new = @class.HasBase && @class.HasRefBase();
 
-                    WriteLines($@"
+                    bool generateNativeToManaged = Options.GenerateNativeToManagedFor(@class);
+                    if (generateNativeToManaged)
+                    { 
+                        WriteLines($@"
 internal static{(@new ? " new" : string.Empty)} {printedClass} __GetOrCreateInstance({TypePrinter.IntPtrType} native, bool saveInstance = false, bool skipVTables = false)
 {{
     if (native == {TypePrinter.IntPtrType}.Zero)
@@ -2414,7 +2423,8 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetOrCreateInst
         {Helpers.RecordNativeToManagedMappingIdentifier}(native, result);
     return result;
 }}");
-                    NewLine();
+                        NewLine();
+                    }
 
                     if (HasVirtualTables(@class))
                     {
@@ -2422,9 +2432,16 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetOrCreateInst
 
                         WriteLines($@"
 internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({TypePrinter.IntPtrType} native)
-{{
+{{");
+
+                        if (generateNativeToManaged)
+                        { 
+WriteLines($@"
     if (!{Helpers.TryGetNativeToManagedMappingIdentifier}(native, out var managed))
-        throw new global::System.Exception(""No managed instance was found"");
+        throw new global::System.Exception(""No managed instance was found"");");
+}
+
+WriteLines($@"
     var result = ({printedClass})managed;
     if (result.{Helpers.OwnsNativeInstanceIdentifier})
         result.SetupVTables();
@@ -2540,7 +2557,8 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                 if (@class.IsRefType)
                 {
                     WriteLine($"{Helpers.OwnsNativeInstanceIdentifier} = true;");
-                    WriteLine($"{Helpers.RecordNativeToManagedMappingIdentifier}({Helpers.InstanceIdentifier}, this);");
+                    if (Options.GenerateNativeToManagedFor(@class))
+                        WriteLine($"{Helpers.RecordNativeToManagedMappingIdentifier}({Helpers.InstanceIdentifier}, this);");
                 }
                 else
                 {
@@ -2985,7 +3003,9 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                 @class.IsAbstractImpl ? @class.BaseClass : @class);
             WriteLine($"{Helpers.InstanceIdentifier} = Marshal.AllocHGlobal(sizeof({@internal}));");
             WriteLine($"{Helpers.OwnsNativeInstanceIdentifier} = true;");
-            WriteLine($"{Helpers.RecordNativeToManagedMappingIdentifier}({Helpers.InstanceIdentifier}, this);");
+
+            if (Options.GenerateNativeToManagedFor(@class))
+                WriteLine($"{Helpers.RecordNativeToManagedMappingIdentifier}({Helpers.InstanceIdentifier}, this);");
 
             if (method.IsCopyConstructor)
             {

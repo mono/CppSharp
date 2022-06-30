@@ -1893,4 +1893,11 @@ public unsafe class CSharpTests
         Assert.That(CSharp.CSharp.TestFunctionToInstanceMethodConstStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
         Assert.That(CSharp.CSharp.TestFunctionToInstanceMethodConstRefStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
     }
+
+    [TestCase(typeof(FTIStruct), ExpectedResult = true)]
+    [TestCase(typeof(ClassWithoutNativeToManaged), ExpectedResult = false)]
+    public bool TestClassGenerateNativeToManaged(Type type)
+    {
+        return type.GetMethods(BindingFlags.NonPublic | BindingFlags.Static).Any(x => x.Name.Contains("NativeToManaged"));
+    }
 }

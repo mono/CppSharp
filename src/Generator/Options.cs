@@ -137,6 +137,12 @@ namespace CppSharp
         public Func<Class, bool> GenerateFinalizersFilter = (@class) => true;
 
         /// <summary>
+        /// A callback that allows the user to provide generator options per-class.
+        /// </summary>
+        public Func<Class, ClassGenerationOptions> GetClassGenerationOptions = null;
+        internal bool GenerateNativeToManagedFor(Class @class) => GetClassGenerationOptions?.Invoke(@class)?.GenerateNativeToManaged ?? true;
+
+        /// <summary>
         /// An internal convenience method that combines the effect of <see
         /// cref="GenerateFinalizers"/> and <see cref="GenerateFinalizersFilter"/>.
         /// </summary>

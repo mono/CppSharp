@@ -33,6 +33,12 @@ namespace CppSharp.Tests
             driver.Options.MarshalCharAsManagedChar = true;
             driver.Options.GenerateDefaultValuesForArguments = true;
             driver.Options.GenerateClassTemplates = true;
+
+            var disableNativeToManaged = new ClassGenerationOptions { GenerateNativeToManaged = false };
+            driver.Options.GetClassGenerationOptions = e => 
+            {
+                return e.Name == "ClassWithoutNativeToManaged" ? disableNativeToManaged : null;
+            };
         }
 
         public override void Preprocess(Driver driver, ASTContext ctx)
