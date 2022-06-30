@@ -1,5 +1,6 @@
 ﻿using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Extensions;
 using System.Linq;
 
 namespace CppSharp.Passes
@@ -32,7 +33,7 @@ namespace CppSharp.Passes
 
             var isReturnIndirect = function.IsReturnIndirect || (
                     Context.ParserOptions.IsMicrosoftAbi &&
-                    function is Method &&
+                    function is Method m && m.IsNativeMethod() &&
                     !function.ReturnType.Type.Desugar().IsAddress() &&
                     function.ReturnType.Type.Desugar().TryGetDeclaration(out Class returnTypeDecl) &&
                     returnTypeDecl.IsPOD &&

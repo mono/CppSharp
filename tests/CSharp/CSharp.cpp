@@ -1685,3 +1685,9 @@ const unsigned StructWithEmbeddedArrayOfStructObjectAlignmentOffsets[2]
     offsetof(StructWithEmbeddedArrayOfStructObjectAlignment, boolean),
     offsetof(StructWithEmbeddedArrayOfStructObjectAlignment, embedded_struct),
 };
+
+DLL_API FTIStruct TestFunctionToInstanceMethod(FTIStruct* bb) { return { 6 }; }
+DLL_API int TestFunctionToInstanceMethodStruct(FTIStruct* bb, FTIStruct defaultValue) { return defaultValue.a; }
+DLL_API int TestFunctionToInstanceMethodRefStruct(FTIStruct* bb, FTIStruct& defaultValue) { return defaultValue.a; }
+DLL_API int TestFunctionToInstanceMethodConstStruct(FTIStruct* bb, const FTIStruct defaultValue) { return defaultValue.a; }
+DLL_API int TestFunctionToInstanceMethodConstRefStruct(FTIStruct* bb, const FTIStruct& defaultValue) { return defaultValue.a; }

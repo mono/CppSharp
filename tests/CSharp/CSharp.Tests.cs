@@ -1883,4 +1883,14 @@ public unsafe class CSharpTests
             Assert.That((short)c, Is.EqualTo(100));
         }
     }
+
+    [Test]
+    public void TestFunctionToInstanceMethod()
+    {
+        Assert.That(CSharp.CSharp.TestFunctionToInstanceMethod(new FTIStruct()).A, Is.EqualTo(6));
+        Assert.That(CSharp.CSharp.TestFunctionToInstanceMethodStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
+        Assert.That(CSharp.CSharp.TestFunctionToInstanceMethodRefStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
+        Assert.That(CSharp.CSharp.TestFunctionToInstanceMethodConstStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
+        Assert.That(CSharp.CSharp.TestFunctionToInstanceMethodConstRefStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
+    }
 }

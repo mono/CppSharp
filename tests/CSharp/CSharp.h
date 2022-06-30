@@ -1526,3 +1526,11 @@ DLL_API const char* TestCSharpString(const char* in, CS_OUT const char** out);
 DLL_API const wchar_t* TestCSharpStringWide(const wchar_t* in, CS_OUT const wchar_t** out);
 DLL_API const char16_t* TestCSharpString16(const char16_t* in, CS_OUT const char16_t** out);    
 DLL_API const char32_t* TestCSharpString32(const char32_t* in, CS_OUT const char32_t** out);
+
+struct DLL_API FTIStruct { int a; };
+
+DLL_API FTIStruct TestFunctionToInstanceMethod(FTIStruct* bb);
+DLL_API int TestFunctionToInstanceMethodStruct(FTIStruct* bb, FTIStruct defaultValue);
+DLL_API int TestFunctionToInstanceMethodRefStruct(FTIStruct* bb, FTIStruct& defaultValue);
+DLL_API int TestFunctionToInstanceMethodConstStruct(FTIStruct* bb, const FTIStruct defaultValue);
+DLL_API int TestFunctionToInstanceMethodConstRefStruct(FTIStruct* bb, const FTIStruct& defaultValue);
