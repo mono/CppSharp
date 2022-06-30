@@ -23,7 +23,8 @@ namespace CppSharp.Passes
                 Namespace = @class,
                 OperatorKind = function.OperatorKind,
                 OriginalFunction = null,
-                IsStatic = true
+                Conversion = MethodConversionKind.FunctionToStaticMethod,
+                IsStatic = true,
             };
 
             if (method.IsOperator)
