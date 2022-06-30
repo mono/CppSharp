@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Extensions;
 using CppSharp.Generators.C;
 using Type = CppSharp.AST.Type;
 
@@ -1014,7 +1015,7 @@ namespace CppSharp.Generators.CLI
                 {
                     if (isValueType)
                         Write($"{valueMarshalName}.");
-                    else if (IsNativeMethod(function))
+                    else if (function.IsNativeMethod())
                         Write($"(({typePrinter.PrintTag(@class)}::{@class.QualifiedOriginalName}*)NativePtr)->");
                     Write("{0}(", function.OriginalName);
                 }
@@ -1107,15 +1108,6 @@ namespace CppSharp.Generators.CLI
                         param.Name, (int)char.MinValue, sbyte.MaxValue);
                 }
             }
-        }
-
-        private static bool IsNativeMethod(Function function)
-        {
-            var method = function as Method;
-            if (method == null)
-                return false;
-
-            return method.Conversion == MethodConversionKind.None;
         }
 
         private static bool IsNativeFunctionOrStaticMethod(Function function)
