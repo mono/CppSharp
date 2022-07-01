@@ -1054,7 +1054,7 @@ namespace CppSharp.Generators.CSharp
                 else
                 {
                     var typeName = TypePrinter.PrintNative(@class);
-                    if (IsInternalClassNested(field.Class))
+                    if (IsInternalClassNested(@class))
                         typeName.RemoveNamespace();
                     returnVar = $"(({typeName}*){Helpers.InstanceIdentifier})->{name}";
                 }
@@ -1415,7 +1415,7 @@ namespace CppSharp.Generators.CSharp
             else
             {
                 var typeName = TypePrinter.PrintNative(@class);
-                if (IsInternalClassNested(field.Class))
+                if (IsInternalClassNested(@class))
                     typeName.RemoveNamespace();
                 returnVar = $"(({typeName}*){Helpers.InstanceIdentifier})->{name}";
                 // Class field getter should return a reference object instead of a copy. Wrapping `returnVar` in
