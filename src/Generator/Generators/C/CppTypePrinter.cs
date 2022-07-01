@@ -5,6 +5,7 @@ using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators.CSharp;
+using CppSharp.Passes;
 using CppSharp.Types;
 
 namespace CppSharp.Generators.C
@@ -577,11 +578,11 @@ namespace CppSharp.Generators.C
                         args.Add(arg.Declaration.Visit(this));
                         break;
                     case TemplateArgument.ArgumentKind.Integral:
-                        Class template = specialization.TemplatedDecl.TemplatedClass;
-                        var nonTypeTemplateParameter = template.TemplateParameters[i]
+                        ClassTemplate template = specialization.TemplatedDecl;
+                        var nonTypeTemplateParameter = template.Parameters[i]
                             as NonTypeTemplateParameter;
                         if (!(nonTypeTemplateParameter?.DefaultArgument is
-                              BuiltinTypeExpressionObsolete builtinExpression) ||
+                                BuiltinTypeExpressionObsolete builtinExpression) ||
                             builtinExpression.Value != arg.Integral)
                         {
                             args.Add(arg.Integral.ToString(CultureInfo.InvariantCulture));

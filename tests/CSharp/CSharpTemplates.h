@@ -944,3 +944,22 @@ public:
 
 };
 const FloatArrayF<6> I6{ 1., 1., 1., 0., 0., 0. };
+
+// KEEP ORDER OTHERWISE TEST WONT WORK
+namespace IncompleteClassTemplatesTests
+{
+    template <size_t Size>
+    struct StructSizeT {};
+
+    template <typename T>
+    struct StructT
+    {
+        template<typename U>
+        struct Inc { };
+    };
+
+    struct Instantiation
+    {
+        StructT<StructSizeT<4000>> st;
+    };
+}
