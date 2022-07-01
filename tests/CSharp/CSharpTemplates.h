@@ -222,6 +222,25 @@ void Base<T>::invokeFriend()
 }
 
 template <typename T>
+struct TemplateUnionField
+{
+    union
+    {
+        struct
+        {
+            T x, y, z;
+        };
+        T v;
+    };
+};
+
+struct TemplateUnionFieldInstantiation
+{
+    TemplateUnionField<int> tuf;
+    TemplateUnionField<float> tuf1;
+};
+
+template <typename T>
 class DependentValueFields : public Base<T>
 {
 public:

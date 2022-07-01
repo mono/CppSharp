@@ -16,7 +16,7 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (!base.VisitClassDecl(@class) || @class.Ignore || @class.IsDependent)
+            if (!base.VisitClassDecl(@class) || @class.Ignore)
                 return false;
 
             for (int i = @class.Fields.Count - 1; i >= 0; i--)
