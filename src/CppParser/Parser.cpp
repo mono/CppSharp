@@ -496,7 +496,7 @@ static clang::Decl* GetPreviousDeclInContext(const clang::Decl* D)
     return nullptr;
 }
 
-bool IsExplicit(const clang::Decl* D)
+static bool IsExplicit(const clang::Decl* D)
 {
     using namespace clang;
 
@@ -1604,23 +1604,30 @@ FunctionTemplate* Parser::WalkFunctionTemplate(const clang::FunctionTemplateDecl
     if (FT != nullptr)
         return FT;
 
-    CppSharp::CppParser::AST::Function* Function = nullptr;
+    CppSharp::CppParser::AST::Function* F = nullptr;
     auto TemplatedDecl = TD->getTemplatedDecl();
 
     if (auto MD = dyn_cast<CXXMethodDecl>(TemplatedDecl))
-        Function = WalkMethodCXX(MD);
+        F = WalkMethodCXX(MD);
     else
-        Function = WalkFunction(TemplatedDecl);
+        F = WalkFunction(TemplatedDecl);
 
     FT = new FunctionTemplate();
     HandleDeclaration(TD, FT);
 
     FT->name = GetDeclName(TD);
     FT->_namespace = NS;
-    FT->TemplatedDecl = Function;
+    FT->TemplatedDecl = F;
     FT->Parameters = WalkTemplateParameterList(TD->getTemplateParameters());
 
     NS->Templates.push_back(FT);
+
+    for (auto&& FD : TD->specializations())
+    {
+        auto F = new Function();
+        HandleDeclaration(FD, F);
+        WalkFunction(FD, F);
+    }
 
     return FT;
 }
@@ -1632,7 +1639,13 @@ Parser::WalkFunctionTemplateSpec(clang::FunctionTemplateSpecializationInfo* FTSI
 {
     using namespace clang;
 
-    auto FTS = new CppSharp::CppParser::FunctionTemplateSpecialization();
+    auto FT = WalkFunctionTemplate(FTSI->getTemplate());
+    auto USR = GetDeclUSR(FTSI->getFunction());
+    auto FTS = FT->FindSpecialization(USR);
+    if (FTS != nullptr)
+        return FTS;
+
+    FTS = new CppSharp::CppParser::FunctionTemplateSpecialization();
     FTS->specializationKind = WalkTemplateSpecializationKind(FTSI->getTemplateSpecializationKind());
     FTS->specializedFunction = Function;
     FTS->_template = WalkFunctionTemplate(FTSI->getTemplate());
