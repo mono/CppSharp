@@ -1900,4 +1900,12 @@ public unsafe class CSharpTests
     {
         return type.GetMethods(BindingFlags.NonPublic | BindingFlags.Static).Any(x => x.Name.Contains("NativeToManaged"));
     }
+
+    [Test]
+    public void TestFunctionTemplate()
+    {
+        Assert.That(CSharpTemplates.FunctionTemplate(5.0), Is.EqualTo(5 + 4.2));
+        Assert.That(CSharpTemplates.FunctionTemplate(6f), Is.EqualTo(6 + 4.1f));
+        Assert.That(CSharpTemplates.FunctionTemplate(7), Is.EqualTo(7 + 4));
+    }
 }

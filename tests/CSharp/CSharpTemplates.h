@@ -945,6 +945,22 @@ public:
 };
 const FloatArrayF<6> I6{ 1., 1., 1., 0., 0., 0. };
 
+template <typename T>
+DLL_API inline T FunctionTemplate(T value) {
+    if (std::is_same<T, double>::value)
+        return 4.2 + value;
+    else if (std::is_same<T, float>::value)
+        return 4.1 + value;
+    return 4 + value;
+}
+
+inline void FunctionTemplateInstantiation()
+{
+    FunctionTemplate<double>({});
+    FunctionTemplate<float>({});
+    FunctionTemplate<int>({});
+}
+
 // KEEP ORDER OTHERWISE TEST WONT WORK
 namespace IncompleteClassTemplatesTests
 {
