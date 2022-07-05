@@ -1908,4 +1908,21 @@ public unsafe class CSharpTests
         Assert.That(CSharpTemplates.FunctionTemplate(6f), Is.EqualTo(6 + 4.1f));
         Assert.That(CSharpTemplates.FunctionTemplate(7), Is.EqualTo(7 + 4));
     }
+
+    [Test]
+    public void TestPatialRefSupport()
+    {
+        var myclass = new ClassWithIntValue();
+        var backup = myclass;
+        myclass.Value = 7;
+
+        CSharp.CSharp.ModifyCore(ref myclass);
+        Assert.That(myclass.Value, Is.EqualTo(10));
+        Assert.That(myclass, Is.SameAs(myclass));
+
+        CSharp.CSharp.CreateCore(ref myclass);
+        Assert.That(myclass.Value, Is.EqualTo(20));
+        Assert.That(myclass, Is.Not.SameAs(backup));
+    }
+
 }

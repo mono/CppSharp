@@ -442,5 +442,31 @@
         {
             return array.Size * array.ElementSize;
         }
+
+        internal static bool IsReferenceToPtrToClass(this Type type)
+        {
+            var @ref = type.Desugar().AsLvReference();
+            if (@ref == null)
+                return false;
+
+            var @ptr = @ref.Pointee.Desugar(false).AsPtr();
+            if (@ptr == null)
+                return false;
+
+            var @class = @ptr.Pointee;
+            return @class != null && @class.IsClass();
+        }
+
+        internal static PointerType AsLvReference(this Type type)
+        {
+            var reference = type as PointerType;
+            return reference?.Modifier == PointerType.TypeModifier.LVReference ? reference : null;
+        }
+
+        internal static PointerType AsPtr(this Type type)
+        {
+            var ptr = type as PointerType;
+            return ptr?.Modifier == PointerType.TypeModifier.Pointer ? ptr : null;
+        }
     }
 }

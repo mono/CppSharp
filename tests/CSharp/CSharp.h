@@ -1536,3 +1536,18 @@ DLL_API int TestFunctionToInstanceMethodConstStruct(FTIStruct* bb, const FTIStru
 DLL_API int TestFunctionToInstanceMethodConstRefStruct(FTIStruct* bb, const FTIStruct& defaultValue);
 
 class ClassWithoutNativeToManaged { };
+
+struct DLL_API ClassWithIntValue {
+    int value;
+};
+
+DLL_API inline ClassWithIntValue* ModifyCore(CS_IN_OUT ClassWithIntValue*& pClass) {
+    pClass->value = 10;
+    return nullptr;
+}
+
+DLL_API inline ClassWithIntValue* CreateCore(CS_IN_OUT ClassWithIntValue*& pClass) {
+    pClass = new ClassWithIntValue();
+    pClass->value = 20;
+    return nullptr;
+}

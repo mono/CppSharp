@@ -3193,6 +3193,17 @@ WriteLines($@"
             }
             WriteLine("{0}({1});", functionName, string.Join(", ", names));
 
+            foreach(var param in @params)
+            {
+                if (param.Param.IsInOut && param.Param.Type.IsReferenceToPtrToClass())
+                {
+                    var qualifiedClass = param.Param.Type.Visit(TypePrinter);
+                    
+                    WriteLine($"if ({param.Name} != {param.Param.Name}.__Instance)");
+                    WriteLine($"{param.Param.Name} = {qualifiedClass}.__GetOrCreateInstance(__{param.Name}, false);");
+                }
+            }
+
             foreach (TextGenerator cleanup in from p in @params
                                               select p.Context.Cleanup)
                 Write(cleanup);
