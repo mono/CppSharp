@@ -26,37 +26,22 @@ namespace CppSharp.Generators.CSharp
             {
                 using (WriteBlock($"internal class {@class}"))
                 {
-                    GenerateStaticVariables();
+                    foreach (var (_, variableIdentifier) in symbols)
+                        WriteLine($"public static IntPtr {variableIdentifier} {{ get; }}");
 
                     using (WriteBlock($"static {@class}()"))
-                        GenerateStaticConstructorBody();
+                    {
+                        WriteLine($"var path = \"{path}\";");
+                        WriteLine("var image = CppSharp.SymbolResolver.LoadImage(ref path);");
+                        WriteLine("if (image == IntPtr.Zero) throw new global::System.DllNotFoundException(path);");
+
+                        foreach (var (mangled, variableIdentifier) in symbols)
+                            WriteLine($"{variableIdentifier} = CppSharp.SymbolResolver.ResolveSymbol(image, \"{mangled}\");");
+                    }
                 }
             }
 
             return ToString();
-        }
-
-        public void GenerateStaticVariables()
-        {
-            foreach (var symbol in symbols)
-            {
-                var variableIdentifier = symbol.Value;
-                WriteLine($"public static IntPtr {variableIdentifier} {{ get; }}");
-            }
-        }
-
-        public void GenerateStaticConstructorBody()
-        {
-            WriteLine($"var path = \"{path}\";");
-            WriteLine("var image = CppSharp.SymbolResolver.LoadImage(ref path);");
-            WriteLine("if (image == IntPtr.Zero) throw new global::System.DllNotFoundException(path);");
-
-            foreach (var symbol in symbols)
-            {
-                var mangled = symbol.Key;
-                var variableIdentifier = symbol.Value;
-                WriteLine($"{variableIdentifier} = CppSharp.SymbolResolver.ResolveSymbol(image, \"{mangled}\");");
-            }
         }
 
         public string GetFullVariablePath(string mangled)

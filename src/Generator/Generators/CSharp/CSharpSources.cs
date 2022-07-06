@@ -113,8 +113,8 @@ namespace CppSharp.Generators.CSharp
                                   group spec by module.OutputNamespace into @group
                                   select @group)
             {
-                using (!string.IsNullOrEmpty(group.Key) 
-                    ? PushWriteBlock(BlockKind.Namespace, $"namespace {group.Key}", NewLineKind.BeforeNextBlock) 
+                using (!string.IsNullOrEmpty(group.Key)
+                    ? PushWriteBlock(BlockKind.Namespace, $"namespace {group.Key}", NewLineKind.BeforeNextBlock)
                     : default)
                 {
                     foreach (var template in from s in @group
@@ -188,8 +188,8 @@ namespace CppSharp.Generators.CSharp
             var shouldGenerateNamespace = !@namespace.IsInline && !isTranslationUnit &&
                 context.Declarations.Any(d => d.IsGenerated || (d is Class && !d.IsIncomplete));
 
-            using var _ = shouldGenerateNamespace 
-                ? PushWriteBlock(BlockKind.Namespace, $"namespace {context.Name}", NewLineKind.BeforeNextBlock) 
+            using var _ = shouldGenerateNamespace
+                ? PushWriteBlock(BlockKind.Namespace, $"namespace {context.Name}", NewLineKind.BeforeNextBlock)
                 : default;
 
             return base.VisitNamespace(@namespace);
@@ -246,45 +246,37 @@ namespace CppSharp.Generators.CSharp
             if (!context.Functions.Any(f => f.IsGenerated) && !hasGlobalVariables)
                 return;
 
-            PushBlock(BlockKind.Functions);
             var parentName = SafeIdentifier(context.TranslationUnit.FileNameWithoutExtension);
+            var isStruct = EnumerateClasses()
+                .ToList()
+                .FindAll(cls => cls.IsValueType && cls.Name == parentName && context.QualifiedLogicalName == cls.Namespace.QualifiedLogicalName)
+                .Any();
 
-            var keyword = "class";
-            var classes = EnumerateClasses().ToList();
-            if (classes.FindAll(cls => cls.IsValueType && cls.Name == parentName && context.QualifiedLogicalName == cls.Namespace.QualifiedLogicalName).Any())
-                keyword = "struct";
-            WriteLine($"public unsafe partial {keyword} {parentName}");
-            WriteOpenBraceAndIndent();
+            using (PushWriteBlock(BlockKind.Functions, $"public unsafe partial {(isStruct ? "struct" : "class")} {parentName}", NewLineKind.BeforeNextBlock))
+            { 
+                using (PushWriteBlock(BlockKind.InternalsClass, GetClassInternalHead(new Class { Name = parentName }), NewLineKind.BeforeNextBlock))
+                { 
+                    // Generate all the internal function declarations.
+                    foreach (var function in context.Functions)
+                    {
+                        if ((!function.IsGenerated && !function.IsInternal) || function.IsSynthetized)
+                            continue;
 
-            PushBlock(BlockKind.InternalsClass);
-            GenerateClassInternalHead(new Class { Name = parentName });
-            WriteOpenBraceAndIndent();
+                        GenerateInternalFunction(function);
+                    }
+                }
 
-            // Generate all the internal function declarations.
-            foreach (var function in context.Functions)
-            {
-                if ((!function.IsGenerated && !function.IsInternal) || function.IsSynthetized)
-                    continue;
+                foreach (var function in context.Functions)
+                {
+                    if (!function.IsGenerated) continue;
 
-                GenerateInternalFunction(function);
+                    GenerateFunction(function, parentName);
+                }
+
+                foreach (var variable in context.Variables.Where(
+                    v => v.IsGenerated && v.Access == AccessSpecifier.Public))
+                    GenerateVariable(null, variable);
             }
-
-            UnindentAndWriteCloseBrace();
-            PopBlock(NewLineKind.BeforeNextBlock);
-
-            foreach (var function in context.Functions)
-            {
-                if (!function.IsGenerated) continue;
-
-                GenerateFunction(function, parentName);
-            }
-
-            foreach (var variable in context.Variables.Where(
-                v => v.IsGenerated && v.Access == AccessSpecifier.Public))
-                GenerateVariable(null, variable);
-
-            UnindentAndWriteCloseBrace();
-            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
         private void GenerateClassTemplateSpecializationInternal(Class classTemplate)
@@ -304,25 +296,28 @@ namespace CppSharp.Generators.CSharp
                 !template.OriginalNamespace.IsDependent ?
                     template.OriginalNamespace.Name + '_' : string.Empty,
                 template.Name);
-            using var _ = PushWriteBlock(BlockKind.Namespace, namespaceName, NewLineKind.BeforeNextBlock);
-            var generated = GetGeneratedClasses(template, specializations);
 
-            foreach (var nestedTemplate in template.Classes.Where(
-                c => c.IsDependent && !c.Ignore && c.Specializations.Any(s => !s.Ignore)))
-                GenerateClassTemplateSpecializationsInternals(
-                    nestedTemplate, nestedTemplate.Specializations);
+            using (PushWriteBlock(BlockKind.Namespace, namespaceName, NewLineKind.BeforeNextBlock))
+            { 
+                var generated = GetGeneratedClasses(template, specializations);
 
-            if (template.HasDependentValueFieldInLayout(specializations) ||
-                template.Specializations.Intersect(specializations).Count() == specializations.Count)
-                foreach (var specialization in generated)
-                    GenerateClassInternals(specialization);
+                foreach (var nestedTemplate in template.Classes.Where(
+                    c => c.IsDependent && !c.Ignore && c.Specializations.Any(s => !s.Ignore)))
+                    GenerateClassTemplateSpecializationsInternals(
+                        nestedTemplate, nestedTemplate.Specializations);
 
-            foreach (var group in specializations.SelectMany(s => s.Classes).Where(
-                c => !c.IsIncomplete).GroupBy(c => c.Name))
-            {
-                var nested = template.Classes.FirstOrDefault(c => c.Name == group.Key);
-                if (nested != null)
-                    GenerateNestedInternals(group.Key, GetGeneratedClasses(nested, group));
+                if (template.HasDependentValueFieldInLayout(specializations) ||
+                    template.Specializations.Intersect(specializations).Count() == specializations.Count)
+                    foreach (var specialization in generated)
+                        GenerateClassInternals(specialization);
+
+                foreach (var group in specializations.SelectMany(s => s.Classes).Where(
+                    c => !c.IsIncomplete).GroupBy(c => c.Name))
+                {
+                    var nested = template.Classes.FirstOrDefault(c => c.Name == group.Key);
+                    if (nested != null)
+                        GenerateNestedInternals(group.Key, GetGeneratedClasses(nested, group));
+                }
             }
         }
 
@@ -414,72 +409,24 @@ namespace CppSharp.Generators.CSharp
                 PushBlock(BlockKind.Field);
                 if (@class.IsValueType)
                 {
-                    WriteLine("private {0}.{1} {2};", @class.Name, Helpers.InternalStruct,
-                        Helpers.InstanceField);
-                    WriteLine("internal {0}.{1} {2} {{ get {{ return {3}; }} }}", @class.Name,
-                        Helpers.InternalStruct, Helpers.InstanceIdentifier, Helpers.InstanceField);
+                    WriteLine($"private {@class.Name}.{Helpers.InternalStruct} {Helpers.InstanceField};");
+                    WriteLine($"internal {@class.Name}.{Helpers.InternalStruct} {Helpers.InstanceIdentifier} => {Helpers.InstanceField};");
                 }
                 else
                 {
-                    WriteLine("public {0} {1} {{ get; protected set; }}",
-                        TypePrinter.IntPtrType, Helpers.InstanceIdentifier);
-
-                    PopBlock(NewLineKind.BeforeNextBlock);
-
-                    PushBlock(BlockKind.Field);
-
+                    WriteLine($"public {TypePrinter.IntPtrType} {Helpers.InstanceIdentifier} {{ get; protected set; }}");
                     if (@class.Layout.HasSubclassAtNonZeroOffset)
                         WriteLine($"protected int {Helpers.PrimaryBaseOffsetIdentifier};");
-
-                    // use interfaces if any - derived types with a secondary base this class must be compatible with the map
-                    var @interface = @class.Namespace.Classes.FirstOrDefault(
-                        c => c.IsInterface && c.OriginalClass == @class);
-                    var printedClass = (@interface ?? @class).Visit(TypePrinter);
-                    var valueType = Options.GenerateFinalizerFor(@class) ? $"global::System.WeakReference<{printedClass}>" : $"{printedClass}";
-                    var dict = $@"global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {valueType}>";
-
-                    var generateNativeToManaged = Options.GenerateNativeToManagedFor(@class);
-                    if (generateNativeToManaged)
-                        WriteLine("internal static readonly {0} NativeToManagedMap = new {0}();", dict);
-                    PopBlock(NewLineKind.BeforeNextBlock);
-
-                    // Create a method to record/recover a mapping to make it easier to call from template instantiation
-                    // implementations. If finalizers are in play, use weak references; otherwise, the finalizer
-                    // will never get invoked: unless the managed object is Disposed, there will always be a reference
-                    // in the dictionary.
-                    PushBlock(BlockKind.Method);
-                    if (generateNativeToManaged)
-                    { 
-                        if (Options.GenerateFinalizerFor(@class))
-                        {
-                            WriteLines($@"
-    internal static void {Helpers.RecordNativeToManagedMappingIdentifier}(IntPtr native, {printedClass} managed)
-    {{
-        NativeToManagedMap[native] = new global::System.WeakReference<{printedClass}>(managed);
-    }}
-
-    internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr native, out {printedClass} managed)
-    {{
-        managed = default;
-        return NativeToManagedMap.TryGetValue(native, out var wr) && wr.TryGetTarget(out managed);
-    }}");
-                        }
-                        else
-                        {
-                            WriteLines($@"
-    internal static void {Helpers.RecordNativeToManagedMappingIdentifier}(IntPtr native, {printedClass} managed)
-    {{
-        NativeToManagedMap[native] = managed;
-    }}
-
-    internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr native, out {printedClass} managed)
-    {{
-        return NativeToManagedMap.TryGetValue(native, out managed);
-    }}");
-                        }
-                    }
                 }
                 PopBlock(NewLineKind.BeforeNextBlock);
+
+                if (!@class.IsValueType)
+                {
+                    PushBlock(BlockKind.Method);
+                    if (Options.GenerateNativeToManagedFor(@class))
+                        GenerateNativeToManaged(@class);
+                    PopBlock(NewLineKind.BeforeNextBlock);
+                }
             }
 
             // Add booleans to track who owns unmanaged memory for string fields
@@ -504,6 +451,40 @@ namespace CppSharp.Generators.CSharp
                 typeMap.IsEnabled = true;
 
             return true;
+        }
+
+        public void GenerateNativeToManaged(Class @class)
+        {
+            // use interfaces if any - derived types with a secondary base this class must be compatible with the map
+            var @interface = @class.Namespace.Classes.FirstOrDefault(c => c.IsInterface && c.OriginalClass == @class);
+            var printedClass = (@interface ?? @class).Visit(TypePrinter);
+
+            // Create a method to record/recover a mapping to make it easier to call from template instantiation
+            // implementations. If finalizers are in play, use weak references; otherwise, the finalizer
+            // will never get invoked: unless the managed object is Disposed, there will always be a reference
+            // in the dictionary.
+
+            bool generateFinalizer = Options.GenerateFinalizerFor(@class);
+            var type = generateFinalizer ? $"global::System.WeakReference<{printedClass}>" : $"{printedClass}";
+
+            WriteLines($@"
+internal static readonly new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {type}> NativeToManagedMap =
+    new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {type}>();
+
+internal static void {Helpers.RecordNativeToManagedMappingIdentifier}(IntPtr native, {printedClass} managed)
+{{
+    NativeToManagedMap[native] = {(generateFinalizer ? $"new {type}(managed)" : "managed")};
+}}
+
+internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr native, out {printedClass} managed)
+{{
+    {(generateFinalizer
+    ? @"
+    managed = default;
+    return NativeToManagedMap.TryGetValue(native, out var wr) && wr.TryGetTarget(out managed);"
+    : @"
+    return NativeToManagedMap.TryGetValue(native, out managed);")}
+}}");
         }
 
         private void GenerateInterface(Class @class)
@@ -577,8 +558,6 @@ namespace CppSharp.Generators.CSharp
         {
             var sequentialLayout = Options.GenerateSequentialLayout && CanUseSequentialLayout(@class);
 
-            PushBlock(BlockKind.InternalsClass);
-
             if (@class.Layout.Size > 0)
             {
                 var layout = sequentialLayout ? "Sequential" : "Explicit";
@@ -586,25 +565,22 @@ namespace CppSharp.Generators.CSharp
                 WriteLine($"[StructLayout(LayoutKind.{layout}, Size = {@class.Layout.Size}{pack})]");
             }
 
-            GenerateClassInternalHead(@class);
-            WriteOpenBraceAndIndent();
-
-            TypePrinter.PushContext(TypePrinterContextKind.Native);
-
-            GenerateClassInternalsFields(@class, sequentialLayout);
-
-            if (@class.IsGenerated)
+            using (PushWriteBlock(BlockKind.InternalsClass, GetClassInternalHead(@class), NewLineKind.BeforeNextBlock))
             {
-                var functions = GatherClassInternalFunctions(@class);
+                TypePrinter.PushContext(TypePrinterContextKind.Native);
 
-                foreach (var function in functions)
-                    GenerateInternalFunction(function);
+                GenerateClassInternalsFields(@class, sequentialLayout);
+
+                if (@class.IsGenerated)
+                {
+                    var functions = GatherClassInternalFunctions(@class);
+
+                    foreach (var function in functions)
+                        GenerateInternalFunction(function);
+                }
+
+                TypePrinter.PopContext();
             }
-
-            TypePrinter.PopContext();
-
-            UnindentAndWriteCloseBrace();
-            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
         private IEnumerable<Function> GatherClassInternalFunctions(Class @class,
@@ -725,10 +701,8 @@ namespace CppSharp.Generators.CSharp
             return @params;
         }
 
-        private void GenerateClassInternalHead(Class @class)
+        private string GetClassInternalHead(Class @class)
         {
-            Write("public ");
-
             bool isSpecialization = false;
             DeclarationContext declContext = @class;
             while (declContext != null)
@@ -738,12 +712,10 @@ namespace CppSharp.Generators.CSharp
                     break;
                 declContext = declContext.Namespace;
             }
-            if (@class != null && @class.NeedsBase &&
-                !@class.BaseClass.IsInterface && !(@class.BaseClass is ClassTemplateSpecialization) && !isSpecialization)
-                Write("new ");
+            var @new = @class != null && @class.NeedsBase &&
+                !@class.BaseClass.IsInterface && !(@class.BaseClass is ClassTemplateSpecialization) && !isSpecialization;
 
-            WriteLine($@"{(isSpecialization ? "unsafe " : string.Empty)}partial struct {
-                Helpers.InternalStruct}{Helpers.GetSuffixForInternal(@class)}");
+            return $@"public {(@new ? "new " : "")}{(isSpecialization ? "unsafe " : string.Empty)}partial struct {Helpers.InternalStruct}{Helpers.GetSuffixForInternal(@class)}";
         }
 
         public static bool ShouldGenerateClassNativeField(Class @class)
@@ -974,8 +946,7 @@ namespace CppSharp.Generators.CSharp
             if (ctx.HasCodeBlock)
                 Indent();
 
-            WriteLine($@"*{ptr} = {marshal.Context.ArgumentPrefix}{
-                marshal.Context.Return};", marshal.Context.Return);
+            WriteLine($@"*{ptr} = {marshal.Context.ArgumentPrefix}{marshal.Context.Return};", marshal.Context.Return);
 
             if (ctx.HasCodeBlock)
                 UnindentAndWriteCloseBrace();
@@ -1020,10 +991,7 @@ namespace CppSharp.Generators.CSharp
             var actualProperty = GetActualProperty(property, @class);
             if (actualProperty == null)
             {
-                WriteLine($@"throw new MissingMethodException(""Method {
-                    property.Name} missing from explicit specialization {
-                    @class.Visit(TypePrinter)}."");");
-
+                WriteLine($@"throw new MissingMethodException(""Method {property.Name} missing from explicit specialization {@class.Visit(TypePrinter)}."");");
                 return false;
             }
             property = actualProperty;
@@ -1178,8 +1146,7 @@ namespace CppSharp.Generators.CSharp
             var internalFunction = GetFunctionNativeIdentifier(function);
             var paramMarshal = GenerateFunctionParamMarshal(
                 function.Parameters[0], 0);
-            string call = $@"{@internal}.{internalFunction}({
-                GetInstanceParam(function)}, {paramMarshal.Context.ArgumentPrefix}{paramMarshal.Name})";
+            string call = $@"{@internal}.{internalFunction}({GetInstanceParam(function)}, {paramMarshal.Context.ArgumentPrefix}{paramMarshal.Name})";
             if (type.IsPrimitiveType())
             {
                 WriteLine($"*{call} = {marshal.Context.ArgumentPrefix}{marshal.Context.Return};");
@@ -1190,13 +1157,11 @@ namespace CppSharp.Generators.CSharp
                 if (type.TryGetClass(out @class) && @class.HasNonTrivialCopyConstructor)
                 {
                     Method cctor = @class.Methods.First(c => c.IsCopyConstructor);
-                    WriteLine($@"{TypePrinter.PrintNative(type)}.{
-                        GetFunctionNativeIdentifier(cctor)}({call}, {marshal.Context.Return});");
+                    WriteLine($@"{TypePrinter.PrintNative(type)}.{GetFunctionNativeIdentifier(cctor)}({call}, {marshal.Context.Return});");
                 }
                 else
                 {
-                    WriteLine($@"*({TypePrinter.PrintNative(type)}*) {call} = {
-                        marshal.Context.ArgumentPrefix}{marshal.Context.Return};");
+                    WriteLine($@"*({TypePrinter.PrintNative(type)}*) {call} = {marshal.Context.ArgumentPrefix}{marshal.Context.Return};");
                 }
             }
             if (paramMarshal.HasUsingBlock)
@@ -1329,9 +1294,7 @@ namespace CppSharp.Generators.CSharp
                 arrayType.SizeType == ArrayType.ArraySize.Constant)
                 ctx.ReturnVarName = ptr;
             else
-                ctx.ReturnVarName = $@"{elementType}.{
-                    Helpers.CreateInstanceIdentifier}(new {
-                        TypePrinter.IntPtrType}({ptr}))";
+                ctx.ReturnVarName = $@"{elementType}.{Helpers.CreateInstanceIdentifier}(new {TypePrinter.IntPtrType}({ptr}))";
 
             var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
             var.QualifiedType.Visit(marshal);
@@ -1355,10 +1318,7 @@ namespace CppSharp.Generators.CSharp
             var actualProperty = GetActualProperty(property, @class);
             if (actualProperty == null)
             {
-                WriteLine($@"throw new MissingMethodException(""Method {
-                    property.Name} missing from explicit specialization {
-                    @class.Visit(TypePrinter)}."");");
-
+                WriteLine($@"throw new MissingMethodException(""Method {property.Name} missing from explicit specialization {@class.Visit(TypePrinter)}."");");
                 return false;
             }
             QualifiedType type = default;
@@ -1601,8 +1561,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
-                    WriteLine($@"{printedType} {
-                        prop.ExplicitInterfaceImpl.Name}.{GetPropertyName(prop)}");
+                    WriteLine($@"{printedType} {prop.ExplicitInterfaceImpl.Name}.{GetPropertyName(prop)}");
                 }
                 WriteOpenBraceAndIndent();
 
@@ -1659,16 +1618,14 @@ namespace CppSharp.Generators.CSharp
                 GeneratePropertyGetterForVariableWithInitializer(variable, signature);
             else
             {
-                WriteLine(signature);
-                WriteOpenBraceAndIndent();
+                using (WriteBlock(signature))
+                {
+                    GeneratePropertyGetter(variable, @class);
 
-                GeneratePropertyGetter(variable, @class);
-
-                if (!variable.QualifiedType.Qualifiers.IsConst &&
-                    !(variable.Type.Desugar() is ArrayType))
-                    GeneratePropertySetter(variable, @class);
-
-                UnindentAndWriteCloseBrace();
+                    if (!variable.QualifiedType.Qualifiers.IsConst &&
+                        !(variable.Type.Desugar() is ArrayType))
+                        GeneratePropertySetter(variable, @class);
+                }
             }
 
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -1712,22 +1669,20 @@ namespace CppSharp.Generators.CSharp
             var originalTableClass = @class.IsDependent ? @class.Specializations[0] : @class;
             var destructorOnly = "destructorOnly";
 
-            WriteLine($"internal static{(hasDynamicBase ? " new" : string.Empty)} class VTableLoader");
+            using (WriteBlock($"internal static{(hasDynamicBase ? " new" : string.Empty)} class VTableLoader"))
             {
-                WriteOpenBraceAndIndent();
-                WriteLine($"private static volatile bool initialized;");
-                WriteLine($"private static readonly IntPtr*[] ManagedVTables = new IntPtr*[{@class.Layout.VTablePointers.Count}];");
-                if (hasVirtualDtor)
-                    WriteLine($"private static readonly IntPtr*[] ManagedVTablesDtorOnly = new IntPtr*[{@class.Layout.VTablePointers.Count}];");
-                WriteLine($"private static readonly IntPtr[] Thunks = new IntPtr[{wrappedEntries.Count}];");
-                WriteLine("private static CppSharp.Runtime.VTables VTables;");
-                WriteLine($"private static readonly global::System.Collections.Generic.List<CppSharp.Runtime.SafeUnmanagedMemoryHandle>");
-                WriteLineIndent("SafeHandles = new global::System.Collections.Generic.List<CppSharp.Runtime.SafeUnmanagedMemoryHandle>();");
-                NewLine();
+                WriteLines($@"
+                    private static volatile bool initialized;
+                    private static readonly IntPtr*[] ManagedVTables = new IntPtr*[{@class.Layout.VTablePointers.Count}];{(hasVirtualDtor ? $@"
+                    private static readonly IntPtr*[] ManagedVTablesDtorOnly = new IntPtr*[{@class.Layout.VTablePointers.Count}];" : "")}
+                    private static readonly IntPtr[] Thunks = new IntPtr[{wrappedEntries.Count}];
+                    private static CppSharp.Runtime.VTables VTables;
+                    private static readonly global::System.Collections.Generic.List<CppSharp.Runtime.SafeUnmanagedMemoryHandle>
+                        SafeHandles = new global::System.Collections.Generic.List<CppSharp.Runtime.SafeUnmanagedMemoryHandle>();
+                ", trimIndentation: true);
 
-                WriteLine($"static VTableLoader()");
+                using (WriteBlock($"static VTableLoader()"))
                 {
-                    WriteOpenBraceAndIndent();
                     foreach (var entry in wrappedEntries.Distinct().Where(e => !e.Method.Ignore))
                     {
                         var name = GetVTableMethodDelegateName(entry.Method);
@@ -1742,13 +1697,11 @@ namespace CppSharp.Generators.CSharp
                             WriteLine($"Thunks[{i}] = Marshal.GetFunctionPointerForDelegate({name + "Instance"});");
                         }
                     }
-                    UnindentAndWriteCloseBrace();
                 }
                 NewLine();
 
-                WriteLine($"public static CppSharp.Runtime.VTables SetupVTables(IntPtr instance, bool {destructorOnly} = false)");
+                using (WriteBlock($"public static CppSharp.Runtime.VTables SetupVTables(IntPtr instance, bool {destructorOnly} = false)"))
                 {
-                    WriteOpenBraceAndIndent();
                     WriteLine($"if (!initialized)");
                     {
                         WriteOpenBraceAndIndent();
@@ -1799,34 +1752,33 @@ namespace CppSharp.Generators.CSharp
                     }
 
                     WriteLine("return VTables;");
-                    UnindentAndWriteCloseBrace();
                 }
             }
-            UnindentAndWriteCloseBrace();
             NewLine();
 
             if (!hasDynamicBase)
                 WriteLine("protected CppSharp.Runtime.VTables __vtables;");
 
-            WriteLines($@"
-            internal {(hasDynamicBase ? "override" : "virtual")} CppSharp.Runtime.VTables __VTables
-            {{ 
+            using (WriteBlock($"internal {(hasDynamicBase ? "override" : "virtual")} CppSharp.Runtime.VTables __VTables"))
+            {
+                WriteLines($@"
                 get {{
                     if (__vtables.IsEmpty)
                         __vtables.Tables = {($"new IntPtr[] {{ {string.Join(", ", originalTableClass.Layout.VTablePointers.Select(x => $"*(IntPtr*)({Helpers.InstanceIdentifier} + {x.Offset})"))} }}")};
                     return __vtables;
                 }}
 
-                set {{        
+                set {{    
                     __vtables = value;
-                }}
-            }}
+                }}", trimIndentation: true);
+            }
 
-            internal {(hasDynamicBase ? "override" : "virtual")} void SetupVTables(bool destructorOnly = false)
-            {{
+            using (WriteBlock($"internal {(hasDynamicBase ? "override" : "virtual")} void SetupVTables(bool destructorOnly = false)"))
+            {
+                WriteLines($@"
                 if (__VTables.IsTransient)
-                    __VTables = VTableLoader.SetupVTables(__Instance, destructorOnly);
-            }}", trimIndentation: true);
+                    __VTables = VTableLoader.SetupVTables(__Instance, destructorOnly);", trimIndentation: true);
+            }
 
             WriteLine("#endregion");
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -1910,8 +1862,7 @@ namespace CppSharp.Generators.CSharp
                     return;
                 }
                 var typeFullName = TypePrinter.VisitClassDecl(@class);
-                WriteLine($@"SetupVTables(GetType().FullName == ""{
-                    typeFullName.Type.Replace("global::", string.Empty)}"");");
+                WriteLine($@"SetupVTables(GetType().FullName == ""{typeFullName.Type.Replace("global::", string.Empty)}"");");
             }
         }
 
@@ -2012,8 +1963,7 @@ namespace CppSharp.Generators.CSharp
                 if (method.HasIndirectReturnTypeParameter)
                 {
                     var retParam = method.Parameters.First(p => p.Kind == ParameterKind.IndirectReturnType);
-                    WriteLine($@"*({TypePrinter.PrintNative(method.OriginalReturnType)}*) {
-                        retParam.Name} = {marshal.Context.ArgumentPrefix}{marshal.Context.Return};");
+                    WriteLine($@"*({TypePrinter.PrintNative(method.OriginalReturnType)}*) {retParam.Name} = {marshal.Context.ArgumentPrefix}{marshal.Context.Return};");
                 }
                 else
                 {
@@ -2051,20 +2001,14 @@ namespace CppSharp.Generators.CSharp
             var vTableMethodDelegateName = GetVTableMethodDelegateName(method);
             TypePrinter.PopMarshalKind();
 
-            WriteLine("private static {0} {1}Instance;",
-                method.FunctionType.ToString(),
-                vTableMethodDelegateName);
+            WriteLine($"private static {method.FunctionType} {vTableMethodDelegateName}Instance;");
             NewLine();
 
-            WriteLine("private static {0} {1}Hook({2})", retType, vTableMethodDelegateName,
-                string.Join(", ", @params));
-            WriteOpenBraceAndIndent();
-
-            var printedClass = @class.Visit(TypePrinter);
-            WriteLine($@"var {Helpers.TargetIdentifier} = {printedClass}.__GetInstance({Helpers.InstanceField});");
-            GenerateVTableManagedCall(method);
-
-            UnindentAndWriteCloseBrace();
+            using (WriteBlock($"private static {retType} {vTableMethodDelegateName}Hook({string.Join(", ", @params)})"))
+            {
+                WriteLine($@"var {Helpers.TargetIdentifier} = {@class.Visit(TypePrinter)}.__GetInstance({Helpers.InstanceField});");
+                GenerateVTableManagedCall(method);
+            }
 
             PopBlock(NewLineKind.Always);
         }
@@ -2241,7 +2185,7 @@ namespace CppSharp.Generators.CSharp
                 return;
 
             using (PushWriteBlock(BlockKind.Finalizer, $"~{@class.Name}()", NewLineKind.BeforeNextBlock))
-                WriteLine($"Dispose(false, callNativeDtor : { Helpers.OwnsNativeInstanceIdentifier} );");
+                WriteLine($"Dispose(false, callNativeDtor : {Helpers.OwnsNativeInstanceIdentifier} );");
         }
 
         private void GenerateDisposeMethods(Class @class)
@@ -2253,7 +2197,7 @@ namespace CppSharp.Generators.CSharp
             {
                 using (PushWriteBlock(BlockKind.Method, "public void Dispose()", NewLineKind.BeforeNextBlock))
                 {
-                    WriteLine($"Dispose(disposing: true, callNativeDtor : { Helpers.OwnsNativeInstanceIdentifier} );");
+                    WriteLine($"Dispose(disposing: true, callNativeDtor : {Helpers.OwnsNativeInstanceIdentifier} );");
                     if (Options.GenerateFinalizerFor(@class))
                         WriteLine("GC.SuppressFinalize(this);");
                 }
@@ -2410,7 +2354,7 @@ namespace CppSharp.Generators.CSharp
 
                     bool generateNativeToManaged = Options.GenerateNativeToManagedFor(@class);
                     if (generateNativeToManaged)
-                    { 
+                    {
                         WriteLines($@"
 internal static{(@new ? " new" : string.Empty)} {printedClass} __GetOrCreateInstance({TypePrinter.IntPtrType} native, bool saveInstance = false, bool skipVTables = false)
 {{
@@ -2435,13 +2379,13 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
 {{");
 
                         if (generateNativeToManaged)
-                        { 
-WriteLines($@"
+                        {
+                            WriteLines($@"
     if (!{Helpers.TryGetNativeToManagedMappingIdentifier}(native, out var managed))
         throw new global::System.Exception(""No managed instance was found"");");
-}
+                        }
 
-WriteLines($@"
+                        WriteLines($@"
     var result = ({printedClass})managed;
     if (result.{Helpers.OwnsNativeInstanceIdentifier})
         result.SetupVTables();
@@ -2520,31 +2464,7 @@ WriteLines($@"
             if (@class.IsRefType && !@class.IsAbstract)
             {
                 PushBlock(BlockKind.Method);
-                WriteLine($"private static void* __CopyValue({@internal} native)");
-                WriteOpenBraceAndIndent();
-                var copyCtorMethod = @class.Methods.FirstOrDefault(method =>
-                    method.IsCopyConstructor);
-                if (@class.HasNonTrivialCopyConstructor && copyCtorMethod != null &&
-                    copyCtorMethod.IsGenerated)
-                {
-                    // Allocate memory for a new native object and call the ctor.
-                    WriteLine($"var ret = Marshal.AllocHGlobal(sizeof({@internal}));");
-                    var printed = TypePrinter.PrintNative(@class);
-                    string defaultValue = string.Empty;
-                    if (copyCtorMethod.Parameters.Count > 1)
-                        defaultValue = $", {ExpressionPrinter.VisitParameter(copyCtorMethod.Parameters.Last())}";
-                    WriteLine($@"{printed}.{GetFunctionNativeIdentifier(copyCtorMethod)}(ret, new {
-                        TypePrinter.IntPtrType}(&native){defaultValue});",
-                        printed, GetFunctionNativeIdentifier(copyCtorMethod));
-                    WriteLine("return ret.ToPointer();");
-                }
-                else
-                {
-                    WriteLine($"var ret = Marshal.AllocHGlobal(sizeof({@internal}));");
-                    WriteLine($"*({@internal}*) ret = native;");
-                    WriteLine("return ret.ToPointer();");
-                }
-                UnindentAndWriteCloseBrace();
+                Generate__CopyValue(@class, @internal);
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
             if (!@class.IsAbstract)
@@ -2569,23 +2489,31 @@ WriteLines($@"
             }
         }
 
-        private void GenerateClassConstructorBase(Class @class, Method method)
+        private void Generate__CopyValue(Class @class, string @internal)
         {
-            var hasBase = @class.HasBaseClass;
-
-            if (hasBase && !@class.IsValueType)
+            using (WriteBlock($"private static void* __CopyValue({@internal} native)"))
             {
-                Indent();
-                Write(": this(");
-
-                Write(method != null ? "(void*) null" : "native");
-
-                WriteLine(")");
-                Unindent();
+                var copyCtorMethod = @class.Methods.FirstOrDefault(method => method.IsCopyConstructor);
+                
+                if (@class.HasNonTrivialCopyConstructor && copyCtorMethod != null && copyCtorMethod.IsGenerated)
+                {
+                    // Allocate memory for a new native object and call the ctor.
+                    var printed = TypePrinter.PrintNative(@class);
+                    string defaultValue = string.Empty;
+                    if (copyCtorMethod.Parameters.Count > 1)
+                        defaultValue = $", {ExpressionPrinter.VisitParameter(copyCtorMethod.Parameters.Last())}";
+                    WriteLine($@"var ret = Marshal.AllocHGlobal(sizeof({@internal}));");
+                    WriteLine($@"{printed}.{GetFunctionNativeIdentifier(copyCtorMethod)}(ret, new {TypePrinter.IntPtrType}(&native){defaultValue});",
+                        printed, GetFunctionNativeIdentifier(copyCtorMethod));
+                    WriteLine("return ret.ToPointer();");
+                }
+                else
+                {
+                    WriteLine($"var ret = Marshal.AllocHGlobal(sizeof({@internal}));");
+                    WriteLine($"*({@internal}*) ret = native;");
+                    WriteLine("return ret.ToPointer();");
+                }
             }
-
-            if (@class.IsValueType)
-                WriteLineIndent(": this()");
         }
 
         #endregion
@@ -2600,17 +2528,15 @@ WriteLines($@"
             var functionName = GetFunctionIdentifier(function);
             if (functionName == parentName)
                 functionName += '_';
-            Write("public static {0} {1}(", function.OriginalReturnType, functionName);
-            Write(FormatMethodParameters(function.Parameters));
-            WriteLine(")");
-            WriteOpenBraceAndIndent();
 
-            if (function.SynthKind == FunctionSynthKind.DefaultValueOverload)
-                GenerateOverloadCall(function);
-            else
-                GenerateInternalFunctionCall(function);
+            using (WriteBlock($"public static {function.OriginalReturnType} {functionName}({FormatMethodParameters(function.Parameters)})"))
+            {
+                if (function.SynthKind == FunctionSynthKind.DefaultValueOverload)
+                    GenerateOverloadCall(function);
+                else
+                    GenerateInternalFunctionCall(function);
+            }
 
-            UnindentAndWriteCloseBrace();
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
@@ -2636,25 +2562,17 @@ WriteLines($@"
                 Write("abstract ");
 
             var functionName = GetMethodIdentifier(method);
-
             var printedType = method.OriginalReturnType.Visit(TypePrinter);
+            var parameters = FormatMethodParameters(method.Parameters);
 
             if (method.IsConstructor || method.IsDestructor)
-                Write("{0}(", functionName);
+                Write($"{functionName}({parameters})");
             else if (method.ExplicitInterfaceImpl != null)
-                Write("{0} {1}.{2}(", printedType,
-                    method.ExplicitInterfaceImpl.Name, functionName);
-            else if (method.OperatorKind == CXXOperatorKind.Conversion ||
-                     method.OperatorKind == CXXOperatorKind.ExplicitConversion)
-            {
-                Write($"{functionName} {printedType}(");
-            }
+                Write($"{printedType} {method.ExplicitInterfaceImpl.Name}.{functionName}({parameters})");
+            else if (method.OperatorKind == CXXOperatorKind.Conversion || method.OperatorKind == CXXOperatorKind.ExplicitConversion)
+                Write($"{functionName} {printedType}({parameters})");
             else
-                Write("{0} {1}(", printedType, functionName);
-
-            Write(FormatMethodParameters(method.Parameters));
-
-            Write(")");
+                Write($"{printedType} {functionName}({parameters})", printedType);
         }
 
         public void GenerateMethod(Method method, Class @class)
@@ -2688,7 +2606,15 @@ WriteLines($@"
 
             if (method.Kind == CXXMethodKind.Constructor &&
                 method.SynthKind != FunctionSynthKind.DefaultValueOverload)
-                GenerateClassConstructorBase(@class, method);
+            {
+                var hasBase = @class.HasBaseClass;
+
+                if (hasBase && !@class.IsValueType)
+                    WriteLineIndent($": this({(method != null ? "(void*) null" : "native")})");
+
+                if (@class.IsValueType)
+                    WriteLineIndent(": this()");
+            }
 
             WriteOpenBraceAndIndent();
 
@@ -2721,7 +2647,13 @@ WriteLines($@"
 
             if (method.OperatorKind == CXXOperatorKind.EqualEqual)
             {
-                GenerateEqualsAndGetHashCode(method, @class);
+                if (ShouldGenerateEqualsAndGetHashCode(@class, method))
+                {
+                    NewLine();
+                    GenerateEquals(@class);
+                    NewLine();
+                    GenerateGetHashCode(@class);
+                }
             }
 
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -2737,18 +2669,12 @@ WriteLines($@"
                     m => m.InstantiatedFrom == (method.OriginalFunction ?? method));
                 if (specializedMethod == null)
                 {
-                    WriteLine($@"throw new MissingMethodException(""Method {
-                        method.Name} missing from explicit specialization {
-                        @class.Visit(TypePrinter)}."");");
-
+                    WriteLine($@"throw new MissingMethodException(""Method {method.Name} missing from explicit specialization {@class.Visit(TypePrinter)}."");");
                     return false;
                 }
                 if (specializedMethod.Ignore)
                 {
-                    WriteLine($@"throw new MissingMethodException(""Method {
-                        method.Name} ignored in specialization {
-                        @class.Visit(TypePrinter)}."");");
-
+                    WriteLine($@"throw new MissingMethodException(""Method {method.Name} ignored in specialization {@class.Visit(TypePrinter)}."");");
                     return false;
                 }
 
@@ -2828,8 +2754,7 @@ WriteLines($@"
                     parameter.Usage == ParameterUsage.InOut && parameter.HasDefaultValue)
                 {
                     var pointeeType = ((PointerType)parameter.Type).Pointee.ToString();
-                    WriteLine($@"{pointeeType} param{j++} = {
-                        (primitiveType == PrimitiveType.Bool ? "false" : "0")};");
+                    WriteLine($@"{pointeeType} param{j++} = {(primitiveType == PrimitiveType.Bool ? "false" : "0")};");
                 }
             }
 
@@ -2851,49 +2776,46 @@ WriteLines($@"
                                 (p.Usage == ParameterUsage.InOut ? "ref " : string.Empty) + p.Name)));
         }
 
-        private void GenerateEqualsAndGetHashCode(Function method, Class @class)
+        private bool ShouldGenerateEqualsAndGetHashCode(Class @class, Function method)
         {
-            Class leftHandSide;
-            Class rightHandSide;
-            if (method.Parameters[0].Type.SkipPointerRefs().TryGetClass(out leftHandSide) &&
-                leftHandSide.OriginalPtr == @class.OriginalPtr &&
-                method.Parameters[1].Type.SkipPointerRefs().TryGetClass(out rightHandSide) &&
-                rightHandSide.OriginalPtr == @class.OriginalPtr)
+            return method.Parameters[0].Type.SkipPointerRefs().TryGetClass(out Class leftHandSide)
+                && leftHandSide.OriginalPtr == @class.OriginalPtr
+                && method.Parameters[1].Type.SkipPointerRefs().TryGetClass(out Class rightHandSide)
+                && rightHandSide.OriginalPtr == @class.OriginalPtr;
+        }
+
+        private void GenerateEquals(Class @class)
+        {
+            using (WriteBlock("public override bool Equals(object obj)"))
             {
-                NewLine();
-                WriteLine("public override bool Equals(object obj)");
-                WriteOpenBraceAndIndent();
                 var printedClass = @class.Visit(TypePrinter);
                 if (@class.IsRefType)
-                {
                     WriteLine($"return this == obj as {printedClass};");
-                }
                 else
                 {
                     WriteLine($"if (!(obj is {printedClass})) return false;");
                     WriteLine($"return this == ({printedClass}) obj;");
                 }
-                UnindentAndWriteCloseBrace();
-
-                NewLine();
-
-                WriteLine("public override int GetHashCode()");
-                WriteOpenBraceAndIndent();
-                if (@class.IsRefType)
-                    this.GenerateMember(@class, GenerateGetHashCode);
-                else
-                    WriteLine($"return {Helpers.InstanceIdentifier}.GetHashCode();");
-                UnindentAndWriteCloseBrace();
             }
         }
 
-        private bool GenerateGetHashCode(Class @class)
+        private void GenerateGetHashCode(Class @class)
         {
-            WriteLine($"if ({Helpers.InstanceIdentifier} == {TypePrinter.IntPtrType}.Zero)");
-            WriteLineIndent($"return {TypePrinter.IntPtrType}.Zero.GetHashCode();");
-            WriteLine($@"return (*({TypePrinter.PrintNative(@class)}*) {
-                Helpers.InstanceIdentifier}).GetHashCode();");
-            return false;
+            using (WriteBlock("public override int GetHashCode()"))
+            { 
+                if (!@class.IsRefType)
+                    WriteLine($"return {Helpers.InstanceIdentifier}.GetHashCode();");
+                else
+                {
+                    this.GenerateMember(@class, c =>
+                    {
+                        WriteLine($"if ({Helpers.InstanceIdentifier} == {TypePrinter.IntPtrType}.Zero)");
+                        WriteLineIndent($"return {TypePrinter.IntPtrType}.Zero.GetHashCode();");
+                        WriteLine($@"return (*({TypePrinter.PrintNative(c)}*) {Helpers.InstanceIdentifier}).GetHashCode();");
+                        return false;
+                    });
+                }
+            }
         }
 
         private void GenerateVirtualFunctionCall(Method method,
@@ -3014,8 +2936,7 @@ WriteLines($@"
                 else
                 {
                     var classInternal = TypePrinter.PrintNative(@class);
-                    WriteLine($@"*(({classInternal}*) {Helpers.InstanceIdentifier}) = *(({
-                        classInternal}*) {method.Parameters[0].Name}.{Helpers.InstanceIdentifier});");
+                    WriteLine($@"*(({classInternal}*) {Helpers.InstanceIdentifier}) = *(({classInternal}*) {method.Parameters[0].Name}.{Helpers.InstanceIdentifier});");
 
                     // Copy any string references owned by the source to the new instance so we
                     // don't have to ref count them.
@@ -3108,8 +3029,7 @@ WriteLines($@"
                     Class retClass;
                     type.TryGetClass(out retClass);
                     var @class = retClass.OriginalClass ?? retClass;
-                    WriteLine($@"var {Helpers.ReturnIdentifier} = new {
-                        TypePrinter.PrintNative(@class)}();");
+                    WriteLine($@"var {Helpers.ReturnIdentifier} = new {TypePrinter.PrintNative(@class)}();");
                 }
                 else
                 {
@@ -3170,9 +3090,7 @@ WriteLines($@"
             {
                 if (operatorParam == null)
                 {
-                    WriteLine($@"fixed ({Helpers.InternalStruct}{
-                        Helpers.GetSuffixForInternal((Class)originalFunction.Namespace)}* __instancePtr = &{
-                        Helpers.InstanceField})");
+                    WriteLine($@"fixed ({Helpers.InternalStruct}{Helpers.GetSuffixForInternal((Class)originalFunction.Namespace)}* __instancePtr = &{Helpers.InstanceField})");
                     WriteOpenBraceAndIndent();
                 }
                 else
@@ -3187,18 +3105,17 @@ WriteLines($@"
             if (method != null && !method.IsConstructor && method.OriginalFunction != null &&
                 ((Method)method.OriginalFunction).IsConstructor)
             {
-                WriteLine($@"Marshal.AllocHGlobal({
-                    ((Class)method.OriginalNamespace).Layout.Size});");
+                WriteLine($@"Marshal.AllocHGlobal({((Class)method.OriginalNamespace).Layout.Size});");
                 names.Insert(0, Helpers.ReturnIdentifier);
             }
             WriteLine("{0}({1});", functionName, string.Join(", ", names));
 
-            foreach(var param in @params)
+            foreach (var param in @params)
             {
                 if (param.Param.IsInOut && param.Param.Type.IsReferenceToPtrToClass())
                 {
                     var qualifiedClass = param.Param.Type.Visit(TypePrinter);
-                    
+
                     WriteLine($"if ({param.Name} != {param.Param.Name}.__Instance)");
                     WriteLine($"{param.Param.Name} = {qualifiedClass}.__GetOrCreateInstance(__{param.Name}, false);");
                 }
