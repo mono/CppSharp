@@ -111,7 +111,8 @@ namespace CppSharp.Passes
             if (decl is TypedefDecl)
                 return Targets.HasFlag(RenameTargets.Delegate);
 
-            if (decl is Namespace && !(decl is TranslationUnit)) return true;
+            if (decl is Namespace && !(decl is TranslationUnit))
+                return Targets.HasFlag(RenameTargets.Namespace);
 
             if (decl is Variable)
                 return Targets.HasFlag(RenameTargets.Variable);
@@ -306,7 +307,8 @@ namespace CppSharp.Passes
         Property = 1 << 8,
         Delegate = 1 << 9,
         Variable = 1 << 10,
-        Any = Function | Method | Parameter | Class | Field | Enum | EnumItem | Event | Property | Delegate | Variable
+        Namespace = 1 << 11,
+        Any = Function | Method | Parameter | Class | Field | Enum | EnumItem | Event | Property | Delegate | Variable | Namespace
     }
 
     /// <summary>
