@@ -46,15 +46,15 @@ namespace CppSharp.Runtime
             }
         }
 
-        public unsafe static IntPtr* CloneTable(List<SafeUnmanagedMemoryHandle> cache, IntPtr instance, int offset, int size)
+        public unsafe static IntPtr* CloneTable(List<SafeUnmanagedMemoryHandle> cache, IntPtr instance, int offset, int size, int offsetRTTI)
         {
-            var sizeInBytes = size * sizeof(IntPtr);
-            var src = ((*(IntPtr*)instance) + offset).ToPointer();
+            var sizeInBytes = (size + offsetRTTI) * sizeof(IntPtr);
+            var src = (((*(IntPtr*)instance) + offset) - offsetRTTI * sizeof(IntPtr)).ToPointer();
             var entries = (IntPtr*)Marshal.AllocHGlobal(sizeInBytes);
 
             Buffer.MemoryCopy(src, entries, sizeInBytes, sizeInBytes);
             cache.Add(new SafeUnmanagedMemoryHandle((IntPtr)entries, true));
-            return entries;
+            return entries + offsetRTTI;
         }
     }
 }
