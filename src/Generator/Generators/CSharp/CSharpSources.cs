@@ -1832,7 +1832,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             string suffix = (destructorOnly ? "_dtor" : string.Empty) +
                 (tableIndex == 0 ? string.Empty : tableIndex.ToString(CultureInfo.InvariantCulture));
 
-            WriteLine($"{table}[{tableIndex}] = CppSharp.Runtime.VTables.CloneTable(SafeHandles, instance, {vptrOffset}, {entries.Count});");
+            WriteLine($"{table}[{tableIndex}] = CppSharp.Runtime.VTables.CloneTable(SafeHandles, instance, {vptrOffset}, {entries.Count}, {offsetRTTI});");
 
             // fill the newly allocated v-table
             for (var i = 0; i < entries.Count; i++)
