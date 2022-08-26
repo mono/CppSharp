@@ -301,11 +301,11 @@ namespace CppSharp.Passes
             {
                 if (name.Length == 4)
                 {
-                    return char.ToLowerInvariant(
-                        name[3]).ToString(CultureInfo.InvariantCulture);
+                    return
+                        name[3].ToString(CultureInfo.InvariantCulture);
                 }
-                return char.ToLowerInvariant(
-                    name[3]).ToString(CultureInfo.InvariantCulture) +
+                return
+                    name[3].ToString(CultureInfo.InvariantCulture) +
                                 name.Substring(4);
             }
             return name;
@@ -321,7 +321,7 @@ namespace CppSharp.Passes
                 return nameBuilder.ToString();
 
             nameBuilder.TrimUnderscores();
-            nameBuilder[0] = char.ToLowerInvariant(nameBuilder[0]);
+            nameBuilder[0] = nameBuilder[0];
             return nameBuilder.ToString();
         }
 

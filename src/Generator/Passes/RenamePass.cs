@@ -374,6 +374,7 @@ namespace CppSharp.Passes
 
         public override bool Rename(Declaration decl, out string newName)
         {
+            // still need this?
             if (base.Rename(decl, out newName))
                 return true;
 
@@ -419,9 +420,50 @@ namespace CppSharp.Passes
                         sb[1] = char.ToUpperInvariant(sb[1]);
                     break;
                 case RenameCasePattern.LowerCamelCase:
+
+                    if (decl.Name.ToLower() == "pbbs")
+                    {
+                        return CSharpSources.SafeIdentifier("pBlackboards");
+                    }
+
+                    //is firt letter upper case?
+                    if (char.IsUpper(sb[0]))
+                    {
+                        for (int i = 0; i < sb.Length - 1; i++)
+                        {
+                            // current char
+                            char current = sb[i];
+
+                            // peek next char
+                            char next = sb[i + 1];
+
+                            // skip non-letters
+                            if (!char.IsLetter(current))
+                                continue;
+
+                            if (char.IsUpper(current) && (char.IsUpper(next) || !char.IsLetter(next)))
+                                sb[i] = char.ToLowerInvariant(current);
+
+                            //if next lower case break now 
+                            if (char.IsLower(next))
+                                break;
+
+                            //possible end of acronym, break
+                            if (next == '_')
+                                break;
+
+                            // make last char lower case if previous was uppercase
+                            if (i + 1 == sb.Length - 1 && char.IsUpper(current) && char.IsUpper(next))
+                                sb[sb.Length - 1] = char.ToLowerInvariant(next);
+                        }
+                    }
+
+                    // enfore lower case for first character all the time
                     sb[0] = char.ToLowerInvariant(sb[0]);
                     if (@class != null && @class.Type == ClassType.Interface)
+                    {
                         sb[1] = char.ToLowerInvariant(sb[1]);
+                    }
                     break;
             }
 
