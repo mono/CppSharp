@@ -299,14 +299,7 @@ namespace CppSharp.Passes
                 (string.Compare(name, firstWord, StringComparison.InvariantCultureIgnoreCase) != 0) &&
                 !char.IsNumber(name[3]))
             {
-                if (name.Length == 4)
-                {
-                    return char.ToLowerInvariant(
-                        name[3]).ToString(CultureInfo.InvariantCulture);
-                }
-                return char.ToLowerInvariant(
-                    name[3]).ToString(CultureInfo.InvariantCulture) +
-                                name.Substring(4);
+                return name.Substring(3);
             }
             return name;
         }
@@ -321,7 +314,6 @@ namespace CppSharp.Passes
                 return nameBuilder.ToString();
 
             nameBuilder.TrimUnderscores();
-            nameBuilder[0] = char.ToLowerInvariant(nameBuilder[0]);
             return nameBuilder.ToString();
         }
 
