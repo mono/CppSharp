@@ -1009,8 +1009,34 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
 
         private void GenerateFieldSetter(Field field, Class @class, QualifiedType fieldType)
         {
+            if (field.Type.IsClass() && !field.Type.IsPointer())
+            {
+                if (field.Type.TryGetClass(out Class fieldClass))
+                {
+                    var caop = fieldClass.Methods.FirstOrDefault(m => m.OperatorKind == CXXOperatorKind.Equal);
+                    if (caop != null)
+                    {
+                        var fieldName = ((Class)field.Namespace).Layout.Fields.First(
+                            f => f.FieldPtr == field.OriginalPtr).Name;
+                        WriteLine($"var dest = new __IntPtr(&((__Internal*)__Instance)->{fieldName});");
+                        WriteLine($"var src = value.{Helpers.InstanceIdentifier};");
+
+                        var typeName = TypePrinter.PrintNative(fieldClass);
+                        if (IsInternalClassNested(fieldClass))
+                            typeName.RemoveNamespace();
+
+                        WriteLine($"{fieldClass}.__Internal.OperatorEqual(dest, src);");
+                        //UnindentAndWriteCloseBrace();
+
+                        return;
+                    }
+                }
+            }
+
+
             string returnVar;
             Type type = field.Type.Desugar();
+
             var arrayType = type as ArrayType;
             if (arrayType != null && @class.IsValueType)
             {
@@ -1480,6 +1506,11 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                     staticMethods.Add(method);
                     continue;
                 }
+
+                // We only use the copy assignment operator internally,
+                // so do not generate a public method wrapper for it
+                if (method.OperatorKind == CXXOperatorKind.Equal)
+                    continue;
 
                 GenerateMethod(method, @class);
             }

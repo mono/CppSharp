@@ -36,9 +36,6 @@ namespace CppSharp.AST
             if (method.IsDestructor)
                 return true;
 
-            if (method.OperatorKind == CXXOperatorKind.Equal)
-                return true;
-
             if (method.Access == AccessSpecifier.Private && !method.IsOverride && !method.IsExplicitlyGenerated)
                 return true;
 
