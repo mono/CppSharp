@@ -1011,7 +1011,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
         {
             if (field.Type.IsClass() && !field.Type.IsPointer())
             {
-                if (field.Type.TryGetClass(out Class fieldClass))
+                if (field.Type.TryGetClass(out Class fieldClass) && !(fieldClass is ClassTemplateSpecialization))
                 {
                     var caop = fieldClass.Methods.FirstOrDefault(m => m.OperatorKind == CXXOperatorKind.Equal);
                     if (caop != null)
