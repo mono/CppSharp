@@ -1014,7 +1014,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                 if (field.Type.TryGetClass(out Class fieldClass) && !(fieldClass is ClassTemplateSpecialization))
                 {
                     var caop = fieldClass.Methods.FirstOrDefault(m => m.OperatorKind == CXXOperatorKind.Equal);
-                    if (caop != null)
+                    if (caop != null && caop.IsGenerated)
                     {
                         var fieldName = ((Class)field.Namespace).Layout.Fields.First(
                             f => f.FieldPtr == field.OriginalPtr).Name;
@@ -1026,7 +1026,6 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                             typeName.RemoveNamespace();
 
                         WriteLine($"{fieldClass}.__Internal.OperatorEqual(dest, src);");
-                        //UnindentAndWriteCloseBrace();
 
                         return;
                     }
