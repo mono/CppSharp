@@ -1018,10 +1018,10 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                     {
                         var fieldName = ((Class)field.Namespace).Layout.Fields.First(
                             f => f.FieldPtr == field.OriginalPtr).Name;
-                        WriteLine($"var dest = new __IntPtr(&((__Internal*)__Instance)->{fieldName});");
+                        var typeName = TypePrinter.PrintNative(@class);
+                        WriteLine($"var dest = new __IntPtr(&(({typeName}*)__Instance)->{fieldName});");
                         WriteLine($"var src = value.{Helpers.InstanceIdentifier};");
 
-                        var typeName = TypePrinter.PrintNative(fieldClass);
                         if (IsInternalClassNested(fieldClass))
                             typeName.RemoveNamespace();
 
