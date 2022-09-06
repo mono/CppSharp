@@ -1750,3 +1750,29 @@ void CallCallByValueInterfacePointer(CallByValueInterface* interface)
     RuleOfThreeTester value;
     interface->CallByPointer(&value);
 }
+
+int CallByValueCopyConstructor::constructorCalls = 0;
+int CallByValueCopyConstructor::destructorCalls = 0;
+int CallByValueCopyConstructor::copyConstructorCalls = 0;
+
+CallByValueCopyConstructor::CallByValueCopyConstructor()
+{
+    a = 0;
+    constructorCalls++;
+}
+
+CallByValueCopyConstructor::CallByValueCopyConstructor(const CallByValueCopyConstructor& other)
+{
+    a = other.a;
+    copyConstructorCalls++;
+}
+
+CallByValueCopyConstructor::~CallByValueCopyConstructor()
+{
+    destructorCalls++;
+}
+
+void CallByValueCopyConstructorFunction(CallByValueCopyConstructor s)
+{
+    s.a = 99999;
+}

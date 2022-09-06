@@ -1984,4 +1984,19 @@ public unsafe class CSharpTests
         Assert.That(RuleOfThreeTester.CopyConstructorCalls, Is.EqualTo(0));
         Assert.That(RuleOfThreeTester.CopyAssignmentCalls, Is.EqualTo(0));
     }
+
+    [Test]
+    public void TestCallByValueCopyConstructor()
+    {
+        using (var s = new CallByValueCopyConstructor())
+        {
+            s.A = 500;
+            CSharp.CSharp.CallByValueCopyConstructorFunction(s);
+            Assert.That(s.A, Is.EqualTo(500));
+        }
+
+        Assert.That(CallByValueCopyConstructor.ConstructorCalls, Is.EqualTo(1));
+        Assert.That(CallByValueCopyConstructor.CopyConstructorCalls, Is.EqualTo(1));
+        Assert.That(CallByValueCopyConstructor.DestructorCalls, Is.EqualTo(2));
+    }
 }

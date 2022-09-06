@@ -767,11 +767,35 @@ namespace CppSharp.Generators.CSharp
             {
                 if (Context.Parameter.IsIndirect)
                 {
-                    Context.Before.WriteLine($"if (ReferenceEquals({Context.Parameter.Name}, null))");
-                    Context.Before.WriteLineIndent(
-                        $@"throw new global::System.ArgumentNullException(""{
-                            Context.Parameter.Name}"", ""Cannot be null because it is passed by value."");");
-                    Context.Return.Write(paramInstance);
+                    Method cctor = @class.HasNonTrivialCopyConstructor ? @class.Methods.First(c => c.IsCopyConstructor) : null;
+                    if (cctor != null && cctor.IsGenerated)
+                    {
+                        Context.Before.WriteLine($"if (ReferenceEquals({Context.Parameter.Name}, null))");
+                        Context.Before.WriteLineIndent(
+                            $@"throw new global::System.ArgumentNullException(""{
+                                Context.Parameter.Name}"", ""Cannot be null because it is passed by value."");");
+
+                        var nativeClass = typePrinter.PrintNative(@class);
+                        var cctorName = CSharpSources.GetFunctionNativeIdentifier(Context.Context, cctor);
+                        Context.Before.WriteLine($"byte* __{Context.Parameter.Name}Memory = stackalloc byte[sizeof({nativeClass})];");
+                        Context.Before.WriteLine($"__IntPtr __{Context.Parameter.Name}Ptr = (__IntPtr)__{Context.Parameter.Name}Memory;");
+                        Context.Before.WriteLine($"{nativeClass}.{cctorName}(__{Context.Parameter.Name}Ptr, {Context.Parameter.Name}.__Instance);");
+                        Context.Return.Write($"__{Context.Parameter.Name}Ptr");
+
+                        if (Context.Context.ParserOptions.IsItaniumLikeAbi && @class.HasNonTrivialDestructor)
+                        {
+                            Method dtor = @class.Destructors.FirstOrDefault();
+                            if (dtor != null)
+                            {
+                                // todo: virtual destructors?
+                                Context.Cleanup.WriteLine($"{nativeClass}.dtor(__{Context.Parameter.Name}Ptr);");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Context.Return.Write(paramInstance);
+                    }
                 }
                 else
                 {

@@ -1582,3 +1582,16 @@ struct DLL_API CallByValueInterface {
 void DLL_API CallCallByValueInterfaceValue(CallByValueInterface*);
 void DLL_API CallCallByValueInterfaceReference(CallByValueInterface*);
 void DLL_API CallCallByValueInterfacePointer(CallByValueInterface*);
+
+struct DLL_API CallByValueCopyConstructor {
+    int a;
+    static int constructorCalls;
+    static int destructorCalls;
+    static int copyConstructorCalls;
+
+    CallByValueCopyConstructor();
+    ~CallByValueCopyConstructor();
+    CallByValueCopyConstructor(const CallByValueCopyConstructor& other);
+};
+
+DLL_API void CallByValueCopyConstructorFunction(CallByValueCopyConstructor s);
