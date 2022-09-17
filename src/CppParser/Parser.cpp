@@ -4185,6 +4185,13 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D)
         Decl->_namespace = NS;
         break;
     }
+    case Decl::Field:
+    {
+        auto FD = cast<FieldDecl>(D);
+        auto _Class = static_cast<Class*>(WalkDeclaration(FD->getParent()));
+        Decl = WalkFieldCXX(FD, _Class);
+        break;
+    }
     case Decl::Friend:
     {
         auto FD = cast<FriendDecl>(D);
