@@ -55,7 +55,10 @@ debug configuration, which will be too slow for practical use beyond debugging.
 
 ## Compiling on macOS or Linux
 
+The following steps should be called from the VS developer command prompt.
+
 1. Generate the VS solution and makefiles 
+
 
     ```shell
     cd <CppSharp>\build
