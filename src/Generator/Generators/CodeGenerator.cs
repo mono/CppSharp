@@ -1292,7 +1292,7 @@ namespace CppSharp.Generators
         public static readonly string InstanceField = Generator.GeneratedIdentifier("instance");
         public static readonly string InstanceIdentifier = Generator.GeneratedIdentifier("Instance");
         public static readonly string PrimaryBaseOffsetIdentifier = Generator.GeneratedIdentifier("PrimaryBaseOffset");
-        public static readonly string ReturnIdentifier = Generator.GeneratedIdentifier("ret");
+        public static readonly string ReturnIdentifier = "___ret";
         public static readonly string DummyIdentifier = Generator.GeneratedIdentifier("dummy");
         public static readonly string TargetIdentifier = Generator.GeneratedIdentifier("target");
         public static readonly string SlotIdentifier = Generator.GeneratedIdentifier("slot");
