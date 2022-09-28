@@ -1537,6 +1537,12 @@ Parser::WalkTemplateArgument(const clang::TemplateArgument& TA,
     case clang::TemplateArgument::Integral:
         Arg.kind = CppSharp::CppParser::TemplateArgument::ArgumentKind::Integral;
         //Arg.Type = WalkType(TA.getIntegralType(), 0);
+        {
+            clang::TypeLoc ArgTL;
+            if (ArgLoc && ArgLoc->getTypeSourceInfo())
+                ArgTL = ArgLoc->getTypeSourceInfo()->getTypeLoc();
+            Arg.type = GetQualifiedType(TA.getIntegralType(), &ArgTL);
+        }
         Arg.integral = TA.getAsIntegral().getLimitedValue();
         break;
     case clang::TemplateArgument::Template:

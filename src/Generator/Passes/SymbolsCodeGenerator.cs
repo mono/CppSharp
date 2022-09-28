@@ -307,7 +307,7 @@ namespace CppSharp.Passes
                         case TemplateArgument.ArgumentKind.Declaration:
                             return a.Declaration.Visit(cppTypePrinter).ToString();
                         case TemplateArgument.ArgumentKind.Integral:
-                            return a.Integral.ToString(CultureInfo.InvariantCulture);
+                            return ("(" + a.Type.Visit(cppTypePrinter) + ")") + a.Integral.ToString(CultureInfo.InvariantCulture);
                     }
                     throw new System.ArgumentOutOfRangeException(
                         nameof(a.Kind), a.Kind, "Unsupported kind of template argument.");
