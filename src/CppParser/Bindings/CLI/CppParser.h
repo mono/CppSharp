@@ -129,6 +129,12 @@ namespace CppSharp
                 void set(::System::Collections::Generic::List<::System::String^>^);
             }
 
+            property ::System::Collections::Generic::List<::System::String^>^ SupportedFunctionTemplates
+            {
+                ::System::Collections::Generic::List<::System::String^>^ get();
+                void set(::System::Collections::Generic::List<::System::String^>^);
+            }
+
             property CppSharp::Parser::AST::ASTContext^ ASTContext
             {
                 CppSharp::Parser::AST::ASTContext^ get();
@@ -240,6 +246,11 @@ namespace CppSharp
                 unsigned int get();
             }
 
+            property unsigned int SupportedFunctionTemplatesCount
+            {
+                unsigned int get();
+            }
+
             ::System::String^ GetArguments(unsigned int i);
 
             void AddArguments(::System::String^ s);
@@ -287,6 +298,12 @@ namespace CppSharp
             void AddSupportedStdTypes(::System::String^ s);
 
             void ClearSupportedStdTypes();
+
+            ::System::String^ GetSupportedFunctionTemplates(unsigned int i);
+
+            void AddSupportedFunctionTemplates(::System::String^ s);
+
+            void ClearSupportedFunctionTemplates();
 
         protected:
 

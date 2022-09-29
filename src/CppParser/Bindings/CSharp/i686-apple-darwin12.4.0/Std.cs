@@ -42,253 +42,13 @@ namespace Std
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_BlockContentComment___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Template___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_TypedefDecl___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair____N_std_N___1_S___tree_end_node_____N_std_N___1_S___tree_node_base___v___N_std_N___1_S_allocator____N_std_N___1_S___tree_node____N_std_N___1_U___value_type____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration_S3_
-        {
-            internal global::Std.TreeEndNode.__Internal_Ptr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair__l___N_std_N___1_S___map_value_compare____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_U___value_type__S1_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_less__S1__Vb1
-        {
-            internal uint __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_BaseClassSpecifier___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Field___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Parameter___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_FunctionTemplateSpecialization___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Method___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_AccessSpecifierDecl___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_VTableComponent___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_VFTableInfo___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_LayoutField___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_LayoutBase___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Class___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Function___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Enumeration_S_Item___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Enumeration___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Namespace___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
         public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair_____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S1_
         {
             internal __IntPtr __value_;
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_ClassTemplateSpecialization___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_ExpressionObsolete___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_VarTemplateSpecialization___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_MacroDefinition___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_TranslationUnit___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Stmt___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_InlineContentComment___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
         public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair___i___N_std_N___1_S_allocator__i
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_VerbatimBlockLineComment___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_InlineCommandComment_S_Argument___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_HTMLStartTagComment_S_Attribute___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_S_ParserDiagnostic___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_NativeLibrary___N_std_N___1_S_allocator__S1_
         {
             internal __IntPtr __value_;
         }
@@ -308,7 +68,19 @@ namespace Std
     {
         public __IntPtr __Instance { get; protected set; }
 
-        internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.Allocator<_Tp>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.Allocator<_Tp>>();
+        internal static readonly new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.Allocator<_Tp>> NativeToManagedMap =
+            new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.Allocator<_Tp>>();
+
+        internal static void __RecordNativeToManagedMapping(IntPtr native, global::Std.Allocator<_Tp> managed)
+        {
+            NativeToManagedMap[native] = managed;
+        }
+
+        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::Std.Allocator<_Tp> managed)
+        {
+    
+            return NativeToManagedMap.TryGetValue(native, out managed);
+        }
 
         protected bool __ownsNativeInstance;
 
@@ -321,11 +93,11 @@ namespace Std
         {
             if (native == __IntPtr.Zero)
                 return null;
-            if (NativeToManagedMap.TryGetValue(native, out var managed))
+            if (__TryGetNativeToManagedMapping(native, out var managed))
                 return (Allocator<_Tp>)managed;
             var result = __CreateInstance(native, skipVTables);
             if (saveInstance)
-                NativeToManagedMap[native] = result;
+                __RecordNativeToManagedMapping(native, result);
             return result;
         }
 
@@ -345,7 +117,7 @@ namespace Std
             : this(__CopyValue(native), skipVTables)
         {
             __ownsNativeInstance = true;
-            NativeToManagedMap[__Instance] = this;
+            __RecordNativeToManagedMapping(__Instance, this);
         }
 
         protected Allocator(void* native, bool skipVTables = false)
@@ -362,7 +134,7 @@ namespace Std
             {
                 __Instance = Marshal.AllocHGlobal(sizeof(global::Std.Allocator.__Internal));
                 __ownsNativeInstance = true;
-                NativeToManagedMap[__Instance] = this;
+                __RecordNativeToManagedMapping(__Instance, this);
                 global::Std.Allocator.__Internal.ctorc__N_std_N___1_S_allocator__C(__Instance);
                 return;
             }
@@ -394,275 +166,11 @@ namespace Std
     namespace Vector
     {
         [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_BlockContentComment___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_BlockContentComment___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Namespace___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Namespace___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Enumeration___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Enumeration___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Function___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Function___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Class___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Class___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Template___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Template___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypedefDecl___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_TypedefDecl___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_BaseClassSpecifier___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_BaseClassSpecifier___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Field___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Field___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Method___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Method___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Parameter___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Parameter___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_FunctionTemplateSpecialization___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_FunctionTemplateSpecialization___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_AccessSpecifierDecl___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_AccessSpecifierDecl___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_VFTableInfo___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_VFTableInfo___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_VTableComponent___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_VTableComponent___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_LayoutField___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_LayoutField___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_LayoutBase___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_LayoutBase___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Enumeration_S_Item___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Enumeration_S_Item___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
         public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S0_
         {
             internal __IntPtr __begin_;
             internal __IntPtr __end_;
             internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair_____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_ClassTemplateSpecialization___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_ClassTemplateSpecialization___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_ExpressionObsolete___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_ExpressionObsolete___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_VarTemplateSpecialization___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_VarTemplateSpecialization___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_MacroDefinition___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_MacroDefinition___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TranslationUnit___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_TranslationUnit___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Stmt___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Stmt___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_InlineContentComment___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_InlineContentComment___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S1_ __end_cap_;
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 12)]
@@ -672,62 +180,11 @@ namespace Std
             internal __IntPtr __end_;
             internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair___i___N_std_N___1_S_allocator__i __end_cap_;
         }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_VerbatimBlockLineComment___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_VerbatimBlockLineComment___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_InlineCommandComment_S_Argument___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_InlineCommandComment_S_Argument___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_HTMLStartTagComment_S_Attribute___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_HTMLStartTagComment_S_Attribute___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_S_ParserDiagnostic___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_S_ParserDiagnostic___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_NativeLibrary___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_NativeLibrary___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
     }
 }
 
 namespace Std
 {
-    namespace Tree
-    {
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___tree____N_std_N___1_U___value_type____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S___map_value_compare__S1__S0____N_std_N___1_S_less__S1__Vb1___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_node_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair____N_std_N___1_S___tree_end_node_____N_std_N___1_S___tree_node_base___v___N_std_N___1_S_allocator____N_std_N___1_S___tree_node____N_std_N___1_U___value_type____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration_S3_ __pair1_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair__l___N_std_N___1_S___map_value_compare____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_U___value_type__S1_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_less__S1__Vb1 __pair3_;
-        }
-    }
-
     namespace TreeEndNode
     {
         [StructLayout(LayoutKind.Sequential, Size = 4)]
@@ -740,14 +197,6 @@ namespace Std
 
 namespace Std
 {
-    namespace Map
-    {
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_map____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_less__S0____N_std_N___1_S_allocator____N_std_N___1_S_pair__1S0__S3_
-        {
-            internal global::Std.Tree.__Internalc__N_std_N___1_S___tree____N_std_N___1_U___value_type____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S___map_value_compare__S1__S0____N_std_N___1_S_less__S1__Vb1___N_std_N___1_S_allocator__S0_ __tree_;
-        }
-    }
 }
 
 namespace Std
@@ -764,7 +213,19 @@ namespace Std
     {
         public __IntPtr __Instance { get; protected set; }
 
-        internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.CharTraits<_CharT>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.CharTraits<_CharT>>();
+        internal static readonly new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.CharTraits<_CharT>> NativeToManagedMap =
+            new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.CharTraits<_CharT>>();
+
+        internal static void __RecordNativeToManagedMapping(IntPtr native, global::Std.CharTraits<_CharT> managed)
+        {
+            NativeToManagedMap[native] = managed;
+        }
+
+        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::Std.CharTraits<_CharT> managed)
+        {
+    
+            return NativeToManagedMap.TryGetValue(native, out managed);
+        }
 
         protected bool __ownsNativeInstance;
 
@@ -777,11 +238,11 @@ namespace Std
         {
             if (native == __IntPtr.Zero)
                 return null;
-            if (NativeToManagedMap.TryGetValue(native, out var managed))
+            if (__TryGetNativeToManagedMapping(native, out var managed))
                 return (CharTraits<_CharT>)managed;
             var result = __CreateInstance(native, skipVTables);
             if (saveInstance)
-                NativeToManagedMap[native] = result;
+                __RecordNativeToManagedMapping(native, result);
             return result;
         }
 
@@ -801,7 +262,7 @@ namespace Std
             : this(__CopyValue(native), skipVTables)
         {
             __ownsNativeInstance = true;
-            NativeToManagedMap[__Instance] = this;
+            __RecordNativeToManagedMapping(__Instance, this);
         }
 
         protected CharTraits(void* native, bool skipVTables = false)
@@ -849,10 +310,17 @@ namespace Std
 
         namespace Rep
         {
-            [StructLayout(LayoutKind.Sequential, Size = 12)]
+            [StructLayout(LayoutKind.Explicit, Size = 12)]
             public unsafe partial struct __Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C
             {
-                internal global::Std.BasicString.Rep._0.__Internal _0;
+                [FieldOffset(0)]
+                internal global::Std.BasicString.Long.__Internal __l;
+
+                [FieldOffset(0)]
+                internal global::Std.BasicString.Short.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C __s;
+
+                [FieldOffset(0)]
+                internal global::Std.BasicString.Raw.__Internal __r;
             }
 
             namespace _0
@@ -888,10 +356,16 @@ namespace Std
 
         namespace Short
         {
-            [StructLayout(LayoutKind.Sequential, Size = 12)]
+            [StructLayout(LayoutKind.Explicit, Size = 12)]
             public unsafe partial struct __Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C
             {
-                internal global::Std.BasicString.Short._0.__Internal _0;
+                [FieldOffset(0)]
+                internal byte __size_;
+
+                [FieldOffset(0)]
+                internal sbyte __lx;
+
+                [FieldOffset(1)]
                 internal fixed sbyte __data_[11];
             }
 
@@ -926,7 +400,19 @@ namespace Std
     {
         public __IntPtr __Instance { get; protected set; }
 
-        internal static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.BasicString<_CharT, _Traits, _Allocator>> NativeToManagedMap = new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.BasicString<_CharT, _Traits, _Allocator>>();
+        internal static readonly new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.BasicString<_CharT, _Traits, _Allocator>> NativeToManagedMap =
+            new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.BasicString<_CharT, _Traits, _Allocator>>();
+
+        internal static void __RecordNativeToManagedMapping(IntPtr native, global::Std.BasicString<_CharT, _Traits, _Allocator> managed)
+        {
+            NativeToManagedMap[native] = managed;
+        }
+
+        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::Std.BasicString<_CharT, _Traits, _Allocator> managed)
+        {
+    
+            return NativeToManagedMap.TryGetValue(native, out managed);
+        }
 
         protected bool __ownsNativeInstance;
 
@@ -939,11 +425,11 @@ namespace Std
         {
             if (native == __IntPtr.Zero)
                 return null;
-            if (NativeToManagedMap.TryGetValue(native, out var managed))
+            if (__TryGetNativeToManagedMapping(native, out var managed))
                 return (BasicString<_CharT, _Traits, _Allocator>)managed;
             var result = __CreateInstance(native, skipVTables);
             if (saveInstance)
-                NativeToManagedMap[native] = result;
+                __RecordNativeToManagedMapping(native, result);
             return result;
         }
 
@@ -963,7 +449,7 @@ namespace Std
             : this(__CopyValue(native), skipVTables)
         {
             __ownsNativeInstance = true;
-            NativeToManagedMap[__Instance] = this;
+            __RecordNativeToManagedMapping(__Instance, this);
         }
 
         protected BasicString(void* native, bool skipVTables = false)
@@ -982,7 +468,7 @@ namespace Std
             {
                 __Instance = Marshal.AllocHGlobal(sizeof(global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C));
                 __ownsNativeInstance = true;
-                NativeToManagedMap[__Instance] = this;
+                __RecordNativeToManagedMapping(__Instance, this);
                 global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C.ctorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C(__Instance);
                 return;
             }

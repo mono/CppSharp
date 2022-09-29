@@ -77,6 +77,7 @@ Parser::Parser(CppParserOptions* Opts) : opts(Opts), index(0)
         supportedStdTypes.insert(SupportedStdType);
     supportedStdTypes.insert("allocator");
     supportedStdTypes.insert("basic_string");
+    supportedFunctionTemplates = { Opts->SupportedFunctionTemplates.begin(), Opts->SupportedFunctionTemplates.end() };
 }
 
 LayoutField Parser::WalkVTablePointer(Class* Class,
@@ -1627,6 +1628,12 @@ FunctionTemplate* Parser::WalkFunctionTemplate(const clang::FunctionTemplateDecl
     FT->Parameters = WalkTemplateParameterList(TD->getTemplateParameters());
 
     NS->Templates.push_back(FT);
+
+    std::string qualifiedName;
+    llvm::raw_string_ostream as(qualifiedName);
+    TD->printQualifiedName(as);
+    if (supportedFunctionTemplates.find(as.str()) == supportedFunctionTemplates.end())
+        return FT;
 
     for (auto&& FD : TD->specializations())
     {

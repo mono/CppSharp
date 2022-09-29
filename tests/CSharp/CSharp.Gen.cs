@@ -25,6 +25,7 @@ namespace CppSharp.Tests
             base.Setup(driver);
 
             driver.ParserOptions.UnityBuild = true;
+            driver.ParserOptions.AddSupportedFunctionTemplates("FunctionTemplate");
         }
 
         public override void SetupPasses(Driver driver)

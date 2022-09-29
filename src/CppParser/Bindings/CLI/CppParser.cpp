@@ -197,6 +197,25 @@ void CppSharp::Parser::CppParserOptions::ClearSupportedStdTypes()
     ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->clearSupportedStdTypes();
 }
 
+::System::String^ CppSharp::Parser::CppParserOptions::GetSupportedFunctionTemplates(unsigned int i)
+{
+    auto __ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getSupportedFunctionTemplates(i);
+    if (__ret == nullptr) return nullptr;
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
+}
+
+void CppSharp::Parser::CppParserOptions::AddSupportedFunctionTemplates(::System::String^ s)
+{
+    auto ___arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto __arg0 = ___arg0.c_str();
+    ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->addSupportedFunctionTemplates(__arg0);
+}
+
+void CppSharp::Parser::CppParserOptions::ClearSupportedFunctionTemplates()
+{
+    ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->clearSupportedFunctionTemplates();
+}
+
 CppSharp::Parser::CppParserOptions::CppParserOptions(CppSharp::Parser::CppParserOptions^ _0)
 {
     __ownsNativeInstance = true;
@@ -400,6 +419,29 @@ void CppSharp::Parser::CppParserOptions::SupportedStdTypes::set(::System::Collec
     ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->SupportedStdTypes = _tmpvalue;
 }
 
+::System::Collections::Generic::List<::System::String^>^ CppSharp::Parser::CppParserOptions::SupportedFunctionTemplates::get()
+{
+    auto _tmp__SupportedFunctionTemplates = gcnew ::System::Collections::Generic::List<::System::String^>();
+    auto __list0 = NativePtr->SupportedFunctionTemplates;
+    for(auto _element : __list0)
+    {
+        auto _marshalElement = clix::marshalString<clix::E_UTF8>(_element);
+        _tmp__SupportedFunctionTemplates->Add(_marshalElement);
+    }
+    return _tmp__SupportedFunctionTemplates;
+}
+
+void CppSharp::Parser::CppParserOptions::SupportedFunctionTemplates::set(::System::Collections::Generic::List<::System::String^>^ value)
+{
+    auto _tmpvalue = std::vector<::std::string>();
+    for each(::System::String^ _element in value)
+    {
+        auto _marshalElement = clix::marshalString<clix::E_UTF8>(_element);
+        _tmpvalue.push_back(_marshalElement);
+    }
+    ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->SupportedFunctionTemplates = _tmpvalue;
+}
+
 CppSharp::Parser::AST::ASTContext^ CppSharp::Parser::CppParserOptions::ASTContext::get()
 {
     return (NativePtr->ASTContext == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::ASTContext((class ::CppSharp::CppParser::AST::ASTContext*)NativePtr->ASTContext);
@@ -561,6 +603,12 @@ unsigned int CppSharp::Parser::CppParserOptions::UndefinesCount::get()
 unsigned int CppSharp::Parser::CppParserOptions::SupportedStdTypesCount::get()
 {
     auto __ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getSupportedStdTypesCount();
+    return __ret;
+}
+
+unsigned int CppSharp::Parser::CppParserOptions::SupportedFunctionTemplatesCount::get()
+{
+    auto __ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getSupportedFunctionTemplatesCount();
     return __ret;
 }
 

@@ -39,6 +39,7 @@ DEF_VECTOR_STRING(CppParserOptions, SystemIncludeDirs)
 DEF_VECTOR_STRING(CppParserOptions, Defines)
 DEF_VECTOR_STRING(CppParserOptions, Undefines)
 DEF_VECTOR_STRING(CppParserOptions, SupportedStdTypes)
+DEF_VECTOR_STRING(CppParserOptions, SupportedFunctionTemplates)
 
 ParserResult::ParserResult()
     : targetInfo(0)
