@@ -138,6 +138,9 @@ namespace CppSharp.Generators.C
                 return pointeeType;
 
             var mod = PrintTypeModifiers ? ConvertModifierToString(pointer.Modifier) : string.Empty;
+            var array = pointer.Pointee as ArrayType;
+            if (array != null && array.QualifiedType.IsConst())
+                pointeeType.Type = "const " + pointeeType.Type;
             pointeeType.NamePrefix.Append(mod);
 
             var qual = GetStringQuals(quals, false);
