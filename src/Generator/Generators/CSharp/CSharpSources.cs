@@ -1934,7 +1934,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             }
             WriteLine(";");
 
-            // on Microsoft ABIs, the destructor on copy-by-value parameters are
+            // on Microsoft ABIs, the destructor on copy-by-value parameters is
             // called by the called function, not the caller, so we are generating
             // code to do that for classes that have a non-trivial destructor.
             if (Context.ParserOptions.IsMicrosoftAbi)
@@ -1954,13 +1954,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                         paramType.TryGetClass(out Class paramClass) && !(paramClass is ClassTemplateSpecialization) &&
                         paramClass.HasNonTrivialDestructor)
                     {
-                        Method dtor = paramClass.Destructors.FirstOrDefault();
-                        if (dtor != null)
-                        {
-                            // todo: virtual destructors?
-                            var nativeClass = TypePrinter.PrintNative(paramClass);
-                            WriteLine($"{nativeClass}.dtor({param.Name});");
-                        }
+                        WriteLine($"{Generator.GeneratedIdentifier("result")}{i}.Dispose(false, true);");
                     }
                 }
             }
