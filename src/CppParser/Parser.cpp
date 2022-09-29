@@ -1630,9 +1630,10 @@ FunctionTemplate* Parser::WalkFunctionTemplate(const clang::FunctionTemplateDecl
 
     for (auto&& FD : TD->specializations())
     {
-        auto F = new Function();
-        HandleDeclaration(FD, F);
-        WalkFunction(FD, F);
+        if (auto MD = dyn_cast<CXXMethodDecl>(FD))
+            WalkMethodCXX(MD);
+        else
+            WalkFunction(FD);
     }
 
     return FT;
