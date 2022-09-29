@@ -1551,3 +1551,29 @@ DLL_API inline ClassWithIntValue* CreateCore(CS_IN_OUT ClassWithIntValue*& pClas
     pClass->value = 20;
     return nullptr;
 }
+
+
+struct DLL_API RuleOfThreeTester {
+    int a;
+    static int constructorCalls;
+    static int destructorCalls;
+    static int copyConstructorCalls;
+    static int copyAssignmentCalls;
+
+    static void reset();
+
+    RuleOfThreeTester();
+    ~RuleOfThreeTester();
+    RuleOfThreeTester(const RuleOfThreeTester& other);
+    RuleOfThreeTester& operator=(const RuleOfThreeTester& other);
+};
+
+struct DLL_API CallByValueInterface {
+    virtual void CallByValue(RuleOfThreeTester value) = 0;
+    virtual void CallByReference(RuleOfThreeTester& value) = 0;
+    virtual void CallByPointer(RuleOfThreeTester* value) = 0;
+};
+
+void DLL_API CallCallByValueInterfaceValue(CallByValueInterface*);
+void DLL_API CallCallByValueInterfaceReference(CallByValueInterface*);
+void DLL_API CallCallByValueInterfacePointer(CallByValueInterface*);
