@@ -141,7 +141,13 @@ namespace CppSharp.Generators.C
             var array = pointer.Pointee as ArrayType;
             if (array != null && array.QualifiedType.IsConst())
                 pointeeType.Type = "const " + pointeeType.Type;
+
+            var paren = array != null && pointer.Modifier == PointerType.TypeModifier.LVReference;
+            if (paren)
+                pointeeType.NamePrefix.Append("(");
             pointeeType.NamePrefix.Append(mod);
+            if (paren)
+                pointeeType.NameSuffix.Insert(0, ")");
 
             var qual = GetStringQuals(quals, false);
             if (!string.IsNullOrEmpty(qual))
