@@ -1918,7 +1918,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             var hasReturn = !isVoid && !isSetter;
 
             if (hasReturn)
-                Write(isPrimitive && !isSetter ? "return " : $"var {Helpers.ReturnIdentifier} = ");
+                Write($"var {Helpers.ReturnIdentifier} = ");
 
             Write($"{Helpers.TargetIdentifier}.");
             string marshalsCode = string.Join(", ", marshals);
@@ -1933,8 +1933,37 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                     Write($" = {marshalsCode}");
             }
             WriteLine(";");
-            if (isPrimitive && !isSetter)
+
+            // on Microsoft ABIs, the destructor on copy-by-value parameters is
+            // called by the called function, not the caller, so we are generating
+            // code to do that for classes that have a non-trivial destructor.
+            if (Context.ParserOptions.IsMicrosoftAbi)
+            {
+                for (int i = 0; i < method.Parameters.Count; i++)
+                {
+                    var param = method.Parameters[i];
+                    if (param.Ignore)
+                        continue;
+
+                    if (param.Kind == ParameterKind.IndirectReturnType)
+                        continue;
+
+                    var paramType = param.Type.GetFinalPointee();
+
+                    if (param.IsIndirect &&
+                        paramType.TryGetClass(out Class paramClass) && !(paramClass is ClassTemplateSpecialization) &&
+                        paramClass.HasNonTrivialDestructor)
+                    {
+                        WriteLine($"{Generator.GeneratedIdentifier("result")}{i}.Dispose(false, true);");
+                    }
+                }
+            }
+
+            if (hasReturn && isPrimitive && !isSetter)
+            {
+                WriteLine($"return { Helpers.ReturnIdentifier};");
                 return;
+            }
 
             if (hasReturn)
             {

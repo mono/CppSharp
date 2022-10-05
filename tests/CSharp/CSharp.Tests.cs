@@ -1925,4 +1925,56 @@ public unsafe class CSharpTests
         Assert.That(myclass, Is.Not.SameAs(backup));
     }
 
+
+    class CallByValueInterfaceImpl : CallByValueInterface
+    {
+        public override void CallByValue(RuleOfThreeTester value)
+        {
+        }
+        public override void CallByReference(RuleOfThreeTester value)
+        {
+        }
+        public override void CallByPointer(RuleOfThreeTester value)
+        {
+        }
+    }
+
+    [Test]
+    public void TestCallByValueCppToCSharpValue()
+    {
+        RuleOfThreeTester.Reset();
+        CallByValueInterface @interface = new CallByValueInterfaceImpl();
+        CSharp.CSharp.CallCallByValueInterfaceValue(@interface);
+
+        Assert.That(RuleOfThreeTester.ConstructorCalls, Is.EqualTo(1));
+        Assert.That(RuleOfThreeTester.DestructorCalls, Is.EqualTo(2));
+        Assert.That(RuleOfThreeTester.CopyConstructorCalls, Is.EqualTo(1));
+        Assert.That(RuleOfThreeTester.CopyAssignmentCalls, Is.EqualTo(0));
+    }
+
+    [Test]
+    public void TestCallByValueCppToCSharpReference()
+    {
+        RuleOfThreeTester.Reset();
+        CallByValueInterface @interface = new CallByValueInterfaceImpl();
+        CSharp.CSharp.CallCallByValueInterfaceReference(@interface);
+
+        Assert.That(RuleOfThreeTester.ConstructorCalls, Is.EqualTo(1));
+        Assert.That(RuleOfThreeTester.DestructorCalls, Is.EqualTo(1));
+        Assert.That(RuleOfThreeTester.CopyConstructorCalls, Is.EqualTo(0));
+        Assert.That(RuleOfThreeTester.CopyAssignmentCalls, Is.EqualTo(0));
+    }
+
+    [Test]
+    public void TestCallByValueCppToCSharpPointer()
+    {
+        RuleOfThreeTester.Reset();
+        CallByValueInterface @interface = new CallByValueInterfaceImpl();
+        CSharp.CSharp.CallCallByValueInterfacePointer(@interface);
+
+        Assert.That(RuleOfThreeTester.ConstructorCalls, Is.EqualTo(1));
+        Assert.That(RuleOfThreeTester.DestructorCalls, Is.EqualTo(1));
+        Assert.That(RuleOfThreeTester.CopyConstructorCalls, Is.EqualTo(0));
+        Assert.That(RuleOfThreeTester.CopyAssignmentCalls, Is.EqualTo(0));
+    }
 }
