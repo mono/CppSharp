@@ -257,6 +257,7 @@ namespace CppSharp.AST
             s => s.Layout.Fields.Any(
                 f => f.QualifiedType.Type.TryGetDeclaration(
                     out ClassTemplateSpecialization specialization) &&
+                    @class != specialization.TemplatedDecl.TemplatedClass &&
                     specialization.TemplatedDecl.TemplatedClass.HasDependentValueFieldInLayout())));
 
         public static IEnumerable<Property> GetConstCharFieldProperties(this Class @class) =>
