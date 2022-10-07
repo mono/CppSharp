@@ -393,8 +393,9 @@ namespace CppSharp.Generators.CSharp
                 var dtorVirtual = (dtor != null && dtor.IsVirtual);
                 var cache = dtorVirtual && Context.Parameter == null;
                 var skipVTables = dtorVirtual && Context.Parameter != null;
-                Context.Before.WriteLine("var {0} = {1}.__GetOrCreateInstance({2}, {3}{4});",
-                    ret, qualifiedClass, Context.ReturnVarName, cache ? "true" : "false", skipVTables ? ", skipVTables: true" : string.Empty);
+                var get = Context.Context.Options.GenerateNativeToManagedFor(@class) ? "GetOr" : "";
+                Context.Before.WriteLine("var {0} = {1}.__{5}CreateInstance({2}, {3}{4});",
+                    ret, qualifiedClass, Context.ReturnVarName, cache ? "true" : "false", skipVTables ? ", skipVTables: true" : string.Empty, get);
             }
             else
             {

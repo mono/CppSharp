@@ -443,8 +443,9 @@
             return array.Size * array.ElementSize;
         }
 
-        internal static bool IsReferenceToPtrToClass(this Type type)
+        internal static bool TryGetReferenceToPtrToClass(this Type type, out Type classType)
         {
+            classType = null;
             var @ref = type.Desugar().AsLvReference();
             if (@ref == null)
                 return false;
@@ -454,7 +455,11 @@
                 return false;
 
             var @class = @ptr.Pointee;
-            return @class != null && @class.IsClass();
+            if (!@class.IsClass())
+                return false;
+
+            classType = @class;
+            return true;
         }
 
         internal static PointerType AsLvReference(this Type type)

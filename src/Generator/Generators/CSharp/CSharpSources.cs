@@ -3141,12 +3141,12 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
 
             foreach (var param in @params)
             {
-                if (param.Param.IsInOut && param.Param.Type.IsReferenceToPtrToClass())
+                if (param.Param.IsInOut && param.Param.Type.TryGetReferenceToPtrToClass(out var classType) && classType.TryGetClass(out var @class))
                 {
                     var qualifiedClass = param.Param.Type.Visit(TypePrinter);
-
+                    var get = Options.GenerateNativeToManagedFor(@class) ? "GetOr" : "";
                     WriteLine($"if ({param.Name} != {param.Param.Name}.__Instance)");
-                    WriteLine($"{param.Param.Name} = {qualifiedClass}.__GetOrCreateInstance(__{param.Name}, false);");
+                    WriteLine($"{param.Param.Name} = {qualifiedClass}.__{get}CreateInstance(__{param.Name}, false);");
                 }
             }
 
