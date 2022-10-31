@@ -84,6 +84,9 @@ namespace CppSharp.Generators.CSharp
 
             GenerateUsings();
 
+            WriteLine("#pragma warning disable CS0109 // Member does not hide an inherited member; new keyword is not required");
+            NewLine();
+
             if (!string.IsNullOrEmpty(Module.OutputNamespace))
             {
                 PushBlock(BlockKind.Namespace);
