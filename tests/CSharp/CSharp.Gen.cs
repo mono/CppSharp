@@ -31,6 +31,10 @@ namespace CppSharp.Tests
         public override void SetupPasses(Driver driver)
         {
             driver.Context.TranslationUnitPasses.AddPass(new TestAttributesPass());
+            var moveFunctionToClassPass = driver.Context.TranslationUnitPasses.FindPass<MoveFunctionToClassPass>();
+            driver.Context.TranslationUnitPasses.RemovePass(moveFunctionToClassPass);
+            driver.Context.TranslationUnitPasses.AddPass(new FunctionToInstanceMethodPass());
+            driver.Context.TranslationUnitPasses.AddPass(new MoveFunctionToClassPass());
             driver.Options.MarshalCharAsManagedChar = true;
             driver.Options.GenerateDefaultValuesForArguments = true;
             driver.Options.GenerateClassTemplates = true;

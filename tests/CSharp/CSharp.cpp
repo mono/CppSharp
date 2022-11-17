@@ -1692,6 +1692,9 @@ DLL_API int TestFunctionToStaticMethodRefStruct(FTIStruct* bb, FTIStruct& defaul
 DLL_API int TestFunctionToStaticMethodConstStruct(FTIStruct* bb, const FTIStruct defaultValue) { return defaultValue.a; }
 DLL_API int TestFunctionToStaticMethodConstRefStruct(FTIStruct* bb, const FTIStruct& defaultValue) { return defaultValue.a; }
 
+DLL_API int TestClassFunctionToInstanceMethod(TestClass* bb, int value) { return value * value; }
+DLL_API int TestClassFunctionToInstanceMethod(TestClass* bb, FTIStruct& value) { return value.a * value.a; }
+
 int RuleOfThreeTester::constructorCalls = 0;
 int RuleOfThreeTester::destructorCalls = 0;
 int RuleOfThreeTester::copyConstructorCalls = 0;

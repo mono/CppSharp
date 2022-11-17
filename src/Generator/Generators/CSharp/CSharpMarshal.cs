@@ -728,14 +728,6 @@ namespace CppSharp.Generators.CSharp
         private void MarshalRefClass(Class @class)
         {
             var method = Context.Function as Method;
-            if (method != null
-                && method.Conversion == MethodConversionKind.FunctionToInstanceMethod
-                && Context.ParameterIndex == 0)
-            {
-                Context.Return.Write("{0}", Helpers.InstanceIdentifier);
-                return;
-            }
-
             string param = Context.Parameter.Name;
             Type type = Context.Parameter.Type.Desugar(resolveTemplateSubstitution: false);
             string paramInstance;

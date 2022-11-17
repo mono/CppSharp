@@ -1894,6 +1894,13 @@ public unsafe class CSharpTests
         Assert.That(CSharp.CSharp.TestFunctionToStaticMethodConstRefStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
     }
 
+    [Test]
+    public void TestFunctionToInstanceMethod()
+    {
+        Assert.That(new TestClass().FunctionToInstanceMethod(5), Is.EqualTo(25));
+        Assert.That(new TestClass().FunctionToInstanceMethod(new FTIStruct() { A = 5 }), Is.EqualTo(25));
+    }
+
     [TestCase(typeof(FTIStruct), ExpectedResult = true)]
     [TestCase(typeof(ClassWithoutNativeToManaged), ExpectedResult = false)]
     public bool TestClassGenerateNativeToManaged(Type type)
