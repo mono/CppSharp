@@ -1529,11 +1529,11 @@ DLL_API const char32_t* TestCSharpString32(const char32_t* in, CS_OUT const char
 
 struct DLL_API FTIStruct { int a; };
 
-DLL_API FTIStruct TestFunctionToInstanceMethod(FTIStruct* bb);
-DLL_API int TestFunctionToInstanceMethodStruct(FTIStruct* bb, FTIStruct defaultValue);
-DLL_API int TestFunctionToInstanceMethodRefStruct(FTIStruct* bb, FTIStruct& defaultValue);
-DLL_API int TestFunctionToInstanceMethodConstStruct(FTIStruct* bb, const FTIStruct defaultValue);
-DLL_API int TestFunctionToInstanceMethodConstRefStruct(FTIStruct* bb, const FTIStruct& defaultValue);
+DLL_API FTIStruct TestFunctionToStaticMethod(FTIStruct* bb);
+DLL_API int TestFunctionToStaticMethodStruct(FTIStruct* bb, FTIStruct defaultValue);
+DLL_API int TestFunctionToStaticMethodRefStruct(FTIStruct* bb, FTIStruct& defaultValue);
+DLL_API int TestFunctionToStaticMethodConstStruct(FTIStruct* bb, const FTIStruct defaultValue);
+DLL_API int TestFunctionToStaticMethodConstRefStruct(FTIStruct* bb, const FTIStruct& defaultValue);
 
 class ClassWithoutNativeToManaged { };
 

@@ -1885,13 +1885,13 @@ public unsafe class CSharpTests
     }
 
     [Test]
-    public void TestFunctionToInstanceMethod()
+    public void TestFunctionToStaticMethod()
     {
-        Assert.That(CSharp.CSharp.TestFunctionToInstanceMethod(new FTIStruct()).A, Is.EqualTo(6));
-        Assert.That(CSharp.CSharp.TestFunctionToInstanceMethodStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
-        Assert.That(CSharp.CSharp.TestFunctionToInstanceMethodRefStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
-        Assert.That(CSharp.CSharp.TestFunctionToInstanceMethodConstStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
-        Assert.That(CSharp.CSharp.TestFunctionToInstanceMethodConstRefStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
+        Assert.That(CSharp.CSharp.TestFunctionToStaticMethod(new FTIStruct()).A, Is.EqualTo(6));
+        Assert.That(CSharp.CSharp.TestFunctionToStaticMethodStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
+        Assert.That(CSharp.CSharp.TestFunctionToStaticMethodRefStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
+        Assert.That(CSharp.CSharp.TestFunctionToStaticMethodConstStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
+        Assert.That(CSharp.CSharp.TestFunctionToStaticMethodConstRefStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
     }
 
     [TestCase(typeof(FTIStruct), ExpectedResult = true)]
