@@ -2399,22 +2399,16 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetOrCreateInst
                         NewLine();
                     }
 
-                    if (HasVirtualTables(@class))
+                    // __GetInstance doesn't work without a ManagedToNativeMap, so don't generate it
+                    if (HasVirtualTables(@class) && generateNativeToManaged)
                     {
                         @new = @class.HasBase && HasVirtualTables(@class.Bases.First().Class);
 
                         WriteLines($@"
 internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({TypePrinter.IntPtrType} native)
-{{");
-
-                        if (generateNativeToManaged)
-                        {
-                            WriteLines($@"
+{{
     if (!{Helpers.TryGetNativeToManagedMappingIdentifier}(native, out var managed))
-        throw new global::System.Exception(""No managed instance was found"");");
-                        }
-
-                        WriteLines($@"
+        throw new global::System.Exception(""No managed instance was found"");
     var result = ({printedClass})managed;
     if (result.{Helpers.OwnsNativeInstanceIdentifier})
         result.SetupVTables();
