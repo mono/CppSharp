@@ -2384,6 +2384,13 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                     @class.NeedsBase && !@class.BaseClass.IsInterface ? "new " : string.Empty,
                     printedClass, Helpers.CreateInstanceIdentifier, TypePrinter.IntPtrType);
                 WriteOpenBraceAndIndent();
+
+                if (@class.IsRefType)
+                {
+                    WriteLine($"if (native == {TypePrinter.IntPtrType}.Zero)");
+                    WriteLineIndent("return null;");
+                }
+
                 var suffix = @class.IsAbstract ? "Internal" : string.Empty;
                 var ctorCall = $"{printedClass.Type}{suffix}{printedClass.NameSuffix}";
                 WriteLine("return new {0}(native.ToPointer(), skipVTables);", ctorCall);
