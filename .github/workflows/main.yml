@@ -110,5 +110,4 @@ jobs:
       - name: Upload package to GitHub Packages
         run: |
           cd artifacts
-          dotnet nuget add source --username tritao --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/tritao/index.json"
-          dotnet nuget push "*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate
+          dotnet nuget push "*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/mono/index.json" --skip-duplicate
