@@ -55,14 +55,22 @@ The following steps should be called from the VS developer command prompt.
 Building in *Release* is recommended because else we will use the Clang parser
 debug configuration, which will be too slow for practical use beyond debugging.
 
-You will need Visual Studio 2019 build tools, these can be installed from [Visual Studio Installer](https://visualstudio.microsoft.com/downloads/) by selecting the payload *MSVC v142 - VS 2019 C++ x64/x86 build tools (v14.29-16.11)*.
+The solution generated will be for Visual Studio 2019.
 
-Windows isn't natively able to run sh scripts, to remediate to this, you can either:
+If you have a more recent version of Visual Studio, you can either:
+- install Visual Studio 2019 
+- install Visual Studio 2019 build tools, from [Visual Studio Installer](https://visualstudio.microsoft.com/downloads/)
+  - select the payload *MSVC v142 - VS 2019 C++ x64/x86 build tools (v14.29-16.11)*
+
+Please note that Windows isn't natively able to run sh scripts, to remediate this, you can either:
 
 - use the one from Visual Studio if present
   - e.g. `C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\Git\usr\bin\sh.exe`
 - use the one from [Git for Windows](https://gitforwindows.org/)
   - e.g. `C:\Program Files\Git\bin\sh.exe`
+
+When opening the solution for the first time on a more recent version than Visual Studio 2019, you will be prompted to retarget projects to one of the platform toolset available on your system.
+
 ## Compiling on macOS or Linux
 
 
