@@ -35,11 +35,13 @@ make sure those are installed on your system.
 
 ## Compiling on Windows/Visual Studio
 
+The following steps should be called from the VS developer command prompt.
+
 1. Generate the VS solution
 
     ```shell
     cd <CppSharp>\build
-    ./build.sh generate -configuration Release -platform x64
+    <sh> build.sh generate -configuration Release -platform x64
     ```
 
 2. Compile the VS projects
@@ -47,15 +49,22 @@ make sure those are installed on your system.
     You can open `CppSharp.sln` and hit F5 or compile via the command line:
 
     ```
-    ./build.sh -configuration Release -platform x64
+    <sh> build.sh -configuration Release -platform x64
     ```
 
 Building in *Release* is recommended because else we will use the Clang parser
 debug configuration, which will be too slow for practical use beyond debugging.
 
+You will need Visual Studio 2019 build tools, these can be installed from Visual Studio Installer by selecting the payload *MSVC v142 - VS 2019 C++ x64/x86 build tools (v14.29-16.11)*.
+
+Windows isn't natively able to run sh scripts, to remediate to this, you can either:
+
+- use the one from Visual Studio if present
+  - e.g. `C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\Git\usr\bin\sh.exe`
+- use the one from [Git for Windows](https://gitforwindows.org/)
+  - e.g. `C:\Program Files\Git\bin\sh.exe`
 ## Compiling on macOS or Linux
 
-The following steps should be called from the VS developer command prompt.
 
 1. Generate the VS solution and makefiles 
 
