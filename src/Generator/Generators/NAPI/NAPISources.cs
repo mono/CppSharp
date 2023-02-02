@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using CppSharp.AST;
@@ -22,14 +21,6 @@ namespace CppSharp.Generators.Cpp
         public NAPISources(BindingContext context, IEnumerable<TranslationUnit> units)
             : base(context, units)
         {
-        }
-
-        public static string GetTranslationUnitName(TranslationUnit unit)
-        {
-            var paths = unit.FileRelativePath.Split('/').ToList();
-            paths = paths.Select(p => Path.GetFileNameWithoutExtension(p.ToLowerInvariant())).ToList();
-            var name = string.Join('_', paths);
-            return name;
         }
 
         public override void Process()

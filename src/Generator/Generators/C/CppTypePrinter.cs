@@ -584,7 +584,8 @@ namespace CppSharp.Generators.C
                         args.Add(arg.Type.Visit(this));
                         break;
                     case TemplateArgument.ArgumentKind.Declaration:
-                        args.Add(arg.Declaration.Visit(this));
+                        if (arg.Declaration != null)
+                            args.Add(arg.Declaration.Visit(this));
                         break;
                     case TemplateArgument.ArgumentKind.Integral:
                         ClassTemplate template = specialization.TemplatedDecl;
@@ -596,6 +597,7 @@ namespace CppSharp.Generators.C
                         {
                             args.Add(arg.Integral.ToString(CultureInfo.InvariantCulture));
                         }
+
                         break;
                 }
             }
@@ -634,7 +636,7 @@ namespace CppSharp.Generators.C
             CppSharp.AST.Type desugared = function.FunctionType.Type.Desugar();
             if (!desugared.IsPointerTo(out functionType))
                 functionType = (FunctionType)desugared;
-            string exceptionType = Print(functionType.ExceptionSpecType);
+            string exceptionType = functionType != null ? Print(functionType.ExceptionSpecType) : "";
 
             var @return = function.OriginalReturnType.Visit(this);
             @return.Name = @class + name;

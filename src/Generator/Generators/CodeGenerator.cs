@@ -316,7 +316,7 @@ namespace CppSharp.Generators
                 property.Visit(this);
             }
 
-            VisitClassConstructors(@class);
+            VisitClassConstructors(@class.Constructors.Where(c => !ASTUtils.CheckIgnoreMethod(c)));
             VisitClassMethods(@class);
 
             return true;
@@ -333,9 +333,9 @@ namespace CppSharp.Generators
             }
         }
 
-        public virtual void VisitClassConstructors(Class @class)
+        public virtual void VisitClassConstructors(IEnumerable<Method> constructors)
         {
-            foreach (var ctor in @class.Constructors.Where(c => !ASTUtils.CheckIgnoreMethod(c)))
+            foreach (var ctor in constructors)
             {
                 ctor.Visit(this);
             }
