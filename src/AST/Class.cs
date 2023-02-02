@@ -286,6 +286,11 @@ namespace CppSharp.AST
                 .FirstOrDefault(m => m.USR == usr);
         }
 
+        public Variable FindVariable(string name)
+        {
+            return Variables.FirstOrDefault(m => m.Name == name);
+        }
+
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitClassDecl(this);
