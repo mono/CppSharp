@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
@@ -9,11 +10,9 @@ using CppSharp.Generators.NAPI;
 
 namespace CppSharp.Generators.Cpp
 {
-    public class NAPICodeGenerator : CCodeGenerator
+    public class MethodGroupCodeGenerator : CCodeGenerator
     {
-        public override string FileExtension => "cpp";
-
-        public NAPICodeGenerator(BindingContext context, IEnumerable<TranslationUnit> units)
+        protected MethodGroupCodeGenerator(BindingContext context, IEnumerable<TranslationUnit> units)
             : base(context, units)
         {
         }
@@ -43,9 +42,9 @@ namespace CppSharp.Generators.Cpp
             return VisitClassDeclContext(@class);
         }
 
-        public override void VisitClassConstructors(Class @class)
+        public override void VisitClassConstructors(IEnumerable<Method> ctors)
         {
-            var constructors = @class.Constructors.Where(c => c.IsGenerated && !c.IsCopyConstructor)
+            var constructors = ctors.Where(c => c.IsGenerated && !c.IsCopyConstructor)
                 .ToList();
 
             if (!constructors.Any())
@@ -59,7 +58,7 @@ namespace CppSharp.Generators.Cpp
             if (!function.IsGenerated)
                 return false;
 
-            if (!(function is Method method))
+            if (function is not Method method)
                 return true;
 
             if (method.IsConstructor || method.IsDestructor)
@@ -88,8 +87,25 @@ namespace CppSharp.Generators.Cpp
             foreach (var method in @group)
             {
                 method.Visit(this);
-                return;
             }
+        }
+
+        public static string GetTranslationUnitName(TranslationUnit unit)
+        {
+            var paths = unit.FileRelativePath.Split('/').ToList();
+            paths = paths.Select(p => Path.GetFileNameWithoutExtension(p.ToLowerInvariant())).ToList();
+            var name = string.Join('_', paths);
+            return name;
+        }
+    }
+
+    public class NAPICodeGenerator : MethodGroupCodeGenerator
+    {
+        public override string FileExtension => "cpp";
+
+        public NAPICodeGenerator(BindingContext context, IEnumerable<TranslationUnit> units)
+            : base(context, units)
+        {
         }
 
         public virtual MarshalPrinter<MarshalContext, CppTypePrinter> GetMarshalManagedToNativePrinter(MarshalContext ctx)

@@ -61,7 +61,7 @@ msvc_cpp_defines = { }
 default_gcc_version = "9.0.0"
 generate_build_config = true
 premake.path = premake.path .. ";" .. path.join(builddir, "modules")
-targetframework = "netcoreapp3.1"
+targetframework = "net6.0"
 
 function string.starts(str, start)
    if str == nil then return end
