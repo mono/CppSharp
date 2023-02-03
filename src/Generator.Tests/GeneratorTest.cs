@@ -72,7 +72,7 @@ namespace CppSharp.Utils
         public static string GetTestsDirectory(string name)
         {
             var directory = new DirectoryInfo(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty);
 
             while (directory != null)
             {
@@ -89,15 +89,12 @@ namespace CppSharp.Utils
                 directory = directory.Parent;
             }
 
-            throw new Exception(string.Format(
-                "Tests directory for project '{0}' was not found", name));
+            throw new Exception($"Tests directory for project '{name}' was not found");
         }
 
         static string GetOutputDirectory()
         {
-            string exePath = new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath;
-            var directory = Directory.GetParent(exePath);
-
+            var directory = Directory.GetParent(Assembly.GetExecutingAssembly().Location);
             while (directory != null)
             {
                 var path = Path.Combine(directory.FullName, "build");
