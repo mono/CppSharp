@@ -6,7 +6,9 @@ namespace CppSharp
     enum TargetArchitecture
     {
         x86,
-        x64
+        x64,
+        WASM32,
+        WASM64
     }
 
     class Options

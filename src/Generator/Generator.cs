@@ -14,6 +14,7 @@ namespace CppSharp.Generators
         CSharp = 2,
         C,
         CPlusPlus,
+        Emscripten,
         ObjectiveC,
         Java,
         Swift,

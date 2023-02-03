@@ -8,6 +8,7 @@ using CppSharp.Generators.C;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.Cpp;
 using CppSharp.Generators.CSharp;
+using CppSharp.Generators.Emscripten;
 using CppSharp.Generators.TS;
 using CppSharp.Parser;
 using CppSharp.Passes;
@@ -43,6 +44,8 @@ namespace CppSharp
                     return new CLIGenerator(Context);
                 case GeneratorKind.CSharp:
                     return new CSharpGenerator(Context);
+                case GeneratorKind.Emscripten:
+                    return new EmscriptenGenerator(Context);
                 case GeneratorKind.QuickJS:
                     return new QuickJSGenerator(Context);
                 case GeneratorKind.NAPI:
