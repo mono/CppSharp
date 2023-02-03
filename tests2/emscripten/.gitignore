@@ -1,0 +1,4 @@
+gen
+*.so
+*.dylib
+*.dll

@@ -26,28 +26,51 @@ namespace CppSharp
         {
             var tripleBuilder = new StringBuilder();
 
-            if (options.Architecture == TargetArchitecture.x64)
-                tripleBuilder.Append("x86_64-");
-            else if (options.Architecture == TargetArchitecture.x86)
-                tripleBuilder.Append("i686-");
-
-            if (options.Platform == TargetPlatform.Windows)
+            switch (options.Architecture)
             {
-                tripleBuilder.Append("pc-win32-msvc");
-                abi = CppAbi.Microsoft;
+                case TargetArchitecture.x64:
+                    tripleBuilder.Append("x86_64-");
+                    break;
+                case TargetArchitecture.x86:
+                    tripleBuilder.Append("i686-");
+                    break;
+                case TargetArchitecture.WASM32:
+                    tripleBuilder.Append("wasm32-");
+                    break;
+                case TargetArchitecture.WASM64:
+                    tripleBuilder.Append("wasm64-");
+                    break;
             }
-            else if (options.Platform == TargetPlatform.MacOS)
-            {
-                tripleBuilder.Append("apple-darwin12.4.0");
-                abi = CppAbi.Itanium;
-            }
-            else if (options.Platform == TargetPlatform.Linux)
-            {
-                tripleBuilder.Append("linux-gnu");
-                abi = CppAbi.Itanium;
 
-                if (options.Cpp11ABI)
-                    tripleBuilder.Append("-cxx11abi");
+            switch (options.Platform)
+            {
+                case TargetPlatform.Windows:
+                    tripleBuilder.Append("pc-win32-msvc");
+                    abi = CppAbi.Microsoft;
+                    break;
+                case TargetPlatform.MacOS:
+                    tripleBuilder.Append("apple-darwin12.4.0");
+                    abi = CppAbi.Itanium;
+                    break;
+                case TargetPlatform.Linux:
+                {
+                    tripleBuilder.Append("linux-gnu");
+                    abi = CppAbi.Itanium;
+
+                    if (options.Cpp11ABI)
+                        tripleBuilder.Append("-cxx11abi");
+                    break;
+                }
+                case TargetPlatform.Emscripten:
+                {
+                    if (options.Architecture != TargetArchitecture.WASM32 &&
+                        options.Architecture != TargetArchitecture.WASM64)
+                        throw new Exception("Emscripten target is only compatible with WASM architectures");
+
+                    tripleBuilder.Append("unknown-emscripten");
+                    abi = CppAbi.Itanium;
+                    break;
+                }
             }
 
             triple = tripleBuilder.ToString();

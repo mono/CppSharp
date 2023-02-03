@@ -11,7 +11,8 @@ namespace CppSharp
         MacOS,
         iOS,
         WatchOS,
-        TVOS
+        TVOS,
+        Emscripten,
     }
 
     public static class Platform

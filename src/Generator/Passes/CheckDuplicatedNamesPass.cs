@@ -7,6 +7,7 @@ using CppSharp.Generators;
 using CppSharp.Generators.C;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.CSharp;
+using CppSharp.Generators.Emscripten;
 using CppSharp.Types;
 
 namespace CppSharp.Passes
@@ -204,6 +205,9 @@ namespace CppSharp.Passes
                 case GeneratorKind.C:
                     typePrinter = new CppTypePrinter(Context) { PrintFlavorKind = CppTypePrintFlavorKind.C };
                     break;
+                case GeneratorKind.Emscripten:
+                    typePrinter = new EmscriptenTypePrinter(Context);
+                    break;;
                 case GeneratorKind.CPlusPlus:
                 case GeneratorKind.QuickJS:
                 case GeneratorKind.NAPI:
