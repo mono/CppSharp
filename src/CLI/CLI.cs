@@ -288,7 +288,7 @@ namespace CppSharp
 
             Generator gen = new Generator(options);
 
-            bool validOptions = gen.ValidateOptions(errorMessages);
+            var validOptions = gen.ValidateOptions(errorMessages);
             PrintErrorMessages(errorMessages);
 
             if (errorMessages.Any() || !validOptions)

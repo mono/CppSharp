@@ -13,30 +13,13 @@ namespace CppSharp
 {
     class Generator : ILibrary
     {
-        private Options options = null;
+        private readonly Options options;
         private string triple = "";
         private CppAbi abi = CppAbi.Microsoft;
 
         public Generator(Options options)
         {
-            if (options == null)
-                throw new ArgumentNullException(nameof(options));
-
-            this.options = options;
-        }
-
-        static TargetPlatform GetCurrentPlatform()
-        {
-            if (Platform.IsWindows)
-                return TargetPlatform.Windows;
-
-            if (Platform.IsMacOS)
-                return TargetPlatform.MacOS;
-
-            if (Platform.IsLinux)
-                return TargetPlatform.Linux;
-
-            throw new System.NotImplementedException("Unknown host platform");
+            this.options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
         void SetupTargetTriple()
@@ -78,8 +61,7 @@ namespace CppSharp
                 return false;
             }
 
-            if (!options.Platform.HasValue)
-                options.Platform = GetCurrentPlatform();
+            options.Platform ??= Platform.Host;
 
             if (string.IsNullOrEmpty(options.OutputDir))
             {
@@ -189,7 +171,7 @@ namespace CppSharp
 
         public void Run()
         {
-            StringBuilder messageBuilder = new StringBuilder();
+            var messageBuilder = new StringBuilder();
             messageBuilder.Append($"Generating {GetGeneratorKindName(options.Kind)}");
             messageBuilder.Append($" bindings for {GetPlatformName(options.Platform)} {options.Architecture}");
 

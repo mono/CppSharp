@@ -5,9 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using LanguageVersion = CppSharp.Parser.LanguageVersion;
 
 namespace CppSharp.Parser
 {
@@ -200,20 +198,22 @@ namespace CppSharp.Parser
                 var versions = Directory.EnumerateDirectories(Path.Combine(headersPath,
                         "usr", "include", "c++"));
 
-                if (versions.Count() == 0)
+                if (!versions.Any())
                     throw new Exception("No valid GCC version found on system include paths");
 
-                string gccVersionPath = versions.First();
+                var gccVersionPath = versions.First();
                 longVersion = shortVersion = gccVersionPath.Substring(
                         gccVersionPath.LastIndexOf(Path.DirectorySeparatorChar) + 1);
 
                 return;
             }
 
-            var info = new ProcessStartInfo(Environment.GetEnvironmentVariable("CXX") ?? "gcc", "-v");
-            info.RedirectStandardError = true;
-            info.CreateNoWindow = true;
-            info.UseShellExecute = false;
+            var info = new ProcessStartInfo(Environment.GetEnvironmentVariable("CXX") ?? "gcc", "-v")
+                {
+                    RedirectStandardError = true,
+                    CreateNoWindow = true,
+                    UseShellExecute = false
+                };
 
             var process = Process.Start(info);
             if (process == null)
@@ -237,13 +237,12 @@ namespace CppSharp.Parser
             NoBuiltinIncludes = true;
             NoStandardIncludes = true;
 
-            string compiler, longVersion, shortVersion;
-            GetUnixCompilerInfo(headersPath, out compiler, out longVersion, out shortVersion);
+            GetUnixCompilerInfo(headersPath, out var compiler, out var longVersion, out var shortVersion);
 
             AddSystemIncludeDirs(BuiltinsDir);
             AddArguments($"-fgnuc-version={longVersion}");
 
-            string majorVersion = shortVersion.Split('.')[0];
+            var majorVersion = shortVersion.Split('.')[0];
             string[] versions = { longVersion, shortVersion, majorVersion };
             string[] triples = { "x86_64-linux-gnu", "x86_64-pc-linux-gnu" };
             if (compiler == "gcc")
@@ -287,9 +286,7 @@ namespace CppSharp.Parser
 
         private void SetupArguments()
         {
-            // do not remove the CppSharp prefix becase the Mono C# compiler breaks
-            if (!LanguageVersion.HasValue)
-                LanguageVersion = CppSharp.Parser.LanguageVersion.CPP14_GNU;
+            LanguageVersion ??= CppSharp.Parser.LanguageVersion.CPP14_GNU;
 
             // As of Clang revision 5e866e411caa we are required to pass "-fgnuc-version="
             // to get the __GNUC__ symbol defined. macOS and Linux system headers require
