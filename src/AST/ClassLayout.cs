@@ -31,14 +31,7 @@ namespace CppSharp.AST
         public Declaration Declaration;
 
         /// Method declaration (if Kind == FunctionPointer).
-        public Method Method
-        {
-            get
-            {
-                Debug.Assert(Kind == VTableComponentKind.FunctionPointer);
-                return Declaration as Method;
-            }
-        }
+        public Method Method => Declaration as Method;
     }
 
     /// <summary>

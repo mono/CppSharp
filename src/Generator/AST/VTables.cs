@@ -34,6 +34,7 @@ namespace CppSharp.AST
                              where component.Kind != VTableComponentKind.CompleteDtorPointer &&
                                    component.Kind != VTableComponentKind.RTTI &&
                                    component.Kind != VTableComponentKind.UnusedFunctionPointer &&
+                                   component.Kind != VTableComponentKind.OffsetToTop &&
                                    component.Method != null
                              select component);
 
