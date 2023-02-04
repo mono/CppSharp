@@ -42,7 +42,6 @@ namespace CppSharp.Utils
             testModule.LibraryDirs.Add(options.OutputDir);
             testModule.Libraries.Add($"{name}.Native");
 
-            Diagnostics.Message("Looking for tests in: {0}", path);
             var files = Directory.EnumerateFiles(path, "*.h", SearchOption.AllDirectories);
             foreach (var file in files)
             {

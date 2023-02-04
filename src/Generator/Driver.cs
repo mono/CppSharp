@@ -112,7 +112,8 @@ namespace CppSharp
             switch (result.Kind)
             {
                 case ParserResultKind.Success:
-                    Diagnostics.Message("Parsed '{0}'", string.Join(", ", files));
+                    if (!Options.Quiet)
+                        Diagnostics.Message("Parsed '{0}'", string.Join(", ", files));
                     break;
                 case ParserResultKind.Error:
                     Diagnostics.Error("Error parsing '{0}'", string.Join(", ", files));
@@ -346,7 +347,8 @@ namespace CppSharp
 
                     output.TranslationUnit.Module?.CodeFiles.Add(file);
 
-                    Diagnostics.Message("Generated '{0}'", fileRelativePath);
+                    if (!Options.Quiet)
+                        Diagnostics.Message("Generated '{0}'", fileRelativePath);
                 }
             }
         }
