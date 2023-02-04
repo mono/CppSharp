@@ -34,7 +34,7 @@
     <GeneratorFileExtension>dll</GeneratorFileExtension>
     <DotNetCmd Condition="'$(PlatformTarget)' == 'x86' AND Exists('$(MSBuildProgramFiles32)\dotnet\dotnet.exe')">"$(MSBuildProgramFiles32)\dotnet\dotnet.exe"</DotNetCmd>
     <DotNetCmd Condition="'$(PlatformTarget)' == 'x64' AND Exists('$(ProgramW6432)\dotnet\dotnet.exe')">"$(ProgramW6432)\dotnet\dotnet.exe"</DotNetCmd>
-    <RID Condition="$(IsWindows)">win</RID>    
+    <RID Condition="$(IsWindows)">win</RID>
     <RID Condition="$(IsLinux)">linux</RID>
     <RID Condition="$(IsMacOSX)">osx</RID>
     <RID>$(RID)-$(PlatformTarget)</RID>

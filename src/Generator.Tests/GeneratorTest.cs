@@ -74,12 +74,12 @@ namespace CppSharp.Utils
 
             while (directory != null)
             {
-                var path = Path.Combine(directory.FullName, "tests", name);
+                var path = Path.Combine(directory.FullName, "tests", "dotnet", name);
 
                 if (Directory.Exists(path))
                     return path;
 
-                path = Path.Combine(directory.FullName, "external", "CppSharp", "tests", name);
+                path = Path.Combine(directory.FullName, "external", "CppSharp", "tests", "dotnet", name);
 
                 if (Directory.Exists(path))
                     return path;
