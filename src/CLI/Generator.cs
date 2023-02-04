@@ -138,7 +138,7 @@ namespace CppSharp
             parserOptions.UnityBuild = options.UnityBuild;
             parserOptions.EnableRTTI = options.EnableRTTI;
 
-            parserOptions.Setup();
+            parserOptions.Setup(options.Platform ?? Platform.Host);
 
             if (triple.Contains("linux"))
                 SetupLinuxOptions(parserOptions);

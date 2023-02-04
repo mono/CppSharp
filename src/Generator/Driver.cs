@@ -85,7 +85,7 @@ namespace CppSharp
         public void Setup()
         {
             ValidateOptions();
-            ParserOptions.Setup();
+            ParserOptions.Setup(Platform.Host);
             Context = new BindingContext(Options, ParserOptions);
             Context.LinkerOptions.Setup(ParserOptions.TargetTriple, ParserOptions.LanguageVersion);
             Generator = CreateGeneratorFromKind(Options.GeneratorKind);
@@ -367,7 +367,7 @@ namespace CppSharp
 
         public bool CompileCode(Module module)
         {
-            var msBuildGenerator = new MSBuildGenerator(Context, module, libraryMappings);
+            var msBuildGenerator = new MSBuildGenerator(Context, module, LibraryMappings);
             msBuildGenerator.Process();
             string csproj = Path.Combine(Options.OutputDir,
                 $"{module.LibraryName}.{msBuildGenerator.FileExtension}");
@@ -378,7 +378,7 @@ namespace CppSharp
             if (error == 0)
             {
                 Diagnostics.Message($@"Compilation succeeded: {
-                    libraryMappings[module] = Path.Combine(
+                    LibraryMappings[module] = Path.Combine(
                         Options.OutputDir, $"{module.LibraryName}.dll")}.");
                 return true;
             }
@@ -407,7 +407,7 @@ namespace CppSharp
         }
 
         private bool hasParsingErrors;
-        private static readonly Dictionary<Module, string> libraryMappings = new Dictionary<Module, string>();
+        private static readonly Dictionary<Module, string> LibraryMappings = new();
     }
 
     public static class ConsoleDriver
