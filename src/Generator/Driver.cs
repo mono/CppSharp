@@ -282,6 +282,10 @@ namespace CppSharp
             if (Options.IsCLIGenerator || Options.IsCSharpGenerator)
             {
                 TranslationUnitPasses.AddPass(new DelegatesPass());
+            }
+
+            if (Options.GeneratorKind != GeneratorKind.C)
+            {
                 TranslationUnitPasses.AddPass(new GetterSetterToPropertyPass());
             }
 
