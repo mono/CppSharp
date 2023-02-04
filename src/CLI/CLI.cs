@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using CppSharp.Generators;
+using CppSharp.Passes;
 using Mono.Options;
 
 namespace CppSharp
@@ -34,6 +35,7 @@ namespace CppSharp
             optionSet.Add("p=|platform=", "the {PLATFORM} that the generated code will target: 'win', 'osx' or 'linux' or 'emscripten'", p => { GetDestinationPlatform(p, errorMessages); });
             optionSet.Add("a=|arch=", "the {ARCHITECTURE} that the generated code will target: 'x86' or 'x64' or 'wasm32' or 'wasm64'", a => { GetDestinationArchitecture(a, errorMessages); });
             optionSet.Add("prefix=", "sets a string prefix to the names of generated files", a => { options.Prefix = a; });
+            optionSet.Add("property=", "the property detection mode to use: 'all', 'none' or 'keywords' or 'heuristics'", p => { GetPropertyMode(p, errorMessages); });
 
             optionSet.Add("exceptions", "enables support for C++ exceptions in the parser", v => { options.EnableExceptions = true; });
             optionSet.Add("rtti", "enables support for C++ RTTI in the parser", v => { options.EnableRTTI = true; });
@@ -267,6 +269,27 @@ namespace CppSharp
 
             errorMessages.Add($@"Unknown target architecture: {architecture}. \
              Defaulting to {options.Architecture}");
+        }
+
+        static void GetPropertyMode(string mode, List<string> errorMessages)
+        {
+            switch (mode.ToLower())
+            {
+                case "all":
+                    options.PropertyMode = PropertyDetectionMode.All;
+                    return;
+                case "none":
+                    options.PropertyMode = PropertyDetectionMode.None;
+                    return;
+                case "dictionary":
+                    options.PropertyMode = PropertyDetectionMode.Dictionary;
+                    return;
+                case "keywords":
+                    options.PropertyMode = PropertyDetectionMode.Keywords;
+                    return;
+            }
+
+            errorMessages.Add($"Unknown property detection mode: {mode}. Defaulting to {options.PropertyMode}");
         }
 
         static void PrintErrorMessages(List<string> errorMessages)

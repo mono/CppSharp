@@ -44,7 +44,7 @@ namespace CppSharp
 
         public GeneratorKind Kind { get; set; } = GeneratorKind.CSharp;
 
-        public PropertyDetectionMode PropertyMode = PropertyDetectionMode.Keywords;
+        public PropertyDetectionMode PropertyMode { get; set; } = PropertyDetectionMode.Keywords;
 
         public bool CheckSymbols { get; set; }
 
