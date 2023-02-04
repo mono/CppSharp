@@ -1,4 +1,4 @@
-local qjs_dir = path.getabsolute("../../deps/quickjs")
+local qjs_dir = path.getabsolute("./quickjs")
 local runtime = "../../src/Generator/Generators/QuickJS/Runtime"
 
 workspace "qjs"

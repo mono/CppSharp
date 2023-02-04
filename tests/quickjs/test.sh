@@ -5,7 +5,7 @@ rootdir="$dir/../.."
 dotnet_configuration=Release
 configuration=debug
 platform=x64
-jsinterp="$rootdir/deps/quickjs/qjs-debug"
+jsinterp="$dir/quickjs/qjs"
 
 red=`tput setaf 1`
 green=`tput setaf 2`
