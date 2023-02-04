@@ -11,6 +11,33 @@ using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Passes
 {
+    /// <summary>
+    /// This is used by GetterSetterToPropertyPass to decide how to process
+    /// getter/setter class methods into properties.
+    /// </summary>
+    public enum PropertyDetectionMode
+    {
+        /// <summary>
+        /// No methods are converted to properties.
+        /// </summary>
+        None,
+        /// <summary>
+        /// All compatible methods are converted to properties.
+        /// </summary>
+        All,
+        /// <summary>
+        /// Only methods starting with certain keyword are converted to properties.
+        /// Right now we consider getter methods starting with "get", "is" and "has".
+        /// </summary>
+        Keywords,
+        /// <summary>
+        /// Heuristics based mode that uses english dictionary words to decide
+        /// if a getter method is an action and thus not to be considered as a
+        /// property.
+        /// </summary>
+        Dictionary
+    }
+
     public class GetterSetterToPropertyPass : TranslationUnitPass
     {
         static GetterSetterToPropertyPass()
@@ -44,6 +71,9 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
+            if (Options.PropertyDetectionMode == PropertyDetectionMode.None)
+                return false;
+
             if (!base.VisitClassDecl(@class))
                 return false;
 
@@ -86,22 +116,16 @@ namespace CppSharp.Passes
 
         private IEnumerable<Property> CleanUp(Class @class, List<Property> properties)
         {
-            if (!Options.UsePropertyDetectionHeuristics)
+#pragma warning disable CS0618
+            if (!Options.UsePropertyDetectionHeuristics ||
+#pragma warning restore CS0618
+                Options.PropertyDetectionMode == PropertyDetectionMode.All)
                 return properties;
 
             for (int i = properties.Count - 1; i >= 0; i--)
             {
-                Property property = properties[i];
-                if (property.HasSetter || property.IsExplicitlyGenerated)
-                    continue;
-
-                string firstWord = GetFirstWord(property.GetMethod.Name);
-                if (firstWord.Length < property.GetMethod.Name.Length &&
-                    Match(firstWord, new[] { "get", "is", "has" }))
-                    continue;
-
-                if (Match(firstWord, new[] { "to", "new", "on" }) ||
-                    Verbs.Contains(firstWord))
+                var property = properties[i];
+                if (!KeepProperty(property))
                 {
                     property.GetMethod.GenerationKind = GenerationKind.Generate;
                     @class.Properties.Remove(property);
@@ -110,6 +134,27 @@ namespace CppSharp.Passes
             }
 
             return properties;
+        }
+
+        public virtual bool KeepProperty(Property property)
+        {
+            if (property.HasSetter || property.IsExplicitlyGenerated)
+                return true;
+
+            var firstWord = GetFirstWord(property.GetMethod.Name);
+            var isKeyword = firstWord.Length < property.GetMethod.Name.Length &&
+                            Match(firstWord, new[] {"get", "is", "has"});
+
+            switch (Options.PropertyDetectionMode)
+            {
+                case PropertyDetectionMode.Keywords:
+                    return isKeyword;
+                case PropertyDetectionMode.Dictionary:
+                    var isAction = Match(firstWord, new[] {"to", "new", "on"}) || Verbs.Contains(firstWord);
+                    return isKeyword || !isAction;
+                default:
+                    return false;
+            }
         }
 
         private static void CreateOrUpdateProperty(List<Property> properties, Method method,
