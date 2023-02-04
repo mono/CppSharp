@@ -5,6 +5,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <IsPackable>true</IsPackable>
+    <NoWarn>0109</NoWarn>
     <PlatformParserFolder Condition="$(IsWindows) AND $(PlatformTarget) == x64">x86_64-pc-win32-msvc</PlatformParserFolder>
     <PlatformParserFolder Condition="$(IsLinux) AND $(PlatformTarget) == x64 AND $(UseCXX11ABI)">x86_64-linux-gnu-cxx11abi</PlatformParserFolder>
     <PlatformParserFolder Condition="$(IsLinux) AND $(PlatformTarget) == x64 AND !$(UseCXX11ABI)">x86_64-linux-gnu</PlatformParserFolder>
