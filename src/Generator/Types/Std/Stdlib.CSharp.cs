@@ -227,8 +227,6 @@ namespace CppSharp.Types.Std
                         return (Context.Options.Encoding, nameof(Encoding.ASCII));
                     if (Context.Options.Encoding == Encoding.UTF8)
                         return (Context.Options.Encoding, nameof(Encoding.UTF8));
-                    if (Context.Options.Encoding == Encoding.UTF7)
-                        return (Context.Options.Encoding, nameof(Encoding.UTF7));
                     if (Context.Options.Encoding == Encoding.BigEndianUnicode)
                         return (Context.Options.Encoding, nameof(Encoding.BigEndianUnicode));
                     if (Context.Options.Encoding == Encoding.Unicode)

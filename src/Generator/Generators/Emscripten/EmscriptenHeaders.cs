@@ -7,7 +7,7 @@ namespace CppSharp.Generators.Emscripten
     /// Generates Emscripten Embind C/C++ header files.
     /// Embind documentation: https://emscripten.org/docs/porting/connecting_cpp_and_javascript/embind.html
     /// </summary>
-    public class EmscriptenHeaders : EmscriptenCodeGenerator
+    public sealed class EmscriptenHeaders : EmscriptenCodeGenerator
     {
         public EmscriptenHeaders(BindingContext context, IEnumerable<TranslationUnit> units)
             : base(context, units)

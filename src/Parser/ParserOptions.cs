@@ -276,15 +276,21 @@ namespace CppSharp.Parser
             AddSystemIncludeDirs($"{headersPath}/usr/include/linux");
         }
 
-        public void Setup()
+        private bool setupDone;
+
+        public void Setup(TargetPlatform targetPlatform)
         {
-            SetupArguments();
+            if (setupDone) return;
+
+            SetupArguments(targetPlatform);
 
             if (!NoBuiltinIncludes)
-                SetupIncludes();
+                SetupIncludes(targetPlatform);
+
+            setupDone = true;
         }
 
-        private void SetupArguments()
+        private void SetupArguments(TargetPlatform targetPlatform)
         {
             LanguageVersion ??= CppSharp.Parser.LanguageVersion.CPP14_GNU;
 
@@ -296,7 +302,7 @@ namespace CppSharp.Parser
             // setup methods, below is generic fallback in case that logic was disabled.
             if (NoBuiltinIncludes)
             {
-                switch (Platform.Host)
+                switch (targetPlatform)
                 {
                     case TargetPlatform.MacOS:
                     case TargetPlatform.Linux:
@@ -370,18 +376,21 @@ namespace CppSharp.Parser
         {
             get
             {
-                var assemblyDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                var assemblyDir = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
+                if (assemblyDir == null)
+                    throw new InvalidOperationException();
+
                 return Path.Combine(assemblyDir, "lib", "clang", ClangVersion, "include");
             }
         }
 
-        private void SetupIncludes()
+        private void SetupIncludes(TargetPlatform targetPlatform)
         {
             // Check that the builtin includes folder exists.
             if (!Directory.Exists(BuiltinsDir))
                 throw new Exception($"Clang resource folder 'lib/clang/{ClangVersion}/include' was not found.");
 
-            switch (Platform.Host)
+            switch (targetPlatform)
             {
                 case TargetPlatform.Windows:
                     SetupMSVC();
@@ -392,6 +401,16 @@ namespace CppSharp.Parser
                 case TargetPlatform.Linux:
                     SetupLinux();
                     break;
+                case TargetPlatform.Android:
+                    throw new NotImplementedException();
+                case TargetPlatform.iOS:
+                case TargetPlatform.WatchOS:
+                case TargetPlatform.TVOS:
+                    throw new NotImplementedException();
+                case TargetPlatform.Emscripten:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
     }

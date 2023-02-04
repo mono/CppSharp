@@ -21,19 +21,16 @@ namespace CppSharp.Passes
         private static void LoadVerbs()
         {
             var assembly = Assembly.GetAssembly(typeof(GetterSetterToPropertyPass));
-            using (var resourceStream = GetResourceStream(assembly))
-            {
-                using (var streamReader = new StreamReader(resourceStream))
-                    while (!streamReader.EndOfStream)
-                        verbs.Add(streamReader.ReadLine());
-            }
+            using var resourceStream = GetResourceStream(assembly);
+            using var streamReader = new StreamReader(resourceStream);
+            while (!streamReader.EndOfStream)
+                Verbs.Add(streamReader.ReadLine());
         }
 
         private static Stream GetResourceStream(Assembly assembly)
         {
             var resources = assembly.GetManifestResourceNames();
-
-            if (resources.Count() == 0)
+            if (!resources.Any())
                 throw new Exception("Cannot find embedded verbs data resource.");
 
             // We are relying on this fact that there is only one resource embedded.
@@ -54,13 +51,12 @@ namespace CppSharp.Passes
             return false;
         }
 
-        protected virtual List<Property> GetProperties(Class @class) =>
-            new List<Property>();
+        protected virtual List<Property> GetProperties() => new();
 
         protected IEnumerable<Property> GenerateProperties(Class @class)
         {
-            List<Property> properties = GetProperties(@class);
-            foreach (Method method in @class.Methods.Where(
+            var properties = GetProperties();
+            foreach (var method in @class.Methods.Where(
                 m => !m.IsConstructor && !m.IsDestructor && !m.IsOperator && m.IsGenerated &&
                     (properties.All(p => p.GetMethod != m && p.SetMethod != m) ||
                         m.OriginalFunction != null) &&
@@ -72,15 +68,16 @@ namespace CppSharp.Passes
                 if (IsGetter(method))
                 {
                     string name = GetPropertyName(method.Name);
-                    GetProperty(properties, method, name, method.OriginalReturnType);
+                    CreateOrUpdateProperty(properties, method, name, method.OriginalReturnType);
                     continue;
                 }
+
                 if (IsSetter(method))
                 {
                     string name = GetPropertyNameFromSetter(method.Name);
                     QualifiedType type = method.Parameters.First(
                         p => p.Kind == ParameterKind.Regular).QualifiedType;
-                    GetProperty(properties, method, name, type, true);
+                    CreateOrUpdateProperty(properties, method, name, type, true);
                 }
             }
 
@@ -104,7 +101,7 @@ namespace CppSharp.Passes
                     continue;
 
                 if (Match(firstWord, new[] { "to", "new", "on" }) ||
-                    verbs.Contains(firstWord))
+                    Verbs.Contains(firstWord))
                 {
                     property.GetMethod.GenerationKind = GenerationKind.Generate;
                     @class.Properties.Remove(property);
@@ -115,12 +112,10 @@ namespace CppSharp.Passes
             return properties;
         }
 
-        private static void GetProperty(List<Property> properties, Method method,
+        private static void CreateOrUpdateProperty(List<Property> properties, Method method,
             string name, QualifiedType type, bool isSetter = false)
         {
             Type underlyingType = GetUnderlyingType(type);
-            Class @class = (Class)method.Namespace;
-
             Property property = properties.Find(
                 p => p.Field == null &&
                     ((!isSetter && p.SetMethod?.IsStatic == method.IsStatic) ||
@@ -255,14 +250,13 @@ namespace CppSharp.Passes
 
         private static Type GetUnderlyingType(QualifiedType type)
         {
-            TagType tagType = type.Type as TagType;
-            if (tagType != null)
+            if (type.Type is TagType)
                 return type.Type;
+
             // TODO: we should normally check pointer types for const; 
             // however, there's some bug, probably in the parser, that returns IsConst = false for "const Type& arg"
             // so skip the check for the time being
-            PointerType pointerType = type.Type as PointerType;
-            return pointerType != null ? pointerType.Pointee : type.Type;
+            return type.Type is PointerType pointerType ? pointerType.Pointee : type.Type;
         }
 
         private static void CombineComments(Property property)
@@ -277,6 +271,7 @@ namespace CppSharp.Passes
                 BriefText = getter.Comment.BriefText,
                 Text = getter.Comment.Text
             };
+
             if (getter.Comment.FullComment != null)
             {
                 comment.FullComment = new FullComment();
@@ -295,20 +290,18 @@ namespace CppSharp.Passes
         private static string GetPropertyName(string name)
         {
             var firstWord = GetFirstWord(name);
-            if (Match(firstWord, new[] { "get" }) &&
-                (string.Compare(name, firstWord, StringComparison.InvariantCultureIgnoreCase) != 0) &&
-                !char.IsNumber(name[3]))
+            if (!Match(firstWord, new[] {"get"}) ||
+                (string.Compare(name, firstWord, StringComparison.InvariantCultureIgnoreCase) == 0) ||
+                char.IsNumber(name[3])) return name;
+
+            if (name.Length == 4)
             {
-                if (name.Length == 4)
-                {
-                    return char.ToLowerInvariant(
-                        name[3]).ToString(CultureInfo.InvariantCulture);
-                }
                 return char.ToLowerInvariant(
-                    name[3]).ToString(CultureInfo.InvariantCulture) +
-                                name.Substring(4);
+                    name[3]).ToString(CultureInfo.InvariantCulture);
             }
-            return name;
+
+            return string.Concat(char.ToLowerInvariant(
+                       name[3]).ToString(CultureInfo.InvariantCulture), name.AsSpan(4));
         }
 
         private static string GetPropertyNameFromSetter(string name)
@@ -327,8 +320,8 @@ namespace CppSharp.Passes
 
         private bool IsGetter(Method method) =>
             !method.IsDestructor &&
-            !method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void) &&
-            !method.Parameters.Any(p => p.Kind != ParameterKind.IndirectReturnType);
+            !method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void) && 
+            method.Parameters.All(p => p.Kind == ParameterKind.IndirectReturnType);
 
         private static bool IsSetter(Method method)
         {
@@ -365,6 +358,6 @@ namespace CppSharp.Passes
             return new string(firstWord.ToArray());
         }
 
-        private static readonly HashSet<string> verbs = new HashSet<string>();
+        private static readonly HashSet<string> Verbs = new();
     }
 }

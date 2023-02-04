@@ -1,5 +1,5 @@
 <Project>
-  <Import Project="../Directory.Build.props" />
+  <Import Project="../../Directory.Build.props" />
   <Import Project="Test.Common.props" />  
   <Import Project="Test.Generator.props" Condition="$(IsTestGenerator)" />
   <Import Project="Test.Bindings.props" Condition="$(IsTestBindings)" />

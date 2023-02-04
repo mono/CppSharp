@@ -62,7 +62,7 @@ namespace CppSharp.Passes
             }
 
             if (function.IsAmbiguous)
-                Diagnostics.Message($"Found ambiguous overload: {function.QualifiedOriginalName}");
+                Diagnostics.Debug($"Found ambiguous overload: {function.QualifiedOriginalName}");
 
             return true;
         }
