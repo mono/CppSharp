@@ -125,12 +125,12 @@ namespace CppSharp.Passes
             for (int i = properties.Count - 1; i >= 0; i--)
             {
                 var property = properties[i];
-                if (!KeepProperty(property))
-                {
-                    property.GetMethod.GenerationKind = GenerationKind.Generate;
-                    @class.Properties.Remove(property);
-                    properties.RemoveAt(i);
-                }
+                if (KeepProperty(property))
+                    continue;
+
+                property.GetMethod.GenerationKind = GenerationKind.Generate;
+                @class.Properties.Remove(property);
+                properties.RemoveAt(i);
             }
 
             return properties;
@@ -160,6 +160,14 @@ namespace CppSharp.Passes
         private static void CreateOrUpdateProperty(List<Property> properties, Method method,
             string name, QualifiedType type, bool isSetter = false)
         {
+            string NormalizeName(string name)
+            {
+                return string.IsNullOrEmpty(name) ?
+                    name : string.Concat(char.ToLowerInvariant(name[0]), name.Substring(1));
+            }
+
+            var normalizedName = NormalizeName(name);
+
             Type underlyingType = GetUnderlyingType(type);
             Property property = properties.Find(
                 p => p.Field == null &&
@@ -169,10 +177,10 @@ namespace CppSharp.Passes
                          p.GetMethod.OriginalReturnType).Equals(underlyingType)) ||
                      (p.HasSetter && GetUnderlyingType(
                          p.SetMethod.Parameters[0].QualifiedType).Equals(underlyingType))) &&
-                    Match(p, name));
+                    Match(p, normalizedName));
 
             if (property == null)
-                properties.Add(property = new Property { Name = name, QualifiedType = type });
+                properties.Add(property = new Property { Name = normalizedName, QualifiedType = type });
 
             method.AssociatedDeclaration = property;
 
@@ -246,7 +254,9 @@ namespace CppSharp.Passes
                     property.SetMethod.OriginalReturnType.Type.Desugar().IsPrimitiveType(PrimitiveType.Void))
                     property.SetMethod.GenerationKind = GenerationKind.Internal;
                 property.Namespace = @class;
+
                 @class.Properties.Add(property);
+
                 RenameConflictingMethods(@class, property);
                 CombineComments(property);
             }
@@ -339,14 +349,8 @@ namespace CppSharp.Passes
                 (string.Compare(name, firstWord, StringComparison.InvariantCultureIgnoreCase) == 0) ||
                 char.IsNumber(name[3])) return name;
 
-            if (name.Length == 4)
-            {
-                return char.ToLowerInvariant(
-                    name[3]).ToString(CultureInfo.InvariantCulture);
-            }
-
-            return string.Concat(char.ToLowerInvariant(
-                       name[3]).ToString(CultureInfo.InvariantCulture), name.AsSpan(4));
+            var rest = (name.Length == 4) ? string.Empty : name.Substring(4);
+            return string.Concat(name[3], rest);
         }
 
         private static string GetPropertyNameFromSetter(string name)
@@ -359,7 +363,6 @@ namespace CppSharp.Passes
                 return nameBuilder.ToString();
 
             nameBuilder.TrimUnderscores();
-            nameBuilder[0] = char.ToLowerInvariant(nameBuilder[0]);
             return nameBuilder.ToString();
         }
 
