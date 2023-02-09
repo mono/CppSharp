@@ -8,6 +8,7 @@ using CppSharp.Generators.C;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.Cpp;
 using CppSharp.Generators.CSharp;
+using CppSharp.Generators.Emscripten;
 using CppSharp.Generators.TS;
 using CppSharp.Parser;
 using CppSharp.Passes;
@@ -43,6 +44,8 @@ namespace CppSharp
                     return new CLIGenerator(Context);
                 case GeneratorKind.CSharp:
                     return new CSharpGenerator(Context);
+                case GeneratorKind.Emscripten:
+                    return new EmscriptenGenerator(Context);
                 case GeneratorKind.QuickJS:
                     return new QuickJSGenerator(Context);
                 case GeneratorKind.NAPI:
@@ -82,7 +85,7 @@ namespace CppSharp
         public void Setup()
         {
             ValidateOptions();
-            ParserOptions.Setup();
+            ParserOptions.Setup(Platform.Host);
             Context = new BindingContext(Options, ParserOptions);
             Context.LinkerOptions.Setup(ParserOptions.TargetTriple, ParserOptions.LanguageVersion);
             Generator = CreateGeneratorFromKind(Options.GeneratorKind);
@@ -109,7 +112,8 @@ namespace CppSharp
             switch (result.Kind)
             {
                 case ParserResultKind.Success:
-                    Diagnostics.Message("Parsed '{0}'", string.Join(", ", files));
+                    if (!Options.Quiet)
+                        Diagnostics.Message("Parsed '{0}'", string.Join(", ", files));
                     break;
                 case ParserResultKind.Error:
                     Diagnostics.Error("Error parsing '{0}'", string.Join(", ", files));
@@ -180,27 +184,22 @@ namespace CppSharp
             ClangParser.LibraryParsed += OnFileParsed;
             foreach (var module in Options.Modules)
             {
-                using (var linkerOptions = new LinkerOptions(Context.LinkerOptions))
+                using var linkerOptions = new LinkerOptions(Context.LinkerOptions);
+                foreach (var libraryDir in module.LibraryDirs)
+                    linkerOptions.AddLibraryDirs(libraryDir);
+
+                foreach (var library in module.Libraries.Where(library =>
+                             Context.Symbols.Libraries.All(l => l.FileName != library)))
                 {
-                    foreach (var libraryDir in module.LibraryDirs)
-                        linkerOptions.AddLibraryDirs(libraryDir);
-
-                    foreach (string library in module.Libraries)
-                    {
-                        if (Context.Symbols.Libraries.Any(l => l.FileName == library))
-                            continue;
-                        linkerOptions.AddLibraries(library);
-                    }
-
-                    using (var res = ClangParser.ParseLibrary(linkerOptions))
-                    {
-                        if (res.Kind != ParserResultKind.Success)
-                            continue;
-
-                        for (uint i = 0; i < res.LibrariesCount; i++)
-                            Context.Symbols.Libraries.Add(ClangParser.ConvertLibrary(res.GetLibraries(i)));
-                    }
+                    linkerOptions.AddLibraries(library);
                 }
+
+                using var res = ClangParser.ParseLibrary(linkerOptions);
+                if (res.Kind != ParserResultKind.Success)
+                    continue;
+
+                for (uint i = 0; i < res.LibrariesCount; i++)
+                    Context.Symbols.Libraries.Add(ClangParser.ConvertLibrary(res.GetLibraries(i)));
             }
             ClangParser.LibraryParsed -= OnFileParsed;
 
@@ -212,95 +211,99 @@ namespace CppSharp
 
         public void SetupPasses(ILibrary library)
         {
-            var TranslationUnitPasses = Context.TranslationUnitPasses;
+            var passes = Context.TranslationUnitPasses;
 
-            TranslationUnitPasses.AddPass(new ResolveIncompleteDeclsPass());
-            TranslationUnitPasses.AddPass(new IgnoreSystemDeclarationsPass());
-            TranslationUnitPasses.AddPass(new MatchParamNamesWithInstantiatedFromPass());
+            passes.AddPass(new ResolveIncompleteDeclsPass());
+            passes.AddPass(new IgnoreSystemDeclarationsPass());
+            passes.AddPass(new MatchParamNamesWithInstantiatedFromPass());
 
             if (Options.IsCSharpGenerator)
-                TranslationUnitPasses.AddPass(new EqualiseAccessOfOverrideAndBasePass());
+                passes.AddPass(new EqualiseAccessOfOverrideAndBasePass());
 
-            TranslationUnitPasses.AddPass(new FlattenAnonymousTypesToFields());
-            TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
-            TranslationUnitPasses.AddPass(new MarkUsedClassInternalsPass());
+            passes.AddPass(new FlattenAnonymousTypesToFields());
+            passes.AddPass(new CheckIgnoredDeclsPass());
+            passes.AddPass(new MarkUsedClassInternalsPass());
 
             if (Options.IsCSharpGenerator)
             {
-                TranslationUnitPasses.AddPass(new TrimSpecializationsPass());
-                TranslationUnitPasses.AddPass(new CheckAmbiguousFunctions());
-                TranslationUnitPasses.AddPass(new GenerateSymbolsPass());
-                TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
+                passes.AddPass(new TrimSpecializationsPass());
+                passes.AddPass(new CheckAmbiguousFunctions());
+                passes.AddPass(new GenerateSymbolsPass());
+                passes.AddPass(new CheckIgnoredDeclsPass());
             }
 
             if (Options.IsCLIGenerator || Options.IsCSharpGenerator)
             {
-                TranslationUnitPasses.AddPass(new MoveFunctionToClassPass());
-                TranslationUnitPasses.AddPass(new ValidateOperatorsPass());
+                passes.AddPass(new MoveFunctionToClassPass());
+                passes.AddPass(new ValidateOperatorsPass());
             }
 
             library.SetupPasses(this);
 
-            TranslationUnitPasses.AddPass(new FindSymbolsPass());
-            TranslationUnitPasses.AddPass(new CheckMacroPass());
-            TranslationUnitPasses.AddPass(new CheckStaticClass());
+            passes.AddPass(new FindSymbolsPass());
+            passes.AddPass(new CheckMacroPass());
+            passes.AddPass(new CheckStaticClass());
 
             if (Options.IsCLIGenerator || Options.IsCSharpGenerator || Options.IsCppGenerator)
             {
-                TranslationUnitPasses.AddPass(new CheckAmbiguousFunctions());
+                passes.AddPass(new CheckAmbiguousFunctions());
             }
 
-            TranslationUnitPasses.AddPass(new ConstructorToConversionOperatorPass());
-            TranslationUnitPasses.AddPass(new MarshalPrimitivePointersAsRefTypePass());
+            passes.AddPass(new ConstructorToConversionOperatorPass());
+            passes.AddPass(new MarshalPrimitivePointersAsRefTypePass());
 
             if (Options.IsCLIGenerator || Options.IsCSharpGenerator)
             {
-                TranslationUnitPasses.AddPass(new CheckOperatorsOverloadsPass());
+                passes.AddPass(new CheckOperatorsOverloadsPass());
             }
 
-            TranslationUnitPasses.AddPass(new CheckVirtualOverrideReturnCovariance());
-            TranslationUnitPasses.AddPass(new CleanCommentsPass());
+            passes.AddPass(new CheckVirtualOverrideReturnCovariance());
+            passes.AddPass(new CleanCommentsPass());
 
             Generator.SetupPasses();
 
-            TranslationUnitPasses.AddPass(new CleanInvalidDeclNamesPass());
-            TranslationUnitPasses.AddPass(new FastDelegateToDelegatesPass());
-            TranslationUnitPasses.AddPass(new FieldToPropertyPass());
-            TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
-            TranslationUnitPasses.AddPass(new CheckFlagEnumsPass());
-            TranslationUnitPasses.AddPass(new MakeProtectedNestedTypesPublicPass());
+            passes.AddPass(new CleanInvalidDeclNamesPass());
+            passes.AddPass(new FastDelegateToDelegatesPass());
+            passes.AddPass(new FieldToPropertyPass());
+            passes.AddPass(new CheckIgnoredDeclsPass());
+            passes.AddPass(new CheckFlagEnumsPass());
+            passes.AddPass(new MakeProtectedNestedTypesPublicPass());
 
             if (Options.IsCSharpGenerator)
             {
-                TranslationUnitPasses.AddPass(new GenerateAbstractImplementationsPass());
-                TranslationUnitPasses.AddPass(new MultipleInheritancePass());
+                passes.AddPass(new GenerateAbstractImplementationsPass());
+                passes.AddPass(new MultipleInheritancePass());
             }
 
             if (Options.IsCLIGenerator || Options.IsCSharpGenerator)
             {
-                TranslationUnitPasses.AddPass(new DelegatesPass());
-                TranslationUnitPasses.AddPass(new GetterSetterToPropertyPass());
+                passes.AddPass(new DelegatesPass());
             }
 
-            TranslationUnitPasses.AddPass(new StripUnusedSystemTypesPass());
+            if (Options.GeneratorKind != GeneratorKind.C)
+            {
+                passes.AddPass(new GetterSetterToPropertyPass());
+            }
+
+            passes.AddPass(new StripUnusedSystemTypesPass());
 
             if (Options.IsCSharpGenerator)
             {
-                TranslationUnitPasses.AddPass(new SpecializationMethodsWithDependentPointersPass());
-                TranslationUnitPasses.AddPass(new ParamTypeToInterfacePass());
+                passes.AddPass(new SpecializationMethodsWithDependentPointersPass());
+                passes.AddPass(new ParamTypeToInterfacePass());
             }
 
-            TranslationUnitPasses.AddPass(new CheckDuplicatedNamesPass());
+            passes.AddPass(new CheckDuplicatedNamesPass());
 
             if (Options.IsCLIGenerator || Options.IsCSharpGenerator)
             {
-                TranslationUnitPasses.RenameDeclsUpperCase(RenameTargets.Any & ~RenameTargets.Parameter);
-                TranslationUnitPasses.AddPass(new CheckKeywordNamesPass());
+                passes.RenameDeclsUpperCase(RenameTargets.Any & ~RenameTargets.Parameter);
+                passes.AddPass(new CheckKeywordNamesPass());
             }
 
-            Context.TranslationUnitPasses.AddPass(new HandleVariableInitializerPass());
+            passes.AddPass(new HandleVariableInitializerPass());
 
-            TranslationUnitPasses.AddPass(new MarkEventsWithUniqueIdPass());
+            passes.AddPass(new MarkEventsWithUniqueIdPass());
         }
 
         public void ProcessCode()
@@ -342,10 +345,10 @@ namespace CppSharp
                     var file = Path.Combine(outputPath, fileRelativePath);
                     WriteGeneratedCodeToFile(file, template.Generate());
 
-                    if (output.TranslationUnit.Module != null)
-                        output.TranslationUnit.Module.CodeFiles.Add(file);
+                    output.TranslationUnit.Module?.CodeFiles.Add(file);
 
-                    Diagnostics.Message("Generated '{0}'", fileRelativePath);
+                    if (!Options.Quiet)
+                        Diagnostics.Message("Generated '{0}'", fileRelativePath);
                 }
             }
         }
@@ -364,7 +367,7 @@ namespace CppSharp
 
         public bool CompileCode(Module module)
         {
-            var msBuildGenerator = new MSBuildGenerator(Context, module, libraryMappings);
+            var msBuildGenerator = new MSBuildGenerator(Context, module, LibraryMappings);
             msBuildGenerator.Process();
             string csproj = Path.Combine(Options.OutputDir,
                 $"{module.LibraryName}.{msBuildGenerator.FileExtension}");
@@ -375,7 +378,7 @@ namespace CppSharp
             if (error == 0)
             {
                 Diagnostics.Message($@"Compilation succeeded: {
-                    libraryMappings[module] = Path.Combine(
+                    LibraryMappings[module] = Path.Combine(
                         Options.OutputDir, $"{module.LibraryName}.dll")}.");
                 return true;
             }
@@ -404,7 +407,7 @@ namespace CppSharp
         }
 
         private bool hasParsingErrors;
-        private static readonly Dictionary<Module, string> libraryMappings = new Dictionary<Module, string>();
+        private static readonly Dictionary<Module, string> LibraryMappings = new();
     }
 
     public static class ConsoleDriver
@@ -412,67 +415,63 @@ namespace CppSharp
         public static void Run(ILibrary library)
         {
             var options = new DriverOptions();
-            using (var driver = new Driver(options))
+            using var driver = new Driver(options);
+            library.Setup(driver);
+
+            driver.Setup();
+
+            if (driver.Options.Verbose)
+                Diagnostics.Level = DiagnosticKind.Debug;
+
+            if (!options.Quiet)
+                Diagnostics.Message("Parsing libraries...");
+
+            if (!driver.ParseLibraries())
+                return;
+
+            if (!options.Quiet)
+                Diagnostics.Message("Parsing code...");
+
+            if (!driver.ParseCode())
             {
-                library.Setup(driver);
-
-                driver.Setup();
-
-                if (driver.Options.Verbose)
-                    Diagnostics.Level = DiagnosticKind.Debug;
-
-                if (!options.Quiet)
-                    Diagnostics.Message("Parsing libraries...");
-
-                if (!driver.ParseLibraries())
-                    return;
-
-                if (!options.Quiet)
-                    Diagnostics.Message("Parsing code...");
-
-                if (!driver.ParseCode())
-                {
-                    Diagnostics.Error("CppSharp has encountered an error while parsing code.");
-                    return;
-                }
-
-                new CleanUnitPass { Context = driver.Context }.VisitASTContext(driver.Context.ASTContext);
-                options.Modules.RemoveAll(m => m != options.SystemModule && !m.Units.GetGenerated().Any());
-
-                if (!options.Quiet)
-                    Diagnostics.Message("Processing code...");
-
-                driver.SetupPasses(library);
-                driver.SetupTypeMaps();
-                driver.SetupDeclMaps();
-
-                library.Preprocess(driver, driver.Context.ASTContext);
-
-                driver.ProcessCode();
-                library.Postprocess(driver, driver.Context.ASTContext);
-
-                if (!options.Quiet)
-                    Diagnostics.Message("Generating code...");
-
-                if (!options.DryRun)
-                {
-                    var outputs = driver.GenerateCode();
-
-                    library.GenerateCode(driver, outputs);
-
-                    foreach (var output in outputs)
-                    {
-                        foreach (var pass in driver.Context.GeneratorOutputPasses.Passes)
-                        {
-                            pass.VisitGeneratorOutput(output);
-                        }
-                    }
-
-                    driver.SaveCode(outputs);
-                    if (driver.Options.IsCSharpGenerator && driver.Options.CompileCode)
-                        driver.Options.Modules.Any(m => !driver.CompileCode(m));
-                }
+                Diagnostics.Error("CppSharp has encountered an error while parsing code.");
+                return;
             }
+
+            new CleanUnitPass { Context = driver.Context }.VisitASTContext(driver.Context.ASTContext);
+            options.Modules.RemoveAll(m => m != options.SystemModule && !m.Units.GetGenerated().Any());
+
+            if (!options.Quiet)
+                Diagnostics.Message("Processing code...");
+
+            driver.SetupPasses(library);
+            driver.SetupTypeMaps();
+            driver.SetupDeclMaps();
+
+            library.Preprocess(driver, driver.Context.ASTContext);
+
+            driver.ProcessCode();
+            library.Postprocess(driver, driver.Context.ASTContext);
+
+            if (!options.Quiet)
+                Diagnostics.Message("Generating code...");
+
+            if (options.DryRun)
+                return;
+
+            var outputs = driver.GenerateCode();
+
+            library.GenerateCode(driver, outputs);
+
+            foreach (var output in outputs)
+            {
+                foreach (var pass in driver.Context.GeneratorOutputPasses.Passes)
+                    pass.VisitGeneratorOutput(output);
+            }
+
+            driver.SaveCode(outputs);
+            if (driver.Options.IsCSharpGenerator && driver.Options.CompileCode)
+                driver.Options.Modules.Any(m => !driver.CompileCode(m));
         }
     }
 }

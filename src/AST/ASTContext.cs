@@ -11,7 +11,8 @@ namespace CppSharp.AST
         Microsoft,
         ARM,
         iOS,
-        iOS64
+        iOS64,
+        WebAssembly
     }
 
     /// <summary>

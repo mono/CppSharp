@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CppSharp.Generators;
 using Mono.Options;
 
 namespace CppSharp
@@ -15,11 +16,11 @@ namespace CppSharp
         {
             var showHelp = false;
 
-            optionSet.Add("I=", "the {PATH} of a folder to search for include files", (i) => { AddIncludeDirs(i, errorMessages); });
+            optionSet.Add("I=", "the {PATH} of a folder to search for include files", i => { AddIncludeDirs(i, errorMessages); });
             optionSet.Add("l=", "{LIBRARY} that that contains the symbols of the generated code", l => options.Libraries.Add(l));
             optionSet.Add("L=", "the {PATH} of a folder to search for additional libraries", l => options.LibraryDirs.Add(l));
             optionSet.Add("D:", "additional define with (optional) value to add to be used while parsing the given header files", (n, v) => AddDefine(n, v, errorMessages));
-            optionSet.Add("A=", "additional Clang arguments to pass to the compiler while parsing the given header files", (v) => AddArgument(v, errorMessages));
+            optionSet.Add("A=", "additional Clang arguments to pass to the compiler while parsing the given header files", v => AddArgument(v, errorMessages));
 
             optionSet.Add("o=|output=", "the {PATH} for the generated bindings file (doesn't need the extension since it will depend on the generator)", v => HandleOutputArg(v, errorMessages));
             optionSet.Add("on=|outputnamespace=", "the {NAMESPACE} that will be used for the generated code", on => options.OutputNamespace = on);
@@ -30,8 +31,8 @@ namespace CppSharp
             optionSet.Add("d|debug", "enables debug mode which generates more verbose code to aid debugging", v => options.Debug = true);
             optionSet.Add("c|compile", "enables automatic compilation of the generated code", v => options.Compile = true);
             optionSet.Add("g=|gen=|generator=", "the {TYPE} of generated code: 'csharp' or 'cli' ('cli' supported only for Windows)", g => { GetGeneratorKind(g, errorMessages); });
-            optionSet.Add("p=|platform=", "the {PLATFORM} that the generated code will target: 'win', 'osx' or 'linux'", p => { GetDestinationPlatform(p, errorMessages); });
-            optionSet.Add("a=|arch=", "the {ARCHITECTURE} that the generated code will target: 'x86' or 'x64'", a => { GetDestinationArchitecture(a, errorMessages); });
+            optionSet.Add("p=|platform=", "the {PLATFORM} that the generated code will target: 'win', 'osx' or 'linux' or 'emscripten'", p => { GetDestinationPlatform(p, errorMessages); });
+            optionSet.Add("a=|arch=", "the {ARCHITECTURE} that the generated code will target: 'x86' or 'x64' or 'wasm32' or 'wasm64'", a => { GetDestinationArchitecture(a, errorMessages); });
             optionSet.Add("prefix=", "sets a string prefix to the names of generated files", a => { options.Prefix = a; });
 
             optionSet.Add("exceptions", "enables support for C++ exceptions in the parser", v => { options.EnableExceptions = true; });
@@ -208,26 +209,29 @@ namespace CppSharp
             switch (generator.ToLower())
             {
                 case "csharp":
-                    options.Kind = CppSharp.Generators.GeneratorKind.CSharp;
+                    options.Kind = GeneratorKind.CSharp;
                     return;
                 case "cli":
-                    options.Kind = CppSharp.Generators.GeneratorKind.CLI;
+                    options.Kind = GeneratorKind.CLI;
                     return;
                 case "c":
-                    options.Kind = CppSharp.Generators.GeneratorKind.C;
+                    options.Kind = GeneratorKind.C;
                     return;
                 case "cpp":
-                    options.Kind = CppSharp.Generators.GeneratorKind.CPlusPlus;
+                    options.Kind = GeneratorKind.CPlusPlus;
                     return;
                 case "napi":
-                    options.Kind = CppSharp.Generators.GeneratorKind.NAPI;
+                    options.Kind = GeneratorKind.NAPI;
                     return;
                 case "qjs":
-                    options.Kind = CppSharp.Generators.GeneratorKind.QuickJS;
+                    options.Kind = GeneratorKind.QuickJS;
                     return;
                 case "ts":
                 case "typescript":
-                    options.Kind = CppSharp.Generators.GeneratorKind.TypeScript;
+                    options.Kind = GeneratorKind.TypeScript;
+                    return;
+                case "emscripten":
+                    options.Kind = GeneratorKind.Emscripten;
                     return;
             }
 
@@ -247,6 +251,9 @@ namespace CppSharp
                 case "linux":
                     options.Platform = TargetPlatform.Linux;
                     return;
+                case "emscripten":
+                    options.Platform = TargetPlatform.Emscripten;
+                    return;
             }
 
             errorMessages.Add($"Unknown target platform: {platform}. Defaulting to {options.Platform}");
@@ -261,6 +268,12 @@ namespace CppSharp
                     return;
                 case "x64":
                     options.Architecture = TargetArchitecture.x64;
+                    return;
+                case "wasm32":
+                    options.Architecture = TargetArchitecture.WASM32;
+                    return;
+                case "wasm64":
+                    options.Architecture = TargetArchitecture.WASM64;
                     return;
             }
 
@@ -286,9 +299,9 @@ namespace CppSharp
                 return;
             }
 
-            Generator gen = new Generator(options);
+            var gen = new Generator(options);
 
-            bool validOptions = gen.ValidateOptions(errorMessages);
+            var validOptions = gen.ValidateOptions(errorMessages);
             PrintErrorMessages(errorMessages);
 
             if (errorMessages.Any() || !validOptions)

@@ -198,7 +198,7 @@ namespace CppSharp.Generators.Cpp
         {
         }
 
-        public override void VisitClassConstructors(Class @class)
+        public override void VisitClassConstructors(IEnumerable<Method> ctors)
         {
         }
 

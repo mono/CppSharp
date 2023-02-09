@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <cstdint>
 
 void            ReturnsVoid () { }
@@ -40,8 +41,10 @@ int16_t         ReturnsInt16  () { return -5; }
 uint16_t        ReturnsUInt16 () { return  5; }
 int32_t         ReturnsInt32  () { return -5; }
 uint32_t        ReturnsUInt32 () { return  5; }
+#if !defined(__EMSCRIPTEN__)
 int64_t         ReturnsInt64  () { return -5; }
 uint64_t        ReturnsUInt64 () { return  5; }
+#endif
 
 int8_t          PassAndReturnsInt8   (int8_t   v) { return v; }
 uint8_t         PassAndReturnsUInt8  (uint8_t  v) { return v; }

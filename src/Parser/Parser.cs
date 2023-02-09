@@ -59,7 +59,7 @@ namespace CppSharp
         /// <summary>
         /// Converts a native parser AST to a managed AST.
         /// </summary>
-        static public AST.ASTContext ConvertASTContext(ASTContext context)
+        public static AST.ASTContext ConvertASTContext(ASTContext context)
         {
             var converter = new ASTConverter(context);
             return converter.Convert();

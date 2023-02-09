@@ -5,9 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using LanguageVersion = CppSharp.Parser.LanguageVersion;
 
 namespace CppSharp.Parser
 {
@@ -200,20 +198,22 @@ namespace CppSharp.Parser
                 var versions = Directory.EnumerateDirectories(Path.Combine(headersPath,
                         "usr", "include", "c++"));
 
-                if (versions.Count() == 0)
+                if (!versions.Any())
                     throw new Exception("No valid GCC version found on system include paths");
 
-                string gccVersionPath = versions.First();
+                var gccVersionPath = versions.First();
                 longVersion = shortVersion = gccVersionPath.Substring(
                         gccVersionPath.LastIndexOf(Path.DirectorySeparatorChar) + 1);
 
                 return;
             }
 
-            var info = new ProcessStartInfo(Environment.GetEnvironmentVariable("CXX") ?? "gcc", "-v");
-            info.RedirectStandardError = true;
-            info.CreateNoWindow = true;
-            info.UseShellExecute = false;
+            var info = new ProcessStartInfo(Environment.GetEnvironmentVariable("CXX") ?? "gcc", "-v")
+                {
+                    RedirectStandardError = true,
+                    CreateNoWindow = true,
+                    UseShellExecute = false
+                };
 
             var process = Process.Start(info);
             if (process == null)
@@ -237,13 +237,12 @@ namespace CppSharp.Parser
             NoBuiltinIncludes = true;
             NoStandardIncludes = true;
 
-            string compiler, longVersion, shortVersion;
-            GetUnixCompilerInfo(headersPath, out compiler, out longVersion, out shortVersion);
+            GetUnixCompilerInfo(headersPath, out var compiler, out var longVersion, out var shortVersion);
 
             AddSystemIncludeDirs(BuiltinsDir);
             AddArguments($"-fgnuc-version={longVersion}");
 
-            string majorVersion = shortVersion.Split('.')[0];
+            var majorVersion = shortVersion.Split('.')[0];
             string[] versions = { longVersion, shortVersion, majorVersion };
             string[] triples = { "x86_64-linux-gnu", "x86_64-pc-linux-gnu" };
             if (compiler == "gcc")
@@ -277,19 +276,23 @@ namespace CppSharp.Parser
             AddSystemIncludeDirs($"{headersPath}/usr/include/linux");
         }
 
-        public void Setup()
+        private bool setupDone;
+
+        public void Setup(TargetPlatform targetPlatform)
         {
-            SetupArguments();
+            if (setupDone) return;
+
+            SetupArguments(targetPlatform);
 
             if (!NoBuiltinIncludes)
-                SetupIncludes();
+                SetupIncludes(targetPlatform);
+
+            setupDone = true;
         }
 
-        private void SetupArguments()
+        private void SetupArguments(TargetPlatform targetPlatform)
         {
-            // do not remove the CppSharp prefix becase the Mono C# compiler breaks
-            if (!LanguageVersion.HasValue)
-                LanguageVersion = CppSharp.Parser.LanguageVersion.CPP14_GNU;
+            LanguageVersion ??= CppSharp.Parser.LanguageVersion.CPP14_GNU;
 
             // As of Clang revision 5e866e411caa we are required to pass "-fgnuc-version="
             // to get the __GNUC__ symbol defined. macOS and Linux system headers require
@@ -299,7 +302,7 @@ namespace CppSharp.Parser
             // setup methods, below is generic fallback in case that logic was disabled.
             if (NoBuiltinIncludes)
             {
-                switch (Platform.Host)
+                switch (targetPlatform)
                 {
                     case TargetPlatform.MacOS:
                     case TargetPlatform.Linux:
@@ -373,18 +376,21 @@ namespace CppSharp.Parser
         {
             get
             {
-                var assemblyDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                var assemblyDir = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
+                if (assemblyDir == null)
+                    throw new InvalidOperationException();
+
                 return Path.Combine(assemblyDir, "lib", "clang", ClangVersion, "include");
             }
         }
 
-        private void SetupIncludes()
+        private void SetupIncludes(TargetPlatform targetPlatform)
         {
             // Check that the builtin includes folder exists.
             if (!Directory.Exists(BuiltinsDir))
                 throw new Exception($"Clang resource folder 'lib/clang/{ClangVersion}/include' was not found.");
 
-            switch (Platform.Host)
+            switch (targetPlatform)
             {
                 case TargetPlatform.Windows:
                     SetupMSVC();
@@ -395,6 +401,16 @@ namespace CppSharp.Parser
                 case TargetPlatform.Linux:
                     SetupLinux();
                     break;
+                case TargetPlatform.Android:
+                    throw new NotImplementedException();
+                case TargetPlatform.iOS:
+                case TargetPlatform.WatchOS:
+                case TargetPlatform.TVOS:
+                    throw new NotImplementedException();
+                case TargetPlatform.Emscripten:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
     }

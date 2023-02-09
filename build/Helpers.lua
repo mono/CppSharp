@@ -47,7 +47,7 @@ rootdir = path.getabsolute("../")
 srcdir = path.join(rootdir, "src");
 incdir = path.join(rootdir, "include");
 examplesdir = path.join(rootdir, "examples");
-testsdir = path.join(rootdir, "tests");
+testsdir = path.join(rootdir, "tests/dotnet");
 builddir = path.join(rootdir, "build")
 bindir = path.join(rootdir, "bin")
 objsdir = path.join(builddir, "obj");
@@ -61,7 +61,7 @@ msvc_cpp_defines = { }
 default_gcc_version = "9.0.0"
 generate_build_config = true
 premake.path = premake.path .. ";" .. path.join(builddir, "modules")
-targetframework = "netcoreapp3.1"
+targetframework = "net6.0"
 
 function string.starts(str, start)
    if str == nil then return end

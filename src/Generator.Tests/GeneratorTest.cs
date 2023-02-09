@@ -35,23 +35,21 @@ namespace CppSharp.Utils
                 testModule.LibraryName, options.GeneratorKind.ToString());
 
             if (Platform.IsMacOS)
-                driver.ParserOptions.TargetTriple = Environment.Is64BitProcess ?
-                    "x86_64-apple-darwin" : "i686-apple-darwin";
+                driver.ParserOptions.TargetTriple = "x86_64-apple-darwin";
 
             var path = Path.GetFullPath(GetTestsDirectory(name));
             testModule.IncludeDirs.Add(path);
             testModule.LibraryDirs.Add(options.OutputDir);
             testModule.Libraries.Add($"{name}.Native");
 
-            Diagnostics.Message("Looking for tests in: {0}", path);
             var files = Directory.EnumerateFiles(path, "*.h", SearchOption.AllDirectories);
             foreach (var file in files)
             {
-                string includeDir = Path.GetDirectoryName(file);
+                var includeDir = Path.GetDirectoryName(file);
+
                 if (!testModule.IncludeDirs.Contains(includeDir))
-                {
                     testModule.IncludeDirs.Add(includeDir);
-                }
+
                 testModule.Headers.Add(Path.GetFileName(file));
             }
         }
@@ -72,16 +70,16 @@ namespace CppSharp.Utils
         public static string GetTestsDirectory(string name)
         {
             var directory = new DirectoryInfo(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty);
 
             while (directory != null)
             {
-                var path = Path.Combine(directory.FullName, "tests", name);
+                var path = Path.Combine(directory.FullName, "tests", "dotnet", name);
 
                 if (Directory.Exists(path))
                     return path;
 
-                path = Path.Combine(directory.FullName, "external", "CppSharp", "tests", name);
+                path = Path.Combine(directory.FullName, "external", "CppSharp", "tests", "dotnet", name);
 
                 if (Directory.Exists(path))
                     return path;
@@ -89,15 +87,12 @@ namespace CppSharp.Utils
                 directory = directory.Parent;
             }
 
-            throw new Exception(string.Format(
-                "Tests directory for project '{0}' was not found", name));
+            throw new Exception($"Tests directory for project '{name}' was not found");
         }
 
         static string GetOutputDirectory()
         {
-            string exePath = new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath;
-            var directory = Directory.GetParent(exePath);
-
+            var directory = Directory.GetParent(Assembly.GetExecutingAssembly().Location);
             while (directory != null)
             {
                 var path = Path.Combine(directory.FullName, "build");

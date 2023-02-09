@@ -33,8 +33,7 @@ namespace CppSharp.Passes
                     return false;
             }
 
-            var @class = field.Namespace as Class;
-            if (@class == null)
+            if (field.Namespace is not Class @class)
                 return false;
 
             // Check if we already have a synthetized property.

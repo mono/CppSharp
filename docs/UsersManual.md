@@ -39,6 +39,7 @@ There is also experimental support for these JavaScript-related targets:
 - N-API (Node.js)
 - QuickJS
 - TypeScript
+- Emscripten
 
 # 3. Native Targets
 

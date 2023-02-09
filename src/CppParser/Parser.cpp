@@ -104,6 +104,8 @@ static CppAbi GetClassLayoutAbi(clang::TargetCXXABI::Kind abi)
         return CppAbi::iOS;
     case clang::TargetCXXABI::AppleARM64:
         return CppAbi::iOS64;
+    case clang::TargetCXXABI::WebAssembly:
+        return CppAbi::WebAssembly;
     default:
         llvm_unreachable("Unsupported C++ ABI kind");
     }
