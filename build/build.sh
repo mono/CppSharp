@@ -6,6 +6,7 @@ vs=vs2019
 configuration=Release
 build_only=false
 ci=false
+target_framework=
 verbosity=minimal
 rootdir="$builddir/.."
 bindir="$rootdir/bin"
@@ -46,7 +47,7 @@ build()
 
 generate_config()
 {
-  "$builddir/premake.sh" --file="$builddir/premake5.lua" $vs --os=$os --arch=$platform --configuration=$configuration --config_only
+  "$builddir/premake.sh" --file="$builddir/premake5.lua" $vs --os=$os --arch=$platform --configuration=$configuration --target-framework=$target_framework --config_only
 }
 
 generate()
@@ -54,10 +55,10 @@ generate()
   download_llvm
 
   if [ "$os" = "linux" ] || [ "$os" = "macosx" ]; then
-    "$builddir/premake.sh" --file="$builddir/premake5.lua" gmake2 --os=$os --arch=$platform --configuration=$configuration "$@"
+    "$builddir/premake.sh" --file="$builddir/premake5.lua" gmake2 --os=$os --arch=$platform --configuration=$configuration --target-framework=$target_framework "$@"
   fi
 
-  "$builddir/premake.sh" --file="$builddir/premake5.lua" $vs --os=$os --arch=$platform --configuration=$configuration
+  "$builddir/premake.sh" --file="$builddir/premake5.lua" $vs --os=$os --arch=$platform --configuration=$configuration --target-framework=$target_framework
 }
 
 restore()
@@ -192,6 +193,11 @@ while [[ $# > 0 ]]; do
       ;;
     -os)
       os=$2
+      shift
+      ;;
+    -target-framework)
+      target_framework=$2
+      echo $target_framework
       shift
       ;;
     -ci)
