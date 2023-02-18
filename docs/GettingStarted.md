@@ -44,6 +44,8 @@ The following steps should be called from the VS developer command prompt.
     <sh> build.sh generate -configuration Release -platform x64
     ```
 
+> :information_source: You can use the `-target-framework` option to target any valid .NET target framework.
+
 2. Compile the VS projects
 
     You can open `CppSharp.sln` and hit F5 or compile via the command line:
@@ -81,6 +83,8 @@ When opening the solution for the first time on a more recent version than Visua
     cd <CppSharp>\build
     ./build.sh generate -configuration Release -platform x64
     ```
+
+> :information_source: You can use the `-target-framework` option to target any valid .NET target framework.
 
 2. Compile the csproj files and makefiles
 
