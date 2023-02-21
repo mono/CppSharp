@@ -43,6 +43,11 @@ newoption {
   description = "Only generate configuration file",
 }
 
+newoption {
+  trigger = "target-framework",
+  description = ".NET target framework version",
+}
+
 rootdir = path.getabsolute("../")
 srcdir = path.join(rootdir, "src");
 incdir = path.join(rootdir, "include");
@@ -61,7 +66,17 @@ msvc_cpp_defines = { }
 default_gcc_version = "9.0.0"
 generate_build_config = true
 premake.path = premake.path .. ";" .. path.join(builddir, "modules")
-targetframework = "net6.0"
+
+function string.isempty(s)
+  return s == nil or s == ''
+end
+
+local function target_framework()
+  local value =  _OPTIONS["target-framework"]
+  return string.isempty(value) and "net6.0" or value
+end
+
+targetframework = target_framework()
 
 function string.starts(str, start)
    if str == nil then return end
