@@ -1,0 +1,3 @@
+<Project>
+  <!-- This empty file is to workaround MSBuild picking up the root Directy.Build.props when building LLVM. -->
+</Project>
