@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - name: Inject slug/short variables
-        uses: rlespinasse/github-slug-action@v3.x
+        uses: rlespinasse/github-slug-action@v4
     
       - name: Check out
         shell: cmd
@@ -60,7 +60,7 @@ jobs:
         working-directory: C:\CppSharp
 
       - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: llvm
           path: C:\CppSharp\build\llvm\llvm-*-*.*

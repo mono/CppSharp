@@ -22,7 +22,7 @@ jobs:
       ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: lukka/get-cmake@latest
 
       - name: Clone LLVM
@@ -38,7 +38,7 @@ jobs:
         run: build/build.sh package_llvm -platform $PLATFORM
 
       - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: llvm
           path: build/llvm/llvm-*-*.*
