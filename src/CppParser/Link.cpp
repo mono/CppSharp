@@ -100,7 +100,7 @@ bool Parser::LinkWindows(const CppLinkerOptions* LinkerOptions,
     std::string Out("-out:" + std::string(Output));
     args.push_back(Out.data());
 
-    return lld::coff::link(args, outs(), errs(), false, false);
+    return lld::coff::link(args, outs(), errs(), /*exitEarly=*/false, /*disableOutput=*/false);
 #else
     return false;
 #endif
@@ -141,7 +141,7 @@ bool Parser::LinkELF(const CppLinkerOptions* LinkerOptions,
     std::string Out(Output);
     args.push_back(Out.data());
 
-    return lld::elf::link(args, false, outs(), errs());
+    return lld::elf::link(args, outs(), errs(), /*exitEarly=*/false, /*disableOutput=*/false);
 #else
     return false;
 #endif
@@ -182,7 +182,7 @@ bool Parser::LinkMachO(const CppLinkerOptions* LinkerOptions,
     std::string Out(Output);
     args.push_back(Out.data());
 
-    return lld::macho::link(args, false, outs(), errs());
+    return lld::macho::link(args, outs(), errs(),  /*exitEarly=*/false, /*disableOutput=*/false);
 #else
     return false;
 #endif
