@@ -9,9 +9,9 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { os: ubuntu-20.04, platform: x64, cxx: g++-10, cc: gcc-10 }
+          - { os: ubuntu-22.04, platform: x64, cxx: g++-11, cc: gcc-11 }
           - { os: macos-11, platform: x64, cxx: clang++, cc: clang }
-          - { os: windows-2019, platform: x64, vs: msvc }
+          - { os: windows-2022, platform: x64, vs: msvc }
 
     runs-on: ${{ matrix.config.os }}
 
@@ -38,7 +38,7 @@ jobs:
       - name: Environment
         if: matrix.config.vs
         shell: bash
-        run: echo "/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/MSBuild/Current/Bin" >> $GITHUB_PATH
+        run: echo "/c/Program Files/Microsoft Visual Studio/2022/Enterprise/MSBuild/Current/Bin" >> $GITHUB_PATH
 
       - name: Setup
         shell: bash
