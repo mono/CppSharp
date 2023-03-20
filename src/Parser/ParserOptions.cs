@@ -136,6 +136,9 @@ namespace CppSharp.Parser
                 case "vs2019":
                     vsVersion = VisualStudioVersion.VS2019;
                     break;
+                case "vs2022":
+                    vsVersion = VisualStudioVersion.VS2022;
+                    break;
 
 #pragma warning restore 162
 

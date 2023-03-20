@@ -356,7 +356,7 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
         _S->allocate = static_cast<AST::Expr*>(WalkExpression(S->getAllocate()));
         _S->deallocate = static_cast<AST::Expr*>(WalkExpression(S->getDeallocate()));
         _S->returnValueInit = static_cast<AST::Expr*>(WalkExpression(S->getReturnValueInit()));
-        _S->resultDecl = static_cast<AST::Stmt*>(WalkStatement(S->getResultDecl()));
+        _S->resultDecl = static_cast<AST::Stmt*>(WalkStatement(S->getReturnValue()));
         _S->returnStmt = static_cast<AST::Stmt*>(WalkStatement(S->getReturnStmt()));
         _S->returnStmtOnAllocFailure = static_cast<AST::Stmt*>(WalkStatement(S->getReturnStmtOnAllocFailure()));
         _Stmt = _S;

@@ -4386,7 +4386,7 @@ void Parser::SetupLLVMCodegen()
     LLVMModule->setTargetTriple(c->getTarget().getTriple().getTriple());
     LLVMModule->setDataLayout(c->getTarget().getDataLayoutString());
 
-    CGM.reset(new clang::CodeGen::CodeGenModule(c->getASTContext(),
+    CGM.reset(new clang::CodeGen::CodeGenModule(c->getASTContext(), nullptr,
         c->getHeaderSearchOpts(), c->getPreprocessorOpts(),
         c->getCodeGenOpts(), *LLVMModule, c->getDiagnostics()));
 
@@ -4397,7 +4397,7 @@ bool Parser::SetupSourceFiles(const std::vector<std::string>& SourceFiles,
     std::vector<const clang::FileEntry*>& FileEntries)
 {
     // Check that the file is reachable.
-    const clang::DirectoryLookup *Dir;
+    clang::ConstSearchDirIterator *Dir;
     llvm::SmallVector<
         std::pair<const clang::FileEntry *, const clang::DirectoryEntry *>,
         0> Includers;

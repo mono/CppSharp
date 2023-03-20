@@ -69,7 +69,7 @@ bool Parser::LinkWindows(const CppLinkerOptions* LinkerOptions,
 
     std::vector<std::string> LibraryPaths;
     LibraryPaths.push_back("-libpath:" + TC.getSubDirectoryPath(
-        clang::driver::toolchains::MSVCToolChain::SubDirectoryType::Lib));
+        llvm::SubDirectoryType::Lib));
     std::string CRTPath;
     if (TC.getUniversalCRTLibraryPath(Args, CRTPath))
         LibraryPaths.push_back("-libpath:" + CRTPath);
@@ -100,7 +100,7 @@ bool Parser::LinkWindows(const CppLinkerOptions* LinkerOptions,
     std::string Out("-out:" + std::string(Output));
     args.push_back(Out.data());
 
-    return lld::coff::link(args, false, outs(), errs());
+    return lld::coff::link(args, outs(), errs(), false, false);
 #else
     return false;
 #endif

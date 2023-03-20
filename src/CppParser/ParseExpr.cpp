@@ -223,7 +223,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->length = S->getLength();
         _S->charByteWidth = S->getCharByteWidth();
         _S->kind = (StringLiteral::StringKind) S->getKind();
-        _S->isAscii = S->isAscii();
+        _S->isAscii = S->isOrdinary();
         _S->isWide = S->isWide();
         _S->isUTF8 = S->isUTF8();
         _S->isUTF16 = S->isUTF16();
