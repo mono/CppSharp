@@ -9,9 +9,9 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { os: ubuntu-20.04, platform: x64, cxx: g++-9, cc: gcc-9 }
-          - { os: ubuntu-20.04, platform: x64, cxx: g++-10, cc: gcc-10 }
-          - { os: macos-10.15, platform: x64, cxx: clang++, cc: clang }
+          - { os: ubuntu-22.04, platform: x64, cxx: g++-11, cc: gcc-11 }
+          - { os: macos-11, platform: x64, cxx: clang++, cc: clang }
+          - { os: macos-12, platform: x64, cxx: clang++, cc: clang }
 
     runs-on: ${{ matrix.config.os }}
 
@@ -22,7 +22,7 @@ jobs:
       ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: lukka/get-cmake@latest
 
       - name: Clone LLVM
@@ -38,7 +38,7 @@ jobs:
         run: build/build.sh package_llvm -platform $PLATFORM
 
       - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: llvm
           path: build/llvm/llvm-*-*.*

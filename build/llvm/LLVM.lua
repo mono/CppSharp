@@ -53,13 +53,15 @@ end
 
 function get_vs_version()
   local function map_msvc_to_vs_version(major, minor)
-    if major == "19" and minor >= "20" then return "vs2019"
+	if major == "19" and minor >= "30" then return "vs2022"
+    elseif major == "19" and minor >= "20" then return "vs2019"
     elseif major == "19" and minor >= "10" then return "vs2017"
     end
   end
 
   local function map_msbuild_to_vs_version(major, minor)
-    if major == "16" then return "vs2019"
+	if major == "17" then return "vs2022"
+    elseif major == "16" then return "vs2019"
     elseif major == "15" then return "vs2017"
 	end
   end
@@ -379,8 +381,6 @@ function cmake(gen, conf, builddir, options)
 		.. ' -DCLANG_TOOL_C_INDEX_TEST_BUILD=false'
 		.. ' -DCLANG_TOOL_DIAGTOOL_BUILD=false'
 		.. ' -DCLANG_TOOL_DRIVER_BUILD=false'
-		.. ' -DCLANG_TOOL_HANDLE_CXX_BUILD=false'
-		.. ' -DCLANG_TOOL_HANDLE_LLVM_BUILD=false'
 		.. ' -DCLANG_TOOL_LIBCLANG_BUILD=false'
 		.. ' -DCLANG_TOOL_SCAN_BUILD_BUILD=false'
 		.. ' -DCLANG_TOOL_SCAN_BUILD_PY_BUILD=false'
@@ -399,7 +399,9 @@ end
 
 function get_cmake_generator()
 	local vsver = get_vs_version()
-	if vsver == "vs2019" then
+	if vsver == "vs2022" then
+		return "Visual Studio 17 2022", (target_architecture() == "x86") and "-A Win32" or nil
+	elseif vsver == "vs2019" then
 		return "Visual Studio 16 2019", (target_architecture() == "x86") and "-A Win32" or nil
 	elseif vsver == "vs2017" then
 		return "Visual Studio 15 2017" .. (target_architecture() == "x64" and " Win64" or ""), nil

@@ -9,8 +9,8 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { os: windows-2019, platform: x86, vs: 2019 }
-          - { os: windows-2019, platform: x64, vs: 2019 }
+          - { os: windows-2022, platform: x86, vs: 2022 }
+          - { os: windows-2022, platform: x64, vs: 2022 }
 
     runs-on: ${{ matrix.config.os }}
 
@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - name: Inject slug/short variables
-        uses: rlespinasse/github-slug-action@v3.x
+        uses: rlespinasse/github-slug-action@v4
     
       - name: Check out
         shell: cmd
@@ -35,7 +35,7 @@ jobs:
       - name: Environment
         shell: cmd
         run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\%VS_VERSION%\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %PLATFORM%
+          call "C:\Program Files\Microsoft Visual Studio\%VS_VERSION%\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %PLATFORM%
           :: Loop over all environment variables and make them global using set-env.
           :: See: https://stackoverflow.com/a/39184941
           setlocal
@@ -60,7 +60,7 @@ jobs:
         working-directory: C:\CppSharp
 
       - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: llvm
           path: C:\CppSharp\build\llvm\llvm-*-*.*
