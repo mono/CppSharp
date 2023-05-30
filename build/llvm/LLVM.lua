@@ -251,6 +251,7 @@ function cmake(gen, conf, builddir, options)
 		.. ' -DLLVM_ENABLE_LIBXML2=false'
 		.. ' -DLLVM_ENABLE_TERMINFO=false'
 		.. ' -DLLVM_ENABLE_ZLIB=false'
+		.. ' -DLLVM_ENABLE_ZSTD=false'
 		.. ' -DLLVM_INCLUDE_DOCS=false'
 		.. ' -DLLVM_INCLUDE_EXAMPLES=false'
 		.. ' -DLLVM_TARGETS_TO_BUILD="X86"'
