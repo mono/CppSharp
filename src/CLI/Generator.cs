@@ -108,6 +108,9 @@ namespace CppSharp
             if (string.IsNullOrEmpty(options.OutputNamespace))
                 options.OutputNamespace = moduleName;
 
+            if (options.IncludeDirs.Count == 0)
+                options.IncludeDirs.Add(Path.GetDirectoryName(options.HeaderFiles.First()));
+
             SetupTargetTriple();
 
             return true;
