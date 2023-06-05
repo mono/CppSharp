@@ -31,14 +31,9 @@ namespace CppSharp.Passes
                 includeDir = ".";
             includeDir = Path.GetFullPath(includeDir);
 
-            Module module = Options.Modules.Find(
-                m => m.IncludeDirs.Any(i => Path.GetFullPath(i) == includeDir));
-            if (module == null)
-            {
-                unit.ExplicitlyIgnore();
-                module = Options.Modules[1];
-            }
-            return module;
+            return Options.Modules.FirstOrDefault(
+                       m => m.IncludeDirs.Any(i => Path.GetFullPath(i) == includeDir)) ??
+                   Options.Modules[1];
         }
 
         public override bool VisitDeclarationContext(DeclarationContext context)
