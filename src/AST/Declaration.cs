@@ -189,15 +189,16 @@ namespace CppSharp.AST
         public static string QualifiedNameSeparator = "::";
 
         public string GetQualifiedName(Func<Declaration, string> getName,
-            Func<Declaration, DeclarationContext> getNamespace)
+            Func<Declaration, DeclarationContext> getNamespace, bool getOriginal)
         {
-            if (Namespace == null)
+            DeclarationContext @namespace = getNamespace(this);
+            if (@namespace == null)
                 return getName(this);
 
-            if (Namespace.IsRoot)
+            if (@namespace.IsRoot)
                 return getName(this);
 
-            var namespaces = GatherNamespaces(getNamespace(this));
+            var namespaces = GatherNamespaces(@namespace, getOriginal);
 
             var names = namespaces.Select(getName).ToList();
             names.Add(getName(this));
@@ -206,7 +207,7 @@ namespace CppSharp.AST
             return string.Join(QualifiedNameSeparator, names);
         }
 
-        public static IEnumerable<Declaration> GatherNamespaces(DeclarationContext @namespace)
+        public static IEnumerable<Declaration> GatherNamespaces(DeclarationContext @namespace, bool getOriginal)
         {
             var namespaces = new Stack<Declaration>();
 
@@ -216,7 +217,7 @@ namespace CppSharp.AST
                 var isInlineNamespace = currentNamespace is Namespace { IsInline: true };
                 if (!isInlineNamespace)
                     namespaces.Push(currentNamespace);
-                currentNamespace = currentNamespace.Namespace;
+                currentNamespace = getOriginal ? currentNamespace.OriginalNamespace : currentNamespace.Namespace;
             }
 
             return namespaces;
@@ -226,7 +227,7 @@ namespace CppSharp.AST
         {
             get
             {
-                return GetQualifiedName(decl => GetDeclName(decl, decl.Name), decl => decl.Namespace);
+                return GetQualifiedName(decl => GetDeclName(decl, decl.Name), decl => decl.Namespace, false);
             }
         }
 
@@ -235,7 +236,7 @@ namespace CppSharp.AST
             get
             {
                 return GetQualifiedName(
-                    decl => GetDeclName(decl, decl.OriginalName), decl => decl.OriginalNamespace);
+                    decl => GetDeclName(decl, decl.OriginalName), decl => decl.OriginalNamespace, true);
             }
         }
 
@@ -244,7 +245,7 @@ namespace CppSharp.AST
             get
             {
                 return GetQualifiedName(
-                    decl => GetDeclName(decl, decl.LogicalName), decl => decl.Namespace);
+                    decl => GetDeclName(decl, decl.LogicalName), decl => decl.Namespace, false);
             }
         }
 
@@ -253,7 +254,7 @@ namespace CppSharp.AST
             get
             {
                 return GetQualifiedName(
-                    decl => GetDeclName(decl, decl.LogicalOriginalName), decl => decl.OriginalNamespace);
+                    decl => GetDeclName(decl, decl.LogicalOriginalName), decl => decl.OriginalNamespace, true);
             }
         }
 
