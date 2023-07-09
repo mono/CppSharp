@@ -27,11 +27,11 @@ namespace CppSharp.Generators.CSharp
             if (desugared.IsPrimitiveType() &&
                 (parameter.DefaultArgument.Declaration != null ||
                  parameter.DefaultArgument.Class == StatementClass.BinaryOperator))
-                return $"({desugared.Visit(typePrinter)}) {expression}";
+                return $"({desugared.Visit(typePrinter)}) ({expression})";
             var finalType = (desugared.GetFinalPointee() ?? desugared).Desugar();
             if (finalType.TryGetClass(out var @class) && @class.IsInterface)
                 return $@"({@class.Visit(typePrinter)}) ({
-                    @class.OriginalClass.Visit(typePrinter)}) {expression}";
+                    @class.OriginalClass.Visit(typePrinter)}) ({expression})";
             return expression;
         }
 
