@@ -1274,3 +1274,7 @@ extern "C"
         return s;
     }
 } // extern "C"
+
+void DLL_API FunctionWithFlagsAsDefaultParameter(int defaultParam)
+{
+}

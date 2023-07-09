@@ -1567,3 +1567,5 @@ extern "C"
     DLL_API void takeConflictName(struct system* self);
     DLL_API struct system freeFunctionReturnByValue();
 } // extern "C"
+
+void DLL_API FunctionWithFlagsAsDefaultParameter(int defaultParam = A | B);
