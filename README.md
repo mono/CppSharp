@@ -76,8 +76,6 @@ Please see the following resources for more information:
 
 Feel free to open up issues on Github for any problems you find.
 
-You can also join us at our [#managed-interop](https://gitter.im/managed-interop) Gitter discussion channel.
-
 ## Support
 
 For building wrappers and priority support please write to &#99;&#112;&#112;&#115;&#104;&#97;&#114;&#112;&#64;&#112;&#114;&#111;&#116;&#111;&#110;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;.
