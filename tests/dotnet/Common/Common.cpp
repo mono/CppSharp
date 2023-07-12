@@ -1278,3 +1278,7 @@ extern "C"
 void DLL_API FunctionWithFlagsAsDefaultParameter(int defaultParam)
 {
 }
+
+void DLL_API FunctionWithConstFlagsAsDefaultParameter(int defaultParam)
+{
+}

@@ -61,13 +61,8 @@ namespace CppSharp.Generators.CSharp
                 case StatementClass.BinaryOperator:
                     var binaryOperator = (BinaryOperatorObsolete)expr;
 
-                    var lhsResult = binaryOperator.LHS.String;
-                    if (binaryOperator.LHS.Declaration is Enumeration.Item)
-                        lhsResult = binaryOperator.LHS.Declaration.Visit(typePrinter).Type;
-
-                    var rhsResult = binaryOperator.RHS.String;
-                    if (binaryOperator.RHS.Declaration is Enumeration.Item)
-                        rhsResult = binaryOperator.RHS.Declaration.Visit(typePrinter).Type;
+                    var lhsResult = VisitExpression(binaryOperator.LHS);
+                    var rhsResult = VisitExpression(binaryOperator.RHS);
 
                     return $"{lhsResult} {binaryOperator.OpcodeStr} {rhsResult}";
                 case StatementClass.ConstructorReference:
