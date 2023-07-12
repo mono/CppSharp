@@ -1569,3 +1569,9 @@ extern "C"
 } // extern "C"
 
 void DLL_API FunctionWithFlagsAsDefaultParameter(int defaultParam = A | B);
+
+const int ConstFlag1 = 1;
+const int ConstFlag2 = 2;
+const int ConstFlag3 = 4;
+
+void DLL_API FunctionWithConstFlagsAsDefaultParameter(int defaultParam = ConstFlag1 | ConstFlag2 | ConstFlag3);
