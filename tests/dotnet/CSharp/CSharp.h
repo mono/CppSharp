@@ -405,6 +405,12 @@ enum class Empty : unsigned long long int
 class _ClassWithLeadingUnderscore {
 };
 
+const int ConstFlag1 = 1;
+const int ConstFlag2 = 2;
+const int ConstFlag3 = 4;
+
+extern DLL_API struct SmallPOD DefaultSmallPODInstance;
+
 class DLL_API MethodsWithDefaultValues : public Quux
 {
 public:
@@ -480,6 +486,10 @@ public:
     void defaultWithSpecialization(IndependentFields<int> specialization = IndependentFields<int>());
     void defaultOverloadedImplicitCtor(P p);
     void defaultOverloadedImplicitCtor(Qux q = Qux());
+    int defaultIntAssignedAnEnumWithBinaryOperatorAndFlags(int f = Bar::Item1 | Bar::Item2);
+    int defaultWithConstantFlags(int f = ConstFlag1 | ConstFlag2 | ConstFlag3);
+    bool defaultWithPointerToEnum(UntypedFlags* f1 = NULL, int* f2 = NULL);
+    SmallPOD* defaultWithNonPrimitiveType(SmallPOD& pod = DefaultSmallPODInstance);
     int DefaultWithParamNamedSameAsMethod(int DefaultWithParamNamedSameAsMethod, const Foo& defaultArg = Foo());
     int getA();
 private:
@@ -1082,9 +1092,9 @@ public:
    static constexpr const char* StringArray1[1] { "Str" "F,\"or" };
    static constexpr const char* StringArray3[3] { "Str" "F,\"or", "C#", String };
    static constexpr const char* StringArray30[30] {
-       "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", 
-       "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", 
-       "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", 
+       "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str",
+       "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str",
+       "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str",
    };
    static constexpr const char* StringArray3EmptyInitList[3] { };
    static constexpr const wchar_t* WideStringArray[2] { L"Str", L"C#" };
@@ -1278,7 +1288,7 @@ struct StructTestArrayTypeFromTypedef
 #define MY_MACRO_TEST2_4     (1 << 3)
 #define MY_MACRO_TEST2_ALL   (1 << 4) - 1
 
-#define SIGNED_MACRO_VALUES_TO_ENUM_TEST_1 1 << 5 
+#define SIGNED_MACRO_VALUES_TO_ENUM_TEST_1 1 << 5
 #define SIGNED_MACRO_VALUES_TO_ENUM_TEST_2 1 << 22
 #define SIGNED_MACRO_VALUES_TO_ENUM_TEST_3 1L << 32
 #define SIGNED_MACRO_VALUES_TO_ENUM_TEST_4 -1
@@ -1465,9 +1475,9 @@ struct DLL_API ConversionFunctions
     short field = 100;
 };
 
-struct DLL_API ClassCustomTypeAlignment 
+struct DLL_API ClassCustomTypeAlignment
 {
-    struct alignas(1) Align1 { };    
+    struct alignas(1) Align1 { };
     struct alignas(8) Align8 { };
     struct alignas(16) Align16 {
         double a;
@@ -1476,7 +1486,7 @@ struct DLL_API ClassCustomTypeAlignment
 
     bool boolean;
     Align16 align16;
-    Align1 align1;    
+    Align1 align1;
     double dbl;
     Align8 align8;
 };
@@ -1524,7 +1534,7 @@ DLL_API extern const unsigned StructWithEmbeddedArrayOfStructObjectAlignmentOffs
 
 DLL_API const char* TestCSharpString(const char* in, CS_OUT const char** out);
 DLL_API const wchar_t* TestCSharpStringWide(const wchar_t* in, CS_OUT const wchar_t** out);
-DLL_API const char16_t* TestCSharpString16(const char16_t* in, CS_OUT const char16_t** out);    
+DLL_API const char16_t* TestCSharpString16(const char16_t* in, CS_OUT const char16_t** out);
 DLL_API const char32_t* TestCSharpString32(const char32_t* in, CS_OUT const char32_t** out);
 
 struct DLL_API FTIStruct { int a; };

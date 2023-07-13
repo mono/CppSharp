@@ -568,6 +568,8 @@ MethodsWithDefaultValues::QMargins::QMargins(int left, int top, int right, int b
 {
 }
 
+struct SmallPOD DefaultSmallPODInstance;
+
 const char* MethodsWithDefaultValues::stringConstant = "test";
 int MethodsWithDefaultValues::intConstant = 5;
 
@@ -806,6 +808,26 @@ void MethodsWithDefaultValues::defaultOverloadedImplicitCtor(Qux q)
 int MethodsWithDefaultValues::DefaultWithParamNamedSameAsMethod(int DefaultWithParamNamedSameAsMethod, const Foo& defaultArg)
 {
     return 1;
+}
+
+int MethodsWithDefaultValues::defaultIntAssignedAnEnumWithBinaryOperatorAndFlags(int f)
+{
+    return f;
+}
+
+int MethodsWithDefaultValues::defaultWithConstantFlags(int f)
+{
+    return f;
+}
+
+bool MethodsWithDefaultValues::defaultWithPointerToEnum(UntypedFlags* f1, int* f2)
+{
+    return (f1 == NULL || *f1 == (UntypedFlags)0) && (f2 == NULL || *f2 == 0);
+}
+
+SmallPOD* MethodsWithDefaultValues::defaultWithNonPrimitiveType(SmallPOD& pod)
+{
+    return &pod;
 }
 
 int MethodsWithDefaultValues::getA()
@@ -1299,7 +1321,7 @@ TestString::TestString() : unicodeConst(L"ქართული ენა"), uni
 {
 }
 
-TestChar32String::TestChar32String() : 
+TestChar32String::TestChar32String() :
     thirtyTwoBitConst(U"ქართული ენა")
 {
     static std::u32string nonConst = U"Test String";
@@ -1307,8 +1329,8 @@ TestChar32String::TestChar32String() :
 }
 
 TestChar32String::~TestChar32String() {}
-void TestChar32String::UpdateString(const char32_t* s) 
-{ 
+void TestChar32String::UpdateString(const char32_t* s)
+{
     static std::u32string nativeOwnedMemory = s;
     thirtyTwoBitConst = nativeOwnedMemory.data();
 }
@@ -1316,8 +1338,8 @@ void TestChar32String::UpdateString(const char32_t* s)
 const char32_t* TestChar32String::RetrieveString() { return thirtyTwoBitConst; }
 void TestChar32String::functionPointerUTF32(void(*ptr)(const char32_t*)) {}
 
-TestChar16String::TestChar16String() : 
-    sixteenBitConst(u"ქართული ენა") 
+TestChar16String::TestChar16String() :
+    sixteenBitConst(u"ქართული ენა")
 {
     static std::u16string nonConst = u"Test String";
     sixteenBitNonConst = &nonConst[0];
@@ -1325,10 +1347,10 @@ TestChar16String::TestChar16String() :
 
 TestChar16String::~TestChar16String() {}
 
-void TestChar16String::UpdateString(const char16_t* s) 
-{ 
+void TestChar16String::UpdateString(const char16_t* s)
+{
     static std::u16string nativeOwnedMemory = s;
-    sixteenBitConst = nativeOwnedMemory.data(); 
+    sixteenBitConst = nativeOwnedMemory.data();
 }
 const char16_t* TestChar16String::RetrieveString() { return sixteenBitConst; }
 
@@ -1667,7 +1689,7 @@ const unsigned ClassCustomTypeAlignmentOffsets[5]
     offsetof(ClassCustomTypeAlignment, align8),
 };
 
-const unsigned ClassCustomObjectAlignmentOffsets[2] { 
+const unsigned ClassCustomObjectAlignmentOffsets[2] {
     offsetof(ClassCustomObjectAlignment, boolean),
     offsetof(ClassCustomObjectAlignment, charAligned8),
 };

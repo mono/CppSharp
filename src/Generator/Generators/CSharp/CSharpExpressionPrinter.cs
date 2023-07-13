@@ -68,8 +68,8 @@ namespace CppSharp.Generators.CSharp
                 case StatementClass.ConstructorReference:
                     var constructorExpr = (CXXConstructExprObsolete)expr;
                     if (constructorExpr.Arguments.Count == 1 &&
-                        constructorExpr.Arguments[0].Declaration is Enumeration.Item)
-                        return constructorExpr.Arguments[0].Declaration.Visit(typePrinter).Type;
+                        constructorExpr.Arguments[0].Class != StatementClass.Any)
+                        return VisitExpression(constructorExpr.Arguments[0]);
                     goto default;
                 default:
                     return expr.String;
