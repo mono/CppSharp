@@ -1430,6 +1430,7 @@ NonTypeTemplateParameter* Parser::WalkNonTypeTemplateParameter(const clang::NonT
     HandleDeclaration(NTTPD, NTP);
     if (NTTPD->hasDefaultArgument())
         NTP->defaultArgument = WalkExpressionObsolete(NTTPD->getDefaultArgument());
+    NTP->type = GetQualifiedType(NTTPD->getType());
     NTP->depth = NTTPD->getDepth();
     NTP->index = NTTPD->getIndex();
     NTP->isParameterPack = NTTPD->isParameterPack();

@@ -13017,6 +13017,7 @@ namespace CppSharp
                     internal uint position;
                     internal byte isPackExpansion;
                     internal byte isExpandedParameterPack;
+                    internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST24NonTypeTemplateParameterC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -13169,6 +13170,21 @@ namespace CppSharp
                     set
                     {
                         ((__Internal*)__Instance)->isExpandedParameterPack = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public global::CppSharp.Parser.AST.QualifiedType Type
+                {
+                    get
+                    {
+                        return global::CppSharp.Parser.AST.QualifiedType.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->type));
+                    }
+
+                    set
+                    {
+                        if (ReferenceEquals(value, null))
+                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
+                        ((__Internal*)__Instance)->type = *(global::CppSharp.Parser.AST.QualifiedType.__Internal*) value.__Instance;
                     }
                 }
             }

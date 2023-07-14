@@ -164,6 +164,7 @@ NonTypeTemplateParameter::NonTypeTemplateParameter(const NonTypeTemplateParamete
     , position(rhs.position)
     , isPackExpansion(rhs.isPackExpansion)
     , isExpandedParameterPack(rhs.isExpandedParameterPack)
+    , type(rhs.type)
 {
 }
 

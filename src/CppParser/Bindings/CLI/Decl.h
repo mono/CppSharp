@@ -2098,6 +2098,12 @@ namespace CppSharp
                     bool get();
                     void set(bool);
                 }
+
+                property CppSharp::Parser::AST::QualifiedType^ Type
+                {
+                    CppSharp::Parser::AST::QualifiedType^ get();
+                    void set(CppSharp::Parser::AST::QualifiedType^);
+                }
             };
 
             public ref class ClassTemplate : CppSharp::Parser::AST::Template

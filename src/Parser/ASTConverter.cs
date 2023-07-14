@@ -2083,6 +2083,7 @@ namespace CppSharp
             nonTypeTemplateParameter.IsParameterPack = decl.IsParameterPack;
             nonTypeTemplateParameter.IsPackExpansion = decl.IsPackExpansion;
             nonTypeTemplateParameter.IsExpandedParameterPack = decl.IsExpandedParameterPack;
+            nonTypeTemplateParameter.Type = typeConverter.VisitQualified(decl.Type);
             return nonTypeTemplateParameter;
         }
 

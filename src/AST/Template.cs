@@ -124,6 +124,8 @@ namespace CppSharp.AST
         /// </summary>
         public bool IsExpandedParameterPack { get; set; }
 
+        public QualifiedType Type { get; set; }
+
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitNonTypeTemplateParameterDecl(this);
