@@ -30,7 +30,7 @@ namespace CppSharp.AST
 
         public override string ToString()
         {
-            return TypePrinterDelegate(this);
+            return TypePrinterDelegate == null ? base.ToString() : TypePrinterDelegate(this);
         }
 
         public abstract object Clone();
