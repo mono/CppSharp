@@ -124,6 +124,13 @@ namespace CppSharp.Generators.CSharp
                 return $"{prefix}string[]";
             }
 
+            if (arrayType.IsPrimitiveType(PrimitiveType.Bool))
+            {
+                var prefix = ContextKind == TypePrinterContextKind.Managed ? string.Empty :
+                    "[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.I1)] ";
+                return $"{prefix}bool[]";
+            }
+
             if (Context.Options.UseSpan && !(array.SizeType != ArrayType.ArraySize.Constant &&
                 MarshalKind == MarshalKind.ReturnVariableArray))
             {
