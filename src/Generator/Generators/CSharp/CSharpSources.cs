@@ -972,7 +972,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             string ptr = Generator.GeneratedIdentifier("ptr");
             if (arrayType != null)
             {
-                if (arrayType.Type.IsPrimitiveType(PrimitiveType.Char) && arrayType.SizeType != ArrayType.ArraySize.Constant)
+                if (Context.Options.MarshalConstCharArrayAsString && arrayType.Type.IsPrimitiveType(PrimitiveType.Char) && arrayType.SizeType != ArrayType.ArraySize.Constant)
                     WriteLine($"var {ptr} = {location};");
                 else
                     WriteLine($"var {ptr} = ({arrayType.Type.Visit(TypePrinter)}*){location};");

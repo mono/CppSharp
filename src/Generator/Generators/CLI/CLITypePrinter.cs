@@ -35,7 +35,8 @@ namespace CppSharp.Generators.CLI
             TypeQualifiers quals)
         {
             // const char* and const char[] are the same so we can use a string
-            if (array.SizeType == ArrayType.ArraySize.Incomplete &&
+            if (Context.Options.MarshalConstCharArrayAsString &&
+                array.SizeType == ArrayType.ArraySize.Incomplete &&
                 array.Type.Desugar().IsPrimitiveType(PrimitiveType.Char) &&
                 array.QualifiedType.Qualifiers.IsConst)
                 return VisitCILType(new CILType(typeof(string)), quals);

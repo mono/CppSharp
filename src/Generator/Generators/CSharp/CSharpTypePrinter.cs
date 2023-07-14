@@ -111,7 +111,8 @@ namespace CppSharp.Generators.CSharp
             }
 
             // const char* and const char[] are the same so we can use a string
-            if (array.SizeType == ArrayType.ArraySize.Incomplete &&
+            if (Context.Options.MarshalConstCharArrayAsString &&
+                array.SizeType == ArrayType.ArraySize.Incomplete &&
                 arrayType.IsPrimitiveType(PrimitiveType.Char) &&
                 array.QualifiedType.Qualifiers.IsConst)
                 return "string";
@@ -121,6 +122,13 @@ namespace CppSharp.Generators.CSharp
                 var prefix = ContextKind == TypePrinterContextKind.Managed ? string.Empty :
                     "[MarshalAs(UnmanagedType.LPArray)] ";
                 return $"{prefix}string[]";
+            }
+
+            if (arrayType.IsPrimitiveType(PrimitiveType.Bool))
+            {
+                var prefix = ContextKind == TypePrinterContextKind.Managed ? string.Empty :
+                    "[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.I1)] ";
+                return $"{prefix}bool[]";
             }
 
             if (Context.Options.UseSpan && !(array.SizeType != ArrayType.ArraySize.Constant &&

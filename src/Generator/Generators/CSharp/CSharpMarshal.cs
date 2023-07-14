@@ -116,7 +116,8 @@ namespace CppSharp.Generators.CSharp
                     break;
                 case ArrayType.ArraySize.Incomplete:
                     // const char* and const char[] are the same so we can use a string
-                    if (array.Type.Desugar().IsPrimitiveType(PrimitiveType.Char) &&
+                    if (Context.Context.Options.MarshalConstCharArrayAsString &&
+                        array.Type.Desugar().IsPrimitiveType(PrimitiveType.Char) &&
                         array.QualifiedType.Qualifiers.IsConst)
                     {
                         var pointer = new PointerType { QualifiedPointee = array.QualifiedType };
@@ -874,7 +875,8 @@ namespace CppSharp.Generators.CSharp
 
             var elementType = arrayType.Type.Desugar();
 
-            if (elementType.IsPrimitiveType() ||
+            if ((elementType.IsPrimitiveType() &&
+                    !(elementType.IsPrimitiveType(PrimitiveType.Char) && Context.Context.Options.MarshalCharAsManagedChar)) ||
                 elementType.IsPointerToPrimitiveType())
             {
                 if (Context.Context.Options.UseSpan && !elementType.IsConstCharString())
@@ -916,6 +918,10 @@ namespace CppSharp.Generators.CSharp
                 Context.Before.WriteLine($@"{intermediateArray}[i] = {
                     element} is null ? {intPtrZero} : {element}.{Helpers.InstanceIdentifier};");
             }
+            else if (elementType.IsPrimitiveType(PrimitiveType.Char) &&
+                        Context.Context.Options.MarshalCharAsManagedChar)
+                Context.Before.WriteLine($@"{intermediateArray}[i] = global::System.Convert.ToSByte({
+                    element});");
             else
                 Context.Before.WriteLine($@"{intermediateArray}[i] = {
                     element} is null ? new {intermediateArrayType}() : *({

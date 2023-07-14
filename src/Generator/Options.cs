@@ -115,7 +115,7 @@ namespace CppSharp
 
         /// <summary>
         /// Enable this option to enable generation of finalizers. Works in both CLI and
-        /// C# backends. 
+        /// C# backends.
         /// </summary>
         /// <remarks>
         /// Use <see cref="GenerateFinalizersFilter"/> to specify a filter so that
@@ -125,7 +125,7 @@ namespace CppSharp
 
         /// <summary>
         /// A filter that can restrict the classes for which finalizers are generated when
-        /// <see cref="GenerateFinalizers"/> is <c>true</c>. 
+        /// <see cref="GenerateFinalizers"/> is <c>true</c>.
         /// </summary>
         /// <remarks>
         /// The default filter performs no filtering so that whenever <see
@@ -189,6 +189,7 @@ namespace CppSharp
 
         public readonly List<string> DependentNameSpaces = new List<string>();
         public bool MarshalCharAsManagedChar { get; set; }
+        public bool MarshalConstCharArrayAsString { get; set; } = true;
 
         /// <summary>
         /// Use Span Struct instead of Managed Array
