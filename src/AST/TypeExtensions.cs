@@ -92,6 +92,25 @@
             return ptr.Pointee.IsPrimitiveType(primitive);
         }
 
+        public static bool IsPointerToEnum(this Type t)
+        {
+            var ptr = t as PointerType;
+            if (ptr == null)
+                return false;
+            return ptr.Pointee.IsEnumType();
+        }
+
+        public static bool IsPointerToEnum(this Type t, out Enumeration @enum)
+        {
+            var ptr = t as PointerType;
+            if (ptr == null)
+            {
+                @enum = null;
+                return false;
+            }
+            return ptr.Pointee.TryGetEnum(out @enum);
+        }
+
         public static bool IsPointerTo<T>(this Type t, out T type) where T : Type
         {
             var pointee = t.GetPointee();

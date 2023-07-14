@@ -346,6 +346,10 @@ public unsafe class CSharpTests
             methodsWithDefaultValues.DefaultWithSpecialization();
             methodsWithDefaultValues.DefaultOverloadedImplicitCtor();
             methodsWithDefaultValues.DefaultWithParamNamedSameAsMethod(5);
+            Assert.That(methodsWithDefaultValues.DefaultIntAssignedAnEnumWithBinaryOperatorAndFlags(), Is.EqualTo((int)(Bar.Items.Item1 | Bar.Items.Item2)));
+            Assert.That(methodsWithDefaultValues.DefaultWithConstantFlags(), Is.EqualTo(CSharp.CSharp.ConstFlag1 | CSharp.CSharp.ConstFlag2 | CSharp.CSharp.ConstFlag3));
+            Assert.IsTrue(methodsWithDefaultValues.DefaultWithPointerToEnum());
+            Assert.AreEqual(CSharp.CSharp.DefaultSmallPODInstance.__Instance, methodsWithDefaultValues.DefaultWithNonPrimitiveType().__Instance);
         }
     }
 
