@@ -23,12 +23,12 @@ namespace CppSharp
             ParseSourceFile(file);
         }
 
-        public static bool ParseSourceFile(string file)
+        private static bool ParseSourceFile(string file)
         {
             // Lets setup the options for parsing the file.
             var parserOptions = new ParserOptions
             {
-                LanguageVersion = LanguageVersion.CPP11,
+                LanguageVersion = LanguageVersion.CPP20_GNU,
 
                 // Verbose here will make sure the parser outputs some extra debugging
                 // information regarding include directories, which can be helpful when
@@ -37,13 +37,10 @@ namespace CppSharp
             };
 
             // This will setup the necessary system include paths and arguments for parsing.
-            // It will probe into the registry (on Windows) and filesystem to find the paths
-            // of the system toolchains and necessary include directories.
-            parserOptions.Setup();
+            parserOptions.Setup(Platform.Host);
 
             // We create the Clang parser and parse the source code.
-            var parser = new ClangParser();
-            var parserResult = parser.ParseSourceFile(file, parserOptions);
+            var parserResult = ClangParser.ParseSourceFile(file, parserOptions);
 
             // If there was some kind of error parsing, then lets print some diagnostics.
             if (parserResult.Kind != ParserResultKind.Success)
