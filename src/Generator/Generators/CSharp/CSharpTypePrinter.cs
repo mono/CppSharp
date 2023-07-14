@@ -111,7 +111,8 @@ namespace CppSharp.Generators.CSharp
             }
 
             // const char* and const char[] are the same so we can use a string
-            if (array.SizeType == ArrayType.ArraySize.Incomplete &&
+            if (Context.Options.MarshalConstCharArrayAsString &&
+                array.SizeType == ArrayType.ArraySize.Incomplete &&
                 arrayType.IsPrimitiveType(PrimitiveType.Char) &&
                 array.QualifiedType.Qualifiers.IsConst)
                 return "string";

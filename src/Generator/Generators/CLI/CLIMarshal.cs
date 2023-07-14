@@ -61,7 +61,8 @@ namespace CppSharp.Generators.CLI
                     break;
                 case ArrayType.ArraySize.Incomplete:
                     // const char* and const char[] are the same so we can use a string
-                    if (array.Type.Desugar().IsPrimitiveType(PrimitiveType.Char) &&
+                    if (Context.Context.Options.MarshalConstCharArrayAsString &&
+                        array.Type.Desugar().IsPrimitiveType(PrimitiveType.Char) &&
                         array.QualifiedType.Qualifiers.IsConst)
                     {
                         var pointer = new PointerType { QualifiedPointee = array.QualifiedType };
