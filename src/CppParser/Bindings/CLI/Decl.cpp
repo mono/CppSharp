@@ -4224,6 +4224,18 @@ void CppSharp::Parser::AST::NonTypeTemplateParameter::IsExpandedParameterPack::s
     ((class ::CppSharp::CppParser::AST::NonTypeTemplateParameter*)NativePtr)->isExpandedParameterPack = value;
 }
 
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::NonTypeTemplateParameter::Type::get()
+{
+    return (&((class ::CppSharp::CppParser::AST::NonTypeTemplateParameter*)NativePtr)->type == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::QualifiedType((struct ::CppSharp::CppParser::AST::QualifiedType*)&((class ::CppSharp::CppParser::AST::NonTypeTemplateParameter*)NativePtr)->type);
+}
+
+void CppSharp::Parser::AST::NonTypeTemplateParameter::Type::set(CppSharp::Parser::AST::QualifiedType^ value)
+{
+    if (ReferenceEquals(value, nullptr))
+        throw gcnew ::System::ArgumentNullException("value", "Cannot be null because it is passed by value.");
+    ((class ::CppSharp::CppParser::AST::NonTypeTemplateParameter*)NativePtr)->type = *(struct ::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
+}
+
 CppSharp::Parser::AST::ClassTemplate::ClassTemplate(class ::CppSharp::CppParser::AST::ClassTemplate* native)
     : CppSharp::Parser::AST::Template((::CppSharp::CppParser::AST::Template*)native)
 {
