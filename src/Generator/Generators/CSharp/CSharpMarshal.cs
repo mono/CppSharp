@@ -875,7 +875,8 @@ namespace CppSharp.Generators.CSharp
 
             var elementType = arrayType.Type.Desugar();
 
-            if (elementType.IsPrimitiveType() ||
+            if ((elementType.IsPrimitiveType() &&
+                    !(elementType.IsPrimitiveType(PrimitiveType.Char) && Context.Context.Options.MarshalCharAsManagedChar)) ||
                 elementType.IsPointerToPrimitiveType())
             {
                 if (Context.Context.Options.UseSpan && !elementType.IsConstCharString())
@@ -917,6 +918,10 @@ namespace CppSharp.Generators.CSharp
                 Context.Before.WriteLine($@"{intermediateArray}[i] = {
                     element} is null ? {intPtrZero} : {element}.{Helpers.InstanceIdentifier};");
             }
+            else if (elementType.IsPrimitiveType(PrimitiveType.Char) &&
+                        Context.Context.Options.MarshalCharAsManagedChar)
+                Context.Before.WriteLine($@"{intermediateArray}[i] = global::System.Convert.ToSByte({
+                    element});");
             else
                 Context.Before.WriteLine($@"{intermediateArray}[i] = {
                     element} is null ? new {intermediateArrayType}() : *({
