@@ -1988,4 +1988,11 @@ public unsafe class CSharpTests
         Assert.That(RuleOfThreeTester.CopyConstructorCalls, Is.EqualTo(0));
         Assert.That(RuleOfThreeTester.CopyAssignmentCalls, Is.EqualTo(0));
     }
+
+    [Test]
+    public void TestPointerToClass()
+    {
+        Assert.IsTrue(CSharp.CSharp.PointerToClass.IsDefaultInstance);
+        Assert.IsTrue(CSharp.CSharp.PointerToClass.IsValid);
+    }
 }

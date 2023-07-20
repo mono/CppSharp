@@ -1285,6 +1285,17 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             };
             ctx.PushMarshalKind(MarshalKind.ReturnVariableArray);
 
+            if (var.Type.Desugar().IsPointer())
+            {
+                var pointerType = var.Type.Desugar() as PointerType;
+                while (pointerType != null && !pointerType.Pointee.Desugar().IsPrimitiveType(PrimitiveType.Char))
+                {
+                    ptr = $"*{ptr}";
+                    pointerType = pointerType.Pointee.Desugar() as PointerType;
+                }
+                ptr = $"(IntPtr*)({ptr})";
+            }
+
             var arrayType = var.Type.Desugar() as ArrayType;
             var isRefTypeArray = arrayType != null && var.Namespace is Class context && context.IsRefType;
             var elementType = arrayType?.Type.Desugar();

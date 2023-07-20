@@ -1772,3 +1772,22 @@ void CallCallByValueInterfacePointer(CallByValueInterface* interface)
     RuleOfThreeTester value;
     interface->CallByPointer(&value);
 }
+
+static PointerTester internalPointerTesterInstance;
+
+PointerTester::PointerTester()
+{
+    a = 0;
+}
+
+bool PointerTester::IsDefaultInstance()
+{
+    return this == &internalPointerTesterInstance;
+}
+
+bool PointerTester::IsValid()
+{
+    return a == 0;
+}
+
+PointerTester* PointerToClass = &internalPointerTesterInstance;
