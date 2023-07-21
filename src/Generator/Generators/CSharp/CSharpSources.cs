@@ -1293,7 +1293,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                     ptr = $"*{ptr}";
                     pointerType = pointerType.Pointee.Desugar() as PointerType;
                 }
-                ptr = $"(IntPtr*)({ptr})";
+                ptr = $"({TypePrinter.IntPtrType}*)({ptr})";
             }
 
             var arrayType = var.Type.Desugar() as ArrayType;
