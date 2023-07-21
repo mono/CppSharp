@@ -1592,3 +1592,14 @@ struct DLL_API CallByValueInterface {
 void DLL_API CallCallByValueInterfaceValue(CallByValueInterface*);
 void DLL_API CallCallByValueInterfaceReference(CallByValueInterface*);
 void DLL_API CallCallByValueInterfacePointer(CallByValueInterface*);
+
+class DLL_API PointerTester
+{
+    int a;
+public:
+    PointerTester();
+    bool IsDefaultInstance();
+    bool IsValid();
+};
+
+DLL_API extern PointerTester* PointerToClass;
