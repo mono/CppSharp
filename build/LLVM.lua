@@ -42,6 +42,7 @@ function SetupLLVMIncludes()
       includedirs
       {
         path.join(LLVMRootDirDebug, "include"),
+        path.join(LLVMRootDirDebug, "llvm/include"),
         path.join(LLVMRootDirDebug, "lld/include"),
         path.join(LLVMRootDirDebug, "clang/include"),
         path.join(LLVMRootDirDebug, "clang/lib"),
@@ -53,6 +54,7 @@ function SetupLLVMIncludes()
       includedirs
       {
         path.join(LLVMRootDirRelease, "include"),
+        path.join(LLVMRootDirRelease, "llvm/include"),
         path.join(LLVMRootDirRelease, "lld/include"),
         path.join(LLVMRootDirRelease, "clang/include"),
         path.join(LLVMRootDirRelease, "clang/lib"),
@@ -64,6 +66,7 @@ function SetupLLVMIncludes()
     includedirs
     {
       path.join(LLVMRootDir, "include"),
+      path.join(LLVMRootDir, "llvm/include"),
       path.join(LLVMRootDir, "lld/include"),
       path.join(LLVMRootDir, "clang/include"),
       path.join(LLVMRootDir, "clang/lib"),
@@ -151,6 +154,7 @@ function SetupLLVMLibs()
       "clangLex",
       "clangBasic",
       "clangIndex",
+      "clangASTMatchers",
       "LLVMWindowsDriver",
       "LLVMWindowsManifest",
       "LLVMDebugInfoPDB",
@@ -158,6 +162,7 @@ function SetupLLVMLibs()
       "LLVMPasses",
       "LLVMObjCARCOpts",
       "LLVMLibDriver",
+      "LLVMFrontendHLSL",
       "LLVMFrontendOpenMP",
       "LLVMOption",
       "LLVMCoverage",
@@ -172,6 +177,7 @@ function SetupLLVMLibs()
       "LLVMVectorize",
       "LLVMLinker",
       "LLVMIRReader",
+      "LLVMIRPrinter",
       "LLVMAsmParser",
       "LLVMMCDisassembler",
       "LLVMCFGuard",
@@ -180,7 +186,9 @@ function SetupLLVMLibs()
       "LLVMAsmPrinter",
       "LLVMDebugInfoDWARF",
       "LLVMCodeGen",
+      "LLVMCodeGenTypes",
       "LLVMTarget",
+      "LLVMTargetParser",
       "LLVMScalarOpts",
       "LLVMInstCombine",
       "LLVMAggressiveInstCombine",
@@ -204,7 +212,8 @@ function SetupLLVMLibs()
       "lldCommon",
       "lldCOFF",
       "lldELF",
-      "lldMachO"
+      "lldMachO",
+      "lldMinGW"
     }
     
   filter(c)

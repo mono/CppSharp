@@ -11,6 +11,11 @@
 #include <Driver/ToolChains/Linux.h>
 #include <lld/Common/Driver.h>
 
+LLD_HAS_DRIVER(coff)
+LLD_HAS_DRIVER(elf)
+LLD_HAS_DRIVER(mingw)
+LLD_HAS_DRIVER(macho)
+
 using namespace CppSharp::CppParser;
 
 bool Parser::Link(const std::string& File, const CppLinkerOptions* LinkerOptions)

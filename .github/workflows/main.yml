@@ -11,7 +11,6 @@ jobs:
         config:
           - { os: ubuntu-22.04, platform: x64, cxx: g++-11, cc: gcc-11 }
           - { os: macos-11, platform: x64, cxx: clang++, cc: clang }
-          - { os: windows-2019, platform: x64, vs: "Program Files (x86)/Microsoft Visual Studio/2019" }
           - { os: windows-2022, platform: x64, vs: "Program Files/Microsoft Visual Studio/2022" }
 
     runs-on: ${{ matrix.config.os }}

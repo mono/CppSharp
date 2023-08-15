@@ -4,6 +4,7 @@ clang_msvc_flags =
   "/wd4355", "/wd4996", "/wd4624", "/wd4291",
   "/wd4251",
   "/wd4141", -- 'inline' : used more than once
+  "/Zc:preprocessor" -- needed for newer Clang Options.inc (VA_ARGS)
 }
 
 if EnableNativeProjects() then
@@ -19,6 +20,9 @@ project "CppSharp.CppParser"
   if os.istarget("linux") then
     linkgroups "On"
   end
+
+  filter "toolset:gcc*"
+    buildoptions { "-Wno-nonnull" }
 
   filter "toolset:msc*"
     buildoptions { clang_msvc_flags }
