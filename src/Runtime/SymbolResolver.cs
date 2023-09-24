@@ -35,13 +35,30 @@ namespace CppSharp
 
         static SymbolResolver()
         {
-            switch (Environment.OSVersion.Platform)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                case PlatformID.Unix:
-                case PlatformID.MacOSX:
-                    loadImage = dlopen;
-                    resolveSymbol = dlsym;
-                    formats = new[] {
+                loadImage = LoadLibrary;
+                resolveSymbol = GetProcAddress;
+                formats = new[] { "{0}", "{0}.dll" };
+            }
+            else
+            {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    loadImage = dlopen_linux;
+                    resolveSymbol = dlsym_linux;
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    loadImage = dlopen_macos;
+                    resolveSymbol = dlsym_macos;
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+
+                formats = new[] {
                     "{0}",
                     "{0}.so",
                     "{0}.dylib",
@@ -49,12 +66,6 @@ namespace CppSharp
                     "lib{0}.dylib",
                     "{0}.bundle"
                 };
-                    break;
-                default:
-                    loadImage = LoadLibrary;
-                    resolveSymbol = GetProcAddress;
-                    formats = new[] { "{0}", "{0}.dll" };
-                    break;
             }
         }
 
@@ -113,16 +124,35 @@ namespace CppSharp
 
         private const int RTLD_LAZY = 0x1;
 
-        static IntPtr dlopen(string path)
+        #region LINUX
+
+        static IntPtr dlopen_linux(string path)
         {
-            return dlopen(path, RTLD_LAZY);
+            return dlopen_linux(path, RTLD_LAZY);
         }
 
-        [DllImport("dl", CharSet = CharSet.Ansi)]
-        static extern IntPtr dlopen(string path, int flags);
+        [DllImport("dl.so.2", EntryPoint = "dlopen", CharSet = CharSet.Ansi)]
+        static extern IntPtr dlopen_linux(string path, int flags);
 
-        [DllImport("dl", CharSet = CharSet.Ansi)]
-        static extern IntPtr dlsym(IntPtr handle, string symbol);
+        [DllImport("dl.so.2", EntryPoint = "dlsym", CharSet = CharSet.Ansi)]
+        static extern IntPtr dlsym_linux(IntPtr handle, string symbol);
+
+        #endregion
+
+        #region MACOS
+
+        static IntPtr dlopen_macos(string path)
+        {
+            return dlopen_macos(path, RTLD_LAZY);
+        }
+
+        [DllImport("dl", EntryPoint = "dlopen", CharSet = CharSet.Ansi)]
+        static extern IntPtr dlopen_macos(string path, int flags);
+
+        [DllImport("dl", EntryPoint = "dlsym", CharSet = CharSet.Ansi)]
+        static extern IntPtr dlsym_macos(IntPtr handle, string symbol);
+
+        #endregion
 
         #endregion
 
