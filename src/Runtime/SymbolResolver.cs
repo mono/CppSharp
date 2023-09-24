@@ -118,10 +118,10 @@ namespace CppSharp
             return dlopen(path, RTLD_LAZY);
         }
 
-        [DllImport("dl", CharSet = CharSet.Ansi)]
+        [DllImport("dl.so.2", CharSet = CharSet.Ansi)]
         static extern IntPtr dlopen(string path, int flags);
 
-        [DllImport("dl", CharSet = CharSet.Ansi)]
+        [DllImport("dl.so.2", CharSet = CharSet.Ansi)]
         static extern IntPtr dlsym(IntPtr handle, string symbol);
 
         #endregion
