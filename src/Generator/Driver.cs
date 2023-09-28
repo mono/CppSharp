@@ -423,7 +423,7 @@ namespace CppSharp
 
     public static class ConsoleDriver
     {
-        public static void Run(ILibrary library)
+        public static bool Run(ILibrary library)
         {
             var options = new DriverOptions();
             using var driver = new Driver(options);
@@ -438,7 +438,7 @@ namespace CppSharp
                 Diagnostics.Message("Parsing libraries...");
 
             if (!driver.ParseLibraries())
-                return;
+                return false;
 
             if (!options.Quiet)
                 Diagnostics.Message("Parsing code...");
@@ -446,7 +446,7 @@ namespace CppSharp
             if (!driver.ParseCode())
             {
                 Diagnostics.Error("CppSharp has encountered an error while parsing code.");
-                return;
+                return false;
             }
 
             new CleanUnitPass { Context = driver.Context }.VisitASTContext(driver.Context.ASTContext);
@@ -473,7 +473,7 @@ namespace CppSharp
                 Diagnostics.Message("Generating code...");
 
             if (options.DryRun)
-                return;
+                return true;
 
             var outputs = driver.GenerateCode();
 
@@ -488,6 +488,8 @@ namespace CppSharp
             driver.SaveCode(outputs);
             if (driver.Options.IsCSharpGenerator && driver.Options.CompileCode)
                 driver.Options.Modules.Any(m => !driver.CompileCode(m));
+
+            return true;
         }
     }
 }
