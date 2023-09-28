@@ -1078,6 +1078,8 @@ HTMLStartTagComment::Attribute::Attribute() {}
 
 HTMLStartTagComment::Attribute::Attribute(const Attribute& rhs) : name(rhs.name), value(rhs.value) {}
 
+HTMLStartTagComment::Attribute::~Attribute() {}
+
 HTMLStartTagComment::HTMLStartTagComment() : HTMLTagComment(CommentKind::HTMLStartTagComment) {}
 
 DEF_VECTOR(HTMLStartTagComment, HTMLStartTagComment::Attribute, Attributes)
