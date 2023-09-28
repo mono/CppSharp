@@ -137,9 +137,17 @@ namespace CppSharp
                 if (diag.Level == ParserDiagnosticLevel.Note)
                     continue;
 
-                Diagnostics.Message("{0}({1},{2}): {3}: {4}",
-                    diag.FileName, diag.LineNumber, diag.ColumnNumber,
-                    diag.Level.ToString().ToLower(), diag.Message);
+                if (diag.LineNumber == 0 && diag.ColumnNumber == 0)
+                {
+                    Diagnostics.Message("{0}: {1}: {2}",
+                        diag.FileName, diag.Level.ToString().ToLower(), diag.Message);
+                }
+                else
+                {
+                    Diagnostics.Message("{0}({1},{2}): {3}: {4}",
+                        diag.FileName, diag.LineNumber, diag.ColumnNumber,
+                        diag.Level.ToString().ToLower(), diag.Message);
+                }
             }
         }
 
@@ -196,7 +204,10 @@ namespace CppSharp
 
                 using var res = ClangParser.ParseLibrary(linkerOptions);
                 if (res.Kind != ParserResultKind.Success)
+                {
+                    res.Dispose();
                     continue;
+                }
 
                 for (uint i = 0; i < res.LibrariesCount; i++)
                     Context.Symbols.Libraries.Add(ClangParser.ConvertLibrary(res.GetLibraries(i)));
@@ -206,7 +217,7 @@ namespace CppSharp
             Context.Symbols.IndexSymbols();
             SortModulesByDependencies();
 
-            return true;
+            return !hasParsingErrors;
         }
 
         public void SetupPasses(ILibrary library)
@@ -412,7 +423,7 @@ namespace CppSharp
 
     public static class ConsoleDriver
     {
-        public static void Run(ILibrary library)
+        public static bool Run(ILibrary library)
         {
             var options = new DriverOptions();
             using var driver = new Driver(options);
@@ -427,7 +438,7 @@ namespace CppSharp
                 Diagnostics.Message("Parsing libraries...");
 
             if (!driver.ParseLibraries())
-                return;
+                return false;
 
             if (!options.Quiet)
                 Diagnostics.Message("Parsing code...");
@@ -435,7 +446,7 @@ namespace CppSharp
             if (!driver.ParseCode())
             {
                 Diagnostics.Error("CppSharp has encountered an error while parsing code.");
-                return;
+                return false;
             }
 
             new CleanUnitPass { Context = driver.Context }.VisitASTContext(driver.Context.ASTContext);
@@ -462,7 +473,7 @@ namespace CppSharp
                 Diagnostics.Message("Generating code...");
 
             if (options.DryRun)
-                return;
+                return true;
 
             var outputs = driver.GenerateCode();
 
@@ -477,6 +488,8 @@ namespace CppSharp
             driver.SaveCode(outputs);
             if (driver.Options.IsCSharpGenerator && driver.Options.CompileCode)
                 driver.Options.Modules.Any(m => !driver.CompileCode(m));
+
+            return true;
         }
     }
 }

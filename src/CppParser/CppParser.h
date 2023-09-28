@@ -82,9 +82,9 @@ struct CS_API ParserDiagnostic
     ~ParserDiagnostic();
     std::string fileName;
     std::string message;
-    ParserDiagnosticLevel level;
-    int lineNumber;
-    int columnNumber;
+    ParserDiagnosticLevel level { ParserDiagnosticLevel::Ignored };
+    int lineNumber {0};
+    int columnNumber {0};
 };
 
 enum class ParserResultKind
