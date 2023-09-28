@@ -4713,7 +4713,13 @@ ParserResult* Parser::ParseLibrary(const CppLinkerOptions* Opts)
         auto BinaryOrErr = llvm::object::createBinary(FileEntry);
         if (!BinaryOrErr)
         {
-            auto Error = BinaryOrErr.takeError();
+            auto ErrMsg = llvm::toString(BinaryOrErr.takeError());
+            auto Diag = ParserDiagnostic();
+            Diag.fileName = FileEntry;
+            Diag.message = ErrMsg;
+            Diag.level = ParserDiagnosticLevel::Error;
+            res->Diagnostics.push_back(Diag);
+
             res->kind = ParserResultKind::Error;
             return res;
         }

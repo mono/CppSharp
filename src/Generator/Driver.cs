@@ -137,9 +137,17 @@ namespace CppSharp
                 if (diag.Level == ParserDiagnosticLevel.Note)
                     continue;
 
-                Diagnostics.Message("{0}({1},{2}): {3}: {4}",
-                    diag.FileName, diag.LineNumber, diag.ColumnNumber,
-                    diag.Level.ToString().ToLower(), diag.Message);
+                if (diag.LineNumber == 0 && diag.ColumnNumber == 0)
+                {
+                    Diagnostics.Message("{0}: {1}: {2}",
+                        diag.FileName, diag.Level.ToString().ToLower(), diag.Message);
+                }
+                else
+                {
+                    Diagnostics.Message("{0}({1},{2}): {3}: {4}",
+                        diag.FileName, diag.LineNumber, diag.ColumnNumber,
+                        diag.Level.ToString().ToLower(), diag.Message);
+                }
             }
         }
 
@@ -196,7 +204,10 @@ namespace CppSharp
 
                 using var res = ClangParser.ParseLibrary(linkerOptions);
                 if (res.Kind != ParserResultKind.Success)
+                {
+                    res.Dispose();
                     continue;
+                }
 
                 for (uint i = 0; i < res.LibrariesCount; i++)
                     Context.Symbols.Libraries.Add(ClangParser.ConvertLibrary(res.GetLibraries(i)));
@@ -206,7 +217,7 @@ namespace CppSharp
             Context.Symbols.IndexSymbols();
             SortModulesByDependencies();
 
-            return true;
+            return !hasParsingErrors;
         }
 
         public void SetupPasses(ILibrary library)
