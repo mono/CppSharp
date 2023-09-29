@@ -3465,6 +3465,12 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
         public string GetFunctionNativeIdentifier(Function function,
             bool isForDelegate = false)
         {
+            return GetFunctionNativeIdentifier(Context, function, isForDelegate);
+        }
+
+        public static string GetFunctionNativeIdentifier(BindingContext context, Function function,
+            bool isForDelegate = false)
+        {
             var identifier = new StringBuilder();
 
             if (function.IsOperator)
@@ -3494,12 +3500,12 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                 identifier.Append(Helpers.GetSuffixFor(specialization));
 
             var internalParams = function.GatherInternalParams(
-                Context.ParserOptions.IsItaniumLikeAbi);
+                context.ParserOptions.IsItaniumLikeAbi);
             var overloads = function.Namespace.GetOverloads(function)
                 .Where(f => (!f.Ignore ||
                     (f.OriginalFunction != null && !f.OriginalFunction.Ignore)) &&
                     (isForDelegate || internalParams.SequenceEqual(
-                        f.GatherInternalParams(Context.ParserOptions.IsItaniumLikeAbi),
+                        f.GatherInternalParams(context.ParserOptions.IsItaniumLikeAbi),
                     new MarshallingParamComparer()))).ToList();
             var index = -1;
             if (overloads.Count > 1)
