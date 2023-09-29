@@ -9,6 +9,8 @@ jobs:
       fail-fast: false
       matrix:
         config:
+          - { os: windows-2019, platform: x86, vs: "Program Files (x86)/Microsoft Visual Studio/2019" }
+          - { os: windows-2019, platform: x64, vs: "Program Files (x86)/Microsoft Visual Studio/2019" }
           - { os: windows-2022, platform: x86, vs: "Program Files/Microsoft Visual Studio/2022" }
           - { os: windows-2022, platform: x64, vs: "Program Files/Microsoft Visual Studio/2022" }
 
