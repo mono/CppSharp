@@ -240,6 +240,12 @@ function cmake(gen, conf, builddir, options)
 
 	if os.ishost("windows") then
 		options = options .. " -Thost=x64"
+
+		-- Workaround build failure due to bugs in older Windows SDK headers
+		local vsver = get_vs_version()
+		if vsver == "vs2019" then
+			options = options .. ' -DCMAKE_SYSTEM_VERSION=10.0.19041.0'
+		end
 	end
 
 	local cmd = cmake .. " -G " .. '"' .. gen .. '"'
