@@ -4851,8 +4851,7 @@ ParserResult* Parser::Compile(const std::string& File)
     const llvm::Triple Triple = c->getTarget().getTriple();
     llvm::StringRef Dir(llvm::sys::path::parent_path(File));
     llvm::SmallString<1024> Object(Dir);
-    llvm::sys::path::append(Object,
-        (Triple.isOSWindows() ? "" : "lib") + Stem + ".o");
+    llvm::sys::path::append(Object, Stem + ".o");
     c->getFrontendOpts().OutputFile = std::string(Object);
 
     llvm::LLVMContext context;

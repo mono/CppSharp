@@ -87,7 +87,6 @@ namespace CppSharp
             ValidateOptions();
             ParserOptions.Setup(Platform.Host);
             Context = new BindingContext(Options, ParserOptions);
-            Context.LinkerOptions.Setup(ParserOptions.TargetTriple, ParserOptions.LanguageVersion);
             Generator = CreateGeneratorFromKind(Options.GeneratorKind);
         }
 

@@ -63,24 +63,72 @@ namespace CppSharp.Passes
                             new[] { module }).SelectMany(d => d.Libraries))
                             linkerOptions.AddLibraries(library);
 
-                        using (var result = Parser.ClangParser.Build(
-                            Context.ParserOptions, linkerOptions, path,
-                            Last: remainingCompilationTasks == 1))
-                        {
-                            if (PrintDiagnostics(result))
-                            {
-                                compiledLibraries[module] = new CompiledLibrary
-                                {
-                                    OutputDir = Options.OutputDir,
-                                    Library = module.SymbolsLibraryName
-                                };
-                            }
-                        }
+                        compiledLibraries[module] = Build(linkerOptions, path, module);
                     }
                 }
 
                 RemainingCompilationTasks--;
             }
+        }
+
+        private CompiledLibrary Build(LinkerOptions linkerOptions, string path, Module module)
+        {
+            var useBuiltinToolchain = Platform.IsWindows;
+            if (useBuiltinToolchain)
+            {
+                linkerOptions.Setup(Context.ParserOptions.TargetTriple, Context.ParserOptions.LanguageVersion);
+                using var result = Parser.ClangParser.Build(
+                    Context.ParserOptions, linkerOptions, path,
+                    Last: remainingCompilationTasks == 1);
+
+                if (!PrintDiagnostics(result))
+                    return null;
+            }
+            else
+            {
+                using var result = Parser.ClangParser.Compile(Context.ParserOptions, path);
+                if (result != null)
+                {
+                    if (!PrintDiagnostics(result))
+                        return null;
+                }
+
+                linkerOptions.Setup(Context.ParserOptions.TargetTriple, Context.ParserOptions.LanguageVersion);
+                linkerOptions.AddArguments("-L" + Path.GetDirectoryName(path));
+
+                var objectFile = Path.ChangeExtension(path, "o");
+                linkerOptions.AddArguments(objectFile);
+
+                var targetPlatform = Options.Compilation.Platform.GetValueOrDefault(Platform.Host);
+                var sharedObjectFile = LinkerOptions.GetSharedObjectName(path, targetPlatform);
+                linkerOptions.AddArguments("-o " + sharedObjectFile);
+                linkerOptions.SetupLibraryArguments();
+
+                var linker = LinkerOptions.GetLinkerExecutableName(targetPlatform);
+                var invocation = linkerOptions.GetLinkerInvocation();
+
+                Diagnostics.Message($"Linking library {Path.GetFileName(sharedObjectFile)}...");
+                if (Options.Verbose)
+                    Diagnostics.Message($"Invoking the linker with: {linker} {invocation}");
+
+                var outMessage = ProcessHelper.Run(
+                    linker, invocation, out var errorCode, out var errorMessage);
+
+                if (errorCode != 0)
+                {
+                    Diagnostics.Error($"Linking failed with: {outMessage} {errorMessage}");
+                }
+                else
+                {
+                    Diagnostics.Message($"Linking success.");
+                }
+            }
+
+            return new CompiledLibrary
+            {
+                OutputDir = Options.OutputDir,
+                Library = module.SymbolsLibraryName
+            };
         }
 
         public override bool VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
