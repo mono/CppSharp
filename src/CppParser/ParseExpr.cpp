@@ -223,7 +223,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->length = S->getLength();
         _S->charByteWidth = S->getCharByteWidth();
         _S->kind = (StringLiteral::StringKind) S->getKind();
-        _S->isAscii = S->isAscii();
+        _S->isAscii = S->isOrdinary();
         _S->isWide = S->isWide();
         _S->isUTF8 = S->isUTF8();
         _S->isUTF16 = S->isUTF16();
@@ -400,7 +400,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->calleeDecl = static_cast<AST::Declaration*>(WalkDeclaration(S->getCalleeDecl()));
         _S->directCallee = static_cast<AST::Function*>(WalkDeclaration(S->getDirectCallee()));
         _S->numArgs = S->getNumArgs();
-        _S->numCommas = S->getNumCommas();
+        _S->numCommas = 0; // Removed from Clang
         _S->builtinCallee = S->getBuiltinCallee();
         _S->isCallToStdMove = S->isCallToStdMove();
         for (auto _E : S->arguments())
@@ -1172,7 +1172,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->calleeDecl = static_cast<AST::Declaration*>(WalkDeclaration(S->getCalleeDecl()));
         _S->directCallee = static_cast<AST::Function*>(WalkDeclaration(S->getDirectCallee()));
         _S->numArgs = S->getNumArgs();
-        _S->numCommas = S->getNumCommas();
+        _S->numCommas = 0; // Removed from Clang
         _S->builtinCallee = S->getBuiltinCallee();
         _S->isCallToStdMove = S->isCallToStdMove();
         for (auto _E : S->arguments())
@@ -1207,7 +1207,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->calleeDecl = static_cast<AST::Declaration*>(WalkDeclaration(S->getCalleeDecl()));
         _S->directCallee = static_cast<AST::Function*>(WalkDeclaration(S->getDirectCallee()));
         _S->numArgs = S->getNumArgs();
-        _S->numCommas = S->getNumCommas();
+        _S->numCommas = 0; // Removed from Clang
         _S->builtinCallee = S->getBuiltinCallee();
         _S->isCallToStdMove = S->isCallToStdMove();
         for (auto _E : S->arguments())
@@ -1241,7 +1241,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->calleeDecl = static_cast<AST::Declaration*>(WalkDeclaration(S->getCalleeDecl()));
         _S->directCallee = static_cast<AST::Function*>(WalkDeclaration(S->getDirectCallee()));
         _S->numArgs = S->getNumArgs();
-        _S->numCommas = S->getNumCommas();
+        _S->numCommas = 0; // Removed from Clang
         _S->builtinCallee = S->getBuiltinCallee();
         _S->isCallToStdMove = S->isCallToStdMove();
         for (auto _E : S->arguments())
@@ -1391,7 +1391,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->calleeDecl = static_cast<AST::Declaration*>(WalkDeclaration(S->getCalleeDecl()));
         _S->directCallee = static_cast<AST::Function*>(WalkDeclaration(S->getDirectCallee()));
         _S->numArgs = S->getNumArgs();
-        _S->numCommas = S->getNumCommas();
+        _S->numCommas = 0; // Removed from Clang
         _S->builtinCallee = S->getBuiltinCallee();
         _S->isCallToStdMove = S->isCallToStdMove();
         for (auto _E : S->arguments())
@@ -1850,7 +1850,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->operatorDelete = static_cast<AST::Function*>(WalkDeclaration(S->getOperatorDelete()));
         _S->allocatedType = GetQualifiedType(S->getAllocatedType());
         _S->isArray = S->isArray();
-        _S->arraySize = static_cast<AST::Expr*>(WalkExpression(S->getArraySize().getValue()));
+        _S->arraySize = static_cast<AST::Expr*>(WalkExpression(S->getArraySize().value()));
         _S->numPlacementArgs = S->getNumPlacementArgs();
         _S->isParenTypeId = S->isParenTypeId();
         _S->isGlobalNew = S->isGlobalNew();

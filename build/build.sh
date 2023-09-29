@@ -2,7 +2,7 @@
 set -e
 builddir=$(cd "$(dirname "$0")"; pwd)
 platform=x64
-vs=vs2019
+vs=vs2022
 configuration=Release
 build_only=false
 ci=false
@@ -104,18 +104,26 @@ download_premake()
 {
   premake_dir="$builddir/premake"
   premake_filename=premake5
+  premake_archive_ext=tar.gz
   if [ $oshost = "windows" ]; then
     premake_filename=$premake_filename.exe
+    premake_archive_ext=zip
   fi
   premake_path=$premake_dir/$premake_filename
 
   if ! [ -f "$premake_path" ]; then
     echo "Downloading and unpacking Premake..."
-    premake_url=https://github.com/InteropAlliance/premake-core/releases/download/latest/premake-$oshost-$platform.zip  
+    premake_version=5.0.0-beta2
+    premake_archive=premake-$premake_version-$oshost.$premake_archive_ext
+    premake_url=https://github.com/premake/premake-core/releases/download/v$premake_version/$premake_archive
     curl -L -O $premake_url
-    unzip premake-$oshost-$platform.zip $premake_filename -d "$premake_dir"
+    if [ $oshost = "windows" ]; then
+      unzip $premake_archive $premake_filename -d "$premake_dir"
+    else
+      tar -xf $premake_archive -C "$premake_dir" ./$premake_filename
+    fi
     chmod +x "$premake_path"
-    rm premake-$oshost-$platform.zip
+    rm $premake_archive
   fi
 }
 

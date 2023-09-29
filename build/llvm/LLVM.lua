@@ -251,6 +251,7 @@ function cmake(gen, conf, builddir, options)
 		.. ' -DLLVM_ENABLE_LIBXML2=false'
 		.. ' -DLLVM_ENABLE_TERMINFO=false'
 		.. ' -DLLVM_ENABLE_ZLIB=false'
+		.. ' -DLLVM_ENABLE_ZSTD=false'
 		.. ' -DLLVM_INCLUDE_DOCS=false'
 		.. ' -DLLVM_INCLUDE_EXAMPLES=false'
 		.. ' -DLLVM_TARGETS_TO_BUILD="X86"'
@@ -370,6 +371,8 @@ function cmake(gen, conf, builddir, options)
 		.. ' -DCLANG_TOOL_CLANG_FUZZER_BUILD=false'
 		.. ' -DCLANG_TOOL_CLANG_IMPORT_TEST_BUILD=false'
 		.. ' -DCLANG_TOOL_CLANG_NVLINK_WRAPPER_BUILD=false'
+		.. ' -DCLANG_TOOL_CLANG_LINKER_WRAPPER_BUILD=false'
+		.. ' -DCLANG_TOOL_CLANG_OFFLOAD_PACKAGER_BUILD=false'
 		.. ' -DCLANG_TOOL_CLANG_OFFLOAD_BUNDLER_BUILD=false'
 		.. ' -DCLANG_TOOL_CLANG_OFFLOAD_WRAPPER_BUILD=false'
 		.. ' -DCLANG_TOOL_CLANG_REFACTOR_BUILD=false'
@@ -456,7 +459,7 @@ function package_llvm(conf, llvm_base, llvm_build)
 	if os.isdir(out) then os.rmdir(out)	end
 	os.mkdir(out)
 
-	os.copydir(llvm_base .. "/llvm/include", out .. "/include")
+	os.copydir(llvm_base .. "/llvm/include", out .. "/llvm/include")
 	os.copydir(llvm_base .. "/lld/include", out .. "/lld/include")
 	os.copydir(llvm_build .. "/include", out .. "/build/include")
 
@@ -483,12 +486,10 @@ function package_llvm(conf, llvm_base, llvm_build)
 	local out_lib_dir = out .. "/build/lib"
 	if os.ishost("windows") then
 		os.rmfiles(out_lib_dir, "clang*ARC*.lib")
-		os.rmfiles(out_lib_dir, "clang*Matchers*.lib")
 		os.rmfiles(out_lib_dir, "clang*Rewrite*.lib")
 		os.rmfiles(out_lib_dir, "clang*StaticAnalyzer*.lib")
 	else
 		os.rmfiles(out_lib_dir, "libclang*ARC*.a")
-		os.rmfiles(out_lib_dir, "libclang*Matchers*.a")
 		os.rmfiles(out_lib_dir, "libclang*Rewrite*.a")
 		os.rmfiles(out_lib_dir, "libclang*StaticAnalyzer*.a")
 	end

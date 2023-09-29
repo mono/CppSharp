@@ -52,7 +52,6 @@
   </PropertyGroup>
 
   <Target Name="prepack" DependsOnTargets="Build" Condition="'$(IsPackable)' == 'true' AND '$(Platform)' == 'x64'">
-    <Copy SourceFiles="$(TargetDir)ref\$(TargetFileName)" DestinationFolder="$(PackageDir)ref\$(GlobalTargetFramework)" Condition="'$(ProduceReferenceAssembly)' == 'true' AND '$(RID)' == 'win-x64'" />
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(PackageDir)runtimes\$(RID)\lib\$(GlobalTargetFramework)" />
   </Target>
 </Project>

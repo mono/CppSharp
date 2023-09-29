@@ -13,7 +13,7 @@
 #include "ELFDumper.h"
 #include "APValuePrinter.h"
 
-#include <llvm/Support/Host.h>
+#include <llvm/TargetParser/Host.h>
 #include <llvm/Support/Path.h>
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Support/TargetSelect.h>
@@ -880,11 +880,9 @@ static clang::CXXRecordDecl* GetCXXRecordDeclFromTemplateName(const clang::Templ
 
     switch (Name.getKind()) {
     case clang::TemplateName::Template:
-        return dyn_cast<clang::CXXRecordDecl>(
-            Name.getAsTemplateDecl()->getTemplatedDecl());
+        return dyn_cast<clang::CXXRecordDecl>(Name.getAsTemplateDecl()->getTemplatedDecl());
     case clang::TemplateName::QualifiedTemplate:
-        return dyn_cast<clang::CXXRecordDecl>(
-            Name.getAsQualifiedTemplateName()->getTemplateDecl()->getTemplatedDecl());
+        return GetCXXRecordDeclFromTemplateName(Name.getAsQualifiedTemplateName()->getUnderlyingTemplate());
     default:
         assert(0 && "Unknown template name kind");
         return nullptr;
@@ -902,7 +900,7 @@ static clang::CXXRecordDecl* GetCXXRecordDeclFromBaseType(const clang::QualType&
     else if (auto Injected = Ty->getAs<clang::InjectedClassNameType>())
         return Injected->getDecl();
 
-    assert("Could not get base CXX record from type");
+    assert(0 && "Could not get base CXX record from type");
     return nullptr;
 }
 
@@ -2604,7 +2602,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
     {
         auto TO = Type->getAs<clang::TypeOfType>();
 
-        Ty = WalkType(TO->getUnderlyingType());
+        Ty = WalkType(TO->getUnmodifiedType());
         break;
     }
     case clang::Type::TypeOfExpr:
@@ -2666,8 +2664,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
             TSTL = &TSpecTL;
         }
 
-        ArrayRef<clang::TemplateArgument> TSArgs(TS->getArgs(), TS->getNumArgs());
-        TemplateArgumentList TArgs(TemplateArgumentList::OnStack, TSArgs);
+        TemplateArgumentList TArgs(TemplateArgumentList::OnStack, TS->template_arguments());
         TST->Arguments = WalkTemplateArgumentList(&TArgs, TSTL);
 
         Ty = TST;
@@ -2709,8 +2706,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
             TSTL = &TSpecTL;
         }
 
-        ArrayRef<clang::TemplateArgument> TSArgs(TS->getArgs(), TS->getNumArgs());
-        TemplateArgumentList TArgs(TemplateArgumentList::OnStack, TSArgs);
+        TemplateArgumentList TArgs(TemplateArgumentList::OnStack, TS->template_arguments());
         TST->Arguments = WalkTemplateArgumentList(&TArgs, TSTL);
 
         Ty = TST;
@@ -2773,9 +2769,9 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
         auto RepTy = TP->getReplacementType();
         TPT->replacement = GetQualifiedType(RepTy, &Next);
         TPT->replacedParameter = (TemplateParameterType*)
-            WalkType(clang::QualType(TP->getReplacedParameter(), 0), 0);
+            WalkType(c->getASTContext().getTypeDeclType(TP->getReplacedParameter()), 0);
         TPT->replacedParameter->parameter = WalkTypeTemplateParameter(
-            TP->getReplacedParameter()->getDecl());
+            TP->getReplacedParameter());
 
         Ty = TPT;
         break;
@@ -4386,7 +4382,7 @@ void Parser::SetupLLVMCodegen()
     LLVMModule->setTargetTriple(c->getTarget().getTriple().getTriple());
     LLVMModule->setDataLayout(c->getTarget().getDataLayoutString());
 
-    CGM.reset(new clang::CodeGen::CodeGenModule(c->getASTContext(),
+    CGM.reset(new clang::CodeGen::CodeGenModule(c->getASTContext(), nullptr,
         c->getHeaderSearchOpts(), c->getPreprocessorOpts(),
         c->getCodeGenOpts(), *LLVMModule, c->getDiagnostics()));
 
@@ -4397,10 +4393,8 @@ bool Parser::SetupSourceFiles(const std::vector<std::string>& SourceFiles,
     std::vector<const clang::FileEntry*>& FileEntries)
 {
     // Check that the file is reachable.
-    const clang::DirectoryLookup *Dir;
-    llvm::SmallVector<
-        std::pair<const clang::FileEntry *, const clang::DirectoryEntry *>,
-        0> Includers;
+    clang::ConstSearchDirIterator *Dir = 0;
+    llvm::ArrayRef<std::pair<const clang::FileEntry*, clang::DirectoryEntryRef>> Includers;
 
     for (const auto& SourceFile : SourceFiles)
     {
@@ -4863,8 +4857,7 @@ ParserResult* Parser::Compile(const std::string& File)
     const llvm::Triple Triple = c->getTarget().getTriple();
     llvm::StringRef Dir(llvm::sys::path::parent_path(File));
     llvm::SmallString<1024> Object(Dir);
-    llvm::sys::path::append(Object,
-        (Triple.isOSWindows() ? "" : "lib") + Stem + ".o");
+    llvm::sys::path::append(Object, Stem + ".o");
     c->getFrontendOpts().OutputFile = std::string(Object);
 
     llvm::LLVMContext context;
@@ -4920,8 +4913,8 @@ ParserTargetInfo* Parser::GetTargetInfo()
     parserTargetInfo->longDoubleWidth = TI.getLongDoubleWidth();
     parserTargetInfo->longLongAlign = TI.getLongLongAlign();
     parserTargetInfo->longLongWidth = TI.getLongLongWidth();
-    parserTargetInfo->pointerAlign = TI.getPointerAlign(0);
-    parserTargetInfo->pointerWidth = TI.getPointerWidth(0);
+    parserTargetInfo->pointerAlign = TI.getPointerAlign(clang::LangAS::Default);
+    parserTargetInfo->pointerWidth = TI.getPointerWidth(clang::LangAS::Default);
     parserTargetInfo->wCharAlign = TI.getWCharAlign();
     parserTargetInfo->wCharWidth = TI.getWCharWidth();
     parserTargetInfo->float128Align = TI.getFloat128Align();

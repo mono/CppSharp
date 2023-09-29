@@ -9,8 +9,8 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { os: windows-2022, platform: x86, vs: 2022 }
-          - { os: windows-2022, platform: x64, vs: 2022 }
+          - { os: windows-2022, platform: x86, vs: "Program Files/Microsoft Visual Studio/2022" }
+          - { os: windows-2022, platform: x64, vs: "Program Files/Microsoft Visual Studio/2022" }
 
     runs-on: ${{ matrix.config.os }}
 
@@ -35,7 +35,7 @@ jobs:
       - name: Environment
         shell: cmd
         run: |
-          call "C:\Program Files\Microsoft Visual Studio\%VS_VERSION%\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %PLATFORM%
+          call "C:\%VS_VERSION%\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %PLATFORM%
           :: Loop over all environment variables and make them global using set-env.
           :: See: https://stackoverflow.com/a/39184941
           setlocal

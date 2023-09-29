@@ -7,7 +7,7 @@
 
 #include "CppParser.h"
 #include "Parser.h"
-#include <llvm/Support/Host.h>
+#include <llvm/TargetParser/Host.h>
 #include <clang/Basic/Version.inc>
 
 namespace CppSharp { namespace CppParser {

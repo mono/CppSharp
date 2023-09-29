@@ -37,6 +37,7 @@ namespace CppSharp.Generators.CSharp
                             blockCommandComment.ParagraphComment.GetCommentSections(sections);
                             break;
                         case CommentCommandKind.Return:
+                        case CommentCommandKind.Returns:
                             sections.Add(new Section(CommentElement.Returns));
                             blockCommandComment.ParagraphComment.GetCommentSections(sections);
                             break;

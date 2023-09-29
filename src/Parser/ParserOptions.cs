@@ -136,6 +136,9 @@ namespace CppSharp.Parser
                 case "vs2019":
                     vsVersion = VisualStudioVersion.VS2019;
                     break;
+                case "vs2022":
+                    vsVersion = VisualStudioVersion.VS2022;
+                    break;
 
 #pragma warning restore 162
 
@@ -374,6 +377,15 @@ namespace CppSharp.Parser
                 AddArguments("-fno-rtti");
         }
 
+        internal string BuiltinsDirBasePath
+        {
+            get
+            {
+                var version = ClangVersion.Split(".").First();
+                return Path.Combine("lib", "clang", version, "include");
+            }
+        }
+
         public string BuiltinsDir
         {
             get
@@ -382,7 +394,7 @@ namespace CppSharp.Parser
                 if (assemblyDir == null)
                     throw new InvalidOperationException();
 
-                return Path.Combine(assemblyDir, "lib", "clang", ClangVersion, "include");
+                return Path.Combine(assemblyDir, BuiltinsDirBasePath);
             }
         }
 
@@ -390,7 +402,7 @@ namespace CppSharp.Parser
         {
             // Check that the builtin includes folder exists.
             if (!Directory.Exists(BuiltinsDir))
-                throw new Exception($"Clang resource folder 'lib/clang/{ClangVersion}/include' was not found.");
+                throw new Exception($"Clang resource folder '{BuiltinsDirBasePath}' was not found.");
 
             switch (targetPlatform)
             {

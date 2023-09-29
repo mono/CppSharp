@@ -9,15 +9,16 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { os: ubuntu-20.04, platform: x64, cxx: g++-10, cc: gcc-10 }
+          - { os: ubuntu-22.04, platform: x64, cxx: g++-11, cc: gcc-11 }
           - { os: macos-11, platform: x64, cxx: clang++, cc: clang }
-          - { os: windows-2019, platform: x64, vs: msvc }
+          - { os: windows-2022, platform: x64, vs: "Program Files/Microsoft Visual Studio/2022" }
 
     runs-on: ${{ matrix.config.os }}
 
     env:
       CC: ${{ matrix.config.cc }}
       CXX: ${{ matrix.config.cxx }}
+      VS_VERSION: ${{ matrix.config.vs }}
       PLATFORM: ${{ matrix.config.platform }}
       DOTNET_NOLOGO: true
       DOTNET_CLI_TELEMETRY_OPTOUT: true
@@ -38,7 +39,7 @@ jobs:
       - name: Environment
         if: matrix.config.vs
         shell: bash
-        run: echo "/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/MSBuild/Current/Bin" >> $GITHUB_PATH
+        run: echo "/c/$VS_VERSION/Enterprise/MSBuild/Current/Bin" >> $GITHUB_PATH
 
       - name: Setup
         shell: bash
