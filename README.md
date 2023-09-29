@@ -85,6 +85,8 @@ Alternatively, you may post bounties at https://www.bountysource.com/.
 
 CppSharp is used by the following projects:
 
+[Kythera AI](https://kythera.ai)
+
 [QtSharp](https://gitlab.com/ddobrev/QtSharp)
 
 [MonoGame](https://github.com/mono/MonoGame)
