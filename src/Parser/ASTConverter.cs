@@ -1309,6 +1309,7 @@ namespace CppSharp
             _method.IsConst = decl.IsConst;
             _method.IsImplicit = decl.IsImplicit;
             _method.IsExplicit = decl.IsExplicit;
+            _method.IsVolatile = decl.IsVolatile;
 
             switch (decl.RefQualifier)
             {

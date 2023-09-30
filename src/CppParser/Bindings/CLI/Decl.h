@@ -1120,6 +1120,12 @@ namespace CppSharp
                     void set(bool);
                 }
 
+                property bool IsVolatile
+                {
+                    bool get();
+                    void set(bool);
+                }
+
                 property CppSharp::Parser::AST::CXXMethodKind MethodKind
                 {
                     CppSharp::Parser::AST::CXXMethodKind get();

@@ -2028,6 +2028,16 @@ void CppSharp::Parser::AST::Method::IsExplicit::set(bool value)
     ((class ::CppSharp::CppParser::AST::Method*)NativePtr)->isExplicit = value;
 }
 
+bool CppSharp::Parser::AST::Method::IsVolatile::get()
+{
+    return ((class ::CppSharp::CppParser::AST::Method*)NativePtr)->isVolatile;
+}
+
+void CppSharp::Parser::AST::Method::IsVolatile::set(bool value)
+{
+    ((class ::CppSharp::CppParser::AST::Method*)NativePtr)->isVolatile = value;
+}
+
 CppSharp::Parser::AST::CXXMethodKind CppSharp::Parser::AST::Method::MethodKind::get()
 {
     return (CppSharp::Parser::AST::CXXMethodKind)((class ::CppSharp::CppParser::AST::Method*)NativePtr)->methodKind;

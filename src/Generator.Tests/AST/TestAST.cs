@@ -564,5 +564,13 @@ namespace CppSharp.Generator.Tests.AST
             Assert.NotNull(macro);
             Assert.AreEqual("(x, y, z) x##y##z", macro.Expression);
         }
+
+        [Test]
+        public void TestMethods()
+        {
+            var hasMethodsClass = AstContext.FindClass("HasMethods").First();
+            var isVolatileMethod = hasMethodsClass.FindMethod("isVolatileMethod");
+            Assert.That(isVolatileMethod.IsVolatile, Is.EqualTo(true));
+        }
     }
 }

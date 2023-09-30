@@ -94,10 +94,12 @@ namespace CppSharp.AST
         {
             Access = method.Access;
             IsVirtual = method.IsVirtual;
+            IsStatic = method.IsStatic;
             IsConst = method.IsConst;
+            IsExplicit = method.IsExplicit;
+            IsVolatile = method.IsVolatile;
             IsFinal = method.IsFinal;
             IsProxy = method.IsProxy;
-            IsStatic = method.IsStatic;
             Kind = method.Kind;
             IsDefaultConstructor = method.IsDefaultConstructor;
             IsCopyConstructor = method.IsCopyConstructor;
@@ -119,6 +121,7 @@ namespace CppSharp.AST
         public bool IsStatic { get; set; }
         public bool IsConst { get; set; }
         public bool IsExplicit { get; set; }
+        public bool IsVolatile { get; set; }
 
         public bool IsOverride
         {

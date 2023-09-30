@@ -1898,6 +1898,7 @@ Method* Parser::WalkMethodCXX(const clang::CXXMethodDecl* MD)
     Method->isStatic = MD->isStatic();
     Method->isVirtual = MD->isVirtual();
     Method->isConst = MD->isConst();
+    Method->isVolatile = MD->isVolatile();
     for (auto OverriddenMethod : MD->overridden_methods())
     {
         auto OM = WalkMethodCXX(OverriddenMethod);
