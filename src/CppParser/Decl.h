@@ -380,6 +380,7 @@ namespace CppSharp
                 bool isStatic;
                 bool isConst;
                 bool isExplicit;
+                bool isVolatile;
 
                 CXXMethodKind methodKind;
 

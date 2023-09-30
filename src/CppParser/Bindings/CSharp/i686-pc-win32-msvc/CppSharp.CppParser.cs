@@ -9350,7 +9350,7 @@ namespace CppSharp
 
             public unsafe partial class Method : global::CppSharp.Parser.AST.Function, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 440)]
+                [StructLayout(LayoutKind.Sequential, Size = 444)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -9410,6 +9410,7 @@ namespace CppSharp
                     internal byte isStatic;
                     internal byte isConst;
                     internal byte isExplicit;
+                    internal byte isVolatile;
                     internal global::CppSharp.Parser.AST.CXXMethodKind methodKind;
                     internal byte isDefaultConstructor;
                     internal byte isCopyConstructor;
@@ -9589,6 +9590,19 @@ namespace CppSharp
                     set
                     {
                         ((__Internal*)__Instance)->isExplicit = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public bool IsVolatile
+                {
+                    get
+                    {
+                        return ((__Internal*)__Instance)->isVolatile != 0;
+                    }
+
+                    set
+                    {
+                        ((__Internal*)__Instance)->isVolatile = (byte) (value ? 1 : 0);
                     }
                 }
 
