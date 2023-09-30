@@ -32,6 +32,17 @@ namespace CppSharp.AST
         }
     }
 
+    // A C++ using declaration.
+    public class Using: Declaration
+    {
+        public DeclarationName DeclarationName { get; set; }
+
+        public override T Visit<T>(IDeclVisitor<T> visitor)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     // Represents a base class of a C++ class.
     public class BaseClassSpecifier : DeclarationBase
     {
@@ -79,6 +90,7 @@ namespace CppSharp.AST
         public List<Property> Properties;
         public List<Method> Methods;
         public List<AccessSpecifierDecl> Specifiers;
+        public List<Using> Usings;
 
         // True if the record is a POD (Plain Old Data) type.
         public bool IsPOD;
@@ -136,6 +148,7 @@ namespace CppSharp.AST
             Properties = new List<Property>();
             Methods = new List<Method>();
             Specifiers = new List<AccessSpecifierDecl>();
+            Usings = new List<Using>();
             IsAbstract = false;
             IsUnion = false;
             IsFinal = false;

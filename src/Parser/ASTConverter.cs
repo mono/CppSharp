@@ -176,6 +176,7 @@ namespace CppSharp
         public abstract TRet VisitTypeTemplateParameter(TypeTemplateParameter decl);
         public abstract TRet VisitNonTypeTemplateParameter(NonTypeTemplateParameter decl);
         public abstract TRet VisitUnresolvedUsingTypename(UnresolvedUsingTypename decl);
+        public abstract TRet VisitUsing(Using decl);
 
         public virtual TRet Visit(Parser.AST.Declaration decl)
         {
@@ -310,6 +311,11 @@ namespace CppSharp
                     {
                         var _decl = UnresolvedUsingTypename.__CreateInstance(decl.__Instance);
                         return VisitUnresolvedUsingTypename(_decl);
+                    }
+                case DeclarationKind.Using:
+                    {
+                        var _decl = Using.__CreateInstance(decl.__Instance);
+                        return VisitUsing(_decl);
                     }
             }
 
@@ -1618,6 +1624,13 @@ namespace CppSharp
                 _class.Specifiers.Add(_spec);
             }
 
+            for (uint i = 0; i < @class.UsingsCount; ++i)
+            {
+                var @using = @class.GetUsings(i);
+                var _using = Visit(@using) as AST.Using;
+                _class.Usings.Add(_using);
+            }
+
             _class.IsPOD = @class.IsPOD;
             _class.IsAbstract = @class.IsAbstract;
             _class.IsUnion = @class.IsUnion;
@@ -2107,7 +2120,15 @@ namespace CppSharp
             VisitDeclaration(decl, unresolvedUsingTypename);
             return unresolvedUsingTypename;
         }
-    }
+
+		public override AST.Declaration VisitUsing(Using decl)
+		{
+            var @using = new AST.Using();
+            VisitDeclaration(decl, @using);
+            @using.DeclarationName = ConversionUtils.VisitDeclarationName(decl.Name);
+            return @using;
+        }
+	}
 
     public unsafe class CommentConverter : CommentsVisitor<AST.Comment>
     {
@@ -2308,6 +2329,48 @@ namespace CppSharp
             Parser.AST.TemplateArgument templateArg)
         {
             return new AST.TemplateArgument();
+        }
+
+        public static AST.DeclarationNameKind VisitDeclarationNameKind(
+            Parser.AST.DeclarationNameKind kind)
+        {
+            switch(kind)
+            {
+                case DeclarationNameKind.Identifier:
+                    return AST.DeclarationNameKind.Identifier;
+                case DeclarationNameKind.ObjCZeroArgSelector:
+                    return AST.DeclarationNameKind.ObjCZeroArgSelector;
+                case DeclarationNameKind.ObjCOneArgSelector:
+                    return AST.DeclarationNameKind.ObjCOneArgSelector;
+                case DeclarationNameKind.CXXConstructorName:
+                    return AST.DeclarationNameKind.CXXConstructorName;
+                case DeclarationNameKind.CXXDestructorName:
+                    return AST.DeclarationNameKind.CXXDestructorName;
+                case DeclarationNameKind.CXXConversionFunctionName:
+                    return AST.DeclarationNameKind.CXXConversionFunctionName;
+                case DeclarationNameKind.CXXOperatorName:
+                    return AST.DeclarationNameKind.CXXOperatorName;
+                case DeclarationNameKind.CXXDeductionGuideName:
+                    return AST.DeclarationNameKind.CXXDeductionGuideName;
+                case DeclarationNameKind.CXXLiteralOperatorName:
+                    return AST.DeclarationNameKind.CXXLiteralOperatorName;
+                case DeclarationNameKind.CXXUsingDirective:
+                    return AST.DeclarationNameKind.CXXUsingDirective;
+                case DeclarationNameKind.ObjCMultiArgSelector:
+                    return AST.DeclarationNameKind.ObjCMultiArgSelector;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        public static AST.DeclarationName VisitDeclarationName(
+            Parser.AST.DeclarationName name)
+        {
+            return new AST.DeclarationName
+            {
+                Kind = VisitDeclarationNameKind(name.Kind),
+                Identifier = name.Identifier
+            };
         }
     }
 

@@ -756,6 +756,7 @@ DEF_VECTOR(Class, BaseClassSpecifier*, Bases)
 DEF_VECTOR(Class, Field*, Fields)
 DEF_VECTOR(Class, Method*, Methods)
 DEF_VECTOR(Class, AccessSpecifierDecl*, Specifiers)
+DEF_VECTOR(Class, Using*, Usings)
 
 Template::Template() : Declaration(DeclarationKind::Template),
     TemplatedDecl(0) {}
@@ -871,6 +872,10 @@ VarTemplatePartialSpecialization::~VarTemplatePartialSpecialization()
 UnresolvedUsingTypename::UnresolvedUsingTypename() : Declaration(DeclarationKind::UnresolvedUsingTypename) {}
 
 UnresolvedUsingTypename::~UnresolvedUsingTypename() {}
+
+Using::Using() : Declaration(DeclarationKind::Using) {}
+
+Using::~Using() {}
 
 Namespace::Namespace() 
     : DeclarationContext(DeclarationKind::Namespace)

@@ -573,4 +573,13 @@ namespace CppSharp.Generator.Tests.AST
             Assert.That(isVolatileMethod.IsVolatile, Is.EqualTo(true));
         }
     }
+
+    [Test]
+    public void TestUsingDecl()
+    {
+        var classWithUsing = AstContext.FindClass("ChildClassWithUsing").First();
+        var usingDecl = classWithUsing.Usings.First();
+        Assert.That(usingDecl.DeclarationName.Kind, Is.EqualTo(DeclarationNameKind.Identifier));
+        Assert.That(usingDecl.DeclarationName.Identifier, Is.EqualTo("test"));
+    }
 }

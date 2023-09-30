@@ -2647,6 +2647,137 @@ CppSharp::Parser::AST::AccessSpecifierDecl::AccessSpecifierDecl(CppSharp::Parser
     NativePtr = new class ::CppSharp::CppParser::AST::AccessSpecifierDecl(__arg0);
 }
 
+CppSharp::Parser::AST::DeclarationName::DeclarationName(class ::CppSharp::CppParser::AST::DeclarationName* native)
+    : __ownsNativeInstance(false)
+{
+    NativePtr = native;
+}
+
+CppSharp::Parser::AST::DeclarationName^ CppSharp::Parser::AST::DeclarationName::__CreateInstance(::System::IntPtr native)
+{
+    return gcnew ::CppSharp::Parser::AST::DeclarationName((class ::CppSharp::CppParser::AST::DeclarationName*) native.ToPointer());
+}
+
+CppSharp::Parser::AST::DeclarationName::DeclarationName(class ::CppSharp::CppParser::AST::DeclarationName* native, bool ownNativeInstance)
+    : __ownsNativeInstance(ownNativeInstance)
+{
+    NativePtr = native;
+}
+
+CppSharp::Parser::AST::DeclarationName^ CppSharp::Parser::AST::DeclarationName::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::DeclarationName((class ::CppSharp::CppParser::AST::DeclarationName*) native.ToPointer(), __ownsNativeInstance);
+}
+
+CppSharp::Parser::AST::DeclarationName::~DeclarationName()
+{
+    delete NativePtr;
+}
+
+CppSharp::Parser::AST::DeclarationName::DeclarationName(CppSharp::Parser::AST::DeclarationName^ _0)
+{
+    __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+    auto &__arg0 = *(class ::CppSharp::CppParser::AST::DeclarationName*)_0->NativePtr;
+    NativePtr = new class ::CppSharp::CppParser::AST::DeclarationName(__arg0);
+}
+
+CppSharp::Parser::AST::DeclarationName::DeclarationName()
+{
+    __ownsNativeInstance = true;
+    NativePtr = new class ::CppSharp::CppParser::AST::DeclarationName();
+}
+
+::System::IntPtr CppSharp::Parser::AST::DeclarationName::__Instance::get()
+{
+    return ::System::IntPtr(NativePtr);
+}
+
+void CppSharp::Parser::AST::DeclarationName::__Instance::set(::System::IntPtr object)
+{
+    NativePtr = (class ::CppSharp::CppParser::AST::DeclarationName*)object.ToPointer();
+}
+
+CppSharp::Parser::AST::DeclarationNameKind CppSharp::Parser::AST::DeclarationName::Kind::get()
+{
+    return (CppSharp::Parser::AST::DeclarationNameKind)NativePtr->kind;
+}
+
+void CppSharp::Parser::AST::DeclarationName::Kind::set(CppSharp::Parser::AST::DeclarationNameKind value)
+{
+    ((class ::CppSharp::CppParser::AST::DeclarationName*)NativePtr)->kind = (enum ::CppSharp::CppParser::AST::DeclarationNameKind)value;
+}
+
+::System::String^ CppSharp::Parser::AST::DeclarationName::Identifier::get()
+{
+    return clix::marshalString<clix::E_UTF8>(NativePtr->identifier);
+}
+
+void CppSharp::Parser::AST::DeclarationName::Identifier::set(::System::String^ value)
+{
+    ((class ::CppSharp::CppParser::AST::DeclarationName*)NativePtr)->identifier = clix::marshalString<clix::E_UTF8>(value);
+}
+
+CppSharp::Parser::AST::Using::Using(class ::CppSharp::CppParser::AST::Using* native)
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
+{
+}
+
+CppSharp::Parser::AST::Using^ CppSharp::Parser::AST::Using::__CreateInstance(::System::IntPtr native)
+{
+    return gcnew ::CppSharp::Parser::AST::Using((class ::CppSharp::CppParser::AST::Using*) native.ToPointer());
+}
+
+CppSharp::Parser::AST::Using::Using(class ::CppSharp::CppParser::AST::Using* native, bool ownNativeInstance)
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native, ownNativeInstance)
+{
+}
+
+CppSharp::Parser::AST::Using^ CppSharp::Parser::AST::Using::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::Using((class ::CppSharp::CppParser::AST::Using*) native.ToPointer(), __ownsNativeInstance);
+}
+
+CppSharp::Parser::AST::Using::~Using()
+{
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (class ::CppSharp::CppParser::AST::Using*) __nativePtr;
+    }
+}
+
+CppSharp::Parser::AST::Using::Using()
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
+{
+    __ownsNativeInstance = true;
+    NativePtr = new class ::CppSharp::CppParser::AST::Using();
+}
+
+CppSharp::Parser::AST::Using::Using(CppSharp::Parser::AST::Using^ _0)
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
+{
+    __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+    auto &__arg0 = *(class ::CppSharp::CppParser::AST::Using*)_0->NativePtr;
+    NativePtr = new class ::CppSharp::CppParser::AST::Using(__arg0);
+}
+
+CppSharp::Parser::AST::DeclarationName^ CppSharp::Parser::AST::Using::Name::get()
+{
+    return (&((class ::CppSharp::CppParser::AST::Using*)NativePtr)->name == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::DeclarationName((class ::CppSharp::CppParser::AST::DeclarationName*)&((class ::CppSharp::CppParser::AST::Using*)NativePtr)->name);
+}
+
+void CppSharp::Parser::AST::Using::Name::set(CppSharp::Parser::AST::DeclarationName^ value)
+{
+    if (ReferenceEquals(value, nullptr))
+        throw gcnew ::System::ArgumentNullException("value", "Cannot be null because it is passed by value.");
+    ((class ::CppSharp::CppParser::AST::Using*)NativePtr)->name = *(class ::CppSharp::CppParser::AST::DeclarationName*)value->NativePtr;
+}
+
 CppSharp::Parser::AST::VTableComponent::VTableComponent(struct ::CppSharp::CppParser::AST::VTableComponent* native)
     : __ownsNativeInstance(false)
 {
@@ -3500,6 +3631,26 @@ void CppSharp::Parser::AST::Class::ClearSpecifiers()
     ((class ::CppSharp::CppParser::AST::Class*)NativePtr)->clearSpecifiers();
 }
 
+CppSharp::Parser::AST::Using^ CppSharp::Parser::AST::Class::GetUsings(unsigned int i)
+{
+    auto ___ret = ((class ::CppSharp::CppParser::AST::Class*)NativePtr)->getUsings(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Using((class ::CppSharp::CppParser::AST::Using*)___ret);
+}
+
+void CppSharp::Parser::AST::Class::AddUsings(CppSharp::Parser::AST::Using^ s)
+{
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
+    auto __arg0 = (class ::CppSharp::CppParser::AST::Using*)s->NativePtr;
+    ((class ::CppSharp::CppParser::AST::Class*)NativePtr)->addUsings(__arg0);
+}
+
+void CppSharp::Parser::AST::Class::ClearUsings()
+{
+    ((class ::CppSharp::CppParser::AST::Class*)NativePtr)->clearUsings();
+}
+
 CppSharp::Parser::AST::Class::Class(CppSharp::Parser::AST::Class^ _0)
     : CppSharp::Parser::AST::DeclarationContext((::CppSharp::CppParser::AST::DeclarationContext*)nullptr)
 {
@@ -3600,6 +3751,29 @@ void CppSharp::Parser::AST::Class::Specifiers::set(::System::Collections::Generi
         _tmpvalue.push_back(_marshalElement);
     }
     ((class ::CppSharp::CppParser::AST::Class*)NativePtr)->Specifiers = _tmpvalue;
+}
+
+::System::Collections::Generic::List<CppSharp::Parser::AST::Using^>^ CppSharp::Parser::AST::Class::Usings::get()
+{
+    auto _tmp__Usings = gcnew ::System::Collections::Generic::List<CppSharp::Parser::AST::Using^>();
+    auto __list0 = ((class ::CppSharp::CppParser::AST::Class*)NativePtr)->Usings;
+    for(auto _element : __list0)
+    {
+        auto _marshalElement = (_element == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Using((class ::CppSharp::CppParser::AST::Using*)_element);
+        _tmp__Usings->Add(_marshalElement);
+    }
+    return _tmp__Usings;
+}
+
+void CppSharp::Parser::AST::Class::Usings::set(::System::Collections::Generic::List<CppSharp::Parser::AST::Using^>^ value)
+{
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Using*>();
+    for each(CppSharp::Parser::AST::Using^ _element in value)
+    {
+        auto _marshalElement = (class ::CppSharp::CppParser::AST::Using*)_element->NativePtr;
+        _tmpvalue.push_back(_marshalElement);
+    }
+    ((class ::CppSharp::CppParser::AST::Class*)NativePtr)->Usings = _tmpvalue;
 }
 
 bool CppSharp::Parser::AST::Class::IsPOD::get()
@@ -3743,6 +3917,12 @@ unsigned int CppSharp::Parser::AST::Class::MethodsCount::get()
 unsigned int CppSharp::Parser::AST::Class::SpecifiersCount::get()
 {
     auto ___ret = ((class ::CppSharp::CppParser::AST::Class*)NativePtr)->getSpecifiersCount();
+    return ___ret;
+}
+
+unsigned int CppSharp::Parser::AST::Class::UsingsCount::get()
+{
+    auto ___ret = ((class ::CppSharp::CppParser::AST::Class*)NativePtr)->getUsingsCount();
     return ___ret;
 }
 

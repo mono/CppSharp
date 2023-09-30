@@ -191,3 +191,13 @@ class HasMethods
 public:
     void isVolatileMethod() volatile {}
 };
+
+struct BaseClass {
+	void test() {}
+};
+
+struct ChildClassWithUsing : BaseClass {
+public:
+	using BaseClass::test;
+};
+
