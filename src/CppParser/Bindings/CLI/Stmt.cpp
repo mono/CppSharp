@@ -65,9 +65,9 @@ CppSharp::Parser::AST::Stmt::Stmt(CppSharp::Parser::AST::Stmt^ _0)
 CppSharp::Parser::AST::Stmt::operator CppSharp::Parser::AST::Stmt^(CppSharp::Parser::AST::StmtClass klass)
 {
     auto __arg0 = (enum ::CppSharp::CppParser::AST::StmtClass)klass;
-    auto __ret = (::CppSharp::CppParser::AST::Stmt) __arg0;
-    auto ____ret = new class ::CppSharp::CppParser::AST::Stmt(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Stmt((class ::CppSharp::CppParser::AST::Stmt*)____ret, true);
+    auto ___ret = (::CppSharp::CppParser::AST::Stmt) __arg0;
+    auto _____ret = new class ::CppSharp::CppParser::AST::Stmt(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Stmt((class ::CppSharp::CppParser::AST::Stmt*)_____ret, true);
 }
 
 ::System::IntPtr CppSharp::Parser::AST::Stmt::__Instance::get()
@@ -165,9 +165,9 @@ CppSharp::Parser::AST::DeclStmt::DeclStmt()
 
 CppSharp::Parser::AST::Declaration^ CppSharp::Parser::AST::DeclStmt::Getdecls(unsigned int i)
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::DeclStmt*)NativePtr)->getdecls(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Declaration((class ::CppSharp::CppParser::AST::Declaration*)__ret);
+    auto ___ret = ((class ::CppSharp::CppParser::AST::DeclStmt*)NativePtr)->getdecls(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Declaration((class ::CppSharp::CppParser::AST::Declaration*)___ret);
 }
 
 void CppSharp::Parser::AST::DeclStmt::Adddecls(CppSharp::Parser::AST::Declaration^ s)
@@ -238,8 +238,8 @@ void CppSharp::Parser::AST::DeclStmt::SingleDecl::set(CppSharp::Parser::AST::Dec
 
 unsigned int CppSharp::Parser::AST::DeclStmt::GetdeclsCount::get()
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::DeclStmt*)NativePtr)->getdeclsCount();
-    return __ret;
+    auto ___ret = ((class ::CppSharp::CppParser::AST::DeclStmt*)NativePtr)->getdeclsCount();
+    return ___ret;
 }
 
 CppSharp::Parser::AST::NullStmt::NullStmt(class ::CppSharp::CppParser::AST::NullStmt* native)
@@ -344,9 +344,9 @@ CppSharp::Parser::AST::CompoundStmt::CompoundStmt()
 
 CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::CompoundStmt::Getbody(unsigned int i)
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::CompoundStmt*)NativePtr)->getbody(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Stmt((class ::CppSharp::CppParser::AST::Stmt*)__ret);
+    auto ___ret = ((class ::CppSharp::CppParser::AST::CompoundStmt*)NativePtr)->getbody(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Stmt((class ::CppSharp::CppParser::AST::Stmt*)___ret);
 }
 
 void CppSharp::Parser::AST::CompoundStmt::Addbody(CppSharp::Parser::AST::Stmt^ s)
@@ -461,8 +461,8 @@ void CppSharp::Parser::AST::CompoundStmt::RBracLoc::set(CppSharp::Parser::Source
 
 unsigned int CppSharp::Parser::AST::CompoundStmt::GetbodyCount::get()
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::CompoundStmt*)NativePtr)->getbodyCount();
-    return __ret;
+    auto ___ret = ((class ::CppSharp::CppParser::AST::CompoundStmt*)NativePtr)->getbodyCount();
+    return ___ret;
 }
 
 CppSharp::Parser::AST::SwitchCase::SwitchCase(class ::CppSharp::CppParser::AST::SwitchCase* native)
@@ -517,9 +517,9 @@ CppSharp::Parser::AST::SwitchCase::SwitchCase(CppSharp::Parser::AST::SwitchCase^
 CppSharp::Parser::AST::SwitchCase::operator CppSharp::Parser::AST::SwitchCase^(CppSharp::Parser::AST::StmtClass klass)
 {
     auto __arg0 = (enum ::CppSharp::CppParser::AST::StmtClass)klass;
-    auto __ret = (::CppSharp::CppParser::AST::SwitchCase) __arg0;
-    auto ____ret = new class ::CppSharp::CppParser::AST::SwitchCase(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::SwitchCase((class ::CppSharp::CppParser::AST::SwitchCase*)____ret, true);
+    auto ___ret = (::CppSharp::CppParser::AST::SwitchCase) __arg0;
+    auto _____ret = new class ::CppSharp::CppParser::AST::SwitchCase(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::SwitchCase((class ::CppSharp::CppParser::AST::SwitchCase*)_____ret, true);
 }
 
 CppSharp::Parser::SourceLocation CppSharp::Parser::AST::SwitchCase::KeywordLoc::get()
@@ -1802,9 +1802,9 @@ CppSharp::Parser::AST::AsmStmt::AsmStmt(CppSharp::Parser::AST::StmtClass klass)
 
 CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::AsmStmt::Getinputs(unsigned int i)
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::AsmStmt*)NativePtr)->getinputs(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)__ret);
+    auto ___ret = ((class ::CppSharp::CppParser::AST::AsmStmt*)NativePtr)->getinputs(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)___ret);
 }
 
 void CppSharp::Parser::AST::AsmStmt::Addinputs(CppSharp::Parser::AST::Expr^ s)
@@ -1822,9 +1822,9 @@ void CppSharp::Parser::AST::AsmStmt::Clearinputs()
 
 CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::AsmStmt::Getoutputs(unsigned int i)
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::AsmStmt*)NativePtr)->getoutputs(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)__ret);
+    auto ___ret = ((class ::CppSharp::CppParser::AST::AsmStmt*)NativePtr)->getoutputs(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)___ret);
 }
 
 void CppSharp::Parser::AST::AsmStmt::Addoutputs(CppSharp::Parser::AST::Expr^ s)
@@ -1853,9 +1853,9 @@ CppSharp::Parser::AST::AsmStmt::AsmStmt(CppSharp::Parser::AST::AsmStmt^ _0)
 CppSharp::Parser::AST::AsmStmt::operator CppSharp::Parser::AST::AsmStmt^(CppSharp::Parser::AST::StmtClass klass)
 {
     auto __arg0 = (enum ::CppSharp::CppParser::AST::StmtClass)klass;
-    auto __ret = (::CppSharp::CppParser::AST::AsmStmt) __arg0;
-    auto ____ret = new class ::CppSharp::CppParser::AST::AsmStmt(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::AsmStmt((class ::CppSharp::CppParser::AST::AsmStmt*)____ret, true);
+    auto ___ret = (::CppSharp::CppParser::AST::AsmStmt) __arg0;
+    auto _____ret = new class ::CppSharp::CppParser::AST::AsmStmt(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::AsmStmt((class ::CppSharp::CppParser::AST::AsmStmt*)_____ret, true);
 }
 
 ::System::Collections::Generic::List<CppSharp::Parser::AST::Expr^>^ CppSharp::Parser::AST::AsmStmt::Inputs::get()
@@ -1978,14 +1978,14 @@ void CppSharp::Parser::AST::AsmStmt::NumClobbers::set(unsigned int value)
 
 unsigned int CppSharp::Parser::AST::AsmStmt::GetinputsCount::get()
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::AsmStmt*)NativePtr)->getinputsCount();
-    return __ret;
+    auto ___ret = ((class ::CppSharp::CppParser::AST::AsmStmt*)NativePtr)->getinputsCount();
+    return ___ret;
 }
 
 unsigned int CppSharp::Parser::AST::AsmStmt::GetoutputsCount::get()
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::AsmStmt*)NativePtr)->getoutputsCount();
-    return __ret;
+    auto ___ret = ((class ::CppSharp::CppParser::AST::AsmStmt*)NativePtr)->getoutputsCount();
+    return ___ret;
 }
 
 CppSharp::Parser::AST::GCCAsmStmt::AsmStringPiece::AsmStringPiece(class ::CppSharp::CppParser::AST::GCCAsmStmt::AsmStringPiece* native)
@@ -2683,9 +2683,9 @@ CppSharp::Parser::AST::CapturedStmt::CapturedStmt()
 
 CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::CapturedStmt::GetcaptureInits(unsigned int i)
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::CapturedStmt*)NativePtr)->getcapture_inits(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)__ret);
+    auto ___ret = ((class ::CppSharp::CppParser::AST::CapturedStmt*)NativePtr)->getcapture_inits(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)___ret);
 }
 
 void CppSharp::Parser::AST::CapturedStmt::AddcaptureInits(CppSharp::Parser::AST::Expr^ s)
@@ -2756,8 +2756,8 @@ void CppSharp::Parser::AST::CapturedStmt::CaptureSize::set(unsigned int value)
 
 unsigned int CppSharp::Parser::AST::CapturedStmt::GetcaptureInitsCount::get()
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::CapturedStmt*)NativePtr)->getcapture_initsCount();
-    return __ret;
+    auto ___ret = ((class ::CppSharp::CppParser::AST::CapturedStmt*)NativePtr)->getcapture_initsCount();
+    return ___ret;
 }
 
 CppSharp::Parser::AST::CXXCatchStmt::CXXCatchStmt(class ::CppSharp::CppParser::AST::CXXCatchStmt* native)

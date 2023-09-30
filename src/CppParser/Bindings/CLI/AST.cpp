@@ -44,9 +44,9 @@ CppSharp::Parser::AST::NativeLibrary::NativeLibrary()
 
 ::System::String^ CppSharp::Parser::AST::NativeLibrary::GetSymbols(unsigned int i)
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->getSymbols(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
+    auto ___ret = ((class ::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->getSymbols(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(___ret));
 }
 
 void CppSharp::Parser::AST::NativeLibrary::AddSymbols(::System::String^ s)
@@ -63,9 +63,9 @@ void CppSharp::Parser::AST::NativeLibrary::ClearSymbols()
 
 ::System::String^ CppSharp::Parser::AST::NativeLibrary::GetDependencies(unsigned int i)
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->getDependencies(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
+    auto ___ret = ((class ::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->getDependencies(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(___ret));
 }
 
 void CppSharp::Parser::AST::NativeLibrary::AddDependencies(::System::String^ s)
@@ -167,14 +167,14 @@ void CppSharp::Parser::AST::NativeLibrary::Dependencies::set(::System::Collectio
 
 unsigned int CppSharp::Parser::AST::NativeLibrary::SymbolsCount::get()
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->getSymbolsCount();
-    return __ret;
+    auto ___ret = ((class ::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->getSymbolsCount();
+    return ___ret;
 }
 
 unsigned int CppSharp::Parser::AST::NativeLibrary::DependenciesCount::get()
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->getDependenciesCount();
-    return __ret;
+    auto ___ret = ((class ::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->getDependenciesCount();
+    return ___ret;
 }
 
 CppSharp::Parser::AST::Comment::Comment(class ::CppSharp::CppParser::AST::Comment* native)
@@ -223,9 +223,9 @@ CppSharp::Parser::AST::Comment::Comment(CppSharp::Parser::AST::Comment^ _0)
 CppSharp::Parser::AST::Comment::operator CppSharp::Parser::AST::Comment^(CppSharp::Parser::AST::CommentKind kind)
 {
     auto __arg0 = (enum ::CppSharp::CppParser::AST::CommentKind)kind;
-    auto __ret = (::CppSharp::CppParser::AST::Comment) __arg0;
-    auto ____ret = new class ::CppSharp::CppParser::AST::Comment(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Comment((class ::CppSharp::CppParser::AST::Comment*)____ret, true);
+    auto ___ret = (::CppSharp::CppParser::AST::Comment) __arg0;
+    auto _____ret = new class ::CppSharp::CppParser::AST::Comment(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Comment((class ::CppSharp::CppParser::AST::Comment*)_____ret, true);
 }
 
 ::System::IntPtr CppSharp::Parser::AST::Comment::__Instance::get()
@@ -300,9 +300,9 @@ CppSharp::Parser::AST::BlockContentComment::BlockContentComment(CppSharp::Parser
 CppSharp::Parser::AST::BlockContentComment::operator CppSharp::Parser::AST::BlockContentComment^(CppSharp::Parser::AST::CommentKind Kind)
 {
     auto __arg0 = (enum ::CppSharp::CppParser::AST::CommentKind)Kind;
-    auto __ret = (::CppSharp::CppParser::AST::BlockContentComment) __arg0;
-    auto ____ret = new class ::CppSharp::CppParser::AST::BlockContentComment(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::BlockContentComment((class ::CppSharp::CppParser::AST::BlockContentComment*)____ret, true);
+    auto ___ret = (::CppSharp::CppParser::AST::BlockContentComment) __arg0;
+    auto _____ret = new class ::CppSharp::CppParser::AST::BlockContentComment(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::BlockContentComment((class ::CppSharp::CppParser::AST::BlockContentComment*)_____ret, true);
 }
 
 CppSharp::Parser::AST::FullComment::FullComment(class ::CppSharp::CppParser::AST::FullComment* native)
@@ -344,9 +344,9 @@ CppSharp::Parser::AST::FullComment::FullComment()
 
 CppSharp::Parser::AST::BlockContentComment^ CppSharp::Parser::AST::FullComment::GetBlocks(unsigned int i)
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::FullComment*)NativePtr)->getBlocks(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::BlockContentComment((class ::CppSharp::CppParser::AST::BlockContentComment*)__ret);
+    auto ___ret = ((class ::CppSharp::CppParser::AST::FullComment*)NativePtr)->getBlocks(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::BlockContentComment((class ::CppSharp::CppParser::AST::BlockContentComment*)___ret);
 }
 
 void CppSharp::Parser::AST::FullComment::AddBlocks(CppSharp::Parser::AST::BlockContentComment^ s)
@@ -397,8 +397,8 @@ void CppSharp::Parser::AST::FullComment::Blocks::set(::System::Collections::Gene
 
 unsigned int CppSharp::Parser::AST::FullComment::BlocksCount::get()
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::FullComment*)NativePtr)->getBlocksCount();
-    return __ret;
+    auto ___ret = ((class ::CppSharp::CppParser::AST::FullComment*)NativePtr)->getBlocksCount();
+    return ___ret;
 }
 
 CppSharp::Parser::AST::InlineContentComment::InlineContentComment(class ::CppSharp::CppParser::AST::InlineContentComment* native)
@@ -453,9 +453,9 @@ CppSharp::Parser::AST::InlineContentComment::InlineContentComment(CppSharp::Pars
 CppSharp::Parser::AST::InlineContentComment::operator CppSharp::Parser::AST::InlineContentComment^(CppSharp::Parser::AST::CommentKind Kind)
 {
     auto __arg0 = (enum ::CppSharp::CppParser::AST::CommentKind)Kind;
-    auto __ret = (::CppSharp::CppParser::AST::InlineContentComment) __arg0;
-    auto ____ret = new class ::CppSharp::CppParser::AST::InlineContentComment(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::InlineContentComment((class ::CppSharp::CppParser::AST::InlineContentComment*)____ret, true);
+    auto ___ret = (::CppSharp::CppParser::AST::InlineContentComment) __arg0;
+    auto _____ret = new class ::CppSharp::CppParser::AST::InlineContentComment(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::InlineContentComment((class ::CppSharp::CppParser::AST::InlineContentComment*)_____ret, true);
 }
 
 bool CppSharp::Parser::AST::InlineContentComment::HasTrailingNewline::get()
@@ -507,9 +507,9 @@ CppSharp::Parser::AST::ParagraphComment::ParagraphComment()
 
 CppSharp::Parser::AST::InlineContentComment^ CppSharp::Parser::AST::ParagraphComment::GetContent(unsigned int i)
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::ParagraphComment*)NativePtr)->getContent(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::InlineContentComment((class ::CppSharp::CppParser::AST::InlineContentComment*)__ret);
+    auto ___ret = ((class ::CppSharp::CppParser::AST::ParagraphComment*)NativePtr)->getContent(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::InlineContentComment((class ::CppSharp::CppParser::AST::InlineContentComment*)___ret);
 }
 
 void CppSharp::Parser::AST::ParagraphComment::AddContent(CppSharp::Parser::AST::InlineContentComment^ s)
@@ -570,8 +570,8 @@ void CppSharp::Parser::AST::ParagraphComment::Content::set(::System::Collections
 
 unsigned int CppSharp::Parser::AST::ParagraphComment::ContentCount::get()
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::ParagraphComment*)NativePtr)->getContentCount();
-    return __ret;
+    auto ___ret = ((class ::CppSharp::CppParser::AST::ParagraphComment*)NativePtr)->getContentCount();
+    return ___ret;
 }
 
 CppSharp::Parser::AST::BlockCommandComment::Argument::Argument(class ::CppSharp::CppParser::AST::BlockCommandComment::Argument* native)
@@ -683,9 +683,9 @@ CppSharp::Parser::AST::BlockCommandComment::BlockCommandComment(CppSharp::Parser
 
 CppSharp::Parser::AST::BlockCommandComment::Argument^ CppSharp::Parser::AST::BlockCommandComment::GetArguments(unsigned int i)
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::BlockCommandComment*)NativePtr)->getArguments(i);
-    auto ____ret = new class ::CppSharp::CppParser::AST::BlockCommandComment::Argument(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::BlockCommandComment::Argument((class ::CppSharp::CppParser::AST::BlockCommandComment::Argument*)____ret, true);
+    auto ___ret = ((class ::CppSharp::CppParser::AST::BlockCommandComment*)NativePtr)->getArguments(i);
+    auto _____ret = new class ::CppSharp::CppParser::AST::BlockCommandComment::Argument(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::BlockCommandComment::Argument((class ::CppSharp::CppParser::AST::BlockCommandComment::Argument*)_____ret, true);
 }
 
 void CppSharp::Parser::AST::BlockCommandComment::AddArguments(CppSharp::Parser::AST::BlockCommandComment::Argument^ s)
@@ -714,9 +714,9 @@ CppSharp::Parser::AST::BlockCommandComment::BlockCommandComment(CppSharp::Parser
 CppSharp::Parser::AST::BlockCommandComment::operator CppSharp::Parser::AST::BlockCommandComment^(CppSharp::Parser::AST::CommentKind Kind)
 {
     auto __arg0 = (enum ::CppSharp::CppParser::AST::CommentKind)Kind;
-    auto __ret = (::CppSharp::CppParser::AST::BlockCommandComment) __arg0;
-    auto ____ret = new class ::CppSharp::CppParser::AST::BlockCommandComment(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::BlockCommandComment((class ::CppSharp::CppParser::AST::BlockCommandComment*)____ret, true);
+    auto ___ret = (::CppSharp::CppParser::AST::BlockCommandComment) __arg0;
+    auto _____ret = new class ::CppSharp::CppParser::AST::BlockCommandComment(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::BlockCommandComment((class ::CppSharp::CppParser::AST::BlockCommandComment*)_____ret, true);
 }
 
 unsigned int CppSharp::Parser::AST::BlockCommandComment::CommandId::get()
@@ -767,8 +767,8 @@ void CppSharp::Parser::AST::BlockCommandComment::Arguments::set(::System::Collec
 
 unsigned int CppSharp::Parser::AST::BlockCommandComment::ArgumentsCount::get()
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::BlockCommandComment*)NativePtr)->getArgumentsCount();
-    return __ret;
+    auto ___ret = ((class ::CppSharp::CppParser::AST::BlockCommandComment*)NativePtr)->getArgumentsCount();
+    return ___ret;
 }
 
 CppSharp::Parser::AST::ParamCommandComment::ParamCommandComment(class ::CppSharp::CppParser::AST::ParamCommandComment* native)
@@ -877,8 +877,8 @@ CppSharp::Parser::AST::TParamCommandComment::TParamCommandComment()
 
 unsigned int CppSharp::Parser::AST::TParamCommandComment::GetPosition(unsigned int i)
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::TParamCommandComment*)NativePtr)->getPosition(i);
-    return __ret;
+    auto ___ret = ((class ::CppSharp::CppParser::AST::TParamCommandComment*)NativePtr)->getPosition(i);
+    return ___ret;
 }
 
 void CppSharp::Parser::AST::TParamCommandComment::AddPosition([::System::Runtime::InteropServices::In, ::System::Runtime::InteropServices::Out] unsigned int% s)
@@ -928,8 +928,8 @@ void CppSharp::Parser::AST::TParamCommandComment::Position::set(::System::Collec
 
 unsigned int CppSharp::Parser::AST::TParamCommandComment::PositionCount::get()
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::TParamCommandComment*)NativePtr)->getPositionCount();
-    return __ret;
+    auto ___ret = ((class ::CppSharp::CppParser::AST::TParamCommandComment*)NativePtr)->getPositionCount();
+    return ___ret;
 }
 
 CppSharp::Parser::AST::VerbatimBlockLineComment::VerbatimBlockLineComment(class ::CppSharp::CppParser::AST::VerbatimBlockLineComment* native)
@@ -1028,9 +1028,9 @@ CppSharp::Parser::AST::VerbatimBlockComment::VerbatimBlockComment()
 
 CppSharp::Parser::AST::VerbatimBlockLineComment^ CppSharp::Parser::AST::VerbatimBlockComment::GetLines(unsigned int i)
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::VerbatimBlockComment*)NativePtr)->getLines(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::VerbatimBlockLineComment((class ::CppSharp::CppParser::AST::VerbatimBlockLineComment*)__ret);
+    auto ___ret = ((class ::CppSharp::CppParser::AST::VerbatimBlockComment*)NativePtr)->getLines(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::VerbatimBlockLineComment((class ::CppSharp::CppParser::AST::VerbatimBlockLineComment*)___ret);
 }
 
 void CppSharp::Parser::AST::VerbatimBlockComment::AddLines(CppSharp::Parser::AST::VerbatimBlockLineComment^ s)
@@ -1081,8 +1081,8 @@ void CppSharp::Parser::AST::VerbatimBlockComment::Lines::set(::System::Collectio
 
 unsigned int CppSharp::Parser::AST::VerbatimBlockComment::LinesCount::get()
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::VerbatimBlockComment*)NativePtr)->getLinesCount();
-    return __ret;
+    auto ___ret = ((class ::CppSharp::CppParser::AST::VerbatimBlockComment*)NativePtr)->getLinesCount();
+    return ___ret;
 }
 
 CppSharp::Parser::AST::VerbatimLineComment::VerbatimLineComment(class ::CppSharp::CppParser::AST::VerbatimLineComment* native)
@@ -1243,9 +1243,9 @@ CppSharp::Parser::AST::InlineCommandComment::InlineCommandComment()
 
 CppSharp::Parser::AST::InlineCommandComment::Argument^ CppSharp::Parser::AST::InlineCommandComment::GetArguments(unsigned int i)
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::InlineCommandComment*)NativePtr)->getArguments(i);
-    auto ____ret = new class ::CppSharp::CppParser::AST::InlineCommandComment::Argument(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::InlineCommandComment::Argument((class ::CppSharp::CppParser::AST::InlineCommandComment::Argument*)____ret, true);
+    auto ___ret = ((class ::CppSharp::CppParser::AST::InlineCommandComment*)NativePtr)->getArguments(i);
+    auto _____ret = new class ::CppSharp::CppParser::AST::InlineCommandComment::Argument(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::InlineCommandComment::Argument((class ::CppSharp::CppParser::AST::InlineCommandComment::Argument*)_____ret, true);
 }
 
 void CppSharp::Parser::AST::InlineCommandComment::AddArguments(CppSharp::Parser::AST::InlineCommandComment::Argument^ s)
@@ -1319,8 +1319,8 @@ void CppSharp::Parser::AST::InlineCommandComment::Arguments::set(::System::Colle
 
 unsigned int CppSharp::Parser::AST::InlineCommandComment::ArgumentsCount::get()
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::InlineCommandComment*)NativePtr)->getArgumentsCount();
-    return __ret;
+    auto ___ret = ((class ::CppSharp::CppParser::AST::InlineCommandComment*)NativePtr)->getArgumentsCount();
+    return ___ret;
 }
 
 CppSharp::Parser::AST::HTMLTagComment::HTMLTagComment(class ::CppSharp::CppParser::AST::HTMLTagComment* native)
@@ -1375,9 +1375,9 @@ CppSharp::Parser::AST::HTMLTagComment::HTMLTagComment(CppSharp::Parser::AST::HTM
 CppSharp::Parser::AST::HTMLTagComment::operator CppSharp::Parser::AST::HTMLTagComment^(CppSharp::Parser::AST::CommentKind Kind)
 {
     auto __arg0 = (enum ::CppSharp::CppParser::AST::CommentKind)Kind;
-    auto __ret = (::CppSharp::CppParser::AST::HTMLTagComment) __arg0;
-    auto ____ret = new class ::CppSharp::CppParser::AST::HTMLTagComment(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::HTMLTagComment((class ::CppSharp::CppParser::AST::HTMLTagComment*)____ret, true);
+    auto ___ret = (::CppSharp::CppParser::AST::HTMLTagComment) __arg0;
+    auto _____ret = new class ::CppSharp::CppParser::AST::HTMLTagComment(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::HTMLTagComment((class ::CppSharp::CppParser::AST::HTMLTagComment*)_____ret, true);
 }
 
 CppSharp::Parser::AST::HTMLStartTagComment::Attribute::Attribute(class ::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute* native)
@@ -1491,9 +1491,9 @@ CppSharp::Parser::AST::HTMLStartTagComment::HTMLStartTagComment()
 
 CppSharp::Parser::AST::HTMLStartTagComment::Attribute^ CppSharp::Parser::AST::HTMLStartTagComment::GetAttributes(unsigned int i)
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::HTMLStartTagComment*)NativePtr)->getAttributes(i);
-    auto ____ret = new class ::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::HTMLStartTagComment::Attribute((class ::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute*)____ret, true);
+    auto ___ret = ((class ::CppSharp::CppParser::AST::HTMLStartTagComment*)NativePtr)->getAttributes(i);
+    auto _____ret = new class ::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::HTMLStartTagComment::Attribute((class ::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute*)_____ret, true);
 }
 
 void CppSharp::Parser::AST::HTMLStartTagComment::AddAttributes(CppSharp::Parser::AST::HTMLStartTagComment::Attribute^ s)
@@ -1557,8 +1557,8 @@ void CppSharp::Parser::AST::HTMLStartTagComment::Attributes::set(::System::Colle
 
 unsigned int CppSharp::Parser::AST::HTMLStartTagComment::AttributesCount::get()
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::HTMLStartTagComment*)NativePtr)->getAttributesCount();
-    return __ret;
+    auto ___ret = ((class ::CppSharp::CppParser::AST::HTMLStartTagComment*)NativePtr)->getAttributesCount();
+    return ___ret;
 }
 
 CppSharp::Parser::AST::HTMLEndTagComment::HTMLEndTagComment(class ::CppSharp::CppParser::AST::HTMLEndTagComment* native)

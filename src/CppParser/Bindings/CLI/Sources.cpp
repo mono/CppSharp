@@ -37,8 +37,8 @@ CppSharp::Parser::SourceLocation::SourceLocation(unsigned int ID)
 
 CppSharp::Parser::SourceLocation::operator CppSharp::Parser::SourceLocation(unsigned int ID)
 {
-    auto __ret = (::CppSharp::CppParser::SourceLocation) ID;
-    return ::CppSharp::Parser::SourceLocation((struct ::CppSharp::CppParser::SourceLocation*)&__ret);
+    auto ___ret = (::CppSharp::CppParser::SourceLocation) ID;
+    return ::CppSharp::Parser::SourceLocation((struct ::CppSharp::CppParser::SourceLocation*)&___ret);
 }
 
 unsigned int CppSharp::Parser::SourceLocation::ID::get()

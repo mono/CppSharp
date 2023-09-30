@@ -15,6 +15,8 @@ using __IntPtr = global::System.IntPtr;
 
 [assembly:InternalsVisibleTo("CppSharp.CppParser")]
 
+#pragma warning disable CS0109 // Member does not hide an inherited member; new keyword is not required
+
 namespace Std
 {
     namespace Vector
@@ -99,6 +101,8 @@ namespace Std
 
         internal static Allocator<_Ty> __CreateInstance(__IntPtr native, bool skipVTables = false)
         {
+            if (native == __IntPtr.Zero)
+                return null;
             return new Allocator<_Ty>(native.ToPointer(), skipVTables);
         }
 
@@ -167,15 +171,6 @@ namespace Std
                 return;
             NativeToManagedMap.TryRemove(__Instance, out _);
             DisposePartial(disposing);
-            if (callNativeDtor)
-            {
-                var ___Ty = typeof(_Ty);
-                if (___Ty.IsAssignableFrom(typeof(sbyte)))
-                {
-                    return;
-                }
-                throw new ArgumentOutOfRangeException("_Ty", string.Join(", ", new[] { typeof(_Ty).FullName }), "global::Std.Allocator<_Ty> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte>.");
-            }
             if (__ownsNativeInstance)
                 Marshal.FreeHGlobal(__Instance);
             __Instance = IntPtr.Zero;
@@ -243,6 +238,8 @@ namespace Std
 
         internal static BasicString<_Elem, _Traits, _Alloc> __CreateInstance(__IntPtr native, bool skipVTables = false)
         {
+            if (native == __IntPtr.Zero)
+                return null;
             return new BasicString<_Elem, _Traits, _Alloc>(native.ToPointer(), skipVTables);
         }
 
@@ -389,6 +386,8 @@ namespace Std
 
         internal static CharTraits<_Elem> __CreateInstance(__IntPtr native, bool skipVTables = false)
         {
+            if (native == __IntPtr.Zero)
+                return null;
             return new CharTraits<_Elem>(native.ToPointer(), skipVTables);
         }
 
@@ -463,16 +462,16 @@ namespace Std
         public static global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> Assign(this global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> @this, string _Ptr)
         {
             var __arg0 = @this is null ? __IntPtr.Zero : @this.__Instance;
-            var __ret = __Internal.Assign(__arg0, _Ptr);
-            var __result0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__GetOrCreateInstance(__ret, false);
+            var ___ret = __Internal.Assign(__arg0, _Ptr);
+            var __result0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__GetOrCreateInstance(___ret, false);
             return __result0;
         }
 
         public static string Data(this global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> @this)
         {
             var __arg0 = @this is null ? __IntPtr.Zero : @this.__Instance;
-            var __ret = __Internal.Data(__arg0);
-            return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
+            var ___ret = __Internal.Data(__arg0);
+            return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
         }
     }
 }

@@ -197,9 +197,9 @@ CppSharp::Parser::AST::Expr::Expr(CppSharp::Parser::AST::Expr^ _0)
 CppSharp::Parser::AST::Expr::operator CppSharp::Parser::AST::Expr^(CppSharp::Parser::AST::StmtClass klass)
 {
     auto __arg0 = (enum ::CppSharp::CppParser::AST::StmtClass)klass;
-    auto __ret = (::CppSharp::CppParser::AST::Expr) __arg0;
-    auto ____ret = new class ::CppSharp::CppParser::AST::Expr(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)____ret, true);
+    auto ___ret = (::CppSharp::CppParser::AST::Expr) __arg0;
+    auto _____ret = new class ::CppSharp::CppParser::AST::Expr(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)_____ret, true);
 }
 
 CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::Expr::Type::get()
@@ -398,9 +398,9 @@ CppSharp::Parser::AST::FullExpr::FullExpr(CppSharp::Parser::AST::FullExpr^ _0)
 CppSharp::Parser::AST::FullExpr::operator CppSharp::Parser::AST::FullExpr^(CppSharp::Parser::AST::StmtClass klass)
 {
     auto __arg0 = (enum ::CppSharp::CppParser::AST::StmtClass)klass;
-    auto __ret = (::CppSharp::CppParser::AST::FullExpr) __arg0;
-    auto ____ret = new class ::CppSharp::CppParser::AST::FullExpr(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::FullExpr((class ::CppSharp::CppParser::AST::FullExpr*)____ret, true);
+    auto ___ret = (::CppSharp::CppParser::AST::FullExpr) __arg0;
+    auto _____ret = new class ::CppSharp::CppParser::AST::FullExpr(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::FullExpr((class ::CppSharp::CppParser::AST::FullExpr*)_____ret, true);
 }
 
 CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::FullExpr::SubExpr::get()
@@ -1851,9 +1851,9 @@ CppSharp::Parser::AST::CallExpr::CallExpr(CppSharp::Parser::AST::StmtClass klass
 
 CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::CallExpr::Getarguments(unsigned int i)
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::CallExpr*)NativePtr)->getarguments(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)__ret);
+    auto ___ret = ((class ::CppSharp::CppParser::AST::CallExpr*)NativePtr)->getarguments(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)___ret);
 }
 
 void CppSharp::Parser::AST::CallExpr::Addarguments(CppSharp::Parser::AST::Expr^ s)
@@ -1882,9 +1882,9 @@ CppSharp::Parser::AST::CallExpr::CallExpr(CppSharp::Parser::AST::CallExpr^ _0)
 CppSharp::Parser::AST::CallExpr::operator CppSharp::Parser::AST::CallExpr^(CppSharp::Parser::AST::StmtClass klass)
 {
     auto __arg0 = (enum ::CppSharp::CppParser::AST::StmtClass)klass;
-    auto __ret = (::CppSharp::CppParser::AST::CallExpr) __arg0;
-    auto ____ret = new class ::CppSharp::CppParser::AST::CallExpr(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::CallExpr((class ::CppSharp::CppParser::AST::CallExpr*)____ret, true);
+    auto ___ret = (::CppSharp::CppParser::AST::CallExpr) __arg0;
+    auto _____ret = new class ::CppSharp::CppParser::AST::CallExpr(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::CallExpr((class ::CppSharp::CppParser::AST::CallExpr*)_____ret, true);
 }
 
 ::System::Collections::Generic::List<CppSharp::Parser::AST::Expr^>^ CppSharp::Parser::AST::CallExpr::Arguments::get()
@@ -1994,8 +1994,8 @@ void CppSharp::Parser::AST::CallExpr::IsCallToStdMove::set(bool value)
 
 unsigned int CppSharp::Parser::AST::CallExpr::GetargumentsCount::get()
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::CallExpr*)NativePtr)->getargumentsCount();
-    return __ret;
+    auto ___ret = ((class ::CppSharp::CppParser::AST::CallExpr*)NativePtr)->getargumentsCount();
+    return ___ret;
 }
 
 CppSharp::Parser::AST::MemberExpr::MemberExpr(class ::CppSharp::CppParser::AST::MemberExpr* native)
@@ -2304,9 +2304,9 @@ CppSharp::Parser::AST::CastExpr::CastExpr(CppSharp::Parser::AST::CastExpr^ _0)
 CppSharp::Parser::AST::CastExpr::operator CppSharp::Parser::AST::CastExpr^(CppSharp::Parser::AST::StmtClass klass)
 {
     auto __arg0 = (enum ::CppSharp::CppParser::AST::StmtClass)klass;
-    auto __ret = (::CppSharp::CppParser::AST::CastExpr) __arg0;
-    auto ____ret = new class ::CppSharp::CppParser::AST::CastExpr(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::CastExpr((class ::CppSharp::CppParser::AST::CastExpr*)____ret, true);
+    auto ___ret = (::CppSharp::CppParser::AST::CastExpr) __arg0;
+    auto _____ret = new class ::CppSharp::CppParser::AST::CastExpr(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::CastExpr((class ::CppSharp::CppParser::AST::CastExpr*)_____ret, true);
 }
 
 CppSharp::Parser::AST::CastKind CppSharp::Parser::AST::CastExpr::CastKind::get()
@@ -2483,9 +2483,9 @@ CppSharp::Parser::AST::ExplicitCastExpr::ExplicitCastExpr(CppSharp::Parser::AST:
 CppSharp::Parser::AST::ExplicitCastExpr::operator CppSharp::Parser::AST::ExplicitCastExpr^(CppSharp::Parser::AST::StmtClass klass)
 {
     auto __arg0 = (enum ::CppSharp::CppParser::AST::StmtClass)klass;
-    auto __ret = (::CppSharp::CppParser::AST::ExplicitCastExpr) __arg0;
-    auto ____ret = new class ::CppSharp::CppParser::AST::ExplicitCastExpr(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::ExplicitCastExpr((class ::CppSharp::CppParser::AST::ExplicitCastExpr*)____ret, true);
+    auto ___ret = (::CppSharp::CppParser::AST::ExplicitCastExpr) __arg0;
+    auto _____ret = new class ::CppSharp::CppParser::AST::ExplicitCastExpr(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::ExplicitCastExpr((class ::CppSharp::CppParser::AST::ExplicitCastExpr*)_____ret, true);
 }
 
 CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::ExplicitCastExpr::TypeAsWritten::get()
@@ -2623,9 +2623,9 @@ CppSharp::Parser::AST::BinaryOperator::BinaryOperator(CppSharp::Parser::AST::Bin
 CppSharp::Parser::AST::BinaryOperator::operator CppSharp::Parser::AST::BinaryOperator^(CppSharp::Parser::AST::StmtClass klass)
 {
     auto __arg0 = (enum ::CppSharp::CppParser::AST::StmtClass)klass;
-    auto __ret = (::CppSharp::CppParser::AST::BinaryOperator) __arg0;
-    auto ____ret = new class ::CppSharp::CppParser::AST::BinaryOperator(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::BinaryOperator((class ::CppSharp::CppParser::AST::BinaryOperator*)____ret, true);
+    auto ___ret = (::CppSharp::CppParser::AST::BinaryOperator) __arg0;
+    auto _____ret = new class ::CppSharp::CppParser::AST::BinaryOperator(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::BinaryOperator((class ::CppSharp::CppParser::AST::BinaryOperator*)_____ret, true);
 }
 
 CppSharp::Parser::SourceLocation CppSharp::Parser::AST::BinaryOperator::OperatorLoc::get()
@@ -2943,9 +2943,9 @@ CppSharp::Parser::AST::AbstractConditionalOperator::AbstractConditionalOperator(
 CppSharp::Parser::AST::AbstractConditionalOperator::operator CppSharp::Parser::AST::AbstractConditionalOperator^(CppSharp::Parser::AST::StmtClass klass)
 {
     auto __arg0 = (enum ::CppSharp::CppParser::AST::StmtClass)klass;
-    auto __ret = (::CppSharp::CppParser::AST::AbstractConditionalOperator) __arg0;
-    auto ____ret = new class ::CppSharp::CppParser::AST::AbstractConditionalOperator(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::AbstractConditionalOperator((class ::CppSharp::CppParser::AST::AbstractConditionalOperator*)____ret, true);
+    auto ___ret = (::CppSharp::CppParser::AST::AbstractConditionalOperator) __arg0;
+    auto _____ret = new class ::CppSharp::CppParser::AST::AbstractConditionalOperator(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::AbstractConditionalOperator((class ::CppSharp::CppParser::AST::AbstractConditionalOperator*)_____ret, true);
 }
 
 CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::AbstractConditionalOperator::Cond::get()
@@ -5485,9 +5485,9 @@ CppSharp::Parser::AST::CXXNamedCastExpr::CXXNamedCastExpr(CppSharp::Parser::AST:
 CppSharp::Parser::AST::CXXNamedCastExpr::operator CppSharp::Parser::AST::CXXNamedCastExpr^(CppSharp::Parser::AST::StmtClass klass)
 {
     auto __arg0 = (enum ::CppSharp::CppParser::AST::StmtClass)klass;
-    auto __ret = (::CppSharp::CppParser::AST::CXXNamedCastExpr) __arg0;
-    auto ____ret = new class ::CppSharp::CppParser::AST::CXXNamedCastExpr(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::CXXNamedCastExpr((class ::CppSharp::CppParser::AST::CXXNamedCastExpr*)____ret, true);
+    auto ___ret = (::CppSharp::CppParser::AST::CXXNamedCastExpr) __arg0;
+    auto _____ret = new class ::CppSharp::CppParser::AST::CXXNamedCastExpr(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::CXXNamedCastExpr((class ::CppSharp::CppParser::AST::CXXNamedCastExpr*)_____ret, true);
 }
 
 ::System::String^ CppSharp::Parser::AST::CXXNamedCastExpr::CastName::get()
@@ -6619,9 +6619,9 @@ CppSharp::Parser::AST::CXXConstructExpr::CXXConstructExpr(CppSharp::Parser::AST:
 
 CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::CXXConstructExpr::Getarguments(unsigned int i)
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::CXXConstructExpr*)NativePtr)->getarguments(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)__ret);
+    auto ___ret = ((class ::CppSharp::CppParser::AST::CXXConstructExpr*)NativePtr)->getarguments(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)___ret);
 }
 
 void CppSharp::Parser::AST::CXXConstructExpr::Addarguments(CppSharp::Parser::AST::Expr^ s)
@@ -6650,9 +6650,9 @@ CppSharp::Parser::AST::CXXConstructExpr::CXXConstructExpr(CppSharp::Parser::AST:
 CppSharp::Parser::AST::CXXConstructExpr::operator CppSharp::Parser::AST::CXXConstructExpr^(CppSharp::Parser::AST::StmtClass klass)
 {
     auto __arg0 = (enum ::CppSharp::CppParser::AST::StmtClass)klass;
-    auto __ret = (::CppSharp::CppParser::AST::CXXConstructExpr) __arg0;
-    auto ____ret = new class ::CppSharp::CppParser::AST::CXXConstructExpr(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::CXXConstructExpr((class ::CppSharp::CppParser::AST::CXXConstructExpr*)____ret, true);
+    auto ___ret = (::CppSharp::CppParser::AST::CXXConstructExpr) __arg0;
+    auto _____ret = new class ::CppSharp::CppParser::AST::CXXConstructExpr(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::CXXConstructExpr((class ::CppSharp::CppParser::AST::CXXConstructExpr*)_____ret, true);
 }
 
 ::System::Collections::Generic::List<CppSharp::Parser::AST::Expr^>^ CppSharp::Parser::AST::CXXConstructExpr::Arguments::get()
@@ -6764,8 +6764,8 @@ void CppSharp::Parser::AST::CXXConstructExpr::NumArgs::set(unsigned int value)
 
 unsigned int CppSharp::Parser::AST::CXXConstructExpr::GetargumentsCount::get()
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::CXXConstructExpr*)NativePtr)->getargumentsCount();
-    return __ret;
+    auto ___ret = ((class ::CppSharp::CppParser::AST::CXXConstructExpr*)NativePtr)->getargumentsCount();
+    return ___ret;
 }
 
 CppSharp::Parser::AST::CXXInheritedCtorInitExpr::CXXInheritedCtorInitExpr(class ::CppSharp::CppParser::AST::CXXInheritedCtorInitExpr* native)
@@ -7002,9 +7002,9 @@ CppSharp::Parser::AST::LambdaExpr::LambdaExpr()
 
 CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::LambdaExpr::GetcaptureInits(unsigned int i)
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::LambdaExpr*)NativePtr)->getcapture_inits(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)__ret);
+    auto ___ret = ((class ::CppSharp::CppParser::AST::LambdaExpr*)NativePtr)->getcapture_inits(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)___ret);
 }
 
 void CppSharp::Parser::AST::LambdaExpr::AddcaptureInits(CppSharp::Parser::AST::Expr^ s)
@@ -7149,8 +7149,8 @@ void CppSharp::Parser::AST::LambdaExpr::HasExplicitResultType::set(bool value)
 
 unsigned int CppSharp::Parser::AST::LambdaExpr::GetcaptureInitsCount::get()
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::LambdaExpr*)NativePtr)->getcapture_initsCount();
-    return __ret;
+    auto ___ret = ((class ::CppSharp::CppParser::AST::LambdaExpr*)NativePtr)->getcapture_initsCount();
+    return ___ret;
 }
 
 CppSharp::Parser::AST::CXXScalarValueInitExpr::CXXScalarValueInitExpr(class ::CppSharp::CppParser::AST::CXXScalarValueInitExpr* native)
@@ -7245,9 +7245,9 @@ CppSharp::Parser::AST::CXXNewExpr::CXXNewExpr()
 
 CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::CXXNewExpr::GetplacementArguments(unsigned int i)
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::CXXNewExpr*)NativePtr)->getplacement_arguments(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)__ret);
+    auto ___ret = ((class ::CppSharp::CppParser::AST::CXXNewExpr*)NativePtr)->getplacement_arguments(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)___ret);
 }
 
 void CppSharp::Parser::AST::CXXNewExpr::AddplacementArguments(CppSharp::Parser::AST::Expr^ s)
@@ -7444,8 +7444,8 @@ void CppSharp::Parser::AST::CXXNewExpr::DirectInitRange::set(CppSharp::Parser::S
 
 unsigned int CppSharp::Parser::AST::CXXNewExpr::GetplacementArgumentsCount::get()
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::CXXNewExpr*)NativePtr)->getplacement_argumentsCount();
-    return __ret;
+    auto ___ret = ((class ::CppSharp::CppParser::AST::CXXNewExpr*)NativePtr)->getplacement_argumentsCount();
+    return ___ret;
 }
 
 CppSharp::Parser::AST::CXXDeleteExpr::CXXDeleteExpr(class ::CppSharp::CppParser::AST::CXXDeleteExpr* native)
@@ -7980,9 +7980,9 @@ CppSharp::Parser::AST::OverloadExpr::OverloadExpr(CppSharp::Parser::AST::Overloa
 CppSharp::Parser::AST::OverloadExpr::operator CppSharp::Parser::AST::OverloadExpr^(CppSharp::Parser::AST::StmtClass klass)
 {
     auto __arg0 = (enum ::CppSharp::CppParser::AST::StmtClass)klass;
-    auto __ret = (::CppSharp::CppParser::AST::OverloadExpr) __arg0;
-    auto ____ret = new class ::CppSharp::CppParser::AST::OverloadExpr(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::OverloadExpr((class ::CppSharp::CppParser::AST::OverloadExpr*)____ret, true);
+    auto ___ret = (::CppSharp::CppParser::AST::OverloadExpr) __arg0;
+    auto _____ret = new class ::CppSharp::CppParser::AST::OverloadExpr(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::OverloadExpr((class ::CppSharp::CppParser::AST::OverloadExpr*)_____ret, true);
 }
 
 unsigned int CppSharp::Parser::AST::OverloadExpr::NumDecls::get()
@@ -8353,9 +8353,9 @@ CppSharp::Parser::AST::CXXUnresolvedConstructExpr::CXXUnresolvedConstructExpr()
 
 CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::CXXUnresolvedConstructExpr::Getarguments(unsigned int i)
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::CXXUnresolvedConstructExpr*)NativePtr)->getarguments(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)__ret);
+    auto ___ret = ((class ::CppSharp::CppParser::AST::CXXUnresolvedConstructExpr*)NativePtr)->getarguments(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)___ret);
 }
 
 void CppSharp::Parser::AST::CXXUnresolvedConstructExpr::Addarguments(CppSharp::Parser::AST::Expr^ s)
@@ -8462,8 +8462,8 @@ void CppSharp::Parser::AST::CXXUnresolvedConstructExpr::ArgSize::set(unsigned in
 
 unsigned int CppSharp::Parser::AST::CXXUnresolvedConstructExpr::GetargumentsCount::get()
 {
-    auto __ret = ((class ::CppSharp::CppParser::AST::CXXUnresolvedConstructExpr*)NativePtr)->getargumentsCount();
-    return __ret;
+    auto ___ret = ((class ::CppSharp::CppParser::AST::CXXUnresolvedConstructExpr*)NativePtr)->getargumentsCount();
+    return ___ret;
 }
 
 CppSharp::Parser::AST::CXXDependentScopeMemberExpr::CXXDependentScopeMemberExpr(class ::CppSharp::CppParser::AST::CXXDependentScopeMemberExpr* native)
@@ -9495,9 +9495,9 @@ CppSharp::Parser::AST::CoroutineSuspendExpr::CoroutineSuspendExpr(CppSharp::Pars
 CppSharp::Parser::AST::CoroutineSuspendExpr::operator CppSharp::Parser::AST::CoroutineSuspendExpr^(CppSharp::Parser::AST::StmtClass klass)
 {
     auto __arg0 = (enum ::CppSharp::CppParser::AST::StmtClass)klass;
-    auto __ret = (::CppSharp::CppParser::AST::CoroutineSuspendExpr) __arg0;
-    auto ____ret = new class ::CppSharp::CppParser::AST::CoroutineSuspendExpr(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::CoroutineSuspendExpr((class ::CppSharp::CppParser::AST::CoroutineSuspendExpr*)____ret, true);
+    auto ___ret = (::CppSharp::CppParser::AST::CoroutineSuspendExpr) __arg0;
+    auto _____ret = new class ::CppSharp::CppParser::AST::CoroutineSuspendExpr(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::CoroutineSuspendExpr((class ::CppSharp::CppParser::AST::CoroutineSuspendExpr*)_____ret, true);
 }
 
 CppSharp::Parser::SourceLocation CppSharp::Parser::AST::CoroutineSuspendExpr::KeywordLoc::get()

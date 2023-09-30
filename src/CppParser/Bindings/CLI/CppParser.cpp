@@ -47,9 +47,9 @@ CppSharp::Parser::CppParserOptions::CppParserOptions()
 
 ::System::String^ CppSharp::Parser::CppParserOptions::GetArguments(unsigned int i)
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getArguments(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
+    auto ___ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getArguments(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(___ret));
 }
 
 void CppSharp::Parser::CppParserOptions::AddArguments(::System::String^ s)
@@ -66,9 +66,9 @@ void CppSharp::Parser::CppParserOptions::ClearArguments()
 
 ::System::String^ CppSharp::Parser::CppParserOptions::GetCompilationOptions(unsigned int i)
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getCompilationOptions(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
+    auto ___ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getCompilationOptions(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(___ret));
 }
 
 void CppSharp::Parser::CppParserOptions::AddCompilationOptions(::System::String^ s)
@@ -85,9 +85,9 @@ void CppSharp::Parser::CppParserOptions::ClearCompilationOptions()
 
 ::System::String^ CppSharp::Parser::CppParserOptions::GetSourceFiles(unsigned int i)
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getSourceFiles(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
+    auto ___ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getSourceFiles(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(___ret));
 }
 
 void CppSharp::Parser::CppParserOptions::AddSourceFiles(::System::String^ s)
@@ -104,9 +104,9 @@ void CppSharp::Parser::CppParserOptions::ClearSourceFiles()
 
 ::System::String^ CppSharp::Parser::CppParserOptions::GetIncludeDirs(unsigned int i)
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getIncludeDirs(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
+    auto ___ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getIncludeDirs(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(___ret));
 }
 
 void CppSharp::Parser::CppParserOptions::AddIncludeDirs(::System::String^ s)
@@ -123,9 +123,9 @@ void CppSharp::Parser::CppParserOptions::ClearIncludeDirs()
 
 ::System::String^ CppSharp::Parser::CppParserOptions::GetSystemIncludeDirs(unsigned int i)
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getSystemIncludeDirs(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
+    auto ___ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getSystemIncludeDirs(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(___ret));
 }
 
 void CppSharp::Parser::CppParserOptions::AddSystemIncludeDirs(::System::String^ s)
@@ -142,9 +142,9 @@ void CppSharp::Parser::CppParserOptions::ClearSystemIncludeDirs()
 
 ::System::String^ CppSharp::Parser::CppParserOptions::GetDefines(unsigned int i)
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getDefines(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
+    auto ___ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getDefines(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(___ret));
 }
 
 void CppSharp::Parser::CppParserOptions::AddDefines(::System::String^ s)
@@ -161,9 +161,9 @@ void CppSharp::Parser::CppParserOptions::ClearDefines()
 
 ::System::String^ CppSharp::Parser::CppParserOptions::GetUndefines(unsigned int i)
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getUndefines(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
+    auto ___ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getUndefines(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(___ret));
 }
 
 void CppSharp::Parser::CppParserOptions::AddUndefines(::System::String^ s)
@@ -180,9 +180,9 @@ void CppSharp::Parser::CppParserOptions::ClearUndefines()
 
 ::System::String^ CppSharp::Parser::CppParserOptions::GetSupportedStdTypes(unsigned int i)
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getSupportedStdTypes(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
+    auto ___ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getSupportedStdTypes(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(___ret));
 }
 
 void CppSharp::Parser::CppParserOptions::AddSupportedStdTypes(::System::String^ s)
@@ -199,9 +199,9 @@ void CppSharp::Parser::CppParserOptions::ClearSupportedStdTypes()
 
 ::System::String^ CppSharp::Parser::CppParserOptions::GetSupportedFunctionTemplates(unsigned int i)
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getSupportedFunctionTemplates(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
+    auto ___ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getSupportedFunctionTemplates(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(___ret));
 }
 
 void CppSharp::Parser::CppParserOptions::AddSupportedFunctionTemplates(::System::String^ s)
@@ -554,62 +554,62 @@ void CppSharp::Parser::CppParserOptions::SkipFunctionBodies::set(bool value)
 
 ::System::String^ CppSharp::Parser::CppParserOptions::ClangVersion::get()
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getClangVersion();
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    auto ___ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getClangVersion();
+    return clix::marshalString<clix::E_UTF8>(___ret);
 }
 
 unsigned int CppSharp::Parser::CppParserOptions::ArgumentsCount::get()
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getArgumentsCount();
-    return __ret;
+    auto ___ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getArgumentsCount();
+    return ___ret;
 }
 
 unsigned int CppSharp::Parser::CppParserOptions::CompilationOptionsCount::get()
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getCompilationOptionsCount();
-    return __ret;
+    auto ___ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getCompilationOptionsCount();
+    return ___ret;
 }
 
 unsigned int CppSharp::Parser::CppParserOptions::SourceFilesCount::get()
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getSourceFilesCount();
-    return __ret;
+    auto ___ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getSourceFilesCount();
+    return ___ret;
 }
 
 unsigned int CppSharp::Parser::CppParserOptions::IncludeDirsCount::get()
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getIncludeDirsCount();
-    return __ret;
+    auto ___ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getIncludeDirsCount();
+    return ___ret;
 }
 
 unsigned int CppSharp::Parser::CppParserOptions::SystemIncludeDirsCount::get()
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getSystemIncludeDirsCount();
-    return __ret;
+    auto ___ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getSystemIncludeDirsCount();
+    return ___ret;
 }
 
 unsigned int CppSharp::Parser::CppParserOptions::DefinesCount::get()
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getDefinesCount();
-    return __ret;
+    auto ___ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getDefinesCount();
+    return ___ret;
 }
 
 unsigned int CppSharp::Parser::CppParserOptions::UndefinesCount::get()
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getUndefinesCount();
-    return __ret;
+    auto ___ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getUndefinesCount();
+    return ___ret;
 }
 
 unsigned int CppSharp::Parser::CppParserOptions::SupportedStdTypesCount::get()
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getSupportedStdTypesCount();
-    return __ret;
+    auto ___ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getSupportedStdTypesCount();
+    return ___ret;
 }
 
 unsigned int CppSharp::Parser::CppParserOptions::SupportedFunctionTemplatesCount::get()
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getSupportedFunctionTemplatesCount();
-    return __ret;
+    auto ___ret = ((struct ::CppSharp::CppParser::CppParserOptions*)NativePtr)->getSupportedFunctionTemplatesCount();
+    return ___ret;
 }
 
 CppSharp::Parser::CppLinkerOptions::CppLinkerOptions(struct ::CppSharp::CppParser::CppLinkerOptions* native)
@@ -647,9 +647,9 @@ CppSharp::Parser::CppLinkerOptions::CppLinkerOptions()
 
 ::System::String^ CppSharp::Parser::CppLinkerOptions::GetArguments(unsigned int i)
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppLinkerOptions*)NativePtr)->getArguments(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
+    auto ___ret = ((struct ::CppSharp::CppParser::CppLinkerOptions*)NativePtr)->getArguments(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(___ret));
 }
 
 void CppSharp::Parser::CppLinkerOptions::AddArguments(::System::String^ s)
@@ -666,9 +666,9 @@ void CppSharp::Parser::CppLinkerOptions::ClearArguments()
 
 ::System::String^ CppSharp::Parser::CppLinkerOptions::GetLibraryDirs(unsigned int i)
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppLinkerOptions*)NativePtr)->getLibraryDirs(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
+    auto ___ret = ((struct ::CppSharp::CppParser::CppLinkerOptions*)NativePtr)->getLibraryDirs(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(___ret));
 }
 
 void CppSharp::Parser::CppLinkerOptions::AddLibraryDirs(::System::String^ s)
@@ -685,9 +685,9 @@ void CppSharp::Parser::CppLinkerOptions::ClearLibraryDirs()
 
 ::System::String^ CppSharp::Parser::CppLinkerOptions::GetLibraries(unsigned int i)
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppLinkerOptions*)NativePtr)->getLibraries(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
+    auto ___ret = ((struct ::CppSharp::CppParser::CppLinkerOptions*)NativePtr)->getLibraries(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(___ret));
 }
 
 void CppSharp::Parser::CppLinkerOptions::AddLibraries(::System::String^ s)
@@ -792,20 +792,20 @@ void CppSharp::Parser::CppLinkerOptions::Libraries::set(::System::Collections::G
 
 unsigned int CppSharp::Parser::CppLinkerOptions::ArgumentsCount::get()
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppLinkerOptions*)NativePtr)->getArgumentsCount();
-    return __ret;
+    auto ___ret = ((struct ::CppSharp::CppParser::CppLinkerOptions*)NativePtr)->getArgumentsCount();
+    return ___ret;
 }
 
 unsigned int CppSharp::Parser::CppLinkerOptions::LibraryDirsCount::get()
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppLinkerOptions*)NativePtr)->getLibraryDirsCount();
-    return __ret;
+    auto ___ret = ((struct ::CppSharp::CppParser::CppLinkerOptions*)NativePtr)->getLibraryDirsCount();
+    return ___ret;
 }
 
 unsigned int CppSharp::Parser::CppLinkerOptions::LibrariesCount::get()
 {
-    auto __ret = ((struct ::CppSharp::CppParser::CppLinkerOptions*)NativePtr)->getLibrariesCount();
-    return __ret;
+    auto ___ret = ((struct ::CppSharp::CppParser::CppLinkerOptions*)NativePtr)->getLibrariesCount();
+    return ___ret;
 }
 
 CppSharp::Parser::ParserDiagnostic::ParserDiagnostic(struct ::CppSharp::CppParser::ParserDiagnostic* native)
@@ -954,9 +954,9 @@ CppSharp::Parser::ParserResult::ParserResult(CppSharp::Parser::ParserResult^ _0)
 
 CppSharp::Parser::ParserDiagnostic^ CppSharp::Parser::ParserResult::GetDiagnostics(unsigned int i)
 {
-    auto __ret = ((struct ::CppSharp::CppParser::ParserResult*)NativePtr)->getDiagnostics(i);
-    auto ____ret = new struct ::CppSharp::CppParser::ParserDiagnostic(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::ParserDiagnostic((struct ::CppSharp::CppParser::ParserDiagnostic*)____ret, true);
+    auto ___ret = ((struct ::CppSharp::CppParser::ParserResult*)NativePtr)->getDiagnostics(i);
+    auto _____ret = new struct ::CppSharp::CppParser::ParserDiagnostic(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::ParserDiagnostic((struct ::CppSharp::CppParser::ParserDiagnostic*)_____ret, true);
 }
 
 void CppSharp::Parser::ParserResult::AddDiagnostics(CppSharp::Parser::ParserDiagnostic^ s)
@@ -974,9 +974,9 @@ void CppSharp::Parser::ParserResult::ClearDiagnostics()
 
 CppSharp::Parser::AST::NativeLibrary^ CppSharp::Parser::ParserResult::GetLibraries(unsigned int i)
 {
-    auto __ret = ((struct ::CppSharp::CppParser::ParserResult*)NativePtr)->getLibraries(i);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::NativeLibrary((class ::CppSharp::CppParser::AST::NativeLibrary*)__ret);
+    auto ___ret = ((struct ::CppSharp::CppParser::ParserResult*)NativePtr)->getLibraries(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::NativeLibrary((class ::CppSharp::CppParser::AST::NativeLibrary*)___ret);
 }
 
 void CppSharp::Parser::ParserResult::AddLibraries(CppSharp::Parser::AST::NativeLibrary^ s)
@@ -1073,14 +1073,14 @@ void CppSharp::Parser::ParserResult::TargetInfo::set(CppSharp::Parser::ParserTar
 
 unsigned int CppSharp::Parser::ParserResult::DiagnosticsCount::get()
 {
-    auto __ret = ((struct ::CppSharp::CppParser::ParserResult*)NativePtr)->getDiagnosticsCount();
-    return __ret;
+    auto ___ret = ((struct ::CppSharp::CppParser::ParserResult*)NativePtr)->getDiagnosticsCount();
+    return ___ret;
 }
 
 unsigned int CppSharp::Parser::ParserResult::LibrariesCount::get()
 {
-    auto __ret = ((struct ::CppSharp::CppParser::ParserResult*)NativePtr)->getLibrariesCount();
-    return __ret;
+    auto ___ret = ((struct ::CppSharp::CppParser::ParserResult*)NativePtr)->getLibrariesCount();
+    return ___ret;
 }
 
 CppSharp::Parser::ClangParser::ClangParser(class ::CppSharp::CppParser::ClangParser* native)
@@ -1113,17 +1113,17 @@ CppSharp::Parser::ClangParser::~ClangParser()
 CppSharp::Parser::ParserResult^ CppSharp::Parser::ClangParser::ParseHeader(CppSharp::Parser::CppParserOptions^ Opts)
 {
     auto __arg0 = (struct ::CppSharp::CppParser::CppParserOptions*)Opts->NativePtr;
-    auto __ret = ::CppSharp::CppParser::ClangParser::ParseHeader(__arg0);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::ParserResult((struct ::CppSharp::CppParser::ParserResult*)__ret);
+    auto ___ret = ::CppSharp::CppParser::ClangParser::ParseHeader(__arg0);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::ParserResult((struct ::CppSharp::CppParser::ParserResult*)___ret);
 }
 
 CppSharp::Parser::ParserResult^ CppSharp::Parser::ClangParser::ParseLibrary(CppSharp::Parser::CppLinkerOptions^ Opts)
 {
     auto __arg0 = (struct ::CppSharp::CppParser::CppLinkerOptions*)Opts->NativePtr;
-    auto __ret = ::CppSharp::CppParser::ClangParser::ParseLibrary(__arg0);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::ParserResult((struct ::CppSharp::CppParser::ParserResult*)__ret);
+    auto ___ret = ::CppSharp::CppParser::ClangParser::ParseLibrary(__arg0);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::ParserResult((struct ::CppSharp::CppParser::ParserResult*)___ret);
 }
 
 CppSharp::Parser::ParserResult^ CppSharp::Parser::ClangParser::Build(CppSharp::Parser::CppParserOptions^ Opts, CppSharp::Parser::CppLinkerOptions^ LinkerOptions, ::System::String^ File, bool Last)
@@ -1131,18 +1131,18 @@ CppSharp::Parser::ParserResult^ CppSharp::Parser::ClangParser::Build(CppSharp::P
     auto __arg0 = (struct ::CppSharp::CppParser::CppParserOptions*)Opts->NativePtr;
     auto __arg1 = (struct ::CppSharp::CppParser::CppLinkerOptions*)LinkerOptions->NativePtr;
     auto __arg2 = clix::marshalString<clix::E_UTF8>(File);
-    auto __ret = ::CppSharp::CppParser::ClangParser::Build(__arg0, __arg1, __arg2, Last);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::ParserResult((struct ::CppSharp::CppParser::ParserResult*)__ret);
+    auto ___ret = ::CppSharp::CppParser::ClangParser::Build(__arg0, __arg1, __arg2, Last);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::ParserResult((struct ::CppSharp::CppParser::ParserResult*)___ret);
 }
 
 CppSharp::Parser::ParserResult^ CppSharp::Parser::ClangParser::Compile(CppSharp::Parser::CppParserOptions^ Opts, ::System::String^ File)
 {
     auto __arg0 = (struct ::CppSharp::CppParser::CppParserOptions*)Opts->NativePtr;
     auto __arg1 = clix::marshalString<clix::E_UTF8>(File);
-    auto __ret = ::CppSharp::CppParser::ClangParser::Compile(__arg0, __arg1);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::ParserResult((struct ::CppSharp::CppParser::ParserResult*)__ret);
+    auto ___ret = ::CppSharp::CppParser::ClangParser::Compile(__arg0, __arg1);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::ParserResult((struct ::CppSharp::CppParser::ParserResult*)___ret);
 }
 
 CppSharp::Parser::ParserResult^ CppSharp::Parser::ClangParser::Link(CppSharp::Parser::CppParserOptions^ Opts, CppSharp::Parser::CppLinkerOptions^ LinkerOptions, ::System::String^ File, bool Last)
@@ -1150,9 +1150,9 @@ CppSharp::Parser::ParserResult^ CppSharp::Parser::ClangParser::Link(CppSharp::Pa
     auto __arg0 = (struct ::CppSharp::CppParser::CppParserOptions*)Opts->NativePtr;
     auto __arg1 = (struct ::CppSharp::CppParser::CppLinkerOptions*)LinkerOptions->NativePtr;
     auto __arg2 = clix::marshalString<clix::E_UTF8>(File);
-    auto __ret = ::CppSharp::CppParser::ClangParser::Link(__arg0, __arg1, __arg2, Last);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::ParserResult((struct ::CppSharp::CppParser::ParserResult*)__ret);
+    auto ___ret = ::CppSharp::CppParser::ClangParser::Link(__arg0, __arg1, __arg2, Last);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::ParserResult((struct ::CppSharp::CppParser::ParserResult*)___ret);
 }
 
 CppSharp::Parser::ClangParser::ClangParser()

@@ -13,6 +13,8 @@ using System.Runtime.CompilerServices;
 
 [assembly:InternalsVisibleTo("CppSharp.Parser")]
 
+#pragma warning disable CS0109 // Member does not hide an inherited member; new keyword is not required
+
 namespace CppSharp
 {
     namespace Parser
@@ -121,6 +123,8 @@ namespace CppSharp
 
                 internal static NativeLibrary __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new NativeLibrary(native.ToPointer(), skipVTables);
                 }
 
@@ -203,8 +207,8 @@ namespace CppSharp
 
                 public string GetSymbols(uint i)
                 {
-                    var __ret = __Internal.GetSymbols(__Instance, i);
-                    return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
+                    var ___ret = __Internal.GetSymbols(__Instance, i);
+                    return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
                 }
 
                 public void AddSymbols(string s)
@@ -219,8 +223,8 @@ namespace CppSharp
 
                 public string GetDependencies(uint i)
                 {
-                    var __ret = __Internal.GetDependencies(__Instance, i);
-                    return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
+                    var ___ret = __Internal.GetDependencies(__Instance, i);
+                    return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
                 }
 
                 public void AddDependencies(string s)
@@ -264,8 +268,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetSymbolsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetSymbolsCount(__Instance);
+                        return ___ret;
                     }
                 }
 
@@ -273,8 +277,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetDependenciesCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetDependenciesCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -313,6 +317,8 @@ namespace CppSharp
 
                 internal static Comment __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new Comment(native.ToPointer(), skipVTables);
                 }
 
@@ -426,6 +432,8 @@ namespace CppSharp
 
                 internal static new BlockContentComment __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new BlockContentComment(native.ToPointer(), skipVTables);
                 }
 
@@ -530,6 +538,8 @@ namespace CppSharp
 
                 internal static new FullComment __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new FullComment(native.ToPointer(), skipVTables);
                 }
 
@@ -607,8 +617,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.BlockContentComment GetBlocks(uint i)
                 {
-                    var __ret = __Internal.GetBlocks(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.BlockContentComment.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetBlocks(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.BlockContentComment.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -630,8 +640,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetBlocksCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetBlocksCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -656,6 +666,8 @@ namespace CppSharp
 
                 internal static new InlineContentComment __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new InlineContentComment(native.ToPointer(), skipVTables);
                 }
 
@@ -774,6 +786,8 @@ namespace CppSharp
 
                 internal static new ParagraphComment __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ParagraphComment(native.ToPointer(), skipVTables);
                 }
 
@@ -851,8 +865,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.InlineContentComment GetContent(uint i)
                 {
-                    var __ret = __Internal.GetContent(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.InlineContentComment.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetContent(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.InlineContentComment.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -887,8 +901,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetContentCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetContentCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -965,6 +979,8 @@ namespace CppSharp
 
                     internal static Argument __CreateInstance(__IntPtr native, bool skipVTables = false)
                     {
+                        if (native == __IntPtr.Zero)
+                            return null;
                         return new Argument(native.ToPointer(), skipVTables);
                     }
 
@@ -1062,6 +1078,8 @@ namespace CppSharp
 
                 internal static new BlockCommandComment __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new BlockCommandComment(native.ToPointer(), skipVTables);
                 }
 
@@ -1148,11 +1166,11 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.BlockCommandComment.Argument GetArguments(uint i)
                 {
-                    var __ret = new global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal();
-                    __Internal.GetArguments(new IntPtr(&__ret), __Instance, i);
-                    var ____ret = global::CppSharp.Parser.AST.BlockCommandComment.Argument.__CreateInstance(__ret);
-                    global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal.dtor(new __IntPtr(&__ret));
-                    return ____ret;
+                    var ___ret = new global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal();
+                    __Internal.GetArguments(new IntPtr(&___ret), __Instance, i);
+                    var _____ret = global::CppSharp.Parser.AST.BlockCommandComment.Argument.__CreateInstance(___ret);
+                    global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal.dtor(new __IntPtr(&___ret));
+                    return _____ret;
                 }
 
                 public void AddArguments(global::CppSharp.Parser.AST.BlockCommandComment.Argument s)
@@ -1204,8 +1222,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetArgumentsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetArgumentsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -1241,6 +1259,8 @@ namespace CppSharp
 
                 internal static new ParamCommandComment __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ParamCommandComment(native.ToPointer(), skipVTables);
                 }
 
@@ -1378,6 +1398,8 @@ namespace CppSharp
 
                 internal static new TParamCommandComment __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new TParamCommandComment(native.ToPointer(), skipVTables);
                 }
 
@@ -1455,8 +1477,8 @@ namespace CppSharp
 
                 public uint GetPosition(uint i)
                 {
-                    var __ret = __Internal.GetPosition(__Instance, i);
-                    return __ret;
+                    var ___ret = __Internal.GetPosition(__Instance, i);
+                    return ___ret;
                 }
 
                 public void AddPosition(ref uint s)
@@ -1477,8 +1499,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetPositionCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetPositionCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -1503,6 +1525,8 @@ namespace CppSharp
 
                 internal static new VerbatimBlockLineComment __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new VerbatimBlockLineComment(native.ToPointer(), skipVTables);
                 }
 
@@ -1628,6 +1652,8 @@ namespace CppSharp
 
                 internal static new VerbatimBlockComment __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new VerbatimBlockComment(native.ToPointer(), skipVTables);
                 }
 
@@ -1705,8 +1731,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.VerbatimBlockLineComment GetLines(uint i)
                 {
-                    var __ret = __Internal.GetLines(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.VerbatimBlockLineComment.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetLines(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.VerbatimBlockLineComment.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -1728,8 +1754,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetLinesCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetLinesCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -1757,6 +1783,8 @@ namespace CppSharp
 
                 internal static new VerbatimLineComment __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new VerbatimLineComment(native.ToPointer(), skipVTables);
                 }
 
@@ -1926,6 +1954,8 @@ namespace CppSharp
 
                     internal static Argument __CreateInstance(__IntPtr native, bool skipVTables = false)
                     {
+                        if (native == __IntPtr.Zero)
+                            return null;
                         return new Argument(native.ToPointer(), skipVTables);
                     }
 
@@ -2023,6 +2053,8 @@ namespace CppSharp
 
                 internal static new InlineCommandComment __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new InlineCommandComment(native.ToPointer(), skipVTables);
                 }
 
@@ -2100,11 +2132,11 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.InlineCommandComment.Argument GetArguments(uint i)
                 {
-                    var __ret = new global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal();
-                    __Internal.GetArguments(new IntPtr(&__ret), __Instance, i);
-                    var ____ret = global::CppSharp.Parser.AST.InlineCommandComment.Argument.__CreateInstance(__ret);
-                    global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal.dtor(new __IntPtr(&__ret));
-                    return ____ret;
+                    var ___ret = new global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal();
+                    __Internal.GetArguments(new IntPtr(&___ret), __Instance, i);
+                    var _____ret = global::CppSharp.Parser.AST.InlineCommandComment.Argument.__CreateInstance(___ret);
+                    global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal.dtor(new __IntPtr(&___ret));
+                    return _____ret;
                 }
 
                 public void AddArguments(global::CppSharp.Parser.AST.InlineCommandComment.Argument s)
@@ -2150,8 +2182,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetArgumentsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetArgumentsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -2176,6 +2208,8 @@ namespace CppSharp
 
                 internal static new HTMLTagComment __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new HTMLTagComment(native.ToPointer(), skipVTables);
                 }
 
@@ -2318,6 +2352,8 @@ namespace CppSharp
 
                     internal static Attribute __CreateInstance(__IntPtr native, bool skipVTables = false)
                     {
+                        if (native == __IntPtr.Zero)
+                            return null;
                         return new Attribute(native.ToPointer(), skipVTables);
                     }
 
@@ -2429,6 +2465,8 @@ namespace CppSharp
 
                 internal static new HTMLStartTagComment __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new HTMLStartTagComment(native.ToPointer(), skipVTables);
                 }
 
@@ -2506,11 +2544,11 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute GetAttributes(uint i)
                 {
-                    var __ret = new global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal();
-                    __Internal.GetAttributes(new IntPtr(&__ret), __Instance, i);
-                    var ____ret = global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__CreateInstance(__ret);
-                    global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal.dtor(new __IntPtr(&__ret));
-                    return ____ret;
+                    var ___ret = new global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal();
+                    __Internal.GetAttributes(new IntPtr(&___ret), __Instance, i);
+                    var _____ret = global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__CreateInstance(___ret);
+                    global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal.dtor(new __IntPtr(&___ret));
+                    return _____ret;
                 }
 
                 public void AddAttributes(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute s)
@@ -2544,8 +2582,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetAttributesCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetAttributesCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -2571,6 +2609,8 @@ namespace CppSharp
 
                 internal static new HTMLEndTagComment __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new HTMLEndTagComment(native.ToPointer(), skipVTables);
                 }
 
@@ -2682,6 +2722,8 @@ namespace CppSharp
 
                 internal static new TextComment __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new TextComment(native.ToPointer(), skipVTables);
                 }
 
@@ -2812,6 +2854,8 @@ namespace CppSharp
 
                 internal static RawComment __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new RawComment(native.ToPointer(), skipVTables);
                 }
 
@@ -3070,6 +3114,8 @@ namespace CppSharp
 
             internal static SourceRange __CreateInstance(__IntPtr native, bool skipVTables = false)
             {
+                if (native == __IntPtr.Zero)
+                    return null;
                 return new SourceRange(native.ToPointer(), skipVTables);
             }
 
@@ -3292,6 +3338,8 @@ namespace CppSharp
 
                 internal static Type __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new Type(native.ToPointer(), skipVTables);
                 }
 
@@ -3435,6 +3483,8 @@ namespace CppSharp
 
                 internal static TypeQualifiers __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new TypeQualifiers(native.ToPointer(), skipVTables);
                 }
 
@@ -3584,6 +3634,8 @@ namespace CppSharp
 
                 internal static QualifiedType __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new QualifiedType(native.ToPointer(), skipVTables);
                 }
 
@@ -3707,6 +3759,8 @@ namespace CppSharp
 
                 internal static new TagType __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new TagType(native.ToPointer(), skipVTables);
                 }
 
@@ -3811,6 +3865,8 @@ namespace CppSharp
 
                 internal static new ArrayType __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ArrayType(native.ToPointer(), skipVTables);
                 }
 
@@ -3962,6 +4018,8 @@ namespace CppSharp
 
                 internal static new FunctionType __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new FunctionType(native.ToPointer(), skipVTables);
                 }
 
@@ -4039,8 +4097,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Parameter GetParameters(uint i)
                 {
-                    var __ret = __Internal.GetParameters(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Parameter.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetParameters(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Parameter.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -4103,8 +4161,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetParametersCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetParametersCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -4136,6 +4194,8 @@ namespace CppSharp
 
                 internal static new PointerType __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new PointerType(native.ToPointer(), skipVTables);
                 }
 
@@ -4243,6 +4303,8 @@ namespace CppSharp
 
                 internal static new MemberPointerType __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new MemberPointerType(native.ToPointer(), skipVTables);
                 }
 
@@ -4337,6 +4399,8 @@ namespace CppSharp
 
                 internal static new TypedefType __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new TypedefType(native.ToPointer(), skipVTables);
                 }
 
@@ -4431,6 +4495,8 @@ namespace CppSharp
 
                 internal static new AttributedType __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new AttributedType(native.ToPointer(), skipVTables);
                 }
 
@@ -4542,6 +4608,8 @@ namespace CppSharp
 
                 internal static new DecayedType __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new DecayedType(native.ToPointer(), skipVTables);
                 }
 
@@ -4697,6 +4765,8 @@ namespace CppSharp
 
                 internal static TemplateArgument __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new TemplateArgument(native.ToPointer(), skipVTables);
                 }
 
@@ -4863,6 +4933,8 @@ namespace CppSharp
 
                 internal static new TemplateSpecializationType __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new TemplateSpecializationType(native.ToPointer(), skipVTables);
                 }
 
@@ -4940,9 +5012,9 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.TemplateArgument GetArguments(uint i)
                 {
-                    var __ret = new global::CppSharp.Parser.AST.TemplateArgument.__Internal();
-                    __Internal.GetArguments(new IntPtr(&__ret), __Instance, i);
-                    return global::CppSharp.Parser.AST.TemplateArgument.__CreateInstance(__ret);
+                    var ___ret = new global::CppSharp.Parser.AST.TemplateArgument.__Internal();
+                    __Internal.GetArguments(new IntPtr(&___ret), __Instance, i);
+                    return global::CppSharp.Parser.AST.TemplateArgument.__CreateInstance(___ret);
                 }
 
                 public void AddArguments(global::CppSharp.Parser.AST.TemplateArgument s)
@@ -4991,8 +5063,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetArgumentsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetArgumentsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -5031,6 +5103,8 @@ namespace CppSharp
 
                 internal static new DependentTemplateSpecializationType __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new DependentTemplateSpecializationType(native.ToPointer(), skipVTables);
                 }
 
@@ -5108,9 +5182,9 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.TemplateArgument GetArguments(uint i)
                 {
-                    var __ret = new global::CppSharp.Parser.AST.TemplateArgument.__Internal();
-                    __Internal.GetArguments(new IntPtr(&__ret), __Instance, i);
-                    return global::CppSharp.Parser.AST.TemplateArgument.__CreateInstance(__ret);
+                    var ___ret = new global::CppSharp.Parser.AST.TemplateArgument.__Internal();
+                    __Internal.GetArguments(new IntPtr(&___ret), __Instance, i);
+                    return global::CppSharp.Parser.AST.TemplateArgument.__CreateInstance(___ret);
                 }
 
                 public void AddArguments(global::CppSharp.Parser.AST.TemplateArgument s)
@@ -5145,8 +5219,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetArgumentsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetArgumentsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -5175,6 +5249,8 @@ namespace CppSharp
 
                 internal static new TemplateParameterType __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new TemplateParameterType(native.ToPointer(), skipVTables);
                 }
 
@@ -5323,6 +5399,8 @@ namespace CppSharp
 
                 internal static new TemplateParameterSubstitutionType __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new TemplateParameterSubstitutionType(native.ToPointer(), skipVTables);
                 }
 
@@ -5432,6 +5510,8 @@ namespace CppSharp
 
                 internal static new InjectedClassNameType __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new InjectedClassNameType(native.ToPointer(), skipVTables);
                 }
 
@@ -5544,6 +5624,8 @@ namespace CppSharp
 
                 internal static new DependentNameType __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new DependentNameType(native.ToPointer(), skipVTables);
                 }
 
@@ -5666,6 +5748,8 @@ namespace CppSharp
 
                 internal static new PackExpansionType __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new PackExpansionType(native.ToPointer(), skipVTables);
                 }
 
@@ -5746,6 +5830,8 @@ namespace CppSharp
 
                 internal static new UnaryTransformType __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new UnaryTransformType(native.ToPointer(), skipVTables);
                 }
 
@@ -5855,6 +5941,8 @@ namespace CppSharp
 
                 internal static new UnresolvedUsingType __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new UnresolvedUsingType(native.ToPointer(), skipVTables);
                 }
 
@@ -5949,6 +6037,8 @@ namespace CppSharp
 
                 internal static new VectorType __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new VectorType(native.ToPointer(), skipVTables);
                 }
 
@@ -6056,6 +6146,8 @@ namespace CppSharp
 
                 internal static new BuiltinType __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new BuiltinType(native.ToPointer(), skipVTables);
                 }
 
@@ -6418,6 +6510,8 @@ namespace CppSharp
 
                 internal static Declaration __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new Declaration(native.ToPointer(), skipVTables);
                 }
 
@@ -6500,8 +6594,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.PreprocessedEntity GetPreprocessedEntities(uint i)
                 {
-                    var __ret = __Internal.GetPreprocessedEntities(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.PreprocessedEntity.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetPreprocessedEntities(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.PreprocessedEntity.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -6521,8 +6615,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Declaration GetRedeclarations(uint i)
                 {
-                    var __ret = __Internal.GetRedeclarations(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Declaration.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetRedeclarations(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Declaration.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -6815,8 +6909,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetPreprocessedEntitiesCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetPreprocessedEntitiesCount(__Instance);
+                        return ___ret;
                     }
                 }
 
@@ -6824,8 +6918,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetRedeclarationsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetRedeclarationsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -6989,6 +7083,8 @@ namespace CppSharp
 
                 internal static new DeclarationContext __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new DeclarationContext(native.ToPointer(), skipVTables);
                 }
 
@@ -7066,8 +7162,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Namespace GetNamespaces(uint i)
                 {
-                    var __ret = __Internal.GetNamespaces(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Namespace.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetNamespaces(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Namespace.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -7087,8 +7183,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Enumeration GetEnums(uint i)
                 {
-                    var __ret = __Internal.GetEnums(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Enumeration.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetEnums(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Enumeration.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -7108,8 +7204,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Function GetFunctions(uint i)
                 {
-                    var __ret = __Internal.GetFunctions(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Function.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetFunctions(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Function.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -7129,8 +7225,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Class GetClasses(uint i)
                 {
-                    var __ret = __Internal.GetClasses(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Class.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetClasses(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Class.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -7150,8 +7246,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Template GetTemplates(uint i)
                 {
-                    var __ret = __Internal.GetTemplates(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Template.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetTemplates(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Template.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -7171,8 +7267,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.TypedefDecl GetTypedefs(uint i)
                 {
-                    var __ret = __Internal.GetTypedefs(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.TypedefDecl.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetTypedefs(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.TypedefDecl.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -7192,8 +7288,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.TypeAlias GetTypeAliases(uint i)
                 {
-                    var __ret = __Internal.GetTypeAliases(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.TypeAlias.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetTypeAliases(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.TypeAlias.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -7213,8 +7309,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Variable GetVariables(uint i)
                 {
-                    var __ret = __Internal.GetVariables(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Variable.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetVariables(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Variable.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -7234,8 +7330,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Friend GetFriends(uint i)
                 {
-                    var __ret = __Internal.GetFriends(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Friend.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetFriends(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Friend.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -7275,8 +7371,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetNamespacesCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetNamespacesCount(__Instance);
+                        return ___ret;
                     }
                 }
 
@@ -7284,8 +7380,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetEnumsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetEnumsCount(__Instance);
+                        return ___ret;
                     }
                 }
 
@@ -7293,8 +7389,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetFunctionsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetFunctionsCount(__Instance);
+                        return ___ret;
                     }
                 }
 
@@ -7302,8 +7398,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetClassesCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetClassesCount(__Instance);
+                        return ___ret;
                     }
                 }
 
@@ -7311,8 +7407,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetTemplatesCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetTemplatesCount(__Instance);
+                        return ___ret;
                     }
                 }
 
@@ -7320,8 +7416,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetTypedefsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetTypedefsCount(__Instance);
+                        return ___ret;
                     }
                 }
 
@@ -7329,8 +7425,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetTypeAliasesCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetTypeAliasesCount(__Instance);
+                        return ___ret;
                     }
                 }
 
@@ -7338,8 +7434,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetVariablesCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetVariablesCount(__Instance);
+                        return ___ret;
                     }
                 }
 
@@ -7347,8 +7443,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetFriendsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetFriendsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -7394,6 +7490,8 @@ namespace CppSharp
 
                 internal static new TypedefNameDecl __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new TypedefNameDecl(native.ToPointer(), skipVTables);
                 }
 
@@ -7531,6 +7629,8 @@ namespace CppSharp
 
                 internal static new TypedefDecl __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new TypedefDecl(native.ToPointer(), skipVTables);
                 }
 
@@ -7649,6 +7749,8 @@ namespace CppSharp
 
                 internal static new TypeAlias __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new TypeAlias(native.ToPointer(), skipVTables);
                 }
 
@@ -7780,6 +7882,8 @@ namespace CppSharp
 
                 internal static new Friend __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new Friend(native.ToPointer(), skipVTables);
                 }
 
@@ -7909,6 +8013,8 @@ namespace CppSharp
 
                 internal static StatementObsolete __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new StatementObsolete(native.ToPointer(), skipVTables);
                 }
 
@@ -8057,6 +8163,8 @@ namespace CppSharp
 
                 internal static new ExpressionObsolete __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ExpressionObsolete(native.ToPointer(), skipVTables);
                 }
 
@@ -8162,6 +8270,8 @@ namespace CppSharp
 
                 internal static new BinaryOperatorObsolete __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new BinaryOperatorObsolete(native.ToPointer(), skipVTables);
                 }
 
@@ -8324,6 +8434,8 @@ namespace CppSharp
 
                 internal static new CallExprObsolete __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CallExprObsolete(native.ToPointer(), skipVTables);
                 }
 
@@ -8406,8 +8518,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.ExpressionObsolete GetArguments(uint i)
                 {
-                    var __ret = __Internal.GetArguments(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.ExpressionObsolete.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetArguments(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.ExpressionObsolete.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -8429,8 +8541,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetArgumentsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetArgumentsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -8469,6 +8581,8 @@ namespace CppSharp
 
                 internal static new CXXConstructExprObsolete __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXConstructExprObsolete(native.ToPointer(), skipVTables);
                 }
 
@@ -8551,8 +8665,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.ExpressionObsolete GetArguments(uint i)
                 {
-                    var __ret = __Internal.GetArguments(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.ExpressionObsolete.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetArguments(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.ExpressionObsolete.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -8574,8 +8688,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetArgumentsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetArgumentsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -8626,6 +8740,8 @@ namespace CppSharp
 
                 internal static new Parameter __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new Parameter(native.ToPointer(), skipVTables);
                 }
 
@@ -8867,6 +8983,8 @@ namespace CppSharp
 
                 internal static new Function __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new Function(native.ToPointer(), skipVTables);
                 }
 
@@ -8944,8 +9062,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Parameter GetParameters(uint i)
                 {
-                    var __ret = __Internal.GetParameters(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Parameter.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetParameters(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Parameter.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -9224,8 +9342,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetParametersCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetParametersCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -9324,6 +9442,8 @@ namespace CppSharp
 
                 internal static new Method __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new Method(native.ToPointer(), skipVTables);
                 }
 
@@ -9401,8 +9521,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Method GetOverriddenMethods(uint i)
                 {
-                    var __ret = __Internal.GetOverriddenMethods(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Method.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetOverriddenMethods(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Method.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -9556,8 +9676,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetOverriddenMethodsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetOverriddenMethodsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -9680,6 +9800,8 @@ namespace CppSharp
 
                     internal static new Item __CreateInstance(__IntPtr native, bool skipVTables = false)
                     {
+                        if (native == __IntPtr.Zero)
+                            return null;
                         return new Item(native.ToPointer(), skipVTables);
                     }
 
@@ -9785,6 +9907,8 @@ namespace CppSharp
 
                 internal static new Enumeration __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new Enumeration(native.ToPointer(), skipVTables);
                 }
 
@@ -9862,8 +9986,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Enumeration.Item GetItems(uint i)
                 {
-                    var __ret = __Internal.GetItems(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Enumeration.Item.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetItems(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Enumeration.Item.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -9886,9 +10010,9 @@ namespace CppSharp
                     var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
                     global::Std.BasicStringExtensions.Assign(__basicString0, Name);
                     var __arg0 = __basicString0.__Instance;
-                    var __ret = __Internal.FindItemByName(__Instance, __arg0);
+                    var ___ret = __Internal.FindItemByName(__Instance, __arg0);
                     __basicString0.Dispose();
-                    var __result0 = global::CppSharp.Parser.AST.Enumeration.Item.__GetOrCreateInstance(__ret, false);
+                    var __result0 = global::CppSharp.Parser.AST.Enumeration.Item.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -9937,8 +10061,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetItemsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetItemsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -9987,6 +10111,8 @@ namespace CppSharp
 
                 internal static new Variable __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new Variable(native.ToPointer(), skipVTables);
                 }
 
@@ -10156,6 +10282,8 @@ namespace CppSharp
 
                 internal static BaseClassSpecifier __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new BaseClassSpecifier(native.ToPointer(), skipVTables);
                 }
 
@@ -10329,6 +10457,8 @@ namespace CppSharp
 
                 internal static new Field __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new Field(native.ToPointer(), skipVTables);
                 }
 
@@ -10500,6 +10630,8 @@ namespace CppSharp
 
                 internal static new AccessSpecifierDecl __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new AccessSpecifierDecl(native.ToPointer(), skipVTables);
                 }
 
@@ -10612,6 +10744,8 @@ namespace CppSharp
 
                 internal static VTableComponent __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new VTableComponent(native.ToPointer(), skipVTables);
                 }
 
@@ -10777,6 +10911,8 @@ namespace CppSharp
 
                 internal static VTableLayout __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new VTableLayout(native.ToPointer(), skipVTables);
                 }
 
@@ -10859,8 +10995,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.VTableComponent GetComponents(uint i)
                 {
-                    var __ret = __Internal.GetComponents(__Instance, i);
-                    return global::CppSharp.Parser.AST.VTableComponent.__CreateInstance(__ret);
+                    var ___ret = __Internal.GetComponents(__Instance, i);
+                    return global::CppSharp.Parser.AST.VTableComponent.__CreateInstance(___ret);
                 }
 
                 public void AddComponents(global::CppSharp.Parser.AST.VTableComponent s)
@@ -10880,8 +11016,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetComponentsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetComponentsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -10926,6 +11062,8 @@ namespace CppSharp
 
                 internal static VFTableInfo __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new VFTableInfo(native.ToPointer(), skipVTables);
                 }
 
@@ -11101,6 +11239,8 @@ namespace CppSharp
 
                 internal static LayoutField __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new LayoutField(native.ToPointer(), skipVTables);
                 }
 
@@ -11275,6 +11415,8 @@ namespace CppSharp
 
                 internal static LayoutBase __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new LayoutBase(native.ToPointer(), skipVTables);
                 }
 
@@ -11466,6 +11608,8 @@ namespace CppSharp
 
                 internal static ClassLayout __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ClassLayout(native.ToPointer(), skipVTables);
                 }
 
@@ -11548,11 +11692,11 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.VFTableInfo GetVFTables(uint i)
                 {
-                    var __ret = new global::CppSharp.Parser.AST.VFTableInfo.__Internal();
-                    __Internal.GetVFTables(new IntPtr(&__ret), __Instance, i);
-                    var ____ret = global::CppSharp.Parser.AST.VFTableInfo.__CreateInstance(__ret);
-                    global::CppSharp.Parser.AST.VFTableInfo.__Internal.dtor(new __IntPtr(&__ret));
-                    return ____ret;
+                    var ___ret = new global::CppSharp.Parser.AST.VFTableInfo.__Internal();
+                    __Internal.GetVFTables(new IntPtr(&___ret), __Instance, i);
+                    var _____ret = global::CppSharp.Parser.AST.VFTableInfo.__CreateInstance(___ret);
+                    global::CppSharp.Parser.AST.VFTableInfo.__Internal.dtor(new __IntPtr(&___ret));
+                    return _____ret;
                 }
 
                 public void AddVFTables(global::CppSharp.Parser.AST.VFTableInfo s)
@@ -11570,11 +11714,11 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.LayoutField GetFields(uint i)
                 {
-                    var __ret = new global::CppSharp.Parser.AST.LayoutField.__Internal();
-                    __Internal.GetFields(new IntPtr(&__ret), __Instance, i);
-                    var ____ret = global::CppSharp.Parser.AST.LayoutField.__CreateInstance(__ret);
-                    global::CppSharp.Parser.AST.LayoutField.__Internal.dtor(new __IntPtr(&__ret));
-                    return ____ret;
+                    var ___ret = new global::CppSharp.Parser.AST.LayoutField.__Internal();
+                    __Internal.GetFields(new IntPtr(&___ret), __Instance, i);
+                    var _____ret = global::CppSharp.Parser.AST.LayoutField.__CreateInstance(___ret);
+                    global::CppSharp.Parser.AST.LayoutField.__Internal.dtor(new __IntPtr(&___ret));
+                    return _____ret;
                 }
 
                 public void AddFields(global::CppSharp.Parser.AST.LayoutField s)
@@ -11592,11 +11736,11 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.LayoutBase GetBases(uint i)
                 {
-                    var __ret = new global::CppSharp.Parser.AST.LayoutBase.__Internal();
-                    __Internal.GetBases(new IntPtr(&__ret), __Instance, i);
-                    var ____ret = global::CppSharp.Parser.AST.LayoutBase.__CreateInstance(__ret);
-                    global::CppSharp.Parser.AST.LayoutBase.__Internal.dtor(new __IntPtr(&__ret));
-                    return ____ret;
+                    var ___ret = new global::CppSharp.Parser.AST.LayoutBase.__Internal();
+                    __Internal.GetBases(new IntPtr(&___ret), __Instance, i);
+                    var _____ret = global::CppSharp.Parser.AST.LayoutBase.__CreateInstance(___ret);
+                    global::CppSharp.Parser.AST.LayoutBase.__Internal.dtor(new __IntPtr(&___ret));
+                    return _____ret;
                 }
 
                 public void AddBases(global::CppSharp.Parser.AST.LayoutBase s)
@@ -11722,8 +11866,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetVFTablesCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetVFTablesCount(__Instance);
+                        return ___ret;
                     }
                 }
 
@@ -11731,8 +11875,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetFieldsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetFieldsCount(__Instance);
+                        return ___ret;
                     }
                 }
 
@@ -11740,8 +11884,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetBasesCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetBasesCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -11861,6 +12005,8 @@ namespace CppSharp
 
                 internal static new Class __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new Class(native.ToPointer(), skipVTables);
                 }
 
@@ -11938,8 +12084,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.BaseClassSpecifier GetBases(uint i)
                 {
-                    var __ret = __Internal.GetBases(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.BaseClassSpecifier.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetBases(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.BaseClassSpecifier.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -11959,8 +12105,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Field GetFields(uint i)
                 {
-                    var __ret = __Internal.GetFields(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Field.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetFields(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Field.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -11980,8 +12126,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Method GetMethods(uint i)
                 {
-                    var __ret = __Internal.GetMethods(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Method.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetMethods(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Method.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -12001,8 +12147,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.AccessSpecifierDecl GetSpecifiers(uint i)
                 {
-                    var __ret = __Internal.GetSpecifiers(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.AccessSpecifierDecl.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetSpecifiers(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.AccessSpecifierDecl.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -12181,8 +12327,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetBasesCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetBasesCount(__Instance);
+                        return ___ret;
                     }
                 }
 
@@ -12190,8 +12336,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetFieldsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetFieldsCount(__Instance);
+                        return ___ret;
                     }
                 }
 
@@ -12199,8 +12345,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetMethodsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetMethodsCount(__Instance);
+                        return ___ret;
                     }
                 }
 
@@ -12208,8 +12354,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetSpecifiersCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetSpecifiersCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -12271,6 +12417,8 @@ namespace CppSharp
 
                 internal static new Template __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new Template(native.ToPointer(), skipVTables);
                 }
 
@@ -12357,8 +12505,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Declaration GetParameters(uint i)
                 {
-                    var __ret = __Internal.GetParameters(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Declaration.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetParameters(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Declaration.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -12399,8 +12547,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetParametersCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetParametersCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -12447,6 +12595,8 @@ namespace CppSharp
 
                 internal static new TypeAliasTemplate __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new TypeAliasTemplate(native.ToPointer(), skipVTables);
                 }
 
@@ -12566,6 +12716,8 @@ namespace CppSharp
 
                 internal static new TemplateParameter __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new TemplateParameter(native.ToPointer(), skipVTables);
                 }
 
@@ -12731,6 +12883,8 @@ namespace CppSharp
 
                 internal static new TemplateTemplateParameter __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new TemplateTemplateParameter(native.ToPointer(), skipVTables);
                 }
 
@@ -12890,6 +13044,8 @@ namespace CppSharp
 
                 internal static new TypeTemplateParameter __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new TypeTemplateParameter(native.ToPointer(), skipVTables);
                 }
 
@@ -12983,7 +13139,7 @@ namespace CppSharp
 
             public unsafe partial class NonTypeTemplateParameter : global::CppSharp.Parser.AST.TemplateParameter, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 240)]
+                [StructLayout(LayoutKind.Sequential, Size = 256)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -13030,6 +13186,8 @@ namespace CppSharp
 
                 internal static new NonTypeTemplateParameter __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new NonTypeTemplateParameter(native.ToPointer(), skipVTables);
                 }
 
@@ -13249,6 +13407,8 @@ namespace CppSharp
 
                 internal static new ClassTemplate __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ClassTemplate(native.ToPointer(), skipVTables);
                 }
 
@@ -13326,8 +13486,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.ClassTemplateSpecialization GetSpecializations(uint i)
                 {
-                    var __ret = __Internal.GetSpecializations(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.ClassTemplateSpecialization.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetSpecializations(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.ClassTemplateSpecialization.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -13350,9 +13510,9 @@ namespace CppSharp
                     var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
                     global::Std.BasicStringExtensions.Assign(__basicString0, usr);
                     var __arg0 = __basicString0.__Instance;
-                    var __ret = __Internal.FindSpecialization(__Instance, __arg0);
+                    var ___ret = __Internal.FindSpecialization(__Instance, __arg0);
                     __basicString0.Dispose();
-                    var __result0 = global::CppSharp.Parser.AST.ClassTemplateSpecialization.__GetOrCreateInstance(__ret, false);
+                    var __result0 = global::CppSharp.Parser.AST.ClassTemplateSpecialization.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -13361,9 +13521,9 @@ namespace CppSharp
                     var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
                     global::Std.BasicStringExtensions.Assign(__basicString0, usr);
                     var __arg0 = __basicString0.__Instance;
-                    var __ret = __Internal.FindPartialSpecialization(__Instance, __arg0);
+                    var ___ret = __Internal.FindPartialSpecialization(__Instance, __arg0);
                     __basicString0.Dispose();
-                    var __result0 = global::CppSharp.Parser.AST.ClassTemplatePartialSpecialization.__GetOrCreateInstance(__ret, false);
+                    var __result0 = global::CppSharp.Parser.AST.ClassTemplatePartialSpecialization.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -13371,8 +13531,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetSpecializationsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetSpecializationsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -13459,6 +13619,8 @@ namespace CppSharp
 
                 internal static new ClassTemplateSpecialization __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ClassTemplateSpecialization(native.ToPointer(), skipVTables);
                 }
 
@@ -13536,9 +13698,9 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.TemplateArgument GetArguments(uint i)
                 {
-                    var __ret = new global::CppSharp.Parser.AST.TemplateArgument.__Internal();
-                    __Internal.GetArguments(new IntPtr(&__ret), __Instance, i);
-                    return global::CppSharp.Parser.AST.TemplateArgument.__CreateInstance(__ret);
+                    var ___ret = new global::CppSharp.Parser.AST.TemplateArgument.__Internal();
+                    __Internal.GetArguments(new IntPtr(&___ret), __Instance, i);
+                    return global::CppSharp.Parser.AST.TemplateArgument.__CreateInstance(___ret);
                 }
 
                 public void AddArguments(global::CppSharp.Parser.AST.TemplateArgument s)
@@ -13585,8 +13747,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetArgumentsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetArgumentsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -13661,6 +13823,8 @@ namespace CppSharp
 
                 internal static new ClassTemplatePartialSpecialization __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ClassTemplatePartialSpecialization(native.ToPointer(), skipVTables);
                 }
 
@@ -13795,6 +13959,8 @@ namespace CppSharp
 
                 internal static new FunctionTemplate __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new FunctionTemplate(native.ToPointer(), skipVTables);
                 }
 
@@ -13872,8 +14038,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.FunctionTemplateSpecialization GetSpecializations(uint i)
                 {
-                    var __ret = __Internal.GetSpecializations(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.FunctionTemplateSpecialization.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetSpecializations(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.FunctionTemplateSpecialization.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -13896,9 +14062,9 @@ namespace CppSharp
                     var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
                     global::Std.BasicStringExtensions.Assign(__basicString0, usr);
                     var __arg0 = __basicString0.__Instance;
-                    var __ret = __Internal.FindSpecialization(__Instance, __arg0);
+                    var ___ret = __Internal.FindSpecialization(__Instance, __arg0);
                     __basicString0.Dispose();
-                    var __result0 = global::CppSharp.Parser.AST.FunctionTemplateSpecialization.__GetOrCreateInstance(__ret, false);
+                    var __result0 = global::CppSharp.Parser.AST.FunctionTemplateSpecialization.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -13906,8 +14072,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetSpecializationsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetSpecializationsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -13964,6 +14130,8 @@ namespace CppSharp
 
                 internal static FunctionTemplateSpecialization __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new FunctionTemplateSpecialization(native.ToPointer(), skipVTables);
                 }
 
@@ -14046,9 +14214,9 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.TemplateArgument GetArguments(uint i)
                 {
-                    var __ret = new global::CppSharp.Parser.AST.TemplateArgument.__Internal();
-                    __Internal.GetArguments(new IntPtr(&__ret), __Instance, i);
-                    return global::CppSharp.Parser.AST.TemplateArgument.__CreateInstance(__ret);
+                    var ___ret = new global::CppSharp.Parser.AST.TemplateArgument.__Internal();
+                    __Internal.GetArguments(new IntPtr(&___ret), __Instance, i);
+                    return global::CppSharp.Parser.AST.TemplateArgument.__CreateInstance(___ret);
                 }
 
                 public void AddArguments(global::CppSharp.Parser.AST.TemplateArgument s)
@@ -14109,8 +14277,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetArgumentsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetArgumentsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -14176,6 +14344,8 @@ namespace CppSharp
 
                 internal static new VarTemplate __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new VarTemplate(native.ToPointer(), skipVTables);
                 }
 
@@ -14253,8 +14423,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.VarTemplateSpecialization GetSpecializations(uint i)
                 {
-                    var __ret = __Internal.GetSpecializations(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.VarTemplateSpecialization.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetSpecializations(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.VarTemplateSpecialization.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -14277,9 +14447,9 @@ namespace CppSharp
                     var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
                     global::Std.BasicStringExtensions.Assign(__basicString0, usr);
                     var __arg0 = __basicString0.__Instance;
-                    var __ret = __Internal.FindSpecialization(__Instance, __arg0);
+                    var ___ret = __Internal.FindSpecialization(__Instance, __arg0);
                     __basicString0.Dispose();
-                    var __result0 = global::CppSharp.Parser.AST.VarTemplateSpecialization.__GetOrCreateInstance(__ret, false);
+                    var __result0 = global::CppSharp.Parser.AST.VarTemplateSpecialization.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -14288,9 +14458,9 @@ namespace CppSharp
                     var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
                     global::Std.BasicStringExtensions.Assign(__basicString0, usr);
                     var __arg0 = __basicString0.__Instance;
-                    var __ret = __Internal.FindPartialSpecialization(__Instance, __arg0);
+                    var ___ret = __Internal.FindPartialSpecialization(__Instance, __arg0);
                     __basicString0.Dispose();
-                    var __result0 = global::CppSharp.Parser.AST.VarTemplatePartialSpecialization.__GetOrCreateInstance(__ret, false);
+                    var __result0 = global::CppSharp.Parser.AST.VarTemplatePartialSpecialization.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -14298,8 +14468,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetSpecializationsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetSpecializationsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -14363,6 +14533,8 @@ namespace CppSharp
 
                 internal static new VarTemplateSpecialization __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new VarTemplateSpecialization(native.ToPointer(), skipVTables);
                 }
 
@@ -14440,9 +14612,9 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.TemplateArgument GetArguments(uint i)
                 {
-                    var __ret = new global::CppSharp.Parser.AST.TemplateArgument.__Internal();
-                    __Internal.GetArguments(new IntPtr(&__ret), __Instance, i);
-                    return global::CppSharp.Parser.AST.TemplateArgument.__CreateInstance(__ret);
+                    var ___ret = new global::CppSharp.Parser.AST.TemplateArgument.__Internal();
+                    __Internal.GetArguments(new IntPtr(&___ret), __Instance, i);
+                    return global::CppSharp.Parser.AST.TemplateArgument.__CreateInstance(___ret);
                 }
 
                 public void AddArguments(global::CppSharp.Parser.AST.TemplateArgument s)
@@ -14489,8 +14661,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetArgumentsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetArgumentsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -14542,6 +14714,8 @@ namespace CppSharp
 
                 internal static new VarTemplatePartialSpecialization __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new VarTemplatePartialSpecialization(native.ToPointer(), skipVTables);
                 }
 
@@ -14658,6 +14832,8 @@ namespace CppSharp
 
                 internal static new UnresolvedUsingTypename __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new UnresolvedUsingTypename(native.ToPointer(), skipVTables);
                 }
 
@@ -14786,6 +14962,8 @@ namespace CppSharp
 
                 internal static new Namespace __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new Namespace(native.ToPointer(), skipVTables);
                 }
 
@@ -14911,6 +15089,8 @@ namespace CppSharp
 
                 internal static PreprocessedEntity __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new PreprocessedEntity(native.ToPointer(), skipVTables);
                 }
 
@@ -15051,6 +15231,8 @@ namespace CppSharp
 
                 internal static new MacroDefinition __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new MacroDefinition(native.ToPointer(), skipVTables);
                 }
 
@@ -15205,6 +15387,8 @@ namespace CppSharp
 
                 internal static new MacroExpansion __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new MacroExpansion(native.ToPointer(), skipVTables);
                 }
 
@@ -15390,6 +15574,8 @@ namespace CppSharp
 
                 internal static new TranslationUnit __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new TranslationUnit(native.ToPointer(), skipVTables);
                 }
 
@@ -15467,8 +15653,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.MacroDefinition GetMacros(uint i)
                 {
-                    var __ret = __Internal.GetMacros(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.MacroDefinition.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetMacros(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.MacroDefinition.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -15517,8 +15703,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetMacrosCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetMacrosCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -15575,6 +15761,8 @@ namespace CppSharp
 
                 internal static ASTContext __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ASTContext(native.ToPointer(), skipVTables);
                 }
 
@@ -15660,16 +15848,16 @@ namespace CppSharp
                     var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
                     global::Std.BasicStringExtensions.Assign(__basicString0, File);
                     var __arg0 = __basicString0.__Instance;
-                    var __ret = __Internal.FindOrCreateModule(__Instance, __arg0);
+                    var ___ret = __Internal.FindOrCreateModule(__Instance, __arg0);
                     __basicString0.Dispose(disposing: true, callNativeDtor:false);
-                    var __result0 = global::CppSharp.Parser.AST.TranslationUnit.__GetOrCreateInstance(__ret, false);
+                    var __result0 = global::CppSharp.Parser.AST.TranslationUnit.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
                 public global::CppSharp.Parser.AST.TranslationUnit GetTranslationUnits(uint i)
                 {
-                    var __ret = __Internal.GetTranslationUnits(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.TranslationUnit.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetTranslationUnits(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.TranslationUnit.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -15691,8 +15879,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetTranslationUnitsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetTranslationUnitsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -15876,6 +16064,8 @@ namespace CppSharp
 
                 internal static Stmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new Stmt(native.ToPointer(), skipVTables);
                 }
 
@@ -16056,6 +16246,8 @@ namespace CppSharp
 
                 internal static new DeclStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new DeclStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -16133,8 +16325,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Declaration Getdecls(uint i)
                 {
-                    var __ret = __Internal.Getdecls(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Declaration.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.Getdecls(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Declaration.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -16183,8 +16375,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetdeclsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetdeclsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -16210,6 +16402,8 @@ namespace CppSharp
 
                 internal static new NullStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new NullStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -16335,6 +16529,8 @@ namespace CppSharp
 
                 internal static new CompoundStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CompoundStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -16412,8 +16608,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Stmt Getbody(uint i)
                 {
-                    var __ret = __Internal.Getbody(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Stmt.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.Getbody(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Stmt.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -16515,8 +16711,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetbodyCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetbodyCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -16546,6 +16742,8 @@ namespace CppSharp
 
                 internal static new SwitchCase __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new SwitchCase(native.ToPointer(), skipVTables);
                 }
 
@@ -16685,6 +16883,8 @@ namespace CppSharp
 
                 internal static new CaseStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CaseStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -16833,6 +17033,8 @@ namespace CppSharp
 
                 internal static new DefaultStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new DefaultStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -16927,6 +17129,8 @@ namespace CppSharp
                 private bool __name_OwnsNativeMemory = false;
                 internal static new LabelStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new LabelStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -17060,6 +17264,8 @@ namespace CppSharp
 
                 internal static new AttributedStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new AttributedStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -17176,6 +17382,8 @@ namespace CppSharp
 
                 internal static new IfStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new IfStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -17422,6 +17630,8 @@ namespace CppSharp
 
                 internal static new SwitchStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new SwitchStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -17612,6 +17822,8 @@ namespace CppSharp
 
                 internal static new WhileStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new WhileStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -17762,6 +17974,8 @@ namespace CppSharp
 
                 internal static new DoStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new DoStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -17914,6 +18128,8 @@ namespace CppSharp
 
                 internal static new ForStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ForStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -18102,6 +18318,8 @@ namespace CppSharp
 
                 internal static new GotoStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new GotoStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -18208,6 +18426,8 @@ namespace CppSharp
 
                 internal static new IndirectGotoStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new IndirectGotoStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -18326,6 +18546,8 @@ namespace CppSharp
 
                 internal static new ContinueStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ContinueStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -18417,6 +18639,8 @@ namespace CppSharp
 
                 internal static new BreakStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new BreakStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -18509,6 +18733,8 @@ namespace CppSharp
 
                 internal static new ReturnStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ReturnStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -18652,6 +18878,8 @@ namespace CppSharp
 
                 internal static new AsmStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new AsmStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -18738,8 +18966,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Expr Getinputs(uint i)
                 {
-                    var __ret = __Internal.Getinputs(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Expr.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.Getinputs(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Expr.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -18759,8 +18987,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Expr Getoutputs(uint i)
                 {
-                    var __ret = __Internal.Getoutputs(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Expr.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.Getoutputs(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Expr.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -18878,8 +19106,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetinputsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetinputsCount(__Instance);
+                        return ___ret;
                     }
                 }
 
@@ -18887,8 +19115,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetoutputsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetoutputsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -18970,6 +19198,8 @@ namespace CppSharp
 
                     internal static AsmStringPiece __CreateInstance(__IntPtr native, bool skipVTables = false)
                     {
+                        if (native == __IntPtr.Zero)
+                            return null;
                         return new AsmStringPiece(native.ToPointer(), skipVTables);
                     }
 
@@ -19119,6 +19349,8 @@ namespace CppSharp
 
                 internal static new GCCAsmStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new GCCAsmStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -19243,6 +19475,8 @@ namespace CppSharp
 
                 internal static new MSAsmStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new MSAsmStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -19394,6 +19628,8 @@ namespace CppSharp
 
                 internal static new SEHExceptStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new SEHExceptStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -19514,6 +19750,8 @@ namespace CppSharp
 
                 internal static new SEHFinallyStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new SEHFinallyStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -19624,6 +19862,8 @@ namespace CppSharp
 
                 internal static new SEHTryStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new SEHTryStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -19784,6 +20024,8 @@ namespace CppSharp
 
                 internal static new SEHLeaveStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new SEHLeaveStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -19937,6 +20179,8 @@ namespace CppSharp
 
                     internal static Capture __CreateInstance(__IntPtr native, bool skipVTables = false)
                     {
+                        if (native == __IntPtr.Zero)
+                            return null;
                         return new Capture(native.ToPointer(), skipVTables);
                     }
 
@@ -20093,6 +20337,8 @@ namespace CppSharp
 
                 internal static new CapturedStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CapturedStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -20170,8 +20416,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Expr GetcaptureInits(uint i)
                 {
-                    var __ret = __Internal.GetcaptureInits(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Expr.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetcaptureInits(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Expr.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -20220,8 +20466,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetcaptureInitsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetcaptureInitsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -20248,6 +20494,8 @@ namespace CppSharp
 
                 internal static new CXXCatchStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXCatchStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -20370,6 +20618,8 @@ namespace CppSharp
 
                 internal static new CXXTryStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXTryStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -20500,6 +20750,8 @@ namespace CppSharp
 
                 internal static new CXXForRangeStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXForRangeStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -20759,6 +21011,8 @@ namespace CppSharp
 
                 internal static new MSDependentExistsStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new MSDependentExistsStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -20949,6 +21203,8 @@ namespace CppSharp
 
                     internal static CtorArgs __CreateInstance(__IntPtr native, bool skipVTables = false)
                     {
+                        if (native == __IntPtr.Zero)
+                            return null;
                         return new CtorArgs(native.ToPointer(), skipVTables);
                     }
 
@@ -21027,6 +21283,8 @@ namespace CppSharp
 
                 internal static new CoroutineBodyStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CoroutineBodyStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -21296,6 +21554,8 @@ namespace CppSharp
 
                 internal static new CoreturnStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CoreturnStmt(native.ToPointer(), skipVTables);
                 }
 
@@ -21771,6 +22031,8 @@ namespace CppSharp
 
                     internal static Classification __CreateInstance(__IntPtr native, bool skipVTables = false)
                     {
+                        if (native == __IntPtr.Zero)
+                            return null;
                         return new Classification(native.ToPointer(), skipVTables);
                     }
 
@@ -21953,6 +22215,8 @@ namespace CppSharp
 
                 internal static new Expr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new Expr(native.ToPointer(), skipVTables);
                 }
 
@@ -22248,6 +22512,8 @@ namespace CppSharp
 
                 internal static new FullExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new FullExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -22368,6 +22634,8 @@ namespace CppSharp
 
                 internal static new ConstantExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ConstantExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -22462,6 +22730,8 @@ namespace CppSharp
 
                 internal static new OpaqueValueExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new OpaqueValueExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -22605,6 +22875,8 @@ namespace CppSharp
 
                 internal static new DeclRefExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new DeclRefExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -22855,6 +23127,8 @@ namespace CppSharp
 
                 internal static new IntegerLiteral __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new IntegerLiteral(native.ToPointer(), skipVTables);
                 }
 
@@ -22974,6 +23248,8 @@ namespace CppSharp
 
                 internal static new FixedPointLiteral __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new FixedPointLiteral(native.ToPointer(), skipVTables);
                 }
 
@@ -23103,6 +23379,8 @@ namespace CppSharp
 
                 internal static new CharacterLiteral __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CharacterLiteral(native.ToPointer(), skipVTables);
                 }
 
@@ -23236,6 +23514,8 @@ namespace CppSharp
 
                 internal static new FloatingLiteral __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new FloatingLiteral(native.ToPointer(), skipVTables);
                 }
 
@@ -23367,6 +23647,8 @@ namespace CppSharp
 
                 internal static new ImaginaryLiteral __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ImaginaryLiteral(native.ToPointer(), skipVTables);
                 }
 
@@ -23499,6 +23781,8 @@ namespace CppSharp
 
                 internal static new StringLiteral __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new StringLiteral(native.ToPointer(), skipVTables);
                 }
 
@@ -23819,6 +24103,8 @@ namespace CppSharp
 
                 internal static new PredefinedExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new PredefinedExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -23939,6 +24225,8 @@ namespace CppSharp
 
                 internal static new ParenExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ParenExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -24081,6 +24369,8 @@ namespace CppSharp
 
                 internal static new UnaryOperator __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new UnaryOperator(native.ToPointer(), skipVTables);
                 }
 
@@ -24320,6 +24610,8 @@ namespace CppSharp
 
                 internal static new OffsetOfExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new OffsetOfExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -24470,6 +24762,8 @@ namespace CppSharp
 
                 internal static new UnaryExprOrTypeTraitExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new UnaryExprOrTypeTraitExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -24662,6 +24956,8 @@ namespace CppSharp
 
                 internal static new ArraySubscriptExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ArraySubscriptExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -24849,6 +25145,8 @@ namespace CppSharp
 
                 internal static new CallExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CallExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -24935,8 +25233,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Expr Getarguments(uint i)
                 {
-                    var __ret = __Internal.Getarguments(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Expr.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.Getarguments(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Expr.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -25070,8 +25368,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetargumentsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetargumentsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -25122,6 +25420,8 @@ namespace CppSharp
 
                 internal static new MemberExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new MemberExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -25386,6 +25686,8 @@ namespace CppSharp
 
                 internal static new CompoundLiteralExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CompoundLiteralExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -25528,6 +25830,8 @@ namespace CppSharp
                 private bool __castKindName_OwnsNativeMemory = false;
                 internal static new CastExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CastExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -25754,6 +26058,8 @@ namespace CppSharp
 
                 internal static new ImplicitCastExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ImplicitCastExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -25869,6 +26175,8 @@ namespace CppSharp
 
                 internal static new ExplicitCastExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ExplicitCastExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -25999,6 +26307,8 @@ namespace CppSharp
 
                 internal static new CStyleCastExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CStyleCastExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -26141,6 +26451,8 @@ namespace CppSharp
 
                 internal static new BinaryOperator __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new BinaryOperator(native.ToPointer(), skipVTables);
                 }
 
@@ -26538,6 +26850,8 @@ namespace CppSharp
 
                 internal static new CompoundAssignOperator __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CompoundAssignOperator(native.ToPointer(), skipVTables);
                 }
 
@@ -26685,6 +26999,8 @@ namespace CppSharp
 
                 internal static new AbstractConditionalOperator __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new AbstractConditionalOperator(native.ToPointer(), skipVTables);
                 }
 
@@ -26865,6 +27181,8 @@ namespace CppSharp
 
                 internal static new ConditionalOperator __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ConditionalOperator(native.ToPointer(), skipVTables);
                 }
 
@@ -26991,6 +27309,8 @@ namespace CppSharp
 
                 internal static new BinaryConditionalOperator __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new BinaryConditionalOperator(native.ToPointer(), skipVTables);
                 }
 
@@ -27112,6 +27432,8 @@ namespace CppSharp
 
                 internal static new AddrLabelExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new AddrLabelExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -27232,6 +27554,8 @@ namespace CppSharp
 
                 internal static new StmtExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new StmtExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -27366,6 +27690,8 @@ namespace CppSharp
 
                 internal static new ShuffleVectorExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ShuffleVectorExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -27499,6 +27825,8 @@ namespace CppSharp
 
                 internal static new ConvertVectorExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ConvertVectorExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -27638,6 +27966,8 @@ namespace CppSharp
 
                 internal static new ChooseExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ChooseExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -27838,6 +28168,8 @@ namespace CppSharp
 
                 internal static new GNUNullExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new GNUNullExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -27946,6 +28278,8 @@ namespace CppSharp
 
                 internal static new VAArgExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new VAArgExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -28102,6 +28436,8 @@ namespace CppSharp
 
                 internal static new InitListExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new InitListExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -28400,6 +28736,8 @@ namespace CppSharp
 
                     internal static Designator __CreateInstance(__IntPtr native, bool skipVTables = false)
                     {
+                        if (native == __IntPtr.Zero)
+                            return null;
                         return new Designator(native.ToPointer(), skipVTables);
                     }
 
@@ -28654,6 +28992,8 @@ namespace CppSharp
 
                     internal static FieldDesignator __CreateInstance(__IntPtr native, bool skipVTables = false)
                     {
+                        if (native == __IntPtr.Zero)
+                            return null;
                         return new FieldDesignator(native.ToPointer(), skipVTables);
                     }
 
@@ -28762,6 +29102,8 @@ namespace CppSharp
 
                     internal static ArrayOrRangeDesignator __CreateInstance(__IntPtr native, bool skipVTables = false)
                     {
+                        if (native == __IntPtr.Zero)
+                            return null;
                         return new ArrayOrRangeDesignator(native.ToPointer(), skipVTables);
                     }
 
@@ -28840,6 +29182,8 @@ namespace CppSharp
 
                 internal static new DesignatedInitExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new DesignatedInitExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -29012,6 +29356,8 @@ namespace CppSharp
 
                 internal static new NoInitExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new NoInitExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -29105,6 +29451,8 @@ namespace CppSharp
 
                 internal static new DesignatedInitUpdateExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new DesignatedInitUpdateExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -29226,6 +29574,8 @@ namespace CppSharp
 
                 internal static new ArrayInitLoopExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ArrayInitLoopExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -29345,6 +29695,8 @@ namespace CppSharp
 
                 internal static new ArrayInitIndexExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ArrayInitIndexExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -29436,6 +29788,8 @@ namespace CppSharp
 
                 internal static new ImplicitValueInitExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ImplicitValueInitExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -29530,6 +29884,8 @@ namespace CppSharp
 
                 internal static new ParenListExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ParenListExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -29668,6 +30024,8 @@ namespace CppSharp
 
                 internal static new GenericSelectionExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new GenericSelectionExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -29870,6 +30228,8 @@ namespace CppSharp
 
                 internal static new ExtVectorElementExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ExtVectorElementExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -30029,6 +30389,8 @@ namespace CppSharp
 
                 internal static new BlockExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new BlockExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -30150,6 +30512,8 @@ namespace CppSharp
 
                 internal static new AsTypeExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new AsTypeExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -30285,6 +30649,8 @@ namespace CppSharp
 
                 internal static new PseudoObjectExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new PseudoObjectExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -30495,6 +30861,8 @@ namespace CppSharp
 
                 internal static new AtomicExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new AtomicExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -30790,6 +31158,8 @@ namespace CppSharp
 
                 internal static new TypoExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new TypoExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -30897,6 +31267,8 @@ namespace CppSharp
 
                 internal static new CXXOperatorCallExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXOperatorCallExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -31072,6 +31444,8 @@ namespace CppSharp
 
                 internal static new CXXMemberCallExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXMemberCallExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -31222,6 +31596,8 @@ namespace CppSharp
 
                 internal static new CUDAKernelCallExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CUDAKernelCallExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -31361,6 +31737,8 @@ namespace CppSharp
                 private bool __castName_OwnsNativeMemory = false;
                 internal static new CXXNamedCastExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXNamedCastExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -31546,6 +31924,8 @@ namespace CppSharp
 
                 internal static new CXXStaticCastExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXStaticCastExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -31650,6 +32030,8 @@ namespace CppSharp
 
                 internal static new CXXDynamicCastExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXDynamicCastExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -31766,6 +32148,8 @@ namespace CppSharp
 
                 internal static new CXXReinterpretCastExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXReinterpretCastExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -31869,6 +32253,8 @@ namespace CppSharp
 
                 internal static new CXXConstCastExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXConstCastExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -31985,6 +32371,8 @@ namespace CppSharp
 
                 internal static new UserDefinedLiteral __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new UserDefinedLiteral(native.ToPointer(), skipVTables);
                 }
 
@@ -32136,6 +32524,8 @@ namespace CppSharp
 
                 internal static new CXXBoolLiteralExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXBoolLiteralExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -32254,6 +32644,8 @@ namespace CppSharp
 
                 internal static new CXXNullPtrLiteralExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXNullPtrLiteralExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -32359,6 +32751,8 @@ namespace CppSharp
 
                 internal static new CXXStdInitializerListExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXStdInitializerListExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -32467,6 +32861,8 @@ namespace CppSharp
 
                 internal static new CXXTypeidExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXTypeidExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -32602,6 +32998,8 @@ namespace CppSharp
 
                 internal static new MSPropertyRefExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new MSPropertyRefExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -32749,6 +33147,8 @@ namespace CppSharp
 
                 internal static new MSPropertySubscriptExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new MSPropertySubscriptExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -32887,6 +33287,8 @@ namespace CppSharp
 
                 internal static new CXXUuidofExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXUuidofExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -33039,6 +33441,8 @@ namespace CppSharp
 
                 internal static new CXXThisExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXThisExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -33159,6 +33563,8 @@ namespace CppSharp
 
                 internal static new CXXThrowExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXThrowExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -33292,6 +33698,8 @@ namespace CppSharp
 
                 internal static new CXXDefaultArgExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXDefaultArgExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -33412,6 +33820,8 @@ namespace CppSharp
 
                 internal static new CXXDefaultInitExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXDefaultInitExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -33532,6 +33942,8 @@ namespace CppSharp
 
                 internal static new CXXBindTemporaryExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXBindTemporaryExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -33672,6 +34084,8 @@ namespace CppSharp
 
                 internal static new CXXConstructExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXConstructExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -33758,8 +34172,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Expr Getarguments(uint i)
                 {
-                    var __ret = __Internal.Getarguments(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Expr.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.Getarguments(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Expr.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -33892,8 +34306,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetargumentsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetargumentsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -33934,6 +34348,8 @@ namespace CppSharp
 
                 internal static new CXXInheritedCtorInitExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXInheritedCtorInitExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -34075,6 +34491,8 @@ namespace CppSharp
 
                 internal static new CXXFunctionalCastExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXFunctionalCastExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -34217,6 +34635,8 @@ namespace CppSharp
 
                 internal static new CXXTemporaryObjectExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXTemporaryObjectExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -34351,6 +34771,8 @@ namespace CppSharp
 
                 internal static new LambdaExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new LambdaExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -34428,8 +34850,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Expr GetcaptureInits(uint i)
                 {
-                    var __ret = __Internal.GetcaptureInits(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Expr.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetcaptureInits(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Expr.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -34572,8 +34994,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetcaptureInitsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetcaptureInitsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -34612,6 +35034,8 @@ namespace CppSharp
 
                 internal static new CXXScalarValueInitExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXScalarValueInitExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -34753,6 +35177,8 @@ namespace CppSharp
 
                 internal static new CXXNewExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXNewExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -34830,8 +35256,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Expr GetplacementArguments(uint i)
                 {
-                    var __ret = __Internal.GetplacementArguments(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Expr.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.GetplacementArguments(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Expr.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -35046,8 +35472,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetplacementArgumentsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetplacementArgumentsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -35091,6 +35517,8 @@ namespace CppSharp
 
                 internal static new CXXDeleteExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXDeleteExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -35272,6 +35700,8 @@ namespace CppSharp
 
                 internal static new CXXPseudoDestructorExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXPseudoDestructorExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -35472,6 +35902,8 @@ namespace CppSharp
 
                 internal static new TypeTraitExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new TypeTraitExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -35592,6 +36024,8 @@ namespace CppSharp
 
                 internal static new ArrayTypeTraitExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ArrayTypeTraitExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -35727,6 +36161,8 @@ namespace CppSharp
 
                 internal static new ExpressionTraitExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ExpressionTraitExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -35886,6 +36322,8 @@ namespace CppSharp
 
                     internal static FindResult __CreateInstance(__IntPtr native, bool skipVTables = false)
                     {
+                        if (native == __IntPtr.Zero)
+                            return null;
                         return new FindResult(native.ToPointer(), skipVTables);
                     }
 
@@ -35964,6 +36402,8 @@ namespace CppSharp
 
                 internal static new OverloadExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new OverloadExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -36183,6 +36623,8 @@ namespace CppSharp
 
                 internal static new UnresolvedLookupExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new UnresolvedLookupExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -36307,6 +36749,8 @@ namespace CppSharp
 
                 internal static new DependentScopeDeclRefExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new DependentScopeDeclRefExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -36492,6 +36936,8 @@ namespace CppSharp
 
                 internal static new ExprWithCleanups __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new ExprWithCleanups(native.ToPointer(), skipVTables);
                 }
 
@@ -36630,6 +37076,8 @@ namespace CppSharp
 
                 internal static new CXXUnresolvedConstructExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXUnresolvedConstructExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -36707,8 +37155,8 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.Expr Getarguments(uint i)
                 {
-                    var __ret = __Internal.Getarguments(__Instance, i);
-                    var __result0 = global::CppSharp.Parser.AST.Expr.__GetOrCreateInstance(__ret, false);
+                    var ___ret = __Internal.Getarguments(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Expr.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
 
@@ -36797,8 +37245,8 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = __Internal.GetargumentsCount(__Instance);
-                        return __ret;
+                        var ___ret = __Internal.GetargumentsCount(__Instance);
+                        return ___ret;
                     }
                 }
             }
@@ -36849,6 +37297,8 @@ namespace CppSharp
 
                 internal static new CXXDependentScopeMemberExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXDependentScopeMemberExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -37128,6 +37578,8 @@ namespace CppSharp
 
                 internal static new UnresolvedMemberExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new UnresolvedMemberExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -37315,6 +37767,8 @@ namespace CppSharp
 
                 internal static new CXXNoexceptExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXNoexceptExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -37435,6 +37889,8 @@ namespace CppSharp
 
                 internal static new PackExpansionExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new PackExpansionExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -37559,6 +38015,8 @@ namespace CppSharp
 
                 internal static new SizeOfPackExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new SizeOfPackExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -37731,6 +38189,8 @@ namespace CppSharp
 
                 internal static new SubstNonTypeTemplateParmExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new SubstNonTypeTemplateParmExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -37851,6 +38311,8 @@ namespace CppSharp
 
                 internal static new SubstNonTypeTemplateParmPackExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new SubstNonTypeTemplateParmPackExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -37972,6 +38434,8 @@ namespace CppSharp
 
                 internal static new FunctionParmPackExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new FunctionParmPackExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -38123,6 +38587,8 @@ namespace CppSharp
 
                     internal static ExtraState __CreateInstance(__IntPtr native, bool skipVTables = false)
                     {
+                        if (native == __IntPtr.Zero)
+                            return null;
                         return new ExtraState(native.ToPointer(), skipVTables);
                     }
 
@@ -38201,6 +38667,8 @@ namespace CppSharp
 
                 internal static new MaterializeTemporaryExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new MaterializeTemporaryExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -38354,6 +38822,8 @@ namespace CppSharp
 
                 internal static new CXXFoldExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CXXFoldExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -38571,6 +39041,8 @@ namespace CppSharp
 
                 internal static new CoroutineSuspendExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CoroutineSuspendExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -38767,6 +39239,8 @@ namespace CppSharp
 
                 internal static new CoawaitExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CoawaitExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -38888,6 +39362,8 @@ namespace CppSharp
 
                 internal static new DependentCoawaitExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new DependentCoawaitExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -39027,6 +39503,8 @@ namespace CppSharp
 
                 internal static new CoyieldExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
                 {
+                    if (native == __IntPtr.Zero)
+                        return null;
                     return new CoyieldExpr(native.ToPointer(), skipVTables);
                 }
 
@@ -39198,6 +39676,8 @@ namespace CppSharp
 
             internal static ParserTargetInfo __CreateInstance(__IntPtr native, bool skipVTables = false)
             {
+                if (native == __IntPtr.Zero)
+                    return null;
                 return new ParserTargetInfo(native.ToPointer(), skipVTables);
             }
 
@@ -39870,6 +40350,8 @@ namespace CppSharp
 
             internal static Parser __CreateInstance(__IntPtr native, bool skipVTables = false)
             {
+                if (native == __IntPtr.Zero)
+                    return null;
                 return new Parser(native.ToPointer(), skipVTables);
             }
 
@@ -40080,6 +40562,8 @@ namespace CppSharp
 
             internal static CppParserOptions __CreateInstance(__IntPtr native, bool skipVTables = false)
             {
+                if (native == __IntPtr.Zero)
+                    return null;
                 return new CppParserOptions(native.ToPointer(), skipVTables);
             }
 
@@ -40162,8 +40646,8 @@ namespace CppSharp
 
             public string GetArguments(uint i)
             {
-                var __ret = __Internal.GetArguments(__Instance, i);
-                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
+                var ___ret = __Internal.GetArguments(__Instance, i);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
             }
 
             public void AddArguments(string s)
@@ -40178,8 +40662,8 @@ namespace CppSharp
 
             public string GetCompilationOptions(uint i)
             {
-                var __ret = __Internal.GetCompilationOptions(__Instance, i);
-                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
+                var ___ret = __Internal.GetCompilationOptions(__Instance, i);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
             }
 
             public void AddCompilationOptions(string s)
@@ -40194,8 +40678,8 @@ namespace CppSharp
 
             public string GetSourceFiles(uint i)
             {
-                var __ret = __Internal.GetSourceFiles(__Instance, i);
-                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
+                var ___ret = __Internal.GetSourceFiles(__Instance, i);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
             }
 
             public void AddSourceFiles(string s)
@@ -40210,8 +40694,8 @@ namespace CppSharp
 
             public string GetIncludeDirs(uint i)
             {
-                var __ret = __Internal.GetIncludeDirs(__Instance, i);
-                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
+                var ___ret = __Internal.GetIncludeDirs(__Instance, i);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
             }
 
             public void AddIncludeDirs(string s)
@@ -40226,8 +40710,8 @@ namespace CppSharp
 
             public string GetSystemIncludeDirs(uint i)
             {
-                var __ret = __Internal.GetSystemIncludeDirs(__Instance, i);
-                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
+                var ___ret = __Internal.GetSystemIncludeDirs(__Instance, i);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
             }
 
             public void AddSystemIncludeDirs(string s)
@@ -40242,8 +40726,8 @@ namespace CppSharp
 
             public string GetDefines(uint i)
             {
-                var __ret = __Internal.GetDefines(__Instance, i);
-                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
+                var ___ret = __Internal.GetDefines(__Instance, i);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
             }
 
             public void AddDefines(string s)
@@ -40258,8 +40742,8 @@ namespace CppSharp
 
             public string GetUndefines(uint i)
             {
-                var __ret = __Internal.GetUndefines(__Instance, i);
-                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
+                var ___ret = __Internal.GetUndefines(__Instance, i);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
             }
 
             public void AddUndefines(string s)
@@ -40274,8 +40758,8 @@ namespace CppSharp
 
             public string GetSupportedStdTypes(uint i)
             {
-                var __ret = __Internal.GetSupportedStdTypes(__Instance, i);
-                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
+                var ___ret = __Internal.GetSupportedStdTypes(__Instance, i);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
             }
 
             public void AddSupportedStdTypes(string s)
@@ -40290,8 +40774,8 @@ namespace CppSharp
 
             public string GetSupportedFunctionTemplates(uint i)
             {
-                var __ret = __Internal.GetSupportedFunctionTemplates(__Instance, i);
-                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
+                var ___ret = __Internal.GetSupportedFunctionTemplates(__Instance, i);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
             }
 
             public void AddSupportedFunctionTemplates(string s)
@@ -40453,9 +40937,9 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ret = new global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C();
-                    __Internal.GetClangVersion(new IntPtr(&__ret), __Instance);
-                    var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&__ret));
+                    var ___ret = new global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C();
+                    __Internal.GetClangVersion(new IntPtr(&___ret), __Instance);
+                    var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&___ret));
                     var __retString0 = global::Std.BasicStringExtensions.Data(__basicStringRet0);
                     __basicStringRet0.Dispose();
                     return __retString0;
@@ -40466,8 +40950,8 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ret = __Internal.GetArgumentsCount(__Instance);
-                    return __ret;
+                    var ___ret = __Internal.GetArgumentsCount(__Instance);
+                    return ___ret;
                 }
             }
 
@@ -40475,8 +40959,8 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ret = __Internal.GetCompilationOptionsCount(__Instance);
-                    return __ret;
+                    var ___ret = __Internal.GetCompilationOptionsCount(__Instance);
+                    return ___ret;
                 }
             }
 
@@ -40484,8 +40968,8 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ret = __Internal.GetSourceFilesCount(__Instance);
-                    return __ret;
+                    var ___ret = __Internal.GetSourceFilesCount(__Instance);
+                    return ___ret;
                 }
             }
 
@@ -40493,8 +40977,8 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ret = __Internal.GetIncludeDirsCount(__Instance);
-                    return __ret;
+                    var ___ret = __Internal.GetIncludeDirsCount(__Instance);
+                    return ___ret;
                 }
             }
 
@@ -40502,8 +40986,8 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ret = __Internal.GetSystemIncludeDirsCount(__Instance);
-                    return __ret;
+                    var ___ret = __Internal.GetSystemIncludeDirsCount(__Instance);
+                    return ___ret;
                 }
             }
 
@@ -40511,8 +40995,8 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ret = __Internal.GetDefinesCount(__Instance);
-                    return __ret;
+                    var ___ret = __Internal.GetDefinesCount(__Instance);
+                    return ___ret;
                 }
             }
 
@@ -40520,8 +41004,8 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ret = __Internal.GetUndefinesCount(__Instance);
-                    return __ret;
+                    var ___ret = __Internal.GetUndefinesCount(__Instance);
+                    return ___ret;
                 }
             }
 
@@ -40529,8 +41013,8 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ret = __Internal.GetSupportedStdTypesCount(__Instance);
-                    return __ret;
+                    var ___ret = __Internal.GetSupportedStdTypesCount(__Instance);
+                    return ___ret;
                 }
             }
 
@@ -40538,8 +41022,8 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ret = __Internal.GetSupportedFunctionTemplatesCount(__Instance);
-                    return __ret;
+                    var ___ret = __Internal.GetSupportedFunctionTemplatesCount(__Instance);
+                    return ___ret;
                 }
             }
         }
@@ -40619,6 +41103,8 @@ namespace CppSharp
 
             internal static CppLinkerOptions __CreateInstance(__IntPtr native, bool skipVTables = false)
             {
+                if (native == __IntPtr.Zero)
+                    return null;
                 return new CppLinkerOptions(native.ToPointer(), skipVTables);
             }
 
@@ -40701,8 +41187,8 @@ namespace CppSharp
 
             public string GetArguments(uint i)
             {
-                var __ret = __Internal.GetArguments(__Instance, i);
-                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
+                var ___ret = __Internal.GetArguments(__Instance, i);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
             }
 
             public void AddArguments(string s)
@@ -40717,8 +41203,8 @@ namespace CppSharp
 
             public string GetLibraryDirs(uint i)
             {
-                var __ret = __Internal.GetLibraryDirs(__Instance, i);
-                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
+                var ___ret = __Internal.GetLibraryDirs(__Instance, i);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
             }
 
             public void AddLibraryDirs(string s)
@@ -40733,8 +41219,8 @@ namespace CppSharp
 
             public string GetLibraries(uint i)
             {
-                var __ret = __Internal.GetLibraries(__Instance, i);
-                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, __ret);
+                var ___ret = __Internal.GetLibraries(__Instance, i);
+                return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
             }
 
             public void AddLibraries(string s)
@@ -40751,8 +41237,8 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ret = __Internal.GetArgumentsCount(__Instance);
-                    return __ret;
+                    var ___ret = __Internal.GetArgumentsCount(__Instance);
+                    return ___ret;
                 }
             }
 
@@ -40760,8 +41246,8 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ret = __Internal.GetLibraryDirsCount(__Instance);
-                    return __ret;
+                    var ___ret = __Internal.GetLibraryDirsCount(__Instance);
+                    return ___ret;
                 }
             }
 
@@ -40769,8 +41255,8 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ret = __Internal.GetLibrariesCount(__Instance);
-                    return __ret;
+                    var ___ret = __Internal.GetLibrariesCount(__Instance);
+                    return ___ret;
                 }
             }
         }
@@ -40816,6 +41302,8 @@ namespace CppSharp
 
             internal static ParserDiagnostic __CreateInstance(__IntPtr native, bool skipVTables = false)
             {
+                if (native == __IntPtr.Zero)
+                    return null;
                 return new ParserDiagnostic(native.ToPointer(), skipVTables);
             }
 
@@ -41028,6 +41516,8 @@ namespace CppSharp
 
             internal static ParserResult __CreateInstance(__IntPtr native, bool skipVTables = false)
             {
+                if (native == __IntPtr.Zero)
+                    return null;
                 return new ParserResult(native.ToPointer(), skipVTables);
             }
 
@@ -41110,11 +41600,11 @@ namespace CppSharp
 
             public global::CppSharp.Parser.ParserDiagnostic GetDiagnostics(uint i)
             {
-                var __ret = new global::CppSharp.Parser.ParserDiagnostic.__Internal();
-                __Internal.GetDiagnostics(new IntPtr(&__ret), __Instance, i);
-                var ____ret = global::CppSharp.Parser.ParserDiagnostic.__CreateInstance(__ret);
-                global::CppSharp.Parser.ParserDiagnostic.__Internal.dtor(new __IntPtr(&__ret));
-                return ____ret;
+                var ___ret = new global::CppSharp.Parser.ParserDiagnostic.__Internal();
+                __Internal.GetDiagnostics(new IntPtr(&___ret), __Instance, i);
+                var _____ret = global::CppSharp.Parser.ParserDiagnostic.__CreateInstance(___ret);
+                global::CppSharp.Parser.ParserDiagnostic.__Internal.dtor(new __IntPtr(&___ret));
+                return _____ret;
             }
 
             public void AddDiagnostics(global::CppSharp.Parser.ParserDiagnostic s)
@@ -41132,8 +41622,8 @@ namespace CppSharp
 
             public global::CppSharp.Parser.AST.NativeLibrary GetLibraries(uint i)
             {
-                var __ret = __Internal.GetLibraries(__Instance, i);
-                var __result0 = global::CppSharp.Parser.AST.NativeLibrary.__GetOrCreateInstance(__ret, false);
+                var ___ret = __Internal.GetLibraries(__Instance, i);
+                var __result0 = global::CppSharp.Parser.AST.NativeLibrary.__GetOrCreateInstance(___ret, false);
                 return __result0;
             }
 
@@ -41182,8 +41672,8 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ret = __Internal.GetDiagnosticsCount(__Instance);
-                    return __ret;
+                    var ___ret = __Internal.GetDiagnosticsCount(__Instance);
+                    return ___ret;
                 }
             }
 
@@ -41191,8 +41681,8 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ret = __Internal.GetLibrariesCount(__Instance);
-                    return __ret;
+                    var ___ret = __Internal.GetLibrariesCount(__Instance);
+                    return ___ret;
                 }
             }
         }
@@ -41241,6 +41731,8 @@ namespace CppSharp
 
             internal static ClangParser __CreateInstance(__IntPtr native, bool skipVTables = false)
             {
+                if (native == __IntPtr.Zero)
+                    return null;
                 return new ClangParser(native.ToPointer(), skipVTables);
             }
 
@@ -41318,16 +41810,16 @@ namespace CppSharp
             public static global::CppSharp.Parser.ParserResult ParseHeader(global::CppSharp.Parser.CppParserOptions Opts)
             {
                 var __arg0 = Opts is null ? __IntPtr.Zero : Opts.__Instance;
-                var __ret = __Internal.ParseHeader(__arg0);
-                var __result0 = global::CppSharp.Parser.ParserResult.__GetOrCreateInstance(__ret, false);
+                var ___ret = __Internal.ParseHeader(__arg0);
+                var __result0 = global::CppSharp.Parser.ParserResult.__GetOrCreateInstance(___ret, false);
                 return __result0;
             }
 
             public static global::CppSharp.Parser.ParserResult ParseLibrary(global::CppSharp.Parser.CppLinkerOptions Opts)
             {
                 var __arg0 = Opts is null ? __IntPtr.Zero : Opts.__Instance;
-                var __ret = __Internal.ParseLibrary(__arg0);
-                var __result0 = global::CppSharp.Parser.ParserResult.__GetOrCreateInstance(__ret, false);
+                var ___ret = __Internal.ParseLibrary(__arg0);
+                var __result0 = global::CppSharp.Parser.ParserResult.__GetOrCreateInstance(___ret, false);
                 return __result0;
             }
 
@@ -41338,9 +41830,9 @@ namespace CppSharp
                 var __basicString2 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
                 global::Std.BasicStringExtensions.Assign(__basicString2, File);
                 var __arg2 = __basicString2.__Instance;
-                var __ret = __Internal.Build(__arg0, __arg1, __arg2, Last);
+                var ___ret = __Internal.Build(__arg0, __arg1, __arg2, Last);
                 __basicString2.Dispose();
-                var __result0 = global::CppSharp.Parser.ParserResult.__GetOrCreateInstance(__ret, false);
+                var __result0 = global::CppSharp.Parser.ParserResult.__GetOrCreateInstance(___ret, false);
                 return __result0;
             }
 
@@ -41350,9 +41842,9 @@ namespace CppSharp
                 var __basicString1 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
                 global::Std.BasicStringExtensions.Assign(__basicString1, File);
                 var __arg1 = __basicString1.__Instance;
-                var __ret = __Internal.Compile(__arg0, __arg1);
+                var ___ret = __Internal.Compile(__arg0, __arg1);
                 __basicString1.Dispose();
-                var __result0 = global::CppSharp.Parser.ParserResult.__GetOrCreateInstance(__ret, false);
+                var __result0 = global::CppSharp.Parser.ParserResult.__GetOrCreateInstance(___ret, false);
                 return __result0;
             }
 
@@ -41363,9 +41855,9 @@ namespace CppSharp
                 var __basicString2 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
                 global::Std.BasicStringExtensions.Assign(__basicString2, File);
                 var __arg2 = __basicString2.__Instance;
-                var __ret = __Internal.Link(__arg0, __arg1, __arg2, Last);
+                var ___ret = __Internal.Link(__arg0, __arg1, __arg2, Last);
                 __basicString2.Dispose();
-                var __result0 = global::CppSharp.Parser.ParserResult.__GetOrCreateInstance(__ret, false);
+                var __result0 = global::CppSharp.Parser.ParserResult.__GetOrCreateInstance(___ret, false);
                 return __result0;
             }
         }
