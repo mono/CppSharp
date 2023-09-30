@@ -73,7 +73,8 @@ end
 
 local function target_framework()
   local value =  _OPTIONS["target-framework"]
-  return string.isempty(value) and "net6.0" or value
+  local default_framework = _ACTION <= "vs2019" and "net5.0" or "net6.0"
+  return string.isempty(value) and default_framework or value
 end
 
 targetframework = target_framework()
