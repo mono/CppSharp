@@ -1995,4 +1995,19 @@ public unsafe class CSharpTests
         Assert.IsTrue(CSharp.CSharp.PointerToClass.IsDefaultInstance);
         Assert.IsTrue(CSharp.CSharp.PointerToClass.IsValid);
     }
+
+    [Test]
+    public void TestCallByValueCopyConstructor()
+    {
+        using (var s = new CallByValueCopyConstructor())
+        {
+            s.A = 500;
+            CSharp.CSharp.CallByValueCopyConstructorFunction(s);
+            Assert.That(s.A, Is.EqualTo(500));
+        }
+
+        Assert.That(CallByValueCopyConstructor.ConstructorCalls, Is.EqualTo(1));
+        Assert.That(CallByValueCopyConstructor.CopyConstructorCalls, Is.EqualTo(1));
+        Assert.That(CallByValueCopyConstructor.DestructorCalls, Is.EqualTo(2));
+    }
 }

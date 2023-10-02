@@ -1603,3 +1603,16 @@ public:
 };
 
 DLL_API extern PointerTester* PointerToClass;
+
+struct DLL_API CallByValueCopyConstructor {
+    int a;
+    static int constructorCalls;
+    static int destructorCalls;
+    static int copyConstructorCalls;
+
+    CallByValueCopyConstructor();
+    ~CallByValueCopyConstructor();
+    CallByValueCopyConstructor(const CallByValueCopyConstructor& other);
+};
+
+DLL_API void CallByValueCopyConstructorFunction(CallByValueCopyConstructor s);
