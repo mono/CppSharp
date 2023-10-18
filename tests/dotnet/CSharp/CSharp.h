@@ -733,22 +733,22 @@ class DLL_API TestParamToInterfacePassBaseOne
 
 class DLL_API TestParamToInterfacePassBaseTwo
 {
-	int m;
+    int m;
 public:
-	int getM();
-	void setM(int n);
-	const TestParamToInterfacePassBaseTwo& operator++();
-	TestParamToInterfacePassBaseTwo();
-	TestParamToInterfacePassBaseTwo(int n);
+    int getM();
+    void setM(int n);
+    const TestParamToInterfacePassBaseTwo& operator++();
+    TestParamToInterfacePassBaseTwo();
+    TestParamToInterfacePassBaseTwo(int n);
 };
 
 class DLL_API TestParamToInterfacePass : public TestParamToInterfacePassBaseOne, public TestParamToInterfacePassBaseTwo
 {
 public:
-	TestParamToInterfacePassBaseTwo addM(TestParamToInterfacePassBaseTwo b);
-	TestParamToInterfacePassBaseTwo operator+(TestParamToInterfacePassBaseTwo b);
-	TestParamToInterfacePass(TestParamToInterfacePassBaseTwo b);
-	TestParamToInterfacePass();
+    TestParamToInterfacePassBaseTwo addM(TestParamToInterfacePassBaseTwo b);
+    TestParamToInterfacePassBaseTwo operator+(TestParamToInterfacePassBaseTwo b);
+    TestParamToInterfacePass(TestParamToInterfacePassBaseTwo b);
+    TestParamToInterfacePass();
 };
 
 class DLL_API HasProtectedVirtual
@@ -973,18 +973,18 @@ class DLL_API ClassWithVirtualBase : public virtual Foo
 
 namespace NamespaceA
 {
-	CS_VALUE_TYPE class DLL_API A
-	{
-	};
+    CS_VALUE_TYPE class DLL_API A
+    {
+    };
 }
 
 namespace NamespaceB
 {
-	class DLL_API B
-	{
-	public:
-		void Function(CS_OUT NamespaceA::A &a);
-	};
+    class DLL_API B
+    {
+    public:
+        void Function(CS_OUT NamespaceA::A &a);
+    };
 }
 
 class DLL_API HasPrivateVirtualProperty
@@ -1607,6 +1607,37 @@ DLL_API extern PointerTester* PointerToClass;
 union DLL_API UnionTester {
     float a;
     int b;
+    inline bool operator ==(const UnionTester& other) const {
+        return b == other.b;
+    }
 };
 
 int DLL_API ValueTypeOutParameter(CS_OUT UnionTester* testerA, CS_OUT UnionTester* testerB);
+
+template <class T>
+class Optional {
+public:
+    T m_value;
+    bool m_hasValue;
+
+    Optional() {
+        m_hasValue = false;
+    }
+
+    Optional(T value) {
+        m_value = std::move(value);
+        m_hasValue = true;
+    }
+
+    inline bool operator ==(const Optional<T>& rhs) const {
+        return (m_hasValue == rhs.m_hasValue && (!m_hasValue || m_value == rhs.m_value));
+    }
+
+    inline bool operator ==(const T& rhs) const {
+        return (m_hasValue && m_value == rhs);
+    }
+};
+
+// We just need a method that uses various instantiations of Optional.
+inline void DLL_API InstantiateOptionalTemplate(Optional<unsigned int>, Optional<std::string>,
+    Optional<TestComparison>, Optional<char*>, Optional<UnionTester>) { }

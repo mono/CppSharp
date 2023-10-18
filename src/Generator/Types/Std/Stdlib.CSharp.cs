@@ -329,7 +329,10 @@ namespace CppSharp.Types.Std
                 ctx.Return.Write($@"{qualifiedBasicString}Extensions.{
                     Helpers.InternalStruct}.{assign.Name}(new {
                     typePrinter.IntPtrType}(&{
-                    ctx.ReturnVarName}), {ctx.Parameter.Name})");
+                    ctx.ReturnVarName}), ");
+                if (ctx.Parameter.Type.IsTemplate())
+                    ctx.Return.Write("(string) (object) ");
+                ctx.Return.Write($"{ctx.Parameter.Name})");
                 ctx.ReturnVarName = string.Empty;
             }
             else
@@ -337,8 +340,13 @@ namespace CppSharp.Types.Std
                 var varBasicString = $"__basicString{ctx.ParameterIndex}";
                 ctx.Before.WriteLine($@"var {varBasicString} = new {
                     basicString.Visit(typePrinter)}();");
-                ctx.Before.WriteLine($@"{qualifiedBasicString}Extensions.{
-                    assign.Name}({varBasicString}, {ctx.Parameter.Name});");
+
+                ctx.Before.Write($@"{qualifiedBasicString}Extensions.{
+                    assign.Name}({varBasicString}, ");
+                if (ctx.Parameter.Type.IsTemplate())
+                    ctx.Before.Write("(string) (object) ");
+                ctx.Before.WriteLine($"{ctx.Parameter.Name});");
+
                 ctx.Return.Write($"{varBasicString}.{Helpers.InstanceIdentifier}");
                 ctx.Cleanup.WriteLine($@"{varBasicString}.Dispose({
                     (!Type.IsAddress() || ctx.Parameter?.IsIndirect == true ? "disposing: true, callNativeDtor:false" : string.Empty)});");

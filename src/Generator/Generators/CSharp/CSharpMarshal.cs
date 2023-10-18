@@ -601,7 +601,7 @@ namespace CppSharp.Generators.CSharp
                 if (Context.Context.Options.MarshalCharAsManagedChar &&
                     primitive == PrimitiveType.Char)
                 {
-                    Context.Return.Write($"({typePrinter.PrintNative(pointer)})");
+                    Context.Return.StringBuilder.Insert(0, $"({typePrinter.PrintNative(pointer)}) ");
                     if (isConst)
                         Context.Return.Write("&");
                     Context.Return.Write(param.Name);
@@ -643,8 +643,13 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
-                    Context.Before.WriteLine("var {0} = {1}.{2};",
-                        arg, Context.Parameter.Name, Helpers.InstanceIdentifier);
+                    Context.Before.Write($"var {arg} = ");
+                    if (pointer.Pointee.IsTemplate())
+                        Context.Before.Write($"(({Context.Parameter.Type}) (object) {Context.Parameter.Name})");
+                    else
+                        Context.Before.WriteLine(Context.Parameter.Name);
+                    Context.Before.WriteLine($".{Helpers.InstanceIdentifier};");
+                    
                     Context.Return.Write($"new {typePrinter.IntPtrType}(&{arg})");
                 }
 
@@ -805,7 +810,12 @@ namespace CppSharp.Generators.CSharp
 
         private void MarshalValueClass()
         {
-            Context.Return.Write("{0}.{1}", Context.Parameter.Name, Helpers.InstanceIdentifier);
+            if (Context.Parameter.Type.IsTemplate())
+                Context.Return.Write($"(({Context.Parameter.Type}) (object) {Context.Parameter.Name})");
+            else
+                Context.Return.Write(Context.Parameter.Name);
+
+            Context.Return.Write($".{Helpers.InstanceIdentifier}");
         }
 
         public override bool VisitFieldDecl(Field field)

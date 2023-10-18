@@ -439,6 +439,22 @@
             return false;
         }
 
+        public static bool IsTemplate(this Type type)
+        {
+            if (type is TemplateParameterType or TemplateParameterSubstitutionType)
+                return true;
+
+            var ptr = type;
+            while (ptr is PointerType pType)
+            {
+                ptr = pType.Pointee;
+                if (ptr is TemplateParameterType or TemplateParameterSubstitutionType)
+                    return true;
+            }
+
+            return false;
+        }
+
         public static Module GetModule(this Type type)
         {
             Declaration declaration;
