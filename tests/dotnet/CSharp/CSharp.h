@@ -1609,4 +1609,4 @@ union DLL_API UnionTester {
     int b;
 };
 
-void DLL_API ValueTypeOutParameter(CS_OUT UnionTester* testerA, CS_OUT UnionTester* testerB);
+int DLL_API ValueTypeOutParameter(CS_OUT UnionTester* testerA, CS_OUT UnionTester* testerB);

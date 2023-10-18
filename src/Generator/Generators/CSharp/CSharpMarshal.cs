@@ -637,9 +637,9 @@ namespace CppSharp.Generators.CSharp
                     Context.Before.WriteLine("fixed ({0}.{1}* {2} = &{3}.{4})",
                         Context.Parameter.QualifiedType, Helpers.InternalStruct,
                         arg, Context.Parameter.Name, Helpers.InstanceIdentifier);
+                    Context.HasCodeBlock = true;
                     Context.Before.WriteOpenBraceAndIndent();
                     Context.Return.Write($"new {typePrinter.IntPtrType}({arg})");
-                    Context.Cleanup.UnindentAndWriteCloseBrace();
                 }
                 else
                 {
