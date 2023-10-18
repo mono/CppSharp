@@ -1999,7 +1999,7 @@ public unsafe class CSharpTests
     [Test]
     public void TestValueTypeOutParameter()
     {
-        CSharp.CSharp.ValueTypeOutParameter(out var unionTestA, out var unionTestB);
+        Assert.AreEqual(2, CSharp.CSharp.ValueTypeOutParameter(out var unionTestA, out var unionTestB));
         Assert.AreEqual(2, unionTestA.A);
         Assert.AreEqual(2, unionTestB.B);
     }
