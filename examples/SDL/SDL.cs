@@ -53,6 +53,8 @@ namespace CppSharp
 
             ctx.IgnoreEnumWithMatchingItem("SDL_ENOMEM");
             ctx.IgnoreFunctionWithName("SDL_Error");
+
+            ctx.SetFunctionParameterUsage("SDL_PollEvent", 1, ParameterUsage.Out);
         }
 
         public void Postprocess(Driver driver, ASTContext ctx)
