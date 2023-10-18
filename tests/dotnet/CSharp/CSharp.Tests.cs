@@ -1995,4 +1995,11 @@ public unsafe class CSharpTests
         Assert.IsTrue(CSharp.CSharp.PointerToClass.IsDefaultInstance);
         Assert.IsTrue(CSharp.CSharp.PointerToClass.IsValid);
     }
+
+    [Test]
+    public void TestValueTypeOutParameter()
+    {
+	    CSharp.CSharp.ValueTypeOutParameter(out var unionTest);
+	    Assert.AreEqual(2, unionTest.A);
+    }
 }

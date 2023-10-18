@@ -1791,3 +1791,8 @@ bool PointerTester::IsValid()
 }
 
 PointerTester* PointerToClass = &internalPointerTesterInstance;
+
+void ValueTypeOutParameter(UnionTester* tester)
+{
+    tester->a = 2;
+}

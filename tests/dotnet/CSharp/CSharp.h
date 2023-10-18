@@ -1603,3 +1603,10 @@ public:
 };
 
 DLL_API extern PointerTester* PointerToClass;
+
+union DLL_API UnionTester {
+    float a;
+    int b;
+};
+
+void DLL_API ValueTypeOutParameter(CS_OUT UnionTester* tester);
