@@ -85,6 +85,7 @@ namespace CppSharp.Generators.CSharp
             GenerateUsings();
 
             WriteLine("#pragma warning disable CS0109 // Member does not hide an inherited member; new keyword is not required");
+            WriteLine("#pragma warning disable CS9084 // Struct member returns 'this' or other instance members by reference");
             NewLine();
 
             if (!string.IsNullOrEmpty(Module.OutputNamespace))

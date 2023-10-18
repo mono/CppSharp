@@ -2003,4 +2003,25 @@ public unsafe class CSharpTests
         Assert.AreEqual(2, unionTestA.A);
         Assert.AreEqual(2, unionTestB.B);
     }
+
+    [TestCase("hi")]
+    [TestCase(2u)]
+    public void TestOptional<T>(T value)
+    {
+        Assert.That(new CSharp.Optional<T>() != new CSharp.Optional<T>(value));
+        Assert.That(new CSharp.Optional<T>() != value);
+        Assert.That(new CSharp.Optional<T>() == new CSharp.Optional<T>());
+        Assert.That(new CSharp.Optional<T>(value) == new CSharp.Optional<T>(value));
+        Assert.That(new CSharp.Optional<T>(value) == value);
+    }
+
+    [Test]
+    public void TestOptionalIntPtr()
+    {
+        Assert.That(new CSharp.Optional<IntPtr>() != new CSharp.Optional<IntPtr>(IntPtr.MaxValue));
+        Assert.That(new CSharp.Optional<IntPtr>() != IntPtr.MaxValue);
+        Assert.That(new CSharp.Optional<IntPtr>() == new CSharp.Optional<IntPtr>());
+        Assert.That(new CSharp.Optional<IntPtr>(IntPtr.MaxValue) == new CSharp.Optional<IntPtr>(IntPtr.MaxValue));
+        Assert.That(new CSharp.Optional<IntPtr>(IntPtr.MaxValue) == IntPtr.MaxValue);
+    }
 }

@@ -52,6 +52,7 @@ namespace CppSharp.Passes
             if (!methodsWithDependentPointers.Any())
                 return false;
 
+            var hasMethods = false;
             var classExtensions = new Class { Name = $"{@class.Name}Extensions", IsStatic = true };
             foreach (var specialization in @class.Specializations.Where(s => s.IsGenerated))
                 foreach (var method in methodsWithDependentPointers.Where(
@@ -59,8 +60,10 @@ namespace CppSharp.Passes
                 {
                     var specializedMethod = specialization.Methods.FirstOrDefault(
                         m => m.InstantiatedFrom == method);
-                    if (specializedMethod == null)
+                    if (specializedMethod == null || specializedMethod.IsOperator)
                         continue;
+
+                    hasMethods = true;
 
                     Method extensionMethod = GetExtensionMethodForDependentPointer(specializedMethod);
                     classExtensions.Methods.Add(extensionMethod);
@@ -75,6 +78,10 @@ namespace CppSharp.Passes
                         extensionMethod.GenerationKind = GenerationKind.Generate;
                     }
                 }
+
+            if (!hasMethods)
+                return false;
+
             classExtensions.Namespace = @class.Namespace;
             classExtensions.OriginalClass = @class;
             extensions.Add(classExtensions);
