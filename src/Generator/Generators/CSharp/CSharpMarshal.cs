@@ -634,17 +634,20 @@ namespace CppSharp.Generators.CSharp
             {
                 if (Context.Parameter.Usage == ParameterUsage.Out)
                 {
-                    var qualifiedIdentifier = (@class.OriginalClass ?? @class).Visit(typePrinter);
-                    Context.Before.WriteLine("var {0} = new {1}.{2}();",
-                        arg, qualifiedIdentifier, Helpers.InternalStruct);
+                    Context.Before.WriteLine("fixed ({0}.{1}* {2} = &{3}.{4})",
+                        Context.Parameter.QualifiedType, Helpers.InternalStruct,
+                        arg, Context.Parameter.Name, Helpers.InstanceIdentifier);
+                    Context.Before.WriteOpenBraceAndIndent();
+                    Context.Return.Write($"new {typePrinter.IntPtrType}({arg})");
+                    Context.Cleanup.UnindentAndWriteCloseBrace();
                 }
                 else
                 {
                     Context.Before.WriteLine("var {0} = {1}.{2};",
                         arg, Context.Parameter.Name, Helpers.InstanceIdentifier);
+                    Context.Return.Write($"new {typePrinter.IntPtrType}(&{arg})");
                 }
 
-                Context.Return.Write($"new {typePrinter.IntPtrType}(&{arg})");
                 return true;
             }
 

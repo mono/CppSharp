@@ -413,7 +413,7 @@ namespace CppSharp.Generators.CSharp
                 if (@class.IsValueType)
                 {
                     WriteLine($"private {@class.Name}.{Helpers.InternalStruct} {Helpers.InstanceField};");
-                    WriteLine($"internal {@class.Name}.{Helpers.InternalStruct} {Helpers.InstanceIdentifier} => {Helpers.InstanceField};");
+                    WriteLine($"internal ref {@class.Name}.{Helpers.InternalStruct} {Helpers.InstanceIdentifier} => ref {Helpers.InstanceField};");
                 }
                 else
                 {
