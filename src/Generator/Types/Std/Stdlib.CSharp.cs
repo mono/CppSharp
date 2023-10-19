@@ -330,7 +330,7 @@ namespace CppSharp.Types.Std
                     Helpers.InternalStruct}.{assign.Name}(new {
                     typePrinter.IntPtrType}(&{
                     ctx.ReturnVarName}), ");
-                if (ctx.Parameter.Type.IsTemplate())
+                if (ctx.Parameter.Type.IsTemplateParameterType())
                     ctx.Return.Write("(string) (object) ");
                 ctx.Return.Write($"{ctx.Parameter.Name})");
                 ctx.ReturnVarName = string.Empty;
@@ -343,7 +343,7 @@ namespace CppSharp.Types.Std
 
                 ctx.Before.Write($@"{qualifiedBasicString}Extensions.{
                     assign.Name}({varBasicString}, ");
-                if (ctx.Parameter.Type.IsTemplate())
+                if (ctx.Parameter.Type.IsTemplateParameterType())
                     ctx.Before.Write("(string) (object) ");
                 ctx.Before.WriteLine($"{ctx.Parameter.Name});");
 

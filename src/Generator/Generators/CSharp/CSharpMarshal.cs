@@ -644,7 +644,7 @@ namespace CppSharp.Generators.CSharp
                 else
                 {
                     Context.Before.Write($"var {arg} = ");
-                    if (pointer.Pointee.IsTemplate())
+                    if (pointer.Pointee.IsTemplateParameterType())
                         Context.Before.Write($"(({Context.Parameter.Type}) (object) {Context.Parameter.Name})");
                     else
                         Context.Before.WriteLine(Context.Parameter.Name);
@@ -810,7 +810,7 @@ namespace CppSharp.Generators.CSharp
 
         private void MarshalValueClass()
         {
-            if (Context.Parameter.Type.IsTemplate())
+            if (Context.Parameter.Type.IsTemplateParameterType())
                 Context.Return.Write($"(({Context.Parameter.Type}) (object) {Context.Parameter.Name})");
             else
                 Context.Return.Write(Context.Parameter.Name);

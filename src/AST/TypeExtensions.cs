@@ -439,18 +439,13 @@
             return false;
         }
 
-        public static bool IsTemplate(this Type type)
+        public static bool IsTemplateParameterType(this Type type)
         {
             if (type is TemplateParameterType or TemplateParameterSubstitutionType)
                 return true;
 
-            var ptr = type;
-            while (ptr is PointerType pType)
-            {
-                ptr = pType.Pointee;
-                if (ptr is TemplateParameterType or TemplateParameterSubstitutionType)
-                    return true;
-            }
+            if (type is PointerType pt)
+                return pt.GetFinalPointee() is TemplateParameterType or TemplateParameterSubstitutionType;
 
             return false;
         }
