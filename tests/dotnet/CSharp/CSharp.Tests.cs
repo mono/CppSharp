@@ -2027,6 +2027,7 @@ public unsafe class CSharpTests
     }
 
     [Test]
+    [Ignore("https://github.com/mono/CppSharp/issues/1730")]
     public void TestString()
     {
         var test = new CSharp.ValueType();

@@ -1642,8 +1642,11 @@ public:
 inline void DLL_API InstantiateOptionalTemplate(Optional<unsigned int>, Optional<std::string>,
     Optional<TestComparison>, Optional<char*>, Optional<UnionTester>) { }
 
-CS_VALUE_TYPE class DLL_API value_type {
+CS_VALUE_TYPE class DLL_API ValueType {
 public:
+    // Parameterless ctors are currently not generated for value types.
+    ValueType(int) { }
+
     std::string string_member;
     const char* char_ptr_member;
 };
