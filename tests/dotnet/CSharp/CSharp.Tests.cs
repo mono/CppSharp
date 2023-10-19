@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 using CSharp;
 using NUnit.Framework;
 
@@ -2023,5 +2022,18 @@ public unsafe class CSharpTests
         Assert.That(new CSharp.Optional<IntPtr>() == new CSharp.Optional<IntPtr>());
         Assert.That(new CSharp.Optional<IntPtr>(IntPtr.MaxValue) == new CSharp.Optional<IntPtr>(IntPtr.MaxValue));
         Assert.That(new CSharp.Optional<IntPtr>(IntPtr.MaxValue) == IntPtr.MaxValue);
+    }
+
+    [Test]
+    [Ignore("https://github.com/mono/CppSharp/issues/1730")]
+    public void TestString()
+    {
+        var test = new CSharp.ValueType();
+        Assert.AreEqual(string.Empty, test.StringMember);
+        Assert.AreEqual(null, test.CharPtrMember);
+        test.StringMember = "test";
+        test.CharPtrMember = "test2";
+        Assert.AreEqual("test", test.StringMember);
+        Assert.AreEqual("test2", test.CharPtrMember);
     }
 }
