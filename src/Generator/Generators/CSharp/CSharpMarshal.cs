@@ -647,7 +647,7 @@ namespace CppSharp.Generators.CSharp
                     if (pointer.Pointee.IsTemplateParameterType())
                         Context.Before.Write($"(({Context.Parameter.Type}) (object) {Context.Parameter.Name})");
                     else
-                        Context.Before.WriteLine(Context.Parameter.Name);
+                        Context.Before.Write(Context.Parameter.Name);
                     Context.Before.WriteLine($".{Helpers.InstanceIdentifier};");
                     
                     Context.Return.Write($"new {typePrinter.IntPtrType}(&{arg})");
