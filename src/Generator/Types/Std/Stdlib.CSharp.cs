@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -6,6 +7,7 @@ using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators;
 using CppSharp.Generators.CSharp;
+using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Types.Std
 {
@@ -145,7 +147,7 @@ namespace CppSharp.Types.Std
                 // would be really helpful to have ctx hold a Decl property representing the
                 // "appropriate" Decl when we get here. When MarshalKind == NativeField, Decl would
                 // be set to the Field we're operating on.
-                var fieldName = ctx.ReturnVarName.Substring(ctx.ReturnVarName.LastIndexOf("->") + 2);
+                var fieldName = ctx.ReturnVarName[Math.Max(ctx.ReturnVarName.LastIndexOf('.') + 1, ctx.ReturnVarName.LastIndexOf("->") + 2)..];
 
                 ctx.Before.WriteLine($"if (__{fieldName}_OwnsNativeMemory)");
                 ctx.Before.WriteLineIndent($"Marshal.FreeHGlobal({ctx.ReturnVarName});");
@@ -326,10 +328,21 @@ namespace CppSharp.Types.Std
             var assign = basicString.Methods.First(m => m.OriginalName == "assign");
             if (ctx.MarshalKind == MarshalKind.NativeField)
             {
+                string var;
+                if (ctx.ReturnVarName.LastIndexOf('.') > ctx.ReturnVarName.LastIndexOf("->"))
+                {
+                    var = Generator.GeneratedIdentifier(ctx.ArgName);
+                    ctx.Before.WriteLine($"fixed (void* {var} = &{ctx.ReturnVarName})");
+                    ctx.Before.WriteOpenBraceAndIndent();
+                    ctx.HasCodeBlock = true;
+                }
+                else
+                {
+                    var = $"&{ctx.ReturnVarName}";
+                }
                 ctx.Return.Write($@"{qualifiedBasicString}Extensions.{
                     Helpers.InternalStruct}.{assign.Name}(new {
-                    typePrinter.IntPtrType}(&{
-                    ctx.ReturnVarName}), ");
+                    typePrinter.IntPtrType}({var}), ");
                 if (ctx.Parameter.Type.IsTemplateParameterType())
                     ctx.Return.Write("(string) (object) ");
                 ctx.Return.Write($"{ctx.Parameter.Name})");

@@ -1641,3 +1641,9 @@ public:
 // We just need a method that uses various instantiations of Optional.
 inline void DLL_API InstantiateOptionalTemplate(Optional<unsigned int>, Optional<std::string>,
     Optional<TestComparison>, Optional<char*>, Optional<UnionTester>) { }
+
+CS_VALUE_TYPE class DLL_API value_type {
+public:
+    std::string string_member;
+    const char* char_ptr_member;
+};

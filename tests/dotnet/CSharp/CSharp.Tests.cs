@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using CSharp;
 using NUnit.Framework;
+using ValueType = CSharp.ValueType;
 
 [TestFixture]
 public unsafe class CSharpTests
@@ -2023,5 +2024,17 @@ public unsafe class CSharpTests
         Assert.That(new CSharp.Optional<IntPtr>() == new CSharp.Optional<IntPtr>());
         Assert.That(new CSharp.Optional<IntPtr>(IntPtr.MaxValue) == new CSharp.Optional<IntPtr>(IntPtr.MaxValue));
         Assert.That(new CSharp.Optional<IntPtr>(IntPtr.MaxValue) == IntPtr.MaxValue);
+    }
+
+    [Test]
+    public void TestString()
+    {
+        var test = new CSharp.ValueType();
+        Assert.AreEqual(string.Empty, test.StringMember);
+        Assert.AreEqual(null, test.CharPtrMember);
+        test.StringMember = "test";
+        test.CharPtrMember = "test2";
+        Assert.AreEqual("test", test.StringMember);
+        Assert.AreEqual("test2", test.CharPtrMember);
     }
 }
