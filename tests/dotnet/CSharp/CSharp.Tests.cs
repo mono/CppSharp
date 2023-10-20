@@ -2037,7 +2037,7 @@ public unsafe class CSharpTests
     }
 
     [Test]
-    [Ignore("https://github.com/mono/CppSharp/issues/1777")]
+    [Ignore("https://github.com/mono/CppSharp/issues/1786")]
     public void TestValueTypeStringMemberDefaulted()
     {
         CSharp.ValueType test = default;
