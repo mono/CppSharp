@@ -798,7 +798,8 @@ namespace CppSharp.Generators.CLI
         public static bool FunctionIgnored(Function function)
         {
             return TypeIgnored(function.ReturnType.Type) ||
-                function.Parameters.Any(param => TypeIgnored(param.Type));
+                function.Parameters.Any(param => TypeIgnored(param.Type)) ||
+                function is Method { IsConstructor: true, Parameters: { Count: 0 }, Namespace: Class { IsValueType: true } };
         }
 
         public static bool TypeIgnored(CppSharp.AST.Type type)

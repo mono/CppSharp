@@ -331,9 +331,6 @@ namespace CppSharp.Types.Std
                 string var;
                 if (ctx.ReturnVarName.LastIndexOf('.') > ctx.ReturnVarName.LastIndexOf("->"))
                 {
-                    ctx.Before.WriteLine("throw new NotImplementedException(\"This method cannot currently be called because it would " +
-                        "leave the object in an invalid state. See https://github.com/mono/CppSharp/issues/1777\");");
-
                     var = Generator.GeneratedIdentifier(ctx.ArgName);
                     ctx.Before.WriteLine($"fixed (void* {var} = &{ctx.ReturnVarName})");
                     ctx.Before.WriteOpenBraceAndIndent();
