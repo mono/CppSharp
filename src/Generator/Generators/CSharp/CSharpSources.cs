@@ -250,7 +250,8 @@ namespace CppSharp.Generators.CSharp
             if (!context.Functions.Any(f => f.IsGenerated) && !hasGlobalVariables)
                 return;
 
-            var parentName = SafeIdentifier(context.TranslationUnit.FileNameWithoutExtension);
+            var parentName = SafeIdentifier(Context.Options.GenerateFreeStandingFunctionsClassName?.Invoke(context.TranslationUnit)
+                                            ?? context.TranslationUnit.FileNameWithoutExtension);
             var isStruct = EnumerateClasses()
                 .ToList()
                 .FindAll(cls => cls.IsValueType && cls.Name == parentName && context.QualifiedLogicalName == cls.Namespace.QualifiedLogicalName)
