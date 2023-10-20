@@ -2678,7 +2678,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                 if (hasBase && !@class.IsValueType)
                     WriteLineIndent($": this({(method != null ? "(void*) null" : "native")})");
 
-                if (@class.IsValueType)
+                if (@class.IsValueType && method.Parameters.Count > 0)
                     WriteLineIndent(": this()");
             }
 

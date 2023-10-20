@@ -2025,10 +2025,35 @@ public unsafe class CSharpTests
     }
 
     [Test]
-    [Ignore("https://github.com/mono/CppSharp/issues/1730")]
-    public void TestString()
+    public void TestValueTypeStringMember()
     {
         var test = new CSharp.ValueType();
+        Assert.AreEqual(string.Empty, test.StringMember);
+        Assert.AreEqual(null, test.CharPtrMember);
+        test.StringMember = "test";
+        test.CharPtrMember = "test2";
+        Assert.AreEqual("test", test.StringMember);
+        Assert.AreEqual("test2", test.CharPtrMember);
+    }
+
+    [Test]
+    [Ignore("https://github.com/mono/CppSharp/issues/1777")]
+    public void TestValueTypeStringMemberDefaulted()
+    {
+        CSharp.ValueType test = default;
+        Assert.AreEqual(string.Empty, test.StringMember);
+        Assert.AreEqual(null, test.CharPtrMember);
+        test.StringMember = "test";
+        test.CharPtrMember = "test2";
+        Assert.AreEqual("test", test.StringMember);
+        Assert.AreEqual("test2", test.CharPtrMember);
+    }
+
+    [Test]
+    [Ignore("https://github.com/mono/CppSharp/issues/1777")]
+    public void TestValueTypeStringMemberDefaultedCtor()
+    {
+        var test = new CSharp.ValueTypeNoCtor();
         Assert.AreEqual(string.Empty, test.StringMember);
         Assert.AreEqual(null, test.CharPtrMember);
         test.StringMember = "test";

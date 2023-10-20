@@ -30,7 +30,7 @@ namespace CppSharp.AST
             var isEmptyCtor = method.IsConstructor && method.Parameters.Count == 0;
 
             var @class = method.Namespace as Class;
-            if (@class != null && @class.IsValueType && isEmptyCtor)
+            if (@class != null && @class.IsValueType && isEmptyCtor && method.IsDefaulted)
                 return true;
 
             if (method.IsDestructor)
