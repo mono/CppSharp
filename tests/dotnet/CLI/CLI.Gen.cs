@@ -68,6 +68,7 @@ namespace CppSharp.Tests
         {
             driver.Options.GenerateFinalizers = true;
             driver.Options.GenerateObjectOverrides = true;
+            driver.Options.GenerateFreeStandingFunctionsClassName = tu => tu.FileNameWithoutExtension + "Cool";
             base.Setup(driver);
         }
 

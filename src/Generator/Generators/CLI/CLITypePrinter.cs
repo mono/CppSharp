@@ -329,7 +329,7 @@ namespace CppSharp.Generators.CLI
             var result = string.Join("::", names);
             var translationUnit = decl.Namespace as TranslationUnit;
             if (translationUnit != null && translationUnit.HasFunctions &&
-                rootNamespace == translationUnit.FileNameWithoutExtension)
+                rootNamespace == Options.GenerateFreeStandingFunctionsClassName(translationUnit))
                 return "::" + result;
             return result;
         }

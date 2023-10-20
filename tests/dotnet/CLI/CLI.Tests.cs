@@ -78,7 +78,7 @@ public class CLITests
         byte[] bytes2 = Encoding.ASCII.GetBytes("TestMulti2");
         sbyte[] sbytes2 = Array.ConvertAll(bytes2, q => Convert.ToSByte(q));
 
-        string s = CLI.CLI.MultipleConstantArraysParamsTestMethod(sbytes, sbytes2);
+        string s = CLI.CLICool.MultipleConstantArraysParamsTestMethod(sbytes, sbytes2);
         Assert.AreEqual("TestMultiTestMulti2", s);
     }
 
@@ -88,7 +88,7 @@ public class CLITests
         byte[] bytes = Encoding.ASCII.GetBytes("TestMultipleConstantArraysParamsTestMethodLongerSourceArray");
         sbyte[] sbytes = Array.ConvertAll(bytes, q => Convert.ToSByte(q));
 
-        Assert.Throws<InvalidOperationException>(() => CLI.CLI.MultipleConstantArraysParamsTestMethod(sbytes, new sbyte[] { }));
+        Assert.Throws<InvalidOperationException>(() => CLI.CLICool.MultipleConstantArraysParamsTestMethod(sbytes, new sbyte[] { }));
     }
 
     [Test]
@@ -110,7 +110,7 @@ public class CLITests
             Assert.AreEqual(10, val.NestedUnion.SzText.Length);
             Assert.AreEqual("TestUnions", val.NestedUnion.SzText);
 
-            string ret = CLI.CLI.StructWithNestedUnionTestMethod(val);
+            string ret = CLI.CLICool.StructWithNestedUnionTestMethod(val);
 
             Assert.AreEqual("TestUnions", ret);
         }
@@ -146,7 +146,7 @@ public class CLITests
             Assert.AreEqual(10, unionWithNestedStruct.NestedStruct.SzText.Length);
             Assert.AreEqual("TestUnions", unionWithNestedStruct.NestedStruct.SzText);
 
-            string ret = CLI.CLI.UnionWithNestedStructTestMethod(unionWithNestedStruct);
+            string ret = CLI.CLICool.UnionWithNestedStructTestMethod(unionWithNestedStruct);
 
             Assert.AreEqual("TestUnions", ret);
         }
@@ -172,7 +172,7 @@ public class CLITests
 
                 Assert.AreEqual(2, unionWithNestedStructArray.NestedStructs.Length);
 
-                string ret = CLI.CLI.UnionWithNestedStructArrayTestMethod(unionWithNestedStructArray);
+                string ret = CLI.CLICool.UnionWithNestedStructArrayTestMethod(unionWithNestedStructArray);
 
                 Assert.AreEqual("TestUnion1TestUnion2", ret);
             }

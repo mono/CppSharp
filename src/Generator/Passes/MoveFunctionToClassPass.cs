@@ -57,7 +57,8 @@ namespace CppSharp.Passes
             }
             else
             {
-                string name = (function.Namespace as TranslationUnit)?.FileNameWithoutExtension ??
+                var tu = function.Namespace as TranslationUnit;
+                string name = tu != null ? Options.GenerateFreeStandingFunctionsClassName(tu) :
                     function.Namespace.Name;
                 @class = ASTContext.FindClass(
                     name, ignoreCase: true).FirstOrDefault(
