@@ -2050,7 +2050,6 @@ public unsafe class CSharpTests
     }
 
     [Test]
-    [Ignore("https://github.com/mono/CppSharp/issues/1777")]
     public void TestValueTypeStringMemberDefaultedCtor()
     {
         var test = new CSharp.ValueTypeNoCtor();
