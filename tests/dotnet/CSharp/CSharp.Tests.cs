@@ -85,9 +85,9 @@ public unsafe class CSharpTests
         {
         }
 
-        CSharp.CSharp.FunctionInsideInlineNamespace();
-        CSharp.CSharp.TakeMappedEnum(TestFlag.Flag1);
-        using (CSharpTemplates.SpecialiseReturnOnly())
+        CSharp.CSharpCool.FunctionInsideInlineNamespace();
+        CSharp.CSharpCool.TakeMappedEnum(TestFlag.Flag1);
+        using (CSharpTemplatesCool.SpecialiseReturnOnly())
         {
         }
 
@@ -127,16 +127,16 @@ public unsafe class CSharpTests
     [Ignore("https://github.com/mono/CppSharp/issues/1518")]
     public void TestReturnCharPointer()
     {
-        Assert.That(new IntPtr(CSharp.CSharp.ReturnCharPointer()), Is.EqualTo(IntPtr.Zero));
+        Assert.That(new IntPtr(CSharp.CSharpCool.ReturnCharPointer()), Is.EqualTo(IntPtr.Zero));
         const char z = 'z';
-        Assert.That(*CSharp.CSharp.TakeConstCharRef(z), Is.EqualTo(z));
+        Assert.That(*CSharp.CSharpCool.TakeConstCharRef(z), Is.EqualTo(z));
     }
 
     [Test]
     public void TestTakeCharPointer()
     {
         char c = 'c';
-        Assert.That(*CSharp.CSharp.TakeCharPointer(&c), Is.EqualTo(c));
+        Assert.That(*CSharp.CSharpCool.TakeCharPointer(&c), Is.EqualTo(c));
     }
 
     [Test]
@@ -346,16 +346,16 @@ public unsafe class CSharpTests
             methodsWithDefaultValues.DefaultOverloadedImplicitCtor();
             methodsWithDefaultValues.DefaultWithParamNamedSameAsMethod(5);
             Assert.That(methodsWithDefaultValues.DefaultIntAssignedAnEnumWithBinaryOperatorAndFlags(), Is.EqualTo((int)(Bar.Items.Item1 | Bar.Items.Item2)));
-            Assert.That(methodsWithDefaultValues.DefaultWithConstantFlags(), Is.EqualTo(CSharp.CSharp.ConstFlag1 | CSharp.CSharp.ConstFlag2 | CSharp.CSharp.ConstFlag3));
+            Assert.That(methodsWithDefaultValues.DefaultWithConstantFlags(), Is.EqualTo(CSharp.CSharpCool.ConstFlag1 | CSharp.CSharpCool.ConstFlag2 | CSharp.CSharpCool.ConstFlag3));
             Assert.IsTrue(methodsWithDefaultValues.DefaultWithPointerToEnum());
-            Assert.AreEqual(CSharp.CSharp.DefaultSmallPODInstance.__Instance, methodsWithDefaultValues.DefaultWithNonPrimitiveType().__Instance);
+            Assert.AreEqual(CSharp.CSharpCool.DefaultSmallPODInstance.__Instance, methodsWithDefaultValues.DefaultWithNonPrimitiveType().__Instance);
         }
     }
 
     [Test]
     public void TestGenerationOfAnotherUnitInSameFile()
     {
-        AnotherUnit.FunctionInAnotherUnit();
+        AnotherUnitCool.FunctionInAnotherUnit();
     }
 
     [Test]
@@ -710,9 +710,9 @@ public unsafe class CSharpTests
     public void TestReferenceToArrayWithConstSize()
     {
         int[] incorrectlySizedArray = { 1 };
-        Assert.Catch<ArgumentOutOfRangeException>(() => CSharp.CSharp.PassConstantArrayRef(incorrectlySizedArray));
+        Assert.Catch<ArgumentOutOfRangeException>(() => CSharp.CSharpCool.PassConstantArrayRef(incorrectlySizedArray));
         int[] array = { 1, 2 };
-        var result = CSharp.CSharp.PassConstantArrayRef(array);
+        var result = CSharp.CSharpCool.PassConstantArrayRef(array);
         Assert.That(result, Is.EqualTo(array[0]));
     }
 
@@ -782,9 +782,9 @@ public unsafe class CSharpTests
     [Test]
     public void TestStdStringConstant()
     {
-        Assert.That(CSharp.HasFreeConstant.AnotherUnit.STD_STRING_CONSTANT, Is.EqualTo("test"));
+        Assert.That(CSharp.HasFreeConstant.AnotherUnitCool.STD_STRING_CONSTANT, Is.EqualTo("test"));
         // check a second time to ensure it hasn't been improperly freed
-        Assert.That(CSharp.HasFreeConstant.AnotherUnit.STD_STRING_CONSTANT, Is.EqualTo("test"));
+        Assert.That(CSharp.HasFreeConstant.AnotherUnitCool.STD_STRING_CONSTANT, Is.EqualTo("test"));
     }
 
     [Test]
@@ -842,10 +842,10 @@ public unsafe class CSharpTests
         }
 
         foreach (var (type, offsets) in new (Type, uint[])[] {
-            (typeof(ClassCustomTypeAlignment), CSharp.CSharp.ClassCustomTypeAlignmentOffsets),
-            (typeof(ClassCustomObjectAlignment), CSharp.CSharp.ClassCustomObjectAlignmentOffsets),
-            (typeof(ClassMicrosoftObjectAlignment), CSharp.CSharp.ClassMicrosoftObjectAlignmentOffsets),
-            (typeof(StructWithEmbeddedArrayOfStructObjectAlignment), CSharp.CSharp.StructWithEmbeddedArrayOfStructObjectAlignmentOffsets),
+            (typeof(ClassCustomTypeAlignment), CSharp.CSharpCool.ClassCustomTypeAlignmentOffsets),
+            (typeof(ClassCustomObjectAlignment), CSharp.CSharpCool.ClassCustomObjectAlignmentOffsets),
+            (typeof(ClassMicrosoftObjectAlignment), CSharp.CSharpCool.ClassMicrosoftObjectAlignmentOffsets),
+            (typeof(StructWithEmbeddedArrayOfStructObjectAlignment), CSharp.CSharpCool.StructWithEmbeddedArrayOfStructObjectAlignmentOffsets),
         })
         {
             var internalType = type.GetNestedType("__Internal");
@@ -884,10 +884,10 @@ public unsafe class CSharpTests
     [Test]
     public void TestConstantArray()
     {
-        Assert.That(CSharp.CSharp.VariableWithFixedPrimitiveArray[0], Is.EqualTo(5));
-        Assert.That(CSharp.CSharp.VariableWithFixedPrimitiveArray[1], Is.EqualTo(10));
-        Assert.That(CSharp.CSharp.VariableWithVariablePrimitiveArray[0], Is.EqualTo(15));
-        Assert.That(CSharp.CSharp.VariableWithVariablePrimitiveArray[1], Is.EqualTo(20));
+        Assert.That(CSharp.CSharpCool.VariableWithFixedPrimitiveArray[0], Is.EqualTo(5));
+        Assert.That(CSharp.CSharpCool.VariableWithFixedPrimitiveArray[1], Is.EqualTo(10));
+        Assert.That(CSharp.CSharpCool.VariableWithVariablePrimitiveArray[0], Is.EqualTo(15));
+        Assert.That(CSharp.CSharpCool.VariableWithVariablePrimitiveArray[1], Is.EqualTo(20));
     }
 
     [Test]
@@ -1489,17 +1489,17 @@ public unsafe class CSharpTests
     [Test]
     public void TestGenerationOfIncompleteClasses()
     {
-        var incompleteStruct = CSharp.CSharp.CreateIncompleteStruct();
+        var incompleteStruct = CSharp.CSharpCool.CreateIncompleteStruct();
         Assert.IsNotNull(incompleteStruct);
-        Assert.DoesNotThrow(() => CSharp.CSharp.UseIncompleteStruct(incompleteStruct));
+        Assert.DoesNotThrow(() => CSharp.CSharpCool.UseIncompleteStruct(incompleteStruct));
     }
 
     [Test]
     public void TestForwardDeclaredStruct()
     {
-        using (var forwardDeclaredStruct = CSharp.CSharp.CreateForwardDeclaredStruct(10))
+        using (var forwardDeclaredStruct = CSharp.CSharpCool.CreateForwardDeclaredStruct(10))
         {
-            var i = CSharp.CSharp.UseForwardDeclaredStruct(forwardDeclaredStruct);
+            var i = CSharp.CSharpCool.UseForwardDeclaredStruct(forwardDeclaredStruct);
             Assert.AreEqual(forwardDeclaredStruct.I, i);
         }
     }
@@ -1507,8 +1507,8 @@ public unsafe class CSharpTests
     [Test, Ignore("The Linux CI (alone) failes to generate these functions.")]
     public void TestDuplicateDeclaredIncompleteStruct()
     {
-        //var duplicateDeclaredIncompleteStruct = CSharp.CSharp.CreateDuplicateDeclaredStruct(10);
-        //var i = CSharp.CSharp.UseDuplicateDeclaredStruct(duplicateDeclaredIncompleteStruct);
+        //var duplicateDeclaredIncompleteStruct = CSharp.CSharpCool.CreateDuplicateDeclaredStruct(10);
+        //var i = CSharp.CSharpCool.UseDuplicateDeclaredStruct(duplicateDeclaredIncompleteStruct);
         //Assert.AreEqual(10, i);
     }
 
@@ -1684,7 +1684,7 @@ public unsafe class CSharpTests
     public void TestFuncWithTypedefedFuncPtrAsParam()
     {
         TypedefedFuncPtr function = (a, b) => 5;
-        Assert.That(CSharp.CSharp.FuncWithTypedefedFuncPtrAsParam(function), Is.EqualTo(5));
+        Assert.That(CSharp.CSharpCool.FuncWithTypedefedFuncPtrAsParam(function), Is.EqualTo(5));
     }
 
     [Test]
@@ -1769,14 +1769,14 @@ public unsafe class CSharpTests
     [Test]
     public void TestConstCharStarRef()
     {
-        Assert.That(CSharp.CSharp.TakeConstCharStarRef("Test"), Is.EqualTo("Test"));
+        Assert.That(CSharp.CSharpCool.TakeConstCharStarRef("Test"), Is.EqualTo("Test"));
     }
 
     [Test]
     public void TestRValueReferenceToPointer()
     {
         int value = 5;
-        IntPtr intPtr = CSharp.CSharp.RValueReferenceToPointer((IntPtr*)&value);
+        IntPtr intPtr = CSharp.CSharpCool.RValueReferenceToPointer((IntPtr*)&value);
         Assert.That((int)intPtr, Is.EqualTo(value));
     }
 
@@ -1785,7 +1785,7 @@ public unsafe class CSharpTests
     {
         using (Foo foo = new Foo { A = 25 })
         {
-            Foo returnedFoo = CSharp.CSharp.TakeReturnReferenceToPointer(foo);
+            Foo returnedFoo = CSharp.CSharpCool.TakeReturnReferenceToPointer(foo);
             Assert.That(returnedFoo.A, Is.EqualTo(foo.A));
             using (Qux qux = new Qux())
             {
@@ -1832,7 +1832,7 @@ public unsafe class CSharpTests
     [Test]
     public void TestTypemapTypedefParam()
     {
-        Assert.That(CSharp.CSharp.TakeTypemapTypedefParam(false), Is.False);
+        Assert.That(CSharp.CSharpCool.TakeTypemapTypedefParam(false), Is.False);
     }
 
     [Test]
@@ -1866,13 +1866,13 @@ public unsafe class CSharpTests
         foreach (var @string in strings)
         {
             var cs = @string;
-            Assert.That(CSharp.CSharp.TestCSharpString(cs, out var @out), Is.EqualTo(cs));
+            Assert.That(CSharp.CSharpCool.TestCSharpString(cs, out var @out), Is.EqualTo(cs));
             Assert.That(@out, Is.EqualTo(cs));
-            Assert.That(CSharp.CSharp.TestCSharpStringWide(cs, out var outWide), Is.EqualTo(cs));
+            Assert.That(CSharp.CSharpCool.TestCSharpStringWide(cs, out var outWide), Is.EqualTo(cs));
             Assert.That(outWide, Is.EqualTo(cs));
-            Assert.That(CSharp.CSharp.TestCSharpString16(cs, out var out16), Is.EqualTo(cs));
+            Assert.That(CSharp.CSharpCool.TestCSharpString16(cs, out var out16), Is.EqualTo(cs));
             Assert.That(out16, Is.EqualTo(cs));
-            Assert.That(CSharp.CSharp.TestCSharpString32(cs, out var out32), Is.EqualTo(cs));
+            Assert.That(CSharp.CSharpCool.TestCSharpString32(cs, out var out32), Is.EqualTo(cs));
             Assert.That(out32, Is.EqualTo(cs));
         }
     }
@@ -1890,11 +1890,11 @@ public unsafe class CSharpTests
     [Test]
     public void TestFunctionToStaticMethod()
     {
-        Assert.That(CSharp.CSharp.TestFunctionToStaticMethod(new FTIStruct()).A, Is.EqualTo(6));
-        Assert.That(CSharp.CSharp.TestFunctionToStaticMethodStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
-        Assert.That(CSharp.CSharp.TestFunctionToStaticMethodRefStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
-        Assert.That(CSharp.CSharp.TestFunctionToStaticMethodConstStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
-        Assert.That(CSharp.CSharp.TestFunctionToStaticMethodConstRefStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
+        Assert.That(CSharp.CSharpCool.TestFunctionToStaticMethod(new FTIStruct()).A, Is.EqualTo(6));
+        Assert.That(CSharp.CSharpCool.TestFunctionToStaticMethodStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
+        Assert.That(CSharp.CSharpCool.TestFunctionToStaticMethodRefStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
+        Assert.That(CSharp.CSharpCool.TestFunctionToStaticMethodConstStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
+        Assert.That(CSharp.CSharpCool.TestFunctionToStaticMethodConstRefStruct(new FTIStruct(), new FTIStruct() { A = 6 }), Is.EqualTo(6));
     }
 
     [Test]
@@ -1914,9 +1914,9 @@ public unsafe class CSharpTests
     [Test]
     public void TestFunctionTemplate()
     {
-        Assert.That(CSharpTemplates.FunctionTemplate(5.0), Is.EqualTo(5 + 4.2));
-        Assert.That(CSharpTemplates.FunctionTemplate(6f), Is.EqualTo(6 + 4.1f));
-        Assert.That(CSharpTemplates.FunctionTemplate(7), Is.EqualTo(7 + 4));
+        Assert.That(CSharpTemplatesCool.FunctionTemplate(5.0), Is.EqualTo(5 + 4.2));
+        Assert.That(CSharpTemplatesCool.FunctionTemplate(6f), Is.EqualTo(6 + 4.1f));
+        Assert.That(CSharpTemplatesCool.FunctionTemplate(7), Is.EqualTo(7 + 4));
     }
 
     [Test]
@@ -1926,11 +1926,11 @@ public unsafe class CSharpTests
         var backup = myclass;
         myclass.Value = 7;
 
-        CSharp.CSharp.ModifyCore(ref myclass);
+        CSharp.CSharpCool.ModifyCore(ref myclass);
         Assert.That(myclass.Value, Is.EqualTo(10));
         Assert.That(myclass, Is.SameAs(myclass));
 
-        CSharp.CSharp.CreateCore(ref myclass);
+        CSharp.CSharpCool.CreateCore(ref myclass);
         Assert.That(myclass.Value, Is.EqualTo(20));
         Assert.That(myclass, Is.Not.SameAs(backup));
     }
@@ -1954,7 +1954,7 @@ public unsafe class CSharpTests
     {
         RuleOfThreeTester.Reset();
         CallByValueInterface @interface = new CallByValueInterfaceImpl();
-        CSharp.CSharp.CallCallByValueInterfaceValue(@interface);
+        CSharp.CSharpCool.CallCallByValueInterfaceValue(@interface);
 
         Assert.That(RuleOfThreeTester.ConstructorCalls, Is.EqualTo(1));
         Assert.That(RuleOfThreeTester.DestructorCalls, Is.EqualTo(2));
@@ -1967,7 +1967,7 @@ public unsafe class CSharpTests
     {
         RuleOfThreeTester.Reset();
         CallByValueInterface @interface = new CallByValueInterfaceImpl();
-        CSharp.CSharp.CallCallByValueInterfaceReference(@interface);
+        CSharp.CSharpCool.CallCallByValueInterfaceReference(@interface);
 
         Assert.That(RuleOfThreeTester.ConstructorCalls, Is.EqualTo(1));
         Assert.That(RuleOfThreeTester.DestructorCalls, Is.EqualTo(1));
@@ -1980,7 +1980,7 @@ public unsafe class CSharpTests
     {
         RuleOfThreeTester.Reset();
         CallByValueInterface @interface = new CallByValueInterfaceImpl();
-        CSharp.CSharp.CallCallByValueInterfacePointer(@interface);
+        CSharp.CSharpCool.CallCallByValueInterfacePointer(@interface);
 
         Assert.That(RuleOfThreeTester.ConstructorCalls, Is.EqualTo(1));
         Assert.That(RuleOfThreeTester.DestructorCalls, Is.EqualTo(1));
@@ -1991,14 +1991,14 @@ public unsafe class CSharpTests
     [Test]
     public void TestPointerToClass()
     {
-        Assert.IsTrue(CSharp.CSharp.PointerToClass.IsDefaultInstance);
-        Assert.IsTrue(CSharp.CSharp.PointerToClass.IsValid);
+        Assert.IsTrue(CSharp.CSharpCool.PointerToClass.IsDefaultInstance);
+        Assert.IsTrue(CSharp.CSharpCool.PointerToClass.IsValid);
     }
 
     [Test]
     public void TestValueTypeOutParameter()
     {
-        Assert.AreEqual(2, CSharp.CSharp.ValueTypeOutParameter(out var unionTestA, out var unionTestB));
+        Assert.AreEqual(2, CSharp.CSharpCool.ValueTypeOutParameter(out var unionTestA, out var unionTestB));
         Assert.AreEqual(2, unionTestA.A);
         Assert.AreEqual(2, unionTestB.B);
     }

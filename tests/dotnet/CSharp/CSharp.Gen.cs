@@ -26,6 +26,8 @@ namespace CppSharp.Tests
 
             driver.ParserOptions.UnityBuild = true;
             driver.ParserOptions.AddSupportedFunctionTemplates("FunctionTemplate");
+
+            driver.Options.GenerateFreeStandingFunctionsClassName = t => t.FileNameWithoutExtension + "Cool";
         }
 
         public override void SetupPasses(Driver driver)

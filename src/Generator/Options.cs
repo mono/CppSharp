@@ -173,6 +173,12 @@ namespace CppSharp
         public Func<TranslationUnit, string> GenerateName;
 
         /// <summary>
+        /// By default the classes in which free standing functions are contained are named like the header they are in
+        /// this options allows you to customize this behavior.
+        /// </summary>
+        public Func<TranslationUnit, string> GenerateFreeStandingFunctionsClassName = tu => tu.FileNameWithoutExtension;
+
+        /// <summary>
         /// Set this option to the kind of comments that you want generated
         /// in the source code. This overrides the default kind set by the
         /// target generator.

@@ -575,7 +575,7 @@ $"[{Context.TargetInfo.LongDoubleWidth}]");
             }
 
             if (decl is Variable && !(decl.Namespace is Class))
-                names.Push(decl.TranslationUnit.FileNameWithoutExtension);
+                names.Push(Options.GenerateFreeStandingFunctionsClassName(decl.TranslationUnit));
 
             while (!(ctx is TranslationUnit))
             {

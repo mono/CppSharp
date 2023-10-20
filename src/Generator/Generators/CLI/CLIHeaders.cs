@@ -219,7 +219,7 @@ namespace CppSharp.Generators.CLI
         {
             PushBlock(BlockKind.FunctionsClass, decl);
 
-            WriteLine("public ref class {0}", TranslationUnit.FileNameWithoutExtension);
+            WriteLine("public ref class {0}", Options.GenerateFreeStandingFunctionsClassName(TranslationUnit));
             WriteLine("{");
             WriteLine("public:");
             Indent();
