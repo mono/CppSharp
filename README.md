@@ -74,12 +74,11 @@ Please see the following resources for more information:
 
 ## Community
 
-Feel free to open up issues on Github for any problems you find.
+Feel free to open up issues on GitHub for any problems you find.
 
 ## Support
 
-For building wrappers and priority support please write to &#99;&#112;&#112;&#115;&#104;&#97;&#114;&#112;&#64;&#112;&#114;&#111;&#116;&#111;&#110;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;.
-Alternatively, you may post bounties at https://www.bountysource.com/.
+If you need commercial support feel free to open a discussion or issue for discussion.
 
 ## Users
 
@@ -108,5 +107,7 @@ CppSharp is used by the following projects:
 [FFmpeg.AutoGen](https://github.com/Ruslan-B/FFmpeg.AutoGen)
 
 [GLFW3.NET](https://github.com/realvictorprm/GLFW3.NET)
+
+[DearImguiSharp](https://github.com/Sewer56/DearImguiSharp)
 
 Please feel free to send us a pull request adding your own projects to the list above.
