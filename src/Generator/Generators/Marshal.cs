@@ -29,7 +29,6 @@ namespace CppSharp.Generators
 
         public string ArgName { get; set; }
         public int ParameterIndex { get; set; }
-        public Function Function { get; set; }
 
         public uint Indentation { get; }
     }

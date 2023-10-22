@@ -272,7 +272,7 @@ namespace CppSharp.Generators.CSharp
                     Kind = ContextKind,
                     MarshalKind = MarshalKind,
                     Type = typedef,
-                    Parameter = Parameter
+                    Parameter = Parameter,
                 };
 
                 return typeMap.CSharpSignatureType(typePrinterContext).ToString();
@@ -698,7 +698,9 @@ $"[{Context.TargetInfo.LongDoubleWidth}]");
         public override TypePrinterResult VisitFieldDecl(Field field)
         {
             PushMarshalKind(MarshalKind.NativeField);
+            Field = field;
             var fieldTypePrinted = field.QualifiedType.Visit(this);
+            Field = null;
             PopMarshalKind();
 
             var returnTypePrinter = new TypePrinterResult();

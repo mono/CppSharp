@@ -85,6 +85,17 @@ namespace CppSharp.Generators
 
         public Parameter Parameter;
 
+        private Field field;
+        public Field Field
+        {
+            get => field ?? Property.Field;
+            set => field = value;
+        }
+
+        public Property Property;
+
+        public Function Function;
+
         #region Dummy implementations
 
         public virtual string ToString(CppSharp.AST.Type type)

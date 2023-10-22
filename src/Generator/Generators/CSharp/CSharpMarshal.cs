@@ -826,10 +826,14 @@ namespace CppSharp.Generators.CSharp
             Context.Parameter = new Parameter
             {
                 Name = Context.ArgName,
-                QualifiedType = field.QualifiedType
+                QualifiedType = field.QualifiedType,
             };
 
-            return field.Type.Visit(this, field.QualifiedType.Qualifiers);
+            Context.Field = field;
+            var ret = field.Type.Visit(this, field.QualifiedType.Qualifiers);
+            Context.Field = null;
+
+            return ret;
         }
 
         public override bool VisitProperty(Property property)
@@ -843,7 +847,11 @@ namespace CppSharp.Generators.CSharp
                 QualifiedType = property.QualifiedType
             };
 
-            return base.VisitProperty(property);
+            Context.Property = property;
+            var ret = base.VisitProperty(property);
+            Context.Property = null;
+
+            return ret;
         }
 
         public override bool VisitEnumDecl(Enumeration @enum)
