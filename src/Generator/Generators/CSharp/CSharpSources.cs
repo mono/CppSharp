@@ -781,13 +781,19 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                 }
             }
 
-            if (@class.IsGenerated && isBindingGen && @class.IsRefType && !@class.IsOpaque)
+            if (@class.IsGenerated && isBindingGen && NeedsDispose(@class) && !@class.IsOpaque)
             {
                 bases.Add("IDisposable");
             }
 
             if (bases.Count > 0 && !@class.IsStatic)
                 Write(" : {0}", string.Join(", ", bases));
+        }
+
+        private bool NeedsDispose(Class @class)
+        {
+            return @class.IsRefType || @class.IsValueType &&
+                (@class.GetConstCharFieldProperties().Any() || @class.HasNonTrivialDestructor);
         }
 
         private bool CanUseSequentialLayout(Class @class)
@@ -2223,25 +2229,24 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                 GenerateMethod(ctor, @class);
             }
 
-            if (@class.IsRefType)
-            {
-                // We used to always call GenerateClassFinalizer here. However, the
-                // finalizer calls Dispose which is conditionally implemented below.
-                // Instead, generate the finalizer only if Dispose is also implemented.
+            // We used to always call GenerateClassFinalizer here. However, the
+            // finalizer calls Dispose which is conditionally implemented below.
+            // Instead, generate the finalizer only if Dispose is also implemented.
 
-                // ensure any virtual dtor in the chain is called
-                var dtor = @class.Destructors.FirstOrDefault(d => d.Access != AccessSpecifier.Private);
-                if (ShouldGenerateClassNativeField(@class) ||
-                    (dtor != null && (dtor.IsVirtual || @class.HasNonTrivialDestructor)) ||
-                    // virtual destructors in abstract classes may lack a pointer in the v-table
-                    // so they have to be called by symbol; thus we need an explicit Dispose override
-                    @class.IsAbstract)
-                    if (!@class.IsOpaque)
-                    {
+            // ensure any virtual dtor in the chain is called
+            var dtor = @class.Destructors.FirstOrDefault(d => d.Access != AccessSpecifier.Private);
+            if (ShouldGenerateClassNativeField(@class) ||
+                (dtor != null && (dtor.IsVirtual || @class.HasNonTrivialDestructor)) ||
+                // virtual destructors in abstract classes may lack a pointer in the v-table
+                // so they have to be called by symbol; thus we need an explicit Dispose override
+                @class.IsAbstract)
+                if (!@class.IsOpaque)
+                {
+                    if (@class.IsRefType)
                         GenerateClassFinalizer(@class);
+                    if (NeedsDispose(@class))
                         GenerateDisposeMethods(@class);
-                    }
-            }
+                }
         }
 
         private void GenerateClassFinalizer(Class @class)
@@ -2250,19 +2255,23 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                 return;
 
             using (PushWriteBlock(BlockKind.Finalizer, $"~{@class.Name}()", NewLineKind.BeforeNextBlock))
-                WriteLine($"Dispose(false, callNativeDtor : {Helpers.OwnsNativeInstanceIdentifier} );");
+                WriteLine($"Dispose(false, callNativeDtor: {Helpers.OwnsNativeInstanceIdentifier});");
         }
 
         private void GenerateDisposeMethods(Class @class)
         {
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
 
+            var hasDtorParam = @class.IsRefType;
+
             // Generate the IDispose Dispose() method.
             if (!hasBaseClass)
             {
                 using (PushWriteBlock(BlockKind.Method, "public void Dispose()", NewLineKind.BeforeNextBlock))
                 {
-                    WriteLine($"Dispose(disposing: true, callNativeDtor : {Helpers.OwnsNativeInstanceIdentifier} );");
+                    WriteLine(hasDtorParam
+                        ? $"Dispose(disposing: true, callNativeDtor: {Helpers.OwnsNativeInstanceIdentifier});"
+                        : "Dispose(disposing: true);");
                     if (Options.GenerateFinalizerFor(@class))
                         WriteLine("GC.SuppressFinalize(this);");
                 }
@@ -2276,7 +2285,10 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
 
             // Generate Dispose(bool, bool) method
             var ext = !@class.IsValueType ? (hasBaseClass ? "override " : "virtual ") : string.Empty;
-            using var _ = PushWriteBlock(BlockKind.Method, $"internal protected {ext}void Dispose(bool disposing, bool callNativeDtor )", NewLineKind.BeforeNextBlock);
+            var protectionLevel = @class.IsValueType ? "private" : "internal protected";
+            using var _ = PushWriteBlock(BlockKind.Method,
+                $"{protectionLevel} {ext}void Dispose(bool disposing{(hasDtorParam ? ", bool callNativeDtor" : "")})",
+                NewLineKind.BeforeNextBlock);
 
             if (@class.IsRefType)
             {
@@ -2323,7 +2335,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                     // instance from the NativeToManagedMap. Of course, this is somewhat half-hearted
                     // since we can't/don't do this when there's no virtual dtor available to detour.
                     // Anyway, we must be able to call the native dtor in this case even if we don't
-                    /// own the underlying native instance.
+                    // own the underlying native instance.
                     //
                     // 2. When we we pass a disposable object to a function "by value" then the callee
                     // calls the dtor on the argument so our marshalling code must have a way from preventing
@@ -2335,21 +2347,29 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                     // }
                     //
                     // IDisposable.Dispose() and Object.Finalize() set callNativeDtor = Helpers.OwnsNativeInstanceIdentifier
-                    WriteLine("if (callNativeDtor)");
-                    if (@class.IsDependent || dtor.IsVirtual)
-                        WriteOpenBraceAndIndent();
-                    else
-                        Indent();
+                    if (hasDtorParam)
+                    {
+                        WriteLine("if (callNativeDtor)");
+                        if (@class.IsDependent || dtor.IsVirtual)
+                            WriteOpenBraceAndIndent();
+                        else
+                            Indent();
+                    }
+
                     if (dtor.IsVirtual)
                         this.GenerateMember(@class, c => GenerateDestructorCall(
                             c is ClassTemplateSpecialization ?
                                 c.Methods.First(m => m.InstantiatedFrom == dtor) : dtor));
                     else
                         this.GenerateMember(@class, c => GenerateMethodBody(c, dtor));
-                    if (@class.IsDependent || dtor.IsVirtual)
-                        UnindentAndWriteCloseBrace();
-                    else
-                        Unindent();
+
+                    if (hasDtorParam)
+                    {
+                        if (@class.IsDependent || dtor.IsVirtual)
+                            UnindentAndWriteCloseBrace();
+                        else
+                            Unindent();
+                    }
                 }
             }
 
@@ -2357,19 +2377,37 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             // referenced memory. Don't rely on testing if the field's IntPtr is IntPtr.Zero since
             // unmanaged memory isn't always initialized and/or a reference may be owned by the
             // native side.
-            //
+
+            string ptr;
+            if (@class.IsValueType)
+            {
+                ptr = $"{Helpers.InstanceIdentifier}Ptr";
+                WriteLine($"fixed ({Helpers.InternalStruct}* {ptr} = &{Helpers.InstanceIdentifier})");
+                WriteOpenBraceAndIndent();
+            }
+            else
+            {
+                ptr = $"(({Helpers.InternalStruct}*){Helpers.InstanceIdentifier})";
+            }
+
             foreach (var prop in @class.GetConstCharFieldProperties())
             {
                 string name = prop.Field.OriginalName;
-                var ptr = $"(({Helpers.InternalStruct}*){Helpers.InstanceIdentifier})->{name}";
                 WriteLine($"if (__{name}_OwnsNativeMemory)");
-                WriteLineIndent($"Marshal.FreeHGlobal({ptr});");
+                WriteLineIndent($"Marshal.FreeHGlobal({ptr}->{name});");
             }
 
-            WriteLine("if ({0})", Helpers.OwnsNativeInstanceIdentifier);
-            WriteLineIndent("Marshal.FreeHGlobal({0});", Helpers.InstanceIdentifier);
+            if (@class.IsValueType)
+            {
+                UnindentAndWriteCloseBrace();
+            }
+            else
+            {
+                WriteLine("if ({0})", Helpers.OwnsNativeInstanceIdentifier);
+                WriteLineIndent("Marshal.FreeHGlobal({0});", Helpers.InstanceIdentifier);
 
-            WriteLine("{0} = IntPtr.Zero;", Helpers.InstanceIdentifier);
+                WriteLine("{0} = IntPtr.Zero;", Helpers.InstanceIdentifier);
+            }
         }
 
         private bool GenerateDestructorCall(Method dtor)

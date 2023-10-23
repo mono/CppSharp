@@ -2034,6 +2034,7 @@ public unsafe class CSharpTests
         test.CharPtrMember = "test2";
         Assert.AreEqual("test", test.StringMember);
         Assert.AreEqual("test2", test.CharPtrMember);
+        test.Dispose();
     }
 
     [Test]
@@ -2047,6 +2048,7 @@ public unsafe class CSharpTests
         test.CharPtrMember = "test2";
         Assert.AreEqual("test", test.StringMember);
         Assert.AreEqual("test2", test.CharPtrMember);
+        test.Dispose();
     }
 
     [Test]
@@ -2059,5 +2061,6 @@ public unsafe class CSharpTests
         test.CharPtrMember = "test2";
         Assert.AreEqual("test", test.StringMember);
         Assert.AreEqual("test2", test.CharPtrMember);
+        test.Dispose();
     }
 }
