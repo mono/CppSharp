@@ -7,9 +7,9 @@ configuration=debug
 platform=x64
 jsinterp="$rootdir/deps/quickjs/qjs-debug"
 
-red=`tput setaf 1`
-green=`tput setaf 2`
-reset=`tput sgr0`
+red=`tput -T ansi setaf 1`
+green=`tput -T ansi setaf 2`
+reset=`tput -T ansi sgr0`
 
 generate=true
 
