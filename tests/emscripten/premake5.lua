@@ -4,6 +4,7 @@ workspace "emscripten"
     location "gen"
     symbols "On"
     optimize "Off"
+    cppdialect "C++14"
 
     project "test"
         kind "SharedLib"
