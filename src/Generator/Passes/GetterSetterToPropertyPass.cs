@@ -341,10 +341,14 @@ namespace CppSharp.Passes
             return nameBuilder.ToString();
         }
 
-        private bool IsGetter(Method method) =>
-            !method.IsDestructor &&
-            !method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void) && 
-            method.Parameters.All(p => p.Kind == ParameterKind.IndirectReturnType);
+        private bool IsGetter(Method method)
+        {
+            if (Options.GeneratorKind == GeneratorKind.Emscripten && !method.IsConst)
+                return false;
+            return !method.IsDestructor &&
+                !method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void) &&
+                method.Parameters.All(p => p.Kind == ParameterKind.IndirectReturnType);
+        }
 
         private static bool IsSetter(Method method)
         {

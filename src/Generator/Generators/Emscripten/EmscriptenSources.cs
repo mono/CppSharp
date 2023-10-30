@@ -117,6 +117,18 @@ namespace CppSharp.Generators.Emscripten
             }
         }
 
+        public override bool VisitProperty(Property property)
+        {
+            if (property.Field != null)
+            {
+                return VisitFieldDecl(property.Field);
+            }
+
+            var @class = property.Namespace as Class;
+            WriteLineIndent($".property(\"{property.Name}\", &{property.GetMethod.QualifiedOriginalName})");
+            return true;
+        }
+
         public override bool VisitMethodDecl(Method method)
         {
             Indent();
@@ -127,6 +139,12 @@ namespace CppSharp.Generators.Emscripten
 
         public override bool VisitFieldDecl(Field field)
         {
+            if (!field.Class.IsValueType)
+            {
+                Console.WriteLine($"Ignoring field for non value type class: {field.Class.QualifiedOriginalName}::{field.OriginalName})");
+                return false;
+            }
+
             WriteLineIndent($".field(\"{field.Name}\", &{field.Class.QualifiedOriginalName}::{field.OriginalName})");
             return true;
         }

@@ -4,6 +4,7 @@
 void            ReturnsVoid () { }
 
 std::nullptr_t  ReturnsNullptr () { return nullptr; }
+void  PassNullptr (std::nullptr_t t) { }
 std::nullptr_t  PassAndReturnsNullptr (std::nullptr_t t) { return t; }
 
 bool            ReturnsBool () { return true; }
