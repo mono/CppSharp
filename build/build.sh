@@ -205,7 +205,7 @@ while [[ $# > 0 ]]; do
       ;;
     -target-framework)
       target_framework=$2
-      echo $target_framework
+      echo 'Using .NET target framework:' $target_framework
       shift
       ;;
     -ci)
