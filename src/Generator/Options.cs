@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using CppSharp.AST;
 using CppSharp.Generators;
+using CppSharp.Passes;
 
 namespace CppSharp
 {
@@ -240,7 +241,13 @@ namespace CppSharp
         /// </summary>
         public HashSet<string> ExplicitlyPatchedVirtualFunctions { get; }
 
+        [Obsolete("Use PropertyDetectionMode instead.")]
         public bool UsePropertyDetectionHeuristics { get; set; } = true;
+
+        /// <summary>
+        /// Sets the property detection mode used by GetterSetterToPropertyPass.
+        /// </summary>
+        public PropertyDetectionMode PropertyDetectionMode { get; set; } = PropertyDetectionMode.Aggressive;
 
         /// <summary>
         /// Experimental option that makes the C/C++ generator generate some extra data storage

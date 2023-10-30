@@ -7,12 +7,25 @@ using System.Reflection;
 using System.Text;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Generators;
 using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Passes
 {
+    public enum PropertyDetectionMode
+    {
+        /// Disable detection for all properties.
+        Disable,
+        /// Use conservative detection (only methods starting with get/set).
+        Conservative,
+        /// Use advanced heuristics based on builtin english words/verbs list.
+        Aggressive
+    }
+
     public class GetterSetterToPropertyPass : TranslationUnitPass
     {
+        public PropertyDetectionMode Policy { get; internal set; }
+
         static GetterSetterToPropertyPass()
         {
             LoadVerbs();
@@ -39,8 +52,11 @@ namespace CppSharp.Passes
             return assembly.GetManifestResourceStream(resources[0]);
         }
 
-        public GetterSetterToPropertyPass()
-            => VisitOptions.ResetFlags(VisitFlags.ClassTemplateSpecializations);
+        public GetterSetterToPropertyPass(PropertyDetectionMode policy = PropertyDetectionMode.Aggressive)
+        {
+            Policy = policy;
+            VisitOptions.ResetFlags(VisitFlags.ClassTemplateSpecializations);
+        }
 
         public override bool VisitClassDecl(Class @class)
         {
@@ -86,30 +102,37 @@ namespace CppSharp.Passes
 
         private IEnumerable<Property> CleanUp(Class @class, List<Property> properties)
         {
-            if (!Options.UsePropertyDetectionHeuristics)
-                return properties;
-
-            for (int i = properties.Count - 1; i >= 0; i--)
+            switch (Policy)
             {
-                Property property = properties[i];
-                if (property.HasSetter || property.IsExplicitlyGenerated)
-                    continue;
+                case PropertyDetectionMode.Disable:
+                    return null;
+                case PropertyDetectionMode.Conservative:
+                    return properties;
+                case PropertyDetectionMode.Aggressive:
+                    for (int i = properties.Count - 1; i >= 0; i--)
+                    {
+                        Property property = properties[i];
+                        if (property.HasSetter || property.IsExplicitlyGenerated)
+                            continue;
 
-                string firstWord = GetFirstWord(property.GetMethod.Name);
-                if (firstWord.Length < property.GetMethod.Name.Length &&
-                    Match(firstWord, new[] { "get", "is", "has" }))
-                    continue;
+                        string firstWord = GetFirstWord(property.GetMethod.Name);
+                        if (firstWord.Length < property.GetMethod.Name.Length &&
+                            Match(firstWord, new[] { "get", "is", "has" }))
+                            continue;
 
-                if (Match(firstWord, new[] { "to", "new", "on" }) ||
-                    Verbs.Contains(firstWord))
-                {
-                    property.GetMethod.GenerationKind = GenerationKind.Generate;
-                    @class.Properties.Remove(property);
-                    properties.RemoveAt(i);
-                }
+                        if (Match(firstWord, new[] { "to", "new", "on" }) ||
+                            Verbs.Contains(firstWord))
+                        {
+                            property.GetMethod.GenerationKind = GenerationKind.Generate;
+                            @class.Properties.Remove(property);
+                            properties.RemoveAt(i);
+                        }
+                    }
+
+                    return properties;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
-
-            return properties;
         }
 
         private static void CreateOrUpdateProperty(List<Property> properties, Method method,

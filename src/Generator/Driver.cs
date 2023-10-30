@@ -290,9 +290,10 @@ namespace CppSharp
                 passes.AddPass(new DelegatesPass());
             }
 
-            if (Options.GeneratorKind != GeneratorKind.C)
+            if (Options.GeneratorKind != GeneratorKind.C &&
+                Options.PropertyDetectionMode != PropertyDetectionMode.Disable)
             {
-                passes.AddPass(new GetterSetterToPropertyPass());
+                passes.AddPass(new GetterSetterToPropertyPass(Options.PropertyDetectionMode));
             }
 
             passes.AddPass(new StripUnusedSystemTypesPass());
