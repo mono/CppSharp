@@ -22,11 +22,18 @@ jobs:
       PLATFORM: ${{ matrix.config.platform }}
       DOTNET_NOLOGO: true
       DOTNET_CLI_TELEMETRY_OPTOUT: true
+      EMSCRIPTEN_VERSION: 1.38.45
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
+
+      - name: Setup emsdk
+        uses: mymindstorm/setup-emsdk@v11
+        with:
+          version: ${{ env.EMSCRIPTEN_VERSION }}
+          actions-cache-folder: emsdk-cache-${{ runner.os }}
 
       - name: Install nbgv
         if: startsWith(matrix.config.os, 'macos')
@@ -55,9 +62,13 @@ jobs:
         shell: bash
         run: build/build.sh -platform $PLATFORM -build_only
 
-      - name: Test
+      - name: Test (.NET)
         shell: bash
         run: build/test.sh -platform $PLATFORM
+
+      - name: Test (Emscripten)
+        shell: bash
+        run: tests/emscripten/test.sh
 
       - name: Pack
         shell: bash
