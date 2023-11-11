@@ -83,11 +83,12 @@ namespace CppSharp.Passes
                     {
                         Parameter parameter = @operator.Parameters.Last();
                         Type type = parameter.Type.Desugar();
-                        switch (Options.GeneratorKind)
+                        var kind = Options.GeneratorKind;
+                        switch (kind)
                         {
-                            case GeneratorKind.CLI:
+                            case var _ when ReferenceEquals(kind, GeneratorKind.CLI):
                                 return type.IsPrimitiveType(PrimitiveType.Int);
-                            case GeneratorKind.CSharp:
+                            case var _ when ReferenceEquals(kind, GeneratorKind.CSharp):
                                 Types.TypeMap typeMap;
                                 if (Context.TypeMaps.FindTypeMap(type, out typeMap))
                                 {

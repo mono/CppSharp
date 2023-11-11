@@ -41,7 +41,7 @@ namespace CppSharp.Types
                 var attrs = type.GetCustomAttributes(typeof(DeclMapAttribute), true);
                 foreach (DeclMapAttribute attr in attrs)
                 {
-                    if (attr.GeneratorKind == 0 ||
+                    if (attr.GeneratorKind == null ||
                         attr.GeneratorKind == bindingContext.Options.GeneratorKind)
                     {
                         var declMap = (DeclMap)Activator.CreateInstance(type);

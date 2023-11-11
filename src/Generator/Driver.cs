@@ -36,21 +36,21 @@ namespace CppSharp
         {
             switch (kind)
             {
-                case GeneratorKind.C:
+                case var _ when ReferenceEquals(kind, GeneratorKind.C):
                     return new CGenerator(Context);
-                case GeneratorKind.CPlusPlus:
+                case var _ when ReferenceEquals(kind, GeneratorKind.CPlusPlus):
                     return new CppGenerator(Context);
-                case GeneratorKind.CLI:
+                case var _ when ReferenceEquals(kind, GeneratorKind.CLI):
                     return new CLIGenerator(Context);
-                case GeneratorKind.CSharp:
+                case var _ when ReferenceEquals(kind, GeneratorKind.CSharp):
                     return new CSharpGenerator(Context);
-                case GeneratorKind.Emscripten:
+                case var _ when ReferenceEquals(kind, GeneratorKind.Emscripten):
                     return new EmscriptenGenerator(Context);
-                case GeneratorKind.QuickJS:
+                case var _ when ReferenceEquals(kind, GeneratorKind.QuickJS):
                     return new QuickJSGenerator(Context);
-                case GeneratorKind.NAPI:
+                case var _ when ReferenceEquals(kind, GeneratorKind.NAPI):
                     return new NAPIGenerator(Context);
-                case GeneratorKind.TypeScript:
+                case var _ when ReferenceEquals(kind, GeneratorKind.TypeScript):
                     return new TSGenerator(Context);
             }
 

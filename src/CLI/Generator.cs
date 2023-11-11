@@ -230,11 +230,11 @@ namespace CppSharp
         {
             switch (kind)
             {
-                case GeneratorKind.CLI:
+                case var _ when ReferenceEquals(kind, GeneratorKind.CLI):
                     return "C++/CLI";
-                case GeneratorKind.CSharp:
+                case var _ when ReferenceEquals(kind, GeneratorKind.CSharp):
                     return "C#";
-                case GeneratorKind.NAPI:
+                case var _ when ReferenceEquals(kind, GeneratorKind.NAPI):
                     return "N-API";
                 default:
                     return kind.ToString();

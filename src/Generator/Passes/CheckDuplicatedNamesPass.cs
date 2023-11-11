@@ -202,22 +202,22 @@ namespace CppSharp.Passes
             TypePrinter typePrinter;
             switch (kind)
             {
-                case GeneratorKind.C:
+                case var _ when ReferenceEquals(kind, GeneratorKind.C):
                     typePrinter = new CppTypePrinter(Context) { PrintFlavorKind = CppTypePrintFlavorKind.C };
                     break;
-                case GeneratorKind.Emscripten:
+                case var _ when ReferenceEquals(kind, GeneratorKind.Emscripten):
                     typePrinter = new EmscriptenTypePrinter(Context);
                     break;;
-                case GeneratorKind.CPlusPlus:
-                case GeneratorKind.QuickJS:
-                case GeneratorKind.NAPI:
-                case GeneratorKind.TypeScript:
+                case var _ when ReferenceEquals(kind, GeneratorKind.CPlusPlus):
+                case var _ when ReferenceEquals(kind, GeneratorKind.QuickJS):
+                case var _ when ReferenceEquals(kind, GeneratorKind.NAPI):
+                case var _ when ReferenceEquals(kind, GeneratorKind.TypeScript):
                     typePrinter = new CppTypePrinter(Context);
                     break;
-                case GeneratorKind.CLI:
+                case var _ when ReferenceEquals(kind, GeneratorKind.CLI):
                     typePrinter = new CLITypePrinter(Context);
                     break;
-                case GeneratorKind.CSharp:
+                case var _ when ReferenceEquals(kind, GeneratorKind.CSharp):
                     typePrinter = new CSharpTypePrinter(Context);
                     break;
                 default:

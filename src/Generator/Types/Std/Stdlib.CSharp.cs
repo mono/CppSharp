@@ -11,35 +11,35 @@ using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Types.Std
 {
-    [TypeMap("int", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("int", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public partial class Int : TypeMap
     {
         public override Type CSharpSignatureType(TypePrinterContext ctx) =>
             CSharpTypePrinter.GetSignedType(Context.TargetInfo.IntWidth);
     }
 
-    [TypeMap("unsigned int", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("unsigned int", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public partial class UnsignedInt : TypeMap
     {
         public override Type CSharpSignatureType(TypePrinterContext ctx) =>
             CSharpTypePrinter.GetUnsignedType(Context.TargetInfo.IntWidth);
     }
 
-    [TypeMap("long", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("long", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public partial class Long : TypeMap
     {
         public override Type CSharpSignatureType(TypePrinterContext ctx) =>
             CSharpTypePrinter.GetSignedType(Context.TargetInfo.LongWidth);
     }
 
-    [TypeMap("unsigned long", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("unsigned long", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public partial class UnsignedLong : TypeMap
     {
         public override Type CSharpSignatureType(TypePrinterContext ctx) =>
             CSharpTypePrinter.GetUnsignedType(Context.TargetInfo.LongWidth);
     }
 
-    [TypeMap("char", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("char", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public partial class Char : TypeMap
     {
         public override Type CSharpSignatureType(TypePrinterContext ctx)
@@ -67,7 +67,7 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("char16_t", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("char16_t", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public partial class Char16T : TypeMap
     {
         public override Type CSharpSignatureType(TypePrinterContext ctx)
@@ -76,7 +76,7 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("wchar_t", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("wchar_t", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public partial class WCharT : TypeMap
     {
         public override Type CSharpSignatureType(TypePrinterContext ctx)
@@ -85,7 +85,7 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("const char*", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("const char*", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public partial class ConstCharPointer : TypeMap
     {
         public override Type CSharpSignatureType(TypePrinterContext ctx)
@@ -281,27 +281,27 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("const char[]", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("const char[]", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public partial class ConstCharArray : ConstCharPointer
     {
     }
 
-    [TypeMap("const wchar_t*", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("const wchar_t*", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public partial class ConstWCharTPointer : ConstCharPointer
     {
     }
 
-    [TypeMap("const char16_t*", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("const char16_t*", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public partial class ConstChar16TPointer : ConstCharPointer
     {
     }
 
-    [TypeMap("const char32_t*", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("const char32_t*", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public partial class ConstChar32TPointer : ConstCharPointer
     {
     }
 
-    [TypeMap("basic_string<char, char_traits<char>, allocator<char>>", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("basic_string<char, char_traits<char>, allocator<char>>", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public partial class String : TypeMap
     {
         public override Type CSharpSignatureType(TypePrinterContext ctx)
@@ -420,7 +420,7 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("FILE", GeneratorKind = GeneratorKind.CSharp)]
+    [TypeMap("FILE", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public partial class FILE : TypeMap
     {
         public override Type CSharpSignatureType(TypePrinterContext ctx)
