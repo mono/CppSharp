@@ -10,7 +10,7 @@ namespace CppSharp.Generators
     /// </summary>
     public class GeneratorKind : IEquatable<GeneratorKind>
     {
-        private static HashSet<string> s_registeredIDSet = new();
+        private static readonly HashSet<string> s_registeredIDSet = new();
 
         public string ID { get; }
 
