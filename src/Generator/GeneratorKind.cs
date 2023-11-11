@@ -18,9 +18,10 @@ namespace CppSharp.Generators
         private static readonly HashSet<string> s_registeredIDSet = new();
 
         public string ID { get; }
+        public string Name { get; }
         public System.Type Type { get; }
 
-        public GeneratorKind(string id, System.Type type)
+        public GeneratorKind(string id, string name, System.Type type)
         {
             if (s_registeredIDSet.Contains(id))
             {
@@ -28,6 +29,7 @@ namespace CppSharp.Generators
             }
             s_registeredIDSet.Add(id);
             ID = id;
+            Name = name;
             Type = type;
         }
 
@@ -79,37 +81,37 @@ namespace CppSharp.Generators
         }
 
         public const string CLI_ID = "CLI";
-        public static readonly GeneratorKind CLI = new(CLI_ID, typeof(CLIGenerator));
+        public static readonly GeneratorKind CLI = new(CLI_ID, "C++/CLI", typeof(CLIGenerator));
 
         public const string CSharp_ID = "CSharp";
-        public static readonly GeneratorKind CSharp = new(CSharp_ID, typeof(CSharpGenerator));
+        public static readonly GeneratorKind CSharp = new(CSharp_ID, "C#", typeof(CSharpGenerator));
 
         public const string C_ID = "C";
-        public static readonly GeneratorKind C = new(C_ID, typeof(CGenerator));
+        public static readonly GeneratorKind C = new(C_ID, "C", typeof(CGenerator));
 
         public const string CPlusPlus_ID = "CPlusPlus";
-        public static readonly GeneratorKind CPlusPlus = new(CPlusPlus_ID, typeof(CppGenerator));
+        public static readonly GeneratorKind CPlusPlus = new(CPlusPlus_ID, "CPlusPlus", typeof(CppGenerator));
 
         public const string Emscripten_ID = "Emscripten";
-        public static readonly GeneratorKind Emscripten = new(Emscripten_ID, typeof(EmscriptenGenerator));
+        public static readonly GeneratorKind Emscripten = new(Emscripten_ID, "Emscripten", typeof(EmscriptenGenerator));
 
         public const string ObjectiveC_ID = "ObjectiveC";
-        public static readonly GeneratorKind ObjectiveC = new(ObjectiveC_ID, typeof(NotImplementedGenerator));
+        public static readonly GeneratorKind ObjectiveC = new(ObjectiveC_ID, "ObjectiveC", typeof(NotImplementedGenerator));
 
         public const string Java_ID = "Java";
-        public static readonly GeneratorKind Java = new(Java_ID, typeof(NotImplementedGenerator));
+        public static readonly GeneratorKind Java = new(Java_ID, "Java", typeof(NotImplementedGenerator));
 
         public const string Swift_ID = "Swift";
-        public static readonly GeneratorKind Swift = new(Swift_ID, typeof(NotImplementedGenerator));
+        public static readonly GeneratorKind Swift = new(Swift_ID, "Swift", typeof(NotImplementedGenerator));
 
         public const string QuickJS_ID = "QuickJS";
-        public static readonly GeneratorKind QuickJS = new(QuickJS_ID, typeof(QuickJSGenerator));
+        public static readonly GeneratorKind QuickJS = new(QuickJS_ID, "QuickJS", typeof(QuickJSGenerator));
 
         public const string NAPI_ID = "NAPI";
-        public static readonly GeneratorKind NAPI = new(NAPI_ID, typeof(NAPIGenerator));
+        public static readonly GeneratorKind NAPI = new(NAPI_ID, "N-API", typeof(NAPIGenerator));
 
         public const string TypeScript_ID = "TypeScript";
-        public static readonly GeneratorKind TypeScript = new(TypeScript_ID, typeof(TSGenerator));
+        public static readonly GeneratorKind TypeScript = new(TypeScript_ID, "TypeScript", typeof(TSGenerator));
     }
 
     public class NotImplementedGenerator : Generator

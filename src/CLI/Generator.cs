@@ -198,7 +198,7 @@ namespace CppSharp
         public void Run()
         {
             var messageBuilder = new StringBuilder();
-            messageBuilder.Append($"Generating {GetGeneratorKindName(options.Kind)}");
+            messageBuilder.Append($"Generating {options.Kind.Name}");
             messageBuilder.Append($" bindings for {GetPlatformName(options.Platform)} {options.Architecture}");
 
             if (options.Cpp11ABI)
@@ -223,21 +223,6 @@ namespace CppSharp
                     return "macOS";
                 default:
                     return platform.ToString();
-            }
-        }
-
-        private static string GetGeneratorKindName(GeneratorKind kind)
-        {
-            switch (kind)
-            {
-                case var _ when ReferenceEquals(kind, GeneratorKind.CLI):
-                    return "C++/CLI";
-                case var _ when ReferenceEquals(kind, GeneratorKind.CSharp):
-                    return "C#";
-                case var _ when ReferenceEquals(kind, GeneratorKind.NAPI):
-                    return "N-API";
-                default:
-                    return kind.ToString();
             }
         }
     }
