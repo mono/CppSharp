@@ -7,6 +7,7 @@ using CppSharp.Generators.Emscripten;
 using CppSharp.Generators.TS;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CppSharp.Generators
 {
@@ -15,27 +16,38 @@ namespace CppSharp.Generators
     /// </summary>
     public class GeneratorKind : IEquatable<GeneratorKind>
     {
-        private static readonly HashSet<string> s_registeredIDSet = new();
+        public static readonly HashSet<GeneratorKind> Registered = new();
 
         public string ID { get; }
         public string Name { get; }
         public System.Type Type { get; }
+        public string[] CLIOptions { get; }
 
-        public GeneratorKind(string id, string name, System.Type type)
+        public GeneratorKind(string id, string name, System.Type type, string[] cLIOptions = null)
         {
-            if (s_registeredIDSet.Contains(id))
+            if (Registered.Any(kind => kind.ID == id))
             {
                 throw new Exception($"GeneratorKind has an already registered ID: {ID}");
             }
-            s_registeredIDSet.Add(id);
             ID = id;
             Name = name;
             Type = type;
+            CLIOptions = cLIOptions;
+            Registered.Add(this);
         }
 
         public Generator CreateGenerator(BindingContext context)
         {
             return (Generator)Activator.CreateInstance(Type, context);
+        }
+
+        public bool IsCLIOptionMatch(string cliOption)
+        {
+            if (CLIOptions == null)
+            {
+                return false;
+            }
+            return CLIOptions.Any(cliOption.Contains);
         }
 
         public static bool operator ==(GeneratorKind obj1, GeneratorKind obj2)
@@ -81,19 +93,19 @@ namespace CppSharp.Generators
         }
 
         public const string CLI_ID = "CLI";
-        public static readonly GeneratorKind CLI = new(CLI_ID, "C++/CLI", typeof(CLIGenerator));
+        public static readonly GeneratorKind CLI = new(CLI_ID, "C++/CLI", typeof(CLIGenerator), new[] { "cli" });
 
         public const string CSharp_ID = "CSharp";
-        public static readonly GeneratorKind CSharp = new(CSharp_ID, "C#", typeof(CSharpGenerator));
+        public static readonly GeneratorKind CSharp = new(CSharp_ID, "C#", typeof(CSharpGenerator), new[] { "csharp" });
 
         public const string C_ID = "C";
-        public static readonly GeneratorKind C = new(C_ID, "C", typeof(CGenerator));
+        public static readonly GeneratorKind C = new(C_ID, "C", typeof(CGenerator), new[] { "c" });
 
         public const string CPlusPlus_ID = "CPlusPlus";
-        public static readonly GeneratorKind CPlusPlus = new(CPlusPlus_ID, "CPlusPlus", typeof(CppGenerator));
+        public static readonly GeneratorKind CPlusPlus = new(CPlusPlus_ID, "CPlusPlus", typeof(CppGenerator), new[] { "cpp" });
 
         public const string Emscripten_ID = "Emscripten";
-        public static readonly GeneratorKind Emscripten = new(Emscripten_ID, "Emscripten", typeof(EmscriptenGenerator));
+        public static readonly GeneratorKind Emscripten = new(Emscripten_ID, "Emscripten", typeof(EmscriptenGenerator), new[] { "emscripten" });
 
         public const string ObjectiveC_ID = "ObjectiveC";
         public static readonly GeneratorKind ObjectiveC = new(ObjectiveC_ID, "ObjectiveC", typeof(NotImplementedGenerator));
@@ -105,13 +117,13 @@ namespace CppSharp.Generators
         public static readonly GeneratorKind Swift = new(Swift_ID, "Swift", typeof(NotImplementedGenerator));
 
         public const string QuickJS_ID = "QuickJS";
-        public static readonly GeneratorKind QuickJS = new(QuickJS_ID, "QuickJS", typeof(QuickJSGenerator));
+        public static readonly GeneratorKind QuickJS = new(QuickJS_ID, "QuickJS", typeof(QuickJSGenerator), new[] { "qjs" });
 
         public const string NAPI_ID = "NAPI";
-        public static readonly GeneratorKind NAPI = new(NAPI_ID, "N-API", typeof(NAPIGenerator));
+        public static readonly GeneratorKind NAPI = new(NAPI_ID, "N-API", typeof(NAPIGenerator), new[] { "napi" });
 
         public const string TypeScript_ID = "TypeScript";
-        public static readonly GeneratorKind TypeScript = new(TypeScript_ID, "TypeScript", typeof(TSGenerator));
+        public static readonly GeneratorKind TypeScript = new(TypeScript_ID, "TypeScript", typeof(TSGenerator), new[] { "ts", "typescript" });
     }
 
     public class NotImplementedGenerator : Generator
