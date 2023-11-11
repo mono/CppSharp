@@ -208,7 +208,7 @@ namespace CppSharp
         {
             foreach (GeneratorKind generatorKind in GeneratorKind.Registered)
             {
-                if (generatorKind.IsCLIOptionMatch(generator))
+                if (generatorKind.IsCLIOptionMatch(generator.ToLower()))
                 {
                     options.Kind = generatorKind;
                     return;
