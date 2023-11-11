@@ -69,7 +69,7 @@ namespace CppSharp.Generators
 
         public static bool operator !=(GeneratorKind obj1, GeneratorKind obj2) => !(obj1 == obj2);
 
-        public bool Equals(GeneratorKind? other)
+        public bool Equals(GeneratorKind other)
         {
             if (other is null)
             {
@@ -82,7 +82,7 @@ namespace CppSharp.Generators
             return ID.Equals(other.ID);
         }
 
-        public override bool Equals(object? obj) => Equals(obj as GeneratorKind);
+        public override bool Equals(object obj) => Equals(obj as GeneratorKind);
 
         public override int GetHashCode()
         {
