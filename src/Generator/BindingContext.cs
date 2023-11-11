@@ -2,6 +2,7 @@ using CppSharp.AST;
 using CppSharp.Passes;
 using CppSharp.Types;
 using CppSharp.Parser;
+using System.Collections.Generic;
 
 namespace CppSharp.Generators
 {
@@ -36,14 +37,21 @@ namespace CppSharp.Generators
 
         public void RunPasses()
         {
+            Dictionary<System.Type, int> passesByType = new Dictionary<System.Type, int>();
+            int index = 0;
             TranslationUnitPasses.RunPasses(pass =>
                 {
+                    int count = passesByType.GetValueOrDefault(pass.GetType(), 0);
                     Diagnostics.Debug("Pass '{0}'", pass);
 
                     Diagnostics.PushIndent();
+                    Options.TranslationUnitPassPreCallBack?.Invoke(pass, index, count);
                     pass.Context = this;
                     pass.VisitASTContext(ASTContext);
+                    Options.TranslationUnitPassPostCallBack?.Invoke(pass, index, count);
                     Diagnostics.PopIndent();
+                    passesByType[pass.GetType()] = count + 1;
+                    index += 1;
                 });
         }
     }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using CppSharp.AST;
 using CppSharp.Generators;
+using CppSharp.Passes;
 
 namespace CppSharp
 {
@@ -253,6 +254,12 @@ namespace CppSharp
         /// on the generated instance, for supporting higher-level binding of the code.
         /// </summary>
         public bool GenerateExternalDataFields { get; set; } = false;
+
+        public delegate void TranslationUnitPassCallBack(TranslationUnitPass pass, int index, int count);
+
+        public TranslationUnitPassCallBack TranslationUnitPassPreCallBack { get; set; }
+
+        public TranslationUnitPassCallBack TranslationUnitPassPostCallBack { get; set; }
 
         #endregion
     }
