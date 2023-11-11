@@ -4,12 +4,6 @@ using System.IO;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.Generators;
-using CppSharp.Generators.C;
-using CppSharp.Generators.CLI;
-using CppSharp.Generators.Cpp;
-using CppSharp.Generators.CSharp;
-using CppSharp.Generators.Emscripten;
-using CppSharp.Generators.TS;
 using CppSharp.Parser;
 using CppSharp.Passes;
 using CppSharp.Utils;
@@ -30,31 +24,6 @@ namespace CppSharp
         {
             Options = options;
             ParserOptions = new ParserOptions();
-        }
-
-        Generator CreateGeneratorFromKind(GeneratorKind kind)
-        {
-            switch (kind)
-            {
-                case var _ when ReferenceEquals(kind, GeneratorKind.C):
-                    return new CGenerator(Context);
-                case var _ when ReferenceEquals(kind, GeneratorKind.CPlusPlus):
-                    return new CppGenerator(Context);
-                case var _ when ReferenceEquals(kind, GeneratorKind.CLI):
-                    return new CLIGenerator(Context);
-                case var _ when ReferenceEquals(kind, GeneratorKind.CSharp):
-                    return new CSharpGenerator(Context);
-                case var _ when ReferenceEquals(kind, GeneratorKind.Emscripten):
-                    return new EmscriptenGenerator(Context);
-                case var _ when ReferenceEquals(kind, GeneratorKind.QuickJS):
-                    return new QuickJSGenerator(Context);
-                case var _ when ReferenceEquals(kind, GeneratorKind.NAPI):
-                    return new NAPIGenerator(Context);
-                case var _ when ReferenceEquals(kind, GeneratorKind.TypeScript):
-                    return new TSGenerator(Context);
-            }
-
-            throw new NotImplementedException();
         }
 
         void ValidateOptions()
@@ -87,7 +56,7 @@ namespace CppSharp
             ValidateOptions();
             ParserOptions.Setup(Platform.Host);
             Context = new BindingContext(Options, ParserOptions);
-            Generator = CreateGeneratorFromKind(Options.GeneratorKind);
+            Generator = Options.GeneratorKind.CreateGenerator(Context);
         }
 
         public void SetupTypeMaps() =>
@@ -387,8 +356,7 @@ namespace CppSharp
                 out int error, out string errorMessage);
             if (error == 0)
             {
-                Diagnostics.Message($@"Compilation succeeded: {
-                    LibraryMappings[module] = Path.Combine(
+                Diagnostics.Message($@"Compilation succeeded: {LibraryMappings[module] = Path.Combine(
                         Options.OutputDir, $"{module.LibraryName}.dll")}.");
                 return true;
             }
