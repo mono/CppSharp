@@ -51,6 +51,16 @@ namespace CppSharp.Passes
         }
     }
 
+    public class TranslationUnitPassGeneratorDependent : TranslationUnitPass
+    {
+        public Generator Generator { get; }
+
+        public TranslationUnitPassGeneratorDependent(Generator generator)
+        {
+            Generator = generator;
+        }
+    }
+
     /// <summary>
     /// Used to modify generated output.
     /// </summary>
