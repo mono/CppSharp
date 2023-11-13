@@ -11,11 +11,8 @@ namespace CppSharp.Generators.TS
     /// </summary>
     public class TSGenerator : CGenerator
     {
-        private readonly TSTypePrinter typePrinter;
-
         public TSGenerator(BindingContext context) : base(context)
         {
-            typePrinter = new TSTypePrinter(Context);
         }
 
         public override List<CodeGenerator> Generate(IEnumerable<TranslationUnit> units)
@@ -31,11 +28,6 @@ namespace CppSharp.Generators.TS
         public override bool SetupPasses()
         {
             return true;
-        }
-
-        protected override string TypePrinterDelegate(Type type)
-        {
-            return type.Visit(typePrinter).ToString();
         }
     }
 }

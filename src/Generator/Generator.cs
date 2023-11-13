@@ -28,9 +28,12 @@ namespace CppSharp.Generators
     {
         public BindingContext Context { get; }
 
+        protected readonly TypePrinter typePrinter;
+
         protected Generator(BindingContext context)
         {
             Context = context;
+            typePrinter = Context.Options.GeneratorKind.CreateTypePrinter(context);
             CppSharp.AST.Type.TypePrinterDelegate += TypePrinterDelegate;
         }
 
@@ -155,7 +158,10 @@ namespace CppSharp.Generators
             return output;
         }
 
-        protected abstract string TypePrinterDelegate(CppSharp.AST.Type type);
+        protected virtual string TypePrinterDelegate(CppSharp.AST.Type type)
+        {
+            return type.Visit(typePrinter);
+        }
 
         public static string GeneratedIdentifier(string id) =>
             $"__{(id.StartsWith("@") ? id.Substring(1) : id)}";

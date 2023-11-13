@@ -20,10 +20,11 @@ namespace CppSharp.Generators
 
         public string ID { get; }
         public string Name { get; }
-        public System.Type Type { get; }
+        public System.Type GeneratorType { get; }
+        public System.Type TypePrinterType { get; }
         public string[] CLIOptions { get; }
 
-        public GeneratorKind(string id, string name, System.Type type, string[] cLIOptions = null)
+        public GeneratorKind(string id, string name, System.Type generatorType, System.Type typePrinterType, string[] cLIOptions = null)
         {
             if (Registered.Any(kind => kind.ID == id))
             {
@@ -31,14 +32,20 @@ namespace CppSharp.Generators
             }
             ID = id;
             Name = name;
-            Type = type;
+            GeneratorType = generatorType;
+            TypePrinterType = typePrinterType;
             CLIOptions = cLIOptions;
             Registered.Add(this);
         }
 
         public Generator CreateGenerator(BindingContext context)
         {
-            return (Generator)Activator.CreateInstance(Type, context);
+            return (Generator)Activator.CreateInstance(GeneratorType, context);
+        }
+
+        public TypePrinter CreateTypePrinter(BindingContext context)
+        {
+            return (TypePrinter)Activator.CreateInstance(TypePrinterType, context);
         }
 
         public bool IsCLIOptionMatch(string cliOption)
@@ -93,37 +100,44 @@ namespace CppSharp.Generators
         }
 
         public const string CLI_ID = "CLI";
-        public static readonly GeneratorKind CLI = new(CLI_ID, "C++/CLI", typeof(CLIGenerator), new[] { "cli" });
+        public static readonly GeneratorKind CLI = new(CLI_ID, "C++/CLI", typeof(CLIGenerator), typeof(CLITypePrinter), new[] { "cli" });
 
         public const string CSharp_ID = "CSharp";
-        public static readonly GeneratorKind CSharp = new(CSharp_ID, "C#", typeof(CSharpGenerator), new[] { "csharp" });
+        public static readonly GeneratorKind CSharp = new(CSharp_ID, "C#", typeof(CSharpGenerator), typeof(CSharpTypePrinter), new[] { "csharp" });
 
         public const string C_ID = "C";
-        public static readonly GeneratorKind C = new(C_ID, "C", typeof(CGenerator), new[] { "c" });
+        public static readonly GeneratorKind C = new(C_ID, "C", typeof(CGenerator), typeof(CppTypePrinter), new[] { "c" });
 
         public const string CPlusPlus_ID = "CPlusPlus";
-        public static readonly GeneratorKind CPlusPlus = new(CPlusPlus_ID, "CPlusPlus", typeof(CppGenerator), new[] { "cpp" });
+        public static readonly GeneratorKind CPlusPlus = new(CPlusPlus_ID, "CPlusPlus", typeof(CppGenerator), typeof(CppTypePrinter), new[] { "cpp" });
 
         public const string Emscripten_ID = "Emscripten";
-        public static readonly GeneratorKind Emscripten = new(Emscripten_ID, "Emscripten", typeof(EmscriptenGenerator), new[] { "emscripten" });
+        public static readonly GeneratorKind Emscripten = new(Emscripten_ID, "Emscripten", typeof(EmscriptenGenerator), typeof(EmscriptenTypePrinter), new[] { "emscripten" });
 
         public const string ObjectiveC_ID = "ObjectiveC";
-        public static readonly GeneratorKind ObjectiveC = new(ObjectiveC_ID, "ObjectiveC", typeof(NotImplementedGenerator));
+        public static readonly GeneratorKind ObjectiveC = new(ObjectiveC_ID, "ObjectiveC", typeof(NotImplementedGenerator), typeof(NotImplementedTypePrinter));
 
         public const string Java_ID = "Java";
-        public static readonly GeneratorKind Java = new(Java_ID, "Java", typeof(NotImplementedGenerator));
+        public static readonly GeneratorKind Java = new(Java_ID, "Java", typeof(NotImplementedGenerator), typeof(NotImplementedTypePrinter));
 
         public const string Swift_ID = "Swift";
-        public static readonly GeneratorKind Swift = new(Swift_ID, "Swift", typeof(NotImplementedGenerator));
+        public static readonly GeneratorKind Swift = new(Swift_ID, "Swift", typeof(NotImplementedGenerator), typeof(NotImplementedTypePrinter));
 
         public const string QuickJS_ID = "QuickJS";
-        public static readonly GeneratorKind QuickJS = new(QuickJS_ID, "QuickJS", typeof(QuickJSGenerator), new[] { "qjs" });
+        public static readonly GeneratorKind QuickJS = new(QuickJS_ID, "QuickJS", typeof(QuickJSGenerator), typeof(QuickJSTypePrinter), new[] { "qjs" });
 
         public const string NAPI_ID = "NAPI";
-        public static readonly GeneratorKind NAPI = new(NAPI_ID, "N-API", typeof(NAPIGenerator), new[] { "napi" });
+        public static readonly GeneratorKind NAPI = new(NAPI_ID, "N-API", typeof(NAPIGenerator), typeof(NAPITypePrinter), new[] { "napi" });
 
         public const string TypeScript_ID = "TypeScript";
-        public static readonly GeneratorKind TypeScript = new(TypeScript_ID, "TypeScript", typeof(TSGenerator), new[] { "ts", "typescript" });
+        public static readonly GeneratorKind TypeScript = new(TypeScript_ID, "TypeScript", typeof(TSGenerator), typeof(TSTypePrinter), new[] { "ts", "typescript" });
+    }
+
+    public class NotImplementedTypePrinter : TypePrinter
+    {
+        public NotImplementedTypePrinter(BindingContext context) : base(context)
+        {
+        }
     }
 
     public class NotImplementedGenerator : Generator
@@ -139,11 +153,6 @@ namespace CppSharp.Generators
         }
 
         public override bool SetupPasses()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override string TypePrinterDelegate(CppSharp.AST.Type type)
         {
             throw new NotImplementedException();
         }

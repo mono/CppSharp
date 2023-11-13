@@ -4,10 +4,6 @@ using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators;
-using CppSharp.Generators.C;
-using CppSharp.Generators.CLI;
-using CppSharp.Generators.CSharp;
-using CppSharp.Generators.Emscripten;
 using CppSharp.Types;
 
 namespace CppSharp.Passes
@@ -190,41 +186,10 @@ namespace CppSharp.Passes
 
         public override bool VisitASTContext(ASTContext context)
         {
-            var typePrinter = GetTypePrinter(Options.GeneratorKind, Context);
-            DeclarationName.ParameterTypeComparer.TypePrinter = typePrinter;
+            DeclarationName.ParameterTypeComparer.TypePrinter = Options.GeneratorKind.CreateTypePrinter(Context);
             DeclarationName.ParameterTypeComparer.TypeMaps = Context.TypeMaps;
             DeclarationName.ParameterTypeComparer.GeneratorKind = Options.GeneratorKind;
             return base.VisitASTContext(context);
-        }
-
-        private TypePrinter GetTypePrinter(GeneratorKind kind, BindingContext context)
-        {
-            TypePrinter typePrinter;
-            switch (kind)
-            {
-                case var _ when ReferenceEquals(kind, GeneratorKind.C):
-                    typePrinter = new CppTypePrinter(Context) { PrintFlavorKind = CppTypePrintFlavorKind.C };
-                    break;
-                case var _ when ReferenceEquals(kind, GeneratorKind.Emscripten):
-                    typePrinter = new EmscriptenTypePrinter(Context);
-                    break;;
-                case var _ when ReferenceEquals(kind, GeneratorKind.CPlusPlus):
-                case var _ when ReferenceEquals(kind, GeneratorKind.QuickJS):
-                case var _ when ReferenceEquals(kind, GeneratorKind.NAPI):
-                case var _ when ReferenceEquals(kind, GeneratorKind.TypeScript):
-                    typePrinter = new CppTypePrinter(Context);
-                    break;
-                case var _ when ReferenceEquals(kind, GeneratorKind.CLI):
-                    typePrinter = new CLITypePrinter(Context);
-                    break;
-                case var _ when ReferenceEquals(kind, GeneratorKind.CSharp):
-                    typePrinter = new CSharpTypePrinter(Context);
-                    break;
-                default:
-                    throw new System.NotImplementedException();
-            }
-
-            return typePrinter;
         }
 
         public override bool VisitProperty(Property decl)

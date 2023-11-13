@@ -1,13 +1,13 @@
 ﻿using CppSharp.AST;
 using CppSharp.Generators.C;
+using System;
 
 namespace CppSharp.Generators
 {
     public class MarshalContext : TypePrinter
     {
-        public MarshalContext(BindingContext context, uint indentation)
+        public MarshalContext(BindingContext context, uint indentation) : base(context)
         {
-            Context = context;
             Before = new TextGenerator { CurrentIndentation = indentation };
             Return = new TextGenerator { CurrentIndentation = indentation };
             Cleanup = new TextGenerator { CurrentIndentation = indentation };
@@ -34,16 +34,16 @@ namespace CppSharp.Generators
         public uint Indentation { get; }
     }
 
-    public abstract class MarshalPrinter<C, P> : AstVisitor where C : MarshalContext where P : TypePrinter, new()
+    public abstract class MarshalPrinter<C, P> : AstVisitor where C : MarshalContext where P : TypePrinter
     {
         public C Context { get; }
 
         protected MarshalPrinter(C ctx)
         {
             Context = ctx;
-            typePrinter.Context = ctx.Context;
+            typePrinter = (P)Activator.CreateInstance(typeof(P), ctx.Context);
         }
 
-        protected P typePrinter = new P();
+        protected P typePrinter;
     }
 }

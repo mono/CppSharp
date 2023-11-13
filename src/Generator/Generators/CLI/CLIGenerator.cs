@@ -10,11 +10,8 @@ namespace CppSharp.Generators.CLI
     /// </summary>
     public class CLIGenerator : Generator
     {
-        private readonly CppTypePrinter typePrinter;
-
         public CLIGenerator(BindingContext context) : base(context)
         {
-            typePrinter = new CLITypePrinter(context);
         }
 
         public override List<CodeGenerator> Generate(IEnumerable<TranslationUnit> units)
@@ -38,11 +35,6 @@ namespace CppSharp.Generators.CLI
                 return false;
 
             return @class.IsRefType && (!@class.NeedsBase || !@class.HasRefBase());
-        }
-
-        protected override string TypePrinterDelegate(Type type)
-        {
-            return type.Visit(typePrinter).ToString();
         }
     }
 }
