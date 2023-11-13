@@ -7,18 +7,15 @@ namespace CppSharp.Generators.CSharp
 {
     public class CSharpGenerator : Generator
     {
-        private readonly CSharpTypePrinter typePrinter;
-
         public CSharpGenerator(BindingContext context) : base(context)
         {
-            typePrinter = new CSharpTypePrinter(context);
         }
 
         public override List<CodeGenerator> Generate(IEnumerable<TranslationUnit> units)
         {
             var outputs = new List<CodeGenerator>();
 
-            var gen = new CSharpSources(Context, units) { TypePrinter = typePrinter };
+            var gen = new CSharpSources(Context, units) { TypePrinter = (CSharpTypePrinter)typePrinter };
             outputs.Add(gen);
 
             return outputs;
@@ -41,11 +38,6 @@ namespace CppSharp.Generators.CSharp
                 Context.TranslationUnitPasses.AddPass(new CheckAbiParameters());
 
             return true;
-        }
-
-        protected override string TypePrinterDelegate(Type type)
-        {
-            return type.Visit(typePrinter);
         }
     }
 }

@@ -21,13 +21,8 @@ namespace CppSharp.Generators.CSharp
 
         public bool PrintModuleOutputNamespace = true;
 
-        public CSharpTypePrinter()
+        public CSharpTypePrinter(BindingContext context) : base(context)
         {
-        }
-
-        public CSharpTypePrinter(BindingContext context)
-        {
-            Context = context;
         }
 
         public string QualifiedType(string name)

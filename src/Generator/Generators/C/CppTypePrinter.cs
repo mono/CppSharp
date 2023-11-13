@@ -28,16 +28,11 @@ namespace CppSharp.Generators.C
 
         public TypePrintScopeKind MethodScopeKind = TypePrintScopeKind.Qualified;
 
-        public CppTypePrinter() : base(TypePrinterContextKind.Native)
+        public CppTypePrinter(BindingContext context) : base(context, TypePrinterContextKind.Native)
         {
             PrintFlavorKind = CppTypePrintFlavorKind.Cpp;
             PrintTypeQualifiers = true;
             PrintTypeModifiers = true;
-        }
-
-        public CppTypePrinter(BindingContext context) : this()
-        {
-            Context = context;
         }
 
         public TypeMapDatabase TypeMapDatabase => Context.TypeMaps;

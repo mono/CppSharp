@@ -11,11 +11,8 @@ namespace CppSharp.Generators.Cpp
     /// </summary>
     public class CppGenerator : CGenerator
     {
-        private readonly CppTypePrinter typePrinter;
-
         public CppGenerator(BindingContext context) : base(context)
         {
-            typePrinter = new CppTypePrinter(Context);
         }
 
         public override List<CodeGenerator> Generate(IEnumerable<TranslationUnit> units)
@@ -43,11 +40,6 @@ namespace CppSharp.Generators.Cpp
                 return false;
 
             return @class.IsRefType && (!@class.HasBase || !@class.HasRefBase());
-        }
-
-        protected override string TypePrinterDelegate(Type type)
-        {
-            return type.Visit(typePrinter).ToString();
         }
     }
 

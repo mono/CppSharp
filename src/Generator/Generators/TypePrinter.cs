@@ -64,8 +64,9 @@ namespace CppSharp.Generators
         public TypePrintScopeKind ScopeKind => scopeKinds.Peek();
         public bool IsGlobalQualifiedScope => ScopeKind == TypePrintScopeKind.GlobalQualified;
 
-        public TypePrinter(TypePrinterContextKind contextKind = TypePrinterContextKind.Managed)
+        public TypePrinter(BindingContext context, TypePrinterContextKind contextKind = TypePrinterContextKind.Managed)
         {
+            Context = context;
             contexts = new Stack<TypePrinterContextKind>();
             marshalKinds = new Stack<MarshalKind>();
             scopeKinds = new Stack<TypePrintScopeKind>();
