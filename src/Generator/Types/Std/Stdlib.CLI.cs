@@ -9,7 +9,7 @@ using CppSharp.Generators.CSharp;
 
 namespace CppSharp.Types.Std
 {
-    [TypeMap("const char*", GeneratorKind = GeneratorKind.CLI)]
+    [TypeMap("const char*", GeneratorKindID = GeneratorKind.CLI_ID)]
     public partial class ConstCharPointer : TypeMap
     {
         public override Type CLISignatureType(TypePrinterContext ctx)
@@ -62,27 +62,27 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("const char[]", GeneratorKind = GeneratorKind.CLI)]
+    [TypeMap("const char[]", GeneratorKindID = GeneratorKind.CLI_ID)]
     public partial class ConstCharArray : ConstCharPointer
     {
     }
 
-    [TypeMap("const wchar_t*", GeneratorKind = GeneratorKind.CLI)]
+    [TypeMap("const wchar_t*", GeneratorKindID = GeneratorKind.CLI_ID)]
     public partial class ConstWCharTPointer : ConstCharPointer
     {
     }
 
-    [TypeMap("const char16_t*", GeneratorKind = GeneratorKind.CLI)]
+    [TypeMap("const char16_t*", GeneratorKindID = GeneratorKind.CLI_ID)]
     public partial class ConstChar16TPointer : ConstCharPointer
     {
     }
 
-    [TypeMap("const char32_t*", GeneratorKind = GeneratorKind.CLI)]
+    [TypeMap("const char32_t*", GeneratorKindID = GeneratorKind.CLI_ID)]
     public partial class ConstChar32TPointer : ConstCharPointer
     {
     }
 
-    [TypeMap("basic_string<char, char_traits<char>, allocator<char>>", GeneratorKind = GeneratorKind.CLI)]
+    [TypeMap("basic_string<char, char_traits<char>, allocator<char>>", GeneratorKindID = GeneratorKind.CLI_ID)]
     public partial class String : TypeMap
     {
         public override Type CLISignatureType(TypePrinterContext ctx)
@@ -103,7 +103,7 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("std::wstring", GeneratorKind = GeneratorKind.CLI)]
+    [TypeMap("std::wstring", GeneratorKindID = GeneratorKind.CLI_ID)]
     public partial class WString : TypeMap
     {
         public override Type CLISignatureType(TypePrinterContext ctx)
@@ -124,7 +124,7 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("std::vector", GeneratorKind = GeneratorKind.CLI)]
+    [TypeMap("std::vector", GeneratorKindID = GeneratorKind.CLI_ID)]
     public partial class Vector : TypeMap
     {
         public override bool IsIgnored
@@ -258,7 +258,7 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("std::map", GeneratorKind = GeneratorKind.CLI)]
+    [TypeMap("std::map", GeneratorKindID = GeneratorKind.CLI_ID)]
     public partial class Map : TypeMap
     {
         public override bool IsIgnored { get { return true; } }
@@ -293,19 +293,19 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("std::list", GeneratorKind = GeneratorKind.CLI)]
+    [TypeMap("std::list", GeneratorKindID = GeneratorKind.CLI_ID)]
     public partial class List : TypeMap
     {
         public override bool IsIgnored { get { return true; } }
     }
 
-    [TypeMap("std::shared_ptr", GeneratorKind = GeneratorKind.CLI)]
+    [TypeMap("std::shared_ptr", GeneratorKindID = GeneratorKind.CLI_ID)]
     public partial class SharedPtr : TypeMap
     {
         public override bool IsIgnored { get { return true; } }
     }
 
-    [TypeMap("basic_ostream<char, char_traits<char>>", GeneratorKind.CLI)]
+    [TypeMap("basic_ostream<char, char_traits<char>>", GeneratorKind.CLI_ID)]
     public partial class OStream : TypeMap
     {
         public override Type CLISignatureType(TypePrinterContext ctx)
@@ -325,7 +325,7 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("std::nullptr_t", GeneratorKind = GeneratorKind.CLI)]
+    [TypeMap("std::nullptr_t", GeneratorKindID = GeneratorKind.CLI_ID)]
     public partial class NullPtr : TypeMap
     {
         public override bool DoesMarshalling { get { return false; } }

@@ -206,33 +206,13 @@ namespace CppSharp
 
         static void GetGeneratorKind(string generator, List<string> errorMessages)
         {
-            switch (generator.ToLower())
+            foreach (GeneratorKind generatorKind in GeneratorKind.Registered)
             {
-                case "csharp":
-                    options.Kind = GeneratorKind.CSharp;
+                if (generatorKind.IsCLIOptionMatch(generator.ToLower()))
+                {
+                    options.Kind = generatorKind;
                     return;
-                case "cli":
-                    options.Kind = GeneratorKind.CLI;
-                    return;
-                case "c":
-                    options.Kind = GeneratorKind.C;
-                    return;
-                case "cpp":
-                    options.Kind = GeneratorKind.CPlusPlus;
-                    return;
-                case "napi":
-                    options.Kind = GeneratorKind.NAPI;
-                    return;
-                case "qjs":
-                    options.Kind = GeneratorKind.QuickJS;
-                    return;
-                case "ts":
-                case "typescript":
-                    options.Kind = GeneratorKind.TypeScript;
-                    return;
-                case "emscripten":
-                    options.Kind = GeneratorKind.Emscripten;
-                    return;
+                }
             }
 
             errorMessages.Add($"Unknown generator kind: {generator}.");

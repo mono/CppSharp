@@ -13,12 +13,15 @@ namespace CppSharp
         ITypeMapDatabase TypeMapDatabase { get; }
         public bool IsIgnored;
 
-        public TypeIgnoreChecker(ITypeMapDatabase database,
-            GeneratorKind generatorKind = GeneratorKind.CSharp)
+        public TypeIgnoreChecker(ITypeMapDatabase database, GeneratorKind generatorKind)
         {
             TypeMapDatabase = database;
             VisitOptions.ClearFlags(VisitFlags.ClassBases | VisitFlags.TemplateArguments);
             this.generatorKind = generatorKind;
+        }
+
+        public TypeIgnoreChecker(ITypeMapDatabase database) : this(database, GeneratorKind.CSharp)
+        {
         }
 
         void Ignore()

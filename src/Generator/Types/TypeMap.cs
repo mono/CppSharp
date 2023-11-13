@@ -15,17 +15,17 @@ namespace CppSharp.Types
     public class TypeMapAttribute : Attribute
     {
         public string Type { get; }
-        public GeneratorKind GeneratorKind { get; set; }
+        public string GeneratorKindID { get; set; }
 
-        public TypeMapAttribute(string type) : this(type, 0)
+        public TypeMapAttribute(string type) : this(type, null)
         {
             Type = type;
         }
 
-        public TypeMapAttribute(string type, GeneratorKind generatorKind)
+        public TypeMapAttribute(string type, string generatorKindID)
         {
             Type = type;
-            GeneratorKind = generatorKind;
+            GeneratorKindID = generatorKindID;
         }
     }
 
@@ -55,12 +55,12 @@ namespace CppSharp.Types
         {
             switch (kind)
             {
-                case GeneratorKind.C:
-                case GeneratorKind.CPlusPlus:
+                case var _ when ReferenceEquals(kind, GeneratorKind.C):
+                case var _ when ReferenceEquals(kind, GeneratorKind.CPlusPlus):
                     return CppSignatureType(ctx);
-                case GeneratorKind.CLI:
+                case var _ when ReferenceEquals(kind, GeneratorKind.CLI):
                     return CLISignatureType(ctx);
-                case GeneratorKind.CSharp:
+                case var _ when ReferenceEquals(kind, GeneratorKind.CSharp):
                     return CSharpSignatureType(ctx);
                 default:
                     throw new System.NotImplementedException();
@@ -71,14 +71,14 @@ namespace CppSharp.Types
         {
             switch (kind)
             {
-                case GeneratorKind.C:
-                case GeneratorKind.CPlusPlus:
+                case var _ when ReferenceEquals(kind, GeneratorKind.C):
+                case var _ when ReferenceEquals(kind, GeneratorKind.CPlusPlus):
                     CppMarshalToNative(ctx);
                     return;
-                case GeneratorKind.CLI:
+                case var _ when ReferenceEquals(kind, GeneratorKind.CLI):
                     CLIMarshalToNative(ctx);
                     return;
-                case GeneratorKind.CSharp:
+                case var _ when ReferenceEquals(kind, GeneratorKind.CSharp):
                     CSharpMarshalToNative(ctx as CSharpMarshalContext);
                     return;
                 default:
@@ -90,14 +90,14 @@ namespace CppSharp.Types
         {
             switch (kind)
             {
-                case GeneratorKind.C:
-                case GeneratorKind.CPlusPlus:
+                case var _ when ReferenceEquals(kind, GeneratorKind.C):
+                case var _ when ReferenceEquals(kind, GeneratorKind.CPlusPlus):
                     CppMarshalToManaged(ctx);
                     return;
-                case GeneratorKind.CLI:
+                case var _ when ReferenceEquals(kind, GeneratorKind.CLI):
                     CLIMarshalToManaged(ctx);
                     return;
-                case GeneratorKind.CSharp:
+                case var _ when ReferenceEquals(kind, GeneratorKind.CSharp):
                     CSharpMarshalToManaged(ctx as CSharpMarshalContext);
                     return;
                 default:

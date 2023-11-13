@@ -40,8 +40,8 @@ namespace CppSharp.Types
                 var attrs = type.GetCustomAttributes(typeof(TypeMapAttribute), true);
                 foreach (TypeMapAttribute attr in attrs)
                 {
-                    if (attr.GeneratorKind == 0 ||
-                        attr.GeneratorKind == bindingContext.Options.GeneratorKind)
+                    if (string.IsNullOrEmpty(attr.GeneratorKindID) ||
+                        attr.GeneratorKindID == bindingContext.Options.GeneratorKind.ID)
                     {
                         var typeMap = (TypeMap)Activator.CreateInstance(type);
                         typeMap.Context = bindingContext;

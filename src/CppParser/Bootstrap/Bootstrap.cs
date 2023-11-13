@@ -1778,8 +1778,7 @@ namespace CppSharp
             return qualifiedName;
         }
 
-        public static string GetDeclName(Declaration decl,
-            GeneratorKind kind = GeneratorKind.CPlusPlus)
+        public static string GetDeclName(Declaration decl, GeneratorKind kind)
         {
             string name = decl.Name;
 
@@ -1809,6 +1808,11 @@ namespace CppSharp
             else throw new NotImplementedException();
 
             return name;
+        }
+
+        public static string GetDeclName(Declaration decl)
+        {
+            return GetDeclName(decl, GeneratorKind.CPlusPlus);
         }
 
         public static AST.Type GetDeclType(AST.Type type,

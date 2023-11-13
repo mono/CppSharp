@@ -35,7 +35,7 @@ namespace CppSharp.Types
     {
         public GeneratorKind GeneratorKind { get; set; }
 
-        public DeclMapAttribute() : this(0)
+        public DeclMapAttribute()
         {
         }
 
