@@ -9,8 +9,10 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { os: windows-2022, platform: x86, vs: "Program Files/Microsoft Visual Studio/2022" }
-          - { os: windows-2022, platform: x64, vs: "Program Files/Microsoft Visual Studio/2022" }
+          - { os: windows-2022, platform: x86, configuration : Release, vs: "Program Files/Microsoft Visual Studio/2022" }
+          - { os: windows-2022, platform: x64, configuration : Debug, vs: "Program Files/Microsoft Visual Studio/2022" }
+          - { os: windows-2022, platform: x86, configuration : Release, vs: "Program Files/Microsoft Visual Studio/2022" }
+          - { os: windows-2022, platform: x64, configuration : Debug, vs: "Program Files/Microsoft Visual Studio/2022" }
 
     runs-on: ${{ matrix.config.os }}
 
@@ -19,6 +21,7 @@ jobs:
       CXX: ${{ matrix.config.cxx }}
       VS_VERSION: ${{ matrix.config.vs }}
       PLATFORM: ${{ matrix.config.platform }}
+      CONFIGURATION: ${{ matrix.config.configuration }}
       ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
     steps:
@@ -51,12 +54,12 @@ jobs:
           
       - name: Build LLVM
         shell: bash
-        run: build/build.sh build_llvm -platform $PLATFORM
+        run: build/build.sh build_llvm -platform $PLATFORM -configuration $CONFIGURATION
         working-directory: C:\CppSharp
 
       - name: Package LLVM
         shell: bash
-        run: build/build.sh package_llvm -platform $PLATFORM
+        run: build/build.sh package_llvm -platform $PLATFORM -configuration $CONFIGURATION
         working-directory: C:\CppSharp
 
       - name: 'Upload Artifact'
