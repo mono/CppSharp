@@ -13,6 +13,8 @@ jobs:
           - { os: windows-2022, platform: x64, configuration : Debug, vs: "Program Files/Microsoft Visual Studio/2022" }
           - { os: windows-2022, platform: x86, configuration : Release, vs: "Program Files/Microsoft Visual Studio/2022" }
           - { os: windows-2022, platform: x64, configuration : Release, vs: "Program Files/Microsoft Visual Studio/2022" }
+          - { os: windows-2022, platform: x86, configuration : RelWithDebInfo, vs: "Program Files/Microsoft Visual Studio/2022" }
+          - { os: windows-2022, platform: x64, configuration : RelWithDebInfo, vs: "Program Files/Microsoft Visual Studio/2022" }
 
     runs-on: ${{ matrix.config.os }}
 
