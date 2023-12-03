@@ -51,8 +51,9 @@ namespace CppSharp.Types
         /// </summary>
         public virtual bool DoesMarshalling => true;
 
-        public virtual Type SignatureType(GeneratorKind kind, TypePrinterContext ctx)
+        public virtual Type SignatureType(TypePrinterContext ctx, GeneratorKind kind = null)
         {
+            kind ??= Context.Options.GeneratorKind;
             switch (kind)
             {
                 case var _ when ReferenceEquals(kind, GeneratorKind.C):
@@ -67,8 +68,9 @@ namespace CppSharp.Types
             }
         }
 
-        public virtual void MarshalToNative(GeneratorKind kind, MarshalContext ctx)
+        public virtual void MarshalToNative(MarshalContext ctx, GeneratorKind kind = null)
         {
+            kind ??= Context.Options.GeneratorKind;
             switch (kind)
             {
                 case var _ when ReferenceEquals(kind, GeneratorKind.C):
@@ -86,8 +88,9 @@ namespace CppSharp.Types
             }
         }
 
-        public virtual void MarshalToManaged(GeneratorKind kind, MarshalContext ctx)
+        public virtual void MarshalToManaged(MarshalContext ctx, GeneratorKind kind = null)
         {
+            kind ??= Context.Options.GeneratorKind;
             switch (kind)
             {
                 case var _ when ReferenceEquals(kind, GeneratorKind.C):
