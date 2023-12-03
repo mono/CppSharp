@@ -29,13 +29,6 @@ namespace CppSharp.Tests
             return new CILType(typeof(string));
         }
 
-        public override Type CppSignatureType(TypePrinterContext ctx)
-        {
-            var tagType = ctx.Type as TagType;
-            var typePrinter = new CppTypePrinter(Context);
-            return new CustomType(tagType.Declaration.Visit(typePrinter));
-        }
-
         public override void CLIMarshalToManaged(MarshalContext ctx)
         {
             ctx.Return.Write("clix::marshalString<clix::E_UTF8>({0}.m_str)", ctx.ReturnVarName);

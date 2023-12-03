@@ -58,7 +58,7 @@ namespace CppSharp.Types
             {
                 case var _ when ReferenceEquals(kind, GeneratorKind.C):
                 case var _ when ReferenceEquals(kind, GeneratorKind.CPlusPlus):
-                    return CppSignatureType(ctx);
+                    return new CILType(typeof(object));
                 case var _ when ReferenceEquals(kind, GeneratorKind.CLI):
                     return CLISignatureType(ctx);
                 case var _ when ReferenceEquals(kind, GeneratorKind.CSharp):
@@ -75,7 +75,7 @@ namespace CppSharp.Types
             {
                 case var _ when ReferenceEquals(kind, GeneratorKind.C):
                 case var _ when ReferenceEquals(kind, GeneratorKind.CPlusPlus):
-                    CppMarshalToNative(ctx);
+                    ctx.Return.Write(ctx.Parameter.Name);
                     return;
                 case var _ when ReferenceEquals(kind, GeneratorKind.CLI):
                     CLIMarshalToNative(ctx);
@@ -95,7 +95,7 @@ namespace CppSharp.Types
             {
                 case var _ when ReferenceEquals(kind, GeneratorKind.C):
                 case var _ when ReferenceEquals(kind, GeneratorKind.CPlusPlus):
-                    CppMarshalToManaged(ctx);
+                    ctx.Return.Write(ctx.ReturnVarName);
                     return;
                 case var _ when ReferenceEquals(kind, GeneratorKind.CLI):
                     CLIMarshalToManaged(ctx);
@@ -158,30 +158,6 @@ namespace CppSharp.Types
         }
 
         #endregion
-
-        #region C++ backend
-
-        public virtual Type CppSignatureType(TypePrinterContext ctx)
-        {
-            return new CILType(typeof(object));
-        }
-
-        public virtual void CppTypeReference(CLITypeReference collector, ASTRecord<Declaration> record)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual void CppMarshalToNative(MarshalContext ctx)
-        {
-            ctx.Return.Write(ctx.Parameter.Name);
-        }
-
-        public virtual void CppMarshalToManaged(MarshalContext ctx)
-        {
-            ctx.Return.Write(ctx.ReturnVarName);
-        }
-
-        #endregion 
     }
 
     public interface ITypeMapDatabase

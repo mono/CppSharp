@@ -68,7 +68,7 @@ namespace CppSharp.Generators.C
             typePrinter.PushContext(ContextKind);
             typePrinter.PushScope(ScopeKind);
 
-            var typeName = typeMap.CppSignatureType(typePrinterContext).Visit(typePrinter);
+            var typeName = typeMap.SignatureType(typePrinterContext).Visit(typePrinter);
             result = new TypePrinterResult(typeName) { TypeMap = typeMap };
 
             return true;
