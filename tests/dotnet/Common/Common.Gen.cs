@@ -7,24 +7,28 @@ using CppSharp.Utils;
 
 namespace CppSharp.Tests
 {
-    [TypeMap("TypeMappedIndex")]
-    public class TypeMappedIndex : TypeMap
+    [TypeMap("TypeMappedIndex", GeneratorKindID = GeneratorKind.CLI_ID)]
+    public class CLITypeMappedIndex : TypeMap
     {
-        public override Type CLISignatureType(TypePrinterContext ctx)
+        public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
         {
             return new BuiltinType(PrimitiveType.UShort);
         }
 
-        public override void CLIMarshalToManaged(MarshalContext ctx)
+        public override void MarshalToManaged(MarshalContext ctx, GeneratorKind kind)
         {
             ctx.Return.Write(ctx.ReturnVarName);
         }
 
-        public override void CLIMarshalToNative(MarshalContext ctx)
+        public override void MarshalToNative(MarshalContext ctx, GeneratorKind kind)
         {
-            ctx.Return.Write("::TypeMappedIndex()");
+            ctx.Return.Write("::TypeMappedIndex1()");
         }
+    }
 
+    [TypeMap("TypeMappedIndex", GeneratorKindID = GeneratorKind.CSharp_ID)]
+    public class TypeMappedIndex : TypeMap
+    {
         public override Type CSharpSignatureType(TypePrinterContext ctx)
         {
             return new BuiltinType(PrimitiveType.UShort);

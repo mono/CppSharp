@@ -51,16 +51,19 @@ namespace CppSharp.Types
         /// </summary>
         public virtual bool DoesMarshalling => true;
 
-        public virtual Type SignatureType(TypePrinterContext ctx, GeneratorKind kind = null)
+        public Type SignatureType(TypePrinterContext ctx)
         {
-            kind ??= Context.Options.GeneratorKind;
+            return SignatureType(ctx, Context.Options.GeneratorKind);
+        }
+
+        public virtual Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
+        {
             switch (kind)
             {
                 case var _ when ReferenceEquals(kind, GeneratorKind.C):
                 case var _ when ReferenceEquals(kind, GeneratorKind.CPlusPlus):
-                    return new CILType(typeof(object));
                 case var _ when ReferenceEquals(kind, GeneratorKind.CLI):
-                    return CLISignatureType(ctx);
+                    return new CILType(typeof(object));
                 case var _ when ReferenceEquals(kind, GeneratorKind.CSharp):
                     return CSharpSignatureType(ctx);
                 default:
@@ -68,17 +71,20 @@ namespace CppSharp.Types
             }
         }
 
-        public virtual void MarshalToNative(MarshalContext ctx, GeneratorKind kind = null)
+        public void MarshalToNative(MarshalContext ctx)
+        {
+            MarshalToNative(ctx, Context.Options.GeneratorKind);
+        }
+
+        public virtual void MarshalToNative(MarshalContext ctx, GeneratorKind kind)
         {
             kind ??= Context.Options.GeneratorKind;
             switch (kind)
             {
                 case var _ when ReferenceEquals(kind, GeneratorKind.C):
                 case var _ when ReferenceEquals(kind, GeneratorKind.CPlusPlus):
-                    ctx.Return.Write(ctx.Parameter.Name);
-                    return;
                 case var _ when ReferenceEquals(kind, GeneratorKind.CLI):
-                    CLIMarshalToNative(ctx);
+                    ctx.Return.Write(ctx.Parameter.Name);
                     return;
                 case var _ when ReferenceEquals(kind, GeneratorKind.CSharp):
                     CSharpMarshalToNative(ctx as CSharpMarshalContext);
@@ -88,17 +94,19 @@ namespace CppSharp.Types
             }
         }
 
-        public virtual void MarshalToManaged(MarshalContext ctx, GeneratorKind kind = null)
+        public void MarshalToManaged(MarshalContext ctx)
         {
-            kind ??= Context.Options.GeneratorKind;
+            MarshalToManaged(ctx, Context.Options.GeneratorKind);
+        }
+
+        public virtual void MarshalToManaged(MarshalContext ctx, GeneratorKind kind)
+        {
             switch (kind)
             {
                 case var _ when ReferenceEquals(kind, GeneratorKind.C):
                 case var _ when ReferenceEquals(kind, GeneratorKind.CPlusPlus):
-                    ctx.Return.Write(ctx.ReturnVarName);
-                    return;
                 case var _ when ReferenceEquals(kind, GeneratorKind.CLI):
-                    CLIMarshalToManaged(ctx);
+                    ctx.Return.Write(ctx.ReturnVarName);
                     return;
                 case var _ when ReferenceEquals(kind, GeneratorKind.CSharp):
                     CSharpMarshalToManaged(ctx as CSharpMarshalContext);
@@ -138,23 +146,8 @@ namespace CppSharp.Types
 
         #region C++/CLI backend
 
-        public virtual Type CLISignatureType(TypePrinterContext ctx)
-        {
-            return new CILType(typeof(object));
-        }
-
         public virtual void CLITypeReference(CLITypeReferenceCollector collector, ASTRecord<Declaration> loc)
         {
-        }
-
-        public virtual void CLIMarshalToNative(MarshalContext ctx)
-        {
-            ctx.Return.Write(ctx.Parameter.Name);
-        }
-
-        public virtual void CLIMarshalToManaged(MarshalContext ctx)
-        {
-            ctx.Return.Write(ctx.ReturnVarName);
         }
 
         #endregion

@@ -22,7 +22,7 @@ namespace CppSharp.Generators.CLI
             TypeMap typeMap;
             if (Context.Context.TypeMaps.FindTypeMap(type, out typeMap) && typeMap.DoesMarshalling)
             {
-                typeMap.CLIMarshalToManaged(Context);
+                typeMap.MarshalToManaged(Context);
                 return false;
             }
 
@@ -215,7 +215,7 @@ namespace CppSharp.Generators.CLI
                 typeMap.DoesMarshalling)
             {
                 typeMap.Type = typedef;
-                typeMap.CLIMarshalToManaged(Context);
+                typeMap.MarshalToManaged(Context);
                 return typeMap.IsValueType;
             }
 
@@ -240,7 +240,7 @@ namespace CppSharp.Generators.CLI
             if (Context.Context.TypeMaps.FindTypeMap(template, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.Type = template;
-                typeMap.CLIMarshalToManaged(Context);
+                typeMap.MarshalToManaged(Context);
                 return true;
             }
 
@@ -406,7 +406,7 @@ namespace CppSharp.Generators.CLI
             TypeMap typeMap;
             if (Context.Context.TypeMaps.FindTypeMap(type, out typeMap) && typeMap.DoesMarshalling)
             {
-                typeMap.CLIMarshalToNative(Context);
+                typeMap.MarshalToNative(Context);
                 return false;
             }
 
@@ -605,7 +605,7 @@ namespace CppSharp.Generators.CLI
             if (Context.Context.TypeMaps.FindTypeMap(decl.Type, out typeMap) &&
                 typeMap.DoesMarshalling)
             {
-                typeMap.CLIMarshalToNative(Context);
+                typeMap.MarshalToNative(Context);
                 return typeMap.IsValueType;
             }
 
@@ -641,7 +641,7 @@ namespace CppSharp.Generators.CLI
             if (Context.Context.TypeMaps.FindTypeMap(template, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.Type = template;
-                typeMap.CLIMarshalToNative(Context);
+                typeMap.MarshalToNative(Context);
                 return true;
             }
 
@@ -688,7 +688,7 @@ namespace CppSharp.Generators.CLI
             if (Context.Context.TypeMaps.FindTypeMap(type, out typeMap) &&
                 typeMap.DoesMarshalling)
             {
-                typeMap.CLIMarshalToNative(Context);
+                typeMap.MarshalToNative(Context);
                 return;
             }
 

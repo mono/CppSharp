@@ -7,34 +7,34 @@ using CppSharp.Utils;
 
 namespace CppSharp.Tests
 {
-    [TypeMap("IgnoredClassTemplateForEmployee")]
+    [TypeMap("IgnoredClassTemplateForEmployee", GeneratorKindID = GeneratorKind.CLI_ID)]
     public class IgnoredClassTemplateForEmployeeMap : TypeMap
     {
-        public override Type CLISignatureType(TypePrinterContext ctx)
+        public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
         {
             return new CustomType("CLI::Employee^");
         }
 
-        public override void CLIMarshalToManaged(MarshalContext ctx)
+        public override void MarshalToManaged(MarshalContext ctx, GeneratorKind kind)
         {
             ctx.Return.Write($"gcnew CLI::Employee({ctx.ReturnVarName}.m_employee)");
         }
     }
 
-    [TypeMap("TestMappedTypeNonConstRefParam")]
+    [TypeMap("TestMappedTypeNonConstRefParam", GeneratorKindID = GeneratorKind.CLI_ID)]
     public class TestMappedTypeNonConstRefParamTypeMap : TypeMap
     {
-        public override Type CLISignatureType(TypePrinterContext ctx)
+        public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
         {
             return new CILType(typeof(string));
         }
 
-        public override void CLIMarshalToManaged(MarshalContext ctx)
+        public override void MarshalToManaged(MarshalContext ctx, GeneratorKind kind)
         {
             ctx.Return.Write("clix::marshalString<clix::E_UTF8>({0}.m_str)", ctx.ReturnVarName);
         }
 
-        public override void CLIMarshalToNative(MarshalContext ctx)
+        public override void MarshalToNative(MarshalContext ctx, GeneratorKind kind)
         {
             if (ctx.Parameter.Usage == ParameterUsage.InOut)
             {
