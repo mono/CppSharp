@@ -22,7 +22,7 @@ namespace CppSharp.Tests
 
         public override void MarshalToNative(MarshalContext ctx, GeneratorKind kind)
         {
-            ctx.Return.Write("::TypeMappedIndex1()");
+            ctx.Return.Write("::TypeMappedIndex()");
         }
     }
 
