@@ -9,12 +9,12 @@ namespace CppSharp.Tests
     [TypeMap("IgnoredClassTemplateForEmployee", GeneratorKindID = GeneratorKind.CLI_ID)]
     public class IgnoredClassTemplateForEmployeeMap : TypeMap
     {
-        public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
+        public override Type SignatureType(TypePrinterContext ctx)
         {
             return new CustomType("CLI::Employee^");
         }
 
-        public override void MarshalToManaged(MarshalContext ctx, GeneratorKind kind)
+        public override void MarshalToManaged(MarshalContext ctx)
         {
             ctx.Return.Write($"gcnew CLI::Employee({ctx.ReturnVarName}.m_employee)");
         }
@@ -25,17 +25,17 @@ namespace CppSharp.Tests
         [TypeMap("TestMappedTypeNonConstRefParam", GeneratorKindID = GeneratorKind.CLI_ID)]
         public class TestMappedTypeNonConstRefParamTypeMap : TypeMap
         {
-            public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
+            public override Type SignatureType(TypePrinterContext ctx)
             {
                 return new CILType(typeof(string));
             }
 
-            public override void MarshalToManaged(MarshalContext ctx, GeneratorKind kind)
+            public override void MarshalToManaged(MarshalContext ctx)
             {
                 ctx.Return.Write("clix::marshalString<clix::E_UTF8>({0}.m_str)", ctx.ReturnVarName);
             }
 
-            public override void MarshalToNative(MarshalContext ctx, GeneratorKind kind)
+            public override void MarshalToNative(MarshalContext ctx)
             {
                 if (ctx.Parameter.Usage == ParameterUsage.InOut)
                 {
@@ -57,7 +57,7 @@ namespace CppSharp.Tests
         [TypeMap("TestMappedTypeNonConstRefParam", GeneratorKindID = GeneratorKind.CPlusPlus_ID)]
         public class TestMappedTypeNonConstRefParamTypeMap : TypeMap
         {
-            public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
+            public override Type SignatureType(TypePrinterContext ctx)
             {
                 var tagType = ctx.Type as TagType;
                 var typePrinter = new CppTypePrinter(Context);

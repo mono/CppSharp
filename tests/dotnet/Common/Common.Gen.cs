@@ -12,17 +12,17 @@ namespace CppSharp.Tests
         [TypeMap("TypeMappedIndex", GeneratorKindID = GeneratorKind.CLI_ID)]
         public class TypeMappedIndex : TypeMap
         {
-            public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
+            public override Type SignatureType(TypePrinterContext ctx)
             {
                 return new BuiltinType(PrimitiveType.UShort);
             }
 
-            public override void MarshalToManaged(MarshalContext ctx, GeneratorKind kind)
+            public override void MarshalToManaged(MarshalContext ctx)
             {
                 ctx.Return.Write(ctx.ReturnVarName);
             }
 
-            public override void MarshalToNative(MarshalContext ctx, GeneratorKind kind)
+            public override void MarshalToNative(MarshalContext ctx)
             {
                 ctx.Return.Write("::TypeMappedIndex()");
             }
@@ -34,17 +34,17 @@ namespace CppSharp.Tests
         [TypeMap("TypeMappedIndex", GeneratorKindID = GeneratorKind.CSharp_ID)]
         public class TypeMappedIndex : TypeMap
         {
-            public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
+            public override Type SignatureType(TypePrinterContext ctx)
             {
                 return new BuiltinType(PrimitiveType.UShort);
             }
 
-            public override void MarshalToManaged(MarshalContext ctx, GeneratorKind kind)
+            public override void MarshalToManaged(MarshalContext ctx)
             {
                 ctx.Return.Write(ctx.ReturnVarName);
             }
 
-            public override void MarshalToNative(MarshalContext ctx, GeneratorKind kind)
+            public override void MarshalToNative(MarshalContext ctx)
             {
                 ctx.Return.Write("IntPtr.Zero");
             }

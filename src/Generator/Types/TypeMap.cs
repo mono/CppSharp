@@ -2,10 +2,7 @@
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Generators.AST;
-using CppSharp.Generators.C;
 using CppSharp.Generators.CLI;
-using CppSharp.Generators.Cpp;
-using CppSharp.Generators.CSharp;
 using Attribute = System.Attribute;
 using Type = CppSharp.AST.Type;
 
@@ -51,64 +48,19 @@ namespace CppSharp.Types
         /// </summary>
         public virtual bool DoesMarshalling => true;
 
-        public Type SignatureType(TypePrinterContext ctx)
+        public virtual Type SignatureType(TypePrinterContext ctx)
         {
-            return SignatureType(ctx, Context.Options.GeneratorKind);
+            return new CILType(typeof(object));
         }
 
-        public virtual Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
+        public virtual void MarshalToNative(MarshalContext ctx)
         {
-            switch (kind)
-            {
-                case var _ when ReferenceEquals(kind, GeneratorKind.C):
-                case var _ when ReferenceEquals(kind, GeneratorKind.CPlusPlus):
-                case var _ when ReferenceEquals(kind, GeneratorKind.CLI):
-                case var _ when ReferenceEquals(kind, GeneratorKind.CSharp):
-                    return new CILType(typeof(object));
-                default:
-                    throw new System.NotImplementedException();
-            }
+            ctx.Return.Write(ctx.Parameter.Name);
         }
 
-        public void MarshalToNative(MarshalContext ctx)
+        public virtual void MarshalToManaged(MarshalContext ctx)
         {
-            MarshalToNative(ctx, Context.Options.GeneratorKind);
-        }
-
-        public virtual void MarshalToNative(MarshalContext ctx, GeneratorKind kind)
-        {
-            kind ??= Context.Options.GeneratorKind;
-            switch (kind)
-            {
-                case var _ when ReferenceEquals(kind, GeneratorKind.C):
-                case var _ when ReferenceEquals(kind, GeneratorKind.CPlusPlus):
-                case var _ when ReferenceEquals(kind, GeneratorKind.CLI):
-                case var _ when ReferenceEquals(kind, GeneratorKind.CSharp):
-                    ctx.Return.Write(ctx.Parameter.Name);
-                    return;
-                default:
-                    throw new System.NotImplementedException();
-            }
-        }
-
-        public void MarshalToManaged(MarshalContext ctx)
-        {
-            MarshalToManaged(ctx, Context.Options.GeneratorKind);
-        }
-
-        public virtual void MarshalToManaged(MarshalContext ctx, GeneratorKind kind)
-        {
-            switch (kind)
-            {
-                case var _ when ReferenceEquals(kind, GeneratorKind.C):
-                case var _ when ReferenceEquals(kind, GeneratorKind.CPlusPlus):
-                case var _ when ReferenceEquals(kind, GeneratorKind.CLI):
-                case var _ when ReferenceEquals(kind, GeneratorKind.CSharp):
-                    ctx.Return.Write(ctx.ReturnVarName);
-                    return;
-                default:
-                    throw new System.NotImplementedException();
-            }
+            ctx.Return.Write(ctx.ReturnVarName);
         }
 
         #region C# backend

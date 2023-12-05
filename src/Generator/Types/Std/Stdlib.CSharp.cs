@@ -14,41 +14,41 @@ namespace CppSharp.Types.Std.CSharp
     [TypeMap("int", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public class Int : TypeMap
     {
-        public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind) =>
+        public override Type SignatureType(TypePrinterContext ctx) =>
             CSharpTypePrinter.GetSignedType(Context.TargetInfo.IntWidth);
     }
 
     [TypeMap("unsigned int", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public class UnsignedInt : TypeMap
     {
-        public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind) =>
+        public override Type SignatureType(TypePrinterContext ctx) =>
             CSharpTypePrinter.GetUnsignedType(Context.TargetInfo.IntWidth);
     }
 
     [TypeMap("long", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public class Long : TypeMap
     {
-        public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind) =>
+        public override Type SignatureType(TypePrinterContext ctx) =>
             CSharpTypePrinter.GetSignedType(Context.TargetInfo.LongWidth);
     }
 
     [TypeMap("unsigned long", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public class UnsignedLong : TypeMap
     {
-        public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind) =>
+        public override Type SignatureType(TypePrinterContext ctx) =>
             CSharpTypePrinter.GetUnsignedType(Context.TargetInfo.LongWidth);
     }
 
     [TypeMap("char", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public class Char : TypeMap
     {
-        public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
+        public override Type SignatureType(TypePrinterContext ctx)
         {
             return new CILType(ctx.Kind == TypePrinterContextKind.Native ||
                 !Context.Options.MarshalCharAsManagedChar ? typeof(sbyte) : typeof(char));
         }
 
-        public override void MarshalToNative(MarshalContext ctx, GeneratorKind kind)
+        public override void MarshalToNative(MarshalContext ctx)
         {
             if (Context.Options.MarshalCharAsManagedChar)
                 ctx.Return.Write("global::System.Convert.ToSByte({0})",
@@ -57,7 +57,7 @@ namespace CppSharp.Types.Std.CSharp
                 ctx.Return.Write(ctx.Parameter.Name);
         }
 
-        public override void MarshalToManaged(MarshalContext ctx, GeneratorKind kind)
+        public override void MarshalToManaged(MarshalContext ctx)
         {
             if (Context.Options.MarshalCharAsManagedChar)
                 ctx.Return.Write("global::System.Convert.ToChar({0})",
@@ -70,7 +70,7 @@ namespace CppSharp.Types.Std.CSharp
     [TypeMap("char16_t", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public class Char16T : TypeMap
     {
-        public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
+        public override Type SignatureType(TypePrinterContext ctx)
         {
             return new CILType(typeof(char));
         }
@@ -79,7 +79,7 @@ namespace CppSharp.Types.Std.CSharp
     [TypeMap("wchar_t", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public class WCharT : TypeMap
     {
-        public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
+        public override Type SignatureType(TypePrinterContext ctx)
         {
             return new CILType(typeof(char));
         }
@@ -88,7 +88,7 @@ namespace CppSharp.Types.Std.CSharp
     [TypeMap("const char*", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public class ConstCharPointer : TypeMap
     {
-        public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
+        public override Type SignatureType(TypePrinterContext ctx)
         {
             if (ctx.Kind == TypePrinterContextKind.Managed)
                 return new CILType(typeof(string));
@@ -117,7 +117,7 @@ namespace CppSharp.Types.Std.CSharp
                 $"{Context.Options.Encoding.EncodingName} is not supported yet.");
         }
 
-        public override void MarshalToNative(MarshalContext ctx, GeneratorKind kind)
+        public override void MarshalToNative(MarshalContext ctx)
         {
             string param = ctx.Parameter.Name;
             if (ctx.Parameter.Usage == ParameterUsage.Unknown &&
@@ -194,7 +194,7 @@ namespace CppSharp.Types.Std.CSharp
             ctx.Return.Write($"{bytePtr}");
         }
 
-        public override void MarshalToManaged(MarshalContext ctx, GeneratorKind kind)
+        public override void MarshalToManaged(MarshalContext ctx)
         {
             if (ctx.Parameter != null && !ctx.Parameter.IsOut &&
                 !ctx.Parameter.IsInOut)
@@ -304,7 +304,7 @@ namespace CppSharp.Types.Std.CSharp
     [TypeMap("basic_string<char, char_traits<char>, allocator<char>>", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public class String : TypeMap
     {
-        public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
+        public override Type SignatureType(TypePrinterContext ctx)
         {
             if (ctx.Kind == TypePrinterContextKind.Managed)
                 return new CILType(typeof(string));
@@ -316,7 +316,7 @@ namespace CppSharp.Types.Std.CSharp
             return new CustomType(basicString.Visit(typePrinter).Type);
         }
 
-        public override void MarshalToNative(MarshalContext ctx, GeneratorKind kind)
+        public override void MarshalToNative(MarshalContext ctx)
         {
             Type type = ctx.Parameter.Type.Desugar();
             ClassTemplateSpecialization basicString = GetBasicString(type);
@@ -361,7 +361,7 @@ namespace CppSharp.Types.Std.CSharp
             }
         }
 
-        public override void MarshalToManaged(MarshalContext ctx, GeneratorKind kind)
+        public override void MarshalToManaged(MarshalContext ctx)
         {
             var type = Type.Desugar(resolveTemplateSubstitution: false);
             ClassTemplateSpecialization basicString = GetBasicString(type);
@@ -415,7 +415,7 @@ namespace CppSharp.Types.Std.CSharp
     [TypeMap("FILE", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public class FILE : TypeMap
     {
-        public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
+        public override Type SignatureType(TypePrinterContext ctx)
         {
             return new CILType(typeof(System.IntPtr));
         }
