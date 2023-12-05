@@ -64,13 +64,12 @@ namespace CppSharp.Types
             {
                 var specialization = template.GetClassTemplateSpecialization();
                 if (specialization != null &&
-                    FindTypeMap(specialization, out typeMap))
+                    FindTypeMap(specialization, kind, out typeMap))
                     return true;
 
                 if (template.Template.TemplatedDecl != null)
                 {
-                    if (FindTypeMap(template.Template.TemplatedDecl,
-                        out typeMap))
+                    if (FindTypeMap(template.Template.TemplatedDecl, kind, out typeMap))
                     {
                         typeMap.Type = type;
                         return true;
