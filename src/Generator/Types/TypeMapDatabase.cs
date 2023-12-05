@@ -10,13 +10,16 @@ namespace CppSharp.Types
 {
     public class TypeMapDatabase : ITypeMapDatabase
     {
-        public IDictionary<string, TypeMap> TypeMaps { get; set; }
         private readonly BindingContext Context;
+        private readonly Dictionary<GeneratorKind, Dictionary<Type, TypeMap>> typeMapsCache = new();
+
+        public Dictionary<GeneratorKind, Dictionary<string, TypeMap>> GlobalTypeMaps { get; private set; }
+        public Dictionary<string, TypeMap> TypeMaps => TypeMapsByKind(GlobalTypeMaps, Context.Options.GeneratorKind);
 
         public TypeMapDatabase(BindingContext bindingContext)
         {
             Context = bindingContext;
-            TypeMaps = new Dictionary<string, TypeMap>();
+            GlobalTypeMaps = new Dictionary<GeneratorKind, Dictionary<string, TypeMap>>();
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 try
@@ -32,33 +35,22 @@ namespace CppSharp.Types
             }
         }
 
-        private void SetupTypeMaps(IEnumerable<System.Type> types,
-            BindingContext bindingContext)
+        public static Dictionary<T, TypeMap> TypeMapsByKind<T>(Dictionary<GeneratorKind, Dictionary<T, TypeMap>> globalTypeMaps, GeneratorKind kind)
         {
-            foreach (var type in types)
+            if (!globalTypeMaps.TryGetValue(kind, out Dictionary<T, TypeMap> typeMap))
             {
-                var attrs = type.GetCustomAttributes(typeof(TypeMapAttribute), true);
-                foreach (TypeMapAttribute attr in attrs)
-                {
-                    if (string.IsNullOrEmpty(attr.GeneratorKindID) ||
-                        attr.GeneratorKindID == bindingContext.Options.GeneratorKind.ID)
-                    {
-                        var typeMap = (TypeMap)Activator.CreateInstance(type);
-                        typeMap.Context = bindingContext;
-                        typeMap.TypeMapDatabase = this;
-
-                        // Custom types won't be overwritten by CppSharp ones.
-                        if (!TypeMaps.ContainsKey(attr.Type))
-                        {
-                            TypeMaps.Add(attr.Type, typeMap);
-                        }
-                    }
-                }
+                typeMap = new Dictionary<T, TypeMap>();
+                globalTypeMaps.Add(kind, typeMap);
             }
+            return typeMap;
         }
 
-        public bool FindTypeMap(Type type, out TypeMap typeMap)
+        public bool FindTypeMap(Type type, out TypeMap typeMap) =>
+            FindTypeMap(type, Context.Options.GeneratorKind, out typeMap);
+
+        public bool FindTypeMap(Type type, GeneratorKind kind, out TypeMap typeMap)
         {
+            var typeMaps = TypeMapsByKind(typeMapsCache, kind);
             // Looks up the type in the cache map.
             if (typeMaps.ContainsKey(type))
             {
@@ -113,7 +105,7 @@ namespace CppSharp.Types
                     typePrinter.PushScope(typePrintScopeKind);
                     var typeName = type.Visit(typePrinter);
                     typePrinter.PopScope();
-                    if (FindTypeMap(typeName, out typeMap))
+                    if (FindTypeMap(typeName, kind, out typeMap))
                     {
                         typeMap.Type = type;
                         typeMaps[type] = typeMap;
@@ -127,11 +119,33 @@ namespace CppSharp.Types
         }
 
         public bool FindTypeMap(Declaration declaration, out TypeMap typeMap) =>
-            FindTypeMap(new TagType(declaration), out typeMap);
+            FindTypeMap(declaration, Context.Options.GeneratorKind, out typeMap);
 
-        public bool FindTypeMap(string name, out TypeMap typeMap) =>
-            TypeMaps.TryGetValue(name, out typeMap) && typeMap.IsEnabled;
+        public bool FindTypeMap(Declaration declaration, GeneratorKind kind, out TypeMap typeMap) =>
+            FindTypeMap(new TagType(declaration), kind, out typeMap);
 
-        private Dictionary<Type, TypeMap> typeMaps = new Dictionary<Type, TypeMap>();
+        public bool FindTypeMap(string name, GeneratorKind kind, out TypeMap typeMap) =>
+            TypeMapsByKind(GlobalTypeMaps, kind).TryGetValue(name, out typeMap) && typeMap.IsEnabled;
+
+        private void SetupTypeMaps(IEnumerable<System.Type> types, BindingContext bindingContext)
+        {
+            foreach (var type in types)
+            {
+                var attrs = type.GetCustomAttributes(typeof(TypeMapAttribute), true);
+                foreach (TypeMapAttribute attr in attrs)
+                {
+                    var kind = string.IsNullOrEmpty(attr.GeneratorKindID) ? Context.Options.GeneratorKind : GeneratorKind.FindGeneratorKindByID(attr.GeneratorKindID);
+                    var typeMaps = TypeMapsByKind(GlobalTypeMaps, kind);
+                    // Custom types won't be overwritten by CppSharp ones.
+                    if (!typeMaps.ContainsKey(attr.Type))
+                    {
+                        var typeMap = (TypeMap)Activator.CreateInstance(type);
+                        typeMap.Context = bindingContext;
+                        typeMap.TypeMapDatabase = this;
+                        typeMaps.Add(attr.Type, typeMap);
+                    }
+                }
+            }
+        }
     }
 }

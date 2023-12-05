@@ -156,6 +156,8 @@ namespace CppSharp.Types
     public interface ITypeMapDatabase
     {
         bool FindTypeMap(Type decl, out TypeMap typeMap);
+        bool FindTypeMap(Type decl, GeneratorKind kind, out TypeMap typeMap);
         bool FindTypeMap(Declaration declaration, out TypeMap typeMap);
+        bool FindTypeMap(Declaration declaration, GeneratorKind kind, out TypeMap typeMap);
     }
 }
