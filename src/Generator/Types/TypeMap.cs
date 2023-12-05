@@ -63,9 +63,8 @@ namespace CppSharp.Types
                 case var _ when ReferenceEquals(kind, GeneratorKind.C):
                 case var _ when ReferenceEquals(kind, GeneratorKind.CPlusPlus):
                 case var _ when ReferenceEquals(kind, GeneratorKind.CLI):
-                    return new CILType(typeof(object));
                 case var _ when ReferenceEquals(kind, GeneratorKind.CSharp):
-                    return CSharpSignatureType(ctx);
+                    return new CILType(typeof(object));
                 default:
                     throw new System.NotImplementedException();
             }
@@ -84,10 +83,8 @@ namespace CppSharp.Types
                 case var _ when ReferenceEquals(kind, GeneratorKind.C):
                 case var _ when ReferenceEquals(kind, GeneratorKind.CPlusPlus):
                 case var _ when ReferenceEquals(kind, GeneratorKind.CLI):
-                    ctx.Return.Write(ctx.Parameter.Name);
-                    return;
                 case var _ when ReferenceEquals(kind, GeneratorKind.CSharp):
-                    CSharpMarshalToNative(ctx as CSharpMarshalContext);
+                    ctx.Return.Write(ctx.Parameter.Name);
                     return;
                 default:
                     throw new System.NotImplementedException();
@@ -106,10 +103,8 @@ namespace CppSharp.Types
                 case var _ when ReferenceEquals(kind, GeneratorKind.C):
                 case var _ when ReferenceEquals(kind, GeneratorKind.CPlusPlus):
                 case var _ when ReferenceEquals(kind, GeneratorKind.CLI):
-                    ctx.Return.Write(ctx.ReturnVarName);
-                    return;
                 case var _ when ReferenceEquals(kind, GeneratorKind.CSharp):
-                    CSharpMarshalToManaged(ctx as CSharpMarshalContext);
+                    ctx.Return.Write(ctx.ReturnVarName);
                     return;
                 default:
                     throw new System.NotImplementedException();
@@ -117,21 +112,6 @@ namespace CppSharp.Types
         }
 
         #region C# backend
-
-        public virtual Type CSharpSignatureType(TypePrinterContext ctx)
-        {
-            return new CILType(typeof(object));
-        }
-
-        public virtual void CSharpMarshalToNative(CSharpMarshalContext ctx)
-        {
-            ctx.Return.Write(ctx.Parameter.Name);
-        }
-
-        public virtual void CSharpMarshalToManaged(CSharpMarshalContext ctx)
-        {
-            ctx.Return.Write(ctx.ReturnVarName);
-        }
 
         /// <summary>
         /// Used to construct a new instance of the mapped type.

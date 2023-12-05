@@ -7,41 +7,47 @@ using CppSharp.Utils;
 
 namespace CppSharp.Tests
 {
-    [TypeMap("TypeMappedIndex", GeneratorKindID = GeneratorKind.CLI_ID)]
-    public class CLITypeMappedIndex : TypeMap
+    namespace CLI
     {
-        public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
+        [TypeMap("TypeMappedIndex", GeneratorKindID = GeneratorKind.CLI_ID)]
+        public class TypeMappedIndex : TypeMap
         {
-            return new BuiltinType(PrimitiveType.UShort);
-        }
+            public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
+            {
+                return new BuiltinType(PrimitiveType.UShort);
+            }
 
-        public override void MarshalToManaged(MarshalContext ctx, GeneratorKind kind)
-        {
-            ctx.Return.Write(ctx.ReturnVarName);
-        }
+            public override void MarshalToManaged(MarshalContext ctx, GeneratorKind kind)
+            {
+                ctx.Return.Write(ctx.ReturnVarName);
+            }
 
-        public override void MarshalToNative(MarshalContext ctx, GeneratorKind kind)
-        {
-            ctx.Return.Write("::TypeMappedIndex()");
+            public override void MarshalToNative(MarshalContext ctx, GeneratorKind kind)
+            {
+                ctx.Return.Write("::TypeMappedIndex()");
+            }
         }
     }
 
-    [TypeMap("TypeMappedIndex", GeneratorKindID = GeneratorKind.CSharp_ID)]
-    public class TypeMappedIndex : TypeMap
+    namespace CSharp
     {
-        public override Type CSharpSignatureType(TypePrinterContext ctx)
+        [TypeMap("TypeMappedIndex", GeneratorKindID = GeneratorKind.CSharp_ID)]
+        public class TypeMappedIndex : TypeMap
         {
-            return new BuiltinType(PrimitiveType.UShort);
-        }
+            public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
+            {
+                return new BuiltinType(PrimitiveType.UShort);
+            }
 
-        public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)
-        {
-            ctx.Return.Write(ctx.ReturnVarName);
-        }
+            public override void MarshalToManaged(MarshalContext ctx, GeneratorKind kind)
+            {
+                ctx.Return.Write(ctx.ReturnVarName);
+            }
 
-        public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
-        {
-            ctx.Return.Write("IntPtr.Zero");
+            public override void MarshalToNative(MarshalContext ctx, GeneratorKind kind)
+            {
+                ctx.Return.Write("IntPtr.Zero");
+            }
         }
     }
 

@@ -68,9 +68,9 @@ namespace CppSharp.Internal
 
         public static System.Type GetSystemType(BindingContext context, Type type)
         {
-            if (context.TypeMaps.FindTypeMap(type, out TypeMap typeMap))
+            if (context.TypeMaps.FindTypeMap(type, GeneratorKind.CSharp, out TypeMap typeMap))
             {
-                var cilType = typeMap.CSharpSignatureType(new TypePrinterContext { Type = type, Kind = TypePrinterContextKind.Managed }) as CILType;
+                var cilType = typeMap.SignatureType(new TypePrinterContext { Type = type, Kind = TypePrinterContextKind.Managed }) as CILType;
                 if (cilType != null)
                     return cilType.Type;
             }
@@ -239,7 +239,7 @@ namespace CppSharp.Internal
             var typePrinterResult = type.Visit(typePrinter);
 
             TypeMap typeMap;
-            if (context.TypeMaps.FindTypeMap(type, out typeMap))
+            if (context.TypeMaps.FindTypeMap(type, GeneratorKind.CSharp, out typeMap))
             {
                 var typePrinterContext = new TypePrinterContext()
                 {
@@ -248,7 +248,7 @@ namespace CppSharp.Internal
                     Type = type
                 };
 
-                var typeInSignature = typeMap.CSharpSignatureType(typePrinterContext)
+                var typeInSignature = typeMap.SignatureType(typePrinterContext)
                     .SkipPointerRefs().Desugar();
 
                 Enumeration @enum;
@@ -413,7 +413,7 @@ namespace CppSharp.Internal
 
         private static bool CheckForString(BindingContext context, Type desugared, ref string result)
         {
-            if (context.TypeMaps.FindTypeMap(desugared, out TypeMap typeMap))
+            if (context.TypeMaps.FindTypeMap(desugared, GeneratorKind.CSharp, out TypeMap typeMap))
             {
                 var typePrinterContext = new TypePrinterContext()
                 {
@@ -422,7 +422,7 @@ namespace CppSharp.Internal
                     Type = desugared
                 };
 
-                var typeInSignature = typeMap.CSharpSignatureType(typePrinterContext)
+                var typeInSignature = typeMap.SignatureType(typePrinterContext)
                     .SkipPointerRefs().Desugar();
 
                 if (typeInSignature is CILType managed && managed.Type == typeof(string))

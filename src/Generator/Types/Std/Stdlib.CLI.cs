@@ -5,12 +5,11 @@ using CppSharp.Generators;
 using CppSharp.Generators.AST;
 using CppSharp.Generators.C;
 using CppSharp.Generators.CLI;
-using CppSharp.Generators.CSharp;
 
-namespace CppSharp.Types.Std
+namespace CppSharp.Types.Std.CLI
 {
     [TypeMap("const char*", GeneratorKindID = GeneratorKind.CLI_ID)]
-    public partial class ConstCharPointer : TypeMap
+    public class ConstCharPointer : TypeMap
     {
         public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
         {
@@ -57,33 +56,32 @@ namespace CppSharp.Types.Std
                     $"{Context.Options.Encoding.EncodingName} is not supported yet.");
 
             ctx.Return.Write(
-                $@"({ctx.ReturnVarName} == 0 ? nullptr : clix::marshalString<clix::{
-                    param}>({ctx.ReturnVarName}))");
+                $@"({ctx.ReturnVarName} == 0 ? nullptr : clix::marshalString<clix::{param}>({ctx.ReturnVarName}))");
         }
     }
 
     [TypeMap("const char[]", GeneratorKindID = GeneratorKind.CLI_ID)]
-    public partial class ConstCharArray : ConstCharPointer
+    public class ConstCharArray : ConstCharPointer
     {
     }
 
     [TypeMap("const wchar_t*", GeneratorKindID = GeneratorKind.CLI_ID)]
-    public partial class ConstWCharTPointer : ConstCharPointer
+    public class ConstWCharTPointer : ConstCharPointer
     {
     }
 
     [TypeMap("const char16_t*", GeneratorKindID = GeneratorKind.CLI_ID)]
-    public partial class ConstChar16TPointer : ConstCharPointer
+    public class ConstChar16TPointer : ConstCharPointer
     {
     }
 
     [TypeMap("const char32_t*", GeneratorKindID = GeneratorKind.CLI_ID)]
-    public partial class ConstChar32TPointer : ConstCharPointer
+    public class ConstChar32TPointer : ConstCharPointer
     {
     }
 
     [TypeMap("basic_string<char, char_traits<char>, allocator<char>>", GeneratorKindID = GeneratorKind.CLI_ID)]
-    public partial class String : TypeMap
+    public class String : TypeMap
     {
         public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
         {
@@ -104,7 +102,7 @@ namespace CppSharp.Types.Std
     }
 
     [TypeMap("std::wstring", GeneratorKindID = GeneratorKind.CLI_ID)]
-    public partial class WString : TypeMap
+    public class WString : TypeMap
     {
         public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
         {
@@ -125,7 +123,7 @@ namespace CppSharp.Types.Std
     }
 
     [TypeMap("std::vector", GeneratorKindID = GeneratorKind.CLI_ID)]
-    public partial class Vector : TypeMap
+    public class Vector : TypeMap
     {
         public override bool IsIgnored
         {
@@ -259,7 +257,7 @@ namespace CppSharp.Types.Std
     }
 
     [TypeMap("std::map", GeneratorKindID = GeneratorKind.CLI_ID)]
-    public partial class Map : TypeMap
+    public class Map : TypeMap
     {
         public override bool IsIgnored { get { return true; } }
 
@@ -267,8 +265,7 @@ namespace CppSharp.Types.Std
         {
             var type = Type as TemplateSpecializationType;
             return new CustomType(
-                $@"::System::Collections::Generic::Dictionary<{
-                    type.Arguments[0].Type}, {type.Arguments[1].Type}>^");
+                $@"::System::Collections::Generic::Dictionary<{type.Arguments[0].Type}, {type.Arguments[1].Type}>^");
         }
 
         public override void MarshalToNative(MarshalContext ctx, GeneratorKind kind)
@@ -283,19 +280,19 @@ namespace CppSharp.Types.Std
     }
 
     [TypeMap("std::list", GeneratorKindID = GeneratorKind.CLI_ID)]
-    public partial class List : TypeMap
+    public class List : TypeMap
     {
         public override bool IsIgnored { get { return true; } }
     }
 
     [TypeMap("std::shared_ptr", GeneratorKindID = GeneratorKind.CLI_ID)]
-    public partial class SharedPtr : TypeMap
+    public class SharedPtr : TypeMap
     {
         public override bool IsIgnored { get { return true; } }
     }
 
     [TypeMap("basic_ostream<char, char_traits<char>>", GeneratorKind.CLI_ID)]
-    public partial class OStream : TypeMap
+    public class OStream : TypeMap
     {
         public override Type SignatureType(TypePrinterContext ctx, GeneratorKind kind)
         {
@@ -315,7 +312,7 @@ namespace CppSharp.Types.Std
     }
 
     [TypeMap("std::nullptr_t", GeneratorKindID = GeneratorKind.CLI_ID)]
-    public partial class NullPtr : TypeMap
+    public class NullPtr : TypeMap
     {
         public override bool DoesMarshalling { get { return false; } }
 

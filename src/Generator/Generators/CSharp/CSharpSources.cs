@@ -3158,7 +3158,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                             Type = indirectRetType.Type.Desugar()
                         };
 
-                        WriteLine("{0} {1};", typeMap.CSharpSignatureType(typePrinterContext),
+                        WriteLine("{0} {1};", typeMap.SignatureType(typePrinterContext),
                             Helpers.ReturnIdentifier);
                     }
                     else

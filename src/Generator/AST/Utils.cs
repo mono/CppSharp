@@ -207,7 +207,7 @@ namespace CppSharp.AST
                 return false;
 
             var typePrinterContext = new TypePrinterContext { Type = type };
-            var mappedTo = typeMap.CSharpSignatureType(typePrinterContext);
+            var mappedTo = typeMap.SignatureType(typePrinterContext);
             mappedTo = mappedTo.Desugar();
             mappedTo = (mappedTo.GetFinalPointee() ?? mappedTo).Desugar();
             return (mappedTo.IsPrimitiveType() ||
