@@ -64,7 +64,8 @@ namespace CppSharp.Generators.Cpp
 
             foreach (var typeRef in typeReferenceCollector.TypeReferences)
             {
-                if (typeRef.Include.File == unit.FileName)
+                var filename = Context.Options.GenerateName != null ? $"{Context.Options.GenerateName(TranslationUnit)}{Path.GetExtension(TranslationUnit.FileName)}" : TranslationUnit.FileName;
+                if (typeRef.Include.File == filename)
                     continue;
 
                 var include = typeRef.Include;
