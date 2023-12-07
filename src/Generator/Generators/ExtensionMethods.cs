@@ -63,12 +63,9 @@ namespace CppSharp.Generators
                     Type = typeMap.Type
                 };
 
-                switch (generatorKind)
+                if (generatorKind == GeneratorKind.CLI || generatorKind == GeneratorKind.CSharp)
                 {
-                    case var _ when ReferenceEquals(generatorKind, GeneratorKind.CLI):
-                        return typeMap.CLISignatureType(typePrinterContext).Desugar();
-                    case var _ when ReferenceEquals(generatorKind, GeneratorKind.CSharp):
-                        return typeMap.CSharpSignatureType(typePrinterContext).Desugar();
+                    return typeMap.SignatureType(typePrinterContext).Desugar();
                 }
             }
 
