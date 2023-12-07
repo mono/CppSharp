@@ -35,12 +35,12 @@ namespace CppSharp.Types
             }
         }
 
-        public static Dictionary<T, TypeMap> TypeMapsByKind<T>(Dictionary<GeneratorKind, Dictionary<T, TypeMap>> globalTypeMaps, GeneratorKind kind)
+        public static Dictionary<T, TypeMap> TypeMapsByKind<T>(Dictionary<GeneratorKind, Dictionary<T, TypeMap>> typeMapsDictionary, GeneratorKind kind)
         {
-            if (!globalTypeMaps.TryGetValue(kind, out Dictionary<T, TypeMap> typeMap))
+            if (!typeMapsDictionary.TryGetValue(kind, out Dictionary<T, TypeMap> typeMap))
             {
                 typeMap = new Dictionary<T, TypeMap>();
-                globalTypeMaps.Add(kind, typeMap);
+                typeMapsDictionary.Add(kind, typeMap);
             }
             return typeMap;
         }
