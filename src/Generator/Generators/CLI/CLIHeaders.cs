@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
@@ -61,7 +62,8 @@ namespace CppSharp.Generators.CLI
                 if (typeRef.Include.TranslationUnit == TranslationUnit)
                     continue;
 
-                if (typeRef.Include.File == TranslationUnit.FileName)
+                var filename = Context.Options.GenerateName != null ? $"{Context.Options.GenerateName(TranslationUnit)}{Path.GetExtension(TranslationUnit.FileName)}" : TranslationUnit.FileName;
+                if (typeRef.Include.File == filename)
                     continue;
 
                 var include = typeRef.Include;
