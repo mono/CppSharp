@@ -22,7 +22,7 @@ namespace CppSharp.Generators.Registrable
             while (true)
             {
                 currentDeclaration = currentDeclaration.OriginalNamespace;
-                if (currentDeclaration != null || currentDeclaration is TranslationUnit)
+                if (currentDeclaration == null || currentDeclaration is TranslationUnit)
                 {
                     break;
                 }
@@ -122,17 +122,17 @@ namespace CppSharp.Generators.Registrable
             return builder.ToString();
         }
 
-        public virtual string PrintClassTemplateParameters(ClassTemplate classTemplate, bool includeEnclosingBrackets, TemplateParameterOption option)
+        public virtual string PrintClassTemplateParameters(List<Declaration> parameters, bool includeEnclosingBrackets, TemplateParameterOption option)
         {
             var builder = new StringBuilder();
             builder.Append('<');
-            for (int i = 0; i < classTemplate.Parameters.Count; i++)
+            for (int i = 0; i < parameters.Count; i++)
             {
                 if (i > 0)
                 {
                     builder.Append(", ");
                 }
-                builder.Append(PrintClassTemplateParameter(classTemplate.Parameters[i], option));
+                builder.Append(PrintClassTemplateParameter(parameters[i], option));
             }
             builder.Append('>');
             return builder.ToString();
@@ -147,17 +147,17 @@ namespace CppSharp.Generators.Registrable
             return templateArgument.Type.Type.Visit(new CppTypePrinter(Generator.Context));
         }
 
-        public virtual string PrintClassTemplateSpecializationArguments(ClassTemplateSpecialization classTemplateSpecialization, bool includeEnclosingBrackets)
+        public virtual string PrintClassTemplateSpecializationArguments(List<TemplateArgument> arguments, bool includeEnclosingBrackets)
         {
             var builder = new StringBuilder();
             builder.Append('<');
-            for (int i = 0; i < classTemplateSpecialization.Arguments.Count; i++)
+            for (int i = 0; i < arguments.Count; i++)
             {
                 if (i > 0)
                 {
                     builder.Append(", ");
                 }
-                builder.Append(PrintClassTemplateSpecializationArgument(classTemplateSpecialization.Arguments[i]));
+                builder.Append(PrintClassTemplateSpecializationArgument(arguments[i]));
             }
             builder.Append('>');
             return builder.ToString();
@@ -177,7 +177,7 @@ namespace CppSharp.Generators.Registrable
             {
                 if (!option.IgnoreTemplateParameters)
                 {
-                    name = ($"{name}{PrintClassTemplateSpecializationArguments(specialization, true)}");
+                    name = ($"{name}{PrintClassTemplateSpecializationArguments(specialization.Arguments, true)}");
                 }
             }
             else
@@ -190,7 +190,7 @@ namespace CppSharp.Generators.Registrable
                 {
                     if (!option.IgnoreTemplateParameters)
                     {
-                        name = ($"{name}{PrintClassTemplateParameters(template, true, TemplateParameterOption.AsArgument)}");
+                        name = ($"{name}{PrintClassTemplateParameters(template.Parameters, true, TemplateParameterOption.AsArgument)}");
                     }
                 }
             }
@@ -235,7 +235,7 @@ namespace CppSharp.Generators.Registrable
                         {
                             needsTypename = true;
                         }
-                        currentName.Append(PrintClassTemplateSpecializationArguments(specialization, true));
+                        currentName.Append(PrintClassTemplateSpecializationArguments(specialization.Arguments, true));
                     }
                 }
                 else
@@ -259,7 +259,7 @@ namespace CppSharp.Generators.Registrable
                             {
                                 needsTypename = true;
                             }
-                            currentName.Append($"{name}{PrintClassTemplateParameters(template, true, TemplateParameterOption.AsArgument)}");
+                            currentName.Append($"{name}{PrintClassTemplateParameters(template.Parameters, true, TemplateParameterOption.AsArgument)}");
                         }
                     }
                 }
@@ -371,7 +371,7 @@ namespace CppSharp.Generators.Registrable
                 var parentList = new List<Declaration>();
                 while (true)
                 {
-                    if (currentDeclaration != null || currentDeclaration is TranslationUnit)
+                    if (currentDeclaration == null || currentDeclaration is TranslationUnit)
                     {
                         break;
                     }

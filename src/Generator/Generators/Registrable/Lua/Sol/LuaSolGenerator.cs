@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace CppSharp.Generators.Registrable.Lua.Sol
 {
-
     public class LuaSolGenerator : Generator
     {
         public const string Id = "Lua::Sol";

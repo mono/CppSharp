@@ -118,6 +118,11 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
                 {
                     GenerateFunctions(translationUnit, overload.ToList());
                 }
+
+                foreach (var typedef in translationUnit.Typedefs)
+                {
+                    typedef.Visit(this);
+                }
             });
         }
 
@@ -205,6 +210,11 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
                 {
                     GenerateFunctions(@namespace, overload.ToList());
                 }
+
+                foreach (var typedef in @namespace.Typedefs)
+                {
+                    typedef.Visit(this);
+                }
             });
         }
 
@@ -235,7 +245,7 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
 
         public virtual void GenerateNamespaceEnd(Namespace @namespace)
         {
-            GenerateNamespaceDeclarationList(@namespace, DetachmentOption.On);
+            //GenerateNamespaceDeclarationList(@namespace, DetachmentOption.On);
         }
 
         public virtual void GenerateNamespaceGlobalStateRegistration(Namespace @namespace)
@@ -1212,6 +1222,67 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
                 Write(NamingStrategy.GetContextualName(method, GenerationContext, FQNOption.IgnoreNone));
                 Write(")");
             }
+        }
+
+        #endregion
+
+        #region Typedef
+
+        public virtual bool CanGenerateTypedefNameDecl(TypedefNameDecl typedef)
+        {
+            if (AlreadyVisited(typedef))
+            {
+                return false;
+            }
+            else if (typedef.Access != AccessSpecifier.Public)
+            {
+                return false;
+            }
+            else if (!NonTemplateAllowed)
+            {
+                return false;
+            }
+            return typedef.IsGenerated;
+        }
+
+        public virtual void GenerateTypedefNameDecl(TypedefNameDecl typedef)
+        {
+            var type = typedef.Type;
+            if (type is TemplateSpecializationType templateSpecializationType)
+            {
+                string typedefName = typedef.Name;
+                string typedefNameQuoted = $"\"{typedefName}\"";
+                string typedefRegistrationFunctionName = NamingStrategy.GetFullyQualifiedName(templateSpecializationType.GetClassTemplateSpecialization(), new FQNOption()
+                {
+                    IgnoreTemplateTypenameKeyword = true
+                });
+                string typedefBindingContext = NamingStrategy.GetBindingContext(typedef, GenerationContext);
+                string typedefRootContextName = NamingStrategy.GetRootContextName(GenerationContext);
+
+                WriteLine($"global{typedefRegistrationFunctionName}{{}}({typedefRootContextName}, {typedefBindingContext}, {typedefNameQuoted}); /* directly */");
+            }
+        }
+
+        public override bool VisitTypedefNameDecl(TypedefNameDecl typedef)
+        {
+            if (!CanGenerateTypedefNameDecl(typedef))
+            {
+                return false;
+            }
+
+            GenerateTypedefNameDecl(typedef);
+
+            return true;
+        }
+
+        public override bool VisitTypedefDecl(TypedefDecl typedef)
+        {
+            return VisitTypedefNameDecl(typedef);
+        }
+
+        public override bool VisitTypeAliasDecl(TypeAlias typeAlias)
+        {
+            return VisitTypedefNameDecl(typeAlias);
         }
 
         #endregion

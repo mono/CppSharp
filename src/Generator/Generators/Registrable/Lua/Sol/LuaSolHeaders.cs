@@ -12,6 +12,8 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
 
         public override string FileExtension => "h";
 
+        protected override bool TemplateAllowed { get { return true; } }
+
         public override void Process()
         {
             GenerateFilePreamble(CommentKind.BCPL);
@@ -20,32 +22,18 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
             WriteLine("#pragma once");
             PopBlock(NewLineKind.BeforeNextBlock);
 
-            //NewLine();
-            //PushBlock(BlockKind.Includes);
-            //GenerateIncludes();
-            //PopBlock(NewLineKind.BeforeNextBlock);
-
             TranslationUnit.Visit(this);
-
-            //PushBlock(BlockKind.Footer);
-            //PopBlock();
-
-            //PushBlock(BlockKind.Class);
-            //PopBlock(NewLineKind.IfNotEmpty);
-
-            //RegistrableGeneratorContext mycontext = new RegistrableGeneratorContext();
-            //string a = (string)mycontext[new InfoEntry("")].Pop();
         }
 
         #region TranslationUnit
 
-        public virtual void GenerateTranslationUnitNamespaceBegin(TranslationUnit translationUnit)
+        public override void GenerateTranslationUnitNamespaceBegin(TranslationUnit translationUnit)
         {
             PushBlock(BlockKind.Namespace);
             WriteLine($"namespace {TranslationUnit.Module.OutputNamespace} {{");
         }
 
-        public virtual void GenerateTranslationUnitNamespaceEnd(TranslationUnit translationUnit)
+        public override void GenerateTranslationUnitNamespaceEnd(TranslationUnit translationUnit)
         {
             WriteLine($"}}  // namespace {TranslationUnit.Module.OutputNamespace}");
             PopBlock();
@@ -58,14 +46,14 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
             NewLine();
         }
 
-        public virtual void GenerateTranslationUnit(TranslationUnit translationUnit)
+        public override void GenerateTranslationUnit(TranslationUnit translationUnit)
         {
             GenerateTranslationUnitNamespaceBegin(translationUnit);
             GenerateTranslationUnitRegistrationFunctionDeclaration(translationUnit);
             GenerateTranslationUnitNamespaceEnd(translationUnit);
         }
 
-        public virtual bool CanGenerateTranslationUnit(TranslationUnit unit)
+        public override bool CanGenerateTranslationUnit(TranslationUnit unit)
         {
             if (AlreadyVisited(unit))
             {
@@ -88,8 +76,6 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
 
         #endregion
 
-        //
-
         public virtual void GenerateMain()
         {
             VisitNamespace(TranslationUnit);
@@ -97,67 +83,10 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
 
         public virtual void GenerateIncludes()
         {
-            foreach (var include in Generator.GeneratorOptions.CommonIncludes)
+            if (Generator.GeneratorOptions.BaseInclude != null)
             {
-                WriteLineIndent(include.ToString());
+                WriteLineIndent(Generator.GeneratorOptions.BaseInclude.ToString());
             }
-        }
-
-        //public override bool VisitNamespace(Namespace @namespace)
-        //{
-        //    base.VisitNamespace(@namespace);
-        //    return true;
-        //}
-
-        public override bool VisitMethodDecl(Method method)
-        {
-            return true;
-        }
-
-        public override bool VisitFunctionDecl(Function function)
-        {
-            //if (FunctionIsTemplate(function))
-            //{
-            //    Console.WriteLine("test");
-            //}
-            return true;
-        }
-
-        public override bool VisitClassTemplateDecl(ClassTemplate template)
-        {
-            return true;
-        }
-
-        public override bool VisitVariableDecl(Variable variable)
-        {
-            return true;
-        }
-
-        public override bool VisitTypeAliasTemplateDecl(TypeAliasTemplate typeAliasTemplate)
-        {
-            return true;
-        }
-
-        public override bool VisitTypedefNameDecl(TypedefNameDecl typedef)
-        {
-            return true;
-        }
-
-        public override bool VisitFunctionTemplateDecl(FunctionTemplate template)
-        {
-            return true;
-        }
-
-        public static bool FunctionIsTemplate(Function function)
-        {
-            foreach (var template in function.Namespace.Templates)
-            {
-                if (template.TemplatedDecl == function)
-                {
-                    return true;
-                }
-            }
-            return false;
         }
     }
 }
