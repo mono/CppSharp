@@ -810,16 +810,12 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
                 // TODO: check for typemaps!!!
                 if (isDetach != DetachmentOption.Off)
                 {
-                    Write($"{variableBindingContext}[{variableNameQuoted}] = ::sol::var({variableContextualName});");
+                    WriteLine($"{variableBindingContext}[{variableNameQuoted}] = ::sol::var({variableContextualName});");
                 }
                 else
                 {
                     WriteLine(",");
                     Write($"{variableNameQuoted}, ::sol::var({variableContextualName})");
-                }
-                if (isDetach != DetachmentOption.Off)
-                {
-                    WriteLine(";");
                 }
             }
 
