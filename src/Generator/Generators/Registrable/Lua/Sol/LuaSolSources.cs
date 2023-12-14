@@ -1,4 +1,5 @@
 using CppSharp.AST;
+using CppSharp.Generators.C;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -103,6 +104,14 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
         public virtual void GenerateTranslationUnitRegistrationFunctionBody(TranslationUnit translationUnit)
         {
             GenerateDeclarationContainerList(translationUnit);
+
+            GenerationContext.Scoped(RegistrableGeneratorContext.IsDetach, DetachmentOption.On, () =>
+            {
+                foreach (var variable in translationUnit.Variables)
+                {
+                    variable.Visit(this);
+                }
+            });
         }
 
         public virtual void GenerateTranslationUnitRegistrationFunctionEnd(TranslationUnit translationUnit)
@@ -175,19 +184,14 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
 
         public virtual void GenerateNamespaceDeclarationList(Namespace @namespace, DetachmentOption detachment)
         {
-            if (detachment == DetachmentOption.Off)
+            GenerateNamespaceContainerList(@namespace);
+            GenerateNamespaceTemplates(@namespace);
+            GenerateNamespaceTypedefs(@namespace);
+            GenerationContext.Scoped(RegistrableGeneratorContext.IsDetach, DetachmentOption.On, () =>
             {
                 GenerateNamespaceFunctions(@namespace);
                 GenerateNamespaceVariables(@namespace);
-            }
-            else
-            {
-                GenerateNamespaceContainerList(@namespace);
-                GenerateNamespaceTemplates(@namespace);
-                GenerateNamespaceTypedefs(@namespace);
-                GenerateNamespaceFunctions(@namespace);
-                GenerateNamespaceVariables(@namespace);
-            }
+            });
         }
 
         public virtual void GenerateNamespaceContainerList(Namespace @namespace)
@@ -209,6 +213,10 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
 
         public virtual void GenerateNamespaceVariables(Namespace @namespace)
         {
+            foreach (var variable in @namespace.Variables)
+            {
+                variable.Visit(this);
+            }
         }
 
         public virtual void GenerateNamespaceEnd(Namespace @namespace)
@@ -543,6 +551,14 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
 
         public virtual void GenerateClassDeclVariables(Class @class)
         {
+            foreach (var field in @class.Fields)
+            {
+                field.Visit(this);
+            }
+            foreach (var variable in @class.Variables)
+            {
+                variable.Visit(this);
+            }
         }
 
         public virtual void GenerateClassDeclEnd(Class @class)
@@ -607,6 +623,217 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
             GenerateClassDecl(@class);
 
             return true;
+        }
+
+        #endregion
+
+        #region Field
+
+        #region Field
+
+        public virtual bool CanGenerateFieldDecl(Field field)
+        {
+            if (AlreadyVisited(field))
+            {
+                return false;
+            }
+            else if (field.Access != AccessSpecifier.Public)
+            {
+                return false;
+            }
+            else if (!NonTemplateAllowed)
+            {
+                return false;
+            }
+            return field.IsGenerated;
+        }
+
+        public virtual bool GenerateFieldDecl(Field field)
+        {
+            var isDetach = GenerationContext.PeekIsDetach(DetachmentOption.Off);
+
+            if (isDetach == DetachmentOption.Forced || isDetach == Utils.FindDetachmentOption(field))
+            {
+                string fieldName = field.Name;
+                string fieldNameQuoted = $"\"{fieldName}\"";
+                string fieldContextualName = NamingStrategy.GetContextualName(field, GenerationContext, FQNOption.IgnoreNone);
+
+                if (isDetach != DetachmentOption.Off)
+                {
+                    Write($"{NamingStrategy.GetBindingContext(field, GenerationContext)}[{fieldNameQuoted}] = ");
+                }
+                else
+                {
+                    WriteLine(",");
+                    Write($"{fieldNameQuoted}, ");
+                }
+                // TODO : check for typemaps!!!
+                {
+                    Write($"&{fieldContextualName}");
+                }
+                if (isDetach != DetachmentOption.Off)
+                {
+                    WriteLine(";");
+                }
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region Bitfield
+
+        public virtual bool CanGenerateFieldDeclBitfield(Field field)
+        {
+            if (AlreadyVisited(field))
+            {
+                return false;
+            }
+            else if (field.Access != AccessSpecifier.Public)
+            {
+                return false;
+            }
+            else if (!NonTemplateAllowed)
+            {
+                return false;
+            }
+            return field.IsGenerated;
+        }
+
+        public virtual bool GenerateFieldDeclBitfield(Field field)
+        {
+            var isDetach = GenerationContext.PeekIsDetach(DetachmentOption.Off);
+
+            if (isDetach == DetachmentOption.Forced || isDetach == Utils.FindDetachmentOption(field))
+            {
+                string bitfieldOriginalName = field.OriginalName;
+                string bitfieldName = field.Name;
+                string bitfieldNameQuoted = $"\"{bitfieldName}\"";
+                string bitfieldCppContext = NamingStrategy.GetCppContext(field, GenerationContext, FQNOption.IgnoreNone);
+                string bitfieldType = field.Type.Visit(new CppTypePrinter(Context));
+
+                if (isDetach != DetachmentOption.Off)
+                {
+                    Write($"{NamingStrategy.GetBindingContext(field, GenerationContext)}[{bitfieldNameQuoted}] = ");
+                }
+                else
+                {
+                    WriteLine(",");
+                    Write($"{bitfieldNameQuoted}, ");
+                }
+                WriteLine("::sol::property(");
+                Indent();
+                WriteLine($"[]({bitfieldCppContext}& self) {{");
+                Indent();
+                WriteLine($"return self.{bitfieldOriginalName};");
+                Unindent();
+                WriteLine("}, ");
+                WriteLine($"[]({bitfieldCppContext}& self, {bitfieldType} value) {{");
+                Indent();
+                WriteLine($"self.{bitfieldOriginalName} = value;");
+                Unindent();
+                WriteLine("}");
+                Unindent();
+                Write(")");
+                if (isDetach != DetachmentOption.Off)
+                {
+                    WriteLine(";");
+                }
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        public override bool VisitFieldDecl(Field field)
+        {
+            if (field.IsBitField)
+            {
+                if (!CanGenerateFieldDeclBitfield(field))
+                {
+                    return false;
+                }
+
+                return GenerateFieldDeclBitfield(field);
+            }
+            else
+            {
+                if (!CanGenerateFieldDecl(field))
+                {
+                    return false;
+                }
+
+                return GenerateFieldDecl(field);
+            }
+            return false;
+        }
+
+        #endregion
+
+        #region Variable
+
+        public virtual bool CanGenerateVariableDecl(Variable variable)
+        {
+            if (AlreadyVisited(variable))
+            {
+                return false;
+            }
+            else if (variable.Access != AccessSpecifier.Public)
+            {
+                return false;
+            }
+            else if (!NonTemplateAllowed)
+            {
+                return false;
+            }
+            return variable.IsGenerated;
+        }
+
+        public virtual bool GenerateVariableDecl(Variable variable)
+        {
+            var isDetach = GenerationContext.PeekIsDetach(DetachmentOption.Off);
+
+            if (isDetach == DetachmentOption.Forced || isDetach == Utils.FindDetachmentOption(variable))
+            {
+                string variableName = variable.Name;
+                string variableNameQuoted = $"\"{variableName}\"";
+                string variableBindingContext = NamingStrategy.GetBindingContext(variable, GenerationContext);
+                string variableContextualName = NamingStrategy.GetContextualName(variable, GenerationContext, FQNOption.IgnoreNone);
+                // TODO: Bug in sol until it gets resolved: we can only bind static class variable by reference.
+                if (variable.OriginalNamespace is Class)
+                {
+                    variableContextualName = $"::std::ref({variableContextualName})";
+                }
+
+                // TODO: check for typemaps!!!
+                if (isDetach != DetachmentOption.Off)
+                {
+                    Write($"{variableBindingContext}[{variableNameQuoted}] = ::sol::var({variableContextualName});");
+                }
+                else
+                {
+                    WriteLine(",");
+                    Write($"{variableNameQuoted}, ::sol::var({variableContextualName})");
+                }
+                if (isDetach != DetachmentOption.Off)
+                {
+                    WriteLine(";");
+                }
+            }
+
+            return true;
+        }
+
+        public override bool VisitVariableDecl(Variable variable)
+        {
+            if (!CanGenerateVariableDecl(variable))
+            {
+                return false;
+            }
+
+            return GenerateVariableDecl(variable);
         }
 
         #endregion

@@ -14,7 +14,10 @@ namespace CppSharp.Generators.Registrable
         {
             if (TryGetValue(infoEntry, out Stack<T> stack))
             {
-                return (T1)stack.Peek();
+                if (stack.Count > 0)
+                {
+                    return (T1)stack.Peek();
+                }
             }
             return defaultValue;
         }
@@ -61,7 +64,7 @@ namespace CppSharp.Generators.Registrable
             return false;
         }
 
-        public void Scoped<T1>(InfoEntry infoEntry, T1 item, Action action) where T1 : T
+        public void Scoped(InfoEntry infoEntry, T item, Action action)
         {
             Push(infoEntry, item);
             action();

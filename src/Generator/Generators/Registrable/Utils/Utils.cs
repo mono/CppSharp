@@ -15,5 +15,10 @@ namespace CppSharp.Generators.Registrable
             }
             return null;
         }
+
+        public static DetachmentOption FindDetachmentOption(Declaration declaration)
+        {
+            return (declaration.Namespace is Class) ? DetachmentOption.Off : DetachmentOption.On;
+        }
     }
 }

@@ -396,7 +396,7 @@ namespace CppSharp.Generators.Registrable
                     return cppContext.GetFullQualifiedName(option);
                 }
             }
-            return "";// GetFullyQualifiedName(entity.OriginalNamespace, option, context);
+            return GetFullyQualifiedName(entity.OriginalNamespace, option);
         }
     }
 }
