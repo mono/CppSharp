@@ -520,6 +520,12 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
             if (detachment == DetachmentOption.Off)
             {
                 GenerateConstructors(@class, @class.Constructors);
+
+                var methods = @class.Methods.Where(method => !(method.IsConstructor || method.IsDestructor || method.IsOperator));
+                var uniqueMethods = methods.GroupBy(m => m.Name);
+                foreach (var group in uniqueMethods)
+                    GenerateMethods(@class, group.ToList());
+
                 GenerateClassDeclFunctions(@class);
                 GenerateClassDeclVariables(@class);
             }
@@ -906,13 +912,13 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
             }
         }
 
-        public virtual bool CanGenerateConstructor(Method method)
+        public virtual bool CanGenerateConstructor(Method constructor)
         {
-            if (AlreadyVisited(method))
+            if (AlreadyVisited(constructor))
             {
                 return false;
             }
-            else if (method.Access != AccessSpecifier.Public)
+            else if (constructor.Access != AccessSpecifier.Public)
             {
                 return false;
             }
@@ -920,7 +926,7 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
             {
                 return false;
             }
-            return method.IsGenerated;
+            return constructor.IsGenerated;
         }
 
         public virtual void GenerateConstructor(Class @class, Method constructor, bool doExpand)
@@ -954,6 +960,122 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
                     }
                     Write("...");
                 }
+                Write(")");
+            }
+        }
+
+        #endregion
+
+        #region Method
+
+        public virtual bool NeedExpansionForMethods(Class @class, IEnumerable<Method> methods)
+        {
+            return false;
+        }
+
+        public virtual void GenerateMethods(Class @class, IEnumerable<Method> methods)
+        {
+            var isDetach = GenerationContext.PeekIsDetach();
+
+            List<Method> filteredMethods = methods.Where((method) => CanGenerateMethod(method)).ToList();
+            if (filteredMethods.Any())
+            {
+                Method method = filteredMethods.First();
+                string methodName = method.Name;
+                string methodNameQuoted = $"\"{methodName}\"";
+                string methodBindingContext = NamingStrategy.GetBindingContext(method, GenerationContext);
+                string methodContextualName = NamingStrategy.GetContextualName(method, GenerationContext, FQNOption.IgnoreNone);
+
+                if (isDetach == DetachmentOption.Forced || isDetach == Utils.FindDetachmentOption(method))
+                {
+
+                    if (isDetach != DetachmentOption.Off)
+                    {
+                        Write($"{methodBindingContext}[{methodNameQuoted}] = ");
+                    }
+                    else
+                    {
+                        WriteLine(",");
+                        Write($"{methodNameQuoted}, ");
+                    }
+                    if (filteredMethods.Count == 1)
+                    {
+                        GenerateMethod(@class, filteredMethods.First());
+                    }
+                    else
+                    {
+                        Write("::sol::overload(");
+                        Indent();
+                        for (int i = 0; i < filteredMethods.Count; i++)
+                        {
+                            if (i > 0)
+                            {
+                                Write(",");
+                            }
+                            NewLine();
+                            GenerateMethod(@class, filteredMethods[i]);
+                        }
+                        Unindent();
+                        NewLine();
+                        Write(")");
+                    }
+                    if (isDetach != DetachmentOption.Off)
+                    {
+                        WriteLine(";");
+                    }
+                }
+            }
+        }
+
+        public virtual bool CanGenerateMethod(Method method)
+        {
+            if (AlreadyVisited(method))
+            {
+                return false;
+            }
+            else if (method.Access != AccessSpecifier.Public)
+            {
+                return false;
+            }
+            else if (!NonTemplateAllowed)
+            {
+                return false;
+            }
+            return method.IsGenerated;
+        }
+
+        public virtual void GenerateMethod(Class @class, Method method)
+        {
+            {
+                Write("static_cast<");
+                Write(method.ReturnType.Visit(new CppTypePrinter(Context)));
+                Write("(");
+                Write("*)");
+                Write("(");
+                var needsComma = false;
+                foreach (var parameter in method.Parameters)
+                {
+                    if (needsComma)
+                    {
+                        Write(", ");
+                    }
+                    else
+                    {
+                        needsComma = true;
+                    }
+                    Write(parameter.Type.Visit(new CppTypePrinter(Context)));
+                }
+                if (method.IsVariadic)
+                {
+                    if (needsComma)
+                    {
+                        Write(", ");
+                    }
+                    Write("...");
+                }
+                Write(")");
+                Write(">(&");
+                Write(NamingStrategy.GetContextualName(method, GenerationContext, FQNOption.IgnoreNone));
                 Write(")");
             }
         }
