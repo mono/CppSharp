@@ -261,14 +261,15 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
 
         public virtual bool CanGenerateNamespace(Namespace @namespace)
         {
-            //  if not self:isNonTemplateAllowed(context) then
-            //    return true
-            //  end
             if (AlreadyVisited(@namespace))
             {
                 return false;
             }
             else if (@namespace.Access != AccessSpecifier.Public)
+            {
+                return false;
+            }
+            else if (!NonTemplateAllowed)
             {
                 return false;
             }
@@ -466,14 +467,15 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
 
         public virtual bool CanGenerateEnumDecl(Enumeration enumeration)
         {
-            //  if not self:isNonTemplateAllowed(context) then
-            //    return true
-            //  end
             if (AlreadyVisited(enumeration))
             {
                 return false;
             }
             else if (enumeration.Access != AccessSpecifier.Public)
+            {
+                return false;
+            }
+            else if (!NonTemplateAllowed)
             {
                 return false;
             }
