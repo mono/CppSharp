@@ -111,6 +111,13 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
                 {
                     variable.Visit(this);
                 }
+
+                var methods = translationUnit.Functions.Where(method => !(method.IsOperator));
+                var overloads = methods.GroupBy(m => m.Name);
+                foreach (var overload in overloads)
+                {
+                    GenerateFunctions(translationUnit, overload.ToList());
+                }
             });
         }
 
@@ -191,6 +198,13 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
             {
                 GenerateNamespaceFunctions(@namespace);
                 GenerateNamespaceVariables(@namespace);
+
+                var methods = @namespace.Functions.Where(method => !(method.IsOperator));
+                var overloads = methods.GroupBy(m => m.Name);
+                foreach (var overload in overloads)
+                {
+                    GenerateFunctions(@namespace, overload.ToList());
+                }
             });
         }
 
@@ -522,9 +536,11 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
                 GenerateConstructors(@class, @class.Constructors);
 
                 var methods = @class.Methods.Where(method => !(method.IsConstructor || method.IsDestructor || method.IsOperator));
-                var uniqueMethods = methods.GroupBy(m => m.Name);
-                foreach (var group in uniqueMethods)
-                    GenerateMethods(@class, group.ToList());
+                var overloads = methods.GroupBy(m => m.Name);
+                foreach (var overload in overloads)
+                {
+                    GenerateMethods(@class, overload.ToList());
+                }
 
                 GenerateClassDeclFunctions(@class);
                 GenerateClassDeclVariables(@class);
@@ -960,6 +976,122 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
                     }
                     Write("...");
                 }
+                Write(")");
+            }
+        }
+
+        #endregion
+
+        #region Function
+
+        public virtual bool NeedExpansionForFunctions(Declaration declaration, IEnumerable<Function> functions)
+        {
+            return false;
+        }
+
+        public virtual void GenerateFunctions(Declaration declaration, IEnumerable<Function> functions)
+        {
+            var isDetach = GenerationContext.PeekIsDetach();
+
+            List<Function> filteredFunctions = functions.Where((function) => CanGenerateFunction(function)).ToList();
+            if (filteredFunctions.Any())
+            {
+                Function function = filteredFunctions.First();
+                string functionName = function.Name;
+                string functionNameQuoted = $"\"{functionName}\"";
+                string functionBindingContext = NamingStrategy.GetBindingContext(function, GenerationContext);
+                string functionContextualName = NamingStrategy.GetContextualName(function, GenerationContext, FQNOption.IgnoreNone);
+
+                if (isDetach == DetachmentOption.Forced || isDetach == Utils.FindDetachmentOption(function))
+                {
+
+                    if (isDetach != DetachmentOption.Off)
+                    {
+                        Write($"{functionBindingContext}[{functionNameQuoted}] = ");
+                    }
+                    else
+                    {
+                        WriteLine(",");
+                        Write($"{functionNameQuoted}, ");
+                    }
+                    if (filteredFunctions.Count == 1)
+                    {
+                        GenerateFunction(declaration, filteredFunctions.First());
+                    }
+                    else
+                    {
+                        Write("::sol::overload(");
+                        Indent();
+                        for (int i = 0; i < filteredFunctions.Count; i++)
+                        {
+                            if (i > 0)
+                            {
+                                Write(",");
+                            }
+                            NewLine();
+                            GenerateFunction(declaration, filteredFunctions[i]);
+                        }
+                        Unindent();
+                        NewLine();
+                        Write(")");
+                    }
+                    if (isDetach != DetachmentOption.Off)
+                    {
+                        WriteLine(";");
+                    }
+                }
+            }
+        }
+
+        public virtual bool CanGenerateFunction(Function function)
+        {
+            if (AlreadyVisited(function))
+            {
+                return false;
+            }
+            else if (function.Access != AccessSpecifier.Public)
+            {
+                return false;
+            }
+            else if (!NonTemplateAllowed)
+            {
+                return false;
+            }
+            return function.IsGenerated;
+        }
+
+        public virtual void GenerateFunction(Declaration declaration, Function function)
+        {
+            {
+                Write("static_cast<");
+                Write(function.ReturnType.Visit(new CppTypePrinter(Context)));
+                Write("(");
+                Write("*)");
+                Write("(");
+                var needsComma = false;
+                foreach (var parameter in function.Parameters)
+                {
+                    if (needsComma)
+                    {
+                        Write(", ");
+                    }
+                    else
+                    {
+                        needsComma = true;
+                    }
+                    Write(parameter.Type.Visit(new CppTypePrinter(Context)));
+                }
+                if (function.IsVariadic)
+                {
+                    if (needsComma)
+                    {
+                        Write(", ");
+                    }
+                    Write("...");
+                }
+                Write(")");
+                Write(">(&");
+                Write(NamingStrategy.GetContextualName(function, GenerationContext, FQNOption.IgnoreNone));
                 Write(")");
             }
         }
