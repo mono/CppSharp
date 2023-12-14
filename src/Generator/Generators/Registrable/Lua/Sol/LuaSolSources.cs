@@ -519,6 +519,7 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
         {
             if (detachment == DetachmentOption.Off)
             {
+                GenerateConstructors(@class, @class.Constructors);
                 GenerateClassDeclFunctions(@class);
                 GenerateClassDeclVariables(@class);
             }
@@ -834,11 +835,79 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
 
         #endregion
 
+        #region Constructor
+
+        public virtual bool NeedExpansionForConstructors(Class @class, IEnumerable<Method> constructors)
+        {
+            return false;
+        }
+
+        public virtual void GenerateConstructors(Class @class, IEnumerable<Method> constructors)
+        {
+            var isDetach = GenerationContext.PeekIsDetach();
+
+            List<Method> filteredConstructors = constructors.Where((method) => CanGenerateConstructor(method)).ToList();
+            if (filteredConstructors.Any())
+            {
+                Method constructor = filteredConstructors.First();
+                string constructorBindingContext = NamingStrategy.GetBindingContext(constructor, GenerationContext);
+                string constructorContextualName = NamingStrategy.GetContextualName(constructor, GenerationContext, FQNOption.IgnoreNone);
+
+                if (isDetach == DetachmentOption.Forced || isDetach == Utils.FindDetachmentOption(constructor))
+                {
+
+                    if (isDetach != DetachmentOption.Off)
+                    {
+                        Write($"{constructorBindingContext}[\"new\"] = ");
+                    }
+                    else
+                    {
+                        WriteLine(",");
+                        Write($"\"new\", ");
+                    }
+                    if (NeedExpansionForConstructors(@class, constructors))
+                    {
+                        Write("::sol::factories(");
+                        Indent();
+                        for (int i = 0; i < filteredConstructors.Count; i++)
+                        {
+                            if (i > 0)
+                            {
+                                Write(",");
+                            }
+                            NewLine();
+                            GenerateConstructor(@class, filteredConstructors[i], true);
+                        }
+                        Unindent();
+                        WriteLine(")");
+                    }
+                    else
+                    {
+                        Write("::sol::constructors<");
+                        Indent();
+                        for (int i = 0; i < filteredConstructors.Count; i++)
+                        {
+                            if (i > 0)
+                            {
+                                Write(",");
+                            }
+                            NewLine();
+                            GenerateConstructor(@class, filteredConstructors[i], false);
+                        }
+                        Unindent();
+                        NewLine();
+                        Write(">()");
+                    }
+                    if (isDetach != DetachmentOption.Off)
+                    {
+                        WriteLine(";");
+                    }
+                }
+            }
+        }
+
         public virtual bool CanGenerateConstructor(Method method)
         {
-            //  if not self:isNonTemplateAllowed(context) then
-            //    return true
-            //  end
             if (AlreadyVisited(method))
             {
                 return false;
@@ -847,20 +916,48 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
             {
                 return false;
             }
+            else if (!NonTemplateAllowed)
+            {
+                return false;
+            }
             return method.IsGenerated;
         }
 
-        public virtual void GenerateConstructors(Class @class, IEnumerable<Method> constructors)
+        public virtual void GenerateConstructor(Class @class, Method constructor, bool doExpand)
         {
-            var isDetach = GenerationContext.PeekIsDetach();
-
-            if (isDetach == DetachmentOption.Forced)
+            if (doExpand)
             {
-                var filteredConstructors = constructors.Where((method) => CanGenerateConstructor(method));
-                foreach (var constructor in constructors)
+                // TODO: Implement when ready
+            }
+            else
+            {
+                Write(NamingStrategy.GetCppContext(constructor, GenerationContext, FQNOption.IgnoreNone));
+                Write("(");
+                var needsComma = false;
+                foreach (var parameter in constructor.Parameters)
                 {
+                    if (needsComma)
+                    {
+                        Write(", ");
+                    }
+                    else
+                    {
+                        needsComma = true;
+                    }
+                    Write(parameter.Type.Visit(new CppTypePrinter(Context)));
                 }
+                if (constructor.IsVariadic)
+                {
+                    if (needsComma)
+                    {
+                        Write(", ");
+                    }
+                    Write("...");
+                }
+                Write(")");
             }
         }
+
+        #endregion
     }
 }
