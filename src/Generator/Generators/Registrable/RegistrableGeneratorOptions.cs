@@ -13,7 +13,8 @@ namespace CppSharp.Generators.Registrable
     {
         public delegate string Delegate(string name);
 
-        protected Generator generator;
+        protected Generator Generator;
+
         public virtual string OutputSubDir { get; }
         public virtual string RootContextType { get; }
         public virtual string RootContextName { get; }
@@ -58,8 +59,9 @@ namespace CppSharp.Generators.Registrable
         public virtual string DefaultStaticCastFunctionTemplateFullyQualifiedName => null;
         public virtual string DefaultDynamicCastFunctionTemplateFullyQualifiedName => null;
 
-        public RegistrableGeneratorOptions()
+        public RegistrableGeneratorOptions(Generator generator)
         {
+            Generator = generator;
             OutputSubDir = DefaultOutputSubdir;
             RootContextType = DefaultRootContextType;
             RootContextName = DefaultRootContextName;

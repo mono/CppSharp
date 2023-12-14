@@ -4,7 +4,7 @@
     {
         public LuaSolNamingStrategy NamingStrategy;
 
-        public LuaSolGeneratorOptions(LuaSolGenerator generator) : base()
+        public LuaSolGeneratorOptions(LuaSolGenerator generator) : base(generator)
         {
             NamingStrategy = new LuaSolNamingStrategy(generator);
         }

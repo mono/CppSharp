@@ -3,7 +3,6 @@ using CppSharp.Generators.C;
 using CppSharp.Generators.Registrable.Lua.Sol;
 using System.Collections.Generic;
 using System.Text;
-using System.Xml.Linq;
 
 namespace CppSharp.Generators.Registrable
 {
@@ -386,7 +385,7 @@ namespace CppSharp.Generators.Registrable
             }
         }
 
-        public string GetCppContext(Declaration entity, RegistrableGeneratorContext context, FQNOption option)
+        public virtual string GetCppContext(Declaration entity, RegistrableGeneratorContext context, FQNOption option)
         {
             if (context != null)
             {
