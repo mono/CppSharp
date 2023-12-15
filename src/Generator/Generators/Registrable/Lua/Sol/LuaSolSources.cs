@@ -6,16 +6,14 @@ using System.Text;
 
 namespace CppSharp.Generators.Registrable.Lua.Sol
 {
-    public class LuaSolSources : CodeGenerator
+    public class LuaSolSources : RegistrableSources<LuaSolGenerator>
     {
-        protected LuaSolGenerator Generator { get; }
         protected LuaSolGenerationContext GenerationContext { get; }
         protected LuaSolNamingStrategy NamingStrategy => Generator.GeneratorOptions.NamingStrategy;
 
         public LuaSolSources(LuaSolGenerator generator, IEnumerable<TranslationUnit> units)
-            : base(generator.Context, units)
+            : base(generator, units)
         {
-            Generator = generator;
             GenerationContext = new LuaSolGenerationContext();
         }
 
@@ -72,13 +70,12 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
 
         #region TranslationUnit
 
-        public virtual string GetTranslationUnitRegistrationFunctionSignature(TranslationUnit translationUnit)
+        public virtual void GenerateTranslationUnitRegistrationFunctionSignature(TranslationUnit translationUnit)
         {
-            StringBuilder builder = new StringBuilder();
-            builder.Append("void ");
-            builder.Append(Generator.GeneratorOptions.NamingStrategy.GetRegistrationFunctionName(translationUnit));
-            builder.Append("(::sol::state_view& state) {");
-            return builder.ToString();
+            var generatorOptions = Generator.GeneratorOptions;
+            Write("void ");
+            Write(generatorOptions.NamingStrategy.GetRegistrationFunctionName(translationUnit));
+            Write($"({generatorOptions.RootContextType} {generatorOptions.RootContextName})");
         }
 
         public virtual void GenerateTranslationUnitNamespaceBegin(TranslationUnit translationUnit)
@@ -97,7 +94,8 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
         {
             PushBlock(BlockKind.Function);
             NewLine();
-            WriteLine(GetTranslationUnitRegistrationFunctionSignature(translationUnit));
+            GenerateTranslationUnitRegistrationFunctionSignature(translationUnit);
+            WriteLine(" {");
             Indent();
         }
 
@@ -1194,7 +1192,7 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
                 Write("static_cast<");
                 Write(method.ReturnType.Visit(new CppTypePrinter(Context)));
                 Write("(");
-                Write("*)");
+                Write($"{NamingStrategy.GetMembershipScopeName(method, GenerationContext)}*)");
                 Write("(");
                 var needsComma = false;
                 foreach (var parameter in method.Parameters)
@@ -1259,7 +1257,7 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
                 string typedefBindingContext = NamingStrategy.GetBindingContext(typedef, GenerationContext);
                 string typedefRootContextName = NamingStrategy.GetRootContextName(GenerationContext);
 
-                WriteLine($"global{typedefRegistrationFunctionName}{{}}({typedefRootContextName}, {typedefBindingContext}, {typedefNameQuoted}); /* directly */");
+                WriteLine($"//TODO: global{typedefRegistrationFunctionName}{{}}({typedefRootContextName}, {typedefBindingContext}, {typedefNameQuoted}); /* directly */");
             }
         }
 

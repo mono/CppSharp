@@ -1,6 +1,6 @@
 ﻿namespace CppSharp.Generators.Registrable.Lua.Sol
 {
-    public class LuaSolGeneratorOptions : RegistrableGeneratorOptions
+    public class LuaSolGeneratorOptions : RegistrableGeneratorOptions<LuaSolGenerator>
     {
         public LuaSolNamingStrategy NamingStrategy;
 

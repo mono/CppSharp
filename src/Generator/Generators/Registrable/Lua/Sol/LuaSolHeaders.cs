@@ -27,22 +27,11 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
 
         #region TranslationUnit
 
-        public override void GenerateTranslationUnitNamespaceBegin(TranslationUnit translationUnit)
-        {
-            PushBlock(BlockKind.Namespace);
-            WriteLine($"namespace {TranslationUnit.Module.OutputNamespace} {{");
-        }
-
-        public override void GenerateTranslationUnitNamespaceEnd(TranslationUnit translationUnit)
-        {
-            WriteLine($"}}  // namespace {TranslationUnit.Module.OutputNamespace}");
-            PopBlock();
-        }
-
         public virtual void GenerateTranslationUnitRegistrationFunctionDeclaration(TranslationUnit translationUnit)
         {
             NewLine();
-            WriteLine(GetTranslationUnitRegistrationFunctionSignature(translationUnit));
+            GenerateTranslationUnitRegistrationFunctionSignature(translationUnit);
+            WriteLine(";");
             NewLine();
         }
 

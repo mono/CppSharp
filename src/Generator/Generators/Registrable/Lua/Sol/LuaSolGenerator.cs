@@ -3,32 +3,28 @@ using System.Collections.Generic;
 
 namespace CppSharp.Generators.Registrable.Lua.Sol
 {
-    public class LuaSolGenerator : Generator
+    public class LuaSolGenerator : RegistrableGenerator<LuaSolGeneratorOptions, LuaSolHeaders, LuaSolSources>
     {
         public const string Id = "Lua::Sol";
         public static readonly GeneratorKind Kind = new(Id, "lua::sol", typeof(LuaSolGenerator), typeof(LuaSolTypePrinter), new[] { "lua::sol" });
 
-        public LuaSolGeneratorOptions GeneratorOptions
-        {
-            get;
-        }
-
         public LuaSolGenerator(BindingContext context) : base(context)
         {
-            GeneratorOptions = new LuaSolGeneratorOptions(this);
         }
 
-        public override List<CodeGenerator> Generate(IEnumerable<TranslationUnit> units)
+        protected override LuaSolGeneratorOptions CreateOptions(RegistrableGenerator<LuaSolGeneratorOptions, LuaSolHeaders, LuaSolSources> generator)
         {
-            var outputs = new List<CodeGenerator>();
+            return new LuaSolGeneratorOptions(this);
+        }
 
-            var header = new LuaSolHeaders(this, units);
-            outputs.Add(header);
+        protected override LuaSolHeaders CreateHeader(RegistrableGenerator<LuaSolGeneratorOptions, LuaSolHeaders, LuaSolSources> generator, IEnumerable<TranslationUnit> units)
+        {
+            return new LuaSolHeaders(this, units);
+        }
 
-            var source = new LuaSolSources(this, units);
-            outputs.Add(source);
-
-            return outputs;
+        protected override LuaSolSources CreateSource(RegistrableGenerator<LuaSolGeneratorOptions, LuaSolHeaders, LuaSolSources> generator, IEnumerable<TranslationUnit> units)
+        {
+            return new LuaSolSources(this, units);
         }
 
         public override bool SetupPasses() => true;

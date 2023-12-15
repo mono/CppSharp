@@ -397,5 +397,17 @@ namespace CppSharp.Generators.Registrable
             }
             return GetFullyQualifiedName(entity.OriginalNamespace, option);
         }
+
+        public virtual string GetMembershipScopeName(Function function, RegistrableGeneratorContext context)
+        {
+            if (function is Method method)
+            {
+                return GetCppContext(method, context, new FQNOption()
+                {
+                    IgnoreTemplateTypenameKeyword = true
+                }) + "::";
+            }
+            return "";
+        }
     }
 }
