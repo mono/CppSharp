@@ -90,9 +90,9 @@ namespace CppSharp.Passes
                                 return type.IsPrimitiveType(PrimitiveType.Int);
                             case var _ when ReferenceEquals(kind, GeneratorKind.CSharp):
                                 Types.TypeMap typeMap;
-                                if (Context.TypeMaps.FindTypeMap(type, GeneratorKind.CSharp, out typeMap))
+                                if (Context.TypeMaps.FindTypeMap(type, out typeMap))
                                 {
-                                    var mappedTo = typeMap.SignatureType(
+                                    var mappedTo = typeMap.CSharpSignatureType(
                                         new TypePrinterContext
                                         {
                                             Parameter = parameter,

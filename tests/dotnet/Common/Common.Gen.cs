@@ -7,47 +7,37 @@ using CppSharp.Utils;
 
 namespace CppSharp.Tests
 {
-    namespace CLI
+    [TypeMap("TypeMappedIndex")]
+    public class TypeMappedIndex : TypeMap
     {
-        [TypeMap("TypeMappedIndex", GeneratorKindID = GeneratorKind.CLI_ID)]
-        public class TypeMappedIndex : TypeMap
+        public override Type CLISignatureType(TypePrinterContext ctx)
         {
-            public override Type SignatureType(TypePrinterContext ctx)
-            {
-                return new BuiltinType(PrimitiveType.UShort);
-            }
-
-            public override void MarshalToManaged(MarshalContext ctx)
-            {
-                ctx.Return.Write(ctx.ReturnVarName);
-            }
-
-            public override void MarshalToNative(MarshalContext ctx)
-            {
-                ctx.Return.Write("::TypeMappedIndex()");
-            }
+            return new BuiltinType(PrimitiveType.UShort);
         }
-    }
 
-    namespace CSharp
-    {
-        [TypeMap("TypeMappedIndex", GeneratorKindID = GeneratorKind.CSharp_ID)]
-        public class TypeMappedIndex : TypeMap
+        public override void CLIMarshalToManaged(MarshalContext ctx)
         {
-            public override Type SignatureType(TypePrinterContext ctx)
-            {
-                return new BuiltinType(PrimitiveType.UShort);
-            }
+            ctx.Return.Write(ctx.ReturnVarName);
+        }
 
-            public override void MarshalToManaged(MarshalContext ctx)
-            {
-                ctx.Return.Write(ctx.ReturnVarName);
-            }
+        public override void CLIMarshalToNative(MarshalContext ctx)
+        {
+            ctx.Return.Write("::TypeMappedIndex()");
+        }
 
-            public override void MarshalToNative(MarshalContext ctx)
-            {
-                ctx.Return.Write("IntPtr.Zero");
-            }
+        public override Type CSharpSignatureType(TypePrinterContext ctx)
+        {
+            return new BuiltinType(PrimitiveType.UShort);
+        }
+
+        public override void CSharpMarshalToManaged(CSharpMarshalContext ctx)
+        {
+            ctx.Return.Write(ctx.ReturnVarName);
+        }
+
+        public override void CSharpMarshalToNative(CSharpMarshalContext ctx)
+        {
+            ctx.Return.Write("IntPtr.Zero");
         }
     }
 

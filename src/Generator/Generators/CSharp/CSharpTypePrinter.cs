@@ -36,7 +36,7 @@ namespace CppSharp.Generators.CSharp
                 return string.Empty;
 
             TypeMap typeMap;
-            if (TypeMapDatabase.FindTypeMap(tag, GeneratorKind.CSharp, out typeMap))
+            if (TypeMapDatabase.FindTypeMap(tag, out typeMap))
             {
                 typeMap.Type = tag;
 
@@ -47,7 +47,7 @@ namespace CppSharp.Generators.CSharp
                     Type = tag
                 };
 
-                return typeMap.SignatureType(typePrinterContext).ToString();
+                return typeMap.CSharpSignatureType(typePrinterContext).ToString();
             }
 
             return base.VisitTagType(tag, quals);
@@ -150,7 +150,7 @@ namespace CppSharp.Generators.CSharp
         public override TypePrinterResult VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
         {
             TypeMap typeMap;
-            if (TypeMapDatabase.FindTypeMap(builtin, GeneratorKind.CSharp, out typeMap))
+            if (TypeMapDatabase.FindTypeMap(builtin, out typeMap))
             {
                 var typePrinterContext = new TypePrinterContext()
                 {
@@ -159,7 +159,7 @@ namespace CppSharp.Generators.CSharp
                     Type = builtin,
                     Parameter = Parameter
                 };
-                return typeMap.SignatureType(typePrinterContext).Visit(this);
+                return typeMap.CSharpSignatureType(typePrinterContext).Visit(this);
             }
             return base.VisitBuiltinType(builtin, quals);
         }
@@ -183,7 +183,7 @@ namespace CppSharp.Generators.CSharp
             if (allowStrings && pointer.IsConstCharString())
             {
                 TypeMap typeMap;
-                TypeMapDatabase.FindTypeMap(pointer, GeneratorKind.CSharp, out typeMap);
+                TypeMapDatabase.FindTypeMap(pointer, out typeMap);
                 var typePrinterContext = new TypePrinterContext()
                 {
                     Kind = ContextKind,
@@ -191,7 +191,7 @@ namespace CppSharp.Generators.CSharp
                     Type = pointer.Pointee,
                     Parameter = Parameter
                 };
-                return typeMap.SignatureType(typePrinterContext).Visit(this);
+                return typeMap.CSharpSignatureType(typePrinterContext).Visit(this);
             }
 
             var pointee = pointer.Pointee.Desugar();
@@ -258,7 +258,7 @@ namespace CppSharp.Generators.CSharp
             var decl = typedef.Declaration;
 
             TypeMap typeMap;
-            if (TypeMapDatabase.FindTypeMap(typedef, GeneratorKind.CSharp, out typeMap))
+            if (TypeMapDatabase.FindTypeMap(typedef, out typeMap))
             {
                 typeMap.Type = typedef;
 
@@ -270,7 +270,7 @@ namespace CppSharp.Generators.CSharp
                     Parameter = Parameter
                 };
 
-                return typeMap.SignatureType(typePrinterContext).ToString();
+                return typeMap.CSharpSignatureType(typePrinterContext).ToString();
             }
 
             FunctionType func;
@@ -299,7 +299,7 @@ namespace CppSharp.Generators.CSharp
                 template.Template.TemplatedDecl;
 
             TypeMap typeMap;
-            if (!TypeMapDatabase.FindTypeMap(template, GeneratorKind.CSharp, out typeMap))
+            if (!TypeMapDatabase.FindTypeMap(template, out typeMap))
             {
                 if (ContextKind == TypePrinterContextKind.Managed &&
                     decl == template.Template.TemplatedDecl &&
@@ -330,7 +330,7 @@ namespace CppSharp.Generators.CSharp
                 MarshalKind = MarshalKind
             };
 
-            return typeMap.SignatureType(typePrinterContext).ToString();
+            return typeMap.CSharpSignatureType(typePrinterContext).ToString();
         }
 
         public override TypePrinterResult VisitDependentTemplateSpecializationType(

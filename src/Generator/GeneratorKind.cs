@@ -38,11 +38,6 @@ namespace CppSharp.Generators
             Registered.Add(this);
         }
 
-        public static GeneratorKind FindGeneratorKindByID(string id)
-        {
-            return Registered.Where(kind => kind.ID == id).First();
-        }
-
         public Generator CreateGenerator(BindingContext context)
         {
             return (Generator)Activator.CreateInstance(GeneratorType, context);
