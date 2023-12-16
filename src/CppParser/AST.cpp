@@ -793,6 +793,8 @@ ClassTemplatePartialSpecialization::ClassTemplatePartialSpecialization()
 
 ClassTemplatePartialSpecialization::~ClassTemplatePartialSpecialization() {}
 
+DEF_VECTOR(ClassTemplatePartialSpecialization, Declaration*, Parameters)
+
 FunctionTemplate::FunctionTemplate() : Template(DeclarationKind::FunctionTemplate) {}
 
 FunctionTemplate::~FunctionTemplate() {}
