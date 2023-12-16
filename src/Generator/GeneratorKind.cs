@@ -99,6 +99,11 @@ namespace CppSharp.Generators
             }
         }
 
+        public override string ToString()
+        {
+            return ID;
+        }
+
         public const string CLI_ID = "CLI";
         public static readonly GeneratorKind CLI = new(CLI_ID, "C++/CLI", typeof(CLIGenerator), typeof(CLITypePrinter), new[] { "cli" });
 
