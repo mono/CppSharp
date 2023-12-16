@@ -412,22 +412,6 @@ namespace CppSharp.Types.Std.CSharp
         }
     }
 
-    [TypeMap("std::map", GeneratorKindID = GeneratorKind.CSharp_ID)]
-    public class Map : TypeMap
-    {
-        public override bool IsIgnored { get { return true; } }
-
-        public override Type SignatureType(TypePrinterContext ctx)
-        {
-            if (ctx.Kind == TypePrinterContextKind.Native)
-                return new CustomType("Std.Map");
-
-            var type = Type as TemplateSpecializationType;
-            return new CustomType(
-                $@"System.Collections.Generic.Dictionary<{type.Arguments[0].Type}, {type.Arguments[1].Type}>");
-        }
-    }
-
     [TypeMap("FILE", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public class FILE : TypeMap
     {
