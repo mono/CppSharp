@@ -1107,6 +1107,13 @@ void Parser::WalkRecord(const clang::RecordDecl* Record, Class* RC)
             // it never is a declaration of a friend function or method
             break;
         }
+        case Decl::Using:
+        {
+            UsingDecl* UD = cast<UsingDecl>(D);
+            auto U = static_cast<Using*>(WalkDeclaration(D));
+            RC->Usings.push_back(U);
+            break;
+        }
         default:
         {
             WalkDeclaration(D);
@@ -1465,6 +1472,19 @@ UnresolvedUsingTypename* Parser::WalkUnresolvedUsingTypename(const clang::Unreso
 
 //-----------------------------------//
 
+static DeclarationName WalkDeclarationName(clang::DeclarationName Name);
+
+Using* Parser::WalkUsing(const clang::UsingDecl* UD)
+{
+    auto U = new CppSharp::CppParser::Using();
+    HandleDeclaration(UD, U);
+    U->name = WalkDeclarationName(UD->getNameInfo().getName());
+
+    return U;
+}
+
+//-----------------------------------//
+
 template<typename TypeLoc>
 std::vector<CppSharp::CppParser::TemplateArgument>
 Parser::WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL,
@@ -1802,28 +1822,65 @@ Parser::WalkVarTemplatePartialSpecialization(const clang::VarTemplatePartialSpec
 
 //-----------------------------------//
 
+static DeclarationNameKind GetDeclarationNameKind(clang::DeclarationName::NameKind Kind)
+{
+    switch (Kind)
+    {
+    case clang::DeclarationName::Identifier:
+        return DeclarationNameKind::Identifier;
+    case clang::DeclarationName::CXXDeductionGuideName:
+        return DeclarationNameKind::CXXDeductionGuideName;
+    case clang::DeclarationName::ObjCZeroArgSelector:
+        return DeclarationNameKind::ObjCZeroArgSelector;
+    case clang::DeclarationName::ObjCOneArgSelector:
+        return DeclarationNameKind::ObjCOneArgSelector;
+    case clang::DeclarationName::ObjCMultiArgSelector:
+        return DeclarationNameKind::ObjCMultiArgSelector;
+    case clang::DeclarationName::CXXConstructorName:
+        return DeclarationNameKind::CXXConstructorName;
+    case clang::DeclarationName::CXXDestructorName:
+        return DeclarationNameKind::CXXDestructorName;
+    case clang::DeclarationName::CXXConversionFunctionName:
+        return DeclarationNameKind::CXXConversionFunctionName;
+    case clang::DeclarationName::CXXOperatorName:
+        return DeclarationNameKind::CXXOperatorName;
+    case clang::DeclarationName::CXXLiteralOperatorName:
+        return DeclarationNameKind::CXXLiteralOperatorName;
+    case clang::DeclarationName::CXXUsingDirective:
+        return DeclarationNameKind::CXXUsingDirective;
+    }
+    assert(0 && "Unknown declaration name kind");
+    return DeclarationNameKind::Identifier;
+}
+
+static DeclarationName WalkDeclarationName(clang::DeclarationName Name)
+{
+    DeclarationName declName;
+    declName.kind = GetDeclarationNameKind(Name.getNameKind());
+    declName.identifier = Name.getAsString();
+    return declName;
+}
+
 static CXXMethodKind GetMethodKindFromDecl(clang::DeclarationName Name)
 {
-    using namespace clang;
-
-    switch(Name.getNameKind())
+    switch (Name.getNameKind())
     {
-    case DeclarationName::Identifier:
-    case DeclarationName::CXXDeductionGuideName:
-    case DeclarationName::ObjCZeroArgSelector:
-    case DeclarationName::ObjCOneArgSelector:
-    case DeclarationName::ObjCMultiArgSelector:
+    case clang::DeclarationName::Identifier:
+    case clang::DeclarationName::CXXDeductionGuideName:
+    case clang::DeclarationName::ObjCZeroArgSelector:
+    case clang::DeclarationName::ObjCOneArgSelector:
+    case clang::DeclarationName::ObjCMultiArgSelector:
         return CXXMethodKind::Normal;
-    case DeclarationName::CXXConstructorName:
+    case clang::DeclarationName::CXXConstructorName:
         return CXXMethodKind::Constructor;
-    case DeclarationName::CXXDestructorName:
+    case clang::DeclarationName::CXXDestructorName:
         return CXXMethodKind::Destructor;
-    case DeclarationName::CXXConversionFunctionName:
+    case clang::DeclarationName::CXXConversionFunctionName:
         return CXXMethodKind::Conversion;
-    case DeclarationName::CXXOperatorName:
-    case DeclarationName::CXXLiteralOperatorName:
+    case clang::DeclarationName::CXXOperatorName:
+    case clang::DeclarationName::CXXLiteralOperatorName:
         return CXXMethodKind::Operator;
-    case DeclarationName::CXXUsingDirective:
+    case clang::DeclarationName::CXXUsingDirective:
         return CXXMethodKind::UsingDirective;
     }
     return CXXMethodKind::Normal;
@@ -1833,7 +1890,7 @@ static CXXOperatorKind GetOperatorKindFromDecl(clang::DeclarationName Name)
 {
     using namespace clang;
 
-    if (Name.getNameKind() != DeclarationName::CXXOperatorName)
+    if (Name.getNameKind() != clang::DeclarationName::CXXOperatorName)
         return CXXOperatorKind::None;
 
     switch(Name.getCXXOverloadedOperator())
@@ -4253,13 +4310,18 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D)
         Decl = WalkUnresolvedUsingTypename(UUTD);
         break;
     }
+    case Decl::Using:
+    {
+        auto UD = cast<UsingDecl>(D);
+        Decl = WalkUsing(UD);
+        break;
+    }
     case Decl::BuiltinTemplate:
     case Decl::ClassScopeFunctionSpecialization:
     case Decl::PragmaComment:
     case Decl::PragmaDetectMismatch:
     case Decl::Empty:
     case Decl::AccessSpec:
-    case Decl::Using:
     case Decl::UsingDirective:
     case Decl::UsingShadow:
     case Decl::ConstructorUsingShadow:

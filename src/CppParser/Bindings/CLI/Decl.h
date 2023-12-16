@@ -23,6 +23,7 @@ namespace CppSharp
             enum class CallingConvention;
             enum class CppAbi;
             enum class DeclarationKind;
+            enum class DeclarationNameKind;
             enum class FriendKind;
             enum class MacroLocation;
             enum class RecordArgABI;
@@ -45,6 +46,7 @@ namespace CppSharp
             ref class ClassTemplateSpecialization;
             ref class Declaration;
             ref class DeclarationContext;
+            ref class DeclarationName;
             ref class Enumeration;
             ref class Expr;
             ref class ExpressionObsolete;
@@ -77,6 +79,7 @@ namespace CppSharp
             ref class TypedefDecl;
             ref class TypedefNameDecl;
             ref class UnresolvedUsingTypename;
+            ref class Using;
             ref class VFTableInfo;
             ref class VTableComponent;
             ref class VTableLayout;
@@ -126,7 +129,8 @@ namespace CppSharp
                 VarTemplate = 27,
                 VarTemplateSpecialization = 28,
                 VarTemplatePartialSpecialization = 29,
-                UnresolvedUsingTypename = 30
+                UnresolvedUsingTypename = 30,
+                Using = 31
             };
 
             public enum class AccessSpecifier
@@ -239,6 +243,21 @@ namespace CppSharp
                 None = 0,
                 LValue = 1,
                 RValue = 2
+            };
+
+            public enum class DeclarationNameKind
+            {
+                Identifier = 0,
+                ObjCZeroArgSelector = 1,
+                ObjCOneArgSelector = 2,
+                CXXConstructorName = 3,
+                CXXDestructorName = 4,
+                CXXConversionFunctionName = 5,
+                CXXOperatorName = 6,
+                CXXDeductionGuideName = 7,
+                CXXLiteralOperatorName = 8,
+                CXXUsingDirective = 9,
+                ObjCMultiArgSelector = 10
             };
 
             public enum class TagKind
@@ -1410,6 +1429,65 @@ namespace CppSharp
                 ~AccessSpecifierDecl();
             };
 
+            public ref class DeclarationName : ICppInstance
+            {
+            public:
+
+                property class ::CppSharp::CppParser::AST::DeclarationName* NativePtr;
+                property ::System::IntPtr __Instance
+                {
+                    virtual ::System::IntPtr get();
+                    virtual void set(::System::IntPtr instance);
+                }
+
+                DeclarationName(class ::CppSharp::CppParser::AST::DeclarationName* native);
+                DeclarationName(class ::CppSharp::CppParser::AST::DeclarationName* native, bool ownNativeInstance);
+                static DeclarationName^ __CreateInstance(::System::IntPtr native);
+                static DeclarationName^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
+                DeclarationName(CppSharp::Parser::AST::DeclarationName^ _0);
+
+                DeclarationName();
+
+                ~DeclarationName();
+
+                property CppSharp::Parser::AST::DeclarationNameKind Kind
+                {
+                    CppSharp::Parser::AST::DeclarationNameKind get();
+                    void set(CppSharp::Parser::AST::DeclarationNameKind);
+                }
+
+                property ::System::String^ Identifier
+                {
+                    ::System::String^ get();
+                    void set(::System::String^);
+                }
+
+            protected:
+
+                bool __ownsNativeInstance;
+            };
+
+            public ref class Using : CppSharp::Parser::AST::Declaration
+            {
+            public:
+
+                Using(class ::CppSharp::CppParser::AST::Using* native);
+                Using(class ::CppSharp::CppParser::AST::Using* native, bool ownNativeInstance);
+                static Using^ __CreateInstance(::System::IntPtr native);
+                static Using^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
+                Using();
+
+                Using(CppSharp::Parser::AST::Using^ _0);
+
+                ~Using();
+
+                property CppSharp::Parser::AST::DeclarationName^ Name
+                {
+                    CppSharp::Parser::AST::DeclarationName^ get();
+                    void set(CppSharp::Parser::AST::DeclarationName^);
+                }
+            };
+
             public ref class VTableComponent : ICppInstance
             {
             public:
@@ -1798,6 +1876,12 @@ namespace CppSharp
                     void set(::System::Collections::Generic::List<CppSharp::Parser::AST::AccessSpecifierDecl^>^);
                 }
 
+                property ::System::Collections::Generic::List<CppSharp::Parser::AST::Using^>^ Usings
+                {
+                    ::System::Collections::Generic::List<CppSharp::Parser::AST::Using^>^ get();
+                    void set(::System::Collections::Generic::List<CppSharp::Parser::AST::Using^>^);
+                }
+
                 property bool IsPOD
                 {
                     bool get();
@@ -1890,6 +1974,11 @@ namespace CppSharp
                     unsigned int get();
                 }
 
+                property unsigned int UsingsCount
+                {
+                    unsigned int get();
+                }
+
                 CppSharp::Parser::AST::BaseClassSpecifier^ GetBases(unsigned int i);
 
                 void AddBases(CppSharp::Parser::AST::BaseClassSpecifier^ s);
@@ -1913,6 +2002,12 @@ namespace CppSharp
                 void AddSpecifiers(CppSharp::Parser::AST::AccessSpecifierDecl^ s);
 
                 void ClearSpecifiers();
+
+                CppSharp::Parser::AST::Using^ GetUsings(unsigned int i);
+
+                void AddUsings(CppSharp::Parser::AST::Using^ s);
+
+                void ClearUsings();
             };
 
             public ref class Template : CppSharp::Parser::AST::Declaration

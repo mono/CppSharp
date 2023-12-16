@@ -52,6 +52,7 @@ namespace CppSharp
                 VarTemplateSpecialization,
                 VarTemplatePartialSpecialization,
                 UnresolvedUsingTypename,
+                Using,
             };
 
 #define DECLARE_DECL_KIND(klass, kind) \
@@ -466,6 +467,36 @@ namespace CppSharp
                 ~AccessSpecifierDecl();
             };
 
+            enum class DeclarationNameKind
+            {
+                Identifier,
+                ObjCZeroArgSelector,
+                ObjCOneArgSelector,
+                CXXConstructorName,
+                CXXDestructorName,
+                CXXConversionFunctionName,
+                CXXOperatorName,
+                CXXDeductionGuideName,
+                CXXLiteralOperatorName,
+                CXXUsingDirective,
+                ObjCMultiArgSelector,
+            };
+
+            class CS_API DeclarationName
+            {
+            public:
+                DeclarationNameKind kind;
+                std::string identifier;
+            };
+
+            class CS_API Using : public Declaration
+            {
+            public:
+                Using();
+                ~Using();
+                DeclarationName name;
+            };
+
             enum class CppAbi
             {
                 Itanium,
@@ -588,6 +619,7 @@ namespace CppSharp
                 VECTOR(Field *, Fields)
                 VECTOR(Method *, Methods)
                 VECTOR(AccessSpecifierDecl *, Specifiers)
+                VECTOR(Using *, Usings)
 
                 bool isPOD;
                 bool isAbstract;
