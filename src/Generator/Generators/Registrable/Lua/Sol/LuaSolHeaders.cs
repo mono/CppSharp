@@ -38,6 +38,7 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
         public override void GenerateTranslationUnit(TranslationUnit translationUnit)
         {
             GenerateTranslationUnitNamespaceBegin(translationUnit);
+            GenerateTranslationUnitRegistrationFunctionBody(translationUnit);
             GenerateTranslationUnitRegistrationFunctionDeclaration(translationUnit);
             GenerateTranslationUnitNamespaceEnd(translationUnit);
         }

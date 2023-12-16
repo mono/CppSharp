@@ -124,7 +124,10 @@ namespace CppSharp.Generators.Registrable
         public virtual string PrintClassTemplateParameters(List<Declaration> parameters, bool includeEnclosingBrackets, TemplateParameterOption option)
         {
             var builder = new StringBuilder();
-            builder.Append('<');
+            if (includeEnclosingBrackets)
+            {
+                builder.Append('<');
+            }
             for (int i = 0; i < parameters.Count; i++)
             {
                 if (i > 0)
@@ -133,7 +136,10 @@ namespace CppSharp.Generators.Registrable
                 }
                 builder.Append(PrintClassTemplateParameter(parameters[i], option));
             }
-            builder.Append('>');
+            if (includeEnclosingBrackets)
+            {
+                builder.Append('>');
+            }
             return builder.ToString();
         }
 
@@ -149,7 +155,10 @@ namespace CppSharp.Generators.Registrable
         public virtual string PrintClassTemplateSpecializationArguments(List<TemplateArgument> arguments, bool includeEnclosingBrackets)
         {
             var builder = new StringBuilder();
-            builder.Append('<');
+            if (includeEnclosingBrackets)
+            {
+                builder.Append('<');
+            }
             for (int i = 0; i < arguments.Count; i++)
             {
                 if (i > 0)
@@ -158,7 +167,10 @@ namespace CppSharp.Generators.Registrable
                 }
                 builder.Append(PrintClassTemplateSpecializationArgument(arguments[i]));
             }
-            builder.Append('>');
+            if (includeEnclosingBrackets)
+            {
+                builder.Append('>');
+            }
             return builder.ToString();
         }
 
@@ -181,9 +193,14 @@ namespace CppSharp.Generators.Registrable
             }
             else
             {
-                if (currentDeclaration is not ClassTemplate template)
+                Template template = null;
+                if (currentDeclaration is not ClassTemplate)
                 {
-                    template = (ClassTemplate)Utils.FindDescribedTemplate(currentDeclaration);
+                    var describedTemplate = Utils.FindDescribedTemplate(currentDeclaration);
+                    if (describedTemplate is ClassTemplate)
+                    {
+                        template = (ClassTemplate)describedTemplate;
+                    }
                 }
                 if (template != null)
                 {
@@ -287,6 +304,31 @@ namespace CppSharp.Generators.Registrable
 
         public virtual string GetContextualName(Declaration declaration, RegistrableGeneratorContext context, FQNOption option)
         {
+            Class @class = null;
+            Template template = null;
+            if (declaration is Class)
+            {
+                @class = declaration as Class;
+                template = Utils.FindDescribedTemplate(declaration);
+            }
+            else if (declaration is ClassTemplate classTemplate)
+            {
+                @class = classTemplate.TemplatedClass;
+                template = classTemplate;
+            }
+            if (@class is Class)
+            {
+                if (template is ClassTemplate)
+                {
+                    // TODO: check if ClassTemplate is collapsible
+                }
+
+                if (@class.Access == AccessSpecifier.Protected)
+                {
+                    return GetCppContext(@class, context, FQNOption.IgnoreNone);
+                }
+                return GetFullyQualifiedName(declaration, option);
+            }
             return GetCppContext(declaration, context, new FQNOption(false, true, false, false)) + "::" + GetQualifiedName(declaration, option);
         }
 
@@ -408,6 +450,11 @@ namespace CppSharp.Generators.Registrable
                 }) + "::";
             }
             return "";
+        }
+
+        public virtual string GetClassTemplateName(Declaration declaration)
+        {
+            return $"functor_{GetRegistrationFunctionName(declaration)}";
         }
     }
 }

@@ -2,7 +2,6 @@ using CppSharp.AST;
 using CppSharp.Generators.C;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CppSharp.Generators.Registrable.Lua.Sol
 {
@@ -60,12 +59,121 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
 
         public virtual void GenerateDeclarationContainerList(DeclarationContext declaration)
         {
-            List<Declaration> declarations = declaration.Declarations.Where(declaration => declaration is Namespace || declaration is Class || declaration is Enumeration).ToList();
-            declarations.Sort((x, y) => x.LineNumberStart.CompareTo(y.LineNumberStart));
-            foreach (var item in declarations)
+            List<Declaration> containerList = declaration.Declarations.Where(declaration =>
+            {
+                if (declaration is Namespace || declaration is Enumeration)
+                {
+                    return true;
+                }
+                else if (declaration is Class)
+                {
+                    return Utils.FindDescribedTemplate(declaration) == null;
+                }
+                return false;
+            }).ToList();
+            containerList.Sort((x, y) => x.LineNumberStart.CompareTo(y.LineNumberStart));
+            foreach (var item in containerList)
             {
                 item.Visit(this);
             };
+
+            if (NonTemplateAllowed)
+            {
+                List<ClassTemplate> classTemplateList = declaration.Templates.Where(template => template is ClassTemplate).Cast<ClassTemplate>().ToList();
+                classTemplateList.Sort((x, y) => x.LineNumberStart.CompareTo(y.LineNumberStart));
+                foreach (var classTemplate in classTemplateList)
+                {
+                    if (Utils.IsDefaultTemplateParameterList(classTemplate.Parameters))
+                    {
+                        Write(string.Format("{0}<>{{}}({1}",
+                            NamingStrategy.GetClassTemplateName(classTemplate),
+                            NamingStrategy.GetRootContextName(GenerationContext)
+                        ));
+                        if (classTemplate.OriginalName != classTemplate.Name)
+                        {
+                            Write(", ");
+                            Write(NamingStrategy.GetRootContextName(GenerationContext));
+                            Write(", ");
+                            Write(classTemplate.Name);
+                        }
+                        WriteLine(");");
+                    }
+
+                    foreach (var classTemplateSpecialization in classTemplate.Specializations)
+                    {
+                        if (classTemplateSpecialization is not ClassTemplatePartialSpecialization)
+                        {
+                            if (classTemplateSpecialization.SpecializationKind == TemplateSpecializationKind.ExplicitSpecialization)
+                            {
+                                Write(string.Format("{0}<{1}>{{}}({2}",
+                                    NamingStrategy.GetClassTemplateName(classTemplateSpecialization),
+                                    NamingStrategy.PrintClassTemplateSpecializationArguments(classTemplateSpecialization.Arguments, false),
+                                    NamingStrategy.GetRootContextName(GenerationContext)
+                                ));
+                                if (classTemplateSpecialization.OriginalName != classTemplateSpecialization.Name)
+                                {
+                                    Write(", ");
+                                    Write(NamingStrategy.GetRootContextName(GenerationContext));
+                                    Write(", ");
+                                    Write(classTemplateSpecialization.Name);
+                                }
+                                WriteLine(");");
+                            }
+                        }
+                    }
+                };
+            }
+        }
+
+        public virtual void GenerateDeclarationTemplateList(DeclarationContext declaration)
+        {
+            if (!TemplateAllowed)
+            {
+                return;
+            }
+
+            List<Declaration> containerList = declaration.Declarations.Where(declaration =>
+            {
+                if (declaration is Namespace || declaration is Enumeration)
+                {
+                    return true;
+                }
+                else if (declaration is Class)
+                {
+                    return Utils.FindDescribedTemplate(declaration) == null;
+                }
+                return false;
+            }).ToList();
+            containerList.Sort((x, y) => x.LineNumberStart.CompareTo(y.LineNumberStart));
+            foreach (var item in containerList)
+            {
+                if (item.Access == AccessSpecifier.Protected)
+                {
+                    item.Visit(this);
+                }
+                else
+                {
+                    GenerateDeclarationTemplateList((DeclarationContext)item);
+                }
+            };
+
+            List<ClassTemplate> classTemplateList = declaration.Templates.Where(template => template is ClassTemplate).Cast<ClassTemplate>().ToList();
+            classTemplateList.Sort((x, y) => x.LineNumberStart.CompareTo(y.LineNumberStart));
+            foreach (var classTemplate in classTemplateList)
+            {
+                classTemplate.Visit(this);
+                foreach (var classTemplateSpecialization in classTemplate.Specializations)
+                {
+                    classTemplateSpecialization.Visit(this);
+                }
+            };
+
+            //List<Template> functionTemplateList = declaration.Templates.Where(template => template is FunctionTemplate).ToList();
+            //functionTemplateList.Sort((x, y) => x.LineNumberStart.CompareTo(y.LineNumberStart));
+            //foreach (var item in functionTemplateList)
+            //{
+            //    item.Visit(this);
+            //};
         }
 
         #region TranslationUnit
@@ -101,6 +209,7 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
 
         public virtual void GenerateTranslationUnitRegistrationFunctionBody(TranslationUnit translationUnit)
         {
+            GenerateDeclarationTemplateList(translationUnit);
             GenerateDeclarationContainerList(translationUnit);
 
             GenerationContext.Scoped(RegistrableGeneratorContext.IsDetach, DetachmentOption.On, () =>
@@ -635,6 +744,10 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
             {
                 return false;
             }
+            else if (@class.IsIncomplete)
+            {
+                return false;
+            }
             else if (!NonTemplateAllowed)
             {
                 return false;
@@ -648,12 +761,24 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (!CanGenerateClassDecl(@class))
+            if (IsClassDeclImported(@class))
             {
-                return false;
-            }
+                if (!CanGenerateClassDeclImported(@class))
+                {
+                    return false;
+                }
 
-            GenerateClassDecl(@class);
+                GenerateClassDeclImported(@class);
+            }
+            else
+            {
+                if (!CanGenerateClassDecl(@class))
+                {
+                    return false;
+                }
+
+                GenerateClassDecl(@class);
+            }
 
             return true;
         }
@@ -952,6 +1077,10 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
             {
                 return false;
             }
+            else if (Utils.FindDescribedTemplate(constructor) != null)
+            {
+                return false;
+            }
             return constructor.IsGenerated;
         }
 
@@ -1067,11 +1196,16 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
             {
                 return false;
             }
+            else if (Utils.FindDescribedTemplate(function) != null)
+            {
+                return false;
+            }
             return function.IsGenerated;
         }
 
         public virtual void GenerateFunction(Declaration declaration, Function function)
         {
+            if (Utils.HasPossibleTemplateOverload(function))
             {
                 Write("static_cast<");
                 Write(function.ReturnType.Visit(new CppTypePrinter(Context)));
@@ -1103,6 +1237,43 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
                 Write(">(&");
                 Write(NamingStrategy.GetContextualName(function, GenerationContext, FQNOption.IgnoreNone));
                 Write(")");
+            }
+            else if (Utils.HasPossibleOverload(function))
+            {
+                Write("::sol::resolve<");
+                Write(function.ReturnType.Visit(new CppTypePrinter(Context)));
+                Write("(");
+                var needsComma = false;
+                foreach (var parameter in function.Parameters)
+                {
+                    if (needsComma)
+                    {
+                        Write(", ");
+                    }
+                    else
+                    {
+                        needsComma = true;
+                    }
+                    Write(parameter.Type.Visit(new CppTypePrinter(Context)));
+                }
+                if (function.IsVariadic)
+                {
+                    if (needsComma)
+                    {
+                        Write(", ");
+                    }
+                    Write("...");
+                }
+                Write(")");
+                Write(">(&");
+                Write(NamingStrategy.GetContextualName(function, GenerationContext, FQNOption.IgnoreNone));
+                Write(")");
+            }
+            else
+            {
+                Write(string.Format("&{0}",
+                    NamingStrategy.GetContextualName(function, GenerationContext, FQNOption.IgnoreNone)
+                ));
             }
         }
 
@@ -1183,11 +1354,16 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
             {
                 return false;
             }
+            else if (Utils.FindDescribedTemplate(method) != null)
+            {
+                return false;
+            }
             return method.IsGenerated;
         }
 
         public virtual void GenerateMethod(Class @class, Method method)
         {
+            if (Utils.HasPossibleTemplateOverload(method))
             {
                 Write("static_cast<");
                 Write(method.ReturnType.Visit(new CppTypePrinter(Context)));
@@ -1219,6 +1395,43 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
                 Write(">(&");
                 Write(NamingStrategy.GetContextualName(method, GenerationContext, FQNOption.IgnoreNone));
                 Write(")");
+            }
+            else if (Utils.HasPossibleOverload(method))
+            {
+                Write("::sol::resolve<");
+                Write(method.ReturnType.Visit(new CppTypePrinter(Context)));
+                Write("(");
+                var needsComma = false;
+                foreach (var parameter in method.Parameters)
+                {
+                    if (needsComma)
+                    {
+                        Write(", ");
+                    }
+                    else
+                    {
+                        needsComma = true;
+                    }
+                    Write(parameter.Type.Visit(new CppTypePrinter(Context)));
+                }
+                if (method.IsVariadic)
+                {
+                    if (needsComma)
+                    {
+                        Write(", ");
+                    }
+                    Write("...");
+                }
+                Write(")");
+                Write(">(&");
+                Write(NamingStrategy.GetContextualName(method, GenerationContext, FQNOption.IgnoreNone));
+                Write(")");
+            }
+            else
+            {
+                Write(string.Format("&{0}",
+                    NamingStrategy.GetContextualName(method, GenerationContext, FQNOption.IgnoreNone)
+                ));
             }
         }
 
@@ -1282,6 +1495,574 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
         {
             return VisitTypedefNameDecl(typeAlias);
         }
+
+        #endregion
+
+        #region Template
+
+        #region ClassDeclImported
+
+        public virtual string GetClassDeclImportedClassType(Class @class)
+        {
+            return "auto";
+        }
+
+        public virtual void GenerateClassDeclImportedClassValueType(Class @class)
+        {
+            var classContextualName = NamingStrategy.GetContextualName(@class, GenerationContext, FQNOption.IgnoreNone);
+            WriteLine($"using value_type = ::sol::usertype<{classContextualName}>;");
+        }
+
+        public virtual void GenerateClassDeclImportedClassBegin(Class @class)
+        {
+            WriteLine($"template <typename Importer>");
+            WriteLine($"struct {NamingStrategy.GetClassTemplateName(@class)} {{");
+            Indent();
+            GenerateClassDeclImportedClassValueType(@class);
+            GenerateDeclarationTemplateList(@class);
+            WriteLine(string.Format("template <typename {0}, typename {1} = {2}>",
+                Generator.GeneratorOptions.TemplateTypenameState,
+                Generator.GeneratorOptions.TemplateTypenameContext,
+                Generator.GeneratorOptions.TemplateContextDefaultType
+            ));
+            WriteLine(string.Format("{0} operator()({1}&& {2}, {3}&& {4} = {5}, const ::std::string& {6} = {{}}) {{",
+                GetClassDeclImportedClassType(@class),
+                Generator.GeneratorOptions.TemplateTypenameState,
+                Generator.GeneratorOptions.TemplateIdentifierState,
+                Generator.GeneratorOptions.TemplateTypenameContext,
+                Generator.GeneratorOptions.TemplateIdentifierContext,
+                Generator.GeneratorOptions.TemplateContextDefaultValue,
+                "name"
+            ));
+            Indent();
+        }
+
+        public virtual void GenerateClassDeclImportedClassEnd(Class @class)
+        {
+            Unindent();
+            WriteLine("}");
+            Unindent();
+            WriteLine("};");
+        }
+
+        public virtual void GenerateClassDeclImportedClassBody(Class @class)
+        {
+            var bindingName = NamingStrategy.GetBindingName(@class);
+            var contextualName = NamingStrategy.GetContextualName(@class, GenerationContext, FQNOption.IgnoreNone);
+            var fullyQualifiedName = NamingStrategy.GetFullyQualifiedName(@class, FQNOption.IgnoreNone);
+            var templateIdentifierContext = Generator.GeneratorOptions.TemplateIdentifierContext;
+            var templateIdentifierState = Generator.GeneratorOptions.TemplateIdentifierState;
+
+            WriteLine(string.Format("const char* {0} = typeid({1}).name();",
+                "__typeid_name",
+                contextualName
+            ));
+            WriteLine(string.Format("if ({0}[{1}] == ::sol::nil) {{",
+                templateIdentifierState,
+                "__typeid_name"
+            ));
+            Indent();
+
+            WriteLine(string.Format("/* FullyQualifiedName: {0} */",
+                fullyQualifiedName
+            ));
+            WriteLine(string.Format("auto {0} = {1}.template new_usertype<{2}>(",
+                bindingName,
+                templateIdentifierState,
+                contextualName
+            ));
+            Indent();
+            Write("__typeid_name");
+            GenerateClassDeclDeclarationList(@class, DetachmentOption.Off);
+            Unindent();
+            NewLine();
+            WriteLine(");");
+
+            Unindent();
+            WriteLine("}");
+            WriteLine(string.Format("if (!{0}.empty()) {{",
+                "name"
+            ));
+            Indent();
+            WriteLine(string.Format("{0}[{1}] = {2}[{3}];",
+                templateIdentifierContext,
+                "name",
+                templateIdentifierState,
+                "__typeid_name"
+            ));
+            Unindent();
+            WriteLine("}");
+            WriteLine(string.Format("return {0}[{1}];",
+                templateIdentifierState,
+                "__typeid_name"
+            ));
+        }
+
+        public virtual void GenerateClassDeclImportedClassPushContext(Class @class)
+        {
+            GenerationContext.PushTemplateLevel(1);
+            GenerationContext.PushRootContextName(Generator.GeneratorOptions.TemplateIdentifierState);
+            GenerationContext.PushCppContext(new CppContext()
+            {
+                FullyQualifiedName = string.Format("Importer::template {0}",
+                    NamingStrategy.GetQualifiedName(@class, FQNOption.IgnoreNone)
+                ),
+                Option = FQNOption.IgnoreNone
+            });
+        }
+
+        public virtual void GenerateClassDeclImportedClassPopContext(Class @class)
+        {
+            GenerationContext.PopCppContext();
+            GenerationContext.PopRootContextName();
+            GenerationContext.PopTemplateLevel();
+        }
+
+        public virtual bool IsClassDeclImported(Class @class)
+        {
+            return @class.Access == AccessSpecifier.Protected;
+        }
+
+        public virtual bool CanGenerateClassDeclImported(Class @class)
+        {
+            if (AlreadyVisited(@class))
+            {
+                return false;
+            }
+            else if (@class.Access != AccessSpecifier.Protected)
+            {
+                return false;
+            }
+            else if (@class.IsIncomplete)
+            {
+                return false;
+            }
+            else if (@class.IsUnion)
+            {
+                return false;
+            }
+            else if (!TemplateAllowed)
+            {
+                return false;
+            }
+            else if (Utils.FindDescribedTemplate(@class) != null)
+            {
+                return false;
+            }
+            return @class.IsGenerated;
+        }
+
+        public virtual void GenerateClassDeclImported(Class @class)
+        {
+            GenerateClassDeclImportedClassPushContext(@class);
+
+            GenerateClassDeclImportedClassBegin(@class);
+            GenerateClassDeclImportedClassBody(@class);
+            GenerateClassDeclImportedClassEnd(@class);
+
+            GenerateClassDeclImportedClassPopContext(@class);
+        }
+
+        #endregion
+
+        #region ClassTemplate
+
+        public virtual string GetClassTemplateDeclFunctorReturnType(ClassTemplate template)
+        {
+            return "auto";
+        }
+
+        public virtual void GenerateClassTemplateDeclFunctorValueType(ClassTemplate template)
+        {
+            var contextualName = NamingStrategy.GetContextualName(template, GenerationContext, FQNOption.IgnoreNone);
+
+            WriteLine(string.Format("using value_type = ::sol::usertype<{0}>;",
+                contextualName
+            ));
+        }
+
+        public virtual void GenerateClassTemplateDeclBegin(ClassTemplate template)
+        {
+            Write("template <");
+            if (template.Access == AccessSpecifier.Protected)
+            {
+                Write("typename Importer>");
+                if (template.Parameters.Count > 0)
+                {
+                    Write(", ");
+                }
+            }
+            Write(NamingStrategy.PrintClassTemplateParameters(template.Parameters, false, TemplateParameterOption.AsParameter));
+            WriteLine(">");
+            WriteLine($"struct {NamingStrategy.GetClassTemplateName(template)} {{");
+            Indent();
+            GenerateClassTemplateDeclFunctorValueType(template);
+            GenerateDeclarationTemplateList(template.TemplatedClass);
+            WriteLine(string.Format("template <typename {0}, typename {1} = {2}>",
+                Generator.GeneratorOptions.TemplateTypenameState,
+                Generator.GeneratorOptions.TemplateTypenameContext,
+                Generator.GeneratorOptions.TemplateContextDefaultType
+            ));
+            WriteLine(string.Format("{0} operator()({1}&& {2}, {3}&& {4} = {5}, const ::std::string& {6} = {{}}) {{",
+                GetClassTemplateDeclFunctorReturnType(template),
+                Generator.GeneratorOptions.TemplateTypenameState,
+                Generator.GeneratorOptions.TemplateIdentifierState,
+                Generator.GeneratorOptions.TemplateTypenameContext,
+                Generator.GeneratorOptions.TemplateIdentifierContext,
+                Generator.GeneratorOptions.TemplateContextDefaultValue,
+                "name"
+            ));
+            Indent();
+        }
+
+        public virtual void GenerateClassTemplateDeclEnd(ClassTemplate template)
+        {
+            Unindent();
+            WriteLine("}");
+            Unindent();
+            WriteLine("};");
+        }
+
+        public virtual void GenerateClassTemplateDeclBody(ClassTemplate template)
+        {
+            var bindingName = NamingStrategy.GetBindingName(template);
+            var contextualName = NamingStrategy.GetContextualName(template, GenerationContext, FQNOption.IgnoreNone);
+            var fullyQualifiedName = NamingStrategy.GetFullyQualifiedName(template, FQNOption.IgnoreNone);
+            var templateIdentifierContext = Generator.GeneratorOptions.TemplateIdentifierContext;
+            var templateIdentifierState = Generator.GeneratorOptions.TemplateIdentifierState;
+
+            WriteLine(string.Format("const char* {0} = typeid({1}).name();",
+                "__typeid_name",
+                contextualName
+            ));
+            WriteLine(string.Format("if ({0}[{1}] == ::sol::nil) {{",
+                templateIdentifierState,
+                "__typeid_name"
+            ));
+            Indent();
+
+            WriteLine(string.Format("/* FullyQualifiedName: {0} */",
+                fullyQualifiedName
+            ));
+            WriteLine(string.Format("auto {0} = {1}.template new_usertype<{2}>(",
+                bindingName,
+                templateIdentifierState,
+                contextualName
+            ));
+            Indent();
+            Write("__typeid_name");
+            GenerateClassDeclDeclarationList(template.TemplatedClass, DetachmentOption.Off);
+            Unindent();
+            NewLine();
+            WriteLine(");");
+
+            Unindent();
+            WriteLine("}");
+            WriteLine(string.Format("if (!{0}.empty()) {{",
+                "name"
+            ));
+            Indent();
+            WriteLine(string.Format("{0}[{1}] = {2}[{3}];",
+                templateIdentifierContext,
+                "name",
+                templateIdentifierState,
+                "__typeid_name"
+            ));
+            Unindent();
+            WriteLine("}");
+            WriteLine(string.Format("return {0}[{1}];",
+                templateIdentifierState,
+                "__typeid_name"
+            ));
+        }
+
+        public virtual void GenerateClassTemplateDeclPushContext(ClassTemplate template)
+        {
+            GenerationContext.PushTemplateLevel(1);
+            GenerationContext.PushRootContextName(Generator.GeneratorOptions.TemplateIdentifierState);
+            if (template.Access == AccessSpecifier.Protected)
+            {
+                if (Generator.GeneratorOptions.ImportedTemplateMode == ImportedClassTemplateMode.Indirect)
+                {
+                    GenerationContext.PushCppContext(new CppContext()
+                    {
+                        FullyQualifiedName = string.Format("Temp_{0}",
+                            NamingStrategy.GetQualifiedName(template, FQNOption.IgnoreNone)
+                        )
+                    });
+                }
+                else
+                {
+                    GenerationContext.PushCppContext(new CppContext()
+                    {
+                        FullyQualifiedName = string.Format("Importer::template {0}",
+                            NamingStrategy.GetQualifiedName(template, FQNOption.IgnoreNone)
+                        )
+                    });
+                }
+            }
+        }
+
+        public virtual void GenerateClassTemplateDeclPopContext(ClassTemplate template)
+        {
+            if (template.Access == AccessSpecifier.Protected)
+            {
+                GenerationContext.PopCppContext();
+            }
+            GenerationContext.PopRootContextName();
+            GenerationContext.PopTemplateLevel();
+        }
+
+        public virtual bool CanGenerateClassTemplateDecl(ClassTemplate template)
+        {
+            if (AlreadyVisited(template))
+            {
+                return false;
+            }
+            else if (template.Access == AccessSpecifier.Private)
+            {
+                return false;
+            }
+            else if (template.IsIncomplete)
+            {
+                return false;
+            }
+            else if (!TemplateAllowed)
+            {
+                return false;
+            }
+            return template.IsGenerated;
+        }
+
+        public virtual void GenerateClassTemplateDecl(ClassTemplate template)
+        {
+            GenerateClassTemplateDeclPushContext(template);
+
+            GenerateClassTemplateDeclBegin(template);
+            GenerateClassTemplateDeclBody(template);
+            GenerateClassTemplateDeclEnd(template);
+
+            GenerateClassTemplateDeclPopContext(template);
+        }
+
+        public override bool VisitClassTemplateDecl(ClassTemplate template)
+        {
+            if (!CanGenerateClassTemplateDecl(template))
+            {
+                return false;
+            }
+
+            GenerateClassTemplateDecl(template);
+
+            return true;
+        }
+
+        #endregion
+
+        #region ClassTemplateSpecialization
+
+        public virtual string GetClassTemplateSpecializationDeclFunctorReturnType(ClassTemplateSpecialization specialization)
+        {
+            return "auto";
+        }
+
+        public virtual void GenerateClassTemplateSpecializationDeclFunctorValueType(ClassTemplateSpecialization specialization)
+        {
+            var contextualName = NamingStrategy.GetContextualName(specialization, GenerationContext, FQNOption.IgnoreNone);
+
+            WriteLine(string.Format("using value_type = ::sol::usertype<{0}>;",
+                contextualName
+            ));
+        }
+
+        public virtual void GenerateClassTemplateSpecializationDeclBegin(ClassTemplateSpecialization specialization)
+        {
+            Write("template <");
+            if (specialization.Access == AccessSpecifier.Protected)
+            {
+                Write("typename Importer>");
+                if (specialization is ClassTemplatePartialSpecialization)
+                {
+                    // TODO: provisional and WRONG: see https://github.com/mono/CppSharp/issues/1801
+                    if (specialization.TemplatedDecl.Parameters.Count > 0)
+                    {
+                        Write(", ");
+                    }
+                }
+            }
+            if (specialization is ClassTemplatePartialSpecialization)
+            {
+                // TODO: provisional and WRONG: see https://github.com/mono/CppSharp/issues/1801
+                Write(NamingStrategy.PrintClassTemplateParameters(specialization.TemplatedDecl.Parameters, false, TemplateParameterOption.AsParameter));
+            }
+            WriteLine(">");
+            WriteLine(string.Format("struct {0}{1} {{",
+                NamingStrategy.GetClassTemplateName(specialization),
+                NamingStrategy.PrintClassTemplateSpecializationArguments(specialization.Arguments, true)
+            ));
+            Indent();
+            GenerateClassTemplateSpecializationDeclFunctorValueType(specialization);
+            GenerateDeclarationTemplateList(specialization);
+            WriteLine(string.Format("template <typename {0}, typename {1} = {2}>",
+                Generator.GeneratorOptions.TemplateTypenameState,
+                Generator.GeneratorOptions.TemplateTypenameContext,
+                Generator.GeneratorOptions.TemplateContextDefaultType
+            ));
+            WriteLine(string.Format("{0} operator()({1}&& {2}, {3}&& {4} = {5}, const ::std::string& {6} = {{}}) {{",
+                GetClassTemplateSpecializationDeclFunctorReturnType(specialization),
+                Generator.GeneratorOptions.TemplateTypenameState,
+                Generator.GeneratorOptions.TemplateIdentifierState,
+                Generator.GeneratorOptions.TemplateTypenameContext,
+                Generator.GeneratorOptions.TemplateIdentifierContext,
+                Generator.GeneratorOptions.TemplateContextDefaultValue,
+                "name"
+            ));
+            Indent();
+        }
+
+        public virtual void GenerateClassTemplateSpecializationDeclEnd(ClassTemplateSpecialization specialization)
+        {
+            Unindent();
+            WriteLine("}");
+            Unindent();
+            WriteLine("};");
+        }
+
+        public virtual void GenerateClassTemplateSpecializationDeclBody(ClassTemplateSpecialization specialization)
+        {
+            var bindingName = NamingStrategy.GetBindingName(specialization);
+            var contextualName = NamingStrategy.GetContextualName(specialization, GenerationContext, FQNOption.IgnoreNone);
+            var fullyQualifiedName = NamingStrategy.GetFullyQualifiedName(specialization, FQNOption.IgnoreNone);
+            var templateIdentifierContext = Generator.GeneratorOptions.TemplateIdentifierContext;
+            var templateIdentifierState = Generator.GeneratorOptions.TemplateIdentifierState;
+
+            WriteLine(string.Format("const char* {0} = typeid({1}).name();",
+                "__typeid_name",
+                contextualName
+            ));
+            WriteLine(string.Format("if ({0}[{1}] == ::sol::nil) {{",
+                templateIdentifierState,
+                "__typeid_name"
+            ));
+            Indent();
+
+            WriteLine(string.Format("/* FullyQualifiedName: {0} */",
+                fullyQualifiedName
+            ));
+            WriteLine(string.Format("auto {0} = {1}.template new_usertype<{2}>(",
+                bindingName,
+                templateIdentifierState,
+                contextualName
+            ));
+            Indent();
+            Write("__typeid_name");
+            GenerateClassDeclDeclarationList(specialization, DetachmentOption.Off);
+            Unindent();
+            NewLine();
+            WriteLine(");");
+
+            Unindent();
+            WriteLine("}");
+            WriteLine(string.Format("if (!{0}.empty()) {{",
+                "name"
+            ));
+            Indent();
+            WriteLine(string.Format("{0}[{1}] = {2}[{3}];",
+                templateIdentifierContext,
+                "name",
+                templateIdentifierState,
+                "__typeid_name"
+            ));
+            Unindent();
+            WriteLine("}");
+            WriteLine(string.Format("return {0}[{1}];",
+                templateIdentifierState,
+                "__typeid_name"
+            ));
+        }
+
+        public virtual void GenerateClassTemplateSpecializationDeclPushContext(ClassTemplateSpecialization specialization)
+        {
+            GenerationContext.PushTemplateLevel(1);
+            GenerationContext.PushRootContextName(Generator.GeneratorOptions.TemplateIdentifierState);
+            if (specialization.Access == AccessSpecifier.Protected)
+            {
+                if (Generator.GeneratorOptions.ImportedTemplateMode == ImportedClassTemplateMode.Indirect)
+                {
+                    GenerationContext.PushCppContext(new CppContext()
+                    {
+                        FullyQualifiedName = string.Format("Temp_{0}",
+                            NamingStrategy.GetQualifiedName(specialization, FQNOption.IgnoreNone)
+                        )
+                    });
+                }
+                else
+                {
+                    GenerationContext.PushCppContext(new CppContext()
+                    {
+                        FullyQualifiedName = string.Format("Importer::template {0}",
+                            NamingStrategy.GetQualifiedName(specialization, FQNOption.IgnoreNone)
+                        )
+                    });
+                }
+            }
+        }
+
+        public virtual void GenerateClassTemplateSpecializationDeclPopContext(ClassTemplateSpecialization specialization)
+        {
+            if (specialization.Access == AccessSpecifier.Protected)
+            {
+                GenerationContext.PopCppContext();
+            }
+            GenerationContext.PopRootContextName();
+            GenerationContext.PopTemplateLevel();
+        }
+
+        public virtual bool CanGenerateClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
+        {
+            if (AlreadyVisited(specialization))
+            {
+                return false;
+            }
+            else if (specialization.Access == AccessSpecifier.Private)
+            {
+                return false;
+            }
+            else if (specialization.IsIncomplete)
+            {
+                return false;
+            }
+            else if (!TemplateAllowed)
+            {
+                return false;
+            }
+            return specialization.IsGenerated;
+        }
+
+        public virtual void GenerateClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
+        {
+            GenerateClassTemplateSpecializationDeclPushContext(specialization);
+
+            GenerateClassTemplateSpecializationDeclBegin(specialization);
+            GenerateClassTemplateSpecializationDeclBody(specialization);
+            GenerateClassTemplateSpecializationDeclEnd(specialization);
+
+            GenerateClassTemplateSpecializationDeclPopContext(specialization);
+        }
+
+        public override bool VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
+        {
+            if (!CanGenerateClassTemplateSpecializationDecl(specialization))
+            {
+                return false;
+            }
+
+            GenerateClassTemplateSpecializationDecl(specialization);
+
+            return true;
+        }
+
+        #endregion
 
         #endregion
     }

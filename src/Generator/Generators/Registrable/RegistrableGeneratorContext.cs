@@ -100,13 +100,16 @@
     public class CppContext
     {
         public string FullyQualifiedName { get; set; }
-        public FQNOption Option { get; set; }
+        public FQNOption Option { get; set; } = FQNOption.IgnoreAll;
 
         public string GetFullQualifiedName(FQNOption option)
         {
-            if (!(Option | option).IgnoreTemplateTypenameKeyword)
+            if (!option.IgnoreTemplateTypenameKeyword)
             {
-                return "typename " + FullyQualifiedName;
+                if (!Option.IgnoreTemplateTypenameKeyword)
+                {
+                    return "typename " + FullyQualifiedName;
+                }
             }
             return FullyQualifiedName;
         }
