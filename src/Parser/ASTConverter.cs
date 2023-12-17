@@ -1918,6 +1918,12 @@ namespace CppSharp
         {
             var _decl = new AST.ClassTemplatePartialSpecialization();
             VisitClassTemplateSpecialization(decl, _decl);
+            for (uint i = 0; i < decl.ParametersCount; ++i)
+            {
+                var param = decl.GetParameters(i);
+                var _param = Visit(param);
+                _decl.Parameters.Add(_param);
+            }
             return _decl;
         }
 

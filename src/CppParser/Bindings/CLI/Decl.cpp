@@ -4514,6 +4514,26 @@ CppSharp::Parser::AST::ClassTemplatePartialSpecialization::ClassTemplatePartialS
     NativePtr = new class ::CppSharp::CppParser::AST::ClassTemplatePartialSpecialization();
 }
 
+CppSharp::Parser::AST::Declaration^ CppSharp::Parser::AST::ClassTemplatePartialSpecialization::GetParameters(unsigned int i)
+{
+    auto ___ret = ((class ::CppSharp::CppParser::AST::ClassTemplatePartialSpecialization*)NativePtr)->getParameters(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Declaration((class ::CppSharp::CppParser::AST::Declaration*)___ret);
+}
+
+void CppSharp::Parser::AST::ClassTemplatePartialSpecialization::AddParameters(CppSharp::Parser::AST::Declaration^ s)
+{
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
+    auto __arg0 = (class ::CppSharp::CppParser::AST::Declaration*)s->NativePtr;
+    ((class ::CppSharp::CppParser::AST::ClassTemplatePartialSpecialization*)NativePtr)->addParameters(__arg0);
+}
+
+void CppSharp::Parser::AST::ClassTemplatePartialSpecialization::ClearParameters()
+{
+    ((class ::CppSharp::CppParser::AST::ClassTemplatePartialSpecialization*)NativePtr)->clearParameters();
+}
+
 CppSharp::Parser::AST::ClassTemplatePartialSpecialization::ClassTemplatePartialSpecialization(CppSharp::Parser::AST::ClassTemplatePartialSpecialization^ _0)
     : CppSharp::Parser::AST::ClassTemplateSpecialization((::CppSharp::CppParser::AST::ClassTemplateSpecialization*)nullptr)
 {
@@ -4522,6 +4542,35 @@ CppSharp::Parser::AST::ClassTemplatePartialSpecialization::ClassTemplatePartialS
         throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
     auto &__arg0 = *(class ::CppSharp::CppParser::AST::ClassTemplatePartialSpecialization*)_0->NativePtr;
     NativePtr = new class ::CppSharp::CppParser::AST::ClassTemplatePartialSpecialization(__arg0);
+}
+
+::System::Collections::Generic::List<CppSharp::Parser::AST::Declaration^>^ CppSharp::Parser::AST::ClassTemplatePartialSpecialization::Parameters::get()
+{
+    auto _tmp__Parameters = gcnew ::System::Collections::Generic::List<CppSharp::Parser::AST::Declaration^>();
+    auto __list0 = ((class ::CppSharp::CppParser::AST::ClassTemplatePartialSpecialization*)NativePtr)->Parameters;
+    for(auto _element : __list0)
+    {
+        auto _marshalElement = (_element == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Declaration((class ::CppSharp::CppParser::AST::Declaration*)_element);
+        _tmp__Parameters->Add(_marshalElement);
+    }
+    return _tmp__Parameters;
+}
+
+void CppSharp::Parser::AST::ClassTemplatePartialSpecialization::Parameters::set(::System::Collections::Generic::List<CppSharp::Parser::AST::Declaration^>^ value)
+{
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Declaration*>();
+    for each(CppSharp::Parser::AST::Declaration^ _element in value)
+    {
+        auto _marshalElement = (class ::CppSharp::CppParser::AST::Declaration*)_element->NativePtr;
+        _tmpvalue.push_back(_marshalElement);
+    }
+    ((class ::CppSharp::CppParser::AST::ClassTemplatePartialSpecialization*)NativePtr)->Parameters = _tmpvalue;
+}
+
+unsigned int CppSharp::Parser::AST::ClassTemplatePartialSpecialization::ParametersCount::get()
+{
+    auto ___ret = ((class ::CppSharp::CppParser::AST::ClassTemplatePartialSpecialization*)NativePtr)->getParametersCount();
+    return ___ret;
 }
 
 CppSharp::Parser::AST::FunctionTemplate::FunctionTemplate(class ::CppSharp::CppParser::AST::FunctionTemplate* native)
