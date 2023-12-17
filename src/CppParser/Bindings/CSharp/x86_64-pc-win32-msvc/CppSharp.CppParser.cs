@@ -3043,10 +3043,10 @@ namespace CppSharp
 
             public SourceLocation()
             {
-               fixed (__Internal* __instancePtr = &__instance)
-               {
-                   __Internal.ctor(new __IntPtr(__instancePtr));
-               }
+                fixed (__Internal* __instancePtr = &__instance)
+                {
+                    __Internal.ctor(new __IntPtr(__instancePtr));
+                }
             }
 
             public SourceLocation(uint ID)
