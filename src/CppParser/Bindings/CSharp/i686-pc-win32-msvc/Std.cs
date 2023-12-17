@@ -16,6 +16,7 @@ using __IntPtr = global::System.IntPtr;
 [assembly:InternalsVisibleTo("CppSharp.CppParser")]
 
 #pragma warning disable CS0109 // Member does not hide an inherited member; new keyword is not required
+#pragma warning disable CS9084 // Struct member returns 'this' or other instance members by reference
 
 namespace Std
 {
@@ -160,17 +161,26 @@ namespace Std
 
         public void Dispose()
         {
-            Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
+            Dispose(disposing: true, callNativeDtor: __ownsNativeInstance);
         }
 
         partial void DisposePartial(bool disposing);
 
-        internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
+        internal protected virtual void Dispose(bool disposing, bool callNativeDtor)
         {
             if (__Instance == IntPtr.Zero)
                 return;
             NativeToManagedMap.TryRemove(__Instance, out _);
             DisposePartial(disposing);
+            if (callNativeDtor)
+            {
+                var ___Ty = typeof(_Ty);
+                if (___Ty.IsAssignableFrom(typeof(sbyte)))
+                {
+                    return;
+                }
+                throw new ArgumentOutOfRangeException("_Ty", string.Join(", ", new[] { typeof(_Ty).FullName }), "global::Std.Allocator<_Ty> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte>.");
+            }
             if (__ownsNativeInstance)
                 Marshal.FreeHGlobal(__Instance);
             __Instance = IntPtr.Zero;
@@ -299,12 +309,12 @@ namespace Std
 
         public void Dispose()
         {
-            Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
+            Dispose(disposing: true, callNativeDtor: __ownsNativeInstance);
         }
 
         partial void DisposePartial(bool disposing);
 
-        internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
+        internal protected virtual void Dispose(bool disposing, bool callNativeDtor)
         {
             if (__Instance == IntPtr.Zero)
                 return;
@@ -431,12 +441,12 @@ namespace Std
 
         public void Dispose()
         {
-            Dispose(disposing: true, callNativeDtor : __ownsNativeInstance );
+            Dispose(disposing: true, callNativeDtor: __ownsNativeInstance);
         }
 
         partial void DisposePartial(bool disposing);
 
-        internal protected virtual void Dispose(bool disposing, bool callNativeDtor )
+        internal protected virtual void Dispose(bool disposing, bool callNativeDtor)
         {
             if (__Instance == IntPtr.Zero)
                 return;
