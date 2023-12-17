@@ -1877,23 +1877,22 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
 
         public virtual void GenerateClassTemplateSpecializationDeclBegin(ClassTemplateSpecialization specialization)
         {
+            ClassTemplatePartialSpecialization classTemplatePartialSpecialization = specialization as ClassTemplatePartialSpecialization;
             Write("template <");
             if (specialization.Access == AccessSpecifier.Protected)
             {
                 Write("typename Importer>");
-                if (specialization is ClassTemplatePartialSpecialization)
+                if (classTemplatePartialSpecialization != null)
                 {
-                    // TODO: provisional and WRONG: see https://github.com/mono/CppSharp/issues/1801
-                    if (specialization.TemplatedDecl.Parameters.Count > 0)
+                    if (classTemplatePartialSpecialization.Parameters.Count > 0)
                     {
                         Write(", ");
                     }
                 }
             }
-            if (specialization is ClassTemplatePartialSpecialization)
+            if (classTemplatePartialSpecialization != null)
             {
-                // TODO: provisional and WRONG: see https://github.com/mono/CppSharp/issues/1801
-                Write(NamingStrategy.PrintClassTemplateParameters(specialization.TemplatedDecl.Parameters, false, TemplateParameterOption.AsParameter));
+                Write(NamingStrategy.PrintClassTemplateParameters(classTemplatePartialSpecialization.Parameters, false, TemplateParameterOption.AsParameter));
             }
             WriteLine(">");
             WriteLine(string.Format("struct {0}{1} {{",
