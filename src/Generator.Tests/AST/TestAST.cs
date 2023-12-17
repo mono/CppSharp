@@ -290,6 +290,28 @@ namespace CppSharp.Generator.Tests.AST
         }
 
         [Test]
+        public void TestASTClassTemplatePartialSpecialization()
+        {
+            var classTemplate = AstContext.TranslationUnits
+                .SelectMany(u => u.Templates.OfType<ClassTemplate>())
+                .FirstOrDefault(t => t.Name == "TestClassTemplatePartialSpecialization");
+
+            var classTemplatePartialSpecializations = classTemplate.Specializations.Where(specialization => specialization is ClassTemplatePartialSpecialization).Cast<ClassTemplatePartialSpecialization>();
+            Assert.IsTrue(classTemplatePartialSpecializations.Count() == 1);
+            var classTemplatePartialSpecialization = classTemplatePartialSpecializations.First();
+            Assert.AreEqual(TemplateSpecializationKind.ExplicitSpecialization, classTemplatePartialSpecialization.SpecializationKind);
+
+            var classTemplatePartialSpecializationParameters = classTemplatePartialSpecialization.Parameters;
+            Assert.AreEqual(1, classTemplatePartialSpecializationParameters.Count);
+            Assert.AreEqual((classTemplatePartialSpecializationParameters[0] as TypeTemplateParameter).Name, "K");
+
+            var classTemplatePartialSpecializationArguments = classTemplatePartialSpecialization.Arguments;
+            Assert.AreEqual(2, classTemplatePartialSpecializationArguments.Count);
+            Assert.AreEqual((classTemplatePartialSpecializationArguments[0].Type.Type as BuiltinType).Type, PrimitiveType.Int);
+            Assert.AreEqual((classTemplatePartialSpecializationArguments[1].Type.Type as TemplateParameterType).Parameter, classTemplatePartialSpecializationParameters[0]);
+        }
+
+        [Test]
         public void TestDeprecatedAttrs()
         {
             var deprecated_func = AstContext.FindFunction("deprecated_func");
