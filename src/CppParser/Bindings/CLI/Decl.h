@@ -2205,6 +2205,23 @@ namespace CppSharp
                 ClassTemplatePartialSpecialization(CppSharp::Parser::AST::ClassTemplatePartialSpecialization^ _0);
 
                 ~ClassTemplatePartialSpecialization();
+
+                property ::System::Collections::Generic::List<CppSharp::Parser::AST::Declaration^>^ Parameters
+                {
+                    ::System::Collections::Generic::List<CppSharp::Parser::AST::Declaration^>^ get();
+                    void set(::System::Collections::Generic::List<CppSharp::Parser::AST::Declaration^>^);
+                }
+
+                property unsigned int ParametersCount
+                {
+                    unsigned int get();
+                }
+
+                CppSharp::Parser::AST::Declaration^ GetParameters(unsigned int i);
+
+                void AddParameters(CppSharp::Parser::AST::Declaration^ s);
+
+                void ClearParameters();
             };
 
             public ref class FunctionTemplate : CppSharp::Parser::AST::Template

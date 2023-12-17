@@ -304,6 +304,12 @@ namespace CppSharp.AST
     /// </summary>
     public class ClassTemplatePartialSpecialization : ClassTemplateSpecialization
     {
+        public readonly List<Declaration> Parameters;
+
+        public ClassTemplatePartialSpecialization()
+        {
+            Parameters = new List<Declaration>();
+        }
     }
 
     /// <summary>

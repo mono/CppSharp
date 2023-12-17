@@ -191,3 +191,12 @@ class HasMethods
 public:
     void isVolatileMethod() volatile {}
 };
+
+template <typename K, typename V>
+class TestClassTemplatePartialSpecialization
+{
+};
+template <typename K>
+class TestClassTemplatePartialSpecialization<int, K>
+{
+};

@@ -13779,7 +13779,7 @@ namespace CppSharp
 
             public unsafe partial class ClassTemplatePartialSpecialization : global::CppSharp.Parser.AST.ClassTemplateSpecialization, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 360)]
+                [StructLayout(LayoutKind.Sequential, Size = 372)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -13834,6 +13834,7 @@ namespace CppSharp
                     internal __IntPtr templatedDecl;
                     internal global::Std.Vector.__Internalc__N_std_S_vector____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_S_allocator__S0_ Arguments;
                     internal global::CppSharp.Parser.AST.TemplateSpecializationKind specializationKind;
+                    internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_allocator__S0_ Parameters;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "??0ClassTemplatePartialSpecialization@AST@CppParser@CppSharp@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
                     internal static extern __IntPtr ctor(__IntPtr __instance);
@@ -13843,6 +13844,18 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "??1ClassTemplatePartialSpecialization@AST@CppParser@CppSharp@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
                     internal static extern void dtor(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?getParameters@ClassTemplatePartialSpecialization@AST@CppParser@CppSharp@@QAEPAVDeclaration@234@I@Z", CallingConvention = __CallingConvention.ThisCall)]
+                    internal static extern __IntPtr GetParameters(__IntPtr __instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?addParameters@ClassTemplatePartialSpecialization@AST@CppParser@CppSharp@@QAEXAAPAVDeclaration@234@@Z", CallingConvention = __CallingConvention.ThisCall)]
+                    internal static extern void AddParameters(__IntPtr __instance, __IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?clearParameters@ClassTemplatePartialSpecialization@AST@CppParser@CppSharp@@QAEXXZ", CallingConvention = __CallingConvention.ThisCall)]
+                    internal static extern void ClearParameters(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?getParametersCount@ClassTemplatePartialSpecialization@AST@CppParser@CppSharp@@QAEIXZ", CallingConvention = __CallingConvention.ThisCall)]
+                    internal static extern uint GetParametersCount(__IntPtr __instance);
                 }
 
                 internal static new ClassTemplatePartialSpecialization __CreateInstance(__IntPtr native, bool skipVTables = false)
@@ -13922,6 +13935,36 @@ namespace CppSharp
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
                     __Instance = IntPtr.Zero;
+                }
+
+                public global::CppSharp.Parser.AST.Declaration GetParameters(uint i)
+                {
+                    var ___ret = __Internal.GetParameters(__Instance, i);
+                    var __result0 = global::CppSharp.Parser.AST.Declaration.__GetOrCreateInstance(___ret, false);
+                    return __result0;
+                }
+
+                public void AddParameters(global::CppSharp.Parser.AST.Declaration s)
+                {
+                    if (ReferenceEquals(s, null))
+                        throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
+                    var ____arg0 = s.__Instance;
+                    var __arg0 = new __IntPtr(&____arg0);
+                    __Internal.AddParameters(__Instance, __arg0);
+                }
+
+                public void ClearParameters()
+                {
+                    __Internal.ClearParameters(__Instance);
+                }
+
+                public uint ParametersCount
+                {
+                    get
+                    {
+                        var ___ret = __Internal.GetParametersCount(__Instance);
+                        return ___ret;
+                    }
                 }
             }
 

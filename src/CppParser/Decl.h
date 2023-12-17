@@ -715,6 +715,7 @@ namespace CppSharp
             public:
                 ClassTemplatePartialSpecialization();
                 ~ClassTemplatePartialSpecialization();
+                VECTOR(Declaration *, Parameters)
             };
 
             class CS_API FunctionTemplate : public Template

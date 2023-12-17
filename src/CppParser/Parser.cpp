@@ -1339,6 +1339,8 @@ Parser::WalkClassTemplatePartialSpecialization(const clang::ClassTemplatePartial
         }
     }
 
+    TS->Parameters = WalkTemplateParameterList(CTS->getTemplateParameters());
+
     return TS;
 }
 
