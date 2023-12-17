@@ -6969,7 +6969,7 @@ namespace CppSharp
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_S_allocator__S0_ TypeAliases;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_S_allocator__S0_ Variables;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_S_allocator__S0_ Friends;
-                    internal Std.Map anonymous;
+                    internal global::Std.Map.__Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_ anonymous;
                     internal byte isAnonymous;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "??0DeclarationContext@AST@CppParser@CppSharp@@QAE@W4DeclarationKind@123@@Z", CallingConvention = __CallingConvention.ThisCall)]
@@ -8945,7 +8945,7 @@ namespace CppSharp
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_S_allocator__S0_ TypeAliases;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_S_allocator__S0_ Variables;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_S_allocator__S0_ Friends;
-                    internal Std.Map anonymous;
+                    internal global::Std.Map.__Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_ anonymous;
                     internal byte isAnonymous;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal returnType;
                     internal byte isReturnIndirect;
@@ -9393,7 +9393,7 @@ namespace CppSharp
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_S_allocator__S0_ TypeAliases;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_S_allocator__S0_ Variables;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_S_allocator__S0_ Friends;
-                    internal Std.Map anonymous;
+                    internal global::Std.Map.__Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_ anonymous;
                     internal byte isAnonymous;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal returnType;
                     internal byte isReturnIndirect;
@@ -9741,7 +9741,7 @@ namespace CppSharp
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_S_allocator__S0_ TypeAliases;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_S_allocator__S0_ Variables;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_S_allocator__S0_ Friends;
-                    internal Std.Map anonymous;
+                    internal global::Std.Map.__Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_ anonymous;
                     internal byte isAnonymous;
                     internal global::CppSharp.Parser.AST.Enumeration.EnumModifiers modifiers;
                     internal __IntPtr type;
@@ -11950,7 +11950,7 @@ namespace CppSharp
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_S_allocator__S0_ TypeAliases;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_S_allocator__S0_ Variables;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_S_allocator__S0_ Friends;
-                    internal Std.Map anonymous;
+                    internal global::Std.Map.__Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_ anonymous;
                     internal byte isAnonymous;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_BaseClassSpecifier___N_std_S_allocator__S0_ Bases;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Field___N_std_S_allocator__S0_ Fields;
@@ -13597,7 +13597,7 @@ namespace CppSharp
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_S_allocator__S0_ TypeAliases;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_S_allocator__S0_ Variables;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_S_allocator__S0_ Friends;
-                    internal Std.Map anonymous;
+                    internal global::Std.Map.__Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_ anonymous;
                     internal byte isAnonymous;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_BaseClassSpecifier___N_std_S_allocator__S0_ Bases;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Field___N_std_S_allocator__S0_ Fields;
@@ -13813,7 +13813,7 @@ namespace CppSharp
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_S_allocator__S0_ TypeAliases;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_S_allocator__S0_ Variables;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_S_allocator__S0_ Friends;
-                    internal Std.Map anonymous;
+                    internal global::Std.Map.__Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_ anonymous;
                     internal byte isAnonymous;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_BaseClassSpecifier___N_std_S_allocator__S0_ Bases;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Field___N_std_S_allocator__S0_ Fields;
@@ -14970,7 +14970,7 @@ namespace CppSharp
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_S_allocator__S0_ TypeAliases;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_S_allocator__S0_ Variables;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_S_allocator__S0_ Friends;
-                    internal Std.Map anonymous;
+                    internal global::Std.Map.__Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_ anonymous;
                     internal byte isAnonymous;
                     internal fixed byte isInlinePadding[3];
                     internal byte isInline;
@@ -15568,7 +15568,7 @@ namespace CppSharp
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_S_allocator__S0_ TypeAliases;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_S_allocator__S0_ Variables;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_S_allocator__S0_ Friends;
-                    internal Std.Map anonymous;
+                    internal global::Std.Map.__Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_ anonymous;
                     internal byte isAnonymous;
                     internal fixed byte isInlinePadding[3];
                     internal byte isInline;
