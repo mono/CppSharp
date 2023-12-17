@@ -9,12 +9,11 @@ namespace CppSharp.Generators.Registrable
         Import
     }
 
-    public abstract class RegistrableGeneratorOptions<TGenerator>
-        where TGenerator : Generator
+    public abstract class RegistrableGeneratorOptions
     {
         public delegate string Delegate(string name);
 
-        public TGenerator Generator { get; set; }
+        public virtual Generator Generator { get; set; }
 
         public virtual string OutputSubDir { get; }
         public virtual string RootContextType { get; }
@@ -60,7 +59,7 @@ namespace CppSharp.Generators.Registrable
         public virtual string DefaultStaticCastFunctionTemplateFullyQualifiedName => null;
         public virtual string DefaultDynamicCastFunctionTemplateFullyQualifiedName => null;
 
-        public RegistrableGeneratorOptions(TGenerator generator)
+        public RegistrableGeneratorOptions(Generator generator)
         {
             Generator = generator;
             OutputSubDir = DefaultOutputSubdir;
@@ -84,6 +83,16 @@ namespace CppSharp.Generators.Registrable
             EqualityFunctionTemplateFullyQualifiedName = DefaultEqualityFunctionTemplateFullyQualifiedName;
             StaticCastFunctionTemplateFullyQualifiedName = DefaultStaticCastFunctionTemplateFullyQualifiedName;
             DynamicCastFunctionTemplateFullyQualifiedName = DefaultDynamicCastFunctionTemplateFullyQualifiedName;
+        }
+    }
+
+    public abstract class TRegistrableGeneratorOptions<TGenerator> : RegistrableGeneratorOptions
+        where TGenerator : Generator
+    {
+        public override TGenerator Generator => (TGenerator)base.Generator;
+
+        public TRegistrableGeneratorOptions(TGenerator generator) : base(generator)
+        {
         }
     }
 }

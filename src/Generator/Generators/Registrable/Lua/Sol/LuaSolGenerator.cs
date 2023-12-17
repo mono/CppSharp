@@ -12,21 +12,19 @@ namespace CppSharp.Generators.Registrable.Lua.Sol
         {
         }
 
-        protected override LuaSolGeneratorOptions CreateOptions(RegistrableGenerator<LuaSolGeneratorOptions, LuaSolHeaders, LuaSolSources> generator)
+        protected override LuaSolGeneratorOptions CreateOptions()
         {
             return new LuaSolGeneratorOptions(this);
         }
 
-        protected override LuaSolHeaders CreateHeader(RegistrableGenerator<LuaSolGeneratorOptions, LuaSolHeaders, LuaSolSources> generator, IEnumerable<TranslationUnit> units)
+        protected override LuaSolHeaders CreateHeader(IEnumerable<TranslationUnit> units)
         {
             return new LuaSolHeaders(this, units);
         }
 
-        protected override LuaSolSources CreateSource(RegistrableGenerator<LuaSolGeneratorOptions, LuaSolHeaders, LuaSolSources> generator, IEnumerable<TranslationUnit> units)
+        protected override LuaSolSources CreateSource(IEnumerable<TranslationUnit> units)
         {
             return new LuaSolSources(this, units);
         }
-
-        public override bool SetupPasses() => true;
     }
 }
