@@ -28,7 +28,7 @@
     <NativeProjectsDir>$(ActionDir)projects\</NativeProjectsDir>
     <PackageDir>$(RootDir)artifacts\package\</PackageDir>
     <TargetDir>$(OutputPath)</TargetDir>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
     <WarningLevel>4</WarningLevel>
     <DotNetCmd>dotnet</DotNetCmd>
     <GeneratorFileExtension>dll</GeneratorFileExtension>
