@@ -2681,10 +2681,11 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
         if (TS->isSugared())
             TST->desugared = GetQualifiedType(TS->getCanonicalTypeInternal(), TL);
 
-        TypeLoc UTL, ETL, ITL;
+        TemplateArgumentList TArgs(TemplateArgumentList::OnStack, TS->template_arguments());
 
         if (LocValid)
         {
+            TypeLoc UTL, ETL, ITL;
             auto TypeLocClass = TL->getTypeLocClass();
             if (TypeLocClass == TypeLoc::Qualified)
             {
@@ -2698,19 +2699,25 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
                 TL = &ITL;
             }
 
-            assert(TL->getTypeLocClass() == TypeLoc::DependentTemplateSpecialization);
+            if (TL->getTypeLocClass() == TypeLoc::DependentTemplateSpecialization)
+            {
+                DependentTemplateSpecializationTypeLoc TSpecTL = TL->getAs<DependentTemplateSpecializationTypeLoc>();
+                TST->Arguments = WalkTemplateArgumentList(&TArgs, &TSpecTL);
+            }
+            else if (TL->getTypeLocClass() == TypeLoc::TemplateSpecialization)
+            {
+                TemplateSpecializationTypeLoc TSpecTL = TL->getAs<TemplateSpecializationTypeLoc>();
+                TST->Arguments = WalkTemplateArgumentList(&TArgs, &TSpecTL);
+            }
+            else
+            {
+                llvm_unreachable("Unexpected semantics");
+            }
         }
-
-        DependentTemplateSpecializationTypeLoc TSpecTL;
-        DependentTemplateSpecializationTypeLoc *TSTL = 0;
-        if (LocValid)
+        else
         {
-            TSpecTL = TL->getAs<DependentTemplateSpecializationTypeLoc>();
-            TSTL = &TSpecTL;
+            TST->Arguments = WalkTemplateArgumentList(&TArgs, (DependentTemplateSpecializationTypeLoc*)nullptr);
         }
-
-        TemplateArgumentList TArgs(TemplateArgumentList::OnStack, TS->template_arguments());
-        TST->Arguments = WalkTemplateArgumentList(&TArgs, TSTL);
 
         Ty = TST;
         break;
