@@ -900,7 +900,6 @@ static clang::CXXRecordDecl* GetCXXRecordDeclFromBaseType(const clang::QualType&
     else if (auto Injected = Ty->getAs<clang::InjectedClassNameType>())
         return Injected->getDecl();
 
-    assert(0 && "Could not get base CXX record from type");
     return nullptr;
 }
 
