@@ -2638,10 +2638,11 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
         if (TS->isSugared())
             TST->desugared = GetQualifiedType(TS->getCanonicalTypeInternal(), TL);
 
-        TypeLoc UTL, ETL, ITL;
+        TemplateArgumentList TArgs(TemplateArgumentList::OnStack, TS->template_arguments());
 
         if (LocValid)
         {
+            TypeLoc UTL, ETL, ITL;
             auto TypeLocClass = TL->getTypeLocClass();
             if (TypeLocClass == TypeLoc::Qualified)
             {
@@ -2655,19 +2656,25 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
                 TL = &ITL;
             }
 
-            assert(TL->getTypeLocClass() == TypeLoc::TemplateSpecialization);
+            if (TL->getTypeLocClass() == TypeLoc::DependentTemplateSpecialization)
+            {
+                DependentTemplateSpecializationTypeLoc TSpecTL = TL->getAs<DependentTemplateSpecializationTypeLoc>();
+                TST->Arguments = WalkTemplateArgumentList(&TArgs, &TSpecTL);
+            }
+            else if (TL->getTypeLocClass() == TypeLoc::TemplateSpecialization)
+            {
+                TemplateSpecializationTypeLoc TSpecTL = TL->getAs<TemplateSpecializationTypeLoc>();
+                TST->Arguments = WalkTemplateArgumentList(&TArgs, &TSpecTL);
+            }
+            else
+            {
+                llvm_unreachable("Unexpected semantics");
+            }
         }
-
-        TemplateSpecializationTypeLoc TSpecTL;
-        TemplateSpecializationTypeLoc *TSTL = 0;
-        if (LocValid)
+        else
         {
-            TSpecTL = TL->getAs<TemplateSpecializationTypeLoc>();
-            TSTL = &TSpecTL;
+            TST->Arguments = WalkTemplateArgumentList(&TArgs, (TemplateSpecializationTypeLoc*)nullptr);
         }
-
-        TemplateArgumentList TArgs(TemplateArgumentList::OnStack, TS->template_arguments());
-        TST->Arguments = WalkTemplateArgumentList(&TArgs, TSTL);
 
         Ty = TST;
         break;
