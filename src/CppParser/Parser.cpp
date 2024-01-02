@@ -2643,13 +2643,12 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
         if (LocValid)
         {
             TypeLoc UTL, ETL, ITL;
-            auto TypeLocClass = TL->getTypeLocClass();
-            if (TypeLocClass == TypeLoc::Qualified)
+            if (TL->getTypeLocClass() == TypeLoc::Qualified)
             {
                 UTL = TL->getUnqualifiedLoc();
                 TL = &UTL;
             }
-            else if (TypeLocClass == TypeLoc::Elaborated)
+            if (TL->getTypeLocClass() == TypeLoc::Elaborated)
             {
                 ETL = TL->getAs<ElaboratedTypeLoc>();
                 ITL = ETL.getNextTypeLoc();
@@ -2692,13 +2691,12 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
         if (LocValid)
         {
             TypeLoc UTL, ETL, ITL;
-            auto TypeLocClass = TL->getTypeLocClass();
-            if (TypeLocClass == TypeLoc::Qualified)
+            if (TL->getTypeLocClass() == TypeLoc::Qualified)
             {
                 UTL = TL->getUnqualifiedLoc();
                 TL = &UTL;
             }
-            else if (TypeLocClass == TypeLoc::Elaborated)
+            if (TL->getTypeLocClass() == TypeLoc::Elaborated)
             {
                 ETL = TL->getAs<ElaboratedTypeLoc>();
                 ITL = ETL.getNextTypeLoc();
@@ -2747,7 +2745,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
                 UTL = TL->getUnqualifiedLoc();
                 TL = &UTL;
             }
-            else if (TypeLocClass == TypeLoc::Elaborated)
+            if (TypeLocClass == TypeLoc::Elaborated)
             {
                 ETL = TL->getAs<ElaboratedTypeLoc>();
                 ITL = ETL.getNextTypeLoc();
