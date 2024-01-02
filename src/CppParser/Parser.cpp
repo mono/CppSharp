@@ -1622,6 +1622,10 @@ FunctionTemplate* Parser::WalkFunctionTemplate(const clang::FunctionTemplateDecl
 
     using namespace clang;
 
+    auto TemplatedDecl = TD->getTemplatedDecl();
+    if (dyn_cast<CXXDeductionGuideDecl>(TemplatedDecl))
+        return nullptr;
+
     auto NS = GetNamespace(TD);
     assert(NS && "Expected a valid namespace");
 
@@ -1631,7 +1635,6 @@ FunctionTemplate* Parser::WalkFunctionTemplate(const clang::FunctionTemplateDecl
         return FT;
 
     CppSharp::CppParser::AST::Function* F = nullptr;
-    auto TemplatedDecl = TD->getTemplatedDecl();
 
     if (auto MD = dyn_cast<CXXMethodDecl>(TemplatedDecl))
         F = WalkMethodCXX(MD);
@@ -2927,6 +2930,15 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
     {
         auto MT = Type->getAs<clang::MacroQualifiedType>();
         Ty = WalkType(MT->getUnderlyingType(), TL);
+        break;
+    }
+    case clang::Type::DeducedTemplateSpecialization:
+    {
+        auto DTS = Type->getAs<clang::DeducedTemplateSpecializationType>();
+        if (DTS->isSugared())
+            Ty = WalkType(DTS->getCanonicalTypeInternal());
+        else
+            return nullptr;
         break;
     }
     default:
@@ -4276,6 +4288,7 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D)
     case Decl::IndirectField:
     case Decl::StaticAssert:
     case Decl::NamespaceAlias:
+    case Decl::CXXDeductionGuide:
         break;
     default:
     {
