@@ -256,7 +256,7 @@ namespace CppSharp
                 Microsoft = 1,
                 ARM = 2,
                 iOS = 3,
-                iOS64 = 4,
+                AppleARM64 = 4,
                 WebAssembly = 5
             };
 
