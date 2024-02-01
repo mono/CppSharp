@@ -105,7 +105,7 @@ static CppAbi GetClassLayoutAbi(clang::TargetCXXABI::Kind abi)
     case clang::TargetCXXABI::iOS:
         return CppAbi::iOS;
     case clang::TargetCXXABI::AppleARM64:
-        return CppAbi::iOS64;
+        return CppAbi::AppleARM64;
     case clang::TargetCXXABI::WebAssembly:
         return CppAbi::WebAssembly;
     default:
@@ -237,7 +237,7 @@ ConvertToClangTargetCXXABI(CppSharp::CppParser::AST::CppAbi abi)
         return TargetCXXABI::GenericARM;
     case CppSharp::CppParser::AST::CppAbi::iOS:
         return TargetCXXABI::iOS;
-    case CppSharp::CppParser::AST::CppAbi::iOS64:
+    case CppSharp::CppParser::AST::CppAbi::AppleARM64:
         return TargetCXXABI::AppleARM64;
     }
 

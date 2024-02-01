@@ -6403,7 +6403,7 @@ namespace CppSharp
                 ARM = 2,
                 AArch64 = 3,
                 iOS = 4,
-                iOS64 = 5,
+                AppleARM64 = 5,
                 WebAssembly = 6
             }
 
