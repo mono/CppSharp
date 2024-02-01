@@ -471,6 +471,7 @@ namespace CppSharp
                 Itanium,
                 Microsoft,
                 ARM,
+                AArch64,
                 iOS,
                 iOS64,
                 WebAssembly
