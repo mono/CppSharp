@@ -170,12 +170,16 @@ namespace CppSharp
             var osxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\osx");
             if (Directory.Exists(osxHeadersPath) || Platform.IsMacOS)
             {
-                Console.WriteLine("Generating the C# parser bindings for OSX...");
+                Console.WriteLine("Generating the C# parser bindings for OSX x86...");
                 ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-apple-darwin12.4.0"));
                 Console.WriteLine();
 
-                Console.WriteLine("Generating the C# parser bindings for OSX...");
+                Console.WriteLine("Generating the C# parser bindings for OSX x64...");
                 ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-apple-darwin12.4.0"));
+                Console.WriteLine();
+
+                Console.WriteLine("Generating the C# parser bindings for OSX ARM64...");
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "arm64-apple-darwin12.4.0"));
                 Console.WriteLine();
             }
 
@@ -186,8 +190,17 @@ namespace CppSharp
                 ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-linux-gnu"));
                 Console.WriteLine();
 
+                Console.WriteLine("Generating the C# parser bindings for Linux ARM64...");
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "arm64-linux-gnu"));
+                Console.WriteLine();
+
                 Console.WriteLine("Generating the C# parser bindings for Linux (GCC C++11 ABI)...");
                 ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-linux-gnu",
+                    isGnuCpp11Abi: true));
+                Console.WriteLine();
+
+                Console.WriteLine("Generating the C# parser bindings for Linux ARM64 (GCC C++11 ABI)...");
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "arm64-linux-gnu",
                     isGnuCpp11Abi: true));
                 Console.WriteLine();
             }
