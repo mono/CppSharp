@@ -249,7 +249,7 @@ namespace CppSharp.Parser
             AddArguments(int.Parse(majorVersion) >= 11 ? $"-fgnuc-version=10.1" : $"-fgnuc-version={longVersion}");
 
             string[] versions = { longVersion, shortVersion, majorVersion };
-            string[] triples = { "x86_64-linux-gnu", "x86_64-pc-linux-gnu" };
+            string[] triples = { "x86_64-linux-gnu", "x86_64-pc-linux-gnu", "aarch64-linux-gnu" };
             if (compiler == "gcc")
             {
                 foreach (var version in versions)
