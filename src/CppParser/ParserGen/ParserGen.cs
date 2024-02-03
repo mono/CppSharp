@@ -118,9 +118,7 @@ namespace CppSharp
             options.MicrosoftMode = false;
             options.NoBuiltinIncludes = true;
 
-            var headersPath = Path.Combine(GetSourceDirectory("build"), "headers",
-                "osx");
-            options.AddDefines("__DARWIN_OS_INLINE=inline");
+            var headersPath = Path.Combine(GetSourceDirectory("build"), "headers", "osx");
             options.AddSystemIncludeDirs(Path.Combine(headersPath, "include", "c++", "v1"));
             options.AddSystemIncludeDirs(options.BuiltinsDir);
             options.AddSystemIncludeDirs(Path.Combine(headersPath, "include"));
@@ -176,7 +174,7 @@ namespace CppSharp
                 Console.WriteLine();
             }
 
-            var osxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\osx");
+            var osxHeadersPath = Path.Combine(GetSourceDirectory("build"), "headers", "osx");
             if (Directory.Exists(osxHeadersPath) || Platform.IsMacOS)
             {
                 Console.WriteLine("Generating the C# parser bindings for OSX x86...");
@@ -192,7 +190,7 @@ namespace CppSharp
                 Console.WriteLine();
             }
 
-            var linuxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\x86_64-linux-gnu");
+            var linuxHeadersPath = Path.Combine(GetSourceDirectory("build"), "headers", "x86_64-linux-gnu");
             if (Directory.Exists(linuxHeadersPath) || Platform.IsLinux)
             {
                 Console.WriteLine("Generating the C# parser bindings for Linux x64...");
@@ -205,7 +203,7 @@ namespace CppSharp
                 Console.WriteLine();
             }
 
-            var linuxArmHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\arm64-linux-gnu");
+            var linuxArmHeadersPath = Path.Combine(GetSourceDirectory("build"), "headers", "arm64-linux-gnu");
             if (Directory.Exists(linuxArmHeadersPath))
             {
                 Console.WriteLine("Generating the C# parser bindings for Linux ARM64...");
