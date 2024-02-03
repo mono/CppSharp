@@ -68,7 +68,16 @@ namespace CppSharp
                 SetupMacOptions(parserOptions);
 
             if (Triple.Contains("linux"))
-                SetupLinuxOptions(parserOptions);
+            {
+                if(Triple.Contains("arm64"))
+                {
+                    SetupLinuxOptions(parserOptions, "arm64-linux-gnu");
+                }
+                else
+                {
+                    SetupLinuxOptions(parserOptions, "x86_64-linux-gnu");
+                }
+            }
 
             var basePath = Path.Combine(GetSourceDirectory("src"), "CppParser");
             parserModule.IncludeDirs.Add(basePath);
@@ -87,13 +96,13 @@ namespace CppSharp
             parserOptions.UnityBuild = true;
         }
 
-        private void SetupLinuxOptions(ParserOptions options)
+        private void SetupLinuxOptions(ParserOptions options, string headerFolderName)
         {
             options.MicrosoftMode = false;
             options.NoBuiltinIncludes = true;
 
             var headersPath = Platform.IsLinux ? string.Empty :
-                Path.Combine(GetSourceDirectory("build"), "headers", "x86_64-linux-gnu");
+                Path.Combine(GetSourceDirectory("build"), "headers", headerFolderName);
             options.SetupLinux(headersPath);
             options.AddDefines("_GLIBCXX_USE_CXX11_ABI=" + (IsGnuCpp11Abi ? "1" : "0"));
         }
@@ -111,7 +120,7 @@ namespace CppSharp
 
             var headersPath = Path.Combine(GetSourceDirectory("build"), "headers",
                 "osx");
-
+            options.AddDefines("__DARWIN_OS_INLINE=inline");
             options.AddSystemIncludeDirs(Path.Combine(headersPath, "include", "c++", "v1"));
             options.AddSystemIncludeDirs(options.BuiltinsDir);
             options.AddSystemIncludeDirs(Path.Combine(headersPath, "include"));
@@ -186,17 +195,21 @@ namespace CppSharp
             var linuxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\x86_64-linux-gnu");
             if (Directory.Exists(linuxHeadersPath) || Platform.IsLinux)
             {
-                Console.WriteLine("Generating the C# parser bindings for Linux...");
+                Console.WriteLine("Generating the C# parser bindings for Linux x64...");
                 ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-linux-gnu"));
                 Console.WriteLine();
 
-                Console.WriteLine("Generating the C# parser bindings for Linux ARM64...");
-                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "arm64-linux-gnu"));
-                Console.WriteLine();
-
-                Console.WriteLine("Generating the C# parser bindings for Linux (GCC C++11 ABI)...");
+                Console.WriteLine("Generating the C# parser bindings for Linux x64 (GCC C++11 ABI)...");
                 ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-linux-gnu",
                     isGnuCpp11Abi: true));
+                Console.WriteLine();
+            }
+
+            var linuxArmHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\arm64-linux-gnu");
+            if (Directory.Exists(linuxArmHeadersPath))
+            {
+                Console.WriteLine("Generating the C# parser bindings for Linux ARM64...");
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "arm64-linux-gnu"));
                 Console.WriteLine();
 
                 Console.WriteLine("Generating the C# parser bindings for Linux ARM64 (GCC C++11 ABI)...");
