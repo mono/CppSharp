@@ -62,13 +62,13 @@ namespace CppSharp
 
             public unsafe partial class NativeLibrary : IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 40)]
+                [StructLayout(LayoutKind.Sequential, Size = 64)]
                 public partial struct __Internal
                 {
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C fileName;
+                    internal global::Std.BasicString.__Internal fileName;
                     internal global::CppSharp.Parser.AST.ArchType archType;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S0_ Symbols;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S0_ Dependencies;
+                    internal global::Std.Vector.__Internal Symbols;
+                    internal global::Std.Vector.__Internal Dependencies;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13NativeLibraryC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -509,11 +509,11 @@ namespace CppSharp
 
             public unsafe partial class FullComment : global::CppSharp.Parser.AST.Comment, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 16)]
+                [StructLayout(LayoutKind.Sequential, Size = 32)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.CommentKind kind;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_BlockContentComment___N_std_N___1_S_allocator__S0_ Blocks;
+                    internal global::Std.Vector.__Internal Blocks;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11FullCommentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -756,12 +756,12 @@ namespace CppSharp
 
             public unsafe partial class ParagraphComment : global::CppSharp.Parser.AST.BlockContentComment, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 20)]
+                [StructLayout(LayoutKind.Sequential, Size = 32)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.CommentKind kind;
                     internal byte isWhitespace;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_InlineContentComment___N_std_N___1_S_allocator__S0_ Content;
+                    internal global::Std.Vector.__Internal Content;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST16ParagraphCommentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -910,13 +910,13 @@ namespace CppSharp
 
             public unsafe partial class BlockCommandComment : global::CppSharp.Parser.AST.BlockContentComment, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 24)]
+                [StructLayout(LayoutKind.Sequential, Size = 40)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.CommentKind kind;
                     internal uint commandId;
                     internal __IntPtr paragraphComment;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S0_ Arguments;
+                    internal global::Std.Vector.__Internal Arguments;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19BlockCommandCommentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -945,10 +945,10 @@ namespace CppSharp
 
                 public unsafe partial class Argument : IDisposable
                 {
-                    [StructLayout(LayoutKind.Sequential, Size = 12)]
+                    [StructLayout(LayoutKind.Sequential, Size = 8)]
                     public partial struct __Internal
                     {
-                        internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C text;
+                        internal global::Std.BasicString.__Internal text;
 
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19BlockCommandComment8ArgumentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                         internal static extern void ctor(__IntPtr __instance);
@@ -1231,13 +1231,13 @@ namespace CppSharp
 
             public unsafe partial class ParamCommandComment : global::CppSharp.Parser.AST.BlockCommandComment, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 32)]
+                [StructLayout(LayoutKind.Sequential, Size = 48)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.CommentKind kind;
                     internal uint commandId;
                     internal __IntPtr paragraphComment;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S0_ Arguments;
+                    internal global::Std.Vector.__Internal Arguments;
                     internal global::CppSharp.Parser.AST.ParamCommandComment.PassDirection direction;
                     internal uint paramIndex;
 
@@ -1366,14 +1366,14 @@ namespace CppSharp
 
             public unsafe partial class TParamCommandComment : global::CppSharp.Parser.AST.BlockCommandComment, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 36)]
+                [StructLayout(LayoutKind.Sequential, Size = 64)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.CommentKind kind;
                     internal uint commandId;
                     internal __IntPtr paragraphComment;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S0_ Arguments;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector__i___N_std_N___1_S_allocator__i Position;
+                    internal global::Std.Vector.__Internal Arguments;
+                    internal global::Std.Vector.__Internal Position;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST20TParamCommandCommentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -1512,7 +1512,7 @@ namespace CppSharp
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.CommentKind kind;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C text;
+                    internal global::Std.BasicString.__Internal text;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST24VerbatimBlockLineCommentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -1620,14 +1620,14 @@ namespace CppSharp
 
             public unsafe partial class VerbatimBlockComment : global::CppSharp.Parser.AST.BlockCommandComment, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 36)]
+                [StructLayout(LayoutKind.Sequential, Size = 64)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.CommentKind kind;
                     internal uint commandId;
                     internal __IntPtr paragraphComment;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S0_ Arguments;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_VerbatimBlockLineComment___N_std_N___1_S_allocator__S0_ Lines;
+                    internal global::Std.Vector.__Internal Arguments;
+                    internal global::Std.Vector.__Internal Lines;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST20VerbatimBlockCommentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -1763,14 +1763,14 @@ namespace CppSharp
 
             public unsafe partial class VerbatimLineComment : global::CppSharp.Parser.AST.BlockCommandComment, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 36)]
+                [StructLayout(LayoutKind.Sequential, Size = 48)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.CommentKind kind;
                     internal uint commandId;
                     internal __IntPtr paragraphComment;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S0_ Arguments;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C text;
+                    internal global::Std.Vector.__Internal Arguments;
+                    internal global::Std.BasicString.__Internal text;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19VerbatimLineCommentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -1878,14 +1878,14 @@ namespace CppSharp
 
             public unsafe partial class InlineCommandComment : global::CppSharp.Parser.AST.InlineContentComment, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 28)]
+                [StructLayout(LayoutKind.Sequential, Size = 40)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.CommentKind kind;
                     internal byte hasTrailingNewline;
                     internal uint commandId;
                     internal global::CppSharp.Parser.AST.InlineCommandComment.RenderKind commentRenderKind;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_InlineCommandComment_S_Argument___N_std_N___1_S_allocator__S0_ Arguments;
+                    internal global::Std.Vector.__Internal Arguments;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST20InlineCommandCommentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -1920,10 +1920,10 @@ namespace CppSharp
 
                 public unsafe partial class Argument : IDisposable
                 {
-                    [StructLayout(LayoutKind.Sequential, Size = 12)]
+                    [StructLayout(LayoutKind.Sequential, Size = 8)]
                     public partial struct __Internal
                     {
-                        internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C text;
+                        internal global::Std.BasicString.__Internal text;
 
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST20InlineCommandComment8ArgumentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                         internal static extern void ctor(__IntPtr __instance);
@@ -2285,13 +2285,13 @@ namespace CppSharp
 
             public unsafe partial class HTMLStartTagComment : global::CppSharp.Parser.AST.HTMLTagComment, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 32)]
+                [StructLayout(LayoutKind.Sequential, Size = 40)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.CommentKind kind;
                     internal byte hasTrailingNewline;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C tagName;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_HTMLStartTagComment_S_Attribute___N_std_N___1_S_allocator__S0_ Attributes;
+                    internal global::Std.BasicString.__Internal tagName;
+                    internal global::Std.Vector.__Internal Attributes;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19HTMLStartTagCommentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -2317,11 +2317,11 @@ namespace CppSharp
 
                 public unsafe partial class Attribute : IDisposable
                 {
-                    [StructLayout(LayoutKind.Sequential, Size = 24)]
+                    [StructLayout(LayoutKind.Sequential, Size = 16)]
                     public partial struct __Internal
                     {
-                        internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                        internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C value;
+                        internal global::Std.BasicString.__Internal name;
+                        internal global::Std.BasicString.__Internal value;
 
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19HTMLStartTagComment9AttributeC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                         internal static extern void ctor(__IntPtr __instance);
@@ -2591,12 +2591,12 @@ namespace CppSharp
 
             public unsafe partial class HTMLEndTagComment : global::CppSharp.Parser.AST.HTMLTagComment, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 20)]
+                [StructLayout(LayoutKind.Sequential, Size = 16)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.CommentKind kind;
                     internal byte hasTrailingNewline;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C tagName;
+                    internal global::Std.BasicString.__Internal tagName;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST17HTMLEndTagCommentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -2704,12 +2704,12 @@ namespace CppSharp
 
             public unsafe partial class TextComment : global::CppSharp.Parser.AST.InlineContentComment, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 20)]
+                [StructLayout(LayoutKind.Sequential, Size = 16)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.CommentKind kind;
                     internal byte hasTrailingNewline;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C text;
+                    internal global::Std.BasicString.__Internal text;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11TextCommentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -2821,8 +2821,8 @@ namespace CppSharp
                 public partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.RawCommentKind kind;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C text;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C briefText;
+                    internal global::Std.BasicString.__Internal text;
+                    internal global::Std.BasicString.__Internal briefText;
                     internal __IntPtr fullCommentBlock;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST10RawCommentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -3610,7 +3610,7 @@ namespace CppSharp
 
             public unsafe partial class QualifiedType : IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 8)]
+                [StructLayout(LayoutKind.Sequential, Size = 16)]
                 public partial struct __Internal
                 {
                     internal __IntPtr type;
@@ -3752,7 +3752,7 @@ namespace CppSharp
 
             public unsafe partial class TagType : global::CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 12)]
+                [StructLayout(LayoutKind.Sequential, Size = 16)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.TypeKind kind;
@@ -3847,15 +3847,15 @@ namespace CppSharp
 
             public unsafe partial class ArrayType : global::CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 28)]
+                [StructLayout(LayoutKind.Sequential, Size = 48)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.TypeKind kind;
                     internal byte isDependent;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
                     internal global::CppSharp.Parser.AST.ArrayType.ArraySize sizeType;
-                    internal int size;
-                    internal int elementSize;
+                    internal long size;
+                    internal long elementSize;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST9ArrayTypeC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -3964,7 +3964,7 @@ namespace CppSharp
                     }
                 }
 
-                public int Size
+                public long Size
                 {
                     get
                     {
@@ -3977,7 +3977,7 @@ namespace CppSharp
                     }
                 }
 
-                public int ElementSize
+                public long ElementSize
                 {
                     get
                     {
@@ -3993,7 +3993,7 @@ namespace CppSharp
 
             public unsafe partial class FunctionType : global::CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 36)]
+                [StructLayout(LayoutKind.Sequential, Size = 56)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.TypeKind kind;
@@ -4001,7 +4001,7 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal returnType;
                     internal global::CppSharp.Parser.AST.CallingConvention callingConvention;
                     internal global::CppSharp.Parser.AST.ExceptionSpecType exceptionSpecType;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Parameter___N_std_N___1_S_allocator__S0_ Parameters;
+                    internal global::Std.Vector.__Internal Parameters;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST12FunctionTypeC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -4178,7 +4178,7 @@ namespace CppSharp
 
             public unsafe partial class PointerType : global::CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 20)]
+                [StructLayout(LayoutKind.Sequential, Size = 32)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.TypeKind kind;
@@ -4296,7 +4296,7 @@ namespace CppSharp
 
             public unsafe partial class MemberPointerType : global::CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 16)]
+                [StructLayout(LayoutKind.Sequential, Size = 24)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.TypeKind kind;
@@ -4392,7 +4392,7 @@ namespace CppSharp
 
             public unsafe partial class TypedefType : global::CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 12)]
+                [StructLayout(LayoutKind.Sequential, Size = 16)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.TypeKind kind;
@@ -4487,7 +4487,7 @@ namespace CppSharp
 
             public unsafe partial class AttributedType : global::CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 24)]
+                [StructLayout(LayoutKind.Sequential, Size = 40)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.TypeKind kind;
@@ -4599,7 +4599,7 @@ namespace CppSharp
 
             public unsafe partial class DecayedType : global::CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 32)]
+                [StructLayout(LayoutKind.Sequential, Size = 56)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.TypeKind kind;
@@ -4727,13 +4727,13 @@ namespace CppSharp
 
             public unsafe partial class TemplateArgument : IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 20)]
+                [StructLayout(LayoutKind.Sequential, Size = 40)]
                 public partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.TemplateArgument.ArgumentKind kind;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal type;
                     internal __IntPtr declaration;
-                    internal int integral;
+                    internal long integral;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST16TemplateArgumentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -4893,7 +4893,7 @@ namespace CppSharp
                     }
                 }
 
-                public int Integral
+                public long Integral
                 {
                     get
                     {
@@ -4909,12 +4909,12 @@ namespace CppSharp
 
             public unsafe partial class TemplateSpecializationType : global::CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 32)]
+                [StructLayout(LayoutKind.Sequential, Size = 56)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.TypeKind kind;
                     internal byte isDependent;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_N___1_S_allocator__S0_ Arguments;
+                    internal global::Std.Vector.__Internal Arguments;
                     internal __IntPtr _template;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal desugared;
 
@@ -5080,12 +5080,12 @@ namespace CppSharp
 
             public unsafe partial class DependentTemplateSpecializationType : global::CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 28)]
+                [StructLayout(LayoutKind.Sequential, Size = 48)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.TypeKind kind;
                     internal byte isDependent;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_N___1_S_allocator__S0_ Arguments;
+                    internal global::Std.Vector.__Internal Arguments;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal desugared;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST35DependentTemplateSpecializationTypeC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -5236,7 +5236,7 @@ namespace CppSharp
 
             public unsafe partial class TemplateParameterType : global::CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 24)]
+                [StructLayout(LayoutKind.Sequential, Size = 32)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.TypeKind kind;
@@ -5391,7 +5391,7 @@ namespace CppSharp
 
             public unsafe partial class TemplateParameterSubstitutionType : global::CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 20)]
+                [StructLayout(LayoutKind.Sequential, Size = 32)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.TypeKind kind;
@@ -5502,7 +5502,7 @@ namespace CppSharp
 
             public unsafe partial class InjectedClassNameType : global::CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 20)]
+                [StructLayout(LayoutKind.Sequential, Size = 32)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.TypeKind kind;
@@ -5613,13 +5613,13 @@ namespace CppSharp
 
             public unsafe partial class DependentNameType : global::CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 28)]
+                [StructLayout(LayoutKind.Sequential, Size = 32)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.TypeKind kind;
                     internal byte isDependent;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifier;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C identifier;
+                    internal global::Std.BasicString.__Internal identifier;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST17DependentNameTypeC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -5822,7 +5822,7 @@ namespace CppSharp
 
             public unsafe partial class UnaryTransformType : global::CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 24)]
+                [StructLayout(LayoutKind.Sequential, Size = 40)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.TypeKind kind;
@@ -5934,7 +5934,7 @@ namespace CppSharp
 
             public unsafe partial class UnresolvedUsingType : global::CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 12)]
+                [StructLayout(LayoutKind.Sequential, Size = 16)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.TypeKind kind;
@@ -6029,7 +6029,7 @@ namespace CppSharp
 
             public unsafe partial class VectorType : global::CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 20)]
+                [StructLayout(LayoutKind.Sequential, Size = 32)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.TypeKind kind;
@@ -6440,7 +6440,7 @@ namespace CppSharp
 
             public unsafe partial class Declaration : IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 116)]
+                [StructLayout(LayoutKind.Sequential, Size = 152)]
                 public partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -6451,9 +6451,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -6461,8 +6461,8 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
 
@@ -6936,7 +6936,7 @@ namespace CppSharp
 
             public unsafe partial class DeclarationContext : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 240)]
+                [StructLayout(LayoutKind.Sequential, Size = 424)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -6947,9 +6947,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -6957,20 +6957,20 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Namespace___N_std_N___1_S_allocator__S0_ Namespaces;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Enumeration___N_std_N___1_S_allocator__S0_ Enums;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Function___N_std_N___1_S_allocator__S0_ Functions;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Class___N_std_N___1_S_allocator__S0_ Classes;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Template___N_std_N___1_S_allocator__S0_ Templates;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypedefDecl___N_std_N___1_S_allocator__S0_ Typedefs;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_N___1_S_allocator__S0_ TypeAliases;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_N___1_S_allocator__S0_ Variables;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_N___1_S_allocator__S0_ Friends;
-                    internal global::Std.Map.__Internalc__N_std_N___1_S_map____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_less__S0____N_std_N___1_S_allocator____N_std_N___1_S_pair__1S0__S3_ anonymous;
+                    internal global::Std.Vector.__Internal Namespaces;
+                    internal global::Std.Vector.__Internal Enums;
+                    internal global::Std.Vector.__Internal Functions;
+                    internal global::Std.Vector.__Internal Classes;
+                    internal global::Std.Vector.__Internal Templates;
+                    internal global::Std.Vector.__Internal Typedefs;
+                    internal global::Std.Vector.__Internal TypeAliases;
+                    internal global::Std.Vector.__Internal Variables;
+                    internal global::Std.Vector.__Internal Friends;
+                    internal global::Std.Map.__Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_ anonymous;
                     internal byte isAnonymous;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST18DeclarationContextC2ENS1_15DeclarationKindE", CallingConvention = __CallingConvention.Cdecl)]
@@ -7461,7 +7461,7 @@ namespace CppSharp
 
             public unsafe partial class TypedefNameDecl : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 124)]
+                [StructLayout(LayoutKind.Sequential, Size = 168)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -7472,9 +7472,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -7482,8 +7482,8 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
@@ -7600,7 +7600,7 @@ namespace CppSharp
 
             public unsafe partial class TypedefDecl : global::CppSharp.Parser.AST.TypedefNameDecl, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 124)]
+                [StructLayout(LayoutKind.Sequential, Size = 168)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -7611,9 +7611,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -7621,8 +7621,8 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
@@ -7719,7 +7719,7 @@ namespace CppSharp
 
             public unsafe partial class TypeAlias : global::CppSharp.Parser.AST.TypedefNameDecl, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 128)]
+                [StructLayout(LayoutKind.Sequential, Size = 176)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -7730,9 +7730,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -7740,8 +7740,8 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
@@ -7853,7 +7853,7 @@ namespace CppSharp
 
             public unsafe partial class Friend : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 120)]
+                [StructLayout(LayoutKind.Sequential, Size = 160)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -7864,9 +7864,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -7874,8 +7874,8 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
                     internal __IntPtr declaration;
@@ -7986,14 +7986,14 @@ namespace CppSharp
 
             public unsafe partial class StatementObsolete : IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 20)]
+                [StructLayout(LayoutKind.Sequential, Size = 24)]
                 public partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StatementClassObsolete _class;
                     internal __IntPtr decl;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C @string;
+                    internal global::Std.BasicString.__Internal @string;
 
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST17StatementObsoleteC2ERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEENS1_22StatementClassObsoleteEPNS1_11DeclarationE", CallingConvention = __CallingConvention.Cdecl)]
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST17StatementObsoleteC2ERKSsNS1_22StatementClassObsoleteEPNS1_11DeclarationE", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance, __IntPtr str, global::CppSharp.Parser.AST.StatementClassObsolete Class, __IntPtr decl);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST17StatementObsoleteC2ERKS2_", CallingConvention = __CallingConvention.Cdecl)]
@@ -8154,14 +8154,14 @@ namespace CppSharp
 
             public unsafe partial class ExpressionObsolete : global::CppSharp.Parser.AST.StatementObsolete, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 20)]
+                [StructLayout(LayoutKind.Sequential, Size = 24)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StatementClassObsolete _class;
                     internal __IntPtr decl;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C @string;
+                    internal global::Std.BasicString.__Internal @string;
 
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST18ExpressionObsoleteC2ERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEENS1_22StatementClassObsoleteEPNS1_11DeclarationE", CallingConvention = __CallingConvention.Cdecl)]
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST18ExpressionObsoleteC2ERKSsNS1_22StatementClassObsoleteEPNS1_11DeclarationE", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance, __IntPtr str, global::CppSharp.Parser.AST.StatementClassObsolete Class, __IntPtr decl);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST18ExpressionObsoleteC2ERKS2_", CallingConvention = __CallingConvention.Cdecl)]
@@ -8258,17 +8258,17 @@ namespace CppSharp
 
             public unsafe partial class BinaryOperatorObsolete : global::CppSharp.Parser.AST.ExpressionObsolete, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 40)]
+                [StructLayout(LayoutKind.Sequential, Size = 48)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StatementClassObsolete _class;
                     internal __IntPtr decl;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C @string;
+                    internal global::Std.BasicString.__Internal @string;
                     internal __IntPtr LHS;
                     internal __IntPtr RHS;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C opcodeStr;
+                    internal global::Std.BasicString.__Internal opcodeStr;
 
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST22BinaryOperatorObsoleteC2ERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPNS1_18ExpressionObsoleteESD_SB_", CallingConvention = __CallingConvention.Cdecl)]
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST22BinaryOperatorObsoleteC2ERKSsPNS1_18ExpressionObsoleteES6_S4_", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance, __IntPtr str, __IntPtr lhs, __IntPtr rhs, __IntPtr opcodeStr);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST22BinaryOperatorObsoleteC2ERKS2_", CallingConvention = __CallingConvention.Cdecl)]
@@ -8412,15 +8412,15 @@ namespace CppSharp
 
             public unsafe partial class CallExprObsolete : global::CppSharp.Parser.AST.ExpressionObsolete, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 32)]
+                [StructLayout(LayoutKind.Sequential, Size = 48)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StatementClassObsolete _class;
                     internal __IntPtr decl;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C @string;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_ExpressionObsolete___N_std_N___1_S_allocator__S0_ Arguments;
+                    internal global::Std.BasicString.__Internal @string;
+                    internal global::Std.Vector.__Internal Arguments;
 
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST16CallExprObsoleteC2ERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPNS1_11DeclarationE", CallingConvention = __CallingConvention.Cdecl)]
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST16CallExprObsoleteC2ERKSsPNS1_11DeclarationE", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance, __IntPtr str, __IntPtr decl);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST16CallExprObsoleteC2ERKS2_", CallingConvention = __CallingConvention.Cdecl)]
@@ -8559,15 +8559,15 @@ namespace CppSharp
 
             public unsafe partial class CXXConstructExprObsolete : global::CppSharp.Parser.AST.ExpressionObsolete, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 32)]
+                [StructLayout(LayoutKind.Sequential, Size = 48)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StatementClassObsolete _class;
                     internal __IntPtr decl;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C @string;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_ExpressionObsolete___N_std_N___1_S_allocator__S0_ Arguments;
+                    internal global::Std.BasicString.__Internal @string;
+                    internal global::Std.Vector.__Internal Arguments;
 
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST24CXXConstructExprObsoleteC2ERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPNS1_11DeclarationE", CallingConvention = __CallingConvention.Cdecl)]
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST24CXXConstructExprObsoleteC2ERKSsPNS1_11DeclarationE", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance, __IntPtr str, __IntPtr decl);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST24CXXConstructExprObsoleteC2ERKS2_", CallingConvention = __CallingConvention.Cdecl)]
@@ -8706,7 +8706,7 @@ namespace CppSharp
 
             public unsafe partial class Parameter : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 140)]
+                [StructLayout(LayoutKind.Sequential, Size = 192)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -8717,9 +8717,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -8727,8 +8727,8 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
@@ -8912,7 +8912,7 @@ namespace CppSharp
 
             public unsafe partial class Function : global::CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 336)]
+                [StructLayout(LayoutKind.Sequential, Size = 552)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -8923,9 +8923,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -8933,20 +8933,20 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Namespace___N_std_N___1_S_allocator__S0_ Namespaces;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Enumeration___N_std_N___1_S_allocator__S0_ Enums;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Function___N_std_N___1_S_allocator__S0_ Functions;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Class___N_std_N___1_S_allocator__S0_ Classes;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Template___N_std_N___1_S_allocator__S0_ Templates;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypedefDecl___N_std_N___1_S_allocator__S0_ Typedefs;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_N___1_S_allocator__S0_ TypeAliases;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_N___1_S_allocator__S0_ Variables;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_N___1_S_allocator__S0_ Friends;
-                    internal global::Std.Map.__Internalc__N_std_N___1_S_map____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_less__S0____N_std_N___1_S_allocator____N_std_N___1_S_pair__1S0__S3_ anonymous;
+                    internal global::Std.Vector.__Internal Namespaces;
+                    internal global::Std.Vector.__Internal Enums;
+                    internal global::Std.Vector.__Internal Functions;
+                    internal global::Std.Vector.__Internal Classes;
+                    internal global::Std.Vector.__Internal Templates;
+                    internal global::Std.Vector.__Internal Typedefs;
+                    internal global::Std.Vector.__Internal TypeAliases;
+                    internal global::Std.Vector.__Internal Variables;
+                    internal global::Std.Vector.__Internal Friends;
+                    internal global::Std.Map.__Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_ anonymous;
                     internal byte isAnonymous;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal returnType;
                     internal byte isReturnIndirect;
@@ -8959,12 +8959,12 @@ namespace CppSharp
                     internal byte isDefaulted;
                     internal global::CppSharp.Parser.AST.FriendKind friendKind;
                     internal global::CppSharp.Parser.AST.CXXOperatorKind operatorKind;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C mangled;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C signature;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C body;
+                    internal global::Std.BasicString.__Internal mangled;
+                    internal global::Std.BasicString.__Internal signature;
+                    internal global::Std.BasicString.__Internal body;
                     internal __IntPtr bodyStmt;
                     internal global::CppSharp.Parser.AST.CallingConvention callingConvention;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Parameter___N_std_N___1_S_allocator__S0_ Parameters;
+                    internal global::Std.Vector.__Internal Parameters;
                     internal __IntPtr specializationInfo;
                     internal __IntPtr instantiatedFrom;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
@@ -9360,7 +9360,7 @@ namespace CppSharp
 
             public unsafe partial class Method : global::CppSharp.Parser.AST.Function, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 376)]
+                [StructLayout(LayoutKind.Sequential, Size = 616)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -9371,9 +9371,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -9381,20 +9381,20 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Namespace___N_std_N___1_S_allocator__S0_ Namespaces;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Enumeration___N_std_N___1_S_allocator__S0_ Enums;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Function___N_std_N___1_S_allocator__S0_ Functions;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Class___N_std_N___1_S_allocator__S0_ Classes;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Template___N_std_N___1_S_allocator__S0_ Templates;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypedefDecl___N_std_N___1_S_allocator__S0_ Typedefs;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_N___1_S_allocator__S0_ TypeAliases;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_N___1_S_allocator__S0_ Variables;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_N___1_S_allocator__S0_ Friends;
-                    internal global::Std.Map.__Internalc__N_std_N___1_S_map____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_less__S0____N_std_N___1_S_allocator____N_std_N___1_S_pair__1S0__S3_ anonymous;
+                    internal global::Std.Vector.__Internal Namespaces;
+                    internal global::Std.Vector.__Internal Enums;
+                    internal global::Std.Vector.__Internal Functions;
+                    internal global::Std.Vector.__Internal Classes;
+                    internal global::Std.Vector.__Internal Templates;
+                    internal global::Std.Vector.__Internal Typedefs;
+                    internal global::Std.Vector.__Internal TypeAliases;
+                    internal global::Std.Vector.__Internal Variables;
+                    internal global::Std.Vector.__Internal Friends;
+                    internal global::Std.Map.__Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_ anonymous;
                     internal byte isAnonymous;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal returnType;
                     internal byte isReturnIndirect;
@@ -9407,12 +9407,12 @@ namespace CppSharp
                     internal byte isDefaulted;
                     internal global::CppSharp.Parser.AST.FriendKind friendKind;
                     internal global::CppSharp.Parser.AST.CXXOperatorKind operatorKind;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C mangled;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C signature;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C body;
+                    internal global::Std.BasicString.__Internal mangled;
+                    internal global::Std.BasicString.__Internal signature;
+                    internal global::Std.BasicString.__Internal body;
                     internal __IntPtr bodyStmt;
                     internal global::CppSharp.Parser.AST.CallingConvention callingConvention;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Parameter___N_std_N___1_S_allocator__S0_ Parameters;
+                    internal global::Std.Vector.__Internal Parameters;
                     internal __IntPtr specializationInfo;
                     internal __IntPtr instantiatedFrom;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
@@ -9427,7 +9427,7 @@ namespace CppSharp
                     internal byte isMoveConstructor;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal conversionType;
                     internal global::CppSharp.Parser.AST.RefQualifierKind refQualifier;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Method___N_std_N___1_S_allocator__S0_ OverriddenMethods;
+                    internal global::Std.Vector.__Internal OverriddenMethods;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST6MethodC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -9708,7 +9708,7 @@ namespace CppSharp
 
             public unsafe partial class Enumeration : global::CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 264)]
+                [StructLayout(LayoutKind.Sequential, Size = 464)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -9719,9 +9719,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -9729,25 +9729,25 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Namespace___N_std_N___1_S_allocator__S0_ Namespaces;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Enumeration___N_std_N___1_S_allocator__S0_ Enums;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Function___N_std_N___1_S_allocator__S0_ Functions;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Class___N_std_N___1_S_allocator__S0_ Classes;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Template___N_std_N___1_S_allocator__S0_ Templates;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypedefDecl___N_std_N___1_S_allocator__S0_ Typedefs;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_N___1_S_allocator__S0_ TypeAliases;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_N___1_S_allocator__S0_ Variables;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_N___1_S_allocator__S0_ Friends;
-                    internal global::Std.Map.__Internalc__N_std_N___1_S_map____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_less__S0____N_std_N___1_S_allocator____N_std_N___1_S_pair__1S0__S3_ anonymous;
+                    internal global::Std.Vector.__Internal Namespaces;
+                    internal global::Std.Vector.__Internal Enums;
+                    internal global::Std.Vector.__Internal Functions;
+                    internal global::Std.Vector.__Internal Classes;
+                    internal global::Std.Vector.__Internal Templates;
+                    internal global::Std.Vector.__Internal Typedefs;
+                    internal global::Std.Vector.__Internal TypeAliases;
+                    internal global::Std.Vector.__Internal Variables;
+                    internal global::Std.Vector.__Internal Friends;
+                    internal global::Std.Map.__Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_ anonymous;
                     internal byte isAnonymous;
                     internal global::CppSharp.Parser.AST.Enumeration.EnumModifiers modifiers;
                     internal __IntPtr type;
                     internal __IntPtr builtinType;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Enumeration_S_Item___N_std_N___1_S_allocator__S0_ Items;
+                    internal global::Std.Vector.__Internal Items;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11EnumerationC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -9767,7 +9767,7 @@ namespace CppSharp
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11Enumeration10clearItemsEv", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ClearItems(__IntPtr __instance);
 
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11Enumeration14FindItemByNameERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEE", CallingConvention = __CallingConvention.Cdecl)]
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11Enumeration14FindItemByNameERKSs", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern __IntPtr FindItemByName(__IntPtr __instance, __IntPtr Name);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11Enumeration13getItemsCountEv", CallingConvention = __CallingConvention.Cdecl)]
@@ -9784,7 +9784,7 @@ namespace CppSharp
 
                 public unsafe partial class Item : global::CppSharp.Parser.AST.Declaration, IDisposable
                 {
-                    [StructLayout(LayoutKind.Sequential, Size = 136)]
+                    [StructLayout(LayoutKind.Sequential, Size = 168)]
                     public new partial struct __Internal
                     {
                         internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -9795,9 +9795,9 @@ namespace CppSharp
                         internal global::CppSharp.Parser.SourceLocation.__Internal location;
                         internal int lineNumberStart;
                         internal int lineNumberEnd;
-                        internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                        internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                        internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                        internal global::Std.BasicString.__Internal name;
+                        internal global::Std.BasicString.__Internal USR;
+                        internal global::Std.BasicString.__Internal debugText;
                         internal byte isIncomplete;
                         internal byte isDependent;
                         internal byte isImplicit;
@@ -9805,11 +9805,11 @@ namespace CppSharp
                         internal byte isDeprecated;
                         internal __IntPtr completeDeclaration;
                         internal uint definitionOrder;
-                        internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                        internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                        internal global::Std.Vector.__Internal PreprocessedEntities;
+                        internal global::Std.Vector.__Internal Redeclarations;
                         internal __IntPtr originalPtr;
                         internal __IntPtr comment;
-                        internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C expression;
+                        internal global::Std.BasicString.__Internal expression;
                         internal ulong value;
 
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11Enumeration4ItemC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -10093,7 +10093,7 @@ namespace CppSharp
 
             public unsafe partial class Variable : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 144)]
+                [StructLayout(LayoutKind.Sequential, Size = 192)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -10104,9 +10104,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -10114,12 +10114,12 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
                     internal byte isConstExpr;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C mangled;
+                    internal global::Std.BasicString.__Internal mangled;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
                     internal __IntPtr initializer;
 
@@ -10271,7 +10271,7 @@ namespace CppSharp
 
             public unsafe partial class BaseClassSpecifier : IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 16)]
+                [StructLayout(LayoutKind.Sequential, Size = 24)]
                 public partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.AccessSpecifier access;
@@ -10439,7 +10439,7 @@ namespace CppSharp
 
             public unsafe partial class Field : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 136)]
+                [StructLayout(LayoutKind.Sequential, Size = 184)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -10450,9 +10450,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -10460,8 +10460,8 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
@@ -10616,7 +10616,7 @@ namespace CppSharp
 
             public unsafe partial class AccessSpecifierDecl : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 116)]
+                [StructLayout(LayoutKind.Sequential, Size = 152)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -10627,9 +10627,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -10637,8 +10637,8 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
 
@@ -10734,7 +10734,7 @@ namespace CppSharp
 
             public unsafe partial class VTableComponent : IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 12)]
+                [StructLayout(LayoutKind.Sequential, Size = 16)]
                 public partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.VTableComponentKind kind;
@@ -10888,10 +10888,10 @@ namespace CppSharp
 
             public unsafe partial class VTableLayout : IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 12)]
+                [StructLayout(LayoutKind.Sequential, Size = 24)]
                 public partial struct __Internal
                 {
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_VTableComponent___N_std_N___1_S_allocator__S0_ Components;
+                    internal global::Std.Vector.__Internal Components;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST12VTableLayoutC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -10903,7 +10903,7 @@ namespace CppSharp
                     internal static extern void dtor(__IntPtr __instance);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST12VTableLayout13getComponentsEj", CallingConvention = __CallingConvention.Cdecl)]
-                    internal static extern void GetComponents(__IntPtr @return, __IntPtr __instance, uint i);
+                    internal static extern global::CppSharp.Parser.AST.VTableComponent.__Internal GetComponents(__IntPtr __instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST12VTableLayout13addComponentsERNS1_15VTableComponentE", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void AddComponents(__IntPtr __instance, __IntPtr s);
@@ -11019,8 +11019,7 @@ namespace CppSharp
 
                 public global::CppSharp.Parser.AST.VTableComponent GetComponents(uint i)
                 {
-                    var ___ret = new global::CppSharp.Parser.AST.VTableComponent.__Internal();
-                    __Internal.GetComponents(new IntPtr(&___ret), __Instance, i);
+                    var ___ret = __Internal.GetComponents(__Instance, i);
                     return global::CppSharp.Parser.AST.VTableComponent.__CreateInstance(___ret);
                 }
 
@@ -11049,7 +11048,7 @@ namespace CppSharp
 
             public unsafe partial class VFTableInfo : IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 28)]
+                [StructLayout(LayoutKind.Sequential, Size = 40)]
                 public partial struct __Internal
                 {
                     internal ulong VBTableIndex;
@@ -11226,11 +11225,11 @@ namespace CppSharp
 
             public unsafe partial class LayoutField : IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 28)]
+                [StructLayout(LayoutKind.Sequential, Size = 40)]
                 public partial struct __Internal
                 {
                     internal uint offset;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
+                    internal global::Std.BasicString.__Internal name;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
                     internal __IntPtr fieldPtr;
 
@@ -11404,7 +11403,7 @@ namespace CppSharp
 
             public unsafe partial class LayoutBase : IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 8)]
+                [StructLayout(LayoutKind.Sequential, Size = 16)]
                 public partial struct __Internal
                 {
                     internal uint offset;
@@ -11552,20 +11551,20 @@ namespace CppSharp
 
             public unsafe partial class ClassLayout : IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 76)]
+                [StructLayout(LayoutKind.Sequential, Size = 136)]
                 public partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.CppAbi ABI;
                     internal global::CppSharp.Parser.AST.RecordArgABI argABI;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_VFTableInfo___N_std_N___1_S_allocator__S0_ VFTables;
+                    internal global::Std.Vector.__Internal VFTables;
                     internal global::CppSharp.Parser.AST.VTableLayout.__Internal layout;
                     internal byte hasOwnVFPtr;
-                    internal int VBPtrOffset;
+                    internal long VBPtrOffset;
                     internal int alignment;
                     internal int size;
                     internal int dataSize;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_LayoutField___N_std_N___1_S_allocator__S0_ Fields;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_LayoutBase___N_std_N___1_S_allocator__S0_ Bases;
+                    internal global::Std.Vector.__Internal Fields;
+                    internal global::Std.Vector.__Internal Bases;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11ClassLayoutC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -11835,7 +11834,7 @@ namespace CppSharp
                     }
                 }
 
-                public int VBPtrOffset
+                public long VBPtrOffset
                 {
                     get
                     {
@@ -11917,7 +11916,7 @@ namespace CppSharp
 
             public unsafe partial class Class : global::CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 308)]
+                [StructLayout(LayoutKind.Sequential, Size = 544)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -11928,9 +11927,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -11938,25 +11937,25 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Namespace___N_std_N___1_S_allocator__S0_ Namespaces;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Enumeration___N_std_N___1_S_allocator__S0_ Enums;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Function___N_std_N___1_S_allocator__S0_ Functions;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Class___N_std_N___1_S_allocator__S0_ Classes;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Template___N_std_N___1_S_allocator__S0_ Templates;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypedefDecl___N_std_N___1_S_allocator__S0_ Typedefs;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_N___1_S_allocator__S0_ TypeAliases;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_N___1_S_allocator__S0_ Variables;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_N___1_S_allocator__S0_ Friends;
-                    internal global::Std.Map.__Internalc__N_std_N___1_S_map____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_less__S0____N_std_N___1_S_allocator____N_std_N___1_S_pair__1S0__S3_ anonymous;
+                    internal global::Std.Vector.__Internal Namespaces;
+                    internal global::Std.Vector.__Internal Enums;
+                    internal global::Std.Vector.__Internal Functions;
+                    internal global::Std.Vector.__Internal Classes;
+                    internal global::Std.Vector.__Internal Templates;
+                    internal global::Std.Vector.__Internal Typedefs;
+                    internal global::Std.Vector.__Internal TypeAliases;
+                    internal global::Std.Vector.__Internal Variables;
+                    internal global::Std.Vector.__Internal Friends;
+                    internal global::Std.Map.__Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_ anonymous;
                     internal byte isAnonymous;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_BaseClassSpecifier___N_std_N___1_S_allocator__S0_ Bases;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Field___N_std_N___1_S_allocator__S0_ Fields;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Method___N_std_N___1_S_allocator__S0_ Methods;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_AccessSpecifierDecl___N_std_N___1_S_allocator__S0_ Specifiers;
+                    internal global::Std.Vector.__Internal Bases;
+                    internal global::Std.Vector.__Internal Fields;
+                    internal global::Std.Vector.__Internal Methods;
+                    internal global::Std.Vector.__Internal Specifiers;
                     internal byte isPOD;
                     internal byte isAbstract;
                     internal byte isUnion;
@@ -12387,7 +12386,7 @@ namespace CppSharp
 
             public unsafe partial class Template : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 132)]
+                [StructLayout(LayoutKind.Sequential, Size = 184)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -12398,9 +12397,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -12408,12 +12407,12 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
                     internal __IntPtr TemplatedDecl;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Parameters;
+                    internal global::Std.Vector.__Internal Parameters;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST8TemplateC2ENS1_15DeclarationKindE", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance, global::CppSharp.Parser.AST.DeclarationKind kind);
@@ -12580,7 +12579,7 @@ namespace CppSharp
 
             public unsafe partial class TypeAliasTemplate : global::CppSharp.Parser.AST.Template, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 132)]
+                [StructLayout(LayoutKind.Sequential, Size = 184)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -12591,9 +12590,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -12601,12 +12600,12 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
                     internal __IntPtr TemplatedDecl;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Parameters;
+                    internal global::Std.Vector.__Internal Parameters;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST17TypeAliasTemplateC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -12700,7 +12699,7 @@ namespace CppSharp
 
             public unsafe partial class TemplateParameter : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 128)]
+                [StructLayout(LayoutKind.Sequential, Size = 168)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -12711,9 +12710,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -12721,8 +12720,8 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
                     internal uint depth;
@@ -12865,7 +12864,7 @@ namespace CppSharp
 
             public unsafe partial class TemplateTemplateParameter : global::CppSharp.Parser.AST.Template, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 136)]
+                [StructLayout(LayoutKind.Sequential, Size = 192)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -12876,9 +12875,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -12886,12 +12885,12 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
                     internal __IntPtr TemplatedDecl;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Parameters;
+                    internal global::Std.Vector.__Internal Parameters;
                     internal byte isParameterPack;
                     internal byte isPackExpansion;
                     internal byte isExpandedParameterPack;
@@ -13027,7 +13026,7 @@ namespace CppSharp
 
             public unsafe partial class TypeTemplateParameter : global::CppSharp.Parser.AST.TemplateParameter, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 136)]
+                [StructLayout(LayoutKind.Sequential, Size = 184)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -13038,9 +13037,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -13048,8 +13047,8 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
                     internal uint depth;
@@ -13164,7 +13163,7 @@ namespace CppSharp
 
             public unsafe partial class NonTypeTemplateParameter : global::CppSharp.Parser.AST.TemplateParameter, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 152)]
+                [StructLayout(LayoutKind.Sequential, Size = 208)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -13175,9 +13174,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -13185,8 +13184,8 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
                     internal uint depth;
@@ -13373,7 +13372,7 @@ namespace CppSharp
 
             public unsafe partial class ClassTemplate : global::CppSharp.Parser.AST.Template, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 144)]
+                [StructLayout(LayoutKind.Sequential, Size = 208)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -13384,9 +13383,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -13394,13 +13393,13 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
                     internal __IntPtr TemplatedDecl;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Parameters;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_ClassTemplateSpecialization___N_std_N___1_S_allocator__S0_ Specializations;
+                    internal global::Std.Vector.__Internal Parameters;
+                    internal global::Std.Vector.__Internal Specializations;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13ClassTemplateC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -13420,10 +13419,10 @@ namespace CppSharp
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13ClassTemplate20clearSpecializationsEv", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ClearSpecializations(__IntPtr __instance);
 
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13ClassTemplate18FindSpecializationERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEE", CallingConvention = __CallingConvention.Cdecl)]
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13ClassTemplate18FindSpecializationERKSs", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern __IntPtr FindSpecialization(__IntPtr __instance, __IntPtr usr);
 
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13ClassTemplate25FindPartialSpecializationERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEE", CallingConvention = __CallingConvention.Cdecl)]
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13ClassTemplate25FindPartialSpecializationERKSs", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern __IntPtr FindPartialSpecialization(__IntPtr __instance, __IntPtr usr);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13ClassTemplate23getSpecializationsCountEv", CallingConvention = __CallingConvention.Cdecl)]
@@ -13564,7 +13563,7 @@ namespace CppSharp
 
             public unsafe partial class ClassTemplateSpecialization : global::CppSharp.Parser.AST.Class, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 328)]
+                [StructLayout(LayoutKind.Sequential, Size = 584)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -13575,9 +13574,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -13585,25 +13584,25 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Namespace___N_std_N___1_S_allocator__S0_ Namespaces;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Enumeration___N_std_N___1_S_allocator__S0_ Enums;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Function___N_std_N___1_S_allocator__S0_ Functions;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Class___N_std_N___1_S_allocator__S0_ Classes;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Template___N_std_N___1_S_allocator__S0_ Templates;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypedefDecl___N_std_N___1_S_allocator__S0_ Typedefs;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_N___1_S_allocator__S0_ TypeAliases;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_N___1_S_allocator__S0_ Variables;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_N___1_S_allocator__S0_ Friends;
-                    internal global::Std.Map.__Internalc__N_std_N___1_S_map____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_less__S0____N_std_N___1_S_allocator____N_std_N___1_S_pair__1S0__S3_ anonymous;
+                    internal global::Std.Vector.__Internal Namespaces;
+                    internal global::Std.Vector.__Internal Enums;
+                    internal global::Std.Vector.__Internal Functions;
+                    internal global::Std.Vector.__Internal Classes;
+                    internal global::Std.Vector.__Internal Templates;
+                    internal global::Std.Vector.__Internal Typedefs;
+                    internal global::Std.Vector.__Internal TypeAliases;
+                    internal global::Std.Vector.__Internal Variables;
+                    internal global::Std.Vector.__Internal Friends;
+                    internal global::Std.Map.__Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_ anonymous;
                     internal byte isAnonymous;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_BaseClassSpecifier___N_std_N___1_S_allocator__S0_ Bases;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Field___N_std_N___1_S_allocator__S0_ Fields;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Method___N_std_N___1_S_allocator__S0_ Methods;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_AccessSpecifierDecl___N_std_N___1_S_allocator__S0_ Specifiers;
+                    internal global::Std.Vector.__Internal Bases;
+                    internal global::Std.Vector.__Internal Fields;
+                    internal global::Std.Vector.__Internal Methods;
+                    internal global::Std.Vector.__Internal Specifiers;
                     internal byte isPOD;
                     internal byte isAbstract;
                     internal byte isUnion;
@@ -13617,7 +13616,7 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.TagKind tagKind;
                     internal __IntPtr layout;
                     internal __IntPtr templatedDecl;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_N___1_S_allocator__S0_ Arguments;
+                    internal global::Std.Vector.__Internal Arguments;
                     internal global::CppSharp.Parser.AST.TemplateSpecializationKind specializationKind;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST27ClassTemplateSpecializationC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -13780,7 +13779,7 @@ namespace CppSharp
 
             public unsafe partial class ClassTemplatePartialSpecialization : global::CppSharp.Parser.AST.ClassTemplateSpecialization, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 340)]
+                [StructLayout(LayoutKind.Sequential, Size = 608)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -13791,9 +13790,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -13801,25 +13800,25 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Namespace___N_std_N___1_S_allocator__S0_ Namespaces;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Enumeration___N_std_N___1_S_allocator__S0_ Enums;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Function___N_std_N___1_S_allocator__S0_ Functions;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Class___N_std_N___1_S_allocator__S0_ Classes;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Template___N_std_N___1_S_allocator__S0_ Templates;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypedefDecl___N_std_N___1_S_allocator__S0_ Typedefs;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_N___1_S_allocator__S0_ TypeAliases;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_N___1_S_allocator__S0_ Variables;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_N___1_S_allocator__S0_ Friends;
-                    internal global::Std.Map.__Internalc__N_std_N___1_S_map____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_less__S0____N_std_N___1_S_allocator____N_std_N___1_S_pair__1S0__S3_ anonymous;
+                    internal global::Std.Vector.__Internal Namespaces;
+                    internal global::Std.Vector.__Internal Enums;
+                    internal global::Std.Vector.__Internal Functions;
+                    internal global::Std.Vector.__Internal Classes;
+                    internal global::Std.Vector.__Internal Templates;
+                    internal global::Std.Vector.__Internal Typedefs;
+                    internal global::Std.Vector.__Internal TypeAliases;
+                    internal global::Std.Vector.__Internal Variables;
+                    internal global::Std.Vector.__Internal Friends;
+                    internal global::Std.Map.__Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_ anonymous;
                     internal byte isAnonymous;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_BaseClassSpecifier___N_std_N___1_S_allocator__S0_ Bases;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Field___N_std_N___1_S_allocator__S0_ Fields;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Method___N_std_N___1_S_allocator__S0_ Methods;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_AccessSpecifierDecl___N_std_N___1_S_allocator__S0_ Specifiers;
+                    internal global::Std.Vector.__Internal Bases;
+                    internal global::Std.Vector.__Internal Fields;
+                    internal global::Std.Vector.__Internal Methods;
+                    internal global::Std.Vector.__Internal Specifiers;
                     internal byte isPOD;
                     internal byte isAbstract;
                     internal byte isUnion;
@@ -13833,9 +13832,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.TagKind tagKind;
                     internal __IntPtr layout;
                     internal __IntPtr templatedDecl;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_N___1_S_allocator__S0_ Arguments;
+                    internal global::Std.Vector.__Internal Arguments;
                     internal global::CppSharp.Parser.AST.TemplateSpecializationKind specializationKind;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Parameters;
+                    internal global::Std.Vector.__Internal Parameters;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST34ClassTemplatePartialSpecializationC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -13971,7 +13970,7 @@ namespace CppSharp
 
             public unsafe partial class FunctionTemplate : global::CppSharp.Parser.AST.Template, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 144)]
+                [StructLayout(LayoutKind.Sequential, Size = 208)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -13982,9 +13981,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -13992,13 +13991,13 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
                     internal __IntPtr TemplatedDecl;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Parameters;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_FunctionTemplateSpecialization___N_std_N___1_S_allocator__S0_ Specializations;
+                    internal global::Std.Vector.__Internal Parameters;
+                    internal global::Std.Vector.__Internal Specializations;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST16FunctionTemplateC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -14018,7 +14017,7 @@ namespace CppSharp
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST16FunctionTemplate20clearSpecializationsEv", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ClearSpecializations(__IntPtr __instance);
 
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST16FunctionTemplate18FindSpecializationERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEE", CallingConvention = __CallingConvention.Cdecl)]
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST16FunctionTemplate18FindSpecializationERKSs", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern __IntPtr FindSpecialization(__IntPtr __instance, __IntPtr usr);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST16FunctionTemplate23getSpecializationsCountEv", CallingConvention = __CallingConvention.Cdecl)]
@@ -14148,11 +14147,11 @@ namespace CppSharp
 
             public unsafe partial class FunctionTemplateSpecialization : IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 24)]
+                [StructLayout(LayoutKind.Sequential, Size = 48)]
                 public partial struct __Internal
                 {
                     internal __IntPtr _template;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_N___1_S_allocator__S0_ Arguments;
+                    internal global::Std.Vector.__Internal Arguments;
                     internal __IntPtr specializedFunction;
                     internal global::CppSharp.Parser.AST.TemplateSpecializationKind specializationKind;
 
@@ -14353,7 +14352,7 @@ namespace CppSharp
 
             public unsafe partial class VarTemplate : global::CppSharp.Parser.AST.Template, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 144)]
+                [StructLayout(LayoutKind.Sequential, Size = 208)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -14364,9 +14363,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -14374,13 +14373,13 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
                     internal __IntPtr TemplatedDecl;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Parameters;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_VarTemplateSpecialization___N_std_N___1_S_allocator__S0_ Specializations;
+                    internal global::Std.Vector.__Internal Parameters;
+                    internal global::Std.Vector.__Internal Specializations;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11VarTemplateC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -14400,10 +14399,10 @@ namespace CppSharp
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11VarTemplate20clearSpecializationsEv", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ClearSpecializations(__IntPtr __instance);
 
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11VarTemplate18FindSpecializationERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEE", CallingConvention = __CallingConvention.Cdecl)]
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11VarTemplate18FindSpecializationERKSs", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern __IntPtr FindSpecialization(__IntPtr __instance, __IntPtr usr);
 
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11VarTemplate25FindPartialSpecializationERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEE", CallingConvention = __CallingConvention.Cdecl)]
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11VarTemplate25FindPartialSpecializationERKSs", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern __IntPtr FindPartialSpecialization(__IntPtr __instance, __IntPtr usr);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11VarTemplate23getSpecializationsCountEv", CallingConvention = __CallingConvention.Cdecl)]
@@ -14544,7 +14543,7 @@ namespace CppSharp
 
             public unsafe partial class VarTemplateSpecialization : global::CppSharp.Parser.AST.Variable, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 164)]
+                [StructLayout(LayoutKind.Sequential, Size = 232)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -14555,9 +14554,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -14565,16 +14564,16 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
                     internal byte isConstExpr;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C mangled;
+                    internal global::Std.BasicString.__Internal mangled;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
                     internal __IntPtr initializer;
                     internal __IntPtr templatedDecl;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_N___1_S_allocator__S0_ Arguments;
+                    internal global::Std.Vector.__Internal Arguments;
                     internal global::CppSharp.Parser.AST.TemplateSpecializationKind specializationKind;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST25VarTemplateSpecializationC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -14737,7 +14736,7 @@ namespace CppSharp
 
             public unsafe partial class VarTemplatePartialSpecialization : global::CppSharp.Parser.AST.VarTemplateSpecialization, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 164)]
+                [StructLayout(LayoutKind.Sequential, Size = 232)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -14748,9 +14747,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -14758,16 +14757,16 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
                     internal byte isConstExpr;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C mangled;
+                    internal global::Std.BasicString.__Internal mangled;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
                     internal __IntPtr initializer;
                     internal __IntPtr templatedDecl;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_N___1_S_allocator__S0_ Arguments;
+                    internal global::Std.Vector.__Internal Arguments;
                     internal global::CppSharp.Parser.AST.TemplateSpecializationKind specializationKind;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST32VarTemplatePartialSpecializationC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -14862,7 +14861,7 @@ namespace CppSharp
 
             public unsafe partial class UnresolvedUsingTypename : global::CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 116)]
+                [StructLayout(LayoutKind.Sequential, Size = 152)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -14873,9 +14872,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -14883,8 +14882,8 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
 
@@ -14980,7 +14979,7 @@ namespace CppSharp
 
             public unsafe partial class Namespace : global::CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 240)]
+                [StructLayout(LayoutKind.Sequential, Size = 424)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -14991,9 +14990,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -15001,20 +15000,20 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Namespace___N_std_N___1_S_allocator__S0_ Namespaces;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Enumeration___N_std_N___1_S_allocator__S0_ Enums;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Function___N_std_N___1_S_allocator__S0_ Functions;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Class___N_std_N___1_S_allocator__S0_ Classes;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Template___N_std_N___1_S_allocator__S0_ Templates;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypedefDecl___N_std_N___1_S_allocator__S0_ Typedefs;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_N___1_S_allocator__S0_ TypeAliases;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_N___1_S_allocator__S0_ Variables;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_N___1_S_allocator__S0_ Friends;
-                    internal global::Std.Map.__Internalc__N_std_N___1_S_map____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_less__S0____N_std_N___1_S_allocator____N_std_N___1_S_pair__1S0__S3_ anonymous;
+                    internal global::Std.Vector.__Internal Namespaces;
+                    internal global::Std.Vector.__Internal Enums;
+                    internal global::Std.Vector.__Internal Functions;
+                    internal global::Std.Vector.__Internal Classes;
+                    internal global::Std.Vector.__Internal Templates;
+                    internal global::Std.Vector.__Internal Typedefs;
+                    internal global::Std.Vector.__Internal TypeAliases;
+                    internal global::Std.Vector.__Internal Variables;
+                    internal global::Std.Vector.__Internal Friends;
+                    internal global::Std.Map.__Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_ anonymous;
                     internal byte isAnonymous;
                     internal byte isInline;
 
@@ -15123,7 +15122,7 @@ namespace CppSharp
 
             public unsafe partial class PreprocessedEntity : IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 12)]
+                [StructLayout(LayoutKind.Sequential, Size = 24)]
                 public partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.MacroLocation macroLocation;
@@ -15276,14 +15275,14 @@ namespace CppSharp
 
             public unsafe partial class MacroDefinition : global::CppSharp.Parser.AST.PreprocessedEntity, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 44)]
+                [StructLayout(LayoutKind.Sequential, Size = 48)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.MacroLocation macroLocation;
                     internal __IntPtr originalPtr;
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C expression;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal expression;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
 
@@ -15433,14 +15432,14 @@ namespace CppSharp
 
             public unsafe partial class MacroExpansion : global::CppSharp.Parser.AST.PreprocessedEntity, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 40)]
+                [StructLayout(LayoutKind.Sequential, Size = 48)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.MacroLocation macroLocation;
                     internal __IntPtr originalPtr;
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C text;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal text;
                     internal __IntPtr definition;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST14MacroExpansionC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -15577,7 +15576,7 @@ namespace CppSharp
 
             public unsafe partial class TranslationUnit : global::CppSharp.Parser.AST.Namespace, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 268)]
+                [StructLayout(LayoutKind.Sequential, Size = 464)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -15588,9 +15587,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internal name;
+                    internal global::Std.BasicString.__Internal USR;
+                    internal global::Std.BasicString.__Internal debugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -15598,25 +15597,25 @@ namespace CppSharp
                     internal byte isDeprecated;
                     internal __IntPtr completeDeclaration;
                     internal uint definitionOrder;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_ PreprocessedEntities;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ Redeclarations;
+                    internal global::Std.Vector.__Internal PreprocessedEntities;
+                    internal global::Std.Vector.__Internal Redeclarations;
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Namespace___N_std_N___1_S_allocator__S0_ Namespaces;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Enumeration___N_std_N___1_S_allocator__S0_ Enums;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Function___N_std_N___1_S_allocator__S0_ Functions;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Class___N_std_N___1_S_allocator__S0_ Classes;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Template___N_std_N___1_S_allocator__S0_ Templates;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypedefDecl___N_std_N___1_S_allocator__S0_ Typedefs;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_N___1_S_allocator__S0_ TypeAliases;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_N___1_S_allocator__S0_ Variables;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_N___1_S_allocator__S0_ Friends;
-                    internal global::Std.Map.__Internalc__N_std_N___1_S_map____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_less__S0____N_std_N___1_S_allocator____N_std_N___1_S_pair__1S0__S3_ anonymous;
+                    internal global::Std.Vector.__Internal Namespaces;
+                    internal global::Std.Vector.__Internal Enums;
+                    internal global::Std.Vector.__Internal Functions;
+                    internal global::Std.Vector.__Internal Classes;
+                    internal global::Std.Vector.__Internal Templates;
+                    internal global::Std.Vector.__Internal Typedefs;
+                    internal global::Std.Vector.__Internal TypeAliases;
+                    internal global::Std.Vector.__Internal Variables;
+                    internal global::Std.Vector.__Internal Friends;
+                    internal global::Std.Map.__Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_ anonymous;
                     internal byte isAnonymous;
                     internal byte isInline;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C fileName;
+                    internal global::Std.BasicString.__Internal fileName;
                     internal byte isSystemHeader;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_MacroDefinition___N_std_N___1_S_allocator__S0_ Macros;
+                    internal global::Std.Vector.__Internal Macros;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST15TranslationUnitC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -15779,10 +15778,10 @@ namespace CppSharp
 
             public unsafe partial class ASTContext : IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 12)]
+                [StructLayout(LayoutKind.Sequential, Size = 24)]
                 public partial struct __Internal
                 {
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TranslationUnit___N_std_N___1_S_allocator__S0_ TranslationUnits;
+                    internal global::Std.Vector.__Internal TranslationUnits;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST10ASTContextC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -15793,7 +15792,7 @@ namespace CppSharp
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST10ASTContextD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void dtor(__IntPtr __instance);
 
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST10ASTContext18FindOrCreateModuleENSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEE", CallingConvention = __CallingConvention.Cdecl)]
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST10ASTContext18FindOrCreateModuleESs", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern __IntPtr FindOrCreateModule(__IntPtr __instance, __IntPtr File);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST10ASTContext19getTranslationUnitsEj", CallingConvention = __CallingConvention.Cdecl)]
@@ -16279,14 +16278,14 @@ namespace CppSharp
 
             public unsafe partial class DeclStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 40)]
+                [StructLayout(LayoutKind.Sequential, Size = 64)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
                     internal global::CppSharp.Parser.SourceRange.__Internal sourceRange;
                     internal global::CppSharp.Parser.SourceLocation.__Internal beginLoc;
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_ decls;
+                    internal global::Std.Vector.__Internal decls;
                     internal byte isSingleDecl;
                     internal __IntPtr singleDecl;
 
@@ -16558,14 +16557,14 @@ namespace CppSharp
 
             public unsafe partial class CompoundStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 56)]
+                [StructLayout(LayoutKind.Sequential, Size = 80)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
                     internal global::CppSharp.Parser.SourceRange.__Internal sourceRange;
                     internal global::CppSharp.Parser.SourceLocation.__Internal beginLoc;
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Stmt___N_std_N___1_S_allocator__S0_ body;
+                    internal global::Std.Vector.__Internal body;
                     internal byte body_empty;
                     internal uint size;
                     internal __IntPtr body_front;
@@ -16787,7 +16786,7 @@ namespace CppSharp
 
             public unsafe partial class SwitchCase : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 32)]
+                [StructLayout(LayoutKind.Sequential, Size = 40)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -16926,7 +16925,7 @@ namespace CppSharp
 
             public unsafe partial class CaseStmt : global::CppSharp.Parser.AST.SwitchCase, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 52)]
+                [StructLayout(LayoutKind.Sequential, Size = 72)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -17080,7 +17079,7 @@ namespace CppSharp
 
             public unsafe partial class DefaultStmt : global::CppSharp.Parser.AST.SwitchCase, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 36)]
+                [StructLayout(LayoutKind.Sequential, Size = 48)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -17176,7 +17175,7 @@ namespace CppSharp
 
             public unsafe partial class LabelStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 32)]
+                [StructLayout(LayoutKind.Sequential, Size = 40)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -17313,7 +17312,7 @@ namespace CppSharp
 
             public unsafe partial class AttributedStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 28)]
+                [StructLayout(LayoutKind.Sequential, Size = 32)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -17421,7 +17420,7 @@ namespace CppSharp
 
             public unsafe partial class IfStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 56)]
+                [StructLayout(LayoutKind.Sequential, Size = 88)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -17673,7 +17672,7 @@ namespace CppSharp
 
             public unsafe partial class SwitchStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 48)]
+                [StructLayout(LayoutKind.Sequential, Size = 72)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -17868,7 +17867,7 @@ namespace CppSharp
 
             public unsafe partial class WhileStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 40)]
+                [StructLayout(LayoutKind.Sequential, Size = 56)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -18020,7 +18019,7 @@ namespace CppSharp
 
             public unsafe partial class DoStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 40)]
+                [StructLayout(LayoutKind.Sequential, Size = 56)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -18171,7 +18170,7 @@ namespace CppSharp
 
             public unsafe partial class ForStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 52)]
+                [StructLayout(LayoutKind.Sequential, Size = 80)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -18474,7 +18473,7 @@ namespace CppSharp
 
             public unsafe partial class IndirectGotoStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 32)]
+                [StructLayout(LayoutKind.Sequential, Size = 40)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -18782,7 +18781,7 @@ namespace CppSharp
 
             public unsafe partial class ReturnStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 28)]
+                [StructLayout(LayoutKind.Sequential, Size = 40)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -18890,15 +18889,15 @@ namespace CppSharp
 
             public unsafe partial class AsmStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 68)]
+                [StructLayout(LayoutKind.Sequential, Size = 96)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
                     internal global::CppSharp.Parser.SourceRange.__Internal sourceRange;
                     internal global::CppSharp.Parser.SourceLocation.__Internal beginLoc;
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S0_ inputs;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S0_ outputs;
+                    internal global::Std.Vector.__Internal inputs;
+                    internal global::Std.Vector.__Internal outputs;
                     internal global::CppSharp.Parser.SourceLocation.__Internal asmLoc;
                     internal byte simple;
                     internal byte _volatile;
@@ -19191,15 +19190,15 @@ namespace CppSharp
 
             public unsafe partial class GCCAsmStmt : global::CppSharp.Parser.AST.AsmStmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 72)]
+                [StructLayout(LayoutKind.Sequential, Size = 104)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
                     internal global::CppSharp.Parser.SourceRange.__Internal sourceRange;
                     internal global::CppSharp.Parser.SourceLocation.__Internal beginLoc;
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S0_ inputs;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S0_ outputs;
+                    internal global::Std.Vector.__Internal inputs;
+                    internal global::Std.Vector.__Internal outputs;
                     internal global::CppSharp.Parser.SourceLocation.__Internal asmLoc;
                     internal byte simple;
                     internal byte _volatile;
@@ -19226,7 +19225,7 @@ namespace CppSharp
                     {
                         internal byte isString;
                         internal byte isOperand;
-                        internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C @string;
+                        internal global::Std.BasicString.__Internal @string;
                         internal uint operandNo;
                         internal sbyte modifier;
 
@@ -19510,15 +19509,15 @@ namespace CppSharp
 
             public unsafe partial class MSAsmStmt : global::CppSharp.Parser.AST.AsmStmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 92)]
+                [StructLayout(LayoutKind.Sequential, Size = 120)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
                     internal global::CppSharp.Parser.SourceRange.__Internal sourceRange;
                     internal global::CppSharp.Parser.SourceLocation.__Internal beginLoc;
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S0_ inputs;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S0_ outputs;
+                    internal global::Std.Vector.__Internal inputs;
+                    internal global::Std.Vector.__Internal outputs;
                     internal global::CppSharp.Parser.SourceLocation.__Internal asmLoc;
                     internal byte simple;
                     internal byte _volatile;
@@ -19529,7 +19528,7 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal lBraceLoc;
                     internal byte hasBraces;
                     internal uint numAsmToks;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C asmString;
+                    internal global::Std.BasicString.__Internal asmString;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST9MSAsmStmtC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -19676,7 +19675,7 @@ namespace CppSharp
 
             public unsafe partial class SEHExceptStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 32)]
+                [StructLayout(LayoutKind.Sequential, Size = 40)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -19799,7 +19798,7 @@ namespace CppSharp
 
             public unsafe partial class SEHFinallyStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 28)]
+                [StructLayout(LayoutKind.Sequential, Size = 32)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -19907,7 +19906,7 @@ namespace CppSharp
 
             public unsafe partial class SEHTryStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 44)]
+                [StructLayout(LayoutKind.Sequential, Size = 64)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -20167,14 +20166,14 @@ namespace CppSharp
 
             public unsafe partial class CapturedStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 40)]
+                [StructLayout(LayoutKind.Sequential, Size = 64)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
                     internal global::CppSharp.Parser.SourceRange.__Internal sourceRange;
                     internal global::CppSharp.Parser.SourceLocation.__Internal beginLoc;
                     internal global::CppSharp.Parser.SourceLocation.__Internal endLoc;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S0_ capture_inits;
+                    internal global::Std.Vector.__Internal capture_inits;
                     internal __IntPtr capturedStmt;
                     internal uint capture_size;
 
@@ -20542,7 +20541,7 @@ namespace CppSharp
 
             public unsafe partial class CXXCatchStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 36)]
+                [StructLayout(LayoutKind.Sequential, Size = 48)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -20666,7 +20665,7 @@ namespace CppSharp
 
             public unsafe partial class CXXTryStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 32)]
+                [StructLayout(LayoutKind.Sequential, Size = 40)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -20788,7 +20787,7 @@ namespace CppSharp
 
             public unsafe partial class CXXForRangeStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 72)]
+                [StructLayout(LayoutKind.Sequential, Size = 112)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -21058,7 +21057,7 @@ namespace CppSharp
 
             public unsafe partial class MSDependentExistsStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 32)]
+                [StructLayout(LayoutKind.Sequential, Size = 40)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -21194,7 +21193,7 @@ namespace CppSharp
 
             public unsafe partial class CoroutineBodyStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 72)]
+                [StructLayout(LayoutKind.Sequential, Size = 120)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -21594,7 +21593,7 @@ namespace CppSharp
 
             public unsafe partial class CoreturnStmt : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 36)]
+                [StructLayout(LayoutKind.Sequential, Size = 48)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -21931,7 +21930,7 @@ namespace CppSharp
 
             public unsafe partial class Expr : global::CppSharp.Parser.AST.Stmt, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 56)]
+                [StructLayout(LayoutKind.Sequential, Size = 80)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -22545,7 +22544,7 @@ namespace CppSharp
 
             public unsafe partial class FullExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 60)]
+                [StructLayout(LayoutKind.Sequential, Size = 88)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -22670,7 +22669,7 @@ namespace CppSharp
 
             public unsafe partial class ConstantExpr : global::CppSharp.Parser.AST.FullExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 60)]
+                [StructLayout(LayoutKind.Sequential, Size = 88)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -22764,7 +22763,7 @@ namespace CppSharp
 
             public unsafe partial class OpaqueValueExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 64)]
+                [StructLayout(LayoutKind.Sequential, Size = 88)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -22900,7 +22899,7 @@ namespace CppSharp
 
             public unsafe partial class DeclRefExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 96)]
+                [StructLayout(LayoutKind.Sequential, Size = 128)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -23162,7 +23161,7 @@ namespace CppSharp
 
             public unsafe partial class IntegerLiteral : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 68)]
+                [StructLayout(LayoutKind.Sequential, Size = 88)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -23283,7 +23282,7 @@ namespace CppSharp
 
             public unsafe partial class FixedPointLiteral : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 68)]
+                [StructLayout(LayoutKind.Sequential, Size = 88)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -23404,7 +23403,7 @@ namespace CppSharp
 
             public unsafe partial class CharacterLiteral : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 68)]
+                [StructLayout(LayoutKind.Sequential, Size = 88)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -23548,7 +23547,7 @@ namespace CppSharp
 
             public unsafe partial class FloatingLiteral : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 68)]
+                [StructLayout(LayoutKind.Sequential, Size = 88)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -23683,7 +23682,7 @@ namespace CppSharp
 
             public unsafe partial class ImaginaryLiteral : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 60)]
+                [StructLayout(LayoutKind.Sequential, Size = 88)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -23791,7 +23790,7 @@ namespace CppSharp
 
             public unsafe partial class StringLiteral : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 108)]
+                [StructLayout(LayoutKind.Sequential, Size = 128)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -23812,8 +23811,8 @@ namespace CppSharp
                     internal __IntPtr sourceBitField;
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C @string;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C bytes;
+                    internal global::Std.BasicString.__Internal @string;
+                    internal global::Std.BasicString.__Internal bytes;
                     internal uint byteLength;
                     internal uint length;
                     internal uint charByteWidth;
@@ -24126,7 +24125,7 @@ namespace CppSharp
 
             public unsafe partial class PredefinedExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 64)]
+                [StructLayout(LayoutKind.Sequential, Size = 88)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -24259,7 +24258,7 @@ namespace CppSharp
 
             public unsafe partial class ParenExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 68)]
+                [StructLayout(LayoutKind.Sequential, Size = 96)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -24395,7 +24394,7 @@ namespace CppSharp
 
             public unsafe partial class UnaryOperator : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 76)]
+                [StructLayout(LayoutKind.Sequential, Size = 104)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -24643,7 +24642,7 @@ namespace CppSharp
 
             public unsafe partial class OffsetOfExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 72)]
+                [StructLayout(LayoutKind.Sequential, Size = 96)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -24792,7 +24791,7 @@ namespace CppSharp
 
             public unsafe partial class UnaryExprOrTypeTraitExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 92)]
+                [StructLayout(LayoutKind.Sequential, Size = 136)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -24988,7 +24987,7 @@ namespace CppSharp
 
             public unsafe partial class ArraySubscriptExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 76)]
+                [StructLayout(LayoutKind.Sequential, Size = 120)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -25155,7 +25154,7 @@ namespace CppSharp
 
             public unsafe partial class CallExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 100)]
+                [StructLayout(LayoutKind.Sequential, Size = 152)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -25176,7 +25175,7 @@ namespace CppSharp
                     internal __IntPtr sourceBitField;
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S0_ arguments;
+                    internal global::Std.Vector.__Internal arguments;
                     internal __IntPtr callee;
                     internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
                     internal __IntPtr calleeDecl;
@@ -25444,7 +25443,7 @@ namespace CppSharp
 
             public unsafe partial class MemberExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 100)]
+                [StructLayout(LayoutKind.Sequential, Size = 128)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -25720,7 +25719,7 @@ namespace CppSharp
 
             public unsafe partial class CompoundLiteralExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 68)]
+                [StructLayout(LayoutKind.Sequential, Size = 96)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -25856,7 +25855,7 @@ namespace CppSharp
 
             public unsafe partial class CastExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 84)]
+                [StructLayout(LayoutKind.Sequential, Size = 120)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -26082,7 +26081,7 @@ namespace CppSharp
 
             public unsafe partial class ImplicitCastExpr : global::CppSharp.Parser.AST.CastExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 88)]
+                [StructLayout(LayoutKind.Sequential, Size = 128)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -26201,7 +26200,7 @@ namespace CppSharp
 
             public unsafe partial class ExplicitCastExpr : global::CppSharp.Parser.AST.CastExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 92)]
+                [StructLayout(LayoutKind.Sequential, Size = 136)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -26334,7 +26333,7 @@ namespace CppSharp
 
             public unsafe partial class CStyleCastExpr : global::CppSharp.Parser.AST.ExplicitCastExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 100)]
+                [StructLayout(LayoutKind.Sequential, Size = 144)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -26463,7 +26462,7 @@ namespace CppSharp
 
             public unsafe partial class BinaryOperator : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 100)]
+                [StructLayout(LayoutKind.Sequential, Size = 128)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -26488,7 +26487,7 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.BinaryOperatorKind opcode;
                     internal __IntPtr lHS;
                     internal __IntPtr rHS;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C opcodeStr;
+                    internal global::Std.BasicString.__Internal opcodeStr;
                     internal byte isPtrMemOp;
                     internal byte isMultiplicativeOp;
                     internal byte isAdditiveOp;
@@ -26863,7 +26862,7 @@ namespace CppSharp
 
             public unsafe partial class CompoundAssignOperator : global::CppSharp.Parser.AST.BinaryOperator, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 116)]
+                [StructLayout(LayoutKind.Sequential, Size = 160)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -26888,7 +26887,7 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.BinaryOperatorKind opcode;
                     internal __IntPtr lHS;
                     internal __IntPtr rHS;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C opcodeStr;
+                    internal global::Std.BasicString.__Internal opcodeStr;
                     internal byte isPtrMemOp;
                     internal byte isMultiplicativeOp;
                     internal byte isAdditiveOp;
@@ -27028,7 +27027,7 @@ namespace CppSharp
 
             public unsafe partial class AbstractConditionalOperator : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 76)]
+                [StructLayout(LayoutKind.Sequential, Size = 112)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -27211,7 +27210,7 @@ namespace CppSharp
 
             public unsafe partial class ConditionalOperator : global::CppSharp.Parser.AST.AbstractConditionalOperator, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 84)]
+                [StructLayout(LayoutKind.Sequential, Size = 128)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -27339,7 +27338,7 @@ namespace CppSharp
 
             public unsafe partial class BinaryConditionalOperator : global::CppSharp.Parser.AST.AbstractConditionalOperator, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 84)]
+                [StructLayout(LayoutKind.Sequential, Size = 128)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -27467,7 +27466,7 @@ namespace CppSharp
 
             public unsafe partial class AddrLabelExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 64)]
+                [StructLayout(LayoutKind.Sequential, Size = 88)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -27588,7 +27587,7 @@ namespace CppSharp
 
             public unsafe partial class StmtExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 68)]
+                [StructLayout(LayoutKind.Sequential, Size = 96)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -27724,7 +27723,7 @@ namespace CppSharp
 
             public unsafe partial class ShuffleVectorExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 68)]
+                [StructLayout(LayoutKind.Sequential, Size = 88)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -27859,7 +27858,7 @@ namespace CppSharp
 
             public unsafe partial class ConvertVectorExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 68)]
+                [StructLayout(LayoutKind.Sequential, Size = 96)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -27995,7 +27994,7 @@ namespace CppSharp
 
             public unsafe partial class ChooseExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 84)]
+                [StructLayout(LayoutKind.Sequential, Size = 128)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -28204,7 +28203,7 @@ namespace CppSharp
 
             public unsafe partial class GNUNullExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 60)]
+                [StructLayout(LayoutKind.Sequential, Size = 80)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -28311,7 +28310,7 @@ namespace CppSharp
 
             public unsafe partial class VAArgExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 72)]
+                [StructLayout(LayoutKind.Sequential, Size = 104)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -28461,7 +28460,7 @@ namespace CppSharp
 
             public unsafe partial class InitListExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 92)]
+                [StructLayout(LayoutKind.Sequential, Size = 136)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -28725,7 +28724,7 @@ namespace CppSharp
 
             public unsafe partial class DesignatedInitExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 84)]
+                [StructLayout(LayoutKind.Sequential, Size = 112)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -28762,7 +28761,7 @@ namespace CppSharp
 
                 public unsafe partial class Designator : IDisposable
                 {
-                    [StructLayout(LayoutKind.Sequential, Size = 40)]
+                    [StructLayout(LayoutKind.Sequential, Size = 48)]
                     public partial struct __Internal
                     {
                         internal __IntPtr field;
@@ -29393,7 +29392,7 @@ namespace CppSharp
 
             public unsafe partial class NoInitExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 56)]
+                [StructLayout(LayoutKind.Sequential, Size = 80)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -29486,7 +29485,7 @@ namespace CppSharp
 
             public unsafe partial class DesignatedInitUpdateExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 64)]
+                [StructLayout(LayoutKind.Sequential, Size = 96)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -29609,7 +29608,7 @@ namespace CppSharp
 
             public unsafe partial class ArrayInitLoopExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 64)]
+                [StructLayout(LayoutKind.Sequential, Size = 96)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -29732,7 +29731,7 @@ namespace CppSharp
 
             public unsafe partial class ArrayInitIndexExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 56)]
+                [StructLayout(LayoutKind.Sequential, Size = 80)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -29825,7 +29824,7 @@ namespace CppSharp
 
             public unsafe partial class ImplicitValueInitExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 56)]
+                [StructLayout(LayoutKind.Sequential, Size = 80)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -29918,7 +29917,7 @@ namespace CppSharp
 
             public unsafe partial class ParenListExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 68)]
+                [StructLayout(LayoutKind.Sequential, Size = 88)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -30053,7 +30052,7 @@ namespace CppSharp
 
             public unsafe partial class GenericSelectionExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 88)]
+                [StructLayout(LayoutKind.Sequential, Size = 120)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -30260,7 +30259,7 @@ namespace CppSharp
 
             public unsafe partial class ExtVectorElementExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 72)]
+                [StructLayout(LayoutKind.Sequential, Size = 104)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -30424,7 +30423,7 @@ namespace CppSharp
 
             public unsafe partial class BlockExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 64)]
+                [StructLayout(LayoutKind.Sequential, Size = 88)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -30546,7 +30545,7 @@ namespace CppSharp
 
             public unsafe partial class AsTypeExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 68)]
+                [StructLayout(LayoutKind.Sequential, Size = 96)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -30682,7 +30681,7 @@ namespace CppSharp
 
             public unsafe partial class PseudoObjectExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 72)]
+                [StructLayout(LayoutKind.Sequential, Size = 112)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -30833,7 +30832,7 @@ namespace CppSharp
 
             public unsafe partial class AtomicExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 112)]
+                [StructLayout(LayoutKind.Sequential, Size = 176)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -31195,7 +31194,7 @@ namespace CppSharp
 
             public unsafe partial class TypoExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 56)]
+                [StructLayout(LayoutKind.Sequential, Size = 80)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -31288,7 +31287,7 @@ namespace CppSharp
 
             public unsafe partial class CXXOperatorCallExpr : global::CppSharp.Parser.AST.CallExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 112)]
+                [StructLayout(LayoutKind.Sequential, Size = 168)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -31309,7 +31308,7 @@ namespace CppSharp
                     internal __IntPtr sourceBitField;
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S0_ arguments;
+                    internal global::Std.Vector.__Internal arguments;
                     internal __IntPtr callee;
                     internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
                     internal __IntPtr calleeDecl;
@@ -31467,7 +31466,7 @@ namespace CppSharp
 
             public unsafe partial class CXXMemberCallExpr : global::CppSharp.Parser.AST.CallExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 108)]
+                [StructLayout(LayoutKind.Sequential, Size = 168)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -31488,7 +31487,7 @@ namespace CppSharp
                     internal __IntPtr sourceBitField;
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S0_ arguments;
+                    internal global::Std.Vector.__Internal arguments;
                     internal __IntPtr callee;
                     internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
                     internal __IntPtr calleeDecl;
@@ -31620,7 +31619,7 @@ namespace CppSharp
 
             public unsafe partial class CUDAKernelCallExpr : global::CppSharp.Parser.AST.CallExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 104)]
+                [StructLayout(LayoutKind.Sequential, Size = 160)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -31641,7 +31640,7 @@ namespace CppSharp
                     internal __IntPtr sourceBitField;
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S0_ arguments;
+                    internal global::Std.Vector.__Internal arguments;
                     internal __IntPtr callee;
                     internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
                     internal __IntPtr calleeDecl;
@@ -31758,7 +31757,7 @@ namespace CppSharp
 
             public unsafe partial class CXXNamedCastExpr : global::CppSharp.Parser.AST.ExplicitCastExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 112)]
+                [StructLayout(LayoutKind.Sequential, Size = 160)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -31949,7 +31948,7 @@ namespace CppSharp
 
             public unsafe partial class CXXStaticCastExpr : global::CppSharp.Parser.AST.CXXNamedCastExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 112)]
+                [StructLayout(LayoutKind.Sequential, Size = 160)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -32054,7 +32053,7 @@ namespace CppSharp
 
             public unsafe partial class CXXDynamicCastExpr : global::CppSharp.Parser.AST.CXXNamedCastExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 116)]
+                [StructLayout(LayoutKind.Sequential, Size = 168)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -32173,7 +32172,7 @@ namespace CppSharp
 
             public unsafe partial class CXXReinterpretCastExpr : global::CppSharp.Parser.AST.CXXNamedCastExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 112)]
+                [StructLayout(LayoutKind.Sequential, Size = 160)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -32278,7 +32277,7 @@ namespace CppSharp
 
             public unsafe partial class CXXConstCastExpr : global::CppSharp.Parser.AST.CXXNamedCastExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 112)]
+                [StructLayout(LayoutKind.Sequential, Size = 160)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -32383,7 +32382,7 @@ namespace CppSharp
 
             public unsafe partial class UserDefinedLiteral : global::CppSharp.Parser.AST.CallExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 112)]
+                [StructLayout(LayoutKind.Sequential, Size = 176)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -32404,7 +32403,7 @@ namespace CppSharp
                     internal __IntPtr sourceBitField;
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S0_ arguments;
+                    internal global::Std.Vector.__Internal arguments;
                     internal __IntPtr callee;
                     internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
                     internal __IntPtr calleeDecl;
@@ -32559,7 +32558,7 @@ namespace CppSharp
 
             public unsafe partial class CXXBoolLiteralExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 60)]
+                [StructLayout(LayoutKind.Sequential, Size = 80)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -32680,7 +32679,7 @@ namespace CppSharp
 
             public unsafe partial class CXXNullPtrLiteralExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 60)]
+                [StructLayout(LayoutKind.Sequential, Size = 80)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -32787,7 +32786,7 @@ namespace CppSharp
 
             public unsafe partial class CXXStdInitializerListExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 60)]
+                [StructLayout(LayoutKind.Sequential, Size = 88)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -32895,7 +32894,7 @@ namespace CppSharp
 
             public unsafe partial class CXXTypeidExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 64)]
+                [StructLayout(LayoutKind.Sequential, Size = 96)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -33031,7 +33030,7 @@ namespace CppSharp
 
             public unsafe partial class MSPropertyRefExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 68)]
+                [StructLayout(LayoutKind.Sequential, Size = 96)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -33181,7 +33180,7 @@ namespace CppSharp
 
             public unsafe partial class MSPropertySubscriptExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 68)]
+                [StructLayout(LayoutKind.Sequential, Size = 96)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -33318,7 +33317,7 @@ namespace CppSharp
 
             public unsafe partial class CXXUuidofExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 76)]
+                [StructLayout(LayoutKind.Sequential, Size = 104)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -33340,7 +33339,7 @@ namespace CppSharp
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
                     internal __IntPtr exprOperand;
-                    internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C uuidStr;
+                    internal global::Std.BasicString.__Internal uuidStr;
                     internal byte isTypeOperand;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13CXXUuidofExprC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -33476,7 +33475,7 @@ namespace CppSharp
 
             public unsafe partial class CXXThisExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 64)]
+                [StructLayout(LayoutKind.Sequential, Size = 88)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -33597,7 +33596,7 @@ namespace CppSharp
 
             public unsafe partial class CXXThrowExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 68)]
+                [StructLayout(LayoutKind.Sequential, Size = 96)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -33733,7 +33732,7 @@ namespace CppSharp
 
             public unsafe partial class CXXDefaultArgExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 64)]
+                [StructLayout(LayoutKind.Sequential, Size = 96)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -33855,7 +33854,7 @@ namespace CppSharp
 
             public unsafe partial class CXXDefaultInitExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 64)]
+                [StructLayout(LayoutKind.Sequential, Size = 96)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -33978,7 +33977,7 @@ namespace CppSharp
 
             public unsafe partial class CXXBindTemporaryExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 60)]
+                [StructLayout(LayoutKind.Sequential, Size = 88)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -34086,7 +34085,7 @@ namespace CppSharp
 
             public unsafe partial class CXXConstructExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 92)]
+                [StructLayout(LayoutKind.Sequential, Size = 128)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -34107,7 +34106,7 @@ namespace CppSharp
                     internal __IntPtr sourceBitField;
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S0_ arguments;
+                    internal global::Std.Vector.__Internal arguments;
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal byte elidable;
                     internal byte hadMultipleCandidates;
@@ -34382,7 +34381,7 @@ namespace CppSharp
 
             public unsafe partial class CXXInheritedCtorInitExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 60)]
+                [StructLayout(LayoutKind.Sequential, Size = 80)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -34517,7 +34516,7 @@ namespace CppSharp
 
             public unsafe partial class CXXFunctionalCastExpr : global::CppSharp.Parser.AST.ExplicitCastExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 104)]
+                [StructLayout(LayoutKind.Sequential, Size = 152)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -34660,7 +34659,7 @@ namespace CppSharp
 
             public unsafe partial class CXXTemporaryObjectExpr : global::CppSharp.Parser.AST.CXXConstructExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 92)]
+                [StructLayout(LayoutKind.Sequential, Size = 128)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -34681,7 +34680,7 @@ namespace CppSharp
                     internal __IntPtr sourceBitField;
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S0_ arguments;
+                    internal global::Std.Vector.__Internal arguments;
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal byte elidable;
                     internal byte hadMultipleCandidates;
@@ -34783,7 +34782,7 @@ namespace CppSharp
 
             public unsafe partial class LambdaExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 100)]
+                [StructLayout(LayoutKind.Sequential, Size = 152)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -34804,7 +34803,7 @@ namespace CppSharp
                     internal __IntPtr sourceBitField;
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S0_ capture_inits;
+                    internal global::Std.Vector.__Internal capture_inits;
                     internal global::CppSharp.Parser.SourceLocation.__Internal captureDefaultLoc;
                     internal uint capture_size;
                     internal global::CppSharp.Parser.SourceRange.__Internal introducerRange;
@@ -35070,7 +35069,7 @@ namespace CppSharp
 
             public unsafe partial class CXXScalarValueInitExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 60)]
+                [StructLayout(LayoutKind.Sequential, Size = 80)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -35177,7 +35176,7 @@ namespace CppSharp
 
             public unsafe partial class CXXNewExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 132)]
+                [StructLayout(LayoutKind.Sequential, Size = 200)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -35198,7 +35197,7 @@ namespace CppSharp
                     internal __IntPtr sourceBitField;
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S0_ placement_arguments;
+                    internal global::Std.Vector.__Internal placement_arguments;
                     internal __IntPtr operatorNew;
                     internal __IntPtr operatorDelete;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal allocatedType;
@@ -35548,7 +35547,7 @@ namespace CppSharp
 
             public unsafe partial class CXXDeleteExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 72)]
+                [StructLayout(LayoutKind.Sequential, Size = 112)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -35729,7 +35728,7 @@ namespace CppSharp
 
             public unsafe partial class CXXPseudoDestructorExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 88)]
+                [StructLayout(LayoutKind.Sequential, Size = 128)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -35937,7 +35936,7 @@ namespace CppSharp
 
             public unsafe partial class TypeTraitExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 60)]
+                [StructLayout(LayoutKind.Sequential, Size = 80)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -36058,7 +36057,7 @@ namespace CppSharp
 
             public unsafe partial class ArrayTypeTraitExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 76)]
+                [StructLayout(LayoutKind.Sequential, Size = 112)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -36196,7 +36195,7 @@ namespace CppSharp
 
             public unsafe partial class ExpressionTraitExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 64)]
+                [StructLayout(LayoutKind.Sequential, Size = 96)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -36318,7 +36317,7 @@ namespace CppSharp
 
             public unsafe partial class OverloadExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 84)]
+                [StructLayout(LayoutKind.Sequential, Size = 104)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -36650,7 +36649,7 @@ namespace CppSharp
 
             public unsafe partial class UnresolvedLookupExpr : global::CppSharp.Parser.AST.OverloadExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 88)]
+                [StructLayout(LayoutKind.Sequential, Size = 112)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -36779,7 +36778,7 @@ namespace CppSharp
 
             public unsafe partial class DependentScopeDeclRefExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 80)]
+                [StructLayout(LayoutKind.Sequential, Size = 104)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -36970,7 +36969,7 @@ namespace CppSharp
 
             public unsafe partial class ExprWithCleanups : global::CppSharp.Parser.AST.FullExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 68)]
+                [StructLayout(LayoutKind.Sequential, Size = 96)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -37092,7 +37091,7 @@ namespace CppSharp
 
             public unsafe partial class CXXUnresolvedConstructExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 92)]
+                [StructLayout(LayoutKind.Sequential, Size = 136)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -37113,7 +37112,7 @@ namespace CppSharp
                     internal __IntPtr sourceBitField;
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
-                    internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S0_ arguments;
+                    internal global::Std.Vector.__Internal arguments;
                     internal global::CppSharp.Parser.SourceLocation.__Internal lParenLoc;
                     internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal typeAsWritten;
@@ -37321,7 +37320,7 @@ namespace CppSharp
 
             public unsafe partial class CXXDependentScopeMemberExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 104)]
+                [StructLayout(LayoutKind.Sequential, Size = 144)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -37600,7 +37599,7 @@ namespace CppSharp
 
             public unsafe partial class UnresolvedMemberExpr : global::CppSharp.Parser.AST.OverloadExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 112)]
+                [StructLayout(LayoutKind.Sequential, Size = 152)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -37802,7 +37801,7 @@ namespace CppSharp
 
             public unsafe partial class CXXNoexceptExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 64)]
+                [StructLayout(LayoutKind.Sequential, Size = 96)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -37924,7 +37923,7 @@ namespace CppSharp
 
             public unsafe partial class PackExpansionExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 64)]
+                [StructLayout(LayoutKind.Sequential, Size = 96)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -38046,7 +38045,7 @@ namespace CppSharp
 
             public unsafe partial class SizeOfPackExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 80)]
+                [StructLayout(LayoutKind.Sequential, Size = 104)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -38224,7 +38223,7 @@ namespace CppSharp
 
             public unsafe partial class SubstNonTypeTemplateParmExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 64)]
+                [StructLayout(LayoutKind.Sequential, Size = 88)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -38346,7 +38345,7 @@ namespace CppSharp
 
             public unsafe partial class SubstNonTypeTemplateParmPackExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 80)]
+                [StructLayout(LayoutKind.Sequential, Size = 120)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -38469,7 +38468,7 @@ namespace CppSharp
 
             public unsafe partial class FunctionParmPackExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 64)]
+                [StructLayout(LayoutKind.Sequential, Size = 88)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -38590,7 +38589,7 @@ namespace CppSharp
 
             public unsafe partial class MaterializeTemporaryExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 72)]
+                [StructLayout(LayoutKind.Sequential, Size = 104)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -38851,7 +38850,7 @@ namespace CppSharp
 
             public unsafe partial class CXXFoldExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 84)]
+                [StructLayout(LayoutKind.Sequential, Size = 128)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -39060,7 +39059,7 @@ namespace CppSharp
 
             public unsafe partial class CoroutineSuspendExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 80)]
+                [StructLayout(LayoutKind.Sequential, Size = 120)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -39268,7 +39267,7 @@ namespace CppSharp
 
             public unsafe partial class CoawaitExpr : global::CppSharp.Parser.AST.CoroutineSuspendExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 88)]
+                [StructLayout(LayoutKind.Sequential, Size = 136)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -39396,7 +39395,7 @@ namespace CppSharp
 
             public unsafe partial class DependentCoawaitExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 68)]
+                [StructLayout(LayoutKind.Sequential, Size = 104)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -39533,7 +39532,7 @@ namespace CppSharp
 
             public unsafe partial class CoyieldExpr : global::CppSharp.Parser.AST.CoroutineSuspendExpr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 84)]
+                [StructLayout(LayoutKind.Sequential, Size = 128)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -39669,10 +39668,10 @@ namespace CppSharp
 
         public unsafe partial class ParserTargetInfo : IDisposable
         {
-            [StructLayout(LayoutKind.Sequential, Size = 172)]
+            [StructLayout(LayoutKind.Sequential, Size = 168)]
             public partial struct __Internal
             {
-                internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C ABI;
+                internal global::Std.BasicString.__Internal ABI;
                 internal global::CppSharp.Parser.ParserIntType char16Type;
                 internal global::CppSharp.Parser.ParserIntType char32Type;
                 internal global::CppSharp.Parser.ParserIntType int64Type;
@@ -40464,21 +40463,21 @@ namespace CppSharp
 
         public unsafe partial class CppParserOptions : IDisposable
         {
-            [StructLayout(LayoutKind.Sequential, Size = 148)]
+            [StructLayout(LayoutKind.Sequential, Size = 256)]
             public partial struct __Internal
             {
-                internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S0_ Arguments;
-                internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S0_ CompilationOptions;
-                internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S0_ SourceFiles;
-                internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S0_ IncludeDirs;
-                internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S0_ SystemIncludeDirs;
-                internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S0_ Defines;
-                internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S0_ Undefines;
-                internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S0_ SupportedStdTypes;
-                internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S0_ SupportedFunctionTemplates;
+                internal global::Std.Vector.__Internal Arguments;
+                internal global::Std.Vector.__Internal CompilationOptions;
+                internal global::Std.Vector.__Internal SourceFiles;
+                internal global::Std.Vector.__Internal IncludeDirs;
+                internal global::Std.Vector.__Internal SystemIncludeDirs;
+                internal global::Std.Vector.__Internal Defines;
+                internal global::Std.Vector.__Internal Undefines;
+                internal global::Std.Vector.__Internal SupportedStdTypes;
+                internal global::Std.Vector.__Internal SupportedFunctionTemplates;
                 internal __IntPtr ASTContext;
                 internal int toolSetToUse;
-                internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C targetTriple;
+                internal global::Std.BasicString.__Internal targetTriple;
                 internal byte noStandardIncludes;
                 internal byte noBuiltinIncludes;
                 internal byte microsoftMode;
@@ -40487,7 +40486,7 @@ namespace CppSharp
                 internal byte skipPrivateDeclarations;
                 internal byte skipLayoutInfo;
                 internal byte skipFunctionBodies;
-                internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C clangVersion;
+                internal global::Std.BasicString.__Internal clangVersion;
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser16CppParserOptionsC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern void ctor(__IntPtr __instance);
@@ -41005,7 +41004,7 @@ namespace CppSharp
             {
                 get
                 {
-                    var ___ret = new global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C();
+                    var ___ret = new global::Std.BasicString.__Internal();
                     __Internal.GetClangVersion(new IntPtr(&___ret), __Instance);
                     var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&___ret));
                     var __retString0 = global::Std.BasicStringExtensions.Data(__basicStringRet0);
@@ -41098,12 +41097,12 @@ namespace CppSharp
 
         public unsafe partial class CppLinkerOptions : IDisposable
         {
-            [StructLayout(LayoutKind.Sequential, Size = 36)]
+            [StructLayout(LayoutKind.Sequential, Size = 72)]
             public partial struct __Internal
             {
-                internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S0_ Arguments;
-                internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S0_ LibraryDirs;
-                internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S0_ Libraries;
+                internal global::Std.Vector.__Internal Arguments;
+                internal global::Std.Vector.__Internal LibraryDirs;
+                internal global::Std.Vector.__Internal Libraries;
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser16CppLinkerOptionsC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern void ctor(__IntPtr __instance);
@@ -41331,11 +41330,11 @@ namespace CppSharp
 
         public unsafe partial class ParserDiagnostic : IDisposable
         {
-            [StructLayout(LayoutKind.Sequential, Size = 36)]
+            [StructLayout(LayoutKind.Sequential, Size = 32)]
             public partial struct __Internal
             {
-                internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C fileName;
-                internal global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C message;
+                internal global::Std.BasicString.__Internal fileName;
+                internal global::Std.BasicString.__Internal message;
                 internal global::CppSharp.Parser.ParserDiagnosticLevel level;
                 internal int lineNumber;
                 internal int columnNumber;
@@ -41522,12 +41521,12 @@ namespace CppSharp
 
         public unsafe partial class ParserResult : IDisposable
         {
-            [StructLayout(LayoutKind.Sequential, Size = 32)]
+            [StructLayout(LayoutKind.Sequential, Size = 64)]
             public partial struct __Internal
             {
                 internal global::CppSharp.Parser.ParserResultKind kind;
-                internal global::Std.Vector.__Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_S_ParserDiagnostic___N_std_N___1_S_allocator__S0_ Diagnostics;
-                internal global::Std.Vector.__Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_NativeLibrary___N_std_N___1_S_allocator__S0_ Libraries;
+                internal global::Std.Vector.__Internal Diagnostics;
+                internal global::Std.Vector.__Internal Libraries;
                 internal __IntPtr targetInfo;
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser12ParserResultC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -41769,13 +41768,13 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser11ClangParser12ParseLibraryEPNS0_16CppLinkerOptionsE", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern __IntPtr ParseLibrary(__IntPtr Opts);
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser11ClangParser5BuildEPNS0_16CppParserOptionsEPKNS0_16CppLinkerOptionsERKNSt3__112basic_stringIcNS7_11char_traitsIcEENS7_9allocatorIcEEEEb", CallingConvention = __CallingConvention.Cdecl)]
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser11ClangParser5BuildEPNS0_16CppParserOptionsEPKNS0_16CppLinkerOptionsERKSsb", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern __IntPtr Build(__IntPtr Opts, __IntPtr LinkerOptions, __IntPtr File, bool Last);
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser11ClangParser7CompileEPNS0_16CppParserOptionsERKNSt3__112basic_stringIcNS4_11char_traitsIcEENS4_9allocatorIcEEEE", CallingConvention = __CallingConvention.Cdecl)]
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser11ClangParser7CompileEPNS0_16CppParserOptionsERKSs", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern __IntPtr Compile(__IntPtr Opts, __IntPtr File);
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser11ClangParser4LinkEPNS0_16CppParserOptionsEPKNS0_16CppLinkerOptionsERKNSt3__112basic_stringIcNS7_11char_traitsIcEENS7_9allocatorIcEEEEb", CallingConvention = __CallingConvention.Cdecl)]
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser11ClangParser4LinkEPNS0_16CppParserOptionsEPKNS0_16CppLinkerOptionsERKSsb", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern __IntPtr Link(__IntPtr Opts, __IntPtr LinkerOptions, __IntPtr File, bool Last);
             }
 
@@ -41934,570 +41933,23 @@ namespace CppSharp
 
 namespace Std
 {
-    namespace CompressedPair
+    namespace RbTree
     {
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_NativeLibrary___N_std_N___1_S_allocator__S1_
+        namespace RbTreeImpl
         {
-            internal __IntPtr __value_;
+            [StructLayout(LayoutKind.Sequential, Size = 48)]
+            public unsafe partial struct __Internalc__N_std_S__Rb_tree____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S_pair__1S0_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S__Select1st__S3____N_std_S_less__S0____N_std_S_allocator__S3__S__Rb_tree_impl__S7__Vb1
+            {
+                internal global::Std.Less.__Internal _M_key_compare;
+                internal global::Std.RbTreeNodeBase.__Internal _M_header;
+                internal ulong _M_node_count;
+            }
         }
 
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_S_ParserDiagnostic___N_std_N___1_S_allocator__S1_
+        [StructLayout(LayoutKind.Sequential, Size = 48)]
+        public unsafe partial struct __Internalc__N_std_S__Rb_tree____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S_pair__1S0_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S__Select1st__S3____N_std_S_less__S0____N_std_S_allocator__S3_
         {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_HTMLStartTagComment_S_Attribute___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_InlineCommandComment_S_Argument___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_VerbatimBlockLineComment___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_InlineContentComment___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Stmt___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_TranslationUnit___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_MacroDefinition___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_VarTemplateSpecialization___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_ExpressionObsolete___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_ClassTemplateSpecialization___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Namespace___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Enumeration___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Enumeration_S_Item___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Function___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Class___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_LayoutBase___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_LayoutField___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_VFTableInfo___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_VTableComponent___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_AccessSpecifierDecl___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Method___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_FunctionTemplateSpecialization___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Parameter___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Field___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_BaseClassSpecifier___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair__l___N_std_N___1_S___map_value_compare____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S___value_type__S1_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_less__S1__Vb1
-        {
-            internal uint __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair____N_std_N___1_S___tree_end_node_____N_std_N___1_S___tree_node_base___v___N_std_N___1_S_allocator____N_std_N___1_S___tree_node____N_std_N___1_S___value_type____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration_S3_
-        {
-            internal global::Std.TreeEndNode.__Internal_Ptr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_TypedefDecl___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Template___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_BlockContentComment___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 4)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S1_
-        {
-            internal __IntPtr __value_;
-        }
-    }
-
-}
-namespace Std
-{
-    namespace Vector
-    {
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_NativeLibrary___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_NativeLibrary___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_S_ParserDiagnostic___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_S_ParserDiagnostic___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_HTMLStartTagComment_S_Attribute___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_HTMLStartTagComment_S_Attribute___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_InlineCommandComment_S_Argument___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_InlineCommandComment_S_Argument___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_VerbatimBlockLineComment___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_VerbatimBlockLineComment___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_BlockCommandComment_S_Argument___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_InlineContentComment___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_InlineContentComment___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Expr___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Stmt___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Stmt___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TranslationUnit___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_TranslationUnit___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_MacroDefinition___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_MacroDefinition___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_VarTemplateSpecialization___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_VarTemplateSpecialization___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_ExpressionObsolete___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_ExpressionObsolete___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_ClassTemplateSpecialization___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_ClassTemplateSpecialization___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Enumeration_S_Item___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Enumeration_S_Item___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_LayoutBase___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_LayoutBase___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_LayoutField___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_LayoutField___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_VTableComponent___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_VTableComponent___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_VFTableInfo___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_VFTableInfo___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_AccessSpecifierDecl___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_AccessSpecifierDecl___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair_____N_CppSharp_N_CppParser_N_AST_S_TemplateArgument___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_FunctionTemplateSpecialization___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_FunctionTemplateSpecialization___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Parameter___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Parameter___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Method___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Method___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Field___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Field___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_BaseClassSpecifier___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_BaseClassSpecifier___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Friend___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Variable___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_TypeAlias___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_TypedefDecl___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_TypedefDecl___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Template___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Template___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Class___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Class___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Function___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Function___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Enumeration___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Enumeration___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Namespace___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Namespace___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_BlockContentComment___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_BlockContentComment___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_vector_____N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_;
-            internal __IntPtr __end_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair______N_CppSharp_N_CppParser_N_AST_S_PreprocessedEntity___N_std_N___1_S_allocator__S1_ __end_cap_;
-        }
-    }
-
-}
-namespace Std
-{
-    namespace Tree
-    {
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S___tree____N_std_N___1_S___value_type____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S___map_value_compare__S1__S0____N_std_N___1_S_less__S1__Vb1___N_std_N___1_S_allocator__S0_
-        {
-            internal __IntPtr __begin_node_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair____N_std_N___1_S___tree_end_node_____N_std_N___1_S___tree_node_base___v___N_std_N___1_S_allocator____N_std_N___1_S___tree_node____N_std_N___1_S___value_type____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration_S3_ __pair1_;
-            internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair__l___N_std_N___1_S___map_value_compare____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S___value_type__S1_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_less__S1__Vb1 __pair3_;
+            internal global::Std.RbTree.RbTreeImpl.__Internalc__N_std_S__Rb_tree____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S_pair__1S0_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S__Select1st__S3____N_std_S_less__S0____N_std_S_allocator__S3__S__Rb_tree_impl__S7__Vb1 _M_impl;
         }
     }
 
@@ -42506,10 +41958,10 @@ namespace Std
 {
     namespace Map
     {
-        [StructLayout(LayoutKind.Sequential, Size = 12)]
-        public unsafe partial struct __Internalc__N_std_N___1_S_map____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S_less__S0____N_std_N___1_S_allocator____N_std_N___1_S_pair__1S0__S3_
+        [StructLayout(LayoutKind.Sequential, Size = 48)]
+        public unsafe partial struct __Internalc__N_std_S_map____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_
         {
-            internal global::Std.Tree.__Internalc__N_std_N___1_S___tree____N_std_N___1_S___value_type____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_N___1_S___map_value_compare__S1__S0____N_std_N___1_S_less__S1__Vb1___N_std_N___1_S_allocator__S0_ __tree_;
+            internal global::Std.RbTree.__Internalc__N_std_S__Rb_tree____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S_pair__1S0_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S__Select1st__S3____N_std_S_less__S0____N_std_S_allocator__S3_ _M_t;
         }
     }
 }

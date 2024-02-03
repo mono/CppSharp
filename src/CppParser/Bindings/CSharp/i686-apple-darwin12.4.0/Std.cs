@@ -36,6 +36,18 @@ namespace Std
 
 namespace Std
 {
+}
+
+namespace Std
+{
+}
+
+namespace Std
+{
+}
+
+namespace Std
+{
     namespace CompressedPair
     {
         [StructLayout(LayoutKind.Sequential, Size = 12)]
@@ -56,7 +68,10 @@ namespace Std
             internal __IntPtr __value_;
         }
     }
+}
 
+namespace Std
+{
     namespace Allocator
     {
         [StructLayout(LayoutKind.Sequential, Size = 1)]
