@@ -448,7 +448,7 @@ function build_llvm(llvm_build)
 			if os.host() == "linux" then
 				local host_arch = unix_host_architecture()
 				if host_arch ~= "aarch64" then
-					options = "" 
+					options = options .. "" 
 						.. ' -DCMAKE_SYSTEM_NAME=Linux'
 						.. ' -DCMAKE_SYSTEM_PROCESSOR=aarch64'
 						.. ' -DCMAKE_C_COMPILER=/usr/bin/aarch64-linux-gnu-gcc'
@@ -464,7 +464,7 @@ function build_llvm(llvm_build)
 			if os.host() == "macosx" then
 				local host_arch = unix_host_architecture()
 				if host_arch ~= "arm64" then
-					options = "" 
+					options = options .. "" 
 						.. ' -DCMAKE_SYSTEM_NAME=Darwin'
 						.. ' -DCMAKE_SYSTEM_PROCESSOR=arm64'
 						.. ' -DCMAKE_C_COMPILER_TARGET=arm64-apple-darwin21.6.0'
