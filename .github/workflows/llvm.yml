@@ -27,6 +27,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: lukka/get-cmake@latest
 
+      - name: Install Aarch64 GCC for cross compile
+        run: sudo apt update && sudo apt install -y g++-aarch64-linux-gnu gcc-aarch64-linux-gnu
+
       - name: Clone LLVM
         shell: bash
         run: build/build.sh clone_llvm
