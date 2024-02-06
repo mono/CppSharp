@@ -25,10 +25,10 @@ namespace Std
         [StructLayout(LayoutKind.Sequential, Size = 1)]
         public unsafe partial struct __Internal
         {
-            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSaIcEC2Ev", CallingConvention = __CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSaIcEC2Ev", CallingConvention = __CallingConvention.Winapi)]
             internal static extern void ctorc__N_std_S_allocator__C(__IntPtr __instance);
 
-            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSaIcED2Ev", CallingConvention = __CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSaIcED2Ev", CallingConvention = __CallingConvention.Winapi)]
             internal static extern void dtorc__N_std_S_allocator__C(__IntPtr __instance);
         }
     }
@@ -347,10 +347,10 @@ namespace Std
             [FieldOffset(16)]
             internal ulong _M_allocated_capacity;
 
-            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC2Ev", CallingConvention = __CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC2Ev", CallingConvention = __CallingConvention.Winapi)]
             internal static extern void ctorc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C(__IntPtr __instance);
 
-            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEED2Ev", CallingConvention = __CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEED2Ev", CallingConvention = __CallingConvention.Winapi)]
             internal static extern void dtorc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C(__IntPtr __instance);
         }
 
@@ -495,10 +495,10 @@ namespace Std
     {
         public partial struct __Internal
         {
-            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE6assignEPKc", CallingConvention = __CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE6assignEPKc", CallingConvention = __CallingConvention.Winapi)]
             internal static extern __IntPtr Assign(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string __s);
 
-            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNKSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE4dataEv", CallingConvention = __CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNKSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE4dataEv", CallingConvention = __CallingConvention.Winapi)]
             internal static extern __IntPtr Data(__IntPtr __instance);
         }
 
