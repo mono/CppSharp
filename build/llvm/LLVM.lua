@@ -438,9 +438,43 @@ function build_llvm(llvm_build)
 		local options = os.ishost("macosx") and
 			"-DLLVM_ENABLE_LIBCXX=true" or ""
 		local is32bits = target_architecture() == "x86"
+		local targetIsArm64 = target_architecture() == "arm64"
+
 		if is32bits then
 			options = options .. (is32bits and " -DLLVM_BUILD_32_BITS=true" or "")
 		end
+
+		if targetIsArm64 then
+			if os.host() == "linux" then
+				local host_arch = unix_host_architecture()
+				if host_arch ~= "aarch64" then
+					options = options .. "" 
+						.. ' -DCMAKE_SYSTEM_NAME=Linux'
+						.. ' -DCMAKE_SYSTEM_PROCESSOR=aarch64'
+						.. ' -DCMAKE_C_COMPILER=/usr/bin/aarch64-linux-gnu-gcc'
+						.. ' -DCMAKE_CXX_COMPILER=/usr/bin/aarch64-linux-gnu-g++'
+						.. ' -DCMAKE_ASM_COMPILER=/usr/bin/aarch64-linux-gnu-as'
+						.. ' -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER'
+						.. ' -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY'
+						.. ' -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY'
+						.. ' -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY'
+						.. ' ' .. options
+				end
+			end
+			if os.host() == "macosx" then
+				local host_arch = unix_host_architecture()
+				if host_arch ~= "arm64" then
+					options = options .. "" 
+						.. ' -DCMAKE_SYSTEM_NAME=Darwin'
+						.. ' -DCMAKE_SYSTEM_PROCESSOR=arm64'
+						.. ' -DCMAKE_C_COMPILER_TARGET=arm64-apple-darwin21.6.0'
+						.. ' -DCMAKE_CXX_COMPILER_TARGET=arm64-apple-darwin21.6.0'
+						.. ' -DCMAKE_ASM_COMPILER_TARGET=arm64-apple-darwin21.6.0'
+						.. ' ' .. options
+				end
+			end
+		end
+
 
 		cmake("Ninja", conf, llvm_build, options)
 		ninja('"' .. llvm_build .. '"')
