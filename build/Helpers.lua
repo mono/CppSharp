@@ -253,11 +253,11 @@ function AddPlatformSpecificFiles(folder, filename)
       files { path.join(folder, "i686-pc-win32-msvc", filename) }
   elseif os.istarget("macosx") then
     filter { "architecture:arm64" }
-      files { path.join(folder, "arm64-apple-darwin12.4.0", filename) }
+      files { path.join(folder, "arm64-apple-darwin21.4.0", filename) }
     filter { "architecture:x86_64" }
-      files { path.join(folder, "x86_64-apple-darwin12.4.0", filename) }
+      files { path.join(folder, "x86_64-apple-darwin21.4.0", filename) }
     filter {"architecture:x86" }
-      files { path.join(folder, "i686-apple-darwin12.4.0", filename) }
+      files { path.join(folder, "i686-apple-darwin21.4.0", filename) }
   elseif os.istarget("linux") then
     filter { "architecture:arm64" }
       files { path.join(folder, "arm64-linux-gnu" .. (UseCxx11ABI() and "-cxx11abi" or ""), filename) }
