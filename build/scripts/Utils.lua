@@ -112,6 +112,11 @@ function download(url, file, try)
   return res, code
 end
 
+function unix_host_architecture()
+  result, errorCode = os.outputof("uname -m")
+  return result
+end
+
 --
 -- Allows copying directories.
 -- It uses the premake patterns (**=recursive match, *=file match)
