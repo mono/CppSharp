@@ -461,7 +461,7 @@ function build_llvm(llvm_build)
 						.. ' ' .. options
 				end
 			end
-			if os.host() == "macos" then
+			if os.host() == "macosx" then
 				local host_arch = unix_host_architecture()
 				if host_arch ~= "arm64" then
 					options = "" 
