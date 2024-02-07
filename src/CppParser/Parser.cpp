@@ -739,8 +739,6 @@ void Parser::WalkVTable(const clang::CXXRecordDecl* RD, Class* C)
         C->layout->layout = WalkVTableLayout(VTLayout);
         break;
     }
-    default:
-        llvm_unreachable("Unsupported C++ ABI kind");
     }
 }
 
