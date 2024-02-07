@@ -23,7 +23,8 @@ enum class ArchType
 {
     UnknownArch,
     x86,
-    x86_64
+    x86_64,
+    ARM64
 };
 
 class CS_API NativeLibrary

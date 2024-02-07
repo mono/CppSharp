@@ -4532,6 +4532,8 @@ static ArchType ConvertArchType(unsigned int archType)
         return ArchType::x86;
     case llvm::Triple::ArchType::x86_64:
         return ArchType::x86_64;
+    case llvm::Triple::ArchType::aarch64:
+        return ArchType::ARM64;
     }
     return ArchType::UnknownArch;
 }
