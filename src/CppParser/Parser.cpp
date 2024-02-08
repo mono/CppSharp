@@ -234,7 +234,7 @@ ConvertToClangTargetCXXABI(CppSharp::CppParser::AST::CppAbi abi)
     case CppSharp::CppParser::AST::CppAbi::ARM:
         return TargetCXXABI::GenericARM;
     case CppSharp::CppParser::AST::CppAbi::AArch64:
-        return TargetCXXABI::GenericARM;
+        return TargetCXXABI::GenericAArch64;
     case CppSharp::CppParser::AST::CppAbi::iOS:
         return TargetCXXABI::iOS;
     case CppSharp::CppParser::AST::CppAbi::AppleARM64:
@@ -731,7 +731,7 @@ void Parser::WalkVTable(const clang::CXXRecordDecl* RD, Class* C)
         }
         break;
     }
-    case TargetCXXABI::GenericItanium:
+    default:
     {
         ItaniumVTableContext VTContext(AST);
 
@@ -739,8 +739,6 @@ void Parser::WalkVTable(const clang::CXXRecordDecl* RD, Class* C)
         C->layout->layout = WalkVTableLayout(VTLayout);
         break;
     }
-    default:
-        llvm_unreachable("Unsupported C++ ABI kind");
     }
 }
 
