@@ -54,9 +54,7 @@ Make sure to use the revisions specified below, or you will most likely get comp
 
 Required LLVM/Clang commits:
 
-[LLVM: see /build/llvm/LLVM-commit.](https://github.com/mono/CppSharp/tree/master/build/LLVM-commit)
-
-[Clang: see /build/Clang-commit.](https://github.com/mono/CppSharp/tree/master/build/Clang-commit)
+[LLVM: see /build/llvm/LLVM-commit.](https://github.com/mono/CppSharp/tree/master/build/llvm/LLVM-commit)
 
 To change to the revisions specified above you can run the following commands:
 
