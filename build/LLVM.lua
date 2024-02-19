@@ -9,6 +9,11 @@ local LLVMRootDirRelease = ""
 
 require "llvm/LLVM"
 
+newoption {
+  trigger = "vs",
+  description = "Override Visual Studio version with particular version"
+}
+
 function SearchLLVM()
   LLVMRootDirDebug = builddir .. "/llvm/" .. get_llvm_package_name(nil, "Debug")
   LLVMRootDirRelease = builddir .. "/llvm/" .. get_llvm_package_name()
@@ -20,7 +25,7 @@ function SearchLLVM()
   elseif os.isdir(LLVMRootDir) then
     print("Using LLVM build: " .. LLVMRootDir)
   else
-    error("Error finding an LLVM build")
+    error("Error finding an LLVM build. Tried: " .. LLVMRootDirDebug .. " and " .. LLVMRootDirRelease)
   end
 end
 
