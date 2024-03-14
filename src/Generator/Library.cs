@@ -202,8 +202,7 @@ namespace CppSharp
             }
             catch (Exception ex)
             {
-                // TODO: This should just throw, but we have a pre-existing behavior that expects malformed
-                // macro expressions to default to 0, see CSharp.h (MY_MACRO_TEST2_0), so do it for now.
+                // TODO: There should be a toggle to just throw here instead.
 
                 // Like other paths, we can however, write a diagnostic message to the console.
 
