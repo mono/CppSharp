@@ -103,22 +103,29 @@ namespace CppSharp
         /// as well as all previously discovered <see cref="Enumeration.Items"/>. The intent is to
         /// preserve sign information about the values held in <paramref name="enum"/>.
         /// </remarks>
-        public static Enumeration.Item GenerateEnumItemFromMacro(this Enumeration @enum,
-            MacroDefinition macro)
+        public static bool TryGenerateEnumItemFromMacro(this Enumeration @enum,
+            MacroDefinition macro, out Enumeration.Item item)
         {
-            var (value, type) = ParseEnumItemMacroExpression(macro, @enum);
+            if (!TryParseEnumItemMacroExpression(macro, @enum, out var result))
+            {
+                item = null;
+                return false;
+            }
+
+            var (value, type) = result;
             if (type > @enum.BuiltinType.Type)
             {
                 @enum.BuiltinType = new BuiltinType(type);
                 @enum.Type = @enum.BuiltinType;
             }
-            return new Enumeration.Item
+            item = new Enumeration.Item
             {
                 Name = macro.Name,
                 Expression = macro.Expression,
                 Value = value,
                 Namespace = @enum
             };
+            return true;
         }
 
         static object EvaluateEnumExpression(string expr, Enumeration @enum)
@@ -154,7 +161,7 @@ namespace CppSharp
         /// evaluator biases towards returning <see cref="int"/> values: it doesn't attempt to
         /// discover that a value could be stored in a <see cref="byte"/>.
         /// </returns>
-        static (ulong value, PrimitiveType type) ParseEnumItemMacroExpression(MacroDefinition macro, Enumeration @enum)
+        static bool TryParseEnumItemMacroExpression(MacroDefinition macro, Enumeration @enum, out (ulong value, PrimitiveType type) item)
         {
             var expression = macro.Expression;
 
@@ -171,30 +178,31 @@ namespace CppSharp
                 // Verify we have some sort of integer type. Enums can have negative values: record
                 // that fact so that we can set the underlying primitive type correctly in the enum
                 // item.
-                switch (System.Type.GetTypeCode(eval.GetType()))
+                item = System.Type.GetTypeCode(eval.GetType()) switch
                 {
                     // Must unbox eval which is typed as object to be able to cast it to a ulong.
-                    case TypeCode.SByte: return ((ulong)(sbyte)eval, PrimitiveType.SChar);
-                    case TypeCode.Int16: return ((ulong)(short)eval, PrimitiveType.Short);
-                    case TypeCode.Int32: return ((ulong)(int)eval, PrimitiveType.Int);
-                    case TypeCode.Int64: return ((ulong)(long)eval, PrimitiveType.LongLong);
+                    TypeCode.SByte => ((ulong)(sbyte)eval, PrimitiveType.SChar),
+                    TypeCode.Int16 => ((ulong)(short)eval, PrimitiveType.Short),
+                    TypeCode.Int32 => ((ulong)(int)eval, PrimitiveType.Int),
+                    TypeCode.Int64 => ((ulong)(long)eval, PrimitiveType.LongLong),
 
-                    case TypeCode.Byte: return ((byte)eval, PrimitiveType.UChar);
-                    case TypeCode.UInt16: return ((ushort)eval, PrimitiveType.UShort);
-                    case TypeCode.UInt32: return ((uint)eval, PrimitiveType.UInt);
-                    case TypeCode.UInt64: return ((ulong)eval, PrimitiveType.ULongLong);
+                    TypeCode.Byte => ((byte)eval, PrimitiveType.UChar),
+                    TypeCode.UInt16 => ((ushort)eval, PrimitiveType.UShort),
+                    TypeCode.UInt32 => ((uint)eval, PrimitiveType.UInt),
+                    TypeCode.UInt64 => ((ulong)eval, PrimitiveType.ULongLong),
 
-                    case TypeCode.Char: return ((char)eval, PrimitiveType.UShort);
+                    TypeCode.Char => ((char)eval, PrimitiveType.UShort),
                     // C++ allows booleans as enum values - they're translated to 1, 0.
-                    case TypeCode.Boolean: return ((bool)eval ? 1UL : 0UL, PrimitiveType.UChar);
+                    TypeCode.Boolean => ((bool)eval ? 1UL : 0UL, PrimitiveType.UChar),
 
-                    default: throw new Exception($"Expression {expression} is not a valid expression type for an enum");
-                }
+                    _ => throw new Exception($"Expression {expression} is not a valid expression type for an enum")
+                };
+
+                return true;
             }
             catch (Exception ex)
             {
-                // TODO: This should just throw, but we have a pre-existing behavior that expects malformed
-                // macro expressions to default to 0, see CSharp.h (MY_MACRO_TEST2_0), so do it for now.
+                // TODO: There should be a toggle to just throw here instead.
 
                 // Like other paths, we can however, write a diagnostic message to the console.
 
@@ -202,7 +210,8 @@ namespace CppSharp
                 Diagnostics.Warning($"Unable to translate macro '{macro.Name}' to en enum value: {ex.Message}");
                 Diagnostics.PopIndent();
 
-                return (0, PrimitiveType.Int);
+                item = default;
+                return false;
             }
         }
 
@@ -311,16 +320,18 @@ namespace CppSharp
                 if (@enum.Items.Exists(it => it.Name == macro.Name))
                     continue;
 
-                var item = @enum.GenerateEnumItemFromMacro(macro);
-                @enum.AddItem(item);
-                macro.Enumeration = @enum;
+                if (@enum.TryGenerateEnumItemFromMacro(macro, out var item))
+                {
+                    @enum.AddItem(item);
+                    macro.Enumeration = @enum;
+                }
             }
 
             if (@enum.Items.Count <= 0)
                 return @enum;
 
             // The value of @enum.BuiltinType has been adjusted on the fly via
-            // GenerateEnumItemFromMacro. However, its notion of PrimitiveType corresponds with
+            // TryGenerateEnumItemFromMacro. However, its notion of PrimitiveType corresponds with
             // what the ExpressionEvaluator returns. In particular, the expression "1" will result
             // in PrimitiveType.Int from the expression evaluator. Narrow the type to account for
             // types narrower than int.
