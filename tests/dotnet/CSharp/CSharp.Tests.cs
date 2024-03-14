@@ -1527,8 +1527,8 @@ public unsafe class CSharpTests
         var a = (MyMacroTest2Enum)1;
         var b = (MyMacroTest2Enum)0x2;
         var c = (MyMacroTest2Enum)(1 << 2);
-        var d = (MyMacroTest2Enum)(b | c);
-        var e = (MyMacroTest2Enum)(b | c | d);
+        var d = (MyMacroTest2Enum)(a | b);
+        var e = (MyMacroTest2Enum)(a | b | c);
         var f = (MyMacroTest2Enum)(1 << 3);
         var g = (MyMacroTest2Enum)((1 << 4) - 1);
         Assert.IsTrue(a == MyMacroTest2Enum.MY_MACRO_TEST2_1 && b == MyMacroTest2Enum.MY_MACRO_TEST2_2 &&
