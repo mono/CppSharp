@@ -129,22 +129,22 @@ download_premake()
 
 download_llvm()
 {
-  "$builddir/premake.sh" --file="$builddir/llvm/LLVM.lua" download_llvm --os=$os --arch=$platform --configuration=$configuration
+  "$builddir/premake.sh" --file="$builddir/llvm/LLVM.lua" download_llvm --vs=$vs --os=$os --arch=$platform --configuration=$configuration
 }
 
 clone_llvm()
 {
-  "$builddir/premake.sh" --file="$builddir/llvm/LLVM.lua" clone_llvm --os=$os --arch=$platform --configuration=$configuration
+  "$builddir/premake.sh" --file="$builddir/llvm/LLVM.lua" clone_llvm --vs=$vs --os=$os --arch=$platform --configuration=$configuration
 }
 
 build_llvm()
 {
-  "$builddir/premake.sh" --file="$builddir/llvm/LLVM.lua" build_llvm --os=$os --arch=$platform --configuration=$configuration
+  "$builddir/premake.sh" --file="$builddir/llvm/LLVM.lua" build_llvm --vs=$vs --os=$os --arch=$platform --configuration=$configuration
 }
 
 package_llvm()
 {
-  "$builddir/premake.sh" --file="$builddir/llvm/LLVM.lua" package_llvm --os=$os --arch=$platform --configuration=$configuration
+  "$builddir/premake.sh" --file="$builddir/llvm/LLVM.lua" package_llvm --vs=$vs --os=$os --arch=$platform --configuration=$configuration
 }
 
 detect_os()
