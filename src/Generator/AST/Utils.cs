@@ -36,10 +36,11 @@ namespace CppSharp.AST
             if (method.IsDestructor)
                 return true;
 
-            if (method.OperatorKind == CXXOperatorKind.Equal)
+            if (method.Access == AccessSpecifier.Private && !method.IsOverride && !method.IsExplicitlyGenerated)
                 return true;
 
-            if (method.Access == AccessSpecifier.Private && !method.IsOverride && !method.IsExplicitlyGenerated)
+            // operator= does not make sense on static classes, but might be generated anyway, so ignore here
+            if (method.OperatorKind == CXXOperatorKind.Equal && @class != null && @class.IsStatic)
                 return true;
 
             // Ignore copy constructor if a base class don't has or has a private copy constructor
