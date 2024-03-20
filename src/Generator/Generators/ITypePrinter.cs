@@ -36,6 +36,14 @@ namespace CppSharp.AST
         public MarshalKind MarshalKind;
         public Declaration Declaration;
         public Parameter Parameter;
+        public Property Property;
+        private Field field;
+        public Field Field
+        {
+            get => field ?? Property.Field;
+            set => field = value;
+        }
+        public Method Method;
         public Type Type;
 
         public TypePrinterContext() : this(TypePrinterContextKind.Normal)
