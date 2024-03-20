@@ -1,3 +1,5 @@
+<img src="docs/logo.svg" width="128">
+
 CppSharp is a tool and set of libraries which facilitates the usage of native C/C++ code
 with the .NET ecosystem.
 

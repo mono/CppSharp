@@ -167,7 +167,7 @@ public unsafe class CSharpTests
     {
         using (var f = new Foo())
         {
-            foreach (var pod in new[] { f.SmallPodCdecl, f.SmallPodStdcall, f.SmallPodThiscall })
+            foreach (var pod in new[] { f.SmallPod_cdecl, f.SmallPod_stdcall, f.SmallPod_thiscall })
             {
                 Assert.That(pod.A, Is.EqualTo(10000));
                 Assert.That(pod.B, Is.EqualTo(40000));

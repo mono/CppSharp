@@ -4,8 +4,8 @@ class Class
 {
 public:
     void ReturnsVoid() {}
-    int ReturnsInt() { return 0; }
-    Class* PassAndReturnsClassPtr(Class* obj) { return obj; }
+    int ReturnsInt() const { return 0; }
+    Class *PassAndReturnsClassPtr(Class *obj) { return obj; }
 };
 
 class ClassWithField
@@ -13,8 +13,19 @@ class ClassWithField
 public:
     ClassWithField() : Field(10) {}
     int Field;
-    int ReturnsField() { return Field; }
+    int ReturnsField() const { return Field; }
 };
+
+class ClassWithProperty
+{
+public:
+    ClassWithProperty() : Field(10) {}
+    int GetField() const { return Field; }
+    void SetField(int value) { Field = value; }
+private:
+    int Field;
+};
+
 
 class ClassWithOverloads
 {
@@ -33,7 +44,6 @@ public:
 
 class ClassWithExternalInheritance : public ClassFromAnotherUnit
 {
-
 };
 
 void FunctionPassClassByRef(Class* klass) { }
