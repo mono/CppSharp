@@ -27,16 +27,34 @@ namespace CppSharp
             return toolchainPath;
         }
 
+        public static string GetXcodeSDKPath() {
+            return Path.Combine(
+                GetXcodePath(),
+                "Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+            );
+        }
+
         public static string GetXcodeCppIncludesFolder()
         {
             var toolchainPath = GetXcodeToolchainPath();
+            var sdkPath = GetXcodeSDKPath();
 
-            var includePath = Path.Combine(toolchainPath, "usr/include/c++/v1");
+            var includePathSuffix = "usr/include/c++/v1";
+            var oldIncludePath = Path.Combine(toolchainPath, includePathSuffix);
+            var newIncludePath = Path.Combine(sdkPath, includePathSuffix);
 
-            if (includePath == null || !Directory.Exists(includePath))
-                throw new Exception($"Could not find a valid C++ include folder: {includePath}");
+            if (newIncludePath != null && Directory.Exists(newIncludePath))
+            {
+                return newIncludePath;
+            }
 
-            return includePath;
+            if (oldIncludePath != null && Directory.Exists(oldIncludePath))
+            {
+                return oldIncludePath;
+            }
+
+            throw new Exception(
+                $"Could not find a valid C++ include folder in either {oldIncludePath} or {newIncludePath}");
         }
 
         public static string GetXcodeBuiltinIncludesFolder()
