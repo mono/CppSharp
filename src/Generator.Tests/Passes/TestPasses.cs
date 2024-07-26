@@ -452,6 +452,17 @@ namespace CppSharp.Generator.Tests.Passes
             Assert.AreEqual(AccessSpecifier.Protected, @protected.Access);
         }
 
+        [Test]
+        public void TestGetterSetterToPropertyPassHandlesBaseClassesFirst()
+        {
+            var @class = AstContext.Class("TestOverridingVirtualPropertyInNamespacedClass");
+
+            passBuilder.AddPass(new GetterSetterToPropertyPass());
+            passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
+
+            Assert.IsNotEmpty(@class.Properties);
+        }
+
         private PassBuilder<TranslationUnitPass> passBuilder;
     }
 }
