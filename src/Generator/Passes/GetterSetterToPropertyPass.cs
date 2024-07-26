@@ -40,7 +40,7 @@ namespace CppSharp.Passes
         }
 
         public GetterSetterToPropertyPass()
-            => VisitOptions.ResetFlags(VisitFlags.ClassTemplateSpecializations);
+            => VisitOptions.ResetFlags(VisitFlags.ClassBases | VisitFlags.ClassTemplateSpecializations);
 
         public override bool VisitClassDecl(Class @class)
         {

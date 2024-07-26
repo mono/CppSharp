@@ -1282,6 +1282,11 @@ int HasConflictWithAbstractProperty::conflictWithProperty()
     return 0;
 }
 
+int TestOverrideOfPropertyInNamespacedClass::property()
+{
+	return 0;
+}
+
 const char* HasVirtualTakesReturnsProblematicTypes::virtualTakesAndReturnsString(const char* c)
 {
     return c;

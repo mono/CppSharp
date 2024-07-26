@@ -1029,6 +1029,19 @@ public:
     virtual int getConflictWithProperty() = 0;
 };
 
+// https://github.com/mono/CppSharp/issues/1283
+namespace NamespaceWithVirtualPropertyClass {
+    class DLL_API HasOverriddenPropertyInNamespacedClass {
+    public:
+        virtual int property() = 0;
+    };
+}
+
+class DLL_API TestOverrideOfPropertyInNamespacedClass : public NamespaceWithVirtualPropertyClass::HasOverriddenPropertyInNamespacedClass {
+public:
+    virtual int property() override;
+};
+
 template <typename T>
 class lowerCase
 {
