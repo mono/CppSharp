@@ -141,16 +141,3 @@ class TestExtractInterfacePass
 public:
     void DoSomething();
 };
-
-// https://github.com/mono/CppSharp/issues/1283
-namespace NamespaceWithVirtualPropertyClass {
-    class TestNamespacedClassWithVirtualProperty {
-    public:
-        virtual int property();
-    };
-}
-
-class TestOverridingVirtualPropertyInNamespacedClass : public NamespaceWithVirtualPropertyClass::TestNamespacedClassWithVirtualProperty {
-public:
-    virtual int property() override;
-};
