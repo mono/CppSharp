@@ -1031,13 +1031,13 @@ public:
 
 // https://github.com/mono/CppSharp/issues/1283
 namespace NamespaceWithVirtualPropertyClass {
-    class DLL_API HasOverridenPropertyInNamespacedClass {
+    class DLL_API HasOverriddenPropertyInNamespacedClass {
     public:
         virtual int property() = 0;
     };
 }
 
-class DLL_API TestOverrideOfPropertyInNamespacedClass : public NamespaceWithVirtualPropertyClass::HasOverridenPropertyInNamespacedClass {
+class DLL_API TestOverrideOfPropertyInNamespacedClass : public NamespaceWithVirtualPropertyClass::HasOverriddenPropertyInNamespacedClass {
 public:
     virtual int property() override;
 };
