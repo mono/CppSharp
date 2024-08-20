@@ -417,12 +417,12 @@ namespace CppSharp
             }
 
             new CleanUnitPass { Context = driver.Context }.VisitASTContext(driver.Context.ASTContext);
-            foreach (var module in options.Modules.Where(
-                         m => m != options.SystemModule && !m.Units.GetGenerated().Any()))
+            options.Modules.RemoveAll(m =>
             {
-                Diagnostics.Message($"Removing module {module} because no translation units are generated...");
-                options.Modules.Remove(module);
-            }
+                bool result = m != options.SystemModule && !m.Units.GetGenerated().Any();
+                if (result) Diagnostics.Message($"Removing module {m} because no translation units are generated...");
+                return result;
+            });
 
             if (!options.Quiet)
                 Diagnostics.Message("Processing code...");
