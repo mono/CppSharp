@@ -2003,7 +2003,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
 
             if (hasReturn && isPrimitive && !isSetter)
             {
-                WriteLine($"return { Helpers.ReturnIdentifier};");
+                WriteLine($"return {Helpers.ReturnIdentifier};");
                 return;
             }
 
@@ -2322,8 +2322,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                 @class.HasNonTrivialDestructor && !@class.IsAbstract)
             {
                 NativeLibrary library;
-                if (!Options.CheckSymbols ||
-                    Context.Symbols.FindLibraryBySymbol(dtor.Mangled, out library))
+                if (!Options.CheckSymbols || Context.Symbols.FindLibraryBySymbol(dtor.Mangled, out library))
                 {
                     // Normally, calling the native dtor should be controlled by whether or not we
                     // we own the underlying instance. (i.e. Helpers.OwnsNativeInstanceIdentifier).
@@ -3559,12 +3558,24 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                 return;
 
             PushBlock(BlockKind.InternalsClassMethod);
-            var callConv = function.CallingConvention.ToInteropCallConv();
 
-            WriteLine("[SuppressUnmanagedCodeSecurity, DllImport(\"{0}\", EntryPoint = \"{1}\", CallingConvention = __CallingConvention.{2})]",
-                GetLibraryOf(function),
-                function.Mangled,
-                callConv);
+            string callConv = "";
+            string libImportType = "LibraryImport";
+            string functionKeyword = "partial";
+
+            if (Options.LibraryImportType == LibraryImportType.DllImport)
+            {
+                callConv = $", CallingConvention = CallingConvention.{function.CallingConvention.ToInteropCallConv()}";
+                libImportType = "DllImport";
+                functionKeyword = "extern";
+            }
+
+            WriteLine("[SuppressUnmanagedCodeSecurity, {0}(\"{1}\", EntryPoint = \"{2}\"{3})]",
+            libImportType,
+            GetLibraryOf(function),
+            function.Mangled,
+            callConv
+            );
 
             if (function.ReturnType.Type.IsPrimitiveType(PrimitiveType.Bool))
                 WriteLine("[return: MarshalAs(UnmanagedType.I1)]");
@@ -3572,7 +3583,9 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
             TypePrinterResult retType;
             var @params = GatherInternalParams(function, out retType);
 
-            WriteLine("internal static extern {0} {1}({2});", retType,
+            WriteLine("internal static {0} {1} {2}({3});",
+                      functionKeyword,
+                      retType,
                       GetFunctionNativeIdentifier(function),
                       string.Join(", ", @params));
             PopBlock(NewLineKind.BeforeNextBlock);

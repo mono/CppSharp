@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Versioning;
 using System.Text;
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Passes;
-
+using Module = CppSharp.AST.Module;
 namespace CppSharp
 {
     public enum GenerationOutputMode
@@ -15,10 +17,28 @@ namespace CppSharp
         FilePerUnit
     }
 
+
+    /// <summary>
+    /// Specifies the type of interop attribute to be used in the generated bindings.
+    /// </summary>
+    public enum LibraryImportType
+    {
+        /// <summary>
+        /// Represents the <see cref="System.Runtime.InteropServices.DllImportAttribute"/> attribute,
+        /// </summary>
+        DllImport,
+
+        /// <summary>
+        /// Represents the <see cref="System.Runtime.InteropServices.LibraryImportAttribute"/> attribute,
+        /// </summary>
+        LibraryImport
+    }
+
     public class DriverOptions
     {
         public DriverOptions()
         {
+
             OutputDir = Directory.GetCurrentDirectory();
 
             SystemModule = new Module("Std") { OutputNamespace = string.Empty };
@@ -84,6 +104,14 @@ namespace CppSharp
 
         public string OutputDir;
 
+        /// <summary>
+        /// C# only: Specifies the type of interop attribute to be used in the generated bindings.
+        /// Default value is dependent on target framework version
+        /// </summary>
+
+        public LibraryImportType LibraryImportType { get; set; } = GetLibraryImportType();
+
+
         public bool OutputInteropIncludes;
         public bool GenerateFunctionTemplates;
         /// <summary>
@@ -111,7 +139,7 @@ namespace CppSharp
         /// </summary>
         public bool GenerateObjectOverrides;
 
-        //List of include directories that are used but not generated
+        // List of include directories that are used but not generated
         public List<string> NoGenIncludeDirs;
 
         /// <summary>
@@ -261,6 +289,22 @@ namespace CppSharp
 
         public TranslationUnitPassCallBack TranslationUnitPassPostCallBack { get; set; }
 
+       internal static LibraryImportType GetLibraryImportType()
+        {
+
+            var targetFrameworkInfo = Assembly.GetCallingAssembly()
+            .GetCustomAttribute<TargetFrameworkAttribute>()
+            .FrameworkName.Split(",");
+
+            var targetFrameworkVer =  float.Parse(targetFrameworkInfo[1].Split("Version=")[1].Trim('v'));
+             if (targetFrameworkVer >= 7.0) 
+             {
+                return LibraryImportType.LibraryImport;
+             } 
+             
+             return LibraryImportType.DllImport;
+        }
+
         #endregion
     }
 
@@ -269,6 +313,7 @@ namespace CppSharp
         public InvalidOptionException(string message) :
             base(message)
         {
+        
         }
     }
 }
