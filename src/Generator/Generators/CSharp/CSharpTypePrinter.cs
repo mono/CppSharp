@@ -115,7 +115,7 @@ namespace CppSharp.Generators.CSharp
             if (arrayType.IsPointerToPrimitiveType(PrimitiveType.Char))
             {
                 var prefix = ContextKind == TypePrinterContextKind.Managed ? string.Empty :
-                    "[MarshalAs(UnmanagedType.LPArray)] ";
+                    "[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] ";
                 return $"{prefix}string[]";
             }
 
@@ -502,8 +502,7 @@ $"[{Context.TargetInfo.LongDoubleWidth}]");
         public override TypePrinterResult VisitClassDecl(Class @class)
         {
             if (ContextKind == TypePrinterContextKind.Native)
-                return $@"{VisitDeclaration(@class.OriginalClass ?? @class)}.{
-                    Helpers.InternalStruct}{Helpers.GetSuffixForInternal(@class)}";
+                return $@"{VisitDeclaration(@class.OriginalClass ?? @class)}.{Helpers.InternalStruct}{Helpers.GetSuffixForInternal(@class)}";
 
             TypePrinterResult printed = VisitDeclaration(@class);
             if (@class.IsTemplate)
@@ -606,8 +605,12 @@ $"[{Context.TargetInfo.LongDoubleWidth}]");
         {
             var typeBuilder = new StringBuilder();
             if (param.Type.Desugar().IsPrimitiveType(PrimitiveType.Bool)
-                && MarshalKind == MarshalKind.GenericDelegate)
+                && (!Options.UseDllImport || MarshalKind == MarshalKind.GenericDelegate))
+            {// LibraryImport requires specific marshalling for bool
                 typeBuilder.Append("[MarshalAs(UnmanagedType.I1)] ");
+                Console.WriteLine($"IsLibraryImport:{!Options.UseDllImport}");
+                ((List<Module>)Options.Modules).GetEnumerator().((module)=>Console.WriteLine($"Current Bindings being generated: {module.LibraryName}"));
+            }
             var printedType = param.Type.Visit(this, param.QualifiedType.Qualifiers);
             typeBuilder.Append(printedType);
             var type = typeBuilder.ToString();
@@ -758,7 +761,7 @@ $"[{Context.TargetInfo.LongDoubleWidth}]");
                 case 64:
                     return new CILType(typeof(ulong));
                 default:
-                    throw new System.NotSupportedException();
+                    throw new NotSupportedException();
             }
         }
 

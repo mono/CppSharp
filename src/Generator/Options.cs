@@ -110,7 +110,8 @@ namespace CppSharp
         /// </summary>
 
         public LibraryImportType LibraryImportType { get; set; } = GetLibraryImportType();
-
+        
+        public bool UseDllImport => LibraryImportType == LibraryImportType.DllImport;
 
         public bool OutputInteropIncludes;
         public bool GenerateFunctionTemplates;
@@ -295,13 +296,13 @@ namespace CppSharp
             var targetFrameworkInfo = Assembly.GetCallingAssembly()
             .GetCustomAttribute<TargetFrameworkAttribute>()
             .FrameworkName.Split(",");
-
-            var targetFrameworkVer =  float.Parse(targetFrameworkInfo[1].Split("Version=")[1].Trim('v'));
+            
+            if (float.TryParse(targetFrameworkInfo[1].Split("Version=")[1].Trim('v'), out var targetFrameworkVer)){
              if (targetFrameworkVer >= 7.0) 
              {
                 return LibraryImportType.LibraryImport;
              } 
-             
+             }
              return LibraryImportType.DllImport;
         }
 

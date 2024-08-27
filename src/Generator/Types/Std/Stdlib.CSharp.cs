@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -100,21 +102,18 @@ namespace CppSharp.Types.Std.CSharp
             }
 
             var (encoding, _) = GetEncoding();
-
             if (encoding == Encoding.ASCII || encoding == Encoding.Default)
                 // This is not really right. ASCII is 7-bit only - the 8th bit is stripped; ANSI has
                 // multi-byte support via a code page. MarshalAs(UnmanagedType.LPStr) marshals as ANSI.
                 // Perhaps we need a CppSharp.Runtime.ASCIIMarshaller?
                 return new CustomType("[MarshalAs(UnmanagedType.LPStr)] string");
-            else if (encoding == Encoding.UTF8)
-                return new CustomType("[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string");
+            else if (encoding == Encoding.UTF8 || encoding == Encoding.UTF32)
+                return new CustomType($"{(Context.Options.UseDllImport ? $"[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof({(encoding == Encoding.UTF32 ? "CppSharp.Runtime.UTF32Marshaller" : "CppSharp.Runtime.UTF8Marshaller")}))] " : string.Empty)}string");
             else if (encoding == Encoding.Unicode || encoding == Encoding.BigEndianUnicode)
                 return new CustomType("[MarshalAs(UnmanagedType.LPWStr)] string");
-            else if (encoding == Encoding.UTF32)
-                return new CustomType("[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF32Marshaller))] string");
 
-            throw new System.NotSupportedException(
-                $"{Context.Options.Encoding.EncodingName} is not supported yet.");
+            throw new NotSupportedException(
+            $"{Context.Options.Encoding.EncodingName} is not supported yet.");
         }
 
         public override void MarshalToNative(MarshalContext ctx)
@@ -179,7 +178,7 @@ namespace CppSharp.Types.Std.CSharp
                             1 => nameof(Marshal.WriteByte),
                             2 => nameof(Marshal.WriteInt16),
                             4 => nameof(Marshal.WriteInt32),
-                            _ => throw new System.NotImplementedException(
+                            _ => throw new NotImplementedException(
                                     $"Encoding bytes per char: {encodingBytesPerChar} is not implemented.")
                         };
 
@@ -218,7 +217,7 @@ namespace CppSharp.Types.Std.CSharp
             ctx.Return.Write($@"CppSharp.Runtime.MarshalUtil.GetString({encoding}, {returnVarName})");
         }
 
-        private (Encoding Encoding, string Name) GetEncoding()
+        public (Encoding Encoding, string Name) GetEncoding()
         {
             switch (GetCharWidth())
             {
@@ -242,7 +241,7 @@ namespace CppSharp.Types.Std.CSharp
                     return (Encoding.UTF32, nameof(Encoding.UTF32));
             }
 
-            throw new System.NotSupportedException(
+            throw new NotSupportedException(
                 $"{Context.Options.Encoding.EncodingName} is not supported yet.");
         }
 
@@ -417,7 +416,7 @@ namespace CppSharp.Types.Std.CSharp
     {
         public override Type SignatureType(TypePrinterContext ctx)
         {
-            return new CILType(typeof(System.IntPtr));
+            return new CILType(typeof(IntPtr));
         }
     }
 }

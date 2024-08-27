@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Security.Permissions;
 using System.Text;
 using System.Text.RegularExpressions;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Extensions;
-using CppSharp.Parser;
 using CppSharp.Types;
 using CppSharp.Utils;
 using Attribute = CppSharp.AST.Attribute;
+using ConstCharPointer = CppSharp.Types.Std.CSharp.ConstCharPointer;
 using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.CSharp
@@ -3157,6 +3156,8 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                             Type = indirectRetType.Type.Desugar()
                         };
 
+
+
                         WriteLine("{0} {1};", typeMap.SignatureType(typePrinterContext),
                             Helpers.ReturnIdentifier);
                     }
@@ -3559,23 +3560,18 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
 
             PushBlock(BlockKind.InternalsClassMethod);
 
-            string callConv = "";
+            string callConv = string.Empty;
             string libImportType = "LibraryImport";
             string functionKeyword = "partial";
 
-            if (Options.LibraryImportType == LibraryImportType.DllImport)
+            if (Options.UseDllImport)
             {
                 callConv = $", CallingConvention = CallingConvention.{function.CallingConvention.ToInteropCallConv()}";
                 libImportType = "DllImport";
                 functionKeyword = "extern";
             }
 
-            WriteLine("[SuppressUnmanagedCodeSecurity, {0}(\"{1}\", EntryPoint = \"{2}\"{3})]",
-            libImportType,
-            GetLibraryOf(function),
-            function.Mangled,
-            callConv
-            );
+            WriteLine("[SuppressUnmanagedCodeSecurity, {0}]", GetImportAttributeString(libImportType, callConv, function));
 
             if (function.ReturnType.Type.IsPrimitiveType(PrimitiveType.Bool))
                 WriteLine("[return: MarshalAs(UnmanagedType.I1)]");
@@ -3629,6 +3625,43 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
             }
 
             return libName;
+        }
+
+        private string GetImportAttributeString(string libImportType, string callConv, Function function)
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendFormat("{0}(\"{1}\", EntryPoint = \"{2}\"{3}", libImportType, GetLibraryOf(function), function.Mangled, callConv);
+
+            if (!Options.UseDllImport)
+            {
+                HashSet<string> marshallers = new(2);
+
+                foreach (var param in function.Parameters.Where(param => param.Type.IsConstCharString()))
+                {
+                    try
+                    {
+
+                        var encoding = new ConstCharPointer() { Type = param.QualifiedType.Type, Context = Context }
+                        .GetEncoding().Encoding;
+
+                        if (encoding == Encoding.UTF8 && marshallers.Add("UTF8"))
+                            sb.Append(", StringMarshalling = StringMarshalling.Utf8");
+                        else if (encoding == Encoding.UTF32 && marshallers.Add("UTF32"))
+                            sb.Append(", StringMarshallingCustomType = typeof(CppSharp.Runtime.UTF32Marshaller)");
+
+
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Error processing parameter '{param.Name}': {e.Message}");
+                        Console.WriteLine($"Param Type: {param.Type?.ToString() ?? "null"}, Param Name: {param.Name ?? "null"}");
+                    }
+                }
+            }
+            sb.Append(')');
+
+            return sb.ToString();
         }
 
         private class MarshallingParamComparer : IEqualityComparer<Parameter>
