@@ -54,6 +54,18 @@ generate()
 {
   download_llvm
 
+
+  if [ "$target_framework" = "" ]; then
+    if command -v dotnet &> /dev/null
+    then
+        version=$(dotnet --version)
+        major_minor=$(echo $version | awk -F. '{print $1"."$2}')
+        target_framework="net$major_minor"
+    else
+        echo ".NET is not installed, cannot lookup up target framework version."
+    fi
+  fi
+
   if [ "$os" = "linux" ] || [ "$os" = "macosx" ]; then
     "$builddir/premake.sh" --file="$builddir/premake5.lua" gmake2 --os=$os --arch=$platform --configuration=$configuration --target-framework=$target_framework "$@"
   fi
