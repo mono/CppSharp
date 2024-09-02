@@ -3566,7 +3566,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
 
             if (Options.UseDllImport)
             {
-                callConv = $", CallingConvention = CallingConvention.{function.CallingConvention.ToInteropCallConv()}";
+                callConv = $", CallingConvention = __CallingConvention.{function.CallingConvention.ToInteropCallConv()}";
                 libImportType = "DllImport";
                 functionKeyword = "extern";
             }
@@ -3635,27 +3635,35 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
 
             if (!Options.UseDllImport)
             {
-                HashSet<string> marshallers = new(2);
+                HashSet<string> addedMarshallers = new(3);
 
-                foreach (var param in function.Parameters.Where(param => param.Type.IsConstCharString()))
+
+                foreach (var param in function.Parameters)
                 {
                     try
                     {
+                        if (param.Type.IsConstCharString())
+                        {
+                            var encoding = new ConstCharPointer() { Type = param.Type, Context = Context }
+                                .GetEncoding().Encoding;
 
-                        var encoding = new ConstCharPointer() { Type = param.QualifiedType.Type, Context = Context }
-                        .GetEncoding().Encoding;
-
-                        if (encoding == Encoding.UTF8 && marshallers.Add("UTF8"))
-                            sb.Append(", StringMarshalling = StringMarshalling.Utf8");
-                        else if (encoding == Encoding.UTF32 && marshallers.Add("UTF32"))
-                            sb.Append(", StringMarshallingCustomType = typeof(CppSharp.Runtime.UTF32Marshaller)");
-
-
+                            if (encoding == Encoding.UTF8 && addedMarshallers.Add("UTF8"))
+                                sb.Append(", StringMarshalling = StringMarshalling.Utf8");
+                            else if (encoding == Encoding.UTF32 && addedMarshallers.Add("UTF32"))
+                                sb.Append(", StringMarshallingCustomType = typeof(CppSharp.Runtime.UTF32StringMarshaller)");
+                            else if (encoding == Encoding.Unicode && addedMarshallers.Add("UTF16"))
+                                sb.Append(", StringMarshalling = StringMarshalling.Utf16");
+                        }
+                        else if ((param.Type.IsPrimitiveType(PrimitiveType.String) ||
+                                 param.Type.IsPrimitiveType(PrimitiveType.Char16) ||
+                                 param.Type.IsPrimitiveType(PrimitiveType.WideChar)) && 
+                                 addedMarshallers.Add("UTF16"))
+                            sb.Append(", StringMarshalling = StringMarshalling.Utf16");
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine($"Error processing parameter '{param.Name}': {e.Message}");
-                        Console.WriteLine($"Param Type: {param.Type?.ToString() ?? "null"}, Param Name: {param.Name ?? "null"}");
+                        Console.WriteLine($"Param Type: {param.Type ?? null}, Param Name: {param.Name ?? "null"}");
                     }
                 }
             }

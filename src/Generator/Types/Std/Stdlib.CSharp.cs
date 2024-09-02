@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -108,7 +106,7 @@ namespace CppSharp.Types.Std.CSharp
                 // Perhaps we need a CppSharp.Runtime.ASCIIMarshaller?
                 return new CustomType("[MarshalAs(UnmanagedType.LPStr)] string");
             else if (encoding == Encoding.UTF8 || encoding == Encoding.UTF32)
-                return new CustomType($"{(Context.Options.UseDllImport ? $"[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof({(encoding == Encoding.UTF32 ? "CppSharp.Runtime.UTF32Marshaller" : "CppSharp.Runtime.UTF8Marshaller")}))] " : string.Empty)}string");
+                return new CustomType($"{(Context.Options.UseDllImport ? $"[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof({(encoding == Encoding.UTF32 ? "CppSharp.Runtime.UTF32StringMarshaller" : "CppSharp.Runtime.UTF8StringMarshaller")}))] " : string.Empty)}string");
             else if (encoding == Encoding.Unicode || encoding == Encoding.BigEndianUnicode)
                 return new CustomType("[MarshalAs(UnmanagedType.LPWStr)] string");
 

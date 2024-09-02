@@ -492,7 +492,7 @@ namespace Std
         public partial struct __Internal
         {
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE6assignEPKc", CallingConvention = __CallingConvention.Cdecl)]
-            internal static extern __IntPtr Assign(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string __s);
+            internal static extern __IntPtr Assign(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8StringMarshaller))] string __s);
 
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNKSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE4dataEv", CallingConvention = __CallingConvention.Cdecl)]
             internal static extern __IntPtr Data(__IntPtr __instance);

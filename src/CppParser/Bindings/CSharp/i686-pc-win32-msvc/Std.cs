@@ -463,7 +463,7 @@ namespace Std
         public partial struct __Internal
         {
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "?assign@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAEAAV12@QBD@Z", CallingConvention = __CallingConvention.ThisCall)]
-            internal static extern __IntPtr Assign(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string _Ptr);
+            internal static extern __IntPtr Assign(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8StringMarshaller))] string _Ptr);
 
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "?data@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QBEPBDXZ", CallingConvention = __CallingConvention.ThisCall)]
             internal static extern __IntPtr Data(__IntPtr __instance);

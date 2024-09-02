@@ -468,7 +468,7 @@ namespace Std
         public partial struct __Internal
         {
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSs6assignEPKc", CallingConvention = __CallingConvention.Cdecl)]
-            internal static extern __IntPtr Assign(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string __s);
+            internal static extern __IntPtr Assign(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8StringMarshaller))] string __s);
 
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNKSs4dataEv", CallingConvention = __CallingConvention.Cdecl)]
             internal static extern __IntPtr Data(__IntPtr __instance);

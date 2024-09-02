@@ -538,16 +538,27 @@ $"[{Context.TargetInfo.LongDoubleWidth}]");
 
         public override TypePrinterResult VisitParameterDecl(Parameter parameter)
         {
-            var paramType = parameter.Type;
-
             if (parameter.Kind == ParameterKind.IndirectReturnType)
                 return IntPtrType;
 
+            var typeBuilder = new StringBuilder();
+            var paramType = parameter.Type;
+            if (!Options.UseDllImport)
+            {
+                if (paramType.IsPrimitiveType(PrimitiveType.Bool))
+                    typeBuilder.Append("[MarshalAs(UnmanagedType.I1)] ");
+                else if ((ContextKind != TypePrinterContextKind.Native || Context.Options.MarshalCharAsManagedChar) && (paramType.IsPrimitiveType(PrimitiveType.Char) || paramType.IsPrimitiveType(PrimitiveType.Char32)))
+                    typeBuilder.AppendFormat("[MarshalUsing(typeof(CppSharp.Runtime.{0}))]", paramType.IsPrimitiveType(PrimitiveType.Char) ? "UTF8CharMarshaller" : "UTF32CharMarshaller");
+            }
+
             Parameter = parameter;
+
             var ret = paramType.Visit(this);
+            typeBuilder.Append(ret);
+
             Parameter = null;
 
-            return ret;
+            return typeBuilder.ToString();
         }
 
         private string GetName(Declaration decl)
@@ -604,13 +615,9 @@ $"[{Context.TargetInfo.LongDoubleWidth}]");
         public override TypePrinterResult VisitParameter(Parameter param, bool hasName)
         {
             var typeBuilder = new StringBuilder();
-            if (param.Type.Desugar().IsPrimitiveType(PrimitiveType.Bool)
-                && (!Options.UseDllImport || MarshalKind == MarshalKind.GenericDelegate))
-            {// LibraryImport requires specific marshalling for bool
+            if (param.Type.Desugar().IsPrimitiveType(PrimitiveType.Bool) && MarshalKind == MarshalKind.GenericDelegate)
                 typeBuilder.Append("[MarshalAs(UnmanagedType.I1)] ");
-                Console.WriteLine($"IsLibraryImport:{!Options.UseDllImport}");
-                ((List<Module>)Options.Modules).GetEnumerator().((module)=>Console.WriteLine($"Current Bindings being generated: {module.LibraryName}"));
-            }
+
             var printedType = param.Type.Visit(this, param.QualifiedType.Qualifiers);
             typeBuilder.Append(printedType);
             var type = typeBuilder.ToString();

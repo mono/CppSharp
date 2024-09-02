@@ -106,11 +106,11 @@ namespace CppSharp
 
         /// <summary>
         /// C# only: Specifies the type of interop attribute to be used in the generated bindings.
-        /// Default value is dependent on target framework version
+        /// Default value is dependent on targetframework version of the application using Cppsharp
         /// </summary>
 
         public LibraryImportType LibraryImportType { get; set; } = GetLibraryImportType();
-        
+
         public bool UseDllImport => LibraryImportType == LibraryImportType.DllImport;
 
         public bool OutputInteropIncludes;
@@ -290,20 +290,25 @@ namespace CppSharp
 
         public TranslationUnitPassCallBack TranslationUnitPassPostCallBack { get; set; }
 
-       internal static LibraryImportType GetLibraryImportType()
+        internal static LibraryImportType GetLibraryImportType()
         {
+             
+            var targetFramework = Assembly.GetCallingAssembly()
+            .GetCustomAttribute<TargetFrameworkAttribute>();
 
-            var targetFrameworkInfo = Assembly.GetCallingAssembly()
-            .GetCustomAttribute<TargetFrameworkAttribute>()
-            .FrameworkName.Split(",");
-            
-            if (float.TryParse(targetFrameworkInfo[1].Split("Version=")[1].Trim('v'), out var targetFrameworkVer)){
-             if (targetFrameworkVer >= 7.0) 
-             {
-                return LibraryImportType.LibraryImport;
-             } 
-             }
-             return LibraryImportType.DllImport;
+            ArgumentNullException.ThrowIfNull(targetFramework);
+
+            var frameworkName = targetFramework.FrameworkName;
+            var versionString = frameworkName.Split(',').FirstOrDefault(s => s.Contains("Version"))?.Split('=')[1];
+
+            if (versionString != null && float.TryParse(versionString, out var targetFrameworkVer))
+            {
+                if (targetFrameworkVer >= 7.0)
+                {
+                    return LibraryImportType.LibraryImport;
+                }
+            }
+            return LibraryImportType.DllImport;
         }
 
         #endregion
@@ -314,7 +319,7 @@ namespace CppSharp
         public InvalidOptionException(string message) :
             base(message)
         {
-        
+
         }
     }
 }
