@@ -37,7 +37,7 @@ namespace CppSharp
 
         public TargetPlatform? Platform { get; set; }
 
-        public TargetArchitecture Architecture { get; set; } = TargetArchitecture.x86;
+        public TargetArchitecture Architecture { get; set; } = TargetArchitecture.x64;
 
         public GeneratorKind Kind { get; set; } = GeneratorKind.CSharp;
 
