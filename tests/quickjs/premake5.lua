@@ -30,4 +30,4 @@ workspace "qjs"
             defines { "JS_SHARED_LIBRARY" }
         filter { "kind:SharedLib", "system:macosx" }
             linkoptions { "-undefined dynamic_lookup" }
-            targetextension ("so")
+            targetextension (".so")
