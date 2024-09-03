@@ -129,6 +129,7 @@ namespace CppSharp
 
             var driverOptions = driver.Options;
             driverOptions.GeneratorKind = options.Kind;
+            driverOptions.PropertyDetectionMode = options.PropertyMode;
             var module = driverOptions.AddModule(options.OutputFileName);
 
             if (!string.IsNullOrEmpty(options.InputLibraryName))

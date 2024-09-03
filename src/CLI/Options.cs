@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using CppSharp.Generators;
+using CppSharp.Passes;
 
 namespace CppSharp
 {
@@ -42,6 +43,8 @@ namespace CppSharp
         public TargetArchitecture Architecture { get; set; } = TargetArchitecture.x64;
 
         public GeneratorKind Kind { get; set; } = GeneratorKind.CSharp;
+
+        public PropertyDetectionMode PropertyMode { get; set; } = PropertyDetectionMode.Keywords;
 
         public bool CheckSymbols { get; set; }
 
