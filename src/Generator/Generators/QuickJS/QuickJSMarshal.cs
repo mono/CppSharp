@@ -509,8 +509,6 @@ namespace CppSharp.Generators.Cpp
 
                 case PrimitiveType.Bool:
                     Context.Before.WriteLine($"{argName} = JS_ToBool(ctx, argv[{Context.ParameterIndex}]);");
-                    Context.Before.WriteLine($"if ({argName} == -1)");
-                    Context.Before.WriteLineIndent("return JS_EXCEPTION;");
                     Context.Return.Write($"{argName}");
                     return true;
 
