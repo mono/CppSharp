@@ -7,7 +7,9 @@ configuration=debug
 platform=x64
 jsinterp="$dir/runtime/build/qjs"
 
-if [ $CI = "true" ]; then
+cd $dir
+
+if [ "$CI" = "true" ]; then
     red=""
     green=""
     reset=""
@@ -27,8 +29,8 @@ fi
 
 echo "${green}Building generated binding files${reset}"
 premake=$rootdir/build/premake.sh
-config=$configuration $premake --file=$dir/premake5.lua gmake
-make -C $dir/gen
+config=$configuration $premake --file=$dir/premake5.lua gmake2
+verbose=true make -C $dir/gen
 echo
 
 echo "${green}Executing JS tests with QuickJS${reset}"

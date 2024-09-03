@@ -1,5 +1,4 @@
-local qjs_dir = path.getabsolute("./runtime")
-local runtime = "../../src/Generator/Generators/QuickJS/Runtime"
+local cppsharp_qjs_runtime = "../../src/Generator/Generators/QuickJS/Runtime"
 
 workspace "qjs"
     configurations { "debug", "release" }
@@ -13,13 +12,13 @@ workspace "qjs"
         files
         {
             "gen/**.cpp",
-            runtime .. "/*.cpp",
-            runtime .. "/*.c"
+            cppsharp_qjs_runtime .. "/*.cpp",
+            cppsharp_qjs_runtime .. "/*.c"
         }
         includedirs
         {
-            qjs_dir,
-            runtime,
+            "runtime",
+            cppsharp_qjs_runtime,
             "..",
             "../../include"
         }
