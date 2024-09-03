@@ -179,7 +179,7 @@ static void register_class__Signal(JSContext *ctx, JSModuleDef *m, bool set, int
 
     if (phase == 0)
     {
-        JS_NewClassID(&classId__Signal);
+        JS_NewClassID(JS_GetRuntime(ctx), &classId__Signal);
 
         JS_NewClass(JS_GetRuntime(ctx), classId__Signal, &classDef__Signal);
 

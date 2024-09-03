@@ -598,7 +598,7 @@ namespace CppSharp.Generators.Cpp
             WriteLine("if (phase == 0)");
             WriteOpenBraceAndIndent();
             {
-                WriteLine($"JS_NewClassID(&{classId});");
+                WriteLine($"JS_NewClassID(JS_GetRuntime(ctx), &{classId});");
                 NewLine();
 
                 WriteLine($"JS_NewClass(JS_GetRuntime(ctx), {classId}, &{classDef});");
