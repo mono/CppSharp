@@ -59,7 +59,7 @@ namespace CppSharp.Generators
             {
                 return false;
             }
-            return CLIOptions.Any(cliOption.Contains);
+            return CLIOptions.Any(option => option == cliOption);
         }
 
         public static bool operator ==(GeneratorKind obj1, GeneratorKind obj2)
