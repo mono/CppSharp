@@ -5,24 +5,32 @@ rootdir="$dir/../.."
 dotnet_configuration=Release
 configuration=debug
 platform=x64
-jsinterp="$rootdir/deps/quickjs/qjs-debug"
+jsinterp="$dir/runtime/build/qjs"
 
-red=`tput setaf 1`
-green=`tput setaf 2`
-reset=`tput sgr0`
+cd $dir
+
+if [ "$CI" = "true" ]; then
+    red=""
+    green=""
+    reset=""
+else
+    red=`tput setaf 1`
+    green=`tput setaf 2`
+    reset=`tput sgr0`
+fi
 
 generate=true
 
 if [ $generate = true ]; then
     echo "${green}Generating bindings${reset}"
     dotnet $rootdir/bin/${dotnet_configuration}_${platform}/CppSharp.CLI.dll \
-        --gen=qjs -I$dir/.. -I$rootdir/include -o $dir/gen -m tests $dir/../*.h
+    $dir/bindings.lua
 fi
 
 echo "${green}Building generated binding files${reset}"
 premake=$rootdir/build/premake.sh
-config=$configuration $premake --file=$dir/premake5.lua gmake
-make -C $dir/gen
+config=$configuration $premake --file=$dir/premake5.lua gmake2
+verbose=true make -C $dir/gen
 echo
 
 echo "${green}Executing JS tests with QuickJS${reset}"

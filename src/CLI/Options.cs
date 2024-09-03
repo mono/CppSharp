@@ -13,6 +13,8 @@ namespace CppSharp
 
     class Options
     {
+        public List<string> LuaBindingsFiles { get; } = new List<string>();
+
         public List<string> HeaderFiles { get; } = new List<string>();
 
         public List<string> IncludeDirs { get; } = new List<string>();
@@ -37,7 +39,7 @@ namespace CppSharp
 
         public TargetPlatform? Platform { get; set; }
 
-        public TargetArchitecture Architecture { get; set; } = TargetArchitecture.x86;
+        public TargetArchitecture Architecture { get; set; } = TargetArchitecture.x64;
 
         public GeneratorKind Kind { get; set; } = GeneratorKind.CSharp;
 

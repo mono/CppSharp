@@ -1,3 +1,5 @@
+#pragma once
+
 enum class Enum0
 {
     Item0,

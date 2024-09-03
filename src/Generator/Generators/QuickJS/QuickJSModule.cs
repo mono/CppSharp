@@ -30,9 +30,9 @@ namespace CppSharp.Generators.Cpp
             {
                 WriteInclude("CppSharp_QuickJS.h", CInclude.IncludeKind.Angled);
 
-                foreach (var unit in TranslationUnits)
-                    WriteInclude(GetIncludeFileName(Context, unit), CInclude.IncludeKind.Quoted);
-                NewLine();
+                // foreach (var unit in TranslationUnits)
+                //     WriteInclude(GetIncludeFileName(Context, unit), CInclude.IncludeKind.Quoted);
+                // NewLine();
             }
             PopBlock();
             NewLine();

@@ -11,7 +11,7 @@ namespace CppSharp.Generators.Cpp
 
         public override string FileExtension { get; }
 
-        public QuickJSTypeCheckGen(int parameterIndex) : base(null)
+        public QuickJSTypeCheckGen(BindingContext context, int parameterIndex) : base(context)
         {
             ParameterIndex = parameterIndex;
         }
@@ -23,7 +23,8 @@ namespace CppSharp.Generators.Cpp
 
         public override bool VisitPrimitiveType(PrimitiveType primitive, TypeQualifiers quals)
         {
-            // TODO: Use TargetInfo to check the actual width of types for the target.
+            (uint width, uint _alignment) =
+            primitive.GetInfo(Context.TargetInfo, out bool _signed);
 
             var condition = string.Empty;
             var arg = $"argv[{ParameterIndex}]";
@@ -50,11 +51,17 @@ namespace CppSharp.Generators.Cpp
                     break;
                 case PrimitiveType.Int:
                 case PrimitiveType.Long:
-                    condition = $"JS_IsInt32({arg})";
+                    if (width == 64)
+                        condition = $"JS_IsBigInt(ctx, {arg})";
+                    else
+                        condition = $"JS_IsInt32({arg})";
                     break;
                 case PrimitiveType.ULong:
                 case PrimitiveType.UInt:
-                    condition = $"JS_IsUInt32({arg})";
+                    if (width == 64)
+                        condition = $"JS_IsBigInt(ctx, {arg})";
+                    else
+                        condition = $"JS_IsUInt32({arg})";
                     break;
                 case PrimitiveType.LongLong:
                 case PrimitiveType.ULongLong:

@@ -1,4 +1,5 @@
-gen
+runtime/
+gen/
 *.so
 *.dylib
 *.dll

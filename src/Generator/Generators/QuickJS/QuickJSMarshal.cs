@@ -1,6 +1,7 @@
 using System;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Extensions;
 using CppSharp.Generators.C;
 using CppSharp.Generators.CLI;
 using CppSharp.Types;
@@ -61,34 +62,22 @@ namespace CppSharp.Generators.Cpp
 
             var pointee = pointer.Pointee.Desugar();
 
-            PrimitiveType primitive;
             var param = Context.Parameter;
             if (param != null && (param.IsOut || param.IsInOut) &&
-                pointee.IsPrimitiveType(out primitive))
+                pointee.IsPrimitiveType(out _))
             {
                 Context.Return.Write(Context.ReturnVarName);
                 return true;
             }
 
-            if (pointee.IsPrimitiveType(out primitive))
+            if (pointee.IsPrimitiveType(out _))
             {
-                var returnVarName = Context.ReturnVarName;
-
-                if (pointer.GetFinalQualifiedPointee().Qualifiers.IsConst !=
-                    Context.ReturnType.Qualifiers.IsConst)
+                if (pointer.IsConstCharString())
                 {
-                    var nativeTypePrinter = new CppTypePrinter(Context.Context)
-                    { PrintTypeQualifiers = false };
-                    var returnType = Context.ReturnType.Type.Desugar();
-                    var constlessPointer = new PointerType()
-                    {
-                        IsDependent = pointer.IsDependent,
-                        Modifier = pointer.Modifier,
-                        QualifiedPointee = new QualifiedType(returnType.GetPointee())
-                    };
-                    var nativeConstlessTypeName = constlessPointer.Visit(nativeTypePrinter, new TypeQualifiers());
-                    returnVarName = string.Format("const_cast<{0}>({1})",
-                        nativeConstlessTypeName, Context.ReturnVarName);
+                    var retName = Generator.GeneratedIdentifier(Context.ReturnVarName);
+                    Context.Before.Write($"JSValue {retName} = JS_NewString(ctx, {Context.ArgName});");
+                    Context.Return.Write(retName);
+                    return true;
                 }
 
                 if (pointer.Pointee is TypedefType)
@@ -101,19 +90,17 @@ namespace CppSharp.Generators.Cpp
                     };
                     var nativeTypeName = desugaredPointer.Visit(typePrinter, quals);
                     Context.Return.Write("reinterpret_cast<{0}>({1})", nativeTypeName,
-                        returnVarName);
+                        Context.ReturnVarName);
                 }
                 else
-                    Context.Return.Write(returnVarName);
+                    Context.Return.Write(Context.ReturnVarName);
 
                 return true;
             }
 
-            TypeMap typeMap = null;
-            Context.Context.TypeMaps.FindTypeMap(pointee, out typeMap);
+            Context.Context.TypeMaps.FindTypeMap(pointee, out var typeMap);
 
-            Class @class;
-            if (pointee.TryGetClass(out @class) && typeMap == null)
+            if (pointee.TryGetClass(out var @class) && typeMap == null)
             {
                 var instance = (pointer.IsReference) ? "&" + Context.ReturnVarName
                     : Context.ReturnVarName;
@@ -146,10 +133,14 @@ namespace CppSharp.Generators.Cpp
             var retName = Generator.GeneratedIdentifier(Context.ReturnVarName);
             Context.Before.Write($"JSValue {retName} = ");
 
+            (uint width, uint _alignment) =
+            primitive.GetInfo(Context.Context.TargetInfo, out bool _signed);
+
             switch (primitive)
             {
                 case PrimitiveType.Void:
-                    return true;
+                    Context.Before.WriteLine("JS_UNDEFINED;");
+                    break;
 
                 case PrimitiveType.Bool:
                     Context.Before.WriteLine($"JS_NewBool(ctx, {Context.ArgName});");
@@ -163,14 +154,23 @@ namespace CppSharp.Generators.Cpp
                 case PrimitiveType.UChar:
                 case PrimitiveType.Short:
                 case PrimitiveType.UShort:
+                    Context.Before.WriteLine($"JS_NewInt32(ctx, {Context.ArgName});");
+                    break;
+
                 case PrimitiveType.Int:
                 case PrimitiveType.Long:
-                    Context.Before.WriteLine($"JS_NewInt32(ctx, {Context.ArgName});");
+                    if (width == 64)
+                        Context.Before.WriteLine($"JS_NewBigInt64(ctx, {Context.ArgName});");
+                    else
+                        Context.Before.WriteLine($"JS_NewInt32(ctx, {Context.ArgName});");
                     break;
 
                 case PrimitiveType.UInt:
                 case PrimitiveType.ULong:
-                    Context.Before.WriteLine($"JS_NewUint32(ctx, {Context.ArgName});");
+                    if (width == 64)
+                        Context.Before.WriteLine($"JS_NewBigUint64(ctx, {Context.ArgName});");
+                    else
+                        Context.Before.WriteLine($"JS_NewUint32(ctx, {Context.ArgName});");
                     break;
 
                 case PrimitiveType.LongLong:
@@ -205,8 +205,7 @@ namespace CppSharp.Generators.Cpp
         {
             var decl = typedef.Declaration;
 
-            TypeMap typeMap;
-            if (Context.Context.TypeMaps.FindTypeMap(decl.Type, out typeMap) &&
+            if (Context.Context.TypeMaps.FindTypeMap(decl.Type, out var typeMap) &&
                 typeMap.DoesMarshalling)
             {
                 typeMap.Type = typedef;
@@ -214,8 +213,7 @@ namespace CppSharp.Generators.Cpp
                 return typeMap.IsValueType;
             }
 
-            FunctionType function;
-            if (decl.Type.IsPointerTo(out function))
+            if (decl.Type.IsPointerTo(out FunctionType _))
             {
                 var typeName = typePrinter.VisitDeclaration(decl);
                 var typeName2 = decl.Type.Visit(typePrinter);
@@ -228,8 +226,7 @@ namespace CppSharp.Generators.Cpp
         public override bool VisitTemplateSpecializationType(TemplateSpecializationType template,
                                                     TypeQualifiers quals)
         {
-            TypeMap typeMap;
-            if (Context.Context.TypeMaps.FindTypeMap(template, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeMaps.FindTypeMap(template, out var typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.Type = template;
                 typeMap.MarshalToManaged(Context);
@@ -382,8 +379,7 @@ namespace CppSharp.Generators.Cpp
 
         public override bool VisitType(Type type, TypeQualifiers quals)
         {
-            TypeMap typeMap;
-            if (Context.Context.TypeMaps.FindTypeMap(type, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeMaps.FindTypeMap(type, out var typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.MarshalToNative(Context);
                 return false;
@@ -443,8 +439,7 @@ namespace CppSharp.Generators.Cpp
                 return VisitDelegateType(cppTypeName);
             }
 
-            Enumeration @enum;
-            if (pointee.TryGetEnum(out @enum))
+            if (pointee.TryGetEnum(out var @enum))
             {
                 var isRef = Context.Parameter.Usage == ParameterUsage.Out ||
                     Context.Parameter.Usage == ParameterUsage.InOut;
@@ -455,12 +450,22 @@ namespace CppSharp.Generators.Cpp
                 return true;
             }
 
-            Class @class;
-            if (pointee.TryGetClass(out @class) && @class.IsValueType)
+            if (pointee.TryGetClass(out var @class) && @class.IsValueType)
             {
                 if (Context.Function == null)
                     Context.Return.Write("&");
                 return pointer.QualifiedPointee.Visit(this);
+            }
+
+            if (pointer.IsConstCharString())
+            {
+                var genName = Generator.GeneratedIdentifier(Context.Parameter.Name);
+                Context.Before.WriteLine($"auto {genName} = JS_ToCString(ctx, argv[{Context.ParameterIndex}]);");
+                Context.Before.WriteLine($"if ({genName} == NULL)");
+                Context.Before.WriteLineIndent("return JS_EXCEPTION;");
+                Context.Return.Write($"{genName}");
+                Context.Cleanup.WriteLine($"JS_FreeCString(ctx, {genName});");
+                return true;
             }
 
             var finalPointee = pointer.GetFinalPointee();
@@ -494,6 +499,9 @@ namespace CppSharp.Generators.Cpp
             var argName = Context.Parameter.Name;
             Context.Before.WriteLine($"{type} {argName};");
 
+            (uint width, uint _alignment) =
+            primitive.GetInfo(Context.Context.TargetInfo, out bool _signed);
+
             switch (primitive)
             {
                 case PrimitiveType.Void:
@@ -501,8 +509,6 @@ namespace CppSharp.Generators.Cpp
 
                 case PrimitiveType.Bool:
                     Context.Before.WriteLine($"{argName} = JS_ToBool(ctx, argv[{Context.ParameterIndex}]);");
-                    Context.Before.WriteLine($"if ({argName} == -1)");
-                    Context.Before.WriteLineIndent("return JS_EXCEPTION;");
                     Context.Return.Write($"{argName}");
                     return true;
 
@@ -527,31 +533,43 @@ namespace CppSharp.Generators.Cpp
 
                 case PrimitiveType.Int:
                 case PrimitiveType.Long:
-                    Context.Before.WriteLine($"if (JS_ToInt32(ctx, &{argName}, argv[{Context.ParameterIndex}]))");
-                    Context.Before.WriteLineIndent("return JS_EXCEPTION;");
+                    if (width == 64)
+                    {
+                        Context.Before.WriteLine($"if (JS_ToBigInt64(ctx, (int64_t*)&{argName}, argv[{Context.ParameterIndex}]))");
+                        Context.Before.WriteLineIndent("return JS_EXCEPTION;");
+                    }
+                    else
+                    {
+                        Context.Before.WriteLine($"if (JS_ToInt32(ctx, &{argName}, argv[{Context.ParameterIndex}]))");
+                        Context.Before.WriteLineIndent("return JS_EXCEPTION;");
+                    }
                     Context.Return.Write($"{argName}");
                     return true;
 
                 case PrimitiveType.UInt:
                 case PrimitiveType.ULong:
-                    Context.Before.WriteLine($"if (JS_ToUint32(ctx, &{argName}, argv[{Context.ParameterIndex}]))");
-                    Context.Before.WriteLineIndent("return JS_EXCEPTION;");
+                    if (width == 64)
+                    {
+                        Context.Before.WriteLine($"if (JS_ToBigInt64(ctx, (int64_t*)&{argName}, argv[{Context.ParameterIndex}]))");
+                        Context.Before.WriteLineIndent("return JS_EXCEPTION;");
+                    }
+                    else
+                    {
+                        Context.Before.WriteLine($"if (JS_ToUint32(ctx, &{argName}, argv[{Context.ParameterIndex}]))");
+                        Context.Before.WriteLineIndent("return JS_EXCEPTION;");
+                    }
                     Context.Return.Write($"{argName}");
                     return true;
 
                 case PrimitiveType.LongLong:
-                    Context.Before.WriteLine($"int64_t _{argName};");
-                    Context.Before.WriteLine($"if (JS_ToInt64Ext(ctx, &_{argName}, argv[{Context.ParameterIndex}]))");
+                    Context.Before.WriteLine($"if (JS_ToBigInt64(ctx, (int64_t*)&{argName}, argv[{Context.ParameterIndex}]))");
                     Context.Before.WriteLineIndent("return JS_EXCEPTION;");
-                    Context.Before.WriteLine($"{argName} = ({type})_{argName};");
                     Context.Return.Write($"{argName}");
                     return true;
 
                 case PrimitiveType.ULongLong:
-                    Context.Before.WriteLine($"int64_t _{argName};");
-                    Context.Before.WriteLine($"if (JS_ToInt64Ext(ctx, &_{argName}, argv[{Context.ParameterIndex}]))");
+                    Context.Before.WriteLine($"if (JS_ToBigUint64(ctx, (uint64_t*)&{argName}, argv[{Context.ParameterIndex}]))");
                     Context.Before.WriteLineIndent("return JS_EXCEPTION;");
-                    Context.Before.WriteLine($"{argName} = ({type})_{argName};");
                     Context.Return.Write($"{argName}");
                     return true;
 
@@ -569,6 +587,12 @@ namespace CppSharp.Generators.Cpp
                     Context.Return.Write($"{argName}");
                     return true;
 
+                case PrimitiveType.Null:
+                    Context.Before.WriteLine($"if (!JS_IsNull(argv[{Context.ParameterIndex}]))");
+                    Context.Before.WriteLineIndent("return JS_EXCEPTION;");
+                    Context.Return.Write($"{argName}");
+                    return true;
+
                 case PrimitiveType.WideChar:
                 default:
                     throw new NotImplementedException();
@@ -579,16 +603,14 @@ namespace CppSharp.Generators.Cpp
         {
             var decl = typedef.Declaration;
 
-            TypeMap typeMap;
-            if (Context.Context.TypeMaps.FindTypeMap(decl.Type, out typeMap) &&
+            if (Context.Context.TypeMaps.FindTypeMap(decl.Type, out var typeMap) &&
                 typeMap.DoesMarshalling)
             {
                 typeMap.MarshalToNative(Context);
                 return typeMap.IsValueType;
             }
 
-            FunctionType func;
-            if (decl.Type.IsPointerTo(out func))
+            if (decl.Type.IsPointerTo(out FunctionType _))
             {
                 typePrinter.PushContext(TypePrinterContextKind.Native);
                 var declName = decl.Visit(typePrinter);
@@ -609,8 +631,7 @@ namespace CppSharp.Generators.Cpp
                 return true;
             }
 
-            PrimitiveType primitive;
-            if (decl.Type.IsPrimitiveType(out primitive))
+            if (decl.Type.IsPrimitiveType(out _))
             {
                 Context.Return.Write($"(::{typedef.Declaration.QualifiedOriginalName})");
             }
@@ -621,8 +642,7 @@ namespace CppSharp.Generators.Cpp
         public override bool VisitTemplateSpecializationType(TemplateSpecializationType template,
                                                     TypeQualifiers quals)
         {
-            TypeMap typeMap;
-            if (Context.Context.TypeMaps.FindTypeMap(template, out typeMap) && typeMap.DoesMarshalling)
+            if (Context.Context.TypeMaps.FindTypeMap(template, out var typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.Type = template;
                 typeMap.MarshalToNative(Context);
@@ -668,42 +688,14 @@ namespace CppSharp.Generators.Cpp
         private void MarshalRefClass(Class @class)
         {
             var type = Context.Parameter.Type.Desugar();
-            TypeMap typeMap;
-            if (Context.Context.TypeMaps.FindTypeMap(type, out typeMap) &&
+            if (Context.Context.TypeMaps.FindTypeMap(type, out var typeMap) &&
                 typeMap.DoesMarshalling)
             {
                 typeMap.MarshalToNative(Context);
                 return;
             }
 
-            if (!type.SkipPointerRefs().IsPointer())
-            {
-                Context.Return.Write("*");
-
-                if (Context.Parameter.Type.IsReference())
-                    VarPrefix.Write("&");
-            }
-
-            var method = Context.Function as Method;
-            if (method != null
-                && method.Conversion == MethodConversionKind.FunctionToInstanceMethod
-                && Context.ParameterIndex == 0)
-            {
-                Context.Return.Write($"(::{@class.QualifiedOriginalName}*)");
-                Context.Return.Write(Helpers.InstanceIdentifier);
-                return;
-            }
-
-            var paramType = Context.Parameter.Type.Desugar();
-            var isPointer = paramType.SkipPointerRefs().IsPointer();
-            var deref = isPointer ? "->" : ".";
-            var instance = $"(::{@class.QualifiedOriginalName}*)" +
-                $"{Context.Parameter.Name}{deref}{Helpers.InstanceIdentifier}";
-
-            if (isPointer)
-                Context.Return.Write($"{Context.Parameter.Name} ? {instance} : nullptr");
-            else
-                Context.Return.Write($"{instance}");
+            Context.Return.Write($"({@class.QualifiedOriginalName}*) JS_GetOpaque(argv[{Context.ParameterIndex}], 0)");
         }
 
         private void MarshalValueClass(Class @class)
