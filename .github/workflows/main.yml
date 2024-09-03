@@ -55,9 +55,17 @@ jobs:
         shell: bash
         run: build/build.sh -platform $PLATFORM -build_only
 
-      - name: Test
+      - name: Test (.NET)
         shell: bash
         run: build/test.sh -platform $PLATFORM
+
+      - name: Build (QuickJS runtime)
+        shell: bash
+        run: tests/quickjs/bootstrap.sh
+
+      - name: Test (QuickJS)
+        shell: bash
+        run: tests/quickjs/test.sh
 
       - name: Pack
         shell: bash
