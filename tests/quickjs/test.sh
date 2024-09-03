@@ -29,8 +29,8 @@ fi
 
 echo "${green}Building generated binding files${reset}"
 premake=$rootdir/build/premake.sh
-config=$configuration $premake --cc=clang --file=$dir/premake5.lua gmake2
-make -C $dir/gen
+config=$configuration $premake --file=$dir/premake5.lua gmake2
+verbose=true make -C $dir/gen
 echo
 
 echo "${green}Executing JS tests with QuickJS${reset}"
