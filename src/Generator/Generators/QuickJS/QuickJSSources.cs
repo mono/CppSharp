@@ -221,6 +221,11 @@ namespace CppSharp.Generators.Cpp
             WriteLine($"JS_CFUNC_DEF(\"{function.Name}\", {maxArgs}, {callbackId}),");
         }
 
+        public override bool VisitProperty(Property property)
+        {
+            return true;
+        }
+
         public override bool VisitEvent(Event @event)
         {
             var getterId = $"callback_event_getter_{GetCIdentifier(Context, @event)}";
