@@ -134,7 +134,7 @@ namespace CppSharp.Generators
         public static readonly GeneratorKind Swift = new(Swift_ID, "Swift", typeof(NotImplementedGenerator), typeof(NotImplementedTypePrinter));
 
         public const string QuickJS_ID = "QuickJS";
-        public static readonly GeneratorKind QuickJS = new(QuickJS_ID, "QuickJS", typeof(QuickJSGenerator), typeof(QuickJSTypePrinter), new[] { "qjs" });
+        public static readonly GeneratorKind QuickJS = new(QuickJS_ID, "QuickJS", typeof(QuickJSGenerator), typeof(QuickJSTypePrinter), new[] { "quickjs", "qjs" });
 
         public const string NAPI_ID = "NAPI";
         public static readonly GeneratorKind NAPI = new(NAPI_ID, "N-API", typeof(NAPIGenerator), typeof(NAPITypePrinter), new[] { "napi" });
