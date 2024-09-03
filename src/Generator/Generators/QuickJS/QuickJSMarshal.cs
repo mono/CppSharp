@@ -568,7 +568,7 @@ namespace CppSharp.Generators.Cpp
                     return true;
 
                 case PrimitiveType.ULongLong:
-                    Context.Before.WriteLine($"if (JS_ToBigUInt64(ctx, (int64_t*)&{argName}, argv[{Context.ParameterIndex}]))");
+                    Context.Before.WriteLine($"if (JS_ToBigUint64(ctx, (int64_t*)&{argName}, argv[{Context.ParameterIndex}]))");
                     Context.Before.WriteLineIndent("return JS_EXCEPTION;");
                     Context.Return.Write($"{argName}");
                     return true;
