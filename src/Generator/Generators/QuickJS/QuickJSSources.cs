@@ -418,17 +418,14 @@ namespace CppSharp.Generators.Cpp
                 WriteLine($"JSValue event = JS_Interop_FindEvent(&events, {@event.GlobalId});");
                 WriteLine($"if (JS_IsUndefined(event))");
 
+                var defaultValuePrinter = new CppDefaultValuePrinter(Context);
+                var defaultValue = functionType.ReturnType.Visit(defaultValuePrinter);
+
                 var isVoidReturn = functionType.ReturnType.Type.IsPrimitiveType(PrimitiveType.Void);
                 if (isVoidReturn)
-                {
                     WriteLineIndent($"return;");
-                }
                 else
-                {
-                    var defaultValuePrinter = new CppDefaultValuePrinter(Context);
-                    var defaultValue = functionType.ReturnType.Visit(defaultValuePrinter);
                     WriteLineIndent($"return {defaultValue};");
-                }
                 NewLine();
 
                 // Marshal the arguments.
@@ -460,24 +457,10 @@ namespace CppSharp.Generators.Cpp
                 WriteLine($"JSValue ret = JS_Call(ctx, data->function, JS_UNDEFINED, {@event.Parameters.Count}, argv);");
                 WriteLine($"JS_FreeValue(ctx, ret);");
 
-                var defaultValuePrinter = new CppDefaultValuePrinter(Context);
-                var defaultValue = functionType.ReturnType.Visit(defaultValuePrinter);
-                WriteLineIndent($"return {defaultValue};");
-
-                //WriteLine($"{@class.QualifiedOriginalName}* instance = data->instance;");
-
-                /*
-                if (!isVoidReturn)
-                {
-                    CTypePrinter.PushContext(TypePrinterContextKind.Native);
-                    var returnType = function.ReturnType.Visit(CTypePrinter);
-                    CTypePrinter.PopContext();
-
-                    Write($"{returnType} {Helpers.ReturnIdentifier} = ");
-                }
-
-                var @class = function.Namespace as Class;
-                */
+                if (isVoidReturn)
+                    WriteLineIndent($"return;");
+                else
+                    WriteLineIndent($"return {defaultValue};");
 
                 UnindentAndWriteCloseBrace();
             }
