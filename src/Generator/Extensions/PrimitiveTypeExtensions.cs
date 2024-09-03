@@ -34,6 +34,11 @@ namespace CppSharp.Extensions
 
             switch (primitive)
             {
+                case PrimitiveType.Void:
+                case PrimitiveType.Null:
+                case PrimitiveType.String:
+                    return (0, 0);
+
                 case PrimitiveType.Bool:
                     return (targetInfo.BoolWidth, targetInfo.BoolAlign);
 
@@ -97,7 +102,7 @@ namespace CppSharp.Extensions
                     return (targetInfo.PointerWidth, targetInfo.PointerAlign);
 
                 default:
-                    throw new NotImplementedException();
+                    throw new Exception($"Not implemented for {primitive}");
             }
         }
     }
