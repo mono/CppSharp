@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Classes2.h"
 
 class Class
@@ -5,7 +7,7 @@ class Class
 public:
     void ReturnsVoid() {}
     int ReturnsInt() { return 0; }
-    Class* PassAndReturnsClassPtr(Class* obj) { return obj; }
+    // Class* PassAndReturnsClassPtr(Class* obj) { return obj; }
 };
 
 class ClassWithField
@@ -36,5 +38,5 @@ class ClassWithExternalInheritance : public ClassFromAnotherUnit
 
 };
 
-void FunctionPassClassByRef(Class* klass) { }
-Class* FunctionReturnsClassByRef() { return new Class(); }
+//void FunctionPassClassByRef(Class* klass) { }
+//Class* FunctionReturnsClassByRef() { return new Class(); }
