@@ -174,12 +174,17 @@ static JSValue JS_Interop_CleanupObject(JSValue obj, JS_Interop_InstanceKind kin
     switch (kind)
     {
     case JS_INTEROP_INSTANCE_SIGNAL_CONTEXT:
+    {
         JS_Interop_ClassData* data = (JS_Interop_ClassData*) JS_GetOpaque(obj, JS_GetClassID(obj));
         if (data)
         {
             JS_Interop_FreeEventMap(data->ctx, &data->events);
             js_free(data->ctx, data);
         }
+        break;
+    }
+    case JS_INTEROP_INSTANCE_RAW_POINTER:
+        break;
     }
 
     return JS_UNDEFINED;
