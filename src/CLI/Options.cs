@@ -13,6 +13,8 @@ namespace CppSharp
 
     class Options
     {
+        public List<string> LuaBindingsFiles { get; } = new List<string>();
+
         public List<string> HeaderFiles { get; } = new List<string>();
 
         public List<string> IncludeDirs { get; } = new List<string>();

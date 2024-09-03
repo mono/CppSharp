@@ -45,8 +45,8 @@ namespace CppSharp.Generators.C
         {
             var outputs = new List<CodeGenerator>();
 
-            var header = new QuickJSHeaders(Context, units);
-            outputs.Add(header);
+            // var header = new QuickJSHeaders(Context, units);
+            // outputs.Add(header);
 
             var source = new QuickJSSources(Context, units);
             outputs.Add(source);

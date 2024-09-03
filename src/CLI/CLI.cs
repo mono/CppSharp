@@ -156,7 +156,12 @@ namespace CppSharp
                     GetFilesFromPath(args, errorMessages);
                 }
                 else if (File.Exists(args))
-                    options.HeaderFiles.Add(args);
+                {
+                    if (Path.GetExtension(args) == ".lua")
+                        options.LuaBindingsFiles.Add(args);
+                    else
+                        options.HeaderFiles.Add(args);
+                }
                 else
                 {
                     errorMessages.Add($"File '{args}' could not be found.");
@@ -207,7 +212,7 @@ namespace CppSharp
             }
         }
 
-        static void GetGeneratorKind(string generator, List<string> errorMessages)
+        public static void GetGeneratorKind(string generator, List<string> errorMessages)
         {
             foreach (GeneratorKind generatorKind in GeneratorKind.Registered)
             {
@@ -221,7 +226,7 @@ namespace CppSharp
             errorMessages.Add($"Unknown generator kind: {generator}.");
         }
 
-        static void GetDestinationPlatform(string platform, List<string> errorMessages)
+        public static void GetDestinationPlatform(string platform, List<string> errorMessages)
         {
             switch (platform.ToLower())
             {
@@ -242,7 +247,7 @@ namespace CppSharp
             errorMessages.Add($"Unknown target platform: {platform}. Defaulting to {options.Platform}");
         }
 
-        static void GetDestinationArchitecture(string architecture, List<string> errorMessages)
+        public static void GetDestinationArchitecture(string architecture, List<string> errorMessages)
         {
             switch (architecture.ToLower())
             {
@@ -282,6 +287,13 @@ namespace CppSharp
                 // Don't need to show the help since if ParseCommandLineArgs returns false
                 // since the help has already been shown
                 return;
+            }
+
+            var luaContext = new LuaContext(options, errorMessages);
+            foreach (var luaFile in options.LuaBindingsFiles)
+            {
+                Directory.SetCurrentDirectory(Path.GetDirectoryName(luaFile));
+                luaContext.LoadFile(luaFile);
             }
 
             var gen = new Generator(options);
