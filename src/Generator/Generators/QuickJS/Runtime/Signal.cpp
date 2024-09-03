@@ -153,12 +153,11 @@ void finalizer__Signal(JSRuntime *rt, JSValue val)
     js_free_rt(rt, signalCtx);
 
     JS_SetOpaque(val, nullptr);
-
 }
 
 static JSClassDef classDef__Signal
 {
-    "Signal",
+    .class_name = "Signal",
     .finalizer = finalizer__Signal
 };
 

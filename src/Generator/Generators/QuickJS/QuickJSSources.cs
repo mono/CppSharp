@@ -320,7 +320,7 @@ namespace CppSharp.Generators.Cpp
                     WriteLine($"static JSClassDef classDef_{GetCIdentifier(Context, @class)}");
                     WriteOpenBraceAndIndent();
 
-                    WriteLine($"\"{@class.Name}\",");
+                    WriteLine($".class_name = \"{@class.Name}\",");
                     WriteLine($".finalizer = {finalizerId}");
 
                     Unindent();
