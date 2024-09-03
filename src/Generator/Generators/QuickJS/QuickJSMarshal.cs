@@ -139,7 +139,7 @@ namespace CppSharp.Generators.Cpp
             switch (primitive)
             {
                 case PrimitiveType.Void:
-                    Context.Before.WriteLine($"JS_UNDEFINED;");
+                    Context.Before.WriteLine("JS_UNDEFINED;");
                     break;
 
                 case PrimitiveType.Bool:
