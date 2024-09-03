@@ -7,9 +7,15 @@ configuration=debug
 platform=x64
 jsinterp="$rootdir/deps/quickjs/qjs-debug"
 
-red=`tput setaf 1`
-green=`tput setaf 2`
-reset=`tput sgr0`
+if [ $CI = "true" ]; then
+    red=""
+    green=""
+    reset=""
+else
+    red=`tput setaf 1`
+    green=`tput setaf 2`
+    reset=`tput sgr0`
+fi
 
 generate=true
 
