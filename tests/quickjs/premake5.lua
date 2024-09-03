@@ -9,6 +9,7 @@ workspace "qjs"
     project "test"
         kind "SharedLib"
         language "C++"
+        cppdialect "C++11"
         files
         {
             "gen/**.cpp",
@@ -29,3 +30,4 @@ workspace "qjs"
             defines { "JS_SHARED_LIBRARY" }
         filter { "kind:SharedLib", "system:macosx" }
             linkoptions { "-undefined dynamic_lookup" }
+            targetextension ("so")
