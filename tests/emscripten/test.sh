@@ -7,7 +7,7 @@ configuration=debug
 platform=x64
 jsinterp=node
 
-if [ $CI = "true" ]; then
+if [ "$CI" = "true" ]; then
     red=""
     green=""
     reset=""

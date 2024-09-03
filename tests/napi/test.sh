@@ -5,7 +5,7 @@ rootdir="$dir/../.."
 configuration=Release
 platform=x64
 
-if [ $CI = "true" ]; then
+if [ "$CI" = "true" ]; then
     red=""
     green=""
     reset=""

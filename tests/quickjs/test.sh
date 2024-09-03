@@ -35,5 +35,4 @@ echo
 
 echo "${green}Executing JS tests with QuickJS${reset}"
 cp $dir/gen/bin/$configuration/libtest.so $dir
-#cp $dir/gen/bin/$configuration/libtest.dylib $dir
 $jsinterp --std $dir/test.js
