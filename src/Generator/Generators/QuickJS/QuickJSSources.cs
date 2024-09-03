@@ -317,7 +317,7 @@ namespace CppSharp.Generators.Cpp
 
                 PushBlock();
                 {
-                    WriteLine($"static JSClassDef classDef_{GetCIdentifier(Context, @class)}");
+                    WriteLine($"static JSClassDef classDef_{GetCIdentifier(Context, @class)} =");
                     WriteOpenBraceAndIndent();
 
                     WriteLine($".class_name = \"{@class.Name}\",");
@@ -330,7 +330,7 @@ namespace CppSharp.Generators.Cpp
 
                 PushBlock();
                 {
-                    WriteLine($"static JSCFunctionListEntry funcDef_{GetCIdentifier(Context, @class)}[]");
+                    WriteLine($"static JSCFunctionListEntry funcDef_{GetCIdentifier(Context, @class)}[] =");
                     WriteOpenBraceAndIndent();
 
                     var funcGen = new QuickJSClassFuncDef(Context);

@@ -155,13 +155,13 @@ void finalizer__Signal(JSRuntime *rt, JSValue val)
     JS_SetOpaque(val, nullptr);
 }
 
-static JSClassDef classDef__Signal
+static JSClassDef classDef__Signal =
 {
     .class_name = "Signal",
     .finalizer = finalizer__Signal
 };
 
-static JSCFunctionListEntry funcDef__Signal[]
+static JSCFunctionListEntry funcDef__Signal[] =
 {
     JS_CFUNC_DEF("connect", 1, callback_method_Signal_connect),
     JS_CFUNC_DEF("disconnect", 1, callback_method_Signal_disconnect),
