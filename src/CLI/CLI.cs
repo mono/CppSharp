@@ -152,7 +152,9 @@ namespace CppSharp
             {
                 bool searchQuery = args.IndexOf('*') >= 0 || args.IndexOf('?') >= 0;
                 if (searchQuery || Directory.Exists(args))
+                {
                     GetFilesFromPath(args, errorMessages);
+                }
                 else if (File.Exists(args))
                     options.HeaderFiles.Add(args);
                 else
@@ -175,7 +177,8 @@ namespace CppSharp
 
             if (lastSeparatorPosition >= 0)
             {
-                if (path.IndexOf('*', lastSeparatorPosition) >= lastSeparatorPosition || path.IndexOf('?', lastSeparatorPosition) >= lastSeparatorPosition)
+                if (path.IndexOf('*', lastSeparatorPosition) >= lastSeparatorPosition ||
+                    path.IndexOf('?', lastSeparatorPosition) >= lastSeparatorPosition)
                 {
                     searchPattern = path.Substring(lastSeparatorPosition + 1);
                     path = path.Substring(0, lastSeparatorPosition);
@@ -257,7 +260,8 @@ namespace CppSharp
                     return;
             }
 
-            errorMessages.Add($"Unknown target architecture: {architecture}. Defaulting to {options.Architecture}");
+            errorMessages.Add($@"Unknown target architecture: {architecture}. \
+             Defaulting to {options.Architecture}");
         }
 
         static void PrintErrorMessages(List<string> errorMessages)
@@ -275,7 +279,8 @@ namespace CppSharp
             {
                 PrintErrorMessages(errorMessages);
 
-                // Don't need to show the help since if ParseCommandLineArgs returns false the help has already been shown
+                // Don't need to show the help since if ParseCommandLineArgs returns false
+                // since the help has already been shown
                 return;
             }
 
