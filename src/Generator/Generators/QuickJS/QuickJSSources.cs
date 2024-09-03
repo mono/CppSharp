@@ -912,7 +912,7 @@ namespace CppSharp.Generators.Cpp
 
         public override string GenerateTypeCheckForParameter(int paramIndex, Type type)
         {
-            var typeChecker = new QuickJSTypeCheckGen(paramIndex);
+            var typeChecker = new QuickJSTypeCheckGen(Context, paramIndex);
             type.Visit(typeChecker);
 
             var condition = typeChecker.Generate();
