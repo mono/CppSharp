@@ -12,6 +12,16 @@ namespace CppSharp.Generators.C
     {
         public QuickJSGenerator(BindingContext context) : base(context)
         {
+            if (context.Options.GenerateName == null)
+            {
+                context.Options.GenerateName = (unit) =>
+                {
+                    if (unit.FileName == "premake5.lua")
+                        return unit.FileNameWithoutExtension;
+                    else
+                        return $"{unit.Module.LibraryName}_JS_{unit.FileNameWithoutExtension}";
+                };
+            }
         }
 
         public override List<GeneratorOutput> Generate()
@@ -65,7 +75,7 @@ namespace CppSharp.Generators.C
             {
                 TranslationUnit = new TranslationUnit
                 {
-                    FilePath = $"{module.LibraryName}_qjs_module.cpp",
+                    FilePath = $"QJSModule.cpp",
                     Module = module
                 },
                 Outputs = new List<CodeGenerator> { moduleGen }
