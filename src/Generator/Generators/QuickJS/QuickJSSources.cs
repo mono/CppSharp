@@ -301,8 +301,9 @@ namespace CppSharp.Generators.Cpp
                     }
                     else
                     {
+                        var classId = $"classId_{GetCIdentifier(Context, @class)}";
                         Write($"{@class.QualifiedOriginalName}* instance = ");
-                        WriteLine($"({@class.QualifiedOriginalName}*) JS_GetOpaque(val, 0);");
+                        WriteLine($"({@class.QualifiedOriginalName}*) JS_GetOpaque(val, {classId});");
                     }
 
                     UnindentAndWriteCloseBrace();
@@ -450,24 +451,27 @@ namespace CppSharp.Generators.Cpp
 
                 var args = marshalers.Select(m => m.Context.Return.ToString());
                 WriteLine($"JSValueConst argv[] = {{ { string.Join(", ", args)} }};");
-                WriteLine($"auto data = (JS_SignalContext*) JS_GetOpaque(event, 0);");
+                WriteLine($"auto data = (JS_SignalContext*) JS_GetOpaque(event, {QuickJSSources.SignalClassId});");
                 WriteLine($"JSValue ret = JS_Call(ctx, data->function, JS_UNDEFINED, {@event.Parameters.Count}, argv);");
                 WriteLine($"JS_FreeValue(ctx, ret);");
+
+                var defaultValuePrinter = new CppDefaultValuePrinter(Context);
+                var defaultValue = functionType.ReturnType.Visit(defaultValuePrinter);
+                WriteLineIndent($"return {defaultValue};");
 
                 //WriteLine($"{@class.QualifiedOriginalName}* instance = data->instance;");
 
                 /*
+                if (!isVoidReturn)
+                {
+                    CTypePrinter.PushContext(TypePrinterContextKind.Native);
+                    var returnType = function.ReturnType.Visit(CTypePrinter);
+                    CTypePrinter.PopContext();
 
-                                if (!isVoidReturn)
-                                {
-                                    CTypePrinter.PushContext(TypePrinterContextKind.Native);
-                                    var returnType = function.ReturnType.Visit(CTypePrinter);
-                                    CTypePrinter.PopContext();
+                    Write($"{returnType} {Helpers.ReturnIdentifier} = ");
+                }
 
-                                    Write($"{returnType} {Helpers.ReturnIdentifier} = ");
-                                }
-
-                                var @class = function.Namespace as Class;
+                var @class = function.Namespace as Class;
                 */
 
                 UnindentAndWriteCloseBrace();
@@ -786,13 +790,15 @@ namespace CppSharp.Generators.Cpp
                 else if (QuickJSRegister.ClassNeedsExtraData(@class))
                 {
                     var classDataId = $"data_{GetCIdentifier(Context, @class)}";
-                    WriteLine($"auto data = ({classDataId}*) JS_GetOpaque(this_val, 0);");
+                    WriteLine("JSClassID _dummy;");
+                    WriteLine($"auto data = ({classDataId}*) JS_GetAnyOpaque(this_val, &_dummy);");
                     WriteLine($"{@class.QualifiedOriginalName}* instance = ({@class.QualifiedOriginalName}*) data->instance;");
                 }
                 else
                 {
+                    WriteLine("JSClassID _dummy;");
                     Write($"{@class.QualifiedOriginalName}* instance = ");
-                    WriteLine($"({@class.QualifiedOriginalName}*) JS_GetOpaque(this_val, 0);");
+                    WriteLine($"({@class.QualifiedOriginalName}*) JS_GetAnyOpaque(this_val, &_dummy);");
                 }
 
                 NewLine();
@@ -931,9 +937,9 @@ namespace CppSharp.Generators.Cpp
                 WriteOpenBraceAndIndent();
 
                 var @class = @event.Namespace as Class;
-                var classId = $"classId_{GetCIdentifier(Context, @class)}";
                 var classDataId = $"data_{GetCIdentifier(Context, @class)}";
-                WriteLine($"auto data = ({classDataId}*) JS_GetOpaque(this_val, 0);");
+                WriteLine("JSClassID _dummy;");
+                WriteLine($"auto data = ({classDataId}*) JS_GetAnyOpaque(this_val, &_dummy);");
 
                 WriteLine($"if (data == nullptr)");
                 WriteLineIndent("return JS_ThrowTypeError(ctx, \"Could not find object instance\");");
