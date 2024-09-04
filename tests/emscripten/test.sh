@@ -5,7 +5,16 @@ rootdir="$dir/../.."
 dotnet_configuration=Release
 configuration=debug
 platform=x64
-jsinterp=node
+jsinterp=$(which node)
+
+for arg in "$@"; do
+    case $arg in
+        --with-node=*)
+        jsinterp="${arg#*=}"
+        shift
+        ;;
+    esac
+done
 
 if [ "$CI" = "true" ]; then
     red=""
