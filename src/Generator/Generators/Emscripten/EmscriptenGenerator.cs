@@ -13,6 +13,16 @@ namespace CppSharp.Generators.Emscripten
     {
         public EmscriptenGenerator(BindingContext context) : base(context)
         {
+            if (context.Options.GenerateName == null)
+            {
+                context.Options.GenerateName = (unit) =>
+                {
+                    if (unit.FileName == "premake5.lua")
+                        return unit.FileNameWithoutExtension;
+                    else
+                        return $"{unit.Module.LibraryName}_embind_{unit.FileNameWithoutExtension}";
+                };
+            }
         }
 
         public override List<GeneratorOutput> Generate()
@@ -59,7 +69,7 @@ namespace CppSharp.Generators.Emscripten
             {
                 TranslationUnit = new TranslationUnit
                 {
-                    FilePath = $"{module.LibraryName}_embind_module.cpp",
+                    FilePath = $"__Module.cpp",
                     Module = module
                 },
                 Outputs = new List<CodeGenerator> { moduleGen }
