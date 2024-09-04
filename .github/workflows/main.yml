@@ -35,6 +35,11 @@ jobs:
           version: ${{ env.EMSCRIPTEN_VERSION }}
           actions-cache-folder: emsdk-cache-${{ runner.os }}
 
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: '3.30.x'
+
       - name: Install nbgv
         if: startsWith(matrix.config.os, 'macos')
         run: |
