@@ -23,7 +23,7 @@
     <GlobalTargetFramework>$(TargetFramework)</GlobalTargetFramework>
     <BaseIntermediateOutputPath>$(ObjDir)$(MSBuildProjectName)\</BaseIntermediateOutputPath>
     <BaseOutputPath>$(RootDir)bin\</BaseOutputPath>
-    <OutputPath>$(BaseOutputPath)$(Configuration)_$(PlatformTarget)\</OutputPath>
+    <OutputPath>$(BaseOutputPath)$(Configuration)\</OutputPath>
     <ActionDir>$(BuildDir)$(PremakeAction)\</ActionDir>
     <NativeProjectsDir>$(ActionDir)projects\</NativeProjectsDir>
     <PackageDir>$(RootDir)artifacts\package\</PackageDir>
