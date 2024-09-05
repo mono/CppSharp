@@ -69,7 +69,7 @@ namespace CppSharp.Generators.Emscripten
             {
                 TranslationUnit = new TranslationUnit
                 {
-                    FilePath = $"__Module.cpp",
+                    FilePath = $"_Module.cpp",
                     Module = module
                 },
                 Outputs = new List<CodeGenerator> { moduleGen }

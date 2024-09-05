@@ -75,7 +75,7 @@ namespace CppSharp.Generators.C
             {
                 TranslationUnit = new TranslationUnit
                 {
-                    FilePath = $"QJSModule.cpp",
+                    FilePath = $"_Module.cpp",
                     Module = module
                 },
                 Outputs = new List<CodeGenerator> { moduleGen }
