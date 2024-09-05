@@ -4,7 +4,6 @@ dir=$(cd "$(dirname "$0")"; pwd)
 rootdir="$dir/../.."
 dotnet_configuration=Release
 configuration=debug
-platform=x64
 jsinterp="$dir/runtime/build/qjs"
 
 cd $dir
@@ -23,7 +22,7 @@ generate=true
 
 if [ $generate = true ]; then
     echo "${green}Generating bindings${reset}"
-    dotnet $rootdir/bin/${dotnet_configuration}_${platform}/CppSharp.CLI.dll \
+    dotnet $rootdir/bin/${dotnet_configuration}/CppSharp.CLI.dll \
     $dir/bindings.lua
 fi
 

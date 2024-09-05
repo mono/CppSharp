@@ -16,7 +16,7 @@ else
 fi
 
 echo "${green}Generating bindings${reset}"
-dotnet $rootdir/bin/${configuration}_${platform}/CppSharp.CLI.dll \
+dotnet $rootdir/bin/${configuration}/CppSharp.CLI.dll \
  --gen=napi -I$dir/.. -o $dir/gen -m tests $dir/../*.h
 
 echo "${green}Building generated binding files${reset}"
