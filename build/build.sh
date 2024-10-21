@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -ex
 builddir=$(cd "$(dirname "$0")"; pwd)
 platform=x64
 vs=vs2022
