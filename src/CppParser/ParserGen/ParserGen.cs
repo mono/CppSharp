@@ -175,15 +175,15 @@ namespace CppSharp
             if (Directory.Exists(osxHeadersPath) || Platform.IsMacOS)
             {
                 Console.WriteLine("Generating the C# parser bindings for macOS x86...");
-                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-apple-darwin12.4.0"));
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-apple-darwin"));
                 Console.WriteLine();
 
                 Console.WriteLine("Generating the C# parser bindings for macOS x64...");
-                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-apple-darwin12.4.0"));
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-apple-darwin"));
                 Console.WriteLine();
 
                 Console.WriteLine("Generating the C# parser bindings for macOS ARM64...");
-                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "arm64-apple-darwin12.4.0"));
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "arm64-apple-darwin"));
                 Console.WriteLine();
             }
             else
