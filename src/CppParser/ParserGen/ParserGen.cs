@@ -166,24 +166,32 @@ namespace CppSharp
                 ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-pc-win32-msvc"));
                 Console.WriteLine();
             }
+            else
+            {
+                Console.WriteLine("Skipping generation for Windows due to missing headers, only supported on Windows platform.");
+            }
 
-            var osxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\osx");
+            var osxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers", "osx");
             if (Directory.Exists(osxHeadersPath) || Platform.IsMacOS)
             {
-                Console.WriteLine("Generating the C# parser bindings for OSX x86...");
+                Console.WriteLine("Generating the C# parser bindings for macOS x86...");
                 ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-apple-darwin12.4.0"));
                 Console.WriteLine();
 
-                Console.WriteLine("Generating the C# parser bindings for OSX x64...");
+                Console.WriteLine("Generating the C# parser bindings for macOS x64...");
                 ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-apple-darwin12.4.0"));
                 Console.WriteLine();
 
-                Console.WriteLine("Generating the C# parser bindings for OSX ARM64...");
+                Console.WriteLine("Generating the C# parser bindings for macOS ARM64...");
                 ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "arm64-apple-darwin12.4.0"));
                 Console.WriteLine();
             }
+            else
+            {
+                Console.WriteLine("Skipping generation for macOS due to missing headers.");
+            }
 
-            var linuxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\x86_64-linux-gnu");
+            var linuxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers", "x86_64-linux-gnu");
             if (Directory.Exists(linuxHeadersPath) || Platform.IsLinux)
             {
                 Console.WriteLine("Generating the C# parser bindings for Linux...");
@@ -203,6 +211,10 @@ namespace CppSharp
                 ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "arm64-linux-gnu",
                     isGnuCpp11Abi: true));
                 Console.WriteLine();
+            }
+            else
+            {
+                Console.WriteLine("Skipping generation for Linux due to missing headers.");
             }
         }
     }
