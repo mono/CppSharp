@@ -193,7 +193,7 @@ namespace Std
         public unsafe partial struct __Internal
         {
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSt3__19allocatorIcEC2B8un170006Ev", CallingConvention = __CallingConvention.Cdecl)]
-            internal static extern void ctorc__N_std_N___1_S_allocator__C(__IntPtr __instance);
+            internal static extern __IntPtr ctorc__N_std_N___1_S_allocator__C(__IntPtr __instance);
         }
     }
 
@@ -306,10 +306,10 @@ namespace Std
             internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C_S___rep_S2_ __r_;
 
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEC2B8un170006Ev", CallingConvention = __CallingConvention.Cdecl)]
-            internal static extern void ctorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C(__IntPtr __instance);
+            internal static extern __IntPtr ctorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C(__IntPtr __instance);
 
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEED2Ev", CallingConvention = __CallingConvention.Cdecl)]
-            internal static extern void dtorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C(__IntPtr __instance);
+            internal static extern __IntPtr dtorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C(__IntPtr __instance);
         }
 
         namespace Rep
@@ -348,34 +348,13 @@ namespace Std
 
         namespace Long
         {
-            [StructLayout(LayoutKind.Explicit, Size = 24)]
+            [StructLayout(LayoutKind.Sequential, Size = 24)]
             public unsafe partial struct __Internal
             {
-                [FieldOffset(0)]
-                internal ulong __is_long_;
-
-                [FieldOffset(0)]
-                internal ulong __cap_;
-
-                [FieldOffset(8)]
-                internal ulong __size_;
-
-                [FieldOffset(16)]
                 internal __IntPtr __data_;
-            }
-
-            namespace _0
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 8)]
-                public unsafe partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal ulong __is_long_;
-
-                    [FieldOffset(0)]
-                    internal ulong __cap_;
-                }
-
+                internal ulong __size_;
+                internal ulong __cap_;
+                internal ulong __is_long_;
             }
 
         }
@@ -386,30 +365,16 @@ namespace Std
             public unsafe partial struct __Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C
             {
                 [FieldOffset(0)]
-                internal byte __is_long_;
+                internal fixed sbyte __data_[23];
 
-                [FieldOffset(0)]
-                internal byte __size_;
-
-                [FieldOffset(1)]
+                [FieldOffset(23)]
                 internal __IntPtr __padding_;
 
-                [FieldOffset(1)]
-                internal fixed sbyte __data_[23];
-            }
+                [FieldOffset(23)]
+                internal byte __size_;
 
-            namespace _0
-            {
-                [StructLayout(LayoutKind.Explicit, Size = 1)]
-                public unsafe partial struct __Internal
-                {
-                    [FieldOffset(0)]
-                    internal byte __is_long_;
-
-                    [FieldOffset(0)]
-                    internal byte __size_;
-                }
-
+                [FieldOffset(23)]
+                internal byte __is_long_;
             }
 
         }
@@ -527,7 +492,6 @@ namespace Std
                 if (___CharT.IsAssignableFrom(typeof(sbyte)) && ___Traits.IsAssignableFrom(typeof(global::Std.CharTraits<sbyte>)) && ___Allocator.IsAssignableFrom(typeof(global::Std.Allocator<sbyte>)))
                 {
                     global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C.dtorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C(__Instance);
-                    return;
                 }
                 throw new ArgumentOutOfRangeException("_CharT, _Traits, _Allocator", string.Join(", ", new[] { typeof(_CharT).FullName, typeof(_Traits).FullName, typeof(_Allocator).FullName }), "global::Std.BasicString<_CharT, _Traits, _Allocator> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.");
             }
