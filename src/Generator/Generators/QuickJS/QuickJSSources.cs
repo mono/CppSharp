@@ -221,6 +221,11 @@ namespace CppSharp.Generators.Cpp
             WriteLine($"JS_CFUNC_DEF(\"{function.Name}\", {maxArgs}, {callbackId}),");
         }
 
+        public override bool VisitProperty(Property property)
+        {
+            return true;
+        }
+
         public override bool VisitEvent(Event @event)
         {
             var getterId = $"callback_event_getter_{GetCIdentifier(Context, @event)}";
@@ -301,8 +306,9 @@ namespace CppSharp.Generators.Cpp
                     }
                     else
                     {
+                        var classId = $"classId_{GetCIdentifier(Context, @class)}";
                         Write($"{@class.QualifiedOriginalName}* instance = ");
-                        WriteLine($"({@class.QualifiedOriginalName}*) JS_GetOpaque(val, 0);");
+                        WriteLine($"({@class.QualifiedOriginalName}*) JS_GetOpaque(val, {classId});");
                     }
 
                     UnindentAndWriteCloseBrace();
@@ -311,10 +317,10 @@ namespace CppSharp.Generators.Cpp
 
                 PushBlock();
                 {
-                    WriteLine($"static JSClassDef classDef_{GetCIdentifier(Context, @class)}");
+                    WriteLine($"static JSClassDef classDef_{GetCIdentifier(Context, @class)} =");
                     WriteOpenBraceAndIndent();
 
-                    WriteLine($"\"{@class.Name}\",");
+                    WriteLine($".class_name = \"{@class.Name}\",");
                     WriteLine($".finalizer = {finalizerId}");
 
                     Unindent();
@@ -324,7 +330,7 @@ namespace CppSharp.Generators.Cpp
 
                 PushBlock();
                 {
-                    WriteLine($"static JSCFunctionListEntry funcDef_{GetCIdentifier(Context, @class)}[]");
+                    WriteLine($"static JSCFunctionListEntry funcDef_{GetCIdentifier(Context, @class)}[] =");
                     WriteOpenBraceAndIndent();
 
                     var funcGen = new QuickJSClassFuncDef(Context);
@@ -412,17 +418,14 @@ namespace CppSharp.Generators.Cpp
                 WriteLine($"JSValue event = JS_Interop_FindEvent(&events, {@event.GlobalId});");
                 WriteLine($"if (JS_IsUndefined(event))");
 
+                var defaultValuePrinter = new CppDefaultValuePrinter(Context);
+                var defaultValue = functionType.ReturnType.Visit(defaultValuePrinter);
+
                 var isVoidReturn = functionType.ReturnType.Type.IsPrimitiveType(PrimitiveType.Void);
                 if (isVoidReturn)
-                {
                     WriteLineIndent($"return;");
-                }
                 else
-                {
-                    var defaultValuePrinter = new CppDefaultValuePrinter(Context);
-                    var defaultValue = functionType.ReturnType.Visit(defaultValuePrinter);
                     WriteLineIndent($"return {defaultValue};");
-                }
                 NewLine();
 
                 // Marshal the arguments.
@@ -450,25 +453,14 @@ namespace CppSharp.Generators.Cpp
 
                 var args = marshalers.Select(m => m.Context.Return.ToString());
                 WriteLine($"JSValueConst argv[] = {{ { string.Join(", ", args)} }};");
-                WriteLine($"auto data = (JS_SignalContext*) JS_GetOpaque(event, 0);");
+                WriteLine($"auto data = (JS_SignalContext*) JS_GetOpaque(event, {QuickJSSources.SignalClassId});");
                 WriteLine($"JSValue ret = JS_Call(ctx, data->function, JS_UNDEFINED, {@event.Parameters.Count}, argv);");
                 WriteLine($"JS_FreeValue(ctx, ret);");
 
-                //WriteLine($"{@class.QualifiedOriginalName}* instance = data->instance;");
-
-                /*
-
-                                if (!isVoidReturn)
-                                {
-                                    CTypePrinter.PushContext(TypePrinterContextKind.Native);
-                                    var returnType = function.ReturnType.Visit(CTypePrinter);
-                                    CTypePrinter.PopContext();
-
-                                    Write($"{returnType} {Helpers.ReturnIdentifier} = ");
-                                }
-
-                                var @class = function.Namespace as Class;
-                */
+                if (isVoidReturn)
+                    WriteLineIndent($"return;");
+                else
+                    WriteLineIndent($"return {defaultValue};");
 
                 UnindentAndWriteCloseBrace();
             }
@@ -594,7 +586,7 @@ namespace CppSharp.Generators.Cpp
             WriteLine("if (phase == 0)");
             WriteOpenBraceAndIndent();
             {
-                WriteLine($"JS_NewClassID(&{classId});");
+                WriteLine($"JS_NewClassID(JS_GetRuntime(ctx), &{classId});");
                 NewLine();
 
                 WriteLine($"JS_NewClass(JS_GetRuntime(ctx), {classId}, &{classDef});");
@@ -786,13 +778,15 @@ namespace CppSharp.Generators.Cpp
                 else if (QuickJSRegister.ClassNeedsExtraData(@class))
                 {
                     var classDataId = $"data_{GetCIdentifier(Context, @class)}";
-                    WriteLine($"auto data = ({classDataId}*) JS_GetOpaque(this_val, 0);");
+                    WriteLine("JSClassID _dummy;");
+                    WriteLine($"auto data = ({classDataId}*) JS_GetAnyOpaque(this_val, &_dummy);");
                     WriteLine($"{@class.QualifiedOriginalName}* instance = ({@class.QualifiedOriginalName}*) data->instance;");
                 }
                 else
                 {
+                    WriteLine("JSClassID _dummy;");
                     Write($"{@class.QualifiedOriginalName}* instance = ");
-                    WriteLine($"({@class.QualifiedOriginalName}*) JS_GetOpaque(this_val, 0);");
+                    WriteLine($"({@class.QualifiedOriginalName}*) JS_GetAnyOpaque(this_val, &_dummy);");
                 }
 
                 NewLine();
@@ -912,7 +906,7 @@ namespace CppSharp.Generators.Cpp
 
         public override string GenerateTypeCheckForParameter(int paramIndex, Type type)
         {
-            var typeChecker = new QuickJSTypeCheckGen(paramIndex);
+            var typeChecker = new QuickJSTypeCheckGen(Context, paramIndex);
             type.Visit(typeChecker);
 
             var condition = typeChecker.Generate();
@@ -931,9 +925,9 @@ namespace CppSharp.Generators.Cpp
                 WriteOpenBraceAndIndent();
 
                 var @class = @event.Namespace as Class;
-                var classId = $"classId_{GetCIdentifier(Context, @class)}";
                 var classDataId = $"data_{GetCIdentifier(Context, @class)}";
-                WriteLine($"auto data = ({classDataId}*) JS_GetOpaque(this_val, 0);");
+                WriteLine("JSClassID _dummy;");
+                WriteLine($"auto data = ({classDataId}*) JS_GetAnyOpaque(this_val, &_dummy);");
 
                 WriteLine($"if (data == nullptr)");
                 WriteLineIndent("return JS_ThrowTypeError(ctx, \"Could not find object instance\");");

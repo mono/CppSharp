@@ -91,22 +91,11 @@ namespace CppSharp
                 options.OutputDir = Path.Combine(Directory.GetCurrentDirectory(), "gen");
             }
 
-            string moduleName;
-            if (options.HeaderFiles.Count == 1)
-            {
-                moduleName = Path.GetFileNameWithoutExtension(options.HeaderFiles.First());
-            }
-            else
-            {
-                var dir = Path.GetDirectoryName(options.HeaderFiles.First());
-                moduleName = new DirectoryInfo(dir).Name;
-            }
-
             if (string.IsNullOrEmpty(options.OutputFileName))
-                options.OutputFileName = moduleName;
+                options.OutputFileName = GetModuleNameFromHeaderFiles();
 
             if (string.IsNullOrEmpty(options.OutputNamespace))
-                options.OutputNamespace = moduleName;
+                options.OutputNamespace = GetModuleNameFromHeaderFiles();
 
             if (options.IncludeDirs.Count == 0)
                 options.IncludeDirs.Add(Path.GetDirectoryName(options.HeaderFiles.First()));
@@ -114,6 +103,22 @@ namespace CppSharp
             SetupTargetTriple();
 
             return true;
+
+            string GetModuleNameFromHeaderFiles()
+            {
+                string moduleName;
+                if (options.HeaderFiles.Count == 1)
+                {
+                    moduleName = Path.GetFileNameWithoutExtension(options.HeaderFiles.First());
+                }
+                else
+                {
+                    var dir = Path.GetDirectoryName(options.HeaderFiles.First());
+                    moduleName = new DirectoryInfo(dir).Name;
+                }
+
+                return moduleName;
+            }
         }
 
         public void Setup(Driver driver)
@@ -124,6 +129,7 @@ namespace CppSharp
 
             var driverOptions = driver.Options;
             driverOptions.GeneratorKind = options.Kind;
+            driverOptions.PropertyDetectionMode = options.PropertyMode;
             var module = driverOptions.AddModule(options.OutputFileName);
 
             if (!string.IsNullOrEmpty(options.InputLibraryName))

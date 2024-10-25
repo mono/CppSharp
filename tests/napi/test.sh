@@ -5,12 +5,18 @@ rootdir="$dir/../.."
 configuration=Release
 platform=x64
 
-red=`tput setaf 1`
-green=`tput setaf 2`
-reset=`tput sgr0`
+if [ "$CI" = "true" ]; then
+    red=""
+    green=""
+    reset=""
+else
+    red=`tput setaf 1`
+    green=`tput setaf 2`
+    reset=`tput sgr0`
+fi
 
 echo "${green}Generating bindings${reset}"
-dotnet $rootdir/bin/${configuration}_${platform}/CppSharp.CLI.dll \
+dotnet $rootdir/bin/${configuration}/CppSharp.CLI.dll \
  --gen=napi -I$dir/.. -o $dir/gen -m tests $dir/../*.h
 
 echo "${green}Building generated binding files${reset}"

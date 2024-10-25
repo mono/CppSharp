@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using CppSharp.Generators;
+using CppSharp.Passes;
 using Mono.Options;
 
 namespace CppSharp
@@ -34,6 +35,7 @@ namespace CppSharp
             optionSet.Add("p=|platform=", "the {PLATFORM} that the generated code will target: 'win', 'osx' or 'linux' or 'emscripten'", p => { GetDestinationPlatform(p, errorMessages); });
             optionSet.Add("a=|arch=", "the {ARCHITECTURE} that the generated code will target: 'x86' or 'x64' or 'wasm32' or 'wasm64'", a => { GetDestinationArchitecture(a, errorMessages); });
             optionSet.Add("prefix=", "sets a string prefix to the names of generated files", a => { options.Prefix = a; });
+            optionSet.Add("property=", "the property detection mode to use: 'all', 'none' or 'keywords' or 'heuristics'", p => { GetPropertyMode(p, errorMessages); });
 
             optionSet.Add("exceptions", "enables support for C++ exceptions in the parser", v => { options.EnableExceptions = true; });
             optionSet.Add("rtti", "enables support for C++ RTTI in the parser", v => { options.EnableRTTI = true; });
@@ -152,9 +154,16 @@ namespace CppSharp
             {
                 bool searchQuery = args.IndexOf('*') >= 0 || args.IndexOf('?') >= 0;
                 if (searchQuery || Directory.Exists(args))
+                {
                     GetFilesFromPath(args, errorMessages);
+                }
                 else if (File.Exists(args))
-                    options.HeaderFiles.Add(args);
+                {
+                    if (Path.GetExtension(args) == ".lua")
+                        options.LuaBindingsFiles.Add(args);
+                    else
+                        options.HeaderFiles.Add(args);
+                }
                 else
                 {
                     errorMessages.Add($"File '{args}' could not be found.");
@@ -175,7 +184,8 @@ namespace CppSharp
 
             if (lastSeparatorPosition >= 0)
             {
-                if (path.IndexOf('*', lastSeparatorPosition) >= lastSeparatorPosition || path.IndexOf('?', lastSeparatorPosition) >= lastSeparatorPosition)
+                if (path.IndexOf('*', lastSeparatorPosition) >= lastSeparatorPosition ||
+                    path.IndexOf('?', lastSeparatorPosition) >= lastSeparatorPosition)
                 {
                     searchPattern = path.Substring(lastSeparatorPosition + 1);
                     path = path.Substring(0, lastSeparatorPosition);
@@ -204,7 +214,7 @@ namespace CppSharp
             }
         }
 
-        static void GetGeneratorKind(string generator, List<string> errorMessages)
+        public static void GetGeneratorKind(string generator, List<string> errorMessages)
         {
             foreach (GeneratorKind generatorKind in GeneratorKind.Registered)
             {
@@ -218,7 +228,7 @@ namespace CppSharp
             errorMessages.Add($"Unknown generator kind: {generator}.");
         }
 
-        static void GetDestinationPlatform(string platform, List<string> errorMessages)
+        public static void GetDestinationPlatform(string platform, List<string> errorMessages)
         {
             switch (platform.ToLower())
             {
@@ -239,7 +249,7 @@ namespace CppSharp
             errorMessages.Add($"Unknown target platform: {platform}. Defaulting to {options.Platform}");
         }
 
-        static void GetDestinationArchitecture(string architecture, List<string> errorMessages)
+        public static void GetDestinationArchitecture(string architecture, List<string> errorMessages)
         {
             switch (architecture.ToLower())
             {
@@ -257,7 +267,29 @@ namespace CppSharp
                     return;
             }
 
-            errorMessages.Add($"Unknown target architecture: {architecture}. Defaulting to {options.Architecture}");
+            errorMessages.Add($@"Unknown target architecture: {architecture}. \
+             Defaulting to {options.Architecture}");
+        }
+
+        static void GetPropertyMode(string mode, List<string> errorMessages)
+        {
+            switch (mode.ToLower())
+            {
+                case "all":
+                    options.PropertyMode = PropertyDetectionMode.All;
+                    return;
+                case "none":
+                    options.PropertyMode = PropertyDetectionMode.None;
+                    return;
+                case "dictionary":
+                    options.PropertyMode = PropertyDetectionMode.Dictionary;
+                    return;
+                case "keywords":
+                    options.PropertyMode = PropertyDetectionMode.Keywords;
+                    return;
+            }
+
+            errorMessages.Add($"Unknown property detection mode: {mode}. Defaulting to {options.PropertyMode}");
         }
 
         static void PrintErrorMessages(List<string> errorMessages)
@@ -275,8 +307,16 @@ namespace CppSharp
             {
                 PrintErrorMessages(errorMessages);
 
-                // Don't need to show the help since if ParseCommandLineArgs returns false the help has already been shown
+                // Don't need to show the help since if ParseCommandLineArgs returns false
+                // since the help has already been shown
                 return;
+            }
+
+            var luaContext = new LuaContext(options, errorMessages);
+            foreach (var luaFile in options.LuaBindingsFiles)
+            {
+                Directory.SetCurrentDirectory(Path.GetDirectoryName(luaFile));
+                luaContext.LoadFile(luaFile);
             }
 
             var gen = new Generator(options);

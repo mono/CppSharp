@@ -117,6 +117,11 @@ namespace CppSharp.Generators.Emscripten
             }
         }
 
+        public override bool VisitProperty(Property property)
+        {
+            return true;
+        }
+
         public override bool VisitMethodDecl(Method method)
         {
             Indent();

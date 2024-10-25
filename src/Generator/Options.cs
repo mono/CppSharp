@@ -276,6 +276,9 @@ namespace CppSharp
         /// </summary>
         public HashSet<string> ExplicitlyPatchedVirtualFunctions { get; }
 
+        public PropertyDetectionMode PropertyDetectionMode { get; set; } = PropertyDetectionMode.Dictionary;
+
+        [Obsolete("Use PropertyDetectionMode instead")]
         public bool UsePropertyDetectionHeuristics { get; set; } = true;
 
         /// <summary>

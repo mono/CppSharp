@@ -7,15 +7,21 @@ configuration=debug
 platform=x64
 jsinterp="$rootdir/deps/quickjs/qjs-debug"
 
-red=`tput setaf 1`
-green=`tput setaf 2`
-reset=`tput sgr0`
+if [ "$CI" = "true" ]; then
+    red=""
+    green=""
+    reset=""
+else
+    red=`tput setaf 1`
+    green=`tput setaf 2`
+    reset=`tput sgr0`
+fi
 
 generate=true
 
 if [ $generate = true ]; then
     echo "${green}Generating bindings${reset}"
-    dotnet $rootdir/bin/${dotnet_configuration}_${platform}/CppSharp.CLI.dll \
+    dotnet $rootdir/bin/${dotnet_configuration}/CppSharp.CLI.dll \
         --gen=ts -I$dir/.. -I$rootdir/include -o $dir/gen -m tests $dir/../*.h
 fi
 

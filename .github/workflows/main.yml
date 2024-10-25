@@ -10,7 +10,7 @@ jobs:
       matrix:
         config:
           - { os: ubuntu-22.04, platform: x64, cxx: g++-11, cc: gcc-11 }
-          - { os: macos-11, platform: x64, cxx: clang++, cc: clang }
+          - { os: macos-12, platform: x64, cxx: clang++, cc: clang }
           - { os: windows-2022, platform: x64, vs: "Program Files/Microsoft Visual Studio/2022" }
 
     runs-on: ${{ matrix.config.os }}
@@ -22,11 +22,23 @@ jobs:
       PLATFORM: ${{ matrix.config.platform }}
       DOTNET_NOLOGO: true
       DOTNET_CLI_TELEMETRY_OPTOUT: true
+      EMSCRIPTEN_VERSION: 3.1.65
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
+
+      - name: Setup emsdk
+        uses: mymindstorm/setup-emsdk@v11
+        with:
+          version: ${{ env.EMSCRIPTEN_VERSION }}
+          actions-cache-folder: emsdk-cache-${{ runner.os }}
+
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: '3.30.x'
 
       - name: Install nbgv
         if: startsWith(matrix.config.os, 'macos')
@@ -55,9 +67,24 @@ jobs:
         shell: bash
         run: build/build.sh -platform $PLATFORM -build_only
 
-      - name: Test
+      - name: Test (.NET)
         shell: bash
         run: build/test.sh -platform $PLATFORM
+
+      - name: Build (QuickJS runtime)
+        shell: bash
+        run: tests/quickjs/bootstrap.sh
+        if: runner.os != 'Windows'
+
+      - name: Test (QuickJS)
+        shell: bash
+        run: tests/quickjs/test.sh
+        if: runner.os != 'Windows'
+
+      - name: Test (Emscripten)
+        shell: bash
+        run: tests/emscripten/test.sh
+        if: runner.os != 'Windows'
 
       - name: Pack
         shell: bash

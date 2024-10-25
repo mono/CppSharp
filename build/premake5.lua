@@ -53,7 +53,6 @@ workspace "CppSharp"
     if EnabledManagedProjects() then
       include (srcdir .. "/Core")
       include (srcdir .. "/AST")
-      --include (srcdir .. "/ASTViewer")
       include (srcdir .. "/CppParser/Bindings")
       include (srcdir .. "/CppParser/Bootstrap")
       include (srcdir .. "/CppParser/ParserGen")

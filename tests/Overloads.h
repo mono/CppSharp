@@ -1,3 +1,5 @@
+#pragma once
+
 void Overload0() {}
 
 int Overload1() { return 1; }

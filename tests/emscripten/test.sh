@@ -5,17 +5,32 @@ rootdir="$dir/../.."
 dotnet_configuration=Release
 configuration=debug
 platform=x64
-jsinterp=node
+jsinterp=$(which node)
 
-red=`tput setaf 1`
-green=`tput setaf 2`
-reset=`tput sgr0`
+for arg in "$@"; do
+    case $arg in
+        --with-node=*)
+        jsinterp="${arg#*=}"
+        shift
+        ;;
+    esac
+done
+
+if [ "$CI" = "true" ]; then
+    red=""
+    green=""
+    reset=""
+else
+    red=`tput setaf 1`
+    green=`tput setaf 2`
+    reset=`tput sgr0`
+fi
 
 generate=true
 
 if [ $generate = true ]; then
     echo "${green}Generating bindings${reset}"
-    dotnet $rootdir/bin/${dotnet_configuration}_${platform}/CppSharp.CLI.dll \
+    dotnet $rootdir/bin/${dotnet_configuration}/CppSharp.CLI.dll \
         --gen=emscripten --platform=emscripten --arch=wasm32 \
         -I$dir/.. -I$rootdir/include -o $dir/gen -m tests $dir/../*.h
 fi

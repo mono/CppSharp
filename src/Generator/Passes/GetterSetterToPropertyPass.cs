@@ -11,6 +11,33 @@ using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Passes
 {
+    /// <summary>
+    /// This is used by GetterSetterToPropertyPass to decide how to process
+    /// getter/setter class methods into properties.
+    /// </summary>
+    public enum PropertyDetectionMode
+    {
+        /// <summary>
+        /// No methods are converted to properties.
+        /// </summary>
+        None,
+        /// <summary>
+        /// All compatible methods are converted to properties.
+        /// </summary>
+        All,
+        /// <summary>
+        /// Only methods starting with certain keyword are converted to properties.
+        /// Right now we consider getter methods starting with "get", "is" and "has".
+        /// </summary>
+        Keywords,
+        /// <summary>
+        /// Heuristics based mode that uses english dictionary words to decide
+        /// if a getter method is an action and thus not to be considered as a
+        /// property.
+        /// </summary>
+        Dictionary
+    }
+
     public class GetterSetterToPropertyPass : TranslationUnitPass
     {
         static GetterSetterToPropertyPass()
@@ -44,6 +71,9 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
+            if (Options.PropertyDetectionMode == PropertyDetectionMode.None)
+                return false;
+
             if (!base.VisitClassDecl(@class))
                 return false;
 
@@ -86,35 +116,58 @@ namespace CppSharp.Passes
 
         private IEnumerable<Property> CleanUp(Class @class, List<Property> properties)
         {
-            if (!Options.UsePropertyDetectionHeuristics)
+#pragma warning disable CS0618
+            if (!Options.UsePropertyDetectionHeuristics ||
+#pragma warning restore CS0618
+                Options.PropertyDetectionMode == PropertyDetectionMode.All)
                 return properties;
 
             for (int i = properties.Count - 1; i >= 0; i--)
             {
-                Property property = properties[i];
-                if (property.HasSetter || property.IsExplicitlyGenerated)
+                var property = properties[i];
+                if (KeepProperty(property))
                     continue;
 
-                string firstWord = GetFirstWord(property.GetMethod.Name);
-                if (firstWord.Length < property.GetMethod.Name.Length &&
-                    Match(firstWord, new[] { "get", "is", "has" }))
-                    continue;
-
-                if (Match(firstWord, new[] { "to", "new", "on" }) ||
-                    Verbs.Contains(firstWord))
-                {
-                    property.GetMethod.GenerationKind = GenerationKind.Generate;
-                    @class.Properties.Remove(property);
-                    properties.RemoveAt(i);
-                }
+                property.GetMethod.GenerationKind = GenerationKind.Generate;
+                @class.Properties.Remove(property);
+                properties.RemoveAt(i);
             }
 
             return properties;
         }
 
+        public virtual bool KeepProperty(Property property)
+        {
+            if (property.HasSetter || property.IsExplicitlyGenerated)
+                return true;
+
+            var firstWord = GetFirstWord(property.GetMethod.Name);
+            var isKeyword = firstWord.Length < property.GetMethod.Name.Length &&
+                            Match(firstWord, new[] {"get", "is", "has"});
+
+            switch (Options.PropertyDetectionMode)
+            {
+                case PropertyDetectionMode.Keywords:
+                    return isKeyword;
+                case PropertyDetectionMode.Dictionary:
+                    var isAction = Match(firstWord, new[] {"to", "new", "on"}) || Verbs.Contains(firstWord);
+                    return isKeyword || !isAction;
+                default:
+                    return false;
+            }
+        }
+
         private static void CreateOrUpdateProperty(List<Property> properties, Method method,
             string name, QualifiedType type, bool isSetter = false)
         {
+            string NormalizeName(string name)
+            {
+                return string.IsNullOrEmpty(name) ?
+                    name : string.Concat(char.ToLowerInvariant(name[0]), name.Substring(1));
+            }
+
+            var normalizedName = NormalizeName(name);
+
             Type underlyingType = GetUnderlyingType(type);
             Property property = properties.Find(
                 p => p.Field == null &&
@@ -124,10 +177,10 @@ namespace CppSharp.Passes
                          p.GetMethod.OriginalReturnType).Equals(underlyingType)) ||
                      (p.HasSetter && GetUnderlyingType(
                          p.SetMethod.Parameters[0].QualifiedType).Equals(underlyingType))) &&
-                    Match(p, name));
+                    Match(p, normalizedName));
 
             if (property == null)
-                properties.Add(property = new Property { Name = name, QualifiedType = type });
+                properties.Add(property = new Property { Name = normalizedName, QualifiedType = type });
 
             method.AssociatedDeclaration = property;
 
@@ -201,7 +254,9 @@ namespace CppSharp.Passes
                     property.SetMethod.OriginalReturnType.Type.Desugar().IsPrimitiveType(PrimitiveType.Void))
                     property.SetMethod.GenerationKind = GenerationKind.Internal;
                 property.Namespace = @class;
+
                 @class.Properties.Add(property);
+
                 RenameConflictingMethods(@class, property);
                 CombineComments(property);
             }
@@ -294,14 +349,8 @@ namespace CppSharp.Passes
                 (string.Compare(name, firstWord, StringComparison.InvariantCultureIgnoreCase) == 0) ||
                 char.IsNumber(name[3])) return name;
 
-            if (name.Length == 4)
-            {
-                return char.ToLowerInvariant(
-                    name[3]).ToString(CultureInfo.InvariantCulture);
-            }
-
-            return string.Concat(char.ToLowerInvariant(
-                       name[3]).ToString(CultureInfo.InvariantCulture), name.AsSpan(4));
+            var rest = (name.Length == 4) ? string.Empty : name.Substring(4);
+            return string.Concat(name[3], rest);
         }
 
         private static string GetPropertyNameFromSetter(string name)
@@ -314,7 +363,6 @@ namespace CppSharp.Passes
                 return nameBuilder.ToString();
 
             nameBuilder.TrimUnderscores();
-            nameBuilder[0] = char.ToLowerInvariant(nameBuilder[0]);
             return nameBuilder.ToString();
         }
 
