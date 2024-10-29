@@ -49,7 +49,6 @@ namespace CppSharp
         {
             var parserOptions = driver.ParserOptions;
             parserOptions.TargetTriple = Triple;
-            parserOptions.EnableExceptions = false;
 
             var options = driver.Options;
             options.GeneratorKind = Kind;
