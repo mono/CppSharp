@@ -51,6 +51,8 @@ project "Std-symbols"
   language "C++"
   SetupNativeProject()
   rtti "Off"
+  exceptionhandling "Off"
+
   defines { "DLL_EXPORT" }
 
   filter { "toolset:msc*" }

@@ -84,6 +84,7 @@ namespace CppSharp.Parser
                 TargetTriple.Contains("windows") || TargetTriple.Contains("msvc");
 
         public bool EnableRTTI { get; set; }
+        public bool EnableExceptions { get; set; }
         public LanguageVersion? LanguageVersion { get; set; }
 
         public void BuildForSourceFile(
@@ -375,6 +376,9 @@ namespace CppSharp.Parser
 
             if (!EnableRTTI)
                 AddArguments("-fno-rtti");
+
+            if (EnableExceptions)
+                AddArguments("-fexceptions");
         }
 
         internal string BuiltinsDirBasePath

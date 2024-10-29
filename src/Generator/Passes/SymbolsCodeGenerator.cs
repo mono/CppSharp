@@ -33,6 +33,8 @@ namespace CppSharp.Passes
                 WriteLine("#define _LIBCPP_DISABLE_VISIBILITY_ANNOTATIONS");
                 WriteLine("#define _LIBCPP_HIDE_FROM_ABI");
                 WriteLine("#define _LIBCPP_NO_ABI_TAG");
+                if (!Context.ParserOptions.EnableExceptions)
+                    WriteLine("#define _LIBCPP_HAS_NO_EXCEPTIONS");
                 NewLine();
                 WriteLine("#include <string>");
             }

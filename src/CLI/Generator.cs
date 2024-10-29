@@ -146,6 +146,7 @@ namespace CppSharp
 
             parserOptions.UnityBuild = options.UnityBuild;
             parserOptions.EnableRTTI = options.EnableRTTI;
+            parserOptions.EnableExceptions = options.EnableExceptions;
 
             parserOptions.Setup(options.Platform ?? Platform.Host);
 
