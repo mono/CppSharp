@@ -7,6 +7,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using __NativeMemory = global::System.Runtime.InteropServices.NativeMemory;
 using __CallingConvention = global::System.Runtime.InteropServices.CallingConvention;
 using __IntPtr = global::System.IntPtr;
 using System.Runtime.CompilerServices;
@@ -154,7 +155,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.NativeLibrary.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -175,7 +176,7 @@ namespace CppSharp
 
                 public NativeLibrary()
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.NativeLibrary.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.NativeLibrary.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -183,7 +184,7 @@ namespace CppSharp
 
                 public NativeLibrary(global::CppSharp.Parser.AST.NativeLibrary _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.NativeLibrary.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.NativeLibrary.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -208,7 +209,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -348,7 +349,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -369,7 +370,7 @@ namespace CppSharp
 
                 public Comment(global::CppSharp.Parser.AST.CommentKind kind)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Comment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Comment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, kind);
@@ -377,7 +378,7 @@ namespace CppSharp
 
                 public Comment(global::CppSharp.Parser.AST.Comment _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Comment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Comment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.Comment.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.Comment.__Internal*) _0.__Instance);
@@ -397,7 +398,7 @@ namespace CppSharp
                     NativeToManagedMap.TryRemove(__Instance, out _);
                     DisposePartial(disposing);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -463,7 +464,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -483,7 +484,7 @@ namespace CppSharp
                 public BlockContentComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockContentComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.BlockContentComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -492,7 +493,7 @@ namespace CppSharp
                 public BlockContentComment(global::CppSharp.Parser.AST.CommentKind Kind)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockContentComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.BlockContentComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, Kind);
@@ -501,7 +502,7 @@ namespace CppSharp
                 public BlockContentComment(global::CppSharp.Parser.AST.BlockContentComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockContentComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.BlockContentComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.BlockContentComment.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.BlockContentComment.__Internal*) _0.__Instance);
@@ -569,7 +570,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.FullComment.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -589,7 +590,7 @@ namespace CppSharp
                 public FullComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FullComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.FullComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -598,7 +599,7 @@ namespace CppSharp
                 public FullComment(global::CppSharp.Parser.AST.FullComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FullComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.FullComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -618,7 +619,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -697,7 +698,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -717,7 +718,7 @@ namespace CppSharp
                 public InlineContentComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineContentComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.InlineContentComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -726,7 +727,7 @@ namespace CppSharp
                 public InlineContentComment(global::CppSharp.Parser.AST.CommentKind Kind)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineContentComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.InlineContentComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, Kind);
@@ -735,7 +736,7 @@ namespace CppSharp
                 public InlineContentComment(global::CppSharp.Parser.AST.InlineContentComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineContentComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.InlineContentComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.InlineContentComment.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.InlineContentComment.__Internal*) _0.__Instance);
@@ -817,7 +818,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.ParagraphComment.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -837,7 +838,7 @@ namespace CppSharp
                 public ParagraphComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ParagraphComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ParagraphComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -846,7 +847,7 @@ namespace CppSharp
                 public ParagraphComment(global::CppSharp.Parser.AST.ParagraphComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ParagraphComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ParagraphComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -866,7 +867,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -1016,7 +1017,7 @@ namespace CppSharp
 
                     private static void* __CopyValue(__Internal native)
                     {
-                        var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                        var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                         global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal.cctor(ret, new __IntPtr(&native));
                         return ret.ToPointer();
                     }
@@ -1037,7 +1038,7 @@ namespace CppSharp
 
                     public Argument()
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         __Internal.ctor(__Instance);
@@ -1045,7 +1046,7 @@ namespace CppSharp
 
                     public Argument(global::CppSharp.Parser.AST.BlockCommandComment.Argument _0)
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.BlockCommandComment.Argument.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         if (ReferenceEquals(_0, null))
@@ -1070,7 +1071,7 @@ namespace CppSharp
                         if (callNativeDtor)
                             __Internal.dtor(__Instance);
                         if (__ownsNativeInstance)
-                            Marshal.FreeHGlobal(__Instance);
+                            __NativeMemory.AlignedFree((void*)__Instance);
                         __Instance = IntPtr.Zero;
                     }
 
@@ -1115,7 +1116,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.BlockCommandComment.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -1135,7 +1136,7 @@ namespace CppSharp
                 public BlockCommandComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockCommandComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.BlockCommandComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -1144,7 +1145,7 @@ namespace CppSharp
                 public BlockCommandComment(global::CppSharp.Parser.AST.CommentKind Kind)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockCommandComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.BlockCommandComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, Kind);
@@ -1153,7 +1154,7 @@ namespace CppSharp
                 public BlockCommandComment(global::CppSharp.Parser.AST.BlockCommandComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockCommandComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.BlockCommandComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -1173,7 +1174,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -1296,7 +1297,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.ParamCommandComment.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -1316,7 +1317,7 @@ namespace CppSharp
                 public ParamCommandComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ParamCommandComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ParamCommandComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -1325,7 +1326,7 @@ namespace CppSharp
                 public ParamCommandComment(global::CppSharp.Parser.AST.ParamCommandComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ParamCommandComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ParamCommandComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -1345,7 +1346,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -1435,7 +1436,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.TParamCommandComment.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -1455,7 +1456,7 @@ namespace CppSharp
                 public TParamCommandComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TParamCommandComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TParamCommandComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -1464,7 +1465,7 @@ namespace CppSharp
                 public TParamCommandComment(global::CppSharp.Parser.AST.TParamCommandComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TParamCommandComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TParamCommandComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -1484,7 +1485,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -1568,7 +1569,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -1588,7 +1589,7 @@ namespace CppSharp
                 public VerbatimBlockLineComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -1597,7 +1598,7 @@ namespace CppSharp
                 public VerbatimBlockLineComment(global::CppSharp.Parser.AST.VerbatimBlockLineComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.VerbatimBlockLineComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -1617,7 +1618,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -1695,7 +1696,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -1715,7 +1716,7 @@ namespace CppSharp
                 public VerbatimBlockComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -1724,7 +1725,7 @@ namespace CppSharp
                 public VerbatimBlockComment(global::CppSharp.Parser.AST.VerbatimBlockComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.VerbatimBlockComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -1744,7 +1745,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -1832,7 +1833,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.VerbatimLineComment.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -1852,7 +1853,7 @@ namespace CppSharp
                 public VerbatimLineComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimLineComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.VerbatimLineComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -1861,7 +1862,7 @@ namespace CppSharp
                 public VerbatimLineComment(global::CppSharp.Parser.AST.VerbatimLineComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VerbatimLineComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.VerbatimLineComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -1881,7 +1882,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -2009,7 +2010,7 @@ namespace CppSharp
 
                     private static void* __CopyValue(__Internal native)
                     {
-                        var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                        var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                         global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal.cctor(ret, new __IntPtr(&native));
                         return ret.ToPointer();
                     }
@@ -2030,7 +2031,7 @@ namespace CppSharp
 
                     public Argument()
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         __Internal.ctor(__Instance);
@@ -2038,7 +2039,7 @@ namespace CppSharp
 
                     public Argument(global::CppSharp.Parser.AST.InlineCommandComment.Argument _0)
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.InlineCommandComment.Argument.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         if (ReferenceEquals(_0, null))
@@ -2063,7 +2064,7 @@ namespace CppSharp
                         if (callNativeDtor)
                             __Internal.dtor(__Instance);
                         if (__ownsNativeInstance)
-                            Marshal.FreeHGlobal(__Instance);
+                            __NativeMemory.AlignedFree((void*)__Instance);
                         __Instance = IntPtr.Zero;
                     }
 
@@ -2108,7 +2109,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.InlineCommandComment.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -2128,7 +2129,7 @@ namespace CppSharp
                 public InlineCommandComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineCommandComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.InlineCommandComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -2137,7 +2138,7 @@ namespace CppSharp
                 public InlineCommandComment(global::CppSharp.Parser.AST.InlineCommandComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InlineCommandComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.InlineCommandComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -2157,7 +2158,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -2263,7 +2264,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -2283,7 +2284,7 @@ namespace CppSharp
                 public HTMLTagComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLTagComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.HTMLTagComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -2292,7 +2293,7 @@ namespace CppSharp
                 public HTMLTagComment(global::CppSharp.Parser.AST.CommentKind Kind)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLTagComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.HTMLTagComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, Kind);
@@ -2301,7 +2302,7 @@ namespace CppSharp
                 public HTMLTagComment(global::CppSharp.Parser.AST.HTMLTagComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLTagComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.HTMLTagComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.HTMLTagComment.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.HTMLTagComment.__Internal*) _0.__Instance);
@@ -2425,7 +2426,7 @@ namespace CppSharp
 
                     private static void* __CopyValue(__Internal native)
                     {
-                        var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                        var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                         global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal.cctor(ret, new __IntPtr(&native));
                         return ret.ToPointer();
                     }
@@ -2446,7 +2447,7 @@ namespace CppSharp
 
                     public Attribute()
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         __Internal.ctor(__Instance);
@@ -2454,7 +2455,7 @@ namespace CppSharp
 
                     public Attribute(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute _0)
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         if (ReferenceEquals(_0, null))
@@ -2479,7 +2480,7 @@ namespace CppSharp
                         if (callNativeDtor)
                             __Internal.dtor(__Instance);
                         if (__ownsNativeInstance)
-                            Marshal.FreeHGlobal(__Instance);
+                            __NativeMemory.AlignedFree((void*)__Instance);
                         __Instance = IntPtr.Zero;
                     }
 
@@ -2538,7 +2539,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -2558,7 +2559,7 @@ namespace CppSharp
                 public HTMLStartTagComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -2567,7 +2568,7 @@ namespace CppSharp
                 public HTMLStartTagComment(global::CppSharp.Parser.AST.HTMLStartTagComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.HTMLStartTagComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -2587,7 +2588,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -2688,7 +2689,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -2708,7 +2709,7 @@ namespace CppSharp
                 public HTMLEndTagComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -2717,7 +2718,7 @@ namespace CppSharp
                 public HTMLEndTagComment(global::CppSharp.Parser.AST.HTMLEndTagComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.HTMLEndTagComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -2737,7 +2738,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -2807,7 +2808,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.TextComment.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -2827,7 +2828,7 @@ namespace CppSharp
                 public TextComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TextComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TextComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -2836,7 +2837,7 @@ namespace CppSharp
                 public TextComment(global::CppSharp.Parser.AST.TextComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TextComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TextComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -2856,7 +2857,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -2951,7 +2952,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.RawComment.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -2972,7 +2973,7 @@ namespace CppSharp
 
                 public RawComment()
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.RawComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.RawComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -2980,7 +2981,7 @@ namespace CppSharp
 
                 public RawComment(global::CppSharp.Parser.AST.RawComment _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.RawComment.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.RawComment.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -3005,7 +3006,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -3219,7 +3220,7 @@ namespace CppSharp
 
             private static void* __CopyValue(__Internal native)
             {
-                var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                 *(__Internal*) ret = native;
                 return ret.ToPointer();
             }
@@ -3240,7 +3241,7 @@ namespace CppSharp
 
             public SourceRange(global::CppSharp.Parser.SourceRange _0)
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.SourceRange.__Internal));
+                __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.SourceRange.__Internal), 16);
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
                 *((global::CppSharp.Parser.SourceRange.__Internal*) __Instance) = *((global::CppSharp.Parser.SourceRange.__Internal*) _0.__Instance);
@@ -3248,7 +3249,7 @@ namespace CppSharp
 
             public SourceRange()
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.SourceRange.__Internal));
+                __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.SourceRange.__Internal), 16);
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
                 __Internal.ctor(__Instance);
@@ -3268,7 +3269,7 @@ namespace CppSharp
                 NativeToManagedMap.TryRemove(__Instance, out _);
                 DisposePartial(disposing);
                 if (__ownsNativeInstance)
-                    Marshal.FreeHGlobal(__Instance);
+                    __NativeMemory.AlignedFree((void*)__Instance);
                 __Instance = IntPtr.Zero;
             }
 
@@ -3443,7 +3444,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.Type.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -3464,7 +3465,7 @@ namespace CppSharp
 
                 public Type(global::CppSharp.Parser.AST.TypeKind kind)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Type.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Type.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, kind);
@@ -3472,7 +3473,7 @@ namespace CppSharp
 
                 public Type(global::CppSharp.Parser.AST.Type _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Type.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Type.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -3495,7 +3496,7 @@ namespace CppSharp
                     NativeToManagedMap.TryRemove(__Instance, out _);
                     DisposePartial(disposing);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -3588,7 +3589,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -3609,7 +3610,7 @@ namespace CppSharp
 
                 public TypeQualifiers(global::CppSharp.Parser.AST.TypeQualifiers _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TypeQualifiers.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TypeQualifiers.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.TypeQualifiers.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.TypeQualifiers.__Internal*) _0.__Instance);
@@ -3617,7 +3618,7 @@ namespace CppSharp
 
                 public TypeQualifiers()
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TypeQualifiers.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TypeQualifiers.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                 }
@@ -3636,7 +3637,7 @@ namespace CppSharp
                     NativeToManagedMap.TryRemove(__Instance, out _);
                     DisposePartial(disposing);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -3739,7 +3740,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -3760,7 +3761,7 @@ namespace CppSharp
 
                 public QualifiedType()
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.QualifiedType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.QualifiedType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -3768,7 +3769,7 @@ namespace CppSharp
 
                 public QualifiedType(global::CppSharp.Parser.AST.QualifiedType _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.QualifiedType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.QualifiedType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.QualifiedType.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.QualifiedType.__Internal*) _0.__Instance);
@@ -3788,7 +3789,7 @@ namespace CppSharp
                     NativeToManagedMap.TryRemove(__Instance, out _);
                     DisposePartial(disposing);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -3864,7 +3865,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.TagType.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -3884,7 +3885,7 @@ namespace CppSharp
                 public TagType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TagType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TagType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -3893,7 +3894,7 @@ namespace CppSharp
                 public TagType(global::CppSharp.Parser.AST.TagType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TagType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TagType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -3970,7 +3971,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.ArrayType.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -3990,7 +3991,7 @@ namespace CppSharp
                 public ArrayType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ArrayType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ArrayType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -3999,7 +4000,7 @@ namespace CppSharp
                 public ArrayType(global::CppSharp.Parser.AST.ArrayType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ArrayType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ArrayType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -4123,7 +4124,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.FunctionType.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -4143,7 +4144,7 @@ namespace CppSharp
                 public FunctionType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FunctionType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.FunctionType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -4152,7 +4153,7 @@ namespace CppSharp
                 public FunctionType(global::CppSharp.Parser.AST.FunctionType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FunctionType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.FunctionType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -4172,7 +4173,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -4299,7 +4300,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.PointerType.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -4319,7 +4320,7 @@ namespace CppSharp
                 public PointerType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.PointerType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.PointerType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -4328,7 +4329,7 @@ namespace CppSharp
                 public PointerType(global::CppSharp.Parser.AST.PointerType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.PointerType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.PointerType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -4408,7 +4409,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.MemberPointerType.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -4428,7 +4429,7 @@ namespace CppSharp
                 public MemberPointerType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.MemberPointerType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.MemberPointerType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -4437,7 +4438,7 @@ namespace CppSharp
                 public MemberPointerType(global::CppSharp.Parser.AST.MemberPointerType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.MemberPointerType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.MemberPointerType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -4504,7 +4505,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.TypedefType.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -4524,7 +4525,7 @@ namespace CppSharp
                 public TypedefType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TypedefType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TypedefType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -4533,7 +4534,7 @@ namespace CppSharp
                 public TypedefType(global::CppSharp.Parser.AST.TypedefType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TypedefType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TypedefType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -4600,7 +4601,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.AttributedType.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -4620,7 +4621,7 @@ namespace CppSharp
                 public AttributedType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.AttributedType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.AttributedType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -4629,7 +4630,7 @@ namespace CppSharp
                 public AttributedType(global::CppSharp.Parser.AST.AttributedType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.AttributedType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.AttributedType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -4713,7 +4714,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.DecayedType.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -4733,7 +4734,7 @@ namespace CppSharp
                 public DecayedType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DecayedType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DecayedType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -4742,7 +4743,7 @@ namespace CppSharp
                 public DecayedType(global::CppSharp.Parser.AST.DecayedType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DecayedType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DecayedType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -4870,7 +4871,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -4891,7 +4892,7 @@ namespace CppSharp
 
                 public TemplateArgument()
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TemplateArgument.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TemplateArgument.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -4899,7 +4900,7 @@ namespace CppSharp
 
                 public TemplateArgument(global::CppSharp.Parser.AST.TemplateArgument _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TemplateArgument.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TemplateArgument.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.TemplateArgument.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.TemplateArgument.__Internal*) _0.__Instance);
@@ -4919,7 +4920,7 @@ namespace CppSharp
                     NativeToManagedMap.TryRemove(__Instance, out _);
                     DisposePartial(disposing);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -5038,7 +5039,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.TemplateSpecializationType.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -5058,7 +5059,7 @@ namespace CppSharp
                 public TemplateSpecializationType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TemplateSpecializationType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TemplateSpecializationType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -5067,7 +5068,7 @@ namespace CppSharp
                 public TemplateSpecializationType(global::CppSharp.Parser.AST.TemplateSpecializationType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TemplateSpecializationType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TemplateSpecializationType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -5087,7 +5088,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -5208,7 +5209,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.DependentTemplateSpecializationType.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -5228,7 +5229,7 @@ namespace CppSharp
                 public DependentTemplateSpecializationType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DependentTemplateSpecializationType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DependentTemplateSpecializationType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -5237,7 +5238,7 @@ namespace CppSharp
                 public DependentTemplateSpecializationType(global::CppSharp.Parser.AST.DependentTemplateSpecializationType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DependentTemplateSpecializationType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DependentTemplateSpecializationType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -5257,7 +5258,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -5354,7 +5355,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.TemplateParameterType.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -5374,7 +5375,7 @@ namespace CppSharp
                 public TemplateParameterType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TemplateParameterType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TemplateParameterType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -5383,7 +5384,7 @@ namespace CppSharp
                 public TemplateParameterType(global::CppSharp.Parser.AST.TemplateParameterType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TemplateParameterType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TemplateParameterType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -5403,7 +5404,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -5504,7 +5505,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.TemplateParameterSubstitutionType.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -5524,7 +5525,7 @@ namespace CppSharp
                 public TemplateParameterSubstitutionType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TemplateParameterSubstitutionType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TemplateParameterSubstitutionType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -5533,7 +5534,7 @@ namespace CppSharp
                 public TemplateParameterSubstitutionType(global::CppSharp.Parser.AST.TemplateParameterSubstitutionType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TemplateParameterSubstitutionType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TemplateParameterSubstitutionType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -5615,7 +5616,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.InjectedClassNameType.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -5635,7 +5636,7 @@ namespace CppSharp
                 public InjectedClassNameType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InjectedClassNameType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.InjectedClassNameType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -5644,7 +5645,7 @@ namespace CppSharp
                 public InjectedClassNameType(global::CppSharp.Parser.AST.InjectedClassNameType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InjectedClassNameType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.InjectedClassNameType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -5735,7 +5736,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.DependentNameType.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -5755,7 +5756,7 @@ namespace CppSharp
                 public DependentNameType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DependentNameType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DependentNameType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -5764,7 +5765,7 @@ namespace CppSharp
                 public DependentNameType(global::CppSharp.Parser.AST.DependentNameType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DependentNameType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DependentNameType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -5784,7 +5785,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -5859,7 +5860,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.PackExpansionType.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -5879,7 +5880,7 @@ namespace CppSharp
                 public PackExpansionType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.PackExpansionType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.PackExpansionType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -5888,7 +5889,7 @@ namespace CppSharp
                 public PackExpansionType(global::CppSharp.Parser.AST.PackExpansionType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.PackExpansionType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.PackExpansionType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -5941,7 +5942,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.UnaryTransformType.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -5961,7 +5962,7 @@ namespace CppSharp
                 public UnaryTransformType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.UnaryTransformType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.UnaryTransformType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -5970,7 +5971,7 @@ namespace CppSharp
                 public UnaryTransformType(global::CppSharp.Parser.AST.UnaryTransformType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.UnaryTransformType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.UnaryTransformType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -6052,7 +6053,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.UnresolvedUsingType.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -6072,7 +6073,7 @@ namespace CppSharp
                 public UnresolvedUsingType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.UnresolvedUsingType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.UnresolvedUsingType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -6081,7 +6082,7 @@ namespace CppSharp
                 public UnresolvedUsingType(global::CppSharp.Parser.AST.UnresolvedUsingType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.UnresolvedUsingType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.UnresolvedUsingType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -6148,7 +6149,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.VectorType.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -6168,7 +6169,7 @@ namespace CppSharp
                 public VectorType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VectorType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.VectorType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -6177,7 +6178,7 @@ namespace CppSharp
                 public VectorType(global::CppSharp.Parser.AST.VectorType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VectorType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.VectorType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -6257,7 +6258,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.BuiltinType.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -6277,7 +6278,7 @@ namespace CppSharp
                 public BuiltinType()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BuiltinType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.BuiltinType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -6286,7 +6287,7 @@ namespace CppSharp
                 public BuiltinType(global::CppSharp.Parser.AST.BuiltinType _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BuiltinType.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.BuiltinType.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -6640,7 +6641,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.Declaration.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -6661,7 +6662,7 @@ namespace CppSharp
 
                 public Declaration(global::CppSharp.Parser.AST.DeclarationKind kind)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Declaration.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Declaration.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, kind);
@@ -6669,7 +6670,7 @@ namespace CppSharp
 
                 public Declaration(global::CppSharp.Parser.AST.Declaration _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Declaration.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Declaration.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -6694,7 +6695,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -7213,7 +7214,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.DeclarationContext.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -7233,7 +7234,7 @@ namespace CppSharp
                 public DeclarationContext(global::CppSharp.Parser.AST.DeclarationKind kind)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DeclarationContext.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DeclarationContext.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, kind);
@@ -7242,7 +7243,7 @@ namespace CppSharp
                 public DeclarationContext(global::CppSharp.Parser.AST.DeclarationContext _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DeclarationContext.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DeclarationContext.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -7262,7 +7263,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -7620,7 +7621,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.TypedefNameDecl.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -7640,7 +7641,7 @@ namespace CppSharp
                 public TypedefNameDecl(global::CppSharp.Parser.AST.DeclarationKind kind)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TypedefNameDecl.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TypedefNameDecl.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, kind);
@@ -7649,7 +7650,7 @@ namespace CppSharp
                 public TypedefNameDecl(global::CppSharp.Parser.AST.TypedefNameDecl _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TypedefNameDecl.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TypedefNameDecl.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -7669,7 +7670,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -7759,7 +7760,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.TypedefDecl.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -7779,7 +7780,7 @@ namespace CppSharp
                 public TypedefDecl()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TypedefDecl.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TypedefDecl.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -7788,7 +7789,7 @@ namespace CppSharp
                 public TypedefDecl(global::CppSharp.Parser.AST.TypedefDecl _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TypedefDecl.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TypedefDecl.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -7808,7 +7809,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
             }
@@ -7879,7 +7880,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.TypeAlias.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -7899,7 +7900,7 @@ namespace CppSharp
                 public TypeAlias()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TypeAlias.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TypeAlias.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -7908,7 +7909,7 @@ namespace CppSharp
                 public TypeAlias(global::CppSharp.Parser.AST.TypeAlias _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TypeAlias.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TypeAlias.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -7928,7 +7929,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -8012,7 +8013,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.Friend.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -8032,7 +8033,7 @@ namespace CppSharp
                 public Friend()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Friend.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Friend.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -8041,7 +8042,7 @@ namespace CppSharp
                 public Friend(global::CppSharp.Parser.AST.Friend _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Friend.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Friend.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -8061,7 +8062,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -8146,7 +8147,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.StatementObsolete.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -8167,7 +8168,7 @@ namespace CppSharp
 
                 public StatementObsolete(global::CppSharp.Parser.AST.StatementObsolete _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.StatementObsolete.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.StatementObsolete.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -8192,7 +8193,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -8280,7 +8281,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.ExpressionObsolete.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -8300,7 +8301,7 @@ namespace CppSharp
                 public ExpressionObsolete(global::CppSharp.Parser.AST.ExpressionObsolete _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ExpressionObsolete.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ExpressionObsolete.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -8320,7 +8321,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
             }
@@ -8376,7 +8377,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -8396,7 +8397,7 @@ namespace CppSharp
                 public BinaryOperatorObsolete(global::CppSharp.Parser.AST.BinaryOperatorObsolete _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -8416,7 +8417,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -8518,7 +8519,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.CallExprObsolete.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -8538,7 +8539,7 @@ namespace CppSharp
                 public CallExprObsolete(global::CppSharp.Parser.AST.CallExprObsolete _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CallExprObsolete.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CallExprObsolete.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -8558,7 +8559,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -8648,7 +8649,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.CXXConstructExprObsolete.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -8668,7 +8669,7 @@ namespace CppSharp
                 public CXXConstructExprObsolete(global::CppSharp.Parser.AST.CXXConstructExprObsolete _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXConstructExprObsolete.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXConstructExprObsolete.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -8688,7 +8689,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -8793,7 +8794,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.Parameter.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -8813,7 +8814,7 @@ namespace CppSharp
                 public Parameter()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Parameter.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Parameter.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -8822,7 +8823,7 @@ namespace CppSharp
                 public Parameter(global::CppSharp.Parser.AST.Parameter _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Parameter.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Parameter.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -8842,7 +8843,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -9054,7 +9055,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.Function.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -9074,7 +9075,7 @@ namespace CppSharp
                 public Function()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Function.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Function.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -9083,7 +9084,7 @@ namespace CppSharp
                 public Function(global::CppSharp.Parser.AST.Function _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Function.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Function.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -9103,7 +9104,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -9514,7 +9515,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.Method.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -9534,7 +9535,7 @@ namespace CppSharp
                 public Method()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Method.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Method.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -9543,7 +9544,7 @@ namespace CppSharp
                 public Method(global::CppSharp.Parser.AST.Method _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Method.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Method.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -9563,7 +9564,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -9888,7 +9889,7 @@ namespace CppSharp
 
                     private static void* __CopyValue(__Internal native)
                     {
-                        var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                        var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                         global::CppSharp.Parser.AST.Enumeration.Item.__Internal.cctor(ret, new __IntPtr(&native));
                         return ret.ToPointer();
                     }
@@ -9908,7 +9909,7 @@ namespace CppSharp
                     public Item()
                         : this((void*) null)
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Enumeration.Item.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Enumeration.Item.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         __Internal.ctor(__Instance);
@@ -9917,7 +9918,7 @@ namespace CppSharp
                     public Item(global::CppSharp.Parser.AST.Enumeration.Item _0)
                         : this((void*) null)
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Enumeration.Item.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Enumeration.Item.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         if (ReferenceEquals(_0, null))
@@ -9937,7 +9938,7 @@ namespace CppSharp
                         if (callNativeDtor)
                             __Internal.dtor(__Instance);
                         if (__ownsNativeInstance)
-                            Marshal.FreeHGlobal(__Instance);
+                            __NativeMemory.AlignedFree((void*)__Instance);
                         __Instance = IntPtr.Zero;
                     }
 
@@ -9995,7 +9996,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.Enumeration.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -10015,7 +10016,7 @@ namespace CppSharp
                 public Enumeration()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Enumeration.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Enumeration.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -10024,7 +10025,7 @@ namespace CppSharp
                 public Enumeration(global::CppSharp.Parser.AST.Enumeration _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Enumeration.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Enumeration.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -10044,7 +10045,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -10194,7 +10195,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.Variable.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -10214,7 +10215,7 @@ namespace CppSharp
                 public Variable()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Variable.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Variable.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -10223,7 +10224,7 @@ namespace CppSharp
                 public Variable(global::CppSharp.Parser.AST.Variable _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Variable.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Variable.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -10243,7 +10244,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -10365,7 +10366,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -10386,7 +10387,7 @@ namespace CppSharp
 
                 public BaseClassSpecifier()
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BaseClassSpecifier.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.BaseClassSpecifier.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -10394,7 +10395,7 @@ namespace CppSharp
 
                 public BaseClassSpecifier(global::CppSharp.Parser.AST.BaseClassSpecifier _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BaseClassSpecifier.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.BaseClassSpecifier.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.BaseClassSpecifier.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.BaseClassSpecifier.__Internal*) _0.__Instance);
@@ -10414,7 +10415,7 @@ namespace CppSharp
                     NativeToManagedMap.TryRemove(__Instance, out _);
                     DisposePartial(disposing);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -10540,7 +10541,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.Field.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -10560,7 +10561,7 @@ namespace CppSharp
                 public Field()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Field.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Field.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -10569,7 +10570,7 @@ namespace CppSharp
                 public Field(global::CppSharp.Parser.AST.Field _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Field.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Field.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -10589,7 +10590,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -10713,7 +10714,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.AccessSpecifierDecl.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -10733,7 +10734,7 @@ namespace CppSharp
                 public AccessSpecifierDecl()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.AccessSpecifierDecl.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.AccessSpecifierDecl.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -10742,7 +10743,7 @@ namespace CppSharp
                 public AccessSpecifierDecl(global::CppSharp.Parser.AST.AccessSpecifierDecl _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.AccessSpecifierDecl.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.AccessSpecifierDecl.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -10762,7 +10763,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
             }
@@ -10827,7 +10828,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -10848,7 +10849,7 @@ namespace CppSharp
 
                 public VTableComponent()
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VTableComponent.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.VTableComponent.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -10856,7 +10857,7 @@ namespace CppSharp
 
                 public VTableComponent(global::CppSharp.Parser.AST.VTableComponent _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VTableComponent.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.VTableComponent.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.VTableComponent.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.VTableComponent.__Internal*) _0.__Instance);
@@ -10876,7 +10877,7 @@ namespace CppSharp
                     NativeToManagedMap.TryRemove(__Instance, out _);
                     DisposePartial(disposing);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -10994,7 +10995,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.VTableLayout.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -11015,7 +11016,7 @@ namespace CppSharp
 
                 public VTableLayout()
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VTableLayout.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.VTableLayout.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -11023,7 +11024,7 @@ namespace CppSharp
 
                 public VTableLayout(global::CppSharp.Parser.AST.VTableLayout _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VTableLayout.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.VTableLayout.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -11048,7 +11049,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -11145,7 +11146,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.VFTableInfo.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -11166,7 +11167,7 @@ namespace CppSharp
 
                 public VFTableInfo()
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VFTableInfo.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.VFTableInfo.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -11174,7 +11175,7 @@ namespace CppSharp
 
                 public VFTableInfo(global::CppSharp.Parser.AST.VFTableInfo _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VFTableInfo.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.VFTableInfo.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -11199,7 +11200,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -11328,7 +11329,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.LayoutField.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -11349,7 +11350,7 @@ namespace CppSharp
 
                 public LayoutField()
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.LayoutField.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.LayoutField.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -11357,7 +11358,7 @@ namespace CppSharp
 
                 public LayoutField(global::CppSharp.Parser.AST.LayoutField other)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.LayoutField.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.LayoutField.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(other, null))
@@ -11382,7 +11383,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -11504,7 +11505,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.LayoutBase.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -11525,7 +11526,7 @@ namespace CppSharp
 
                 public LayoutBase()
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.LayoutBase.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.LayoutBase.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -11533,7 +11534,7 @@ namespace CppSharp
 
                 public LayoutBase(global::CppSharp.Parser.AST.LayoutBase other)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.LayoutBase.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.LayoutBase.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(other, null))
@@ -11558,7 +11559,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -11697,7 +11698,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.ClassLayout.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -11718,7 +11719,7 @@ namespace CppSharp
 
                 public ClassLayout()
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ClassLayout.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ClassLayout.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -11726,7 +11727,7 @@ namespace CppSharp
 
                 public ClassLayout(global::CppSharp.Parser.AST.ClassLayout _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ClassLayout.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ClassLayout.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -11751,7 +11752,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -12094,7 +12095,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.Class.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -12114,7 +12115,7 @@ namespace CppSharp
                 public Class()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Class.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Class.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -12123,7 +12124,7 @@ namespace CppSharp
                 public Class(global::CppSharp.Parser.AST.Class _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Class.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Class.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -12143,7 +12144,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -12506,7 +12507,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.Template.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -12526,7 +12527,7 @@ namespace CppSharp
                 public Template(global::CppSharp.Parser.AST.DeclarationKind kind)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Template.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Template.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, kind);
@@ -12535,7 +12536,7 @@ namespace CppSharp
                 public Template()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Template.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Template.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -12544,7 +12545,7 @@ namespace CppSharp
                 public Template(global::CppSharp.Parser.AST.Template _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Template.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Template.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -12564,7 +12565,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -12684,7 +12685,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.TypeAliasTemplate.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -12704,7 +12705,7 @@ namespace CppSharp
                 public TypeAliasTemplate()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TypeAliasTemplate.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TypeAliasTemplate.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -12713,7 +12714,7 @@ namespace CppSharp
                 public TypeAliasTemplate(global::CppSharp.Parser.AST.TypeAliasTemplate _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TypeAliasTemplate.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TypeAliasTemplate.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -12733,7 +12734,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
             }
@@ -12805,7 +12806,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.TemplateParameter.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -12825,7 +12826,7 @@ namespace CppSharp
                 public TemplateParameter(global::CppSharp.Parser.AST.DeclarationKind kind)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TemplateParameter.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TemplateParameter.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, kind);
@@ -12834,7 +12835,7 @@ namespace CppSharp
                 public TemplateParameter(global::CppSharp.Parser.AST.TemplateParameter _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TemplateParameter.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TemplateParameter.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -12854,7 +12855,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -12972,7 +12973,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.TemplateTemplateParameter.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -12992,7 +12993,7 @@ namespace CppSharp
                 public TemplateTemplateParameter()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TemplateTemplateParameter.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TemplateTemplateParameter.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -13001,7 +13002,7 @@ namespace CppSharp
                 public TemplateTemplateParameter(global::CppSharp.Parser.AST.TemplateTemplateParameter _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TemplateTemplateParameter.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TemplateTemplateParameter.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -13021,7 +13022,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -13133,7 +13134,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.TypeTemplateParameter.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -13153,7 +13154,7 @@ namespace CppSharp
                 public TypeTemplateParameter()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TypeTemplateParameter.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TypeTemplateParameter.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -13162,7 +13163,7 @@ namespace CppSharp
                 public TypeTemplateParameter(global::CppSharp.Parser.AST.TypeTemplateParameter _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TypeTemplateParameter.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TypeTemplateParameter.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -13182,7 +13183,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -13275,7 +13276,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -13295,7 +13296,7 @@ namespace CppSharp
                 public NonTypeTemplateParameter()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -13304,7 +13305,7 @@ namespace CppSharp
                 public NonTypeTemplateParameter(global::CppSharp.Parser.AST.NonTypeTemplateParameter _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.NonTypeTemplateParameter.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -13324,7 +13325,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -13490,7 +13491,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.ClassTemplate.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -13510,7 +13511,7 @@ namespace CppSharp
                 public ClassTemplate()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ClassTemplate.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ClassTemplate.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -13519,7 +13520,7 @@ namespace CppSharp
                 public ClassTemplate(global::CppSharp.Parser.AST.ClassTemplate _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ClassTemplate.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ClassTemplate.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -13539,7 +13540,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -13680,7 +13681,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.ClassTemplateSpecialization.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -13700,7 +13701,7 @@ namespace CppSharp
                 public ClassTemplateSpecialization()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ClassTemplateSpecialization.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ClassTemplateSpecialization.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -13709,7 +13710,7 @@ namespace CppSharp
                 public ClassTemplateSpecialization(global::CppSharp.Parser.AST.ClassTemplateSpecialization _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ClassTemplateSpecialization.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ClassTemplateSpecialization.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -13729,7 +13730,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -13897,7 +13898,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.ClassTemplatePartialSpecialization.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -13917,7 +13918,7 @@ namespace CppSharp
                 public ClassTemplatePartialSpecialization()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ClassTemplatePartialSpecialization.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ClassTemplatePartialSpecialization.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -13926,7 +13927,7 @@ namespace CppSharp
                 public ClassTemplatePartialSpecialization(global::CppSharp.Parser.AST.ClassTemplatePartialSpecialization _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ClassTemplatePartialSpecialization.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ClassTemplatePartialSpecialization.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -13946,7 +13947,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -14060,7 +14061,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.FunctionTemplate.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -14080,7 +14081,7 @@ namespace CppSharp
                 public FunctionTemplate()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FunctionTemplate.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.FunctionTemplate.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -14089,7 +14090,7 @@ namespace CppSharp
                 public FunctionTemplate(global::CppSharp.Parser.AST.FunctionTemplate _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FunctionTemplate.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.FunctionTemplate.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -14109,7 +14110,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -14220,7 +14221,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.FunctionTemplateSpecialization.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -14241,7 +14242,7 @@ namespace CppSharp
 
                 public FunctionTemplateSpecialization()
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FunctionTemplateSpecialization.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.FunctionTemplateSpecialization.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -14249,7 +14250,7 @@ namespace CppSharp
 
                 public FunctionTemplateSpecialization(global::CppSharp.Parser.AST.FunctionTemplateSpecialization _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FunctionTemplateSpecialization.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.FunctionTemplateSpecialization.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -14274,7 +14275,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -14428,7 +14429,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.VarTemplate.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -14448,7 +14449,7 @@ namespace CppSharp
                 public VarTemplate()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VarTemplate.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.VarTemplate.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -14457,7 +14458,7 @@ namespace CppSharp
                 public VarTemplate(global::CppSharp.Parser.AST.VarTemplate _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VarTemplate.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.VarTemplate.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -14477,7 +14478,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -14595,7 +14596,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.VarTemplateSpecialization.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -14615,7 +14616,7 @@ namespace CppSharp
                 public VarTemplateSpecialization()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VarTemplateSpecialization.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.VarTemplateSpecialization.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -14624,7 +14625,7 @@ namespace CppSharp
                 public VarTemplateSpecialization(global::CppSharp.Parser.AST.VarTemplateSpecialization _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VarTemplateSpecialization.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.VarTemplateSpecialization.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -14644,7 +14645,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -14776,7 +14777,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.VarTemplatePartialSpecialization.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -14796,7 +14797,7 @@ namespace CppSharp
                 public VarTemplatePartialSpecialization()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VarTemplatePartialSpecialization.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.VarTemplatePartialSpecialization.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -14805,7 +14806,7 @@ namespace CppSharp
                 public VarTemplatePartialSpecialization(global::CppSharp.Parser.AST.VarTemplatePartialSpecialization _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VarTemplatePartialSpecialization.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.VarTemplatePartialSpecialization.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -14825,7 +14826,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
             }
@@ -14894,7 +14895,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.UnresolvedUsingTypename.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -14914,7 +14915,7 @@ namespace CppSharp
                 public UnresolvedUsingTypename()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.UnresolvedUsingTypename.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.UnresolvedUsingTypename.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -14923,7 +14924,7 @@ namespace CppSharp
                 public UnresolvedUsingTypename(global::CppSharp.Parser.AST.UnresolvedUsingTypename _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.UnresolvedUsingTypename.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.UnresolvedUsingTypename.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -14943,7 +14944,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
             }
@@ -15024,7 +15025,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.Namespace.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -15044,7 +15045,7 @@ namespace CppSharp
                 public Namespace()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Namespace.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Namespace.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -15053,7 +15054,7 @@ namespace CppSharp
                 public Namespace(global::CppSharp.Parser.AST.Namespace _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Namespace.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Namespace.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -15073,7 +15074,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -15151,7 +15152,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -15172,7 +15173,7 @@ namespace CppSharp
 
                 public PreprocessedEntity()
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.PreprocessedEntity.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.PreprocessedEntity.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -15180,7 +15181,7 @@ namespace CppSharp
 
                 public PreprocessedEntity(global::CppSharp.Parser.AST.PreprocessedEntity _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.PreprocessedEntity.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.PreprocessedEntity.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.PreprocessedEntity.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.PreprocessedEntity.__Internal*) _0.__Instance);
@@ -15200,7 +15201,7 @@ namespace CppSharp
                     NativeToManagedMap.TryRemove(__Instance, out _);
                     DisposePartial(disposing);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -15305,7 +15306,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.MacroDefinition.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -15325,7 +15326,7 @@ namespace CppSharp
                 public MacroDefinition()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.MacroDefinition.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.MacroDefinition.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -15334,7 +15335,7 @@ namespace CppSharp
                 public MacroDefinition(global::CppSharp.Parser.AST.MacroDefinition _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.MacroDefinition.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.MacroDefinition.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -15354,7 +15355,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -15473,7 +15474,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.MacroExpansion.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -15493,7 +15494,7 @@ namespace CppSharp
                 public MacroExpansion()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.MacroExpansion.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.MacroExpansion.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -15502,7 +15503,7 @@ namespace CppSharp
                 public MacroExpansion(global::CppSharp.Parser.AST.MacroExpansion _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.MacroExpansion.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.MacroExpansion.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -15522,7 +15523,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -15666,7 +15667,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.TranslationUnit.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -15686,7 +15687,7 @@ namespace CppSharp
                 public TranslationUnit()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TranslationUnit.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TranslationUnit.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -15695,7 +15696,7 @@ namespace CppSharp
                 public TranslationUnit(global::CppSharp.Parser.AST.TranslationUnit _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TranslationUnit.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TranslationUnit.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -15715,7 +15716,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -15850,7 +15851,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.ASTContext.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -15871,7 +15872,7 @@ namespace CppSharp
 
                 public ASTContext()
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ASTContext.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ASTContext.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -15879,7 +15880,7 @@ namespace CppSharp
 
                 public ASTContext(global::CppSharp.Parser.AST.ASTContext _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ASTContext.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ASTContext.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -15904,7 +15905,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -16142,7 +16143,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -16163,7 +16164,7 @@ namespace CppSharp
 
                 public Stmt()
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Stmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Stmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -16171,7 +16172,7 @@ namespace CppSharp
 
                 public Stmt(global::CppSharp.Parser.AST.StmtClass klass)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Stmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Stmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, klass);
@@ -16179,7 +16180,7 @@ namespace CppSharp
 
                 public Stmt(global::CppSharp.Parser.AST.Stmt _0)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Stmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Stmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.Stmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.Stmt.__Internal*) _0.__Instance);
@@ -16199,7 +16200,7 @@ namespace CppSharp
                     NativeToManagedMap.TryRemove(__Instance, out _);
                     DisposePartial(disposing);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -16324,7 +16325,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.DeclStmt.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -16344,7 +16345,7 @@ namespace CppSharp
                 public DeclStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DeclStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DeclStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -16353,7 +16354,7 @@ namespace CppSharp
                 public DeclStmt(global::CppSharp.Parser.AST.DeclStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DeclStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DeclStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -16373,7 +16374,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -16480,7 +16481,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -16500,7 +16501,7 @@ namespace CppSharp
                 public NullStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.NullStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.NullStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -16509,7 +16510,7 @@ namespace CppSharp
                 public NullStmt(global::CppSharp.Parser.AST.NullStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.NullStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.NullStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.NullStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.NullStmt.__Internal*) _0.__Instance);
@@ -16607,7 +16608,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.CompoundStmt.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -16627,7 +16628,7 @@ namespace CppSharp
                 public CompoundStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CompoundStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CompoundStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -16636,7 +16637,7 @@ namespace CppSharp
                 public CompoundStmt(global::CppSharp.Parser.AST.CompoundStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CompoundStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CompoundStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -16656,7 +16657,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -16820,7 +16821,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -16840,7 +16841,7 @@ namespace CppSharp
                 public SwitchCase()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.SwitchCase.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.SwitchCase.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -16849,7 +16850,7 @@ namespace CppSharp
                 public SwitchCase(global::CppSharp.Parser.AST.StmtClass klass)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.SwitchCase.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.SwitchCase.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, klass);
@@ -16858,7 +16859,7 @@ namespace CppSharp
                 public SwitchCase(global::CppSharp.Parser.AST.SwitchCase _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.SwitchCase.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.SwitchCase.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.SwitchCase.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.SwitchCase.__Internal*) _0.__Instance);
@@ -16961,7 +16962,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -16981,7 +16982,7 @@ namespace CppSharp
                 public CaseStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CaseStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CaseStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -16990,7 +16991,7 @@ namespace CppSharp
                 public CaseStmt(global::CppSharp.Parser.AST.CaseStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CaseStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CaseStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CaseStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CaseStmt.__Internal*) _0.__Instance);
@@ -17111,7 +17112,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -17131,7 +17132,7 @@ namespace CppSharp
                 public DefaultStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DefaultStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DefaultStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -17140,7 +17141,7 @@ namespace CppSharp
                 public DefaultStmt(global::CppSharp.Parser.AST.DefaultStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DefaultStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DefaultStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.DefaultStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.DefaultStmt.__Internal*) _0.__Instance);
@@ -17207,7 +17208,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -17227,7 +17228,7 @@ namespace CppSharp
                 public LabelStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.LabelStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.LabelStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -17236,7 +17237,7 @@ namespace CppSharp
                 public LabelStmt(global::CppSharp.Parser.AST.LabelStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.LabelStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.LabelStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.LabelStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.LabelStmt.__Internal*) _0.__Instance);
@@ -17342,7 +17343,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -17362,7 +17363,7 @@ namespace CppSharp
                 public AttributedStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.AttributedStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.AttributedStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -17371,7 +17372,7 @@ namespace CppSharp
                 public AttributedStmt(global::CppSharp.Parser.AST.AttributedStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.AttributedStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.AttributedStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.AttributedStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.AttributedStmt.__Internal*) _0.__Instance);
@@ -17460,7 +17461,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -17480,7 +17481,7 @@ namespace CppSharp
                 public IfStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.IfStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.IfStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -17489,7 +17490,7 @@ namespace CppSharp
                 public IfStmt(global::CppSharp.Parser.AST.IfStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.IfStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.IfStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.IfStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.IfStmt.__Internal*) _0.__Instance);
@@ -17708,7 +17709,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -17728,7 +17729,7 @@ namespace CppSharp
                 public SwitchStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.SwitchStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.SwitchStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -17737,7 +17738,7 @@ namespace CppSharp
                 public SwitchStmt(global::CppSharp.Parser.AST.SwitchStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.SwitchStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.SwitchStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.SwitchStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.SwitchStmt.__Internal*) _0.__Instance);
@@ -17900,7 +17901,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -17920,7 +17921,7 @@ namespace CppSharp
                 public WhileStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.WhileStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.WhileStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -17929,7 +17930,7 @@ namespace CppSharp
                 public WhileStmt(global::CppSharp.Parser.AST.WhileStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.WhileStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.WhileStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.WhileStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.WhileStmt.__Internal*) _0.__Instance);
@@ -18052,7 +18053,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -18072,7 +18073,7 @@ namespace CppSharp
                 public DoStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DoStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DoStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -18081,7 +18082,7 @@ namespace CppSharp
                 public DoStmt(global::CppSharp.Parser.AST.DoStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DoStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DoStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.DoStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.DoStmt.__Internal*) _0.__Instance);
@@ -18206,7 +18207,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -18226,7 +18227,7 @@ namespace CppSharp
                 public ForStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ForStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ForStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -18235,7 +18236,7 @@ namespace CppSharp
                 public ForStmt(global::CppSharp.Parser.AST.ForStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ForStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ForStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.ForStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.ForStmt.__Internal*) _0.__Instance);
@@ -18396,7 +18397,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -18416,7 +18417,7 @@ namespace CppSharp
                 public GotoStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.GotoStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.GotoStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -18425,7 +18426,7 @@ namespace CppSharp
                 public GotoStmt(global::CppSharp.Parser.AST.GotoStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.GotoStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.GotoStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.GotoStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.GotoStmt.__Internal*) _0.__Instance);
@@ -18504,7 +18505,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -18524,7 +18525,7 @@ namespace CppSharp
                 public IndirectGotoStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.IndirectGotoStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.IndirectGotoStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -18533,7 +18534,7 @@ namespace CppSharp
                 public IndirectGotoStmt(global::CppSharp.Parser.AST.IndirectGotoStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.IndirectGotoStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.IndirectGotoStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.IndirectGotoStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.IndirectGotoStmt.__Internal*) _0.__Instance);
@@ -18624,7 +18625,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -18644,7 +18645,7 @@ namespace CppSharp
                 public ContinueStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ContinueStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ContinueStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -18653,7 +18654,7 @@ namespace CppSharp
                 public ContinueStmt(global::CppSharp.Parser.AST.ContinueStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ContinueStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ContinueStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.ContinueStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.ContinueStmt.__Internal*) _0.__Instance);
@@ -18717,7 +18718,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -18737,7 +18738,7 @@ namespace CppSharp
                 public BreakStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BreakStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.BreakStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -18746,7 +18747,7 @@ namespace CppSharp
                 public BreakStmt(global::CppSharp.Parser.AST.BreakStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BreakStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.BreakStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.BreakStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.BreakStmt.__Internal*) _0.__Instance);
@@ -18811,7 +18812,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -18831,7 +18832,7 @@ namespace CppSharp
                 public ReturnStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ReturnStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ReturnStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -18840,7 +18841,7 @@ namespace CppSharp
                 public ReturnStmt(global::CppSharp.Parser.AST.ReturnStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ReturnStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ReturnStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.ReturnStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.ReturnStmt.__Internal*) _0.__Instance);
@@ -18956,7 +18957,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.AsmStmt.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -18976,7 +18977,7 @@ namespace CppSharp
                 public AsmStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.AsmStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.AsmStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -18985,7 +18986,7 @@ namespace CppSharp
                 public AsmStmt(global::CppSharp.Parser.AST.StmtClass klass)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.AsmStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.AsmStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, klass);
@@ -18994,7 +18995,7 @@ namespace CppSharp
                 public AsmStmt(global::CppSharp.Parser.AST.AsmStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.AsmStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.AsmStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -19014,7 +19015,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -19282,7 +19283,7 @@ namespace CppSharp
 
                     private static void* __CopyValue(__Internal native)
                     {
-                        var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                        var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                         global::CppSharp.Parser.AST.GCCAsmStmt.AsmStringPiece.__Internal.cctor(ret, new __IntPtr(&native));
                         return ret.ToPointer();
                     }
@@ -19303,7 +19304,7 @@ namespace CppSharp
 
                     public AsmStringPiece()
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.GCCAsmStmt.AsmStringPiece.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.GCCAsmStmt.AsmStringPiece.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         __Internal.ctor(__Instance);
@@ -19311,7 +19312,7 @@ namespace CppSharp
 
                     public AsmStringPiece(global::CppSharp.Parser.AST.GCCAsmStmt.AsmStringPiece _0)
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.GCCAsmStmt.AsmStringPiece.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.GCCAsmStmt.AsmStringPiece.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         if (ReferenceEquals(_0, null))
@@ -19336,7 +19337,7 @@ namespace CppSharp
                         if (callNativeDtor)
                             __Internal.dtor(__Instance);
                         if (__ownsNativeInstance)
-                            Marshal.FreeHGlobal(__Instance);
+                            __NativeMemory.AlignedFree((void*)__Instance);
                         __Instance = IntPtr.Zero;
                     }
 
@@ -19433,7 +19434,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.GCCAsmStmt.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -19453,7 +19454,7 @@ namespace CppSharp
                 public GCCAsmStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.GCCAsmStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.GCCAsmStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -19462,7 +19463,7 @@ namespace CppSharp
                 public GCCAsmStmt(global::CppSharp.Parser.AST.GCCAsmStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.GCCAsmStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.GCCAsmStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -19482,7 +19483,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -19565,7 +19566,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.MSAsmStmt.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -19585,7 +19586,7 @@ namespace CppSharp
                 public MSAsmStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.MSAsmStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.MSAsmStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -19594,7 +19595,7 @@ namespace CppSharp
                 public MSAsmStmt(global::CppSharp.Parser.AST.MSAsmStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.MSAsmStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.MSAsmStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -19614,7 +19615,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -19718,7 +19719,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -19738,7 +19739,7 @@ namespace CppSharp
                 public SEHExceptStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.SEHExceptStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.SEHExceptStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -19747,7 +19748,7 @@ namespace CppSharp
                 public SEHExceptStmt(global::CppSharp.Parser.AST.SEHExceptStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.SEHExceptStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.SEHExceptStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.SEHExceptStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.SEHExceptStmt.__Internal*) _0.__Instance);
@@ -19840,7 +19841,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -19860,7 +19861,7 @@ namespace CppSharp
                 public SEHFinallyStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.SEHFinallyStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.SEHFinallyStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -19869,7 +19870,7 @@ namespace CppSharp
                 public SEHFinallyStmt(global::CppSharp.Parser.AST.SEHFinallyStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.SEHFinallyStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.SEHFinallyStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.SEHFinallyStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.SEHFinallyStmt.__Internal*) _0.__Instance);
@@ -19952,7 +19953,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -19972,7 +19973,7 @@ namespace CppSharp
                 public SEHTryStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.SEHTryStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.SEHTryStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -19981,7 +19982,7 @@ namespace CppSharp
                 public SEHTryStmt(global::CppSharp.Parser.AST.SEHTryStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.SEHTryStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.SEHTryStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.SEHTryStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.SEHTryStmt.__Internal*) _0.__Instance);
@@ -20114,7 +20115,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -20134,7 +20135,7 @@ namespace CppSharp
                 public SEHLeaveStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.SEHLeaveStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.SEHLeaveStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -20143,7 +20144,7 @@ namespace CppSharp
                 public SEHLeaveStmt(global::CppSharp.Parser.AST.SEHLeaveStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.SEHLeaveStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.SEHLeaveStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.SEHLeaveStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.SEHLeaveStmt.__Internal*) _0.__Instance);
@@ -20269,7 +20270,7 @@ namespace CppSharp
 
                     private static void* __CopyValue(__Internal native)
                     {
-                        var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                        var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                         *(__Internal*) ret = native;
                         return ret.ToPointer();
                     }
@@ -20290,7 +20291,7 @@ namespace CppSharp
 
                     public Capture()
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CapturedStmt.Capture.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CapturedStmt.Capture.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         __Internal.ctor(__Instance);
@@ -20298,7 +20299,7 @@ namespace CppSharp
 
                     public Capture(global::CppSharp.Parser.AST.CapturedStmt.Capture _0)
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CapturedStmt.Capture.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CapturedStmt.Capture.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         *((global::CppSharp.Parser.AST.CapturedStmt.Capture.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CapturedStmt.Capture.__Internal*) _0.__Instance);
@@ -20318,7 +20319,7 @@ namespace CppSharp
                         NativeToManagedMap.TryRemove(__Instance, out _);
                         DisposePartial(disposing);
                         if (__ownsNativeInstance)
-                            Marshal.FreeHGlobal(__Instance);
+                            __NativeMemory.AlignedFree((void*)__Instance);
                         __Instance = IntPtr.Zero;
                     }
 
@@ -20427,7 +20428,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.CapturedStmt.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -20447,7 +20448,7 @@ namespace CppSharp
                 public CapturedStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CapturedStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CapturedStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -20456,7 +20457,7 @@ namespace CppSharp
                 public CapturedStmt(global::CppSharp.Parser.AST.CapturedStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CapturedStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CapturedStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -20476,7 +20477,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -20584,7 +20585,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -20604,7 +20605,7 @@ namespace CppSharp
                 public CXXCatchStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXCatchStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXCatchStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -20613,7 +20614,7 @@ namespace CppSharp
                 public CXXCatchStmt(global::CppSharp.Parser.AST.CXXCatchStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXCatchStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXCatchStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXCatchStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXCatchStmt.__Internal*) _0.__Instance);
@@ -20708,7 +20709,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -20728,7 +20729,7 @@ namespace CppSharp
                 public CXXTryStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXTryStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXTryStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -20737,7 +20738,7 @@ namespace CppSharp
                 public CXXTryStmt(global::CppSharp.Parser.AST.CXXTryStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXTryStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXTryStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXTryStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXTryStmt.__Internal*) _0.__Instance);
@@ -20840,7 +20841,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -20860,7 +20861,7 @@ namespace CppSharp
                 public CXXForRangeStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -20869,7 +20870,7 @@ namespace CppSharp
                 public CXXForRangeStmt(global::CppSharp.Parser.AST.CXXForRangeStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXForRangeStmt.__Internal*) _0.__Instance);
@@ -21101,7 +21102,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -21121,7 +21122,7 @@ namespace CppSharp
                 public MSDependentExistsStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.MSDependentExistsStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.MSDependentExistsStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -21130,7 +21131,7 @@ namespace CppSharp
                 public MSDependentExistsStmt(global::CppSharp.Parser.AST.MSDependentExistsStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.MSDependentExistsStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.MSDependentExistsStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.MSDependentExistsStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.MSDependentExistsStmt.__Internal*) _0.__Instance);
@@ -21293,7 +21294,7 @@ namespace CppSharp
 
                     private static void* __CopyValue(__Internal native)
                     {
-                        var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                        var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                         *(__Internal*) ret = native;
                         return ret.ToPointer();
                     }
@@ -21314,7 +21315,7 @@ namespace CppSharp
 
                     public CtorArgs()
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CoroutineBodyStmt.CtorArgs.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CoroutineBodyStmt.CtorArgs.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         __Internal.ctor(__Instance);
@@ -21322,7 +21323,7 @@ namespace CppSharp
 
                     public CtorArgs(global::CppSharp.Parser.AST.CoroutineBodyStmt.CtorArgs _0)
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CoroutineBodyStmt.CtorArgs.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CoroutineBodyStmt.CtorArgs.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         *((global::CppSharp.Parser.AST.CoroutineBodyStmt.CtorArgs.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CoroutineBodyStmt.CtorArgs.__Internal*) _0.__Instance);
@@ -21342,7 +21343,7 @@ namespace CppSharp
                         NativeToManagedMap.TryRemove(__Instance, out _);
                         DisposePartial(disposing);
                         if (__ownsNativeInstance)
-                            Marshal.FreeHGlobal(__Instance);
+                            __NativeMemory.AlignedFree((void*)__Instance);
                         __Instance = IntPtr.Zero;
                     }
                 }
@@ -21373,7 +21374,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -21393,7 +21394,7 @@ namespace CppSharp
                 public CoroutineBodyStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CoroutineBodyStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CoroutineBodyStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -21402,7 +21403,7 @@ namespace CppSharp
                 public CoroutineBodyStmt(global::CppSharp.Parser.AST.CoroutineBodyStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CoroutineBodyStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CoroutineBodyStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CoroutineBodyStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CoroutineBodyStmt.__Internal*) _0.__Instance);
@@ -21644,7 +21645,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -21664,7 +21665,7 @@ namespace CppSharp
                 public CoreturnStmt()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CoreturnStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CoreturnStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -21673,7 +21674,7 @@ namespace CppSharp
                 public CoreturnStmt(global::CppSharp.Parser.AST.CoreturnStmt _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CoreturnStmt.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CoreturnStmt.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CoreturnStmt.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CoreturnStmt.__Internal*) _0.__Instance);
@@ -22121,7 +22122,7 @@ namespace CppSharp
 
                     private static void* __CopyValue(__Internal native)
                     {
-                        var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                        var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                         *(__Internal*) ret = native;
                         return ret.ToPointer();
                     }
@@ -22142,7 +22143,7 @@ namespace CppSharp
 
                     public Classification()
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Expr.Classification.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Expr.Classification.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         __Internal.ctor(__Instance);
@@ -22150,7 +22151,7 @@ namespace CppSharp
 
                     public Classification(global::CppSharp.Parser.AST.Expr.Classification _0)
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Expr.Classification.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Expr.Classification.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         *((global::CppSharp.Parser.AST.Expr.Classification.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.Expr.Classification.__Internal*) _0.__Instance);
@@ -22170,7 +22171,7 @@ namespace CppSharp
                         NativeToManagedMap.TryRemove(__Instance, out _);
                         DisposePartial(disposing);
                         if (__ownsNativeInstance)
-                            Marshal.FreeHGlobal(__Instance);
+                            __NativeMemory.AlignedFree((void*)__Instance);
                         __Instance = IntPtr.Zero;
                     }
 
@@ -22305,7 +22306,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -22325,7 +22326,7 @@ namespace CppSharp
                 public Expr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Expr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Expr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -22334,7 +22335,7 @@ namespace CppSharp
                 public Expr(global::CppSharp.Parser.AST.StmtClass klass)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Expr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Expr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, klass);
@@ -22343,7 +22344,7 @@ namespace CppSharp
                 public Expr(global::CppSharp.Parser.AST.Expr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.Expr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.Expr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.Expr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.Expr.__Internal*) _0.__Instance);
@@ -22602,7 +22603,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -22622,7 +22623,7 @@ namespace CppSharp
                 public FullExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FullExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.FullExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -22631,7 +22632,7 @@ namespace CppSharp
                 public FullExpr(global::CppSharp.Parser.AST.StmtClass klass)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FullExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.FullExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, klass);
@@ -22640,7 +22641,7 @@ namespace CppSharp
                 public FullExpr(global::CppSharp.Parser.AST.FullExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FullExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.FullExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.FullExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.FullExpr.__Internal*) _0.__Instance);
@@ -22724,7 +22725,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -22744,7 +22745,7 @@ namespace CppSharp
                 public ConstantExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ConstantExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ConstantExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -22753,7 +22754,7 @@ namespace CppSharp
                 public ConstantExpr(global::CppSharp.Parser.AST.ConstantExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ConstantExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ConstantExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.ConstantExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.ConstantExpr.__Internal*) _0.__Instance);
@@ -22820,7 +22821,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -22840,7 +22841,7 @@ namespace CppSharp
                 public OpaqueValueExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.OpaqueValueExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.OpaqueValueExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -22849,7 +22850,7 @@ namespace CppSharp
                 public OpaqueValueExpr(global::CppSharp.Parser.AST.OpaqueValueExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.OpaqueValueExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.OpaqueValueExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.OpaqueValueExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.OpaqueValueExpr.__Internal*) _0.__Instance);
@@ -22965,7 +22966,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -22985,7 +22986,7 @@ namespace CppSharp
                 public DeclRefExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DeclRefExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DeclRefExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -22994,7 +22995,7 @@ namespace CppSharp
                 public DeclRefExpr(global::CppSharp.Parser.AST.DeclRefExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DeclRefExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DeclRefExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.DeclRefExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.DeclRefExpr.__Internal*) _0.__Instance);
@@ -23217,7 +23218,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -23237,7 +23238,7 @@ namespace CppSharp
                 public IntegerLiteral()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.IntegerLiteral.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.IntegerLiteral.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -23246,7 +23247,7 @@ namespace CppSharp
                 public IntegerLiteral(global::CppSharp.Parser.AST.IntegerLiteral _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.IntegerLiteral.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.IntegerLiteral.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.IntegerLiteral.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.IntegerLiteral.__Internal*) _0.__Instance);
@@ -23338,7 +23339,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -23358,7 +23359,7 @@ namespace CppSharp
                 public FixedPointLiteral()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FixedPointLiteral.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.FixedPointLiteral.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -23367,7 +23368,7 @@ namespace CppSharp
                 public FixedPointLiteral(global::CppSharp.Parser.AST.FixedPointLiteral _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FixedPointLiteral.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.FixedPointLiteral.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.FixedPointLiteral.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.FixedPointLiteral.__Internal*) _0.__Instance);
@@ -23469,7 +23470,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -23489,7 +23490,7 @@ namespace CppSharp
                 public CharacterLiteral()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CharacterLiteral.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CharacterLiteral.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -23498,7 +23499,7 @@ namespace CppSharp
                 public CharacterLiteral(global::CppSharp.Parser.AST.CharacterLiteral _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CharacterLiteral.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CharacterLiteral.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CharacterLiteral.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CharacterLiteral.__Internal*) _0.__Instance);
@@ -23604,7 +23605,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -23624,7 +23625,7 @@ namespace CppSharp
                 public FloatingLiteral()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FloatingLiteral.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.FloatingLiteral.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -23633,7 +23634,7 @@ namespace CppSharp
                 public FloatingLiteral(global::CppSharp.Parser.AST.FloatingLiteral _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FloatingLiteral.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.FloatingLiteral.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.FloatingLiteral.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.FloatingLiteral.__Internal*) _0.__Instance);
@@ -23737,7 +23738,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -23757,7 +23758,7 @@ namespace CppSharp
                 public ImaginaryLiteral()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ImaginaryLiteral.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ImaginaryLiteral.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -23766,7 +23767,7 @@ namespace CppSharp
                 public ImaginaryLiteral(global::CppSharp.Parser.AST.ImaginaryLiteral _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ImaginaryLiteral.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ImaginaryLiteral.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.ImaginaryLiteral.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.ImaginaryLiteral.__Internal*) _0.__Instance);
@@ -23883,7 +23884,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.StringLiteral.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -23903,7 +23904,7 @@ namespace CppSharp
                 public StringLiteral()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.StringLiteral.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.StringLiteral.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -23912,7 +23913,7 @@ namespace CppSharp
                 public StringLiteral(global::CppSharp.Parser.AST.StringLiteral _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.StringLiteral.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.StringLiteral.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -23932,7 +23933,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -24205,7 +24206,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -24225,7 +24226,7 @@ namespace CppSharp
                 public PredefinedExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.PredefinedExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.PredefinedExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -24234,7 +24235,7 @@ namespace CppSharp
                 public PredefinedExpr(global::CppSharp.Parser.AST.PredefinedExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.PredefinedExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.PredefinedExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.PredefinedExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.PredefinedExpr.__Internal*) _0.__Instance);
@@ -24327,7 +24328,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -24347,7 +24348,7 @@ namespace CppSharp
                 public ParenExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ParenExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ParenExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -24356,7 +24357,7 @@ namespace CppSharp
                 public ParenExpr(global::CppSharp.Parser.AST.ParenExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ParenExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ParenExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.ParenExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.ParenExpr.__Internal*) _0.__Instance);
@@ -24471,7 +24472,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -24491,7 +24492,7 @@ namespace CppSharp
                 public UnaryOperator()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.UnaryOperator.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.UnaryOperator.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -24500,7 +24501,7 @@ namespace CppSharp
                 public UnaryOperator(global::CppSharp.Parser.AST.UnaryOperator _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.UnaryOperator.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.UnaryOperator.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.UnaryOperator.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.UnaryOperator.__Internal*) _0.__Instance);
@@ -24712,7 +24713,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -24732,7 +24733,7 @@ namespace CppSharp
                 public OffsetOfExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.OffsetOfExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.OffsetOfExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -24741,7 +24742,7 @@ namespace CppSharp
                 public OffsetOfExpr(global::CppSharp.Parser.AST.OffsetOfExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.OffsetOfExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.OffsetOfExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.OffsetOfExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.OffsetOfExpr.__Internal*) _0.__Instance);
@@ -24864,7 +24865,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -24884,7 +24885,7 @@ namespace CppSharp
                 public UnaryExprOrTypeTraitExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.UnaryExprOrTypeTraitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.UnaryExprOrTypeTraitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -24893,7 +24894,7 @@ namespace CppSharp
                 public UnaryExprOrTypeTraitExpr(global::CppSharp.Parser.AST.UnaryExprOrTypeTraitExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.UnaryExprOrTypeTraitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.UnaryExprOrTypeTraitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.UnaryExprOrTypeTraitExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.UnaryExprOrTypeTraitExpr.__Internal*) _0.__Instance);
@@ -25058,7 +25059,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -25078,7 +25079,7 @@ namespace CppSharp
                 public ArraySubscriptExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ArraySubscriptExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ArraySubscriptExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -25087,7 +25088,7 @@ namespace CppSharp
                 public ArraySubscriptExpr(global::CppSharp.Parser.AST.ArraySubscriptExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ArraySubscriptExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ArraySubscriptExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.ArraySubscriptExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.ArraySubscriptExpr.__Internal*) _0.__Instance);
@@ -25247,7 +25248,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.CallExpr.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -25267,7 +25268,7 @@ namespace CppSharp
                 public CallExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CallExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CallExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -25276,7 +25277,7 @@ namespace CppSharp
                 public CallExpr(global::CppSharp.Parser.AST.StmtClass klass)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CallExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CallExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, klass);
@@ -25285,7 +25286,7 @@ namespace CppSharp
                 public CallExpr(global::CppSharp.Parser.AST.CallExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CallExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CallExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -25305,7 +25306,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -25522,7 +25523,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -25542,7 +25543,7 @@ namespace CppSharp
                 public MemberExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.MemberExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.MemberExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -25551,7 +25552,7 @@ namespace CppSharp
                 public MemberExpr(global::CppSharp.Parser.AST.MemberExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.MemberExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.MemberExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.MemberExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.MemberExpr.__Internal*) _0.__Instance);
@@ -25788,7 +25789,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -25808,7 +25809,7 @@ namespace CppSharp
                 public CompoundLiteralExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CompoundLiteralExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CompoundLiteralExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -25817,7 +25818,7 @@ namespace CppSharp
                 public CompoundLiteralExpr(global::CppSharp.Parser.AST.CompoundLiteralExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CompoundLiteralExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CompoundLiteralExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CompoundLiteralExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CompoundLiteralExpr.__Internal*) _0.__Instance);
@@ -25932,7 +25933,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -25952,7 +25953,7 @@ namespace CppSharp
                 public CastExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -25961,7 +25962,7 @@ namespace CppSharp
                 public CastExpr(global::CppSharp.Parser.AST.StmtClass klass)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, klass);
@@ -25970,7 +25971,7 @@ namespace CppSharp
                 public CastExpr(global::CppSharp.Parser.AST.CastExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CastExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CastExpr.__Internal*) _0.__Instance);
@@ -26160,7 +26161,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -26180,7 +26181,7 @@ namespace CppSharp
                 public ImplicitCastExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ImplicitCastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ImplicitCastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -26189,7 +26190,7 @@ namespace CppSharp
                 public ImplicitCastExpr(global::CppSharp.Parser.AST.ImplicitCastExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ImplicitCastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ImplicitCastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.ImplicitCastExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.ImplicitCastExpr.__Internal*) _0.__Instance);
@@ -26277,7 +26278,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -26297,7 +26298,7 @@ namespace CppSharp
                 public ExplicitCastExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ExplicitCastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ExplicitCastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -26306,7 +26307,7 @@ namespace CppSharp
                 public ExplicitCastExpr(global::CppSharp.Parser.AST.StmtClass klass)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ExplicitCastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ExplicitCastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, klass);
@@ -26315,7 +26316,7 @@ namespace CppSharp
                 public ExplicitCastExpr(global::CppSharp.Parser.AST.ExplicitCastExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ExplicitCastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ExplicitCastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.ExplicitCastExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.ExplicitCastExpr.__Internal*) _0.__Instance);
@@ -26409,7 +26410,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -26429,7 +26430,7 @@ namespace CppSharp
                 public CStyleCastExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CStyleCastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CStyleCastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -26438,7 +26439,7 @@ namespace CppSharp
                 public CStyleCastExpr(global::CppSharp.Parser.AST.CStyleCastExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CStyleCastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CStyleCastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CStyleCastExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CStyleCastExpr.__Internal*) _0.__Instance);
@@ -26559,7 +26560,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.BinaryOperator.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -26579,7 +26580,7 @@ namespace CppSharp
                 public BinaryOperator()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BinaryOperator.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.BinaryOperator.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -26588,7 +26589,7 @@ namespace CppSharp
                 public BinaryOperator(global::CppSharp.Parser.AST.StmtClass klass)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BinaryOperator.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.BinaryOperator.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, klass);
@@ -26597,7 +26598,7 @@ namespace CppSharp
                 public BinaryOperator(global::CppSharp.Parser.AST.BinaryOperator _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BinaryOperator.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.BinaryOperator.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -26617,7 +26618,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -26958,7 +26959,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.CompoundAssignOperator.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -26978,7 +26979,7 @@ namespace CppSharp
                 public CompoundAssignOperator()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CompoundAssignOperator.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CompoundAssignOperator.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -26987,7 +26988,7 @@ namespace CppSharp
                 public CompoundAssignOperator(global::CppSharp.Parser.AST.CompoundAssignOperator _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CompoundAssignOperator.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CompoundAssignOperator.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -27007,7 +27008,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -27107,7 +27108,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -27127,7 +27128,7 @@ namespace CppSharp
                 public AbstractConditionalOperator()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.AbstractConditionalOperator.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.AbstractConditionalOperator.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -27136,7 +27137,7 @@ namespace CppSharp
                 public AbstractConditionalOperator(global::CppSharp.Parser.AST.StmtClass klass)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.AbstractConditionalOperator.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.AbstractConditionalOperator.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, klass);
@@ -27145,7 +27146,7 @@ namespace CppSharp
                 public AbstractConditionalOperator(global::CppSharp.Parser.AST.AbstractConditionalOperator _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.AbstractConditionalOperator.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.AbstractConditionalOperator.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.AbstractConditionalOperator.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.AbstractConditionalOperator.__Internal*) _0.__Instance);
@@ -27289,7 +27290,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -27309,7 +27310,7 @@ namespace CppSharp
                 public ConditionalOperator()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ConditionalOperator.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ConditionalOperator.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -27318,7 +27319,7 @@ namespace CppSharp
                 public ConditionalOperator(global::CppSharp.Parser.AST.ConditionalOperator _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ConditionalOperator.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ConditionalOperator.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.ConditionalOperator.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.ConditionalOperator.__Internal*) _0.__Instance);
@@ -27417,7 +27418,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -27437,7 +27438,7 @@ namespace CppSharp
                 public BinaryConditionalOperator()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BinaryConditionalOperator.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.BinaryConditionalOperator.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -27446,7 +27447,7 @@ namespace CppSharp
                 public BinaryConditionalOperator(global::CppSharp.Parser.AST.BinaryConditionalOperator _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BinaryConditionalOperator.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.BinaryConditionalOperator.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.BinaryConditionalOperator.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.BinaryConditionalOperator.__Internal*) _0.__Instance);
@@ -27540,7 +27541,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -27560,7 +27561,7 @@ namespace CppSharp
                 public AddrLabelExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.AddrLabelExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.AddrLabelExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -27569,7 +27570,7 @@ namespace CppSharp
                 public AddrLabelExpr(global::CppSharp.Parser.AST.AddrLabelExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.AddrLabelExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.AddrLabelExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.AddrLabelExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.AddrLabelExpr.__Internal*) _0.__Instance);
@@ -27662,7 +27663,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -27682,7 +27683,7 @@ namespace CppSharp
                 public StmtExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.StmtExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.StmtExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -27691,7 +27692,7 @@ namespace CppSharp
                 public StmtExpr(global::CppSharp.Parser.AST.StmtExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.StmtExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.StmtExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.StmtExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.StmtExpr.__Internal*) _0.__Instance);
@@ -27798,7 +27799,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -27818,7 +27819,7 @@ namespace CppSharp
                 public ShuffleVectorExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ShuffleVectorExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ShuffleVectorExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -27827,7 +27828,7 @@ namespace CppSharp
                 public ShuffleVectorExpr(global::CppSharp.Parser.AST.ShuffleVectorExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ShuffleVectorExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ShuffleVectorExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.ShuffleVectorExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.ShuffleVectorExpr.__Internal*) _0.__Instance);
@@ -27933,7 +27934,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -27953,7 +27954,7 @@ namespace CppSharp
                 public ConvertVectorExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ConvertVectorExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ConvertVectorExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -27962,7 +27963,7 @@ namespace CppSharp
                 public ConvertVectorExpr(global::CppSharp.Parser.AST.ConvertVectorExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ConvertVectorExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ConvertVectorExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.ConvertVectorExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.ConvertVectorExpr.__Internal*) _0.__Instance);
@@ -28074,7 +28075,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -28094,7 +28095,7 @@ namespace CppSharp
                 public ChooseExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ChooseExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ChooseExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -28103,7 +28104,7 @@ namespace CppSharp
                 public ChooseExpr(global::CppSharp.Parser.AST.ChooseExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ChooseExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ChooseExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.ChooseExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.ChooseExpr.__Internal*) _0.__Instance);
@@ -28276,7 +28277,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -28296,7 +28297,7 @@ namespace CppSharp
                 public GNUNullExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.GNUNullExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.GNUNullExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -28305,7 +28306,7 @@ namespace CppSharp
                 public GNUNullExpr(global::CppSharp.Parser.AST.GNUNullExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.GNUNullExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.GNUNullExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.GNUNullExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.GNUNullExpr.__Internal*) _0.__Instance);
@@ -28386,7 +28387,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -28406,7 +28407,7 @@ namespace CppSharp
                 public VAArgExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VAArgExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.VAArgExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -28415,7 +28416,7 @@ namespace CppSharp
                 public VAArgExpr(global::CppSharp.Parser.AST.VAArgExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.VAArgExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.VAArgExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.VAArgExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.VAArgExpr.__Internal*) _0.__Instance);
@@ -28544,7 +28545,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -28564,7 +28565,7 @@ namespace CppSharp
                 public InitListExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InitListExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.InitListExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -28573,7 +28574,7 @@ namespace CppSharp
                 public InitListExpr(global::CppSharp.Parser.AST.InitListExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.InitListExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.InitListExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.InitListExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.InitListExpr.__Internal*) _0.__Instance);
@@ -28844,7 +28845,7 @@ namespace CppSharp
 
                     private static void* __CopyValue(__Internal native)
                     {
-                        var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                        var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                         *(__Internal*) ret = native;
                         return ret.ToPointer();
                     }
@@ -28865,7 +28866,7 @@ namespace CppSharp
 
                     public Designator()
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DesignatedInitExpr.Designator.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DesignatedInitExpr.Designator.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         __Internal.ctor(__Instance);
@@ -28873,7 +28874,7 @@ namespace CppSharp
 
                     public Designator(global::CppSharp.Parser.AST.DesignatedInitExpr.Designator _0)
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DesignatedInitExpr.Designator.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DesignatedInitExpr.Designator.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         *((global::CppSharp.Parser.AST.DesignatedInitExpr.Designator.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.DesignatedInitExpr.Designator.__Internal*) _0.__Instance);
@@ -28893,7 +28894,7 @@ namespace CppSharp
                         NativeToManagedMap.TryRemove(__Instance, out _);
                         DisposePartial(disposing);
                         if (__ownsNativeInstance)
-                            Marshal.FreeHGlobal(__Instance);
+                            __NativeMemory.AlignedFree((void*)__Instance);
                         __Instance = IntPtr.Zero;
                     }
 
@@ -29100,7 +29101,7 @@ namespace CppSharp
 
                     private static void* __CopyValue(__Internal native)
                     {
-                        var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                        var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                         *(__Internal*) ret = native;
                         return ret.ToPointer();
                     }
@@ -29121,7 +29122,7 @@ namespace CppSharp
 
                     public FieldDesignator()
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DesignatedInitExpr.FieldDesignator.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DesignatedInitExpr.FieldDesignator.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         __Internal.ctor(__Instance);
@@ -29129,7 +29130,7 @@ namespace CppSharp
 
                     public FieldDesignator(global::CppSharp.Parser.AST.DesignatedInitExpr.FieldDesignator _0)
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DesignatedInitExpr.FieldDesignator.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DesignatedInitExpr.FieldDesignator.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         *((global::CppSharp.Parser.AST.DesignatedInitExpr.FieldDesignator.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.DesignatedInitExpr.FieldDesignator.__Internal*) _0.__Instance);
@@ -29149,7 +29150,7 @@ namespace CppSharp
                         NativeToManagedMap.TryRemove(__Instance, out _);
                         DisposePartial(disposing);
                         if (__ownsNativeInstance)
-                            Marshal.FreeHGlobal(__Instance);
+                            __NativeMemory.AlignedFree((void*)__Instance);
                         __Instance = IntPtr.Zero;
                     }
                 }
@@ -29210,7 +29211,7 @@ namespace CppSharp
 
                     private static void* __CopyValue(__Internal native)
                     {
-                        var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                        var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                         *(__Internal*) ret = native;
                         return ret.ToPointer();
                     }
@@ -29231,7 +29232,7 @@ namespace CppSharp
 
                     public ArrayOrRangeDesignator()
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DesignatedInitExpr.ArrayOrRangeDesignator.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DesignatedInitExpr.ArrayOrRangeDesignator.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         __Internal.ctor(__Instance);
@@ -29239,7 +29240,7 @@ namespace CppSharp
 
                     public ArrayOrRangeDesignator(global::CppSharp.Parser.AST.DesignatedInitExpr.ArrayOrRangeDesignator _0)
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DesignatedInitExpr.ArrayOrRangeDesignator.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DesignatedInitExpr.ArrayOrRangeDesignator.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         *((global::CppSharp.Parser.AST.DesignatedInitExpr.ArrayOrRangeDesignator.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.DesignatedInitExpr.ArrayOrRangeDesignator.__Internal*) _0.__Instance);
@@ -29259,7 +29260,7 @@ namespace CppSharp
                         NativeToManagedMap.TryRemove(__Instance, out _);
                         DisposePartial(disposing);
                         if (__ownsNativeInstance)
-                            Marshal.FreeHGlobal(__Instance);
+                            __NativeMemory.AlignedFree((void*)__Instance);
                         __Instance = IntPtr.Zero;
                     }
                 }
@@ -29290,7 +29291,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -29310,7 +29311,7 @@ namespace CppSharp
                 public DesignatedInitExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DesignatedInitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DesignatedInitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -29319,7 +29320,7 @@ namespace CppSharp
                 public DesignatedInitExpr(global::CppSharp.Parser.AST.DesignatedInitExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DesignatedInitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DesignatedInitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.DesignatedInitExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.DesignatedInitExpr.__Internal*) _0.__Instance);
@@ -29464,7 +29465,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -29484,7 +29485,7 @@ namespace CppSharp
                 public NoInitExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.NoInitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.NoInitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -29493,7 +29494,7 @@ namespace CppSharp
                 public NoInitExpr(global::CppSharp.Parser.AST.NoInitExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.NoInitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.NoInitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.NoInitExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.NoInitExpr.__Internal*) _0.__Instance);
@@ -29559,7 +29560,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -29579,7 +29580,7 @@ namespace CppSharp
                 public DesignatedInitUpdateExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DesignatedInitUpdateExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DesignatedInitUpdateExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -29588,7 +29589,7 @@ namespace CppSharp
                 public DesignatedInitUpdateExpr(global::CppSharp.Parser.AST.DesignatedInitUpdateExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DesignatedInitUpdateExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DesignatedInitUpdateExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.DesignatedInitUpdateExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.DesignatedInitUpdateExpr.__Internal*) _0.__Instance);
@@ -29682,7 +29683,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -29702,7 +29703,7 @@ namespace CppSharp
                 public ArrayInitLoopExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ArrayInitLoopExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ArrayInitLoopExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -29711,7 +29712,7 @@ namespace CppSharp
                 public ArrayInitLoopExpr(global::CppSharp.Parser.AST.ArrayInitLoopExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ArrayInitLoopExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ArrayInitLoopExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.ArrayInitLoopExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.ArrayInitLoopExpr.__Internal*) _0.__Instance);
@@ -29803,7 +29804,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -29823,7 +29824,7 @@ namespace CppSharp
                 public ArrayInitIndexExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ArrayInitIndexExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ArrayInitIndexExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -29832,7 +29833,7 @@ namespace CppSharp
                 public ArrayInitIndexExpr(global::CppSharp.Parser.AST.ArrayInitIndexExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ArrayInitIndexExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ArrayInitIndexExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.ArrayInitIndexExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.ArrayInitIndexExpr.__Internal*) _0.__Instance);
@@ -29896,7 +29897,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -29916,7 +29917,7 @@ namespace CppSharp
                 public ImplicitValueInitExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ImplicitValueInitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ImplicitValueInitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -29925,7 +29926,7 @@ namespace CppSharp
                 public ImplicitValueInitExpr(global::CppSharp.Parser.AST.ImplicitValueInitExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ImplicitValueInitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ImplicitValueInitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.ImplicitValueInitExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.ImplicitValueInitExpr.__Internal*) _0.__Instance);
@@ -29992,7 +29993,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -30012,7 +30013,7 @@ namespace CppSharp
                 public ParenListExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ParenListExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ParenListExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -30021,7 +30022,7 @@ namespace CppSharp
                 public ParenListExpr(global::CppSharp.Parser.AST.ParenListExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ParenListExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ParenListExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.ParenListExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.ParenListExpr.__Internal*) _0.__Instance);
@@ -30132,7 +30133,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -30152,7 +30153,7 @@ namespace CppSharp
                 public GenericSelectionExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.GenericSelectionExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.GenericSelectionExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -30161,7 +30162,7 @@ namespace CppSharp
                 public GenericSelectionExpr(global::CppSharp.Parser.AST.GenericSelectionExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.GenericSelectionExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.GenericSelectionExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.GenericSelectionExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.GenericSelectionExpr.__Internal*) _0.__Instance);
@@ -30336,7 +30337,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -30356,7 +30357,7 @@ namespace CppSharp
                 public ExtVectorElementExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ExtVectorElementExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ExtVectorElementExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -30365,7 +30366,7 @@ namespace CppSharp
                 public ExtVectorElementExpr(global::CppSharp.Parser.AST.ExtVectorElementExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ExtVectorElementExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ExtVectorElementExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.ExtVectorElementExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.ExtVectorElementExpr.__Internal*) _0.__Instance);
@@ -30497,7 +30498,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -30517,7 +30518,7 @@ namespace CppSharp
                 public BlockExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.BlockExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -30526,7 +30527,7 @@ namespace CppSharp
                 public BlockExpr(global::CppSharp.Parser.AST.BlockExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BlockExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.BlockExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.BlockExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.BlockExpr.__Internal*) _0.__Instance);
@@ -30620,7 +30621,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -30640,7 +30641,7 @@ namespace CppSharp
                 public AsTypeExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.AsTypeExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.AsTypeExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -30649,7 +30650,7 @@ namespace CppSharp
                 public AsTypeExpr(global::CppSharp.Parser.AST.AsTypeExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.AsTypeExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.AsTypeExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.AsTypeExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.AsTypeExpr.__Internal*) _0.__Instance);
@@ -30757,7 +30758,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -30777,7 +30778,7 @@ namespace CppSharp
                 public PseudoObjectExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.PseudoObjectExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.PseudoObjectExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -30786,7 +30787,7 @@ namespace CppSharp
                 public PseudoObjectExpr(global::CppSharp.Parser.AST.PseudoObjectExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.PseudoObjectExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.PseudoObjectExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.PseudoObjectExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.PseudoObjectExpr.__Internal*) _0.__Instance);
@@ -30969,7 +30970,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -30989,7 +30990,7 @@ namespace CppSharp
                 public AtomicExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.AtomicExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.AtomicExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -30998,7 +30999,7 @@ namespace CppSharp
                 public AtomicExpr(global::CppSharp.Parser.AST.AtomicExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.AtomicExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.AtomicExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.AtomicExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.AtomicExpr.__Internal*) _0.__Instance);
@@ -31266,7 +31267,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -31286,7 +31287,7 @@ namespace CppSharp
                 public TypoExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TypoExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TypoExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -31295,7 +31296,7 @@ namespace CppSharp
                 public TypoExpr(global::CppSharp.Parser.AST.TypoExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TypoExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TypoExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.TypoExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.TypoExpr.__Internal*) _0.__Instance);
@@ -31375,7 +31376,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.CXXOperatorCallExpr.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -31395,7 +31396,7 @@ namespace CppSharp
                 public CXXOperatorCallExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXOperatorCallExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXOperatorCallExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -31404,7 +31405,7 @@ namespace CppSharp
                 public CXXOperatorCallExpr(global::CppSharp.Parser.AST.CXXOperatorCallExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXOperatorCallExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXOperatorCallExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -31424,7 +31425,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -31552,7 +31553,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.CXXMemberCallExpr.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -31572,7 +31573,7 @@ namespace CppSharp
                 public CXXMemberCallExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXMemberCallExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXMemberCallExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -31581,7 +31582,7 @@ namespace CppSharp
                 public CXXMemberCallExpr(global::CppSharp.Parser.AST.CXXMemberCallExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXMemberCallExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXMemberCallExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -31601,7 +31602,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -31704,7 +31705,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.CUDAKernelCallExpr.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -31724,7 +31725,7 @@ namespace CppSharp
                 public CUDAKernelCallExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CUDAKernelCallExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CUDAKernelCallExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -31733,7 +31734,7 @@ namespace CppSharp
                 public CUDAKernelCallExpr(global::CppSharp.Parser.AST.CUDAKernelCallExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CUDAKernelCallExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CUDAKernelCallExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -31753,7 +31754,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -31845,7 +31846,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -31865,7 +31866,7 @@ namespace CppSharp
                 public CXXNamedCastExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXNamedCastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXNamedCastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -31874,7 +31875,7 @@ namespace CppSharp
                 public CXXNamedCastExpr(global::CppSharp.Parser.AST.StmtClass klass)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXNamedCastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXNamedCastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, klass);
@@ -31883,7 +31884,7 @@ namespace CppSharp
                 public CXXNamedCastExpr(global::CppSharp.Parser.AST.CXXNamedCastExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXNamedCastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXNamedCastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXNamedCastExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXNamedCastExpr.__Internal*) _0.__Instance);
@@ -32032,7 +32033,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -32052,7 +32053,7 @@ namespace CppSharp
                 public CXXStaticCastExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXStaticCastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXStaticCastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -32061,7 +32062,7 @@ namespace CppSharp
                 public CXXStaticCastExpr(global::CppSharp.Parser.AST.CXXStaticCastExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXStaticCastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXStaticCastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXStaticCastExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXStaticCastExpr.__Internal*) _0.__Instance);
@@ -32138,7 +32139,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -32158,7 +32159,7 @@ namespace CppSharp
                 public CXXDynamicCastExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXDynamicCastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXDynamicCastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -32167,7 +32168,7 @@ namespace CppSharp
                 public CXXDynamicCastExpr(global::CppSharp.Parser.AST.CXXDynamicCastExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXDynamicCastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXDynamicCastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXDynamicCastExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXDynamicCastExpr.__Internal*) _0.__Instance);
@@ -32256,7 +32257,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -32276,7 +32277,7 @@ namespace CppSharp
                 public CXXReinterpretCastExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXReinterpretCastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXReinterpretCastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -32285,7 +32286,7 @@ namespace CppSharp
                 public CXXReinterpretCastExpr(global::CppSharp.Parser.AST.CXXReinterpretCastExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXReinterpretCastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXReinterpretCastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXReinterpretCastExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXReinterpretCastExpr.__Internal*) _0.__Instance);
@@ -32361,7 +32362,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -32381,7 +32382,7 @@ namespace CppSharp
                 public CXXConstCastExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXConstCastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXConstCastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -32390,7 +32391,7 @@ namespace CppSharp
                 public CXXConstCastExpr(global::CppSharp.Parser.AST.CXXConstCastExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXConstCastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXConstCastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXConstCastExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXConstCastExpr.__Internal*) _0.__Instance);
@@ -32479,7 +32480,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.UserDefinedLiteral.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -32499,7 +32500,7 @@ namespace CppSharp
                 public UserDefinedLiteral()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.UserDefinedLiteral.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.UserDefinedLiteral.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -32508,7 +32509,7 @@ namespace CppSharp
                 public UserDefinedLiteral(global::CppSharp.Parser.AST.UserDefinedLiteral _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.UserDefinedLiteral.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.UserDefinedLiteral.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -32528,7 +32529,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -32632,7 +32633,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -32652,7 +32653,7 @@ namespace CppSharp
                 public CXXBoolLiteralExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXBoolLiteralExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXBoolLiteralExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -32661,7 +32662,7 @@ namespace CppSharp
                 public CXXBoolLiteralExpr(global::CppSharp.Parser.AST.CXXBoolLiteralExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXBoolLiteralExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXBoolLiteralExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXBoolLiteralExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXBoolLiteralExpr.__Internal*) _0.__Instance);
@@ -32752,7 +32753,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -32772,7 +32773,7 @@ namespace CppSharp
                 public CXXNullPtrLiteralExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXNullPtrLiteralExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXNullPtrLiteralExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -32781,7 +32782,7 @@ namespace CppSharp
                 public CXXNullPtrLiteralExpr(global::CppSharp.Parser.AST.CXXNullPtrLiteralExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXNullPtrLiteralExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXNullPtrLiteralExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXNullPtrLiteralExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXNullPtrLiteralExpr.__Internal*) _0.__Instance);
@@ -32859,7 +32860,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -32879,7 +32880,7 @@ namespace CppSharp
                 public CXXStdInitializerListExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXStdInitializerListExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXStdInitializerListExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -32888,7 +32889,7 @@ namespace CppSharp
                 public CXXStdInitializerListExpr(global::CppSharp.Parser.AST.CXXStdInitializerListExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXStdInitializerListExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXStdInitializerListExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXStdInitializerListExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXStdInitializerListExpr.__Internal*) _0.__Instance);
@@ -32969,7 +32970,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -32989,7 +32990,7 @@ namespace CppSharp
                 public CXXTypeidExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXTypeidExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXTypeidExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -32998,7 +32999,7 @@ namespace CppSharp
                 public CXXTypeidExpr(global::CppSharp.Parser.AST.CXXTypeidExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXTypeidExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXTypeidExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXTypeidExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXTypeidExpr.__Internal*) _0.__Instance);
@@ -33106,7 +33107,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -33126,7 +33127,7 @@ namespace CppSharp
                 public MSPropertyRefExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.MSPropertyRefExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.MSPropertyRefExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -33135,7 +33136,7 @@ namespace CppSharp
                 public MSPropertyRefExpr(global::CppSharp.Parser.AST.MSPropertyRefExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.MSPropertyRefExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.MSPropertyRefExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.MSPropertyRefExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.MSPropertyRefExpr.__Internal*) _0.__Instance);
@@ -33255,7 +33256,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -33275,7 +33276,7 @@ namespace CppSharp
                 public MSPropertySubscriptExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.MSPropertySubscriptExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.MSPropertySubscriptExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -33284,7 +33285,7 @@ namespace CppSharp
                 public MSPropertySubscriptExpr(global::CppSharp.Parser.AST.MSPropertySubscriptExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.MSPropertySubscriptExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.MSPropertySubscriptExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.MSPropertySubscriptExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.MSPropertySubscriptExpr.__Internal*) _0.__Instance);
@@ -33401,7 +33402,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.CXXUuidofExpr.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -33421,7 +33422,7 @@ namespace CppSharp
                 public CXXUuidofExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXUuidofExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXUuidofExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -33430,7 +33431,7 @@ namespace CppSharp
                 public CXXUuidofExpr(global::CppSharp.Parser.AST.CXXUuidofExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXUuidofExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXUuidofExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -33450,7 +33451,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -33555,7 +33556,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -33575,7 +33576,7 @@ namespace CppSharp
                 public CXXThisExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXThisExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXThisExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -33584,7 +33585,7 @@ namespace CppSharp
                 public CXXThisExpr(global::CppSharp.Parser.AST.CXXThisExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXThisExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXThisExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXThisExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXThisExpr.__Internal*) _0.__Instance);
@@ -33677,7 +33678,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -33697,7 +33698,7 @@ namespace CppSharp
                 public CXXThrowExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXThrowExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXThrowExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -33706,7 +33707,7 @@ namespace CppSharp
                 public CXXThrowExpr(global::CppSharp.Parser.AST.CXXThrowExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXThrowExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXThrowExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXThrowExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXThrowExpr.__Internal*) _0.__Instance);
@@ -33812,7 +33813,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -33832,7 +33833,7 @@ namespace CppSharp
                 public CXXDefaultArgExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXDefaultArgExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXDefaultArgExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -33841,7 +33842,7 @@ namespace CppSharp
                 public CXXDefaultArgExpr(global::CppSharp.Parser.AST.CXXDefaultArgExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXDefaultArgExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXDefaultArgExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXDefaultArgExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXDefaultArgExpr.__Internal*) _0.__Instance);
@@ -33934,7 +33935,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -33954,7 +33955,7 @@ namespace CppSharp
                 public CXXDefaultInitExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXDefaultInitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXDefaultInitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -33963,7 +33964,7 @@ namespace CppSharp
                 public CXXDefaultInitExpr(global::CppSharp.Parser.AST.CXXDefaultInitExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXDefaultInitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXDefaultInitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXDefaultInitExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXDefaultInitExpr.__Internal*) _0.__Instance);
@@ -34056,7 +34057,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -34076,7 +34077,7 @@ namespace CppSharp
                 public CXXBindTemporaryExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXBindTemporaryExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXBindTemporaryExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -34085,7 +34086,7 @@ namespace CppSharp
                 public CXXBindTemporaryExpr(global::CppSharp.Parser.AST.CXXBindTemporaryExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXBindTemporaryExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXBindTemporaryExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXBindTemporaryExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXBindTemporaryExpr.__Internal*) _0.__Instance);
@@ -34198,7 +34199,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.CXXConstructExpr.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -34218,7 +34219,7 @@ namespace CppSharp
                 public CXXConstructExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXConstructExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXConstructExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -34227,7 +34228,7 @@ namespace CppSharp
                 public CXXConstructExpr(global::CppSharp.Parser.AST.StmtClass klass)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXConstructExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXConstructExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, klass);
@@ -34236,7 +34237,7 @@ namespace CppSharp
                 public CXXConstructExpr(global::CppSharp.Parser.AST.CXXConstructExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXConstructExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXConstructExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -34256,7 +34257,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -34462,7 +34463,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -34482,7 +34483,7 @@ namespace CppSharp
                 public CXXInheritedCtorInitExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXInheritedCtorInitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXInheritedCtorInitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -34491,7 +34492,7 @@ namespace CppSharp
                 public CXXInheritedCtorInitExpr(global::CppSharp.Parser.AST.CXXInheritedCtorInitExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXInheritedCtorInitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXInheritedCtorInitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXInheritedCtorInitExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXInheritedCtorInitExpr.__Internal*) _0.__Instance);
@@ -34605,7 +34606,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -34625,7 +34626,7 @@ namespace CppSharp
                 public CXXFunctionalCastExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXFunctionalCastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXFunctionalCastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -34634,7 +34635,7 @@ namespace CppSharp
                 public CXXFunctionalCastExpr(global::CppSharp.Parser.AST.CXXFunctionalCastExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXFunctionalCastExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXFunctionalCastExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXFunctionalCastExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXFunctionalCastExpr.__Internal*) _0.__Instance);
@@ -34749,7 +34750,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.CXXTemporaryObjectExpr.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -34769,7 +34770,7 @@ namespace CppSharp
                 public CXXTemporaryObjectExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXTemporaryObjectExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXTemporaryObjectExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -34778,7 +34779,7 @@ namespace CppSharp
                 public CXXTemporaryObjectExpr(global::CppSharp.Parser.AST.CXXTemporaryObjectExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXTemporaryObjectExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXTemporaryObjectExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -34798,7 +34799,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
             }
@@ -34885,7 +34886,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.LambdaExpr.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -34905,7 +34906,7 @@ namespace CppSharp
                 public LambdaExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.LambdaExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.LambdaExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -34914,7 +34915,7 @@ namespace CppSharp
                 public LambdaExpr(global::CppSharp.Parser.AST.LambdaExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.LambdaExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.LambdaExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -34934,7 +34935,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -35148,7 +35149,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -35168,7 +35169,7 @@ namespace CppSharp
                 public CXXScalarValueInitExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXScalarValueInitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXScalarValueInitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -35177,7 +35178,7 @@ namespace CppSharp
                 public CXXScalarValueInitExpr(global::CppSharp.Parser.AST.CXXScalarValueInitExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXScalarValueInitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXScalarValueInitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXScalarValueInitExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXScalarValueInitExpr.__Internal*) _0.__Instance);
@@ -35291,7 +35292,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.CXXNewExpr.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -35311,7 +35312,7 @@ namespace CppSharp
                 public CXXNewExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXNewExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXNewExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -35320,7 +35321,7 @@ namespace CppSharp
                 public CXXNewExpr(global::CppSharp.Parser.AST.CXXNewExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXNewExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXNewExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -35340,7 +35341,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -35631,7 +35632,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -35651,7 +35652,7 @@ namespace CppSharp
                 public CXXDeleteExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXDeleteExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXDeleteExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -35660,7 +35661,7 @@ namespace CppSharp
                 public CXXDeleteExpr(global::CppSharp.Parser.AST.CXXDeleteExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXDeleteExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXDeleteExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXDeleteExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXDeleteExpr.__Internal*) _0.__Instance);
@@ -35814,7 +35815,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -35834,7 +35835,7 @@ namespace CppSharp
                 public CXXPseudoDestructorExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXPseudoDestructorExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXPseudoDestructorExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -35843,7 +35844,7 @@ namespace CppSharp
                 public CXXPseudoDestructorExpr(global::CppSharp.Parser.AST.CXXPseudoDestructorExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXPseudoDestructorExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXPseudoDestructorExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXPseudoDestructorExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXPseudoDestructorExpr.__Internal*) _0.__Instance);
@@ -36016,7 +36017,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -36036,7 +36037,7 @@ namespace CppSharp
                 public TypeTraitExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TypeTraitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TypeTraitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -36045,7 +36046,7 @@ namespace CppSharp
                 public TypeTraitExpr(global::CppSharp.Parser.AST.TypeTraitExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.TypeTraitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.TypeTraitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.TypeTraitExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.TypeTraitExpr.__Internal*) _0.__Instance);
@@ -36138,7 +36139,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -36158,7 +36159,7 @@ namespace CppSharp
                 public ArrayTypeTraitExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ArrayTypeTraitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ArrayTypeTraitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -36167,7 +36168,7 @@ namespace CppSharp
                 public ArrayTypeTraitExpr(global::CppSharp.Parser.AST.ArrayTypeTraitExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ArrayTypeTraitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ArrayTypeTraitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.ArrayTypeTraitExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.ArrayTypeTraitExpr.__Internal*) _0.__Instance);
@@ -36275,7 +36276,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -36295,7 +36296,7 @@ namespace CppSharp
                 public ExpressionTraitExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ExpressionTraitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ExpressionTraitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -36304,7 +36305,7 @@ namespace CppSharp
                 public ExpressionTraitExpr(global::CppSharp.Parser.AST.ExpressionTraitExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ExpressionTraitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ExpressionTraitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.ExpressionTraitExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.ExpressionTraitExpr.__Internal*) _0.__Instance);
@@ -36436,7 +36437,7 @@ namespace CppSharp
 
                     private static void* __CopyValue(__Internal native)
                     {
-                        var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                        var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                         *(__Internal*) ret = native;
                         return ret.ToPointer();
                     }
@@ -36457,7 +36458,7 @@ namespace CppSharp
 
                     public FindResult()
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.OverloadExpr.FindResult.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.OverloadExpr.FindResult.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         __Internal.ctor(__Instance);
@@ -36465,7 +36466,7 @@ namespace CppSharp
 
                     public FindResult(global::CppSharp.Parser.AST.OverloadExpr.FindResult _0)
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.OverloadExpr.FindResult.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.OverloadExpr.FindResult.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         *((global::CppSharp.Parser.AST.OverloadExpr.FindResult.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.OverloadExpr.FindResult.__Internal*) _0.__Instance);
@@ -36485,7 +36486,7 @@ namespace CppSharp
                         NativeToManagedMap.TryRemove(__Instance, out _);
                         DisposePartial(disposing);
                         if (__ownsNativeInstance)
-                            Marshal.FreeHGlobal(__Instance);
+                            __NativeMemory.AlignedFree((void*)__Instance);
                         __Instance = IntPtr.Zero;
                     }
                 }
@@ -36516,7 +36517,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -36536,7 +36537,7 @@ namespace CppSharp
                 public OverloadExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.OverloadExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.OverloadExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -36545,7 +36546,7 @@ namespace CppSharp
                 public OverloadExpr(global::CppSharp.Parser.AST.StmtClass klass)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.OverloadExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.OverloadExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, klass);
@@ -36554,7 +36555,7 @@ namespace CppSharp
                 public OverloadExpr(global::CppSharp.Parser.AST.OverloadExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.OverloadExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.OverloadExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.OverloadExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.OverloadExpr.__Internal*) _0.__Instance);
@@ -36737,7 +36738,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -36757,7 +36758,7 @@ namespace CppSharp
                 public UnresolvedLookupExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.UnresolvedLookupExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.UnresolvedLookupExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -36766,7 +36767,7 @@ namespace CppSharp
                 public UnresolvedLookupExpr(global::CppSharp.Parser.AST.UnresolvedLookupExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.UnresolvedLookupExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.UnresolvedLookupExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.UnresolvedLookupExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.UnresolvedLookupExpr.__Internal*) _0.__Instance);
@@ -36863,7 +36864,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -36883,7 +36884,7 @@ namespace CppSharp
                 public DependentScopeDeclRefExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DependentScopeDeclRefExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DependentScopeDeclRefExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -36892,7 +36893,7 @@ namespace CppSharp
                 public DependentScopeDeclRefExpr(global::CppSharp.Parser.AST.DependentScopeDeclRefExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DependentScopeDeclRefExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DependentScopeDeclRefExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.DependentScopeDeclRefExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.DependentScopeDeclRefExpr.__Internal*) _0.__Instance);
@@ -37050,7 +37051,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -37070,7 +37071,7 @@ namespace CppSharp
                 public ExprWithCleanups()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ExprWithCleanups.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ExprWithCleanups.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -37079,7 +37080,7 @@ namespace CppSharp
                 public ExprWithCleanups(global::CppSharp.Parser.AST.ExprWithCleanups _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ExprWithCleanups.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.ExprWithCleanups.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.ExprWithCleanups.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.ExprWithCleanups.__Internal*) _0.__Instance);
@@ -37190,7 +37191,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     global::CppSharp.Parser.AST.CXXUnresolvedConstructExpr.__Internal.cctor(ret, new __IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -37210,7 +37211,7 @@ namespace CppSharp
                 public CXXUnresolvedConstructExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXUnresolvedConstructExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXUnresolvedConstructExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -37219,7 +37220,7 @@ namespace CppSharp
                 public CXXUnresolvedConstructExpr(global::CppSharp.Parser.AST.CXXUnresolvedConstructExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXUnresolvedConstructExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXUnresolvedConstructExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     if (ReferenceEquals(_0, null))
@@ -37239,7 +37240,7 @@ namespace CppSharp
                     if (callNativeDtor)
                         __Internal.dtor(__Instance);
                     if (__ownsNativeInstance)
-                        Marshal.FreeHGlobal(__Instance);
+                        __NativeMemory.AlignedFree((void*)__Instance);
                     __Instance = IntPtr.Zero;
                 }
 
@@ -37411,7 +37412,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -37431,7 +37432,7 @@ namespace CppSharp
                 public CXXDependentScopeMemberExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXDependentScopeMemberExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXDependentScopeMemberExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -37440,7 +37441,7 @@ namespace CppSharp
                 public CXXDependentScopeMemberExpr(global::CppSharp.Parser.AST.CXXDependentScopeMemberExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXDependentScopeMemberExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXDependentScopeMemberExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXDependentScopeMemberExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXDependentScopeMemberExpr.__Internal*) _0.__Instance);
@@ -37692,7 +37693,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -37712,7 +37713,7 @@ namespace CppSharp
                 public UnresolvedMemberExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.UnresolvedMemberExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.UnresolvedMemberExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -37721,7 +37722,7 @@ namespace CppSharp
                 public UnresolvedMemberExpr(global::CppSharp.Parser.AST.UnresolvedMemberExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.UnresolvedMemberExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.UnresolvedMemberExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.UnresolvedMemberExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.UnresolvedMemberExpr.__Internal*) _0.__Instance);
@@ -37881,7 +37882,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -37901,7 +37902,7 @@ namespace CppSharp
                 public CXXNoexceptExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXNoexceptExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXNoexceptExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -37910,7 +37911,7 @@ namespace CppSharp
                 public CXXNoexceptExpr(global::CppSharp.Parser.AST.CXXNoexceptExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXNoexceptExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXNoexceptExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXNoexceptExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXNoexceptExpr.__Internal*) _0.__Instance);
@@ -38003,7 +38004,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -38023,7 +38024,7 @@ namespace CppSharp
                 public PackExpansionExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.PackExpansionExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.PackExpansionExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -38032,7 +38033,7 @@ namespace CppSharp
                 public PackExpansionExpr(global::CppSharp.Parser.AST.PackExpansionExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.PackExpansionExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.PackExpansionExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.PackExpansionExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.PackExpansionExpr.__Internal*) _0.__Instance);
@@ -38129,7 +38130,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -38149,7 +38150,7 @@ namespace CppSharp
                 public SizeOfPackExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.SizeOfPackExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.SizeOfPackExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -38158,7 +38159,7 @@ namespace CppSharp
                 public SizeOfPackExpr(global::CppSharp.Parser.AST.SizeOfPackExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.SizeOfPackExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.SizeOfPackExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.SizeOfPackExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.SizeOfPackExpr.__Internal*) _0.__Instance);
@@ -38303,7 +38304,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -38323,7 +38324,7 @@ namespace CppSharp
                 public SubstNonTypeTemplateParmExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.SubstNonTypeTemplateParmExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.SubstNonTypeTemplateParmExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -38332,7 +38333,7 @@ namespace CppSharp
                 public SubstNonTypeTemplateParmExpr(global::CppSharp.Parser.AST.SubstNonTypeTemplateParmExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.SubstNonTypeTemplateParmExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.SubstNonTypeTemplateParmExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.SubstNonTypeTemplateParmExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.SubstNonTypeTemplateParmExpr.__Internal*) _0.__Instance);
@@ -38425,7 +38426,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -38445,7 +38446,7 @@ namespace CppSharp
                 public SubstNonTypeTemplateParmPackExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.SubstNonTypeTemplateParmPackExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.SubstNonTypeTemplateParmPackExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -38454,7 +38455,7 @@ namespace CppSharp
                 public SubstNonTypeTemplateParmPackExpr(global::CppSharp.Parser.AST.SubstNonTypeTemplateParmPackExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.SubstNonTypeTemplateParmPackExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.SubstNonTypeTemplateParmPackExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.SubstNonTypeTemplateParmPackExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.SubstNonTypeTemplateParmPackExpr.__Internal*) _0.__Instance);
@@ -38548,7 +38549,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -38568,7 +38569,7 @@ namespace CppSharp
                 public FunctionParmPackExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FunctionParmPackExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.FunctionParmPackExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -38577,7 +38578,7 @@ namespace CppSharp
                 public FunctionParmPackExpr(global::CppSharp.Parser.AST.FunctionParmPackExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.FunctionParmPackExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.FunctionParmPackExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.FunctionParmPackExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.FunctionParmPackExpr.__Internal*) _0.__Instance);
@@ -38701,7 +38702,7 @@ namespace CppSharp
 
                     private static void* __CopyValue(__Internal native)
                     {
-                        var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                        var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                         *(__Internal*) ret = native;
                         return ret.ToPointer();
                     }
@@ -38722,7 +38723,7 @@ namespace CppSharp
 
                     public ExtraState()
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.MaterializeTemporaryExpr.ExtraState.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.MaterializeTemporaryExpr.ExtraState.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         __Internal.ctor(__Instance);
@@ -38730,7 +38731,7 @@ namespace CppSharp
 
                     public ExtraState(global::CppSharp.Parser.AST.MaterializeTemporaryExpr.ExtraState _0)
                     {
-                        __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.MaterializeTemporaryExpr.ExtraState.__Internal));
+                        __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.MaterializeTemporaryExpr.ExtraState.__Internal), 16);
                         __ownsNativeInstance = true;
                         __RecordNativeToManagedMapping(__Instance, this);
                         *((global::CppSharp.Parser.AST.MaterializeTemporaryExpr.ExtraState.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.MaterializeTemporaryExpr.ExtraState.__Internal*) _0.__Instance);
@@ -38750,7 +38751,7 @@ namespace CppSharp
                         NativeToManagedMap.TryRemove(__Instance, out _);
                         DisposePartial(disposing);
                         if (__ownsNativeInstance)
-                            Marshal.FreeHGlobal(__Instance);
+                            __NativeMemory.AlignedFree((void*)__Instance);
                         __Instance = IntPtr.Zero;
                     }
                 }
@@ -38781,7 +38782,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -38801,7 +38802,7 @@ namespace CppSharp
                 public MaterializeTemporaryExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.MaterializeTemporaryExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.MaterializeTemporaryExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -38810,7 +38811,7 @@ namespace CppSharp
                 public MaterializeTemporaryExpr(global::CppSharp.Parser.AST.MaterializeTemporaryExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.MaterializeTemporaryExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.MaterializeTemporaryExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.MaterializeTemporaryExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.MaterializeTemporaryExpr.__Internal*) _0.__Instance);
@@ -38936,7 +38937,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -38956,7 +38957,7 @@ namespace CppSharp
                 public CXXFoldExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXFoldExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXFoldExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -38965,7 +38966,7 @@ namespace CppSharp
                 public CXXFoldExpr(global::CppSharp.Parser.AST.CXXFoldExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXFoldExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CXXFoldExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CXXFoldExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CXXFoldExpr.__Internal*) _0.__Instance);
@@ -39155,7 +39156,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -39175,7 +39176,7 @@ namespace CppSharp
                 public CoroutineSuspendExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CoroutineSuspendExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CoroutineSuspendExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -39184,7 +39185,7 @@ namespace CppSharp
                 public CoroutineSuspendExpr(global::CppSharp.Parser.AST.StmtClass klass)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CoroutineSuspendExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CoroutineSuspendExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance, klass);
@@ -39193,7 +39194,7 @@ namespace CppSharp
                 public CoroutineSuspendExpr(global::CppSharp.Parser.AST.CoroutineSuspendExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CoroutineSuspendExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CoroutineSuspendExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CoroutineSuspendExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CoroutineSuspendExpr.__Internal*) _0.__Instance);
@@ -39353,7 +39354,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -39373,7 +39374,7 @@ namespace CppSharp
                 public CoawaitExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CoawaitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CoawaitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -39382,7 +39383,7 @@ namespace CppSharp
                 public CoawaitExpr(global::CppSharp.Parser.AST.CoawaitExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CoawaitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CoawaitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CoawaitExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CoawaitExpr.__Internal*) _0.__Instance);
@@ -39476,7 +39477,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -39496,7 +39497,7 @@ namespace CppSharp
                 public DependentCoawaitExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DependentCoawaitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DependentCoawaitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -39505,7 +39506,7 @@ namespace CppSharp
                 public DependentCoawaitExpr(global::CppSharp.Parser.AST.DependentCoawaitExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.DependentCoawaitExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.DependentCoawaitExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.DependentCoawaitExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.DependentCoawaitExpr.__Internal*) _0.__Instance);
@@ -39617,7 +39618,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(__Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                    var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                     *(__Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -39637,7 +39638,7 @@ namespace CppSharp
                 public CoyieldExpr()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CoyieldExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CoyieldExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     __Internal.ctor(__Instance);
@@ -39646,7 +39647,7 @@ namespace CppSharp
                 public CoyieldExpr(global::CppSharp.Parser.AST.CoyieldExpr _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CoyieldExpr.__Internal));
+                    __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.AST.CoyieldExpr.__Internal), 16);
                     __ownsNativeInstance = true;
                     __RecordNativeToManagedMapping(__Instance, this);
                     *((global::CppSharp.Parser.AST.CoyieldExpr.__Internal*) __Instance) = *((global::CppSharp.Parser.AST.CoyieldExpr.__Internal*) _0.__Instance);
@@ -39796,7 +39797,7 @@ namespace CppSharp
 
             private static void* __CopyValue(__Internal native)
             {
-                var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                 global::CppSharp.Parser.ParserTargetInfo.__Internal.cctor(ret, new __IntPtr(&native));
                 return ret.ToPointer();
             }
@@ -39817,7 +39818,7 @@ namespace CppSharp
 
             public ParserTargetInfo()
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.ParserTargetInfo.__Internal));
+                __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.ParserTargetInfo.__Internal), 16);
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
                 __Internal.ctor(__Instance);
@@ -39825,7 +39826,7 @@ namespace CppSharp
 
             public ParserTargetInfo(global::CppSharp.Parser.ParserTargetInfo _0)
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.ParserTargetInfo.__Internal));
+                __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.ParserTargetInfo.__Internal), 16);
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
                 if (ReferenceEquals(_0, null))
@@ -39850,7 +39851,7 @@ namespace CppSharp
                 if (callNativeDtor)
                     __Internal.dtor(__Instance);
                 if (__ownsNativeInstance)
-                    Marshal.FreeHGlobal(__Instance);
+                    __NativeMemory.AlignedFree((void*)__Instance);
                 __Instance = IntPtr.Zero;
             }
 
@@ -40470,7 +40471,7 @@ namespace CppSharp
 
             private static void* __CopyValue(__Internal native)
             {
-                var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                 *(__Internal*) ret = native;
                 return ret.ToPointer();
             }
@@ -40695,7 +40696,7 @@ namespace CppSharp
 
             private static void* __CopyValue(__Internal native)
             {
-                var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                 global::CppSharp.Parser.CppParserOptions.__Internal.cctor(ret, new __IntPtr(&native));
                 return ret.ToPointer();
             }
@@ -40716,7 +40717,7 @@ namespace CppSharp
 
             public CppParserOptions()
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.CppParserOptions.__Internal));
+                __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.CppParserOptions.__Internal), 16);
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
                 __Internal.ctor(__Instance);
@@ -40724,7 +40725,7 @@ namespace CppSharp
 
             public CppParserOptions(global::CppSharp.Parser.CppParserOptions _0)
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.CppParserOptions.__Internal));
+                __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.CppParserOptions.__Internal), 16);
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
                 if (ReferenceEquals(_0, null))
@@ -40749,7 +40750,7 @@ namespace CppSharp
                 if (callNativeDtor)
                     __Internal.dtor(__Instance);
                 if (__ownsNativeInstance)
-                    Marshal.FreeHGlobal(__Instance);
+                    __NativeMemory.AlignedFree((void*)__Instance);
                 __Instance = IntPtr.Zero;
             }
 
@@ -41259,7 +41260,7 @@ namespace CppSharp
 
             private static void* __CopyValue(__Internal native)
             {
-                var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                 global::CppSharp.Parser.CppLinkerOptions.__Internal.cctor(ret, new __IntPtr(&native));
                 return ret.ToPointer();
             }
@@ -41280,7 +41281,7 @@ namespace CppSharp
 
             public CppLinkerOptions()
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.CppLinkerOptions.__Internal));
+                __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.CppLinkerOptions.__Internal), 16);
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
                 __Internal.ctor(__Instance);
@@ -41288,7 +41289,7 @@ namespace CppSharp
 
             public CppLinkerOptions(global::CppSharp.Parser.CppLinkerOptions _0)
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.CppLinkerOptions.__Internal));
+                __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.CppLinkerOptions.__Internal), 16);
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
                 if (ReferenceEquals(_0, null))
@@ -41313,7 +41314,7 @@ namespace CppSharp
                 if (callNativeDtor)
                     __Internal.dtor(__Instance);
                 if (__ownsNativeInstance)
-                    Marshal.FreeHGlobal(__Instance);
+                    __NativeMemory.AlignedFree((void*)__Instance);
                 __Instance = IntPtr.Zero;
             }
 
@@ -41470,7 +41471,7 @@ namespace CppSharp
 
             private static void* __CopyValue(__Internal native)
             {
-                var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                 global::CppSharp.Parser.ParserDiagnostic.__Internal.cctor(ret, new __IntPtr(&native));
                 return ret.ToPointer();
             }
@@ -41491,7 +41492,7 @@ namespace CppSharp
 
             public ParserDiagnostic()
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.ParserDiagnostic.__Internal));
+                __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.ParserDiagnostic.__Internal), 16);
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
                 __Internal.ctor(__Instance);
@@ -41499,7 +41500,7 @@ namespace CppSharp
 
             public ParserDiagnostic(global::CppSharp.Parser.ParserDiagnostic _0)
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.ParserDiagnostic.__Internal));
+                __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.ParserDiagnostic.__Internal), 16);
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
                 if (ReferenceEquals(_0, null))
@@ -41524,7 +41525,7 @@ namespace CppSharp
                 if (callNativeDtor)
                     __Internal.dtor(__Instance);
                 if (__ownsNativeInstance)
-                    Marshal.FreeHGlobal(__Instance);
+                    __NativeMemory.AlignedFree((void*)__Instance);
                 __Instance = IntPtr.Zero;
             }
 
@@ -41684,7 +41685,7 @@ namespace CppSharp
 
             private static void* __CopyValue(__Internal native)
             {
-                var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                 global::CppSharp.Parser.ParserResult.__Internal.cctor(ret, new __IntPtr(&native));
                 return ret.ToPointer();
             }
@@ -41705,7 +41706,7 @@ namespace CppSharp
 
             public ParserResult()
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.ParserResult.__Internal));
+                __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.ParserResult.__Internal), 16);
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
                 __Internal.ctor(__Instance);
@@ -41713,7 +41714,7 @@ namespace CppSharp
 
             public ParserResult(global::CppSharp.Parser.ParserResult _0)
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.ParserResult.__Internal));
+                __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.ParserResult.__Internal), 16);
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
                 if (ReferenceEquals(_0, null))
@@ -41738,7 +41739,7 @@ namespace CppSharp
                 if (callNativeDtor)
                     __Internal.dtor(__Instance);
                 if (__ownsNativeInstance)
-                    Marshal.FreeHGlobal(__Instance);
+                    __NativeMemory.AlignedFree((void*)__Instance);
                 __Instance = IntPtr.Zero;
             }
 
@@ -41899,7 +41900,7 @@ namespace CppSharp
 
             private static void* __CopyValue(__Internal native)
             {
-                var ret = Marshal.AllocHGlobal(sizeof(__Internal));
+                var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(__Internal), 16);
                 *(__Internal*) ret = native;
                 return ret.ToPointer();
             }
@@ -41920,14 +41921,14 @@ namespace CppSharp
 
             public ClangParser()
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.ClangParser.__Internal));
+                __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.ClangParser.__Internal), 16);
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
             }
 
             public ClangParser(global::CppSharp.Parser.ClangParser _0)
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.ClangParser.__Internal));
+                __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::CppSharp.Parser.ClangParser.__Internal), 16);
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
                 *((global::CppSharp.Parser.ClangParser.__Internal*) __Instance) = *((global::CppSharp.Parser.ClangParser.__Internal*) _0.__Instance);
@@ -41947,7 +41948,7 @@ namespace CppSharp
                 NativeToManagedMap.TryRemove(__Instance, out _);
                 DisposePartial(disposing);
                 if (__ownsNativeInstance)
-                    Marshal.FreeHGlobal(__Instance);
+                    __NativeMemory.AlignedFree((void*)__Instance);
                 __Instance = IntPtr.Zero;
             }
 

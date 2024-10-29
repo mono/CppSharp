@@ -8,6 +8,7 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
+using __NativeMemory = global::System.Runtime.InteropServices.NativeMemory;
 using __CallingConvention = global::System.Runtime.InteropServices.CallingConvention;
 using __IntPtr = global::System.IntPtr;
 
@@ -79,7 +80,7 @@ namespace Std
 
         private static void* __CopyValue(global::Std.Allocator.__Internal native)
         {
-            var ret = Marshal.AllocHGlobal(sizeof(global::Std.Allocator.__Internal));
+            var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::Std.Allocator.__Internal), 16);
             *(global::Std.Allocator.__Internal*) ret = native;
             return ret.ToPointer();
         }
@@ -103,7 +104,7 @@ namespace Std
             var ___Tp = typeof(_Tp);
             if (___Tp.IsAssignableFrom(typeof(sbyte)))
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::Std.Allocator.__Internal));
+                __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::Std.Allocator.__Internal), 16);
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
                 global::Std.Allocator.__Internal.ctorc__N_std_S_allocator__C(__Instance);
@@ -136,7 +137,7 @@ namespace Std
                 throw new ArgumentOutOfRangeException("_Tp", string.Join(", ", new[] { typeof(_Tp).FullName }), "global::Std.Allocator<_Tp> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte>.");
             }
             if (__ownsNativeInstance)
-                Marshal.FreeHGlobal(__Instance);
+                __NativeMemory.AlignedFree((void*)__Instance);
             __Instance = IntPtr.Zero;
         }
     }
@@ -285,7 +286,7 @@ namespace Std
 
         private static void* __CopyValue(global::Std.CharTraits.__Internal native)
         {
-            var ret = Marshal.AllocHGlobal(sizeof(global::Std.CharTraits.__Internal));
+            var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::Std.CharTraits.__Internal), 16);
             *(global::Std.CharTraits.__Internal*) ret = native;
             return ret.ToPointer();
         }
@@ -318,7 +319,7 @@ namespace Std
             NativeToManagedMap.TryRemove(__Instance, out _);
             DisposePartial(disposing);
             if (__ownsNativeInstance)
-                Marshal.FreeHGlobal(__Instance);
+                __NativeMemory.AlignedFree((void*)__Instance);
             __Instance = IntPtr.Zero;
         }
     }
@@ -397,7 +398,7 @@ namespace Std
 
         private static void* __CopyValue(global::Std.BasicString.__Internal native)
         {
-            var ret = Marshal.AllocHGlobal(sizeof(global::Std.BasicString.__Internal));
+            var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::Std.BasicString.__Internal), 16);
             *(global::Std.BasicString.__Internal*) ret = native;
             return ret.ToPointer();
         }
@@ -423,7 +424,7 @@ namespace Std
             var ___Alloc = typeof(_Alloc);
             if (___CharT.IsAssignableFrom(typeof(sbyte)) && ___Traits.IsAssignableFrom(typeof(global::Std.CharTraits<sbyte>)) && ___Alloc.IsAssignableFrom(typeof(global::Std.Allocator<sbyte>)))
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::Std.BasicString.__Internal));
+                __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::Std.BasicString.__Internal), 16);
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
                 global::Std.BasicString.__Internal.ctorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C(__Instance);
@@ -458,7 +459,7 @@ namespace Std
                 throw new ArgumentOutOfRangeException("_CharT, _Traits, _Alloc", string.Join(", ", new[] { typeof(_CharT).FullName, typeof(_Traits).FullName, typeof(_Alloc).FullName }), "global::Std.BasicString<_CharT, _Traits, _Alloc> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.");
             }
             if (__ownsNativeInstance)
-                Marshal.FreeHGlobal(__Instance);
+                __NativeMemory.AlignedFree((void*)__Instance);
             __Instance = IntPtr.Zero;
         }
     }
