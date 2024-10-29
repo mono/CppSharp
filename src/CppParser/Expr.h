@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "Helpers.h"
 #include "Sources.h"
 #include "Types.h"
 #include "Stmt.h"
@@ -438,8 +439,8 @@ public:
     };
 
     StringLiteral();
-    std::string string;
-    std::string bytes;
+    STRING(String);
+    STRING(Bytes);
     unsigned int byteLength;
     unsigned int length;
     unsigned int charByteWidth;
@@ -630,7 +631,7 @@ public:
     BinaryOperatorKind opcode;
     Expr* lHS;
     Expr* rHS;
-    std::string opcodeStr;
+    STRING(OpcodeStr);
     bool isPtrMemOp;
     bool isMultiplicativeOp;
     bool isAdditiveOp;
@@ -1116,7 +1117,7 @@ class CS_API CXXUuidofExpr : public Expr
 public:
     CXXUuidofExpr();
     Expr* exprOperand;
-    std::string uuidStr;
+    STRING(UuidStr);
     bool isTypeOperand;
 };
 

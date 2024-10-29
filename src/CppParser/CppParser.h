@@ -23,10 +23,12 @@ struct CS_API CppParserOptions
     CppParserOptions();
     ~CppParserOptions();
 
-    std::string getClangVersion();
+    static const char * getClangVersion();
 
     VECTOR_STRING(Arguments)
     VECTOR_STRING(CompilationOptions)
+
+    STRING(LibraryFile)
     // C/C++ header file names.
     VECTOR_STRING(SourceFiles)
 
@@ -41,7 +43,8 @@ struct CS_API CppParserOptions
     CppSharp::CppParser::AST::ASTContext* ASTContext;
 
     int toolSetToUse;
-    std::string targetTriple;
+    STRING(TargetTriple)
+    CppAbi abi;
 
     bool noStandardIncludes;
     bool noBuiltinIncludes;
@@ -51,9 +54,6 @@ struct CS_API CppParserOptions
     bool skipPrivateDeclarations;
     bool skipLayoutInfo;
     bool skipFunctionBodies;
-
-private:
-    std::string clangVersion;
 };
 
 struct CS_API CppLinkerOptions
@@ -80,8 +80,8 @@ struct CS_API ParserDiagnostic
     ParserDiagnostic();
     ParserDiagnostic(const ParserDiagnostic&);
     ~ParserDiagnostic();
-    std::string fileName;
-    std::string message;
+    STRING(FileName)
+    STRING(Message)
     ParserDiagnosticLevel level { ParserDiagnosticLevel::Ignored };
     int lineNumber {0};
     int columnNumber {0};
@@ -124,10 +124,10 @@ public:
     static ParserResult* ParseHeader(CppParserOptions* Opts);
     static ParserResult* ParseLibrary(CppLinkerOptions* Opts);
     static ParserResult* Build(CppParserOptions* Opts,
-        const CppLinkerOptions* LinkerOptions, const std::string& File, bool Last);
-    static ParserResult* Compile(CppParserOptions* Opts, const std::string& File);
+        const CppLinkerOptions* LinkerOptions, const char * File, bool Last);
+    static ParserResult* Compile(CppParserOptions* Opts, const char * File);
     static ParserResult* Link(CppParserOptions* Opts,
-        const CppLinkerOptions* LinkerOptions, const std::string& File, bool Last);
+        const CppLinkerOptions* LinkerOptions, const char * File, bool Last);
 };
 
 } }

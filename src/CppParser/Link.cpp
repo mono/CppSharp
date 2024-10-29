@@ -18,7 +18,7 @@ LLD_HAS_DRIVER(macho)
 
 using namespace CppSharp::CppParser;
 
-bool Parser::Link(const std::string& File, const CppLinkerOptions* LinkerOptions)
+bool Parser::Link(const char * File, const CppLinkerOptions* LinkerOptions)
 {
     std::vector<const char*> args;
     llvm::StringRef Dir(llvm::sys::path::parent_path(File));

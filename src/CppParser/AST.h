@@ -31,7 +31,7 @@ class CS_API NativeLibrary
 public:
     NativeLibrary();
     ~NativeLibrary();
-    std::string fileName;
+    STRING(FileName)
     ArchType archType;
     VECTOR_STRING(Symbols)
     VECTOR_STRING(Dependencies)
@@ -108,7 +108,7 @@ public:
         Argument();
         Argument(const Argument&);
         ~Argument();
-        std::string text;
+        STRING(Text)
     };
     BlockCommandComment();
     BlockCommandComment(CommentKind Kind);
@@ -143,7 +143,7 @@ class CS_API VerbatimBlockLineComment : public Comment
 {
 public:
     VerbatimBlockLineComment();
-    std::string text;
+    STRING(Text)
 };
 
 class CS_API VerbatimBlockComment : public BlockCommandComment
@@ -158,7 +158,7 @@ class CS_API VerbatimLineComment : public BlockCommandComment
 {
 public:
     VerbatimLineComment();
-    std::string text;
+    STRING(Text)
 };
 
 class CS_API InlineCommandComment : public InlineContentComment
@@ -178,7 +178,7 @@ public:
         Argument();
         Argument(const Argument&);
         ~Argument();
-        std::string text;
+        STRING(Text)
     };
     InlineCommandComment();
     unsigned commandId;
@@ -202,11 +202,11 @@ public:
         Attribute();
         Attribute(const Attribute&);
         ~Attribute();
-        std::string name;
-        std::string value;
+        STRING(Name)
+        STRING(Value)
     };
     HTMLStartTagComment();
-    std::string tagName;
+    STRING(TagName)
     VECTOR(Attribute, Attributes)
 };
 
@@ -214,14 +214,14 @@ class CS_API HTMLEndTagComment : public HTMLTagComment
 {
 public:
     HTMLEndTagComment();
-    std::string tagName;
+    STRING(TagName)
 };
 
 class CS_API TextComment : public InlineContentComment
 {
 public:
     TextComment();
-    std::string text;
+    STRING(Text)
 };
 
 enum class RawCommentKind
@@ -242,8 +242,8 @@ public:
     RawComment();
     ~RawComment();
     RawCommentKind kind;
-    std::string text;
-    std::string briefText;
+    STRING(Text)
+    STRING(BriefText)
     FullComment* fullCommentBlock;
 };
 

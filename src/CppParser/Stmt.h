@@ -372,7 +372,7 @@ public:
         AsmStringPiece();
         bool isString;
         bool isOperand;
-        std::string string;
+        STRING(String);
         unsigned int operandNo;
         char modifier;
     };
@@ -388,7 +388,7 @@ public:
     SourceLocation lBraceLoc;
     bool hasBraces;
     unsigned int numAsmToks;
-    std::string asmString;
+    STRING(AsmString);
 };
 
 class CS_API SEHExceptStmt : public Stmt

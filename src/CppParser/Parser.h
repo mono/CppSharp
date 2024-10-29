@@ -56,9 +56,9 @@ public:
     void Setup(bool Compile = false);
     ParserResult* Parse(const std::vector<std::string>& SourceFiles);
     static ParserResult* ParseLibrary(const CppLinkerOptions* Opts);
-    ParserResult* Build(const CppLinkerOptions* LinkerOptions, const std::string& File, bool Last);
-    ParserResult* Compile(const std::string& File);
-    bool Link(const std::string& File, const CppLinkerOptions* LinkerOptions);
+    ParserResult* Build(const CppLinkerOptions* LinkerOptions, const char * File, bool Last);
+    ParserResult* Compile(const char * File);
+    bool Link(const char * File, const CppLinkerOptions* LinkerOptions);
     void WalkAST(clang::TranslationUnitDecl* TU);
     void HandleDeclaration(const clang::Decl* D, Declaration* Decl);
     CppParserOptions* opts;

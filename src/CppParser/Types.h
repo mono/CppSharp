@@ -259,7 +259,7 @@ public:
     DECLARE_TYPE_KIND(DependentName)
     ~DependentNameType();
     QualifiedType qualifier;
-    std::string identifier;
+    STRING(Identifier);
 };
 
 class CS_API PackExpansionType : public Type

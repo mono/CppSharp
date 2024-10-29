@@ -244,7 +244,7 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
         }
         _S->hasBraces = S->hasBraces();
         _S->numAsmToks = S->getNumAsmToks();
-        _S->asmString = S->getAsmString().str();
+        _S->AsmString = S->getAsmString();
         _Stmt = _S;
         break;
     }

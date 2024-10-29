@@ -65,7 +65,7 @@ namespace CppSharp
                 [StructLayout(LayoutKind.Sequential, Size = 88)]
                 public partial struct __Internal
                 {
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C fileName;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C FileName;
                     internal global::CppSharp.Parser.AST.ArchType archType;
                     internal global::Std.Vector.__Internal Symbols;
                     internal global::Std.Vector.__Internal Dependencies;
@@ -96,6 +96,12 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13NativeLibrary17clearDependenciesEv", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ClearDependencies(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13NativeLibrary11getFileNameEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetFileName(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13NativeLibrary11setFileNameEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetFileName(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13NativeLibrary15getSymbolsCountEv", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern uint GetSymbolsCount(__IntPtr __instance);
@@ -238,20 +244,6 @@ namespace CppSharp
                     __Internal.ClearDependencies(__Instance);
                 }
 
-                public string FileName
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->fileName));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->fileName), value);
-                    }
-                }
-
                 public global::CppSharp.Parser.AST.ArchType ArchType
                 {
                     get
@@ -262,6 +254,20 @@ namespace CppSharp
                     set
                     {
                         ((__Internal*)__Instance)->archType = value;
+                    }
+                }
+
+                public string FileName
+                {
+                    get
+                    {
+                        var ___ret = __Internal.GetFileName(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                    }
+
+                    set
+                    {
+                        __Internal.SetFileName(__Instance, value);
                     }
                 }
 
@@ -948,7 +954,7 @@ namespace CppSharp
                     [StructLayout(LayoutKind.Sequential, Size = 32)]
                     public partial struct __Internal
                     {
-                        internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C text;
+                        internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Text;
 
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19BlockCommandComment8ArgumentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                         internal static extern void ctor(__IntPtr __instance);
@@ -958,6 +964,12 @@ namespace CppSharp
 
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19BlockCommandComment8ArgumentD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                         internal static extern void dtor(__IntPtr __instance);
+
+                        [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19BlockCommandComment8Argument7getTextEv", CallingConvention = __CallingConvention.Cdecl)]
+                        internal static extern __IntPtr GetText(__IntPtr __instance);
+
+                        [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19BlockCommandComment8Argument7setTextEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                        internal static extern void SetText(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
                     }
 
                     public __IntPtr __Instance { get; protected set; }
@@ -1066,13 +1078,13 @@ namespace CppSharp
                     {
                         get
                         {
-                            var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->text));
-                            return global::Std.BasicStringExtensions.Data(__basicStringRet0);
+                            var ___ret = __Internal.GetText(__Instance);
+                            return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
                         }
 
                         set
                         {
-                            global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->text), value);
+                            __Internal.SetText(__Instance, value);
                         }
                     }
                 }
@@ -1512,7 +1524,7 @@ namespace CppSharp
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.CommentKind kind;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C text;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Text;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST24VerbatimBlockLineCommentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -1522,6 +1534,12 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST24VerbatimBlockLineCommentD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void dtor(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST24VerbatimBlockLineComment7getTextEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetText(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST24VerbatimBlockLineComment7setTextEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetText(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
                 }
 
                 internal static new VerbatimBlockLineComment __CreateInstance(__IntPtr native, bool skipVTables = false)
@@ -1607,13 +1625,13 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->text));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
+                        var ___ret = __Internal.GetText(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
                     }
 
                     set
                     {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->text), value);
+                        __Internal.SetText(__Instance, value);
                     }
                 }
             }
@@ -1770,7 +1788,7 @@ namespace CppSharp
                     internal uint commandId;
                     internal __IntPtr paragraphComment;
                     internal global::Std.Vector.__Internal Arguments;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C text;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Text;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19VerbatimLineCommentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -1780,6 +1798,12 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19VerbatimLineCommentD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void dtor(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19VerbatimLineComment7getTextEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetText(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19VerbatimLineComment7setTextEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetText(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
                 }
 
                 internal static new VerbatimLineComment __CreateInstance(__IntPtr native, bool skipVTables = false)
@@ -1865,13 +1889,13 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->text));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
+                        var ___ret = __Internal.GetText(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
                     }
 
                     set
                     {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->text), value);
+                        __Internal.SetText(__Instance, value);
                     }
                 }
             }
@@ -1923,7 +1947,7 @@ namespace CppSharp
                     [StructLayout(LayoutKind.Sequential, Size = 32)]
                     public partial struct __Internal
                     {
-                        internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C text;
+                        internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Text;
 
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST20InlineCommandComment8ArgumentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                         internal static extern void ctor(__IntPtr __instance);
@@ -1933,6 +1957,12 @@ namespace CppSharp
 
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST20InlineCommandComment8ArgumentD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                         internal static extern void dtor(__IntPtr __instance);
+
+                        [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST20InlineCommandComment8Argument7getTextEv", CallingConvention = __CallingConvention.Cdecl)]
+                        internal static extern __IntPtr GetText(__IntPtr __instance);
+
+                        [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST20InlineCommandComment8Argument7setTextEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                        internal static extern void SetText(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
                     }
 
                     public __IntPtr __Instance { get; protected set; }
@@ -2041,13 +2071,13 @@ namespace CppSharp
                     {
                         get
                         {
-                            var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->text));
-                            return global::Std.BasicStringExtensions.Data(__basicStringRet0);
+                            var ___ret = __Internal.GetText(__Instance);
+                            return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
                         }
 
                         set
                         {
-                            global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->text), value);
+                            __Internal.SetText(__Instance, value);
                         }
                     }
                 }
@@ -2290,7 +2320,7 @@ namespace CppSharp
                 {
                     internal global::CppSharp.Parser.AST.CommentKind kind;
                     internal byte hasTrailingNewline;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C tagName;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C TagName;
                     internal global::Std.Vector.__Internal Attributes;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19HTMLStartTagCommentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -2311,6 +2341,12 @@ namespace CppSharp
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19HTMLStartTagComment15clearAttributesEv", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ClearAttributes(__IntPtr __instance);
 
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19HTMLStartTagComment10getTagNameEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetTagName(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19HTMLStartTagComment10setTagNameEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetTagName(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
+
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19HTMLStartTagComment18getAttributesCountEv", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern uint GetAttributesCount(__IntPtr __instance);
                 }
@@ -2320,8 +2356,8 @@ namespace CppSharp
                     [StructLayout(LayoutKind.Sequential, Size = 64)]
                     public partial struct __Internal
                     {
-                        internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
-                        internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C value;
+                        internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
+                        internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Value;
 
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19HTMLStartTagComment9AttributeC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                         internal static extern void ctor(__IntPtr __instance);
@@ -2331,6 +2367,18 @@ namespace CppSharp
 
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19HTMLStartTagComment9AttributeD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                         internal static extern void dtor(__IntPtr __instance);
+
+                        [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19HTMLStartTagComment9Attribute7getNameEv", CallingConvention = __CallingConvention.Cdecl)]
+                        internal static extern __IntPtr GetName(__IntPtr __instance);
+
+                        [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19HTMLStartTagComment9Attribute7setNameEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                        internal static extern void SetName(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
+
+                        [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19HTMLStartTagComment9Attribute8getValueEv", CallingConvention = __CallingConvention.Cdecl)]
+                        internal static extern __IntPtr GetValue(__IntPtr __instance);
+
+                        [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST19HTMLStartTagComment9Attribute8setValueEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                        internal static extern void SetValue(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
                     }
 
                     public __IntPtr __Instance { get; protected set; }
@@ -2439,13 +2487,13 @@ namespace CppSharp
                     {
                         get
                         {
-                            var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->name));
-                            return global::Std.BasicStringExtensions.Data(__basicStringRet0);
+                            var ___ret = __Internal.GetName(__Instance);
+                            return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
                         }
 
                         set
                         {
-                            global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->name), value);
+                            __Internal.SetName(__Instance, value);
                         }
                     }
 
@@ -2453,13 +2501,13 @@ namespace CppSharp
                     {
                         get
                         {
-                            var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->value));
-                            return global::Std.BasicStringExtensions.Data(__basicStringRet0);
+                            var ___ret = __Internal.GetValue(__Instance);
+                            return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
                         }
 
                         set
                         {
-                            global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->value), value);
+                            __Internal.SetValue(__Instance, value);
                         }
                     }
                 }
@@ -2569,13 +2617,13 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->tagName));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
+                        var ___ret = __Internal.GetTagName(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
                     }
 
                     set
                     {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->tagName), value);
+                        __Internal.SetTagName(__Instance, value);
                     }
                 }
 
@@ -2596,7 +2644,7 @@ namespace CppSharp
                 {
                     internal global::CppSharp.Parser.AST.CommentKind kind;
                     internal byte hasTrailingNewline;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C tagName;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C TagName;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST17HTMLEndTagCommentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -2606,6 +2654,12 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST17HTMLEndTagCommentD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void dtor(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST17HTMLEndTagComment10getTagNameEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetTagName(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST17HTMLEndTagComment10setTagNameEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetTagName(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
                 }
 
                 internal static new HTMLEndTagComment __CreateInstance(__IntPtr native, bool skipVTables = false)
@@ -2691,13 +2745,13 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->tagName));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
+                        var ___ret = __Internal.GetTagName(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
                     }
 
                     set
                     {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->tagName), value);
+                        __Internal.SetTagName(__Instance, value);
                     }
                 }
             }
@@ -2709,7 +2763,7 @@ namespace CppSharp
                 {
                     internal global::CppSharp.Parser.AST.CommentKind kind;
                     internal byte hasTrailingNewline;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C text;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Text;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11TextCommentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -2719,6 +2773,12 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11TextCommentD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void dtor(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11TextComment7getTextEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetText(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11TextComment7setTextEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetText(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
                 }
 
                 internal static new TextComment __CreateInstance(__IntPtr native, bool skipVTables = false)
@@ -2804,13 +2864,13 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->text));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
+                        var ___ret = __Internal.GetText(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
                     }
 
                     set
                     {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->text), value);
+                        __Internal.SetText(__Instance, value);
                     }
                 }
             }
@@ -2821,8 +2881,8 @@ namespace CppSharp
                 public partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.RawCommentKind kind;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C text;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C briefText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Text;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C BriefText;
                     internal __IntPtr fullCommentBlock;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST10RawCommentC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -2833,6 +2893,18 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST10RawCommentD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void dtor(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST10RawComment7getTextEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetText(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST10RawComment7setTextEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetText(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST10RawComment12getBriefTextEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetBriefText(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST10RawComment12setBriefTextEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetBriefText(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
                 }
 
                 public __IntPtr __Instance { get; protected set; }
@@ -2950,34 +3022,6 @@ namespace CppSharp
                     }
                 }
 
-                public string Text
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->text));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->text), value);
-                    }
-                }
-
-                public string BriefText
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->briefText));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->briefText), value);
-                    }
-                }
-
                 public global::CppSharp.Parser.AST.FullComment FullCommentBlock
                 {
                     get
@@ -2989,6 +3033,34 @@ namespace CppSharp
                     set
                     {
                         ((__Internal*)__Instance)->fullCommentBlock = value is null ? __IntPtr.Zero : value.__Instance;
+                    }
+                }
+
+                public string Text
+                {
+                    get
+                    {
+                        var ___ret = __Internal.GetText(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                    }
+
+                    set
+                    {
+                        __Internal.SetText(__Instance, value);
+                    }
+                }
+
+                public string BriefText
+                {
+                    get
+                    {
+                        var ___ret = __Internal.GetBriefText(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                    }
+
+                    set
+                    {
+                        __Internal.SetBriefText(__Instance, value);
                     }
                 }
             }
@@ -5619,7 +5691,7 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.TypeKind kind;
                     internal byte isDependent;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifier;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C identifier;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Identifier;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST17DependentNameTypeC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -5629,6 +5701,12 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST17DependentNameTypeD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void dtor(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST17DependentNameType13getIdentifierEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetIdentifier(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST17DependentNameType13setIdentifierEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetIdentifier(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
                 }
 
                 internal static new DependentNameType __CreateInstance(__IntPtr native, bool skipVTables = false)
@@ -5729,13 +5807,13 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->identifier));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
+                        var ___ret = __Internal.GetIdentifier(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
                     }
 
                     set
                     {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->identifier), value);
+                        __Internal.SetIdentifier(__Instance, value);
                     }
                 }
             }
@@ -6451,9 +6529,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -6492,6 +6570,24 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11Declaration19clearRedeclarationsEv", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ClearRedeclarations(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11Declaration7getNameEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetName(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11Declaration7setNameEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetName(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11Declaration6getUSREv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetUSR(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11Declaration6setUSREPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetUSR(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11Declaration12getDebugTextEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetDebugText(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11Declaration12setDebugTextEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetDebugText(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11Declaration28getPreprocessedEntitiesCountEv", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern uint GetPreprocessedEntitiesCount(__IntPtr __instance);
@@ -6754,48 +6850,6 @@ namespace CppSharp
                     }
                 }
 
-                public string Name
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->name));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->name), value);
-                    }
-                }
-
-                public string USR
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->USR));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->USR), value);
-                    }
-                }
-
-                public string DebugText
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->debugText));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->debugText), value);
-                    }
-                }
-
                 public bool IsIncomplete
                 {
                     get
@@ -6915,6 +6969,48 @@ namespace CppSharp
                     }
                 }
 
+                public string Name
+                {
+                    get
+                    {
+                        var ___ret = __Internal.GetName(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                    }
+
+                    set
+                    {
+                        __Internal.SetName(__Instance, value);
+                    }
+                }
+
+                public string USR
+                {
+                    get
+                    {
+                        var ___ret = __Internal.GetUSR(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                    }
+
+                    set
+                    {
+                        __Internal.SetUSR(__Instance, value);
+                    }
+                }
+
+                public string DebugText
+                {
+                    get
+                    {
+                        var ___ret = __Internal.GetDebugText(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                    }
+
+                    set
+                    {
+                        __Internal.SetDebugText(__Instance, value);
+                    }
+                }
+
                 public uint PreprocessedEntitiesCount
                 {
                     get
@@ -6947,9 +7043,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -7472,9 +7568,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -7611,9 +7707,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -7730,9 +7826,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -7864,9 +7960,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -7991,16 +8087,19 @@ namespace CppSharp
                 {
                     internal global::CppSharp.Parser.AST.StatementClassObsolete _class;
                     internal __IntPtr decl;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C @string;
-
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST17StatementObsoleteC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEENS1_22StatementClassObsoleteEPNS1_11DeclarationE", CallingConvention = __CallingConvention.Cdecl)]
-                    internal static extern void ctor(__IntPtr __instance, __IntPtr str, global::CppSharp.Parser.AST.StatementClassObsolete Class, __IntPtr decl);
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C String;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST17StatementObsoleteC2ERKS2_", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void cctor(__IntPtr __instance, __IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST17StatementObsoleteD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void dtor(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST17StatementObsolete9getStringEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetString(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST17StatementObsolete9setStringEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetString(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
                 }
 
                 public __IntPtr __Instance { get; protected set; }
@@ -8066,19 +8165,6 @@ namespace CppSharp
                     __Instance = new __IntPtr(native);
                 }
 
-                public StatementObsolete(string str, global::CppSharp.Parser.AST.StatementClassObsolete Class, global::CppSharp.Parser.AST.Declaration decl)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.StatementObsolete.__Internal));
-                    __ownsNativeInstance = true;
-                    __RecordNativeToManagedMapping(__Instance, this);
-                    var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
-                    global::Std.BasicStringExtensions.Assign(__basicString0, str);
-                    var __arg0 = __basicString0.__Instance;
-                    var __arg2 = decl is null ? __IntPtr.Zero : decl.__Instance;
-                    __Internal.ctor(__Instance, __arg0, Class, __arg2);
-                    __basicString0.Dispose();
-                }
-
                 public StatementObsolete(global::CppSharp.Parser.AST.StatementObsolete _0)
                 {
                     __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.StatementObsolete.__Internal));
@@ -8141,13 +8227,13 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->@string));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
+                        var ___ret = __Internal.GetString(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
                     }
 
                     set
                     {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->@string), value);
+                        __Internal.SetString(__Instance, value);
                     }
                 }
             }
@@ -8159,10 +8245,7 @@ namespace CppSharp
                 {
                     internal global::CppSharp.Parser.AST.StatementClassObsolete _class;
                     internal __IntPtr decl;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C @string;
-
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST18ExpressionObsoleteC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEENS1_22StatementClassObsoleteEPNS1_11DeclarationE", CallingConvention = __CallingConvention.Cdecl)]
-                    internal static extern void ctor(__IntPtr __instance, __IntPtr str, global::CppSharp.Parser.AST.StatementClassObsolete Class, __IntPtr decl);
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C String;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST18ExpressionObsoleteC2ERKS2_", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void cctor(__IntPtr __instance, __IntPtr _0);
@@ -8214,20 +8297,6 @@ namespace CppSharp
                 {
                 }
 
-                public ExpressionObsolete(string str, global::CppSharp.Parser.AST.StatementClassObsolete Class, global::CppSharp.Parser.AST.Declaration decl)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.ExpressionObsolete.__Internal));
-                    __ownsNativeInstance = true;
-                    __RecordNativeToManagedMapping(__Instance, this);
-                    var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
-                    global::Std.BasicStringExtensions.Assign(__basicString0, str);
-                    var __arg0 = __basicString0.__Instance;
-                    var __arg2 = decl is null ? __IntPtr.Zero : decl.__Instance;
-                    __Internal.ctor(__Instance, __arg0, Class, __arg2);
-                    __basicString0.Dispose();
-                }
-
                 public ExpressionObsolete(global::CppSharp.Parser.AST.ExpressionObsolete _0)
                     : this((void*) null)
                 {
@@ -8263,19 +8332,22 @@ namespace CppSharp
                 {
                     internal global::CppSharp.Parser.AST.StatementClassObsolete _class;
                     internal __IntPtr decl;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C @string;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C String;
                     internal __IntPtr LHS;
                     internal __IntPtr RHS;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C opcodeStr;
-
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST22BinaryOperatorObsoleteC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEPNS1_18ExpressionObsoleteESC_SA_", CallingConvention = __CallingConvention.Cdecl)]
-                    internal static extern void ctor(__IntPtr __instance, __IntPtr str, __IntPtr lhs, __IntPtr rhs, __IntPtr opcodeStr);
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C OpcodeStr;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST22BinaryOperatorObsoleteC2ERKS2_", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void cctor(__IntPtr __instance, __IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST22BinaryOperatorObsoleteD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void dtor(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST22BinaryOperatorObsolete12getOpcodeStrEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetOpcodeStr(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST22BinaryOperatorObsolete12setOpcodeStrEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetOpcodeStr(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
                 }
 
                 internal static new BinaryOperatorObsolete __CreateInstance(__IntPtr native, bool skipVTables = false)
@@ -8319,25 +8391,6 @@ namespace CppSharp
                 protected BinaryOperatorObsolete(void* native, bool skipVTables = false)
                     : base((void*) native)
                 {
-                }
-
-                public BinaryOperatorObsolete(string str, global::CppSharp.Parser.AST.ExpressionObsolete lhs, global::CppSharp.Parser.AST.ExpressionObsolete rhs, string opcodeStr)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.BinaryOperatorObsolete.__Internal));
-                    __ownsNativeInstance = true;
-                    __RecordNativeToManagedMapping(__Instance, this);
-                    var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
-                    global::Std.BasicStringExtensions.Assign(__basicString0, str);
-                    var __arg0 = __basicString0.__Instance;
-                    var __arg1 = lhs is null ? __IntPtr.Zero : lhs.__Instance;
-                    var __arg2 = rhs is null ? __IntPtr.Zero : rhs.__Instance;
-                    var __basicString3 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
-                    global::Std.BasicStringExtensions.Assign(__basicString3, opcodeStr);
-                    var __arg3 = __basicString3.__Instance;
-                    __Internal.ctor(__Instance, __arg0, __arg1, __arg2, __arg3);
-                    __basicString0.Dispose();
-                    __basicString3.Dispose();
                 }
 
                 public BinaryOperatorObsolete(global::CppSharp.Parser.AST.BinaryOperatorObsolete _0)
@@ -8399,13 +8452,13 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->opcodeStr));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
+                        var ___ret = __Internal.GetOpcodeStr(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
                     }
 
                     set
                     {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->opcodeStr), value);
+                        __Internal.SetOpcodeStr(__Instance, value);
                     }
                 }
             }
@@ -8417,11 +8470,8 @@ namespace CppSharp
                 {
                     internal global::CppSharp.Parser.AST.StatementClassObsolete _class;
                     internal __IntPtr decl;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C @string;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C String;
                     internal global::Std.Vector.__Internal Arguments;
-
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST16CallExprObsoleteC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEPNS1_11DeclarationE", CallingConvention = __CallingConvention.Cdecl)]
-                    internal static extern void ctor(__IntPtr __instance, __IntPtr str, __IntPtr decl);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST16CallExprObsoleteC2ERKS2_", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void cctor(__IntPtr __instance, __IntPtr _0);
@@ -8483,20 +8533,6 @@ namespace CppSharp
                 protected CallExprObsolete(void* native, bool skipVTables = false)
                     : base((void*) native)
                 {
-                }
-
-                public CallExprObsolete(string str, global::CppSharp.Parser.AST.Declaration decl)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CallExprObsolete.__Internal));
-                    __ownsNativeInstance = true;
-                    __RecordNativeToManagedMapping(__Instance, this);
-                    var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
-                    global::Std.BasicStringExtensions.Assign(__basicString0, str);
-                    var __arg0 = __basicString0.__Instance;
-                    var __arg1 = decl is null ? __IntPtr.Zero : decl.__Instance;
-                    __Internal.ctor(__Instance, __arg0, __arg1);
-                    __basicString0.Dispose();
                 }
 
                 public CallExprObsolete(global::CppSharp.Parser.AST.CallExprObsolete _0)
@@ -8564,11 +8600,8 @@ namespace CppSharp
                 {
                     internal global::CppSharp.Parser.AST.StatementClassObsolete _class;
                     internal __IntPtr decl;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C @string;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C String;
                     internal global::Std.Vector.__Internal Arguments;
-
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST24CXXConstructExprObsoleteC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEPNS1_11DeclarationE", CallingConvention = __CallingConvention.Cdecl)]
-                    internal static extern void ctor(__IntPtr __instance, __IntPtr str, __IntPtr decl);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST24CXXConstructExprObsoleteC2ERKS2_", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void cctor(__IntPtr __instance, __IntPtr _0);
@@ -8630,20 +8663,6 @@ namespace CppSharp
                 protected CXXConstructExprObsolete(void* native, bool skipVTables = false)
                     : base((void*) native)
                 {
-                }
-
-                public CXXConstructExprObsolete(string str, global::CppSharp.Parser.AST.Declaration decl)
-                    : this((void*) null)
-                {
-                    __Instance = Marshal.AllocHGlobal(sizeof(global::CppSharp.Parser.AST.CXXConstructExprObsolete.__Internal));
-                    __ownsNativeInstance = true;
-                    __RecordNativeToManagedMapping(__Instance, this);
-                    var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
-                    global::Std.BasicStringExtensions.Assign(__basicString0, str);
-                    var __arg0 = __basicString0.__Instance;
-                    var __arg1 = decl is null ? __IntPtr.Zero : decl.__Instance;
-                    __Internal.ctor(__Instance, __arg0, __arg1);
-                    __basicString0.Dispose();
                 }
 
                 public CXXConstructExprObsolete(global::CppSharp.Parser.AST.CXXConstructExprObsolete _0)
@@ -8717,9 +8736,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -8923,9 +8942,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -8959,9 +8978,9 @@ namespace CppSharp
                     internal byte isDefaulted;
                     internal global::CppSharp.Parser.AST.FriendKind friendKind;
                     internal global::CppSharp.Parser.AST.CXXOperatorKind operatorKind;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C mangled;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C signature;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C body;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Mangled;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Signature;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Body;
                     internal __IntPtr bodyStmt;
                     internal global::CppSharp.Parser.AST.CallingConvention callingConvention;
                     internal global::Std.Vector.__Internal Parameters;
@@ -8986,6 +9005,24 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST8Function15clearParametersEv", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ClearParameters(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST8Function10getMangledEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetMangled(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST8Function10setMangledEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetMangled(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST8Function12getSignatureEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetSignature(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST8Function12setSignatureEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetSignature(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST8Function7getBodyEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetBody(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST8Function7setBodyEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetBody(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST8Function18getParametersCountEv", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern uint GetParametersCount(__IntPtr __instance);
@@ -9236,48 +9273,6 @@ namespace CppSharp
                     }
                 }
 
-                public string Mangled
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->mangled));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->mangled), value);
-                    }
-                }
-
-                public string Signature
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->signature));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->signature), value);
-                    }
-                }
-
-                public string Body
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->body));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->body), value);
-                    }
-                }
-
                 public global::CppSharp.Parser.AST.Stmt BodyStmt
                 {
                     get
@@ -9348,6 +9343,48 @@ namespace CppSharp
                     }
                 }
 
+                public string Mangled
+                {
+                    get
+                    {
+                        var ___ret = __Internal.GetMangled(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                    }
+
+                    set
+                    {
+                        __Internal.SetMangled(__Instance, value);
+                    }
+                }
+
+                public string Signature
+                {
+                    get
+                    {
+                        var ___ret = __Internal.GetSignature(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                    }
+
+                    set
+                    {
+                        __Internal.SetSignature(__Instance, value);
+                    }
+                }
+
+                public string Body
+                {
+                    get
+                    {
+                        var ___ret = __Internal.GetBody(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                    }
+
+                    set
+                    {
+                        __Internal.SetBody(__Instance, value);
+                    }
+                }
+
                 public uint ParametersCount
                 {
                     get
@@ -9371,9 +9408,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -9407,9 +9444,9 @@ namespace CppSharp
                     internal byte isDefaulted;
                     internal global::CppSharp.Parser.AST.FriendKind friendKind;
                     internal global::CppSharp.Parser.AST.CXXOperatorKind operatorKind;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C mangled;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C signature;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C body;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Mangled;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Signature;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Body;
                     internal __IntPtr bodyStmt;
                     internal global::CppSharp.Parser.AST.CallingConvention callingConvention;
                     internal global::Std.Vector.__Internal Parameters;
@@ -9719,9 +9756,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -9767,9 +9804,6 @@ namespace CppSharp
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11Enumeration10clearItemsEv", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ClearItems(__IntPtr __instance);
 
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11Enumeration14FindItemByNameERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE", CallingConvention = __CallingConvention.Cdecl)]
-                    internal static extern __IntPtr FindItemByName(__IntPtr __instance, __IntPtr Name);
-
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11Enumeration13getItemsCountEv", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern uint GetItemsCount(__IntPtr __instance);
                 }
@@ -9795,9 +9829,9 @@ namespace CppSharp
                         internal global::CppSharp.Parser.SourceLocation.__Internal location;
                         internal int lineNumberStart;
                         internal int lineNumberEnd;
-                        internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                        internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                         internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                        internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                        internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                         internal byte isIncomplete;
                         internal byte isDependent;
                         internal byte isImplicit;
@@ -9809,7 +9843,7 @@ namespace CppSharp
                         internal global::Std.Vector.__Internal Redeclarations;
                         internal __IntPtr originalPtr;
                         internal __IntPtr comment;
-                        internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C expression;
+                        internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Expression;
                         internal ulong value;
 
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11Enumeration4ItemC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -9820,6 +9854,12 @@ namespace CppSharp
 
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11Enumeration4ItemD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                         internal static extern void dtor(__IntPtr __instance);
+
+                        [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11Enumeration4Item13getExpressionEv", CallingConvention = __CallingConvention.Cdecl)]
+                        internal static extern __IntPtr GetExpression(__IntPtr __instance);
+
+                        [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11Enumeration4Item13setExpressionEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                        internal static extern void SetExpression(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
                     }
 
                     internal static new Item __CreateInstance(__IntPtr native, bool skipVTables = false)
@@ -9901,20 +9941,6 @@ namespace CppSharp
                         __Instance = IntPtr.Zero;
                     }
 
-                    public string Expression
-                    {
-                        get
-                        {
-                            var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->expression));
-                            return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                        }
-
-                        set
-                        {
-                            global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->expression), value);
-                        }
-                    }
-
                     public ulong Value
                     {
                         get
@@ -9925,6 +9951,20 @@ namespace CppSharp
                         set
                         {
                             ((__Internal*)__Instance)->value = value;
+                        }
+                    }
+
+                    public string Expression
+                    {
+                        get
+                        {
+                            var ___ret = __Internal.GetExpression(__Instance);
+                            return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                        }
+
+                        set
+                        {
+                            __Internal.SetExpression(__Instance, value);
                         }
                     }
                 }
@@ -10029,17 +10069,6 @@ namespace CppSharp
                     __Internal.ClearItems(__Instance);
                 }
 
-                public global::CppSharp.Parser.AST.Enumeration.Item FindItemByName(string Name)
-                {
-                    var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
-                    global::Std.BasicStringExtensions.Assign(__basicString0, Name);
-                    var __arg0 = __basicString0.__Instance;
-                    var ___ret = __Internal.FindItemByName(__Instance, __arg0);
-                    __basicString0.Dispose();
-                    var __result0 = global::CppSharp.Parser.AST.Enumeration.Item.__GetOrCreateInstance(___ret, false);
-                    return __result0;
-                }
-
                 public global::CppSharp.Parser.AST.Enumeration.EnumModifiers Modifiers
                 {
                     get
@@ -10104,9 +10133,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -10119,7 +10148,7 @@ namespace CppSharp
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
                     internal byte isConstExpr;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C mangled;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Mangled;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
                     internal __IntPtr initializer;
 
@@ -10131,6 +10160,12 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST8VariableD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void dtor(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST8Variable10getMangledEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetMangled(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST8Variable10setMangledEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetMangled(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
                 }
 
                 internal static new Variable __CreateInstance(__IntPtr native, bool skipVTables = false)
@@ -10225,20 +10260,6 @@ namespace CppSharp
                     }
                 }
 
-                public string Mangled
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->mangled));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->mangled), value);
-                    }
-                }
-
                 public global::CppSharp.Parser.AST.QualifiedType QualifiedType
                 {
                     get
@@ -10265,6 +10286,20 @@ namespace CppSharp
                     set
                     {
                         ((__Internal*)__Instance)->initializer = value is null ? __IntPtr.Zero : value.__Instance;
+                    }
+                }
+
+                public string Mangled
+                {
+                    get
+                    {
+                        var ___ret = __Internal.GetMangled(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                    }
+
+                    set
+                    {
+                        __Internal.SetMangled(__Instance, value);
                     }
                 }
             }
@@ -10450,9 +10485,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -10627,9 +10662,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -11229,7 +11264,7 @@ namespace CppSharp
                 public partial struct __Internal
                 {
                     internal uint offset;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
                     internal __IntPtr fieldPtr;
 
@@ -11241,6 +11276,12 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11LayoutFieldD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void dtor(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11LayoutField7getNameEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetName(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11LayoutField7setNameEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetName(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
                 }
 
                 public __IntPtr __Instance { get; protected set; }
@@ -11358,20 +11399,6 @@ namespace CppSharp
                     }
                 }
 
-                public string Name
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->name));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->name), value);
-                    }
-                }
-
                 public global::CppSharp.Parser.AST.QualifiedType QualifiedType
                 {
                     get
@@ -11397,6 +11424,20 @@ namespace CppSharp
                     set
                     {
                         ((__Internal*)__Instance)->fieldPtr = (__IntPtr) value;
+                    }
+                }
+
+                public string Name
+                {
+                    get
+                    {
+                        var ___ret = __Internal.GetName(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                    }
+
+                    set
+                    {
+                        __Internal.SetName(__Instance, value);
                     }
                 }
             }
@@ -11927,9 +11968,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -12397,9 +12438,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -12590,9 +12631,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -12710,9 +12751,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -12875,9 +12916,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -13037,9 +13078,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -13174,9 +13215,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -13383,9 +13424,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -13418,12 +13459,6 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13ClassTemplate20clearSpecializationsEv", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ClearSpecializations(__IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13ClassTemplate18FindSpecializationERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE", CallingConvention = __CallingConvention.Cdecl)]
-                    internal static extern __IntPtr FindSpecialization(__IntPtr __instance, __IntPtr usr);
-
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13ClassTemplate25FindPartialSpecializationERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE", CallingConvention = __CallingConvention.Cdecl)]
-                    internal static extern __IntPtr FindPartialSpecialization(__IntPtr __instance, __IntPtr usr);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13ClassTemplate23getSpecializationsCountEv", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern uint GetSpecializationsCount(__IntPtr __instance);
@@ -13529,28 +13564,6 @@ namespace CppSharp
                     __Internal.ClearSpecializations(__Instance);
                 }
 
-                public global::CppSharp.Parser.AST.ClassTemplateSpecialization FindSpecialization(string usr)
-                {
-                    var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
-                    global::Std.BasicStringExtensions.Assign(__basicString0, usr);
-                    var __arg0 = __basicString0.__Instance;
-                    var ___ret = __Internal.FindSpecialization(__Instance, __arg0);
-                    __basicString0.Dispose();
-                    var __result0 = global::CppSharp.Parser.AST.ClassTemplateSpecialization.__GetOrCreateInstance(___ret, false);
-                    return __result0;
-                }
-
-                public global::CppSharp.Parser.AST.ClassTemplatePartialSpecialization FindPartialSpecialization(string usr)
-                {
-                    var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
-                    global::Std.BasicStringExtensions.Assign(__basicString0, usr);
-                    var __arg0 = __basicString0.__Instance;
-                    var ___ret = __Internal.FindPartialSpecialization(__Instance, __arg0);
-                    __basicString0.Dispose();
-                    var __result0 = global::CppSharp.Parser.AST.ClassTemplatePartialSpecialization.__GetOrCreateInstance(___ret, false);
-                    return __result0;
-                }
-
                 public uint SpecializationsCount
                 {
                     get
@@ -13574,9 +13587,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -13790,9 +13803,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -13981,9 +13994,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -14016,9 +14029,6 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST16FunctionTemplate20clearSpecializationsEv", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ClearSpecializations(__IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST16FunctionTemplate18FindSpecializationERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE", CallingConvention = __CallingConvention.Cdecl)]
-                    internal static extern __IntPtr FindSpecialization(__IntPtr __instance, __IntPtr usr);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST16FunctionTemplate23getSpecializationsCountEv", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern uint GetSpecializationsCount(__IntPtr __instance);
@@ -14122,17 +14132,6 @@ namespace CppSharp
                 public void ClearSpecializations()
                 {
                     __Internal.ClearSpecializations(__Instance);
-                }
-
-                public global::CppSharp.Parser.AST.FunctionTemplateSpecialization FindSpecialization(string usr)
-                {
-                    var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
-                    global::Std.BasicStringExtensions.Assign(__basicString0, usr);
-                    var __arg0 = __basicString0.__Instance;
-                    var ___ret = __Internal.FindSpecialization(__Instance, __arg0);
-                    __basicString0.Dispose();
-                    var __result0 = global::CppSharp.Parser.AST.FunctionTemplateSpecialization.__GetOrCreateInstance(___ret, false);
-                    return __result0;
                 }
 
                 public uint SpecializationsCount
@@ -14363,9 +14362,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -14398,12 +14397,6 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11VarTemplate20clearSpecializationsEv", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ClearSpecializations(__IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11VarTemplate18FindSpecializationERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE", CallingConvention = __CallingConvention.Cdecl)]
-                    internal static extern __IntPtr FindSpecialization(__IntPtr __instance, __IntPtr usr);
-
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11VarTemplate25FindPartialSpecializationERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE", CallingConvention = __CallingConvention.Cdecl)]
-                    internal static extern __IntPtr FindPartialSpecialization(__IntPtr __instance, __IntPtr usr);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST11VarTemplate23getSpecializationsCountEv", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern uint GetSpecializationsCount(__IntPtr __instance);
@@ -14509,28 +14502,6 @@ namespace CppSharp
                     __Internal.ClearSpecializations(__Instance);
                 }
 
-                public global::CppSharp.Parser.AST.VarTemplateSpecialization FindSpecialization(string usr)
-                {
-                    var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
-                    global::Std.BasicStringExtensions.Assign(__basicString0, usr);
-                    var __arg0 = __basicString0.__Instance;
-                    var ___ret = __Internal.FindSpecialization(__Instance, __arg0);
-                    __basicString0.Dispose();
-                    var __result0 = global::CppSharp.Parser.AST.VarTemplateSpecialization.__GetOrCreateInstance(___ret, false);
-                    return __result0;
-                }
-
-                public global::CppSharp.Parser.AST.VarTemplatePartialSpecialization FindPartialSpecialization(string usr)
-                {
-                    var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
-                    global::Std.BasicStringExtensions.Assign(__basicString0, usr);
-                    var __arg0 = __basicString0.__Instance;
-                    var ___ret = __Internal.FindPartialSpecialization(__Instance, __arg0);
-                    __basicString0.Dispose();
-                    var __result0 = global::CppSharp.Parser.AST.VarTemplatePartialSpecialization.__GetOrCreateInstance(___ret, false);
-                    return __result0;
-                }
-
                 public uint SpecializationsCount
                 {
                     get
@@ -14554,9 +14525,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -14569,7 +14540,7 @@ namespace CppSharp
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
                     internal byte isConstExpr;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C mangled;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Mangled;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
                     internal __IntPtr initializer;
                     internal __IntPtr templatedDecl;
@@ -14747,9 +14718,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -14762,7 +14733,7 @@ namespace CppSharp
                     internal __IntPtr originalPtr;
                     internal __IntPtr comment;
                     internal byte isConstExpr;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C mangled;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Mangled;
                     internal global::CppSharp.Parser.AST.QualifiedType.__Internal qualifiedType;
                     internal __IntPtr initializer;
                     internal __IntPtr templatedDecl;
@@ -14872,9 +14843,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -14990,9 +14961,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -15281,8 +15252,8 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.MacroLocation macroLocation;
                     internal __IntPtr originalPtr;
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C expression;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Expression;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
 
@@ -15294,6 +15265,18 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST15MacroDefinitionD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void dtor(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST15MacroDefinition7getNameEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetName(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST15MacroDefinition7setNameEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetName(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST15MacroDefinition13getExpressionEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetExpression(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST15MacroDefinition13setExpressionEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetExpression(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
                 }
 
                 internal static new MacroDefinition __CreateInstance(__IntPtr native, bool skipVTables = false)
@@ -15375,34 +15358,6 @@ namespace CppSharp
                     __Instance = IntPtr.Zero;
                 }
 
-                public string Name
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->name));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->name), value);
-                    }
-                }
-
-                public string Expression
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->expression));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->expression), value);
-                    }
-                }
-
                 public int LineNumberStart
                 {
                     get
@@ -15428,6 +15383,34 @@ namespace CppSharp
                         ((__Internal*)__Instance)->lineNumberEnd = value;
                     }
                 }
+
+                public string Name
+                {
+                    get
+                    {
+                        var ___ret = __Internal.GetName(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                    }
+
+                    set
+                    {
+                        __Internal.SetName(__Instance, value);
+                    }
+                }
+
+                public string Expression
+                {
+                    get
+                    {
+                        var ___ret = __Internal.GetExpression(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                    }
+
+                    set
+                    {
+                        __Internal.SetExpression(__Instance, value);
+                    }
+                }
             }
 
             public unsafe partial class MacroExpansion : global::CppSharp.Parser.AST.PreprocessedEntity, IDisposable
@@ -15438,8 +15421,8 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.MacroLocation macroLocation;
                     internal __IntPtr originalPtr;
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C text;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Text;
                     internal __IntPtr definition;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST14MacroExpansionC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -15450,6 +15433,18 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST14MacroExpansionD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void dtor(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST14MacroExpansion7getNameEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetName(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST14MacroExpansion7setNameEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetName(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST14MacroExpansion7getTextEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetText(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST14MacroExpansion7setTextEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetText(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
                 }
 
                 internal static new MacroExpansion __CreateInstance(__IntPtr native, bool skipVTables = false)
@@ -15531,34 +15526,6 @@ namespace CppSharp
                     __Instance = IntPtr.Zero;
                 }
 
-                public string Name
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->name));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->name), value);
-                    }
-                }
-
-                public string Text
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->text));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->text), value);
-                    }
-                }
-
                 public global::CppSharp.Parser.AST.MacroDefinition Definition
                 {
                     get
@@ -15570,6 +15537,34 @@ namespace CppSharp
                     set
                     {
                         ((__Internal*)__Instance)->definition = value is null ? __IntPtr.Zero : value.__Instance;
+                    }
+                }
+
+                public string Name
+                {
+                    get
+                    {
+                        var ___ret = __Internal.GetName(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                    }
+
+                    set
+                    {
+                        __Internal.SetName(__Instance, value);
+                    }
+                }
+
+                public string Text
+                {
+                    get
+                    {
+                        var ___ret = __Internal.GetText(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                    }
+
+                    set
+                    {
+                        __Internal.SetText(__Instance, value);
                     }
                 }
             }
@@ -15587,9 +15582,9 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal location;
                     internal int lineNumberStart;
                     internal int lineNumberEnd;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C name;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Name;
                     internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C USR;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C debugText;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C DebugText;
                     internal byte isIncomplete;
                     internal byte isDependent;
                     internal byte isImplicit;
@@ -15613,7 +15608,7 @@ namespace CppSharp
                     internal global::Std.Map.__Internalc__N_std_S_map____N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_less__S0____N_std_S_allocator____N_std_S_pair__1S0__S3_ anonymous;
                     internal byte isAnonymous;
                     internal byte isInline;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C fileName;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C FileName;
                     internal byte isSystemHeader;
                     internal global::Std.Vector.__Internal Macros;
 
@@ -15634,6 +15629,12 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST15TranslationUnit11clearMacrosEv", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ClearMacros(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST15TranslationUnit11getFileNameEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetFileName(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST15TranslationUnit11setFileNameEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetFileName(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST15TranslationUnit14getMacrosCountEv", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern uint GetMacrosCount(__IntPtr __instance);
@@ -15739,20 +15740,6 @@ namespace CppSharp
                     __Internal.ClearMacros(__Instance);
                 }
 
-                public string FileName
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->fileName));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->fileName), value);
-                    }
-                }
-
                 public bool IsSystemHeader
                 {
                     get
@@ -15763,6 +15750,20 @@ namespace CppSharp
                     set
                     {
                         ((__Internal*)__Instance)->isSystemHeader = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public string FileName
+                {
+                    get
+                    {
+                        var ___ret = __Internal.GetFileName(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                    }
+
+                    set
+                    {
+                        __Internal.SetFileName(__Instance, value);
                     }
                 }
 
@@ -15791,9 +15792,6 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST10ASTContextD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void dtor(__IntPtr __instance);
-
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST10ASTContext18FindOrCreateModuleENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE", CallingConvention = __CallingConvention.Cdecl)]
-                    internal static extern __IntPtr FindOrCreateModule(__IntPtr __instance, __IntPtr File);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST10ASTContext19getTranslationUnitsEj", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern __IntPtr GetTranslationUnits(__IntPtr __instance, uint i);
@@ -15908,17 +15906,6 @@ namespace CppSharp
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
                     __Instance = IntPtr.Zero;
-                }
-
-                public global::CppSharp.Parser.AST.TranslationUnit FindOrCreateModule(string File)
-                {
-                    var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
-                    global::Std.BasicStringExtensions.Assign(__basicString0, File);
-                    var __arg0 = __basicString0.__Instance;
-                    var ___ret = __Internal.FindOrCreateModule(__Instance, __arg0);
-                    __basicString0.Dispose(disposing: true, callNativeDtor:false);
-                    var __result0 = global::CppSharp.Parser.AST.TranslationUnit.__GetOrCreateInstance(___ret, false);
-                    return __result0;
                 }
 
                 public global::CppSharp.Parser.AST.TranslationUnit GetTranslationUnits(uint i)
@@ -19225,7 +19212,7 @@ namespace CppSharp
                     {
                         internal byte isString;
                         internal byte isOperand;
-                        internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C @string;
+                        internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C String;
                         internal uint operandNo;
                         internal sbyte modifier;
 
@@ -19237,6 +19224,12 @@ namespace CppSharp
 
                         [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST10GCCAsmStmt14AsmStringPieceD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                         internal static extern void dtor(__IntPtr __instance);
+
+                        [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST10GCCAsmStmt14AsmStringPiece9getStringEv", CallingConvention = __CallingConvention.Cdecl)]
+                        internal static extern __IntPtr GetString(__IntPtr __instance);
+
+                        [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST10GCCAsmStmt14AsmStringPiece9setStringEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                        internal static extern void SetString(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
                     }
 
                     public enum Kind
@@ -19373,20 +19366,6 @@ namespace CppSharp
                         }
                     }
 
-                    public string String
-                    {
-                        get
-                        {
-                            var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->@string));
-                            return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                        }
-
-                        set
-                        {
-                            global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->@string), value);
-                        }
-                    }
-
                     public uint OperandNo
                     {
                         get
@@ -19410,6 +19389,20 @@ namespace CppSharp
                         set
                         {
                             ((__Internal*)__Instance)->modifier = value;
+                        }
+                    }
+
+                    public string String
+                    {
+                        get
+                        {
+                            var ___ret = __Internal.GetString(__Instance);
+                            return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                        }
+
+                        set
+                        {
+                            __Internal.SetString(__Instance, value);
                         }
                     }
                 }
@@ -19528,7 +19521,7 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal lBraceLoc;
                     internal byte hasBraces;
                     internal uint numAsmToks;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C asmString;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C AsmString;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST9MSAsmStmtC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -19538,6 +19531,12 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST9MSAsmStmtD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void dtor(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST9MSAsmStmt12getAsmStringEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetAsmString(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST9MSAsmStmt12setAsmStringEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetAsmString(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
                 }
 
                 internal static new MSAsmStmt __CreateInstance(__IntPtr native, bool skipVTables = false)
@@ -19662,13 +19661,13 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->asmString));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
+                        var ___ret = __Internal.GetAsmString(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
                     }
 
                     set
                     {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->asmString), value);
+                        __Internal.SetAsmString(__Instance, value);
                     }
                 }
             }
@@ -23811,8 +23810,8 @@ namespace CppSharp
                     internal __IntPtr sourceBitField;
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C @string;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C bytes;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C String;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Bytes;
                     internal uint byteLength;
                     internal uint length;
                     internal uint charByteWidth;
@@ -23835,6 +23834,18 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13StringLiteralD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void dtor(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13StringLiteral9getStringEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetString(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13StringLiteral9setStringEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetString(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13StringLiteral8getBytesEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetBytes(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13StringLiteral8setBytesEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetBytes(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
                 }
 
                 public enum StringKind
@@ -23923,34 +23934,6 @@ namespace CppSharp
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
                     __Instance = IntPtr.Zero;
-                }
-
-                public string String
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->@string));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->@string), value);
-                    }
-                }
-
-                public string Bytes
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->bytes));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->bytes), value);
-                    }
                 }
 
                 public uint ByteLength
@@ -24119,6 +24102,34 @@ namespace CppSharp
                     set
                     {
                         ((__Internal*)__Instance)->numConcatenated = value;
+                    }
+                }
+
+                public string String
+                {
+                    get
+                    {
+                        var ___ret = __Internal.GetString(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                    }
+
+                    set
+                    {
+                        __Internal.SetString(__Instance, value);
+                    }
+                }
+
+                public string Bytes
+                {
+                    get
+                    {
+                        var ___ret = __Internal.GetBytes(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                    }
+
+                    set
+                    {
+                        __Internal.SetBytes(__Instance, value);
                     }
                 }
             }
@@ -26487,7 +26498,7 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.BinaryOperatorKind opcode;
                     internal __IntPtr lHS;
                     internal __IntPtr rHS;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C opcodeStr;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C OpcodeStr;
                     internal byte isPtrMemOp;
                     internal byte isMultiplicativeOp;
                     internal byte isAdditiveOp;
@@ -26514,6 +26525,12 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST14BinaryOperatorD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void dtor(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST14BinaryOperator12getOpcodeStrEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetOpcodeStr(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST14BinaryOperator12setOpcodeStrEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetOpcodeStr(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
                 }
 
                 internal static new BinaryOperator __CreateInstance(__IntPtr native, bool skipVTables = false)
@@ -26660,20 +26677,6 @@ namespace CppSharp
                     set
                     {
                         ((__Internal*)__Instance)->rHS = value is null ? __IntPtr.Zero : value.__Instance;
-                    }
-                }
-
-                public string OpcodeStr
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->opcodeStr));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->opcodeStr), value);
                     }
                 }
 
@@ -26858,6 +26861,20 @@ namespace CppSharp
                         ((__Internal*)__Instance)->isFEnvAccessOn = (byte) (value ? 1 : 0);
                     }
                 }
+
+                public string OpcodeStr
+                {
+                    get
+                    {
+                        var ___ret = __Internal.GetOpcodeStr(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                    }
+
+                    set
+                    {
+                        __Internal.SetOpcodeStr(__Instance, value);
+                    }
+                }
             }
 
             public unsafe partial class CompoundAssignOperator : global::CppSharp.Parser.AST.BinaryOperator, IDisposable
@@ -26887,7 +26904,7 @@ namespace CppSharp
                     internal global::CppSharp.Parser.AST.BinaryOperatorKind opcode;
                     internal __IntPtr lHS;
                     internal __IntPtr rHS;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C opcodeStr;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C OpcodeStr;
                     internal byte isPtrMemOp;
                     internal byte isMultiplicativeOp;
                     internal byte isAdditiveOp;
@@ -33339,7 +33356,7 @@ namespace CppSharp
                     internal __IntPtr referencedDeclOfCallee;
                     internal byte hasPlaceholderType;
                     internal __IntPtr exprOperand;
-                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C uuidStr;
+                    internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C UuidStr;
                     internal byte isTypeOperand;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13CXXUuidofExprC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -33350,6 +33367,12 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13CXXUuidofExprD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void dtor(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13CXXUuidofExpr10getUuidStrEv", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern __IntPtr GetUuidStr(__IntPtr __instance);
+
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST13CXXUuidofExpr10setUuidStrEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                    internal static extern void SetUuidStr(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
                 }
 
                 internal static new CXXUuidofExpr __CreateInstance(__IntPtr native, bool skipVTables = false)
@@ -33445,20 +33468,6 @@ namespace CppSharp
                     }
                 }
 
-                public string UuidStr
-                {
-                    get
-                    {
-                        var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->uuidStr));
-                        return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                    }
-
-                    set
-                    {
-                        global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->uuidStr), value);
-                    }
-                }
-
                 public bool IsTypeOperand
                 {
                     get
@@ -33469,6 +33478,20 @@ namespace CppSharp
                     set
                     {
                         ((__Internal*)__Instance)->isTypeOperand = (byte) (value ? 1 : 0);
+                    }
+                }
+
+                public string UuidStr
+                {
+                    get
+                    {
+                        var ___ret = __Internal.GetUuidStr(__Instance);
+                        return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                    }
+
+                    set
+                    {
+                        __Internal.SetUuidStr(__Instance, value);
                     }
                 }
             }
@@ -39721,6 +39744,12 @@ namespace CppSharp
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser16ParserTargetInfoD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern void dtor(__IntPtr __instance);
+
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser16ParserTargetInfo6getABIEv", CallingConvention = __CallingConvention.Cdecl)]
+                internal static extern __IntPtr GetABI(__IntPtr __instance);
+
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser16ParserTargetInfo6setABIEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                internal static extern void SetABI(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
             }
 
             public __IntPtr __Instance { get; protected set; }
@@ -39823,20 +39852,6 @@ namespace CppSharp
                 if (__ownsNativeInstance)
                     Marshal.FreeHGlobal(__Instance);
                 __Instance = IntPtr.Zero;
-            }
-
-            public string ABI
-            {
-                get
-                {
-                    var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->ABI));
-                    return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                }
-
-                set
-                {
-                    global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->ABI), value);
-                }
             }
 
             public global::CppSharp.Parser.ParserIntType Char16Type
@@ -40358,6 +40373,20 @@ namespace CppSharp
                     ((__Internal*)__Instance)->float128Width = value;
                 }
             }
+
+            public string ABI
+            {
+                get
+                {
+                    var ___ret = __Internal.GetABI(__Instance);
+                    return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                }
+
+                set
+                {
+                    __Internal.SetABI(__Instance, value);
+                }
+            }
         }
     }
 }
@@ -40463,11 +40492,12 @@ namespace CppSharp
 
         public unsafe partial class CppParserOptions : IDisposable
         {
-            [StructLayout(LayoutKind.Sequential, Size = 304)]
+            [StructLayout(LayoutKind.Sequential, Size = 312)]
             public partial struct __Internal
             {
                 internal global::Std.Vector.__Internal Arguments;
                 internal global::Std.Vector.__Internal CompilationOptions;
+                internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C LibraryFile;
                 internal global::Std.Vector.__Internal SourceFiles;
                 internal global::Std.Vector.__Internal IncludeDirs;
                 internal global::Std.Vector.__Internal SystemIncludeDirs;
@@ -40477,7 +40507,8 @@ namespace CppSharp
                 internal global::Std.Vector.__Internal SupportedFunctionTemplates;
                 internal __IntPtr ASTContext;
                 internal int toolSetToUse;
-                internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C targetTriple;
+                internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C TargetTriple;
+                internal global::CppSharp.Parser.AST.CppAbi abi;
                 internal byte noStandardIncludes;
                 internal byte noBuiltinIncludes;
                 internal byte microsoftMode;
@@ -40486,7 +40517,6 @@ namespace CppSharp
                 internal byte skipPrivateDeclarations;
                 internal byte skipLayoutInfo;
                 internal byte skipFunctionBodies;
-                internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C clangVersion;
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser16CppParserOptionsC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern void ctor(__IntPtr __instance);
@@ -40578,14 +40608,20 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser16CppParserOptions31clearSupportedFunctionTemplatesEv", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern void ClearSupportedFunctionTemplates(__IntPtr __instance);
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser16CppParserOptions15getClangVersionB5cxx11Ev", CallingConvention = __CallingConvention.Cdecl)]
-                internal static extern void GetClangVersion(__IntPtr @return, __IntPtr __instance);
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser16CppParserOptions15getClangVersionEv", CallingConvention = __CallingConvention.Cdecl)]
+                internal static extern __IntPtr GetClangVersion();
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser16CppParserOptions17getArgumentsCountEv", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern uint GetArgumentsCount(__IntPtr __instance);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser16CppParserOptions26getCompilationOptionsCountEv", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern uint GetCompilationOptionsCount(__IntPtr __instance);
+
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser16CppParserOptions14getLibraryFileEv", CallingConvention = __CallingConvention.Cdecl)]
+                internal static extern __IntPtr GetLibraryFile(__IntPtr __instance);
+
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser16CppParserOptions14setLibraryFileEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                internal static extern void SetLibraryFile(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser16CppParserOptions19getSourceFilesCountEv", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern uint GetSourceFilesCount(__IntPtr __instance);
@@ -40607,6 +40643,12 @@ namespace CppSharp
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser16CppParserOptions34getSupportedFunctionTemplatesCountEv", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern uint GetSupportedFunctionTemplatesCount(__IntPtr __instance);
+
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser16CppParserOptions15getTargetTripleEv", CallingConvention = __CallingConvention.Cdecl)]
+                internal static extern __IntPtr GetTargetTriple(__IntPtr __instance);
+
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser16CppParserOptions15setTargetTripleEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                internal static extern void SetTargetTriple(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
             }
 
             public __IntPtr __Instance { get; protected set; }
@@ -40882,17 +40924,16 @@ namespace CppSharp
                 }
             }
 
-            public string TargetTriple
+            public global::CppSharp.Parser.AST.CppAbi Abi
             {
                 get
                 {
-                    var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->targetTriple));
-                    return global::Std.BasicStringExtensions.Data(__basicStringRet0);
+                    return ((__Internal*)__Instance)->abi;
                 }
 
                 set
                 {
-                    global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->targetTriple), value);
+                    ((__Internal*)__Instance)->abi = value;
                 }
             }
 
@@ -41000,16 +41041,12 @@ namespace CppSharp
                 }
             }
 
-            public string ClangVersion
+            public static string ClangVersion
             {
                 get
                 {
-                    var ___ret = new global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C();
-                    __Internal.GetClangVersion(new IntPtr(&___ret), __Instance);
-                    var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&___ret));
-                    var __retString0 = global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                    __basicStringRet0.Dispose();
-                    return __retString0;
+                    var ___ret = __Internal.GetClangVersion();
+                    return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
                 }
             }
 
@@ -41028,6 +41065,20 @@ namespace CppSharp
                 {
                     var ___ret = __Internal.GetCompilationOptionsCount(__Instance);
                     return ___ret;
+                }
+            }
+
+            public string LibraryFile
+            {
+                get
+                {
+                    var ___ret = __Internal.GetLibraryFile(__Instance);
+                    return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                }
+
+                set
+                {
+                    __Internal.SetLibraryFile(__Instance, value);
                 }
             }
 
@@ -41091,6 +41142,20 @@ namespace CppSharp
                 {
                     var ___ret = __Internal.GetSupportedFunctionTemplatesCount(__Instance);
                     return ___ret;
+                }
+            }
+
+            public string TargetTriple
+            {
+                get
+                {
+                    var ___ret = __Internal.GetTargetTriple(__Instance);
+                    return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                }
+
+                set
+                {
+                    __Internal.SetTargetTriple(__Instance, value);
                 }
             }
         }
@@ -41333,8 +41398,8 @@ namespace CppSharp
             [StructLayout(LayoutKind.Sequential, Size = 80)]
             public partial struct __Internal
             {
-                internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C fileName;
-                internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C message;
+                internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C FileName;
+                internal global::Std.BasicString.__Internalc__N_std_N___cxx11_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C Message;
                 internal global::CppSharp.Parser.ParserDiagnosticLevel level;
                 internal int lineNumber;
                 internal int columnNumber;
@@ -41347,6 +41412,18 @@ namespace CppSharp
 
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser16ParserDiagnosticD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern void dtor(__IntPtr __instance);
+
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser16ParserDiagnostic11getFileNameEv", CallingConvention = __CallingConvention.Cdecl)]
+                internal static extern __IntPtr GetFileName(__IntPtr __instance);
+
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser16ParserDiagnostic11setFileNameEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                internal static extern void SetFileName(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
+
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser16ParserDiagnostic10getMessageEv", CallingConvention = __CallingConvention.Cdecl)]
+                internal static extern __IntPtr GetMessage(__IntPtr __instance);
+
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser16ParserDiagnostic10setMessageEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                internal static extern void SetMessage(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string s);
             }
 
             public __IntPtr __Instance { get; protected set; }
@@ -41451,34 +41528,6 @@ namespace CppSharp
                 __Instance = IntPtr.Zero;
             }
 
-            public string FileName
-            {
-                get
-                {
-                    var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->fileName));
-                    return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                }
-
-                set
-                {
-                    global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->fileName), value);
-                }
-            }
-
-            public string Message
-            {
-                get
-                {
-                    var __basicStringRet0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->message));
-                    return global::Std.BasicStringExtensions.Data(__basicStringRet0);
-                }
-
-                set
-                {
-                    global::Std.BasicStringExtensions.__Internal.Assign(new __IntPtr(&((__Internal*)__Instance)->message), value);
-                }
-            }
-
             public global::CppSharp.Parser.ParserDiagnosticLevel Level
             {
                 get
@@ -41515,6 +41564,34 @@ namespace CppSharp
                 set
                 {
                     ((__Internal*)__Instance)->columnNumber = value;
+                }
+            }
+
+            public string FileName
+            {
+                get
+                {
+                    var ___ret = __Internal.GetFileName(__Instance);
+                    return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                }
+
+                set
+                {
+                    __Internal.SetFileName(__Instance, value);
+                }
+            }
+
+            public string Message
+            {
+                get
+                {
+                    var ___ret = __Internal.GetMessage(__Instance);
+                    return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+                }
+
+                set
+                {
+                    __Internal.SetMessage(__Instance, value);
                 }
             }
         }
@@ -41768,14 +41845,14 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser11ClangParser12ParseLibraryEPNS0_16CppLinkerOptionsE", CallingConvention = __CallingConvention.Cdecl)]
                 internal static extern __IntPtr ParseLibrary(__IntPtr Opts);
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser11ClangParser5BuildEPNS0_16CppParserOptionsEPKNS0_16CppLinkerOptionsERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEb", CallingConvention = __CallingConvention.Cdecl)]
-                internal static extern __IntPtr Build(__IntPtr Opts, __IntPtr LinkerOptions, __IntPtr File, bool Last);
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser11ClangParser5BuildEPNS0_16CppParserOptionsEPKNS0_16CppLinkerOptionsEPKcb", CallingConvention = __CallingConvention.Cdecl)]
+                internal static extern __IntPtr Build(__IntPtr Opts, __IntPtr LinkerOptions, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string File, bool Last);
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser11ClangParser7CompileEPNS0_16CppParserOptionsERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE", CallingConvention = __CallingConvention.Cdecl)]
-                internal static extern __IntPtr Compile(__IntPtr Opts, __IntPtr File);
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser11ClangParser7CompileEPNS0_16CppParserOptionsEPKc", CallingConvention = __CallingConvention.Cdecl)]
+                internal static extern __IntPtr Compile(__IntPtr Opts, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string File);
 
-                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser11ClangParser4LinkEPNS0_16CppParserOptionsEPKNS0_16CppLinkerOptionsERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEb", CallingConvention = __CallingConvention.Cdecl)]
-                internal static extern __IntPtr Link(__IntPtr Opts, __IntPtr LinkerOptions, __IntPtr File, bool Last);
+                [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser11ClangParser4LinkEPNS0_16CppParserOptionsEPKNS0_16CppLinkerOptionsEPKcb", CallingConvention = __CallingConvention.Cdecl)]
+                internal static extern __IntPtr Link(__IntPtr Opts, __IntPtr LinkerOptions, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string File, bool Last);
             }
 
             public __IntPtr __Instance { get; protected set; }
@@ -41894,11 +41971,7 @@ namespace CppSharp
             {
                 var __arg0 = Opts is null ? __IntPtr.Zero : Opts.__Instance;
                 var __arg1 = LinkerOptions is null ? __IntPtr.Zero : LinkerOptions.__Instance;
-                var __basicString2 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
-                global::Std.BasicStringExtensions.Assign(__basicString2, File);
-                var __arg2 = __basicString2.__Instance;
-                var ___ret = __Internal.Build(__arg0, __arg1, __arg2, Last);
-                __basicString2.Dispose();
+                var ___ret = __Internal.Build(__arg0, __arg1, File, Last);
                 var __result0 = global::CppSharp.Parser.ParserResult.__GetOrCreateInstance(___ret, false);
                 return __result0;
             }
@@ -41906,11 +41979,7 @@ namespace CppSharp
             public static global::CppSharp.Parser.ParserResult Compile(global::CppSharp.Parser.CppParserOptions Opts, string File)
             {
                 var __arg0 = Opts is null ? __IntPtr.Zero : Opts.__Instance;
-                var __basicString1 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
-                global::Std.BasicStringExtensions.Assign(__basicString1, File);
-                var __arg1 = __basicString1.__Instance;
-                var ___ret = __Internal.Compile(__arg0, __arg1);
-                __basicString1.Dispose();
+                var ___ret = __Internal.Compile(__arg0, File);
                 var __result0 = global::CppSharp.Parser.ParserResult.__GetOrCreateInstance(___ret, false);
                 return __result0;
             }
@@ -41919,11 +41988,7 @@ namespace CppSharp
             {
                 var __arg0 = Opts is null ? __IntPtr.Zero : Opts.__Instance;
                 var __arg1 = LinkerOptions is null ? __IntPtr.Zero : LinkerOptions.__Instance;
-                var __basicString2 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
-                global::Std.BasicStringExtensions.Assign(__basicString2, File);
-                var __arg2 = __basicString2.__Instance;
-                var ___ret = __Internal.Link(__arg0, __arg1, __arg2, Last);
-                __basicString2.Dispose();
+                var ___ret = __Internal.Link(__arg0, __arg1, File, Last);
                 var __result0 = global::CppSharp.Parser.ParserResult.__GetOrCreateInstance(___ret, false);
                 return __result0;
             }
