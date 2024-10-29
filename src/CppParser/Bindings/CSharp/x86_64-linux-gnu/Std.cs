@@ -23,7 +23,7 @@ namespace Std
 {
     namespace Allocator
     {
-        [StructLayout(LayoutKind.Sequential, Size = 1)]
+        [StructLayout(LayoutKind.Explicit, Size = 1)]
         public unsafe partial struct __Internal
         {
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSaIcEC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -147,28 +147,35 @@ namespace Std
 {
     namespace Vector
     {
-        [StructLayout(LayoutKind.Sequential, Size = 24)]
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
         public unsafe partial struct __Internal
         {
+            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
     }
 
     namespace VectorBase
     {
-        [StructLayout(LayoutKind.Sequential, Size = 24)]
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
         public unsafe partial struct __Internal
         {
+            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
         namespace VectorImpl
         {
-            [StructLayout(LayoutKind.Sequential, Size = 24)]
+            [StructLayout(LayoutKind.Explicit, Size = 24)]
             public unsafe partial struct __Internal
             {
+                [FieldOffset(0)]
                 internal __IntPtr _M_start;
+
+                [FieldOffset(8)]
                 internal __IntPtr _M_finish;
+
+                [FieldOffset(16)]
                 internal __IntPtr _M_end_of_storage;
             }
 
@@ -176,11 +183,16 @@ namespace Std
 
         namespace VectorImplData
         {
-            [StructLayout(LayoutKind.Sequential, Size = 24)]
+            [StructLayout(LayoutKind.Explicit, Size = 24)]
             public unsafe partial struct __Internal
             {
+                [FieldOffset(0)]
                 internal __IntPtr _M_start;
+
+                [FieldOffset(8)]
                 internal __IntPtr _M_finish;
+
+                [FieldOffset(16)]
                 internal __IntPtr _M_end_of_storage;
             }
         }
@@ -192,7 +204,7 @@ namespace Std
 {
     namespace Less
     {
-        [StructLayout(LayoutKind.Sequential, Size = 1)]
+        [StructLayout(LayoutKind.Explicit, Size = 1)]
         public unsafe partial struct __Internal
         {
         }
@@ -207,12 +219,19 @@ namespace Std
 
     public unsafe partial class RbTreeNodeBase
     {
-        [StructLayout(LayoutKind.Sequential, Size = 32)]
+        [StructLayout(LayoutKind.Explicit, Size = 32)]
         public partial struct __Internal
         {
+            [FieldOffset(0)]
             internal global::Std.RbTreeColor _M_color;
+
+            [FieldOffset(8)]
             internal __IntPtr _M_parent;
+
+            [FieldOffset(16)]
             internal __IntPtr _M_left;
+
+            [FieldOffset(24)]
             internal __IntPtr _M_right;
         }
     }
@@ -234,7 +253,7 @@ namespace Std
 {
     namespace CharTraits
     {
-        [StructLayout(LayoutKind.Sequential, Size = 1)]
+        [StructLayout(LayoutKind.Explicit, Size = 1)]
         public unsafe partial struct __Internal
         {
         }
@@ -329,9 +348,10 @@ namespace Std
 {
     namespace BasicString
     {
-        [StructLayout(LayoutKind.Sequential, Size = 8)]
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
         public unsafe partial struct __Internal
         {
+            [FieldOffset(0)]
             internal global::Std.BasicString.AllocHider.__Internal _M_dataplus;
 
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSsC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -343,9 +363,10 @@ namespace Std
 
         namespace AllocHider
         {
-            [StructLayout(LayoutKind.Sequential, Size = 8)]
+            [StructLayout(LayoutKind.Explicit, Size = 8)]
             public unsafe partial struct __Internal
             {
+                [FieldOffset(0)]
                 internal __IntPtr _M_p;
             }
         }

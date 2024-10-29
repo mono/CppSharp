@@ -59,7 +59,7 @@ namespace Std
 {
     namespace CharTraits
     {
-        [StructLayout(LayoutKind.Sequential, Size = 1)]
+        [StructLayout(LayoutKind.Explicit, Size = 1)]
         public unsafe partial struct __Internal
         {
         }
@@ -166,21 +166,24 @@ namespace Std
 {
     namespace CompressedPair
     {
-        [StructLayout(LayoutKind.Sequential, Size = 24)]
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
         public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C_S___rep_S2_
         {
+            [FieldOffset(0)]
             internal global::Std.BasicString.Rep.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C __value_;
         }
 
-        [StructLayout(LayoutKind.Sequential, Size = 8)]
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
         public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair_____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S1_
         {
+            [FieldOffset(0)]
             internal __IntPtr __value_;
         }
 
-        [StructLayout(LayoutKind.Sequential, Size = 8)]
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
         public unsafe partial struct __Internalc__N_std_N___1_S___compressed_pair___i___N_std_N___1_S_allocator__i
         {
+            [FieldOffset(0)]
             internal __IntPtr __value_;
         }
     }
@@ -190,7 +193,7 @@ namespace Std
 {
     namespace Allocator
     {
-        [StructLayout(LayoutKind.Sequential, Size = 1)]
+        [StructLayout(LayoutKind.Explicit, Size = 1)]
         public unsafe partial struct __Internal
         {
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSt3__19allocatorIcEC2B8un170006Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -301,9 +304,10 @@ namespace Std
 {
     namespace BasicString
     {
-        [StructLayout(LayoutKind.Sequential, Size = 24)]
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
         public unsafe partial struct __Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C
         {
+            [FieldOffset(0)]
             internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C_S___rep_S2_ __r_;
 
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEC2B8un170006Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -352,12 +356,19 @@ namespace Std
 
         namespace Long
         {
-            [StructLayout(LayoutKind.Sequential, Size = 24)]
+            [StructLayout(LayoutKind.Explicit, Size = 24)]
             public unsafe partial struct __Internal
             {
+                [FieldOffset(0)]
                 internal __IntPtr __data_;
+
+                [FieldOffset(8)]
                 internal ulong __size_;
+
+                [FieldOffset(16)]
                 internal ulong __cap_;
+
+                [FieldOffset(23)]
                 internal ulong __is_long_;
             }
 
@@ -385,9 +396,10 @@ namespace Std
 
         namespace Raw
         {
-            [StructLayout(LayoutKind.Sequential, Size = 24)]
+            [StructLayout(LayoutKind.Explicit, Size = 24)]
             public unsafe partial struct __Internal
             {
+                [FieldOffset(0)]
                 internal fixed ulong __words[3];
             }
         }
@@ -526,19 +538,29 @@ namespace Std
 {
     namespace Vector
     {
-        [StructLayout(LayoutKind.Sequential, Size = 24)]
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
         public unsafe partial struct __Internalc__N_std_N___1_S_vector____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S0_
         {
+            [FieldOffset(0)]
             internal __IntPtr __begin_;
+
+            [FieldOffset(8)]
             internal __IntPtr __end_;
+
+            [FieldOffset(16)]
             internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair_____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C___N_std_N___1_S_allocator__S1_ __end_cap_;
         }
 
-        [StructLayout(LayoutKind.Sequential, Size = 24)]
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
         public unsafe partial struct __Internalc__N_std_N___1_S_vector__i___N_std_N___1_S_allocator__i
         {
+            [FieldOffset(0)]
             internal __IntPtr __begin_;
+
+            [FieldOffset(8)]
             internal __IntPtr __end_;
+
+            [FieldOffset(16)]
             internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair___i___N_std_N___1_S_allocator__i __end_cap_;
         }
     }
@@ -548,9 +570,10 @@ namespace Std
 {
     namespace TreeEndNode
     {
-        [StructLayout(LayoutKind.Sequential, Size = 8)]
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
         public unsafe partial struct __Internal_Ptr
         {
+            [FieldOffset(0)]
             internal __IntPtr __left_;
         }
     }
