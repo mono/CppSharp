@@ -537,6 +537,9 @@ namespace CppSharp
                 ~LayoutBase();
                 unsigned offset;
                 Class *_class;
+#ifdef __aarch64__
+                unsigned padding;
+#endif
             };
 
             enum class RecordArgABI

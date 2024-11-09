@@ -45,6 +45,9 @@ public:
 
     TypeKind kind;
     bool isDependent;
+#ifdef __aarch64__
+    unsigned padding;
+#endif
 };
 
 struct CS_API TypeQualifiers
