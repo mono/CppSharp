@@ -410,8 +410,12 @@ namespace CppSharp.Passes
                 char? next = i < decl.Name.Length - 1 ? decl.Name[i + 1] : null;
 
                 if (c == '_'
-                    && next != null && i - 1 != startIndex
+                    && next != null
+                    // Prevent two capitals in a row caused by later uppercasing of first char.
+                    && (i - 1 != startIndex || pattern == RenameCasePattern.LowerCamelCase)
+                    // Ignore multiple underscores in a row.
                     && prev != '_' && next != '_'
+                    // Don't join digits.
                     && (IsLetter(prev) || IsLetter(next))
                     && !justHadSeparator)
                 {
@@ -423,7 +427,7 @@ namespace CppSharp.Passes
                 // CamelCase separator.
                 justHadSeparator = IsLower(prev) && IsUpper(c);
 
-                sb.Append(!IsUpper(prev) ? c : char.ToLowerInvariant(c));
+                sb.Append(IsUpper(prev) ? char.ToLowerInvariant(c) : c);
 
                 // Nullable helper functions.
                 bool IsLetter(char? ch) => IsUpper(ch) || IsLower(ch);

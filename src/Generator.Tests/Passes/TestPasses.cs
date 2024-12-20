@@ -121,7 +121,7 @@ namespace CppSharp.Generator.Tests.Passes
             Assert.That(@enum.Name, Is.EqualTo("ScreamingEnum"));
             Assert.That(enumItem.Name, Is.EqualTo("SnakeValue"));
 
-            AssertConversion("test_123", "Test123");
+            AssertConversion("test_123_123", "Test123_123");
             AssertConversion("SCREAMING", "Screaming");
             AssertConversion("Not_Screaming", "NotScreaming");
             AssertConversion("Still_Not___Screaming", "StillNot___Screaming");
@@ -131,11 +131,14 @@ namespace CppSharp.Generator.Tests.Passes
             AssertConversion("_d_", "_d_");
             AssertConversion("MyCool2d_string", "MyCool2dString");
             AssertConversion("MyCool2_d_String", "MyCool2D_String");
+            AssertConversion("MyCoolD_d_String", "MyCoolD_dString");
             AssertConversion("MyC_de_cool", "MyC_deCool");
             AssertConversion("m_d_d_d", "M_dD_d");
+            AssertConversion("m_d_d_d", "mD_dD", RenameCasePattern.LowerCamelCase);
             AssertConversion("__m_d_d_d", "__mD_dD");
             AssertConversion("mProperty", "MProperty");
             AssertConversion("mProperty", "mProperty", RenameCasePattern.LowerCamelCase);
+            AssertConversion("m_property", "mProperty", RenameCasePattern.LowerCamelCase);
 
             void AssertConversion(string input, string output, RenameCasePattern pattern = RenameCasePattern.UpperCamelCase)
                 => Assert.That(CaseRenamePass.ConvertCaseString(new Class { Name = input }, pattern),
