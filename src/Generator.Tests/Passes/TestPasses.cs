@@ -126,6 +126,7 @@ namespace CppSharp.Generator.Tests.Passes
             AssertConversion("Not_Screaming", "NotScreaming");
             AssertConversion("Still_Not___Screaming", "StillNot___Screaming");
             AssertConversion("Still_Not___screaming", "StillNot___screaming");
+            AssertConversion("still_not___screaming", "StillNot___screaming");
             AssertConversion("_D_", "_D_");
             AssertConversion("_d_", "_d_");
             AssertConversion("MyCool2d_string", "MyCool2dString");
