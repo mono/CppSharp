@@ -24,6 +24,10 @@ struct TestRename
 {
   int lowerCaseMethod();
   int lowerCaseField;
+  enum SCREAMING_ENUM
+  {
+    snake_value
+  };
 };
 
 /// <summary>A simple test.</summary>

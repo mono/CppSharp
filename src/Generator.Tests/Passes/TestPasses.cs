@@ -110,12 +110,35 @@ namespace CppSharp.Generator.Tests.Passes
 
             var method = c.Method("lowerCaseMethod");
             var property = c.Properties.Find(p => p.Name == "lowerCaseField");
+            var @enum = c.FindEnum("SCREAMING_ENUM");
+            var enumItem = @enum.Items.Find(i => i.Name == "snake_value");
 
             passBuilder.RenameDeclsUpperCase(RenameTargets.Any);
             passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
 
             Assert.That(method.Name, Is.EqualTo("LowerCaseMethod"));
             Assert.That(property.Name, Is.EqualTo("LowerCaseField"));
+            Assert.That(@enum.Name, Is.EqualTo("ScreamingEnum"));
+            Assert.That(enumItem.Name, Is.EqualTo("SnakeValue"));
+
+            AssertConversion("test_123", "Test123");
+            AssertConversion("SCREAMING", "Screaming");
+            AssertConversion("Not_Screaming", "NotScreaming");
+            AssertConversion("Still_Not___Screaming", "StillNot___Screaming");
+            AssertConversion("Still_Not___screaming", "StillNot___screaming");
+            AssertConversion("_D_", "_D_");
+            AssertConversion("_d_", "_d_");
+            AssertConversion("MyCool2d_string", "MyCool2dString");
+            AssertConversion("MyCool2_d_String", "MyCool2D_String");
+            AssertConversion("MyC_de_cool", "MyC_deCool");
+            AssertConversion("m_d_d_d", "M_dD_d");
+            AssertConversion("__m_d_d_d", "__mD_dD");
+            AssertConversion("mProperty", "MProperty");
+            AssertConversion("mProperty", "mProperty", RenameCasePattern.LowerCamelCase);
+
+            void AssertConversion(string input, string output, RenameCasePattern pattern = RenameCasePattern.UpperCamelCase)
+                => Assert.That(CaseRenamePass.ConvertCaseString(new Class { Name = input }, pattern),
+                    Is.EqualTo(output));
 
             Type.TypePrinterDelegate -= TypePrinterDelegate;
         }

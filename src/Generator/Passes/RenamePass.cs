@@ -400,12 +400,36 @@ namespace CppSharp.Passes
                 property.GetMethod.SynthKind == FunctionSynthKind.InterfaceInstance)
                 return decl.Name;
 
-            var sb = new StringBuilder(decl.Name);
-            // check if it's been renamed to avoid a keyword
-            if (sb[0] == '@' || sb[0] == '$')
-                sb.Remove(0, 1);
+            var sb = new StringBuilder(decl.Name.Length);
+            var startIndex = decl.Name[0] is '@' or '$' ? 1 : 0;
+            var justHadSeparator = true;
+            for (var i = startIndex; i < decl.Name.Length; i++)
+            {
+                var c = decl.Name[i];
+                char? prev = i > 0 ? decl.Name[i - 1] : null;
+                char? next = i < decl.Name.Length - 1 ? decl.Name[i + 1] : null;
 
-            RemoveUnderscores(sb);
+                if (c == '_'
+                    && next != null && i - 1 != startIndex
+                    && prev != '_' && next != '_'
+                    && (IsLetter(prev) || IsLetter(next))
+                    && !justHadSeparator)
+                {
+                    sb.Append(char.ToUpperInvariant(next.Value));
+                    i++;
+                    justHadSeparator = true;
+                    continue;
+                }
+                // CamelCase separator.
+                justHadSeparator = IsLower(prev) && IsUpper(c);
+
+                sb.Append(!IsUpper(prev) ? c : char.ToLowerInvariant(c));
+
+                // Nullable helper functions.
+                bool IsLetter(char? ch) => IsUpper(ch) || IsLower(ch);
+                bool IsUpper(char? ch) => ch is >= 'A' and <= 'Z';
+                bool IsLower(char? ch) => ch is >= 'a' and <= 'z';
+            }
 
             var @class = decl as Class;
             switch (pattern)
@@ -425,24 +449,6 @@ namespace CppSharp.Passes
             }
 
             return sb.ToString();
-        }
-
-        private static void RemoveUnderscores(StringBuilder sb)
-        {
-            for (int i = sb.Length - 1; i >= 0; i--)
-            {
-                if (sb[i] != '_' ||
-                    // lower case intentional if the first character is already upper case
-                    (i + 1 < sb.Length && char.IsLower(sb[i + 1]) && char.IsUpper(sb[0])) ||
-                    // don't end up with more capitals or digits in a row than before
-                    (i > 0 && (char.IsUpper(sb[i - 1]) ||
-                     (i < sb.Length - 1 && char.IsDigit(sb[i + 1]) && char.IsDigit(sb[i - 1])))))
-                    continue;
-
-                if (i < sb.Length - 1)
-                    sb[i + 1] = char.ToUpperInvariant(sb[i + 1]);
-                sb.Remove(i, 1);
-            }
         }
     }
 
