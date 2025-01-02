@@ -13,6 +13,9 @@
 #include "ELFDumper.h"
 #include "APValuePrinter.h"
 
+#include <iostream>
+#include <stdlib.h>
+
 #include <llvm/TargetParser/Host.h>
 #include <llvm/Support/Path.h>
 #include <llvm/Support/raw_ostream.h>
@@ -62,6 +65,60 @@
 #include <dlfcn.h>
 
 #define HAVE_DLFCN
+#endif
+
+// Internals of assertm with or without abort.
+#define _assertm(condition, message, call) \
+    do{                                    \
+         if (!(condition)) {               \
+             std::cerr << "Assert at "     \
+                       << __FILE__         \
+                       << ":"              \
+                       << __LINE__         \
+                       << " in "           \
+                       << __FUNCTION__     \
+                       << "failed. "       \
+                       << message;         \
+             call;                         \
+         }                                 \
+   } while (0)
+
+// Internals of assertml with or without abort.
+#define _assertml(condition, message, sm, loc, call)      \
+    do{                                                   \
+         if (!(condition)) {                              \
+             const clang::SourceManager& _sm = sm;        \
+             clang::SourceLocation _loc = loc;            \
+             std::cerr << "Assert at "                    \
+                       << __FILE__                        \
+                       << ":"                             \
+                       << __LINE__                        \
+                       << " in "                          \
+                       << __FUNCTION__                    \
+                       << "failed. "                      \
+                       << message                         \
+                       << " Filename "                    \
+                       << _sm.getFilename(_loc).str()     \
+                       << ":"                             \
+                       << _sm.getSpellingLineNumber(_loc) \
+                       << "\n";                           \
+            call;                                         \
+         }                                                \
+    }while(0)
+
+// Macros which output messages to console if parsing encounters oddity.
+// If _DEBUG is defined but DEBUG_NO_ABORT is not macros abort.
+//
+// Macro assertm outputs a message if condition is false.
+// Macro assertml outputs a message and parsing file and line on given source manager and source line.
+//
+// assertml adds newline ending.
+#if defined(_DEBUG) && !defined(DEBUG_NO_ABORT)
+#define assertm(condition, message) _assertm(condition, message, abort())
+#define assertml(condition, message, sm, source) _assertml(condition, message, sm, source, abort())
+#else
+#define assertm(condition, message) _assertm(condition, message, )
+#define assertml(condition, message, sm, source) _assertml(condition, message, sm, source, )
 #endif
 
 using namespace CppSharp::CppParser;
@@ -152,8 +209,8 @@ void Parser::ReadClassLayout(Class* Class, const clang::RecordDecl* RD,
         // Collect nvbases.
         SmallVector<const CXXRecordDecl *, 4> Bases;
         for (const CXXBaseSpecifier &Base : CXXRD->bases()) {
-            assert(!Base.getType()->isDependentType() &&
-                "Cannot layout class with dependent bases.");
+          assertm(!Base.getType()->isDependentType(),"Cannot layout class with dependent bases.\n");
+            
             if (!Base.isVirtual())
                 Bases.push_back(Base.getType()->getAsCXXRecordDecl());
         }
@@ -201,7 +258,8 @@ void Parser::ReadClassLayout(Class* Class, const clang::RecordDecl* RD,
             Layout.getVBaseOffsetsMap();
 
         for (const CXXBaseSpecifier &Base : CXXRD->vbases()) {
-            assert(Base.isVirtual() && "Found non-virtual class!");
+            assertm(Base.isVirtual(), "Found non-virtual class!\n");
+            
             const CXXRecordDecl *VBase = Base.getType()->getAsCXXRecordDecl();
 
             CharUnits VBaseOffset = Offset + Layout.getVBaseClassOffset(VBase);
@@ -302,7 +360,7 @@ void Parser::Setup(bool Compile)
         TI = TargetInfo::CreateTargetInfo(c->getDiagnostics(), TO);
     }
 
-    assert(TI && "Expected valid target info");
+    assertm(TI, "Expected valid target info!\n");
 
     c->setTarget(TI);
 
@@ -471,7 +529,7 @@ static std::string GetTagDeclName(const clang::TagDecl* D)
 
     if (auto Typedef = D->getTypedefNameForAnonDecl())
     {
-        assert(Typedef->getIdentifier() && "Typedef without identifier?");
+        assertm(Typedef->getIdentifier(), "Typedef without identifier?\n");
         return GetDeclName(Typedef);
     }
 
@@ -489,7 +547,7 @@ static std::string GetDeclUSR(const clang::Decl* D)
 
 static clang::Decl* GetPreviousDeclInContext(const clang::Decl* D)
 {
-    assert(!D->getLexicalDeclContext()->decls_empty());
+    assertm(!D->getLexicalDeclContext()->decls_empty(), "No previous declaration.\n");
 
     clang::Decl* prevDecl = nullptr;
     for(auto it =  D->getDeclContext()->decls_begin();
@@ -527,7 +585,7 @@ static clang::SourceLocation GetDeclStartLocation(clang::CompilerInstance* C,
     auto lineNo = SM.getExpansionLineNumber(startLoc);
     auto lineBeginLoc = SM.translateLineCol(SM.getFileID(startLoc), lineNo, 1);
     auto lineBeginOffset = SM.getFileOffset(lineBeginLoc);
-    assert(lineBeginOffset <= startOffset);
+    assertm(lineBeginOffset <= startOffset, "Line starts before the file!\n");
 
     if (D->getLexicalDeclContext()->decls_empty())
         return lineBeginLoc;
@@ -702,7 +760,7 @@ void Parser::WalkVTable(const clang::CXXRecordDecl* RD, Class* C)
 {
     using namespace clang;
 
-    assert(RD->isDynamicClass() && "Only dynamic classes have virtual tables");
+    assertm(RD->isDynamicClass(), "Only dynamic classes have virtual tables!\n");
 
     if (!C->layout)
         C->layout = new ClassLayout();
@@ -768,7 +826,7 @@ Class* Parser::GetRecord(const clang::RecordDecl* Record, bool& Process)
     Process = false;
 
     auto NS = GetNamespace(Record);
-    assert(NS && "Expected a valid namespace");
+    assertm(NS, "Expected a valid namespace!\n");
 
     bool isCompleteDefinition = Record->isCompleteDefinition();
 
@@ -886,12 +944,12 @@ static clang::CXXRecordDecl* GetCXXRecordDeclFromTemplateName(const clang::Templ
     case clang::TemplateName::QualifiedTemplate:
         return GetCXXRecordDeclFromTemplateName(Name.getAsQualifiedTemplateName()->getUnderlyingTemplate());
     default:
-        assert(0 && "Unknown template name kind");
+        assertm(0, "Unknown template name kind?\n");
         return nullptr;
     }
 }
 
-static clang::CXXRecordDecl* GetCXXRecordDeclFromBaseType(const clang::QualType& Ty)
+static clang::CXXRecordDecl* GetCXXRecordDeclFromBaseType(const clang::ASTContext& context, const clang::CXXBaseSpecifier& base, const clang::QualType& Ty)
 {
     using namespace clang;
 
@@ -902,7 +960,8 @@ static clang::CXXRecordDecl* GetCXXRecordDeclFromBaseType(const clang::QualType&
     else if (auto Injected = Ty->getAs<clang::InjectedClassNameType>())
         return Injected->getDecl();
 
-    assert(0 && "Could not get base CXX record from type");
+    assertml(0, "Could not get base CXX record from type. Unhandled type: ", context.getSourceManager(), base.getBeginLoc());
+
     return nullptr;
 }
 
@@ -918,7 +977,7 @@ bool Parser::HasLayout(const clang::RecordDecl* Record)
     if (auto CXXRecord = llvm::dyn_cast<clang::CXXRecordDecl>(Record))
         for (const clang::CXXBaseSpecifier& Base : CXXRecord->bases())
         {
-            auto CXXBase = GetCXXRecordDeclFromBaseType(Base.getType());
+            auto CXXBase = GetCXXRecordDeclFromBaseType(c->getASTContext(), Base, Base.getType());
             if (!CXXBase || !HasLayout(CXXBase))
                 return false;
         }
@@ -1149,7 +1208,7 @@ void Parser::WalkRecordCXX(const clang::CXXRecordDecl* Record, Class* RC)
     {
         Layout = &c->getASTContext().getASTRecordLayout(Record);
 
-        assert (RC->layout && "Expected a valid AST layout");
+        assertm(RC->layout, "Expected a valid AST layout!\n");
         RC->layout->hasOwnVFPtr = Layout->hasOwnVFPtr();
         RC->layout->VBPtrOffset = Layout->getVBPtrOffset().getQuantity();
     }
@@ -1164,7 +1223,7 @@ void Parser::WalkRecordCXX(const clang::CXXRecordDecl* Record, Class* RC)
         auto BSTL = BS.getTypeSourceInfo()->getTypeLoc();
         Base->type = WalkType(BS.getType(), &BSTL);
 
-        auto BaseDecl = GetCXXRecordDeclFromBaseType(BS.getType());
+        auto BaseDecl = GetCXXRecordDeclFromBaseType(c->getASTContext(), BS, BS.getType());
         if (BaseDecl && Layout)
         {
             auto Offset = BS.isVirtual() ? Layout->getVBaseClassOffset(BaseDecl)
@@ -1256,7 +1315,7 @@ Parser::WalkClassTemplateSpecialization(const clang::ClassTemplateSpecialization
     HandleDeclaration(CTS, TS);
 
     auto NS = GetNamespace(CTS);
-    assert(NS && "Expected a valid namespace");
+    assertm(NS, "Expected a valid namespace!\n");
     TS->_namespace = NS;
     TS->name = CTS->getName().str();
     TS->templatedDecl = CT;
@@ -1311,7 +1370,7 @@ Parser::WalkClassTemplatePartialSpecialization(const clang::ClassTemplatePartial
     HandleDeclaration(CTS, TS);
 
     auto NS = GetNamespace(CTS);
-    assert(NS && "Expected a valid namespace");
+    assertm(NS, "Expected a valid namespace!\n");
     TS->_namespace = NS;
     TS->name = CTS->getName().str();
     TS->templatedDecl = CT;
@@ -1367,7 +1426,7 @@ std::vector<Declaration*> Parser::WalkTemplateParameterList(const clang::Templat
 ClassTemplate* Parser::WalkClassTemplate(const clang::ClassTemplateDecl* TD)
 {
     auto NS = GetNamespace(TD);
-    assert(NS && "Expected a valid namespace");
+    assertm(NS, "Expected a valid namespace!\n");
 
     auto USR = GetDeclUSR(TD);
     auto CT = NS->FindTemplate<ClassTemplate>(USR);
@@ -1596,7 +1655,7 @@ TypeAliasTemplate* Parser::WalkTypeAliasTemplate(
     using namespace clang;
 
     auto NS = GetNamespace(TD);
-    assert(NS && "Expected a valid namespace");
+    assertm(NS, "Expected a valid namespace!\n");
 
     auto USR = GetDeclUSR(TD);
     auto TA = NS->FindTemplate<TypeAliasTemplate>(USR);
@@ -1626,7 +1685,7 @@ FunctionTemplate* Parser::WalkFunctionTemplate(const clang::FunctionTemplateDecl
     using namespace clang;
 
     auto NS = GetNamespace(TD);
-    assert(NS && "Expected a valid namespace");
+    assertm(NS, "Expected a valid namespace!\n");
 
     auto USR = GetDeclUSR(TD);
     auto FT = NS->FindTemplate<FunctionTemplate>(USR);
@@ -1708,7 +1767,7 @@ Parser::WalkFunctionTemplateSpec(clang::FunctionTemplateSpecializationInfo* FTSI
 VarTemplate* Parser::WalkVarTemplate(const clang::VarTemplateDecl* TD)
 {
     auto NS = GetNamespace(TD);
-    assert(NS && "Expected a valid namespace");
+    assertm(NS, "Expected a valid namespace!\n");
 
     auto USR = GetDeclUSR(TD);
     auto VT = NS->FindTemplate<VarTemplate>(USR);
@@ -1744,7 +1803,7 @@ Parser::WalkVarTemplateSpecialization(const clang::VarTemplateSpecializationDecl
     HandleDeclaration(VTS, TS);
 
     auto NS = GetNamespace(VTS);
-    assert(NS && "Expected a valid namespace");
+    assertm(NS, "Expected a valid namespace!\n");
     TS->_namespace = NS;
     TS->name = VTS->getName().str();
     TS->templatedDecl = VT;
@@ -1784,7 +1843,7 @@ Parser::WalkVarTemplatePartialSpecialization(const clang::VarTemplatePartialSpec
     HandleDeclaration(VTS, TS);
 
     auto NS = GetNamespace(VTS);
-    assert(NS && "Expected a valid namespace");
+    assertm(NS, "Expected a valid namespace!\n");
     TS->_namespace = NS;
     TS->name = VTS->getName().str();
     TS->templatedDecl = VT;
@@ -2008,7 +2067,7 @@ TranslationUnit* Parser::GetTranslationUnit(clang::SourceLocation Loc,
         break;
     default:
         File = SM.getFilename(Loc);
-        assert(!File.empty() && "Expected to find a valid file");
+        assertm(!File.empty(), "Expected to find a valid file!\n");
         break;
     }
 
@@ -2018,7 +2077,7 @@ TranslationUnit* Parser::GetTranslationUnit(clang::SourceLocation Loc,
     auto Unit = opts->ASTContext->FindOrCreateModule(File.str());
 
     Unit->originalPtr = (void*) Unit;
-    assert(Unit->originalPtr != nullptr);
+    assertm(Unit->originalPtr != nullptr, "Module not found?\n");
 
     if (LocKind != SourceLocationKind::Invalid)
         Unit->isSystemHeader = SM.isInSystemHeader(Loc);
@@ -2059,7 +2118,7 @@ DeclarationContext* Parser::GetNamespace(const clang::Decl* D,
     for(; Context != nullptr; Context = Context->getParent())
         Contexts.push_back(Context);
 
-    assert(Contexts.back()->isTranslationUnit());
+    assertm(Contexts.back()->isTranslationUnit(), "Last element does not have translation unit!\n");
     Contexts.pop_back();
 
     DeclarationContext* DC = Unit;
@@ -2115,7 +2174,7 @@ DeclarationContext* Parser::GetNamespace(const clang::Decl *D)
 
 static PrimitiveType WalkBuiltinType(const clang::BuiltinType* Builtin)
 {
-    assert(Builtin && "Expected a builtin type");
+    assertm(Builtin, "Expected a builtin type!\n");
 
     switch(Builtin->getKind())
     {
@@ -2192,7 +2251,7 @@ clang::TypeLoc ResolveTypeLoc(clang::TypeLoc TL, clang::TypeLoc::TypeLocClass Cl
         TL = PTL.getNextTypeLoc();
     }
 
-    assert(TL.getTypeLocClass() == Class);
+    assertm(TL.getTypeLocClass() == Class, "No class found!\n");
     return TL;
 }
 
@@ -2320,19 +2379,19 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
     if (DesugarType)
     {
         clang::QualType Desugared = QualType.getDesugaredType(AST);
-        assert(!Desugared.isNull() && "Expected a valid desugared type");
+        assertm(!Desugared.isNull(), "Expected a valid desugared type!\n");
         Type = Desugared.getTypePtr();
     }
 
     CppSharp::CppParser::AST::Type* Ty = nullptr;
 
-    assert(Type && "Expected a valid type");
+    assertm(Type, "Expected a valid type!\n");
     switch(Type->getTypeClass())
     {
     case clang::Type::Atomic:
     {
         auto Atomic = Type->getAs<clang::AtomicType>();
-        assert(Atomic && "Expected an atomic type");
+        assertm(Atomic, "Expected an atomic type!\n");
 
         TypeLoc Next;
         if (LocValid) Next = TL->getNextTypeLoc();
@@ -2343,7 +2402,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
     case clang::Type::Attributed:
     {
         auto Attributed = Type->getAs<clang::AttributedType>();
-        assert(Attributed && "Expected an attributed type");
+        assertm(Attributed, "Expected an attributed type!\n");
 
         TypeLoc Next;
         if (LocValid) Next = TL->getNextTypeLoc();
@@ -2362,7 +2421,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
     case clang::Type::Builtin:
     {
         auto Builtin = Type->getAs<clang::BuiltinType>();
-        assert(Builtin && "Expected a builtin type");
+        assertm(Builtin, "Expected a builtin type!\n");
     
         auto BT = new BuiltinType();
         BT->type = WalkBuiltinType(Builtin);
@@ -2658,7 +2717,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
                 TL = &ITL;
             }
 
-            assert(TL->getTypeLocClass() == TypeLoc::TemplateSpecialization);
+            assertm(TL->getTypeLocClass() == TypeLoc::TemplateSpecialization, "Only Template specialization accepted!\n");
         }
 
         TemplateSpecializationTypeLoc TSpecTL;
@@ -2699,8 +2758,9 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
                 ITL = ETL.getNextTypeLoc();
                 TL = &ITL;
             }
-
-            assert(TL->getTypeLocClass() == TypeLoc::DependentTemplateSpecialization);
+            assertml(TL->getTypeLocClass() == TypeLoc::DependentTemplateSpecialization,
+                     "Dependent template only accepted!",
+                     c->getSourceManager(), TL->getBeginLoc());
         }
 
         DependentTemplateSpecializationTypeLoc TSpecTL;
@@ -2749,7 +2809,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
                 TL = &Next;
             }
 
-            assert(TL->getTypeLocClass() == TypeLoc::TemplateTypeParm);
+            assertm(TL->getTypeLocClass() == TypeLoc::TemplateTypeParm, "Token should be template type parameter!\n");
             auto TTTL = TL->getAs<TemplateTypeParmTypeLoc>();
 
             TPT->parameter = WalkTypeTemplateParameter(TTTL.getDecl());
@@ -2941,7 +3001,7 @@ Enumeration* Parser::WalkEnum(const clang::EnumDecl* ED)
     using namespace clang;
 
     auto NS = GetNamespace(ED);
-    assert(NS && "Expected a valid namespace");
+    assertm(NS, "Expected a valid namespace!\n");
 
     auto E = NS->FindEnum(ED->getCanonicalDecl());
     if (E && !E->isIncomplete)
@@ -3287,11 +3347,11 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F)
 {
     using namespace clang;
 
-    assert(FD->getBuiltinID() == 0);
+    assertm(FD->getBuiltinID() == 0, "Function has no buildin ID!\n");
     auto FT = FD->getType()->getAs<clang::FunctionType>();
 
     auto NS = GetNamespace(FD);
-    assert(NS && "Expected a valid namespace");
+    assertm(NS, "Expected a valid namespace!\n");
 
     F->name = FD->getNameAsString();
     F->_namespace = NS;
@@ -3356,7 +3416,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F)
         if (FTL)
         {
             auto FTInfo = FTL.castAs<FunctionTypeLoc>();
-            assert(!FTInfo.isNull());
+            assertm(!FTInfo.isNull(), "Token is not a function!\n");
 
             ParamStartLoc = FTInfo.getLParenLoc();
             ResultLoc = FTInfo.getReturnLoc().getBeginLoc();
@@ -3431,10 +3491,10 @@ Function* Parser::WalkFunction(const clang::FunctionDecl* FD)
 {
     using namespace clang;
 
-    assert (FD->getBuiltinID() == 0);
+    assertm(FD->getBuiltinID() == 0, "Function has no buildin ID!\n");
 
     auto NS = GetNamespace(FD);
-    assert(NS && "Expected a valid namespace");
+    assertm(NS, "Expected a valid namespace!\n");
 
     auto USR = GetDeclUSR(FD);
     auto F = NS->FindFunction(USR);
@@ -3520,7 +3580,7 @@ Variable* Parser::WalkVariable(const clang::VarDecl *VD)
     using namespace clang;
 
     auto NS = GetNamespace(VD);
-    assert(NS && "Expected a valid namespace");
+    assertm(NS, "Expected a valid namespace!\n");
 
     auto USR = GetDeclUSR(VD);
     if (auto Var = NS->FindVariable(USR))
@@ -3543,7 +3603,7 @@ Friend* Parser::WalkFriend(const clang::FriendDecl *FD)
     using namespace clang;
 
     auto NS = GetNamespace(FD);
-    assert(NS && "Expected a valid namespace");
+    assertm(NS, "Expected a valid namespace!\n");
 
     auto FriendDecl = FD->getFriendDecl();
 
@@ -3626,7 +3686,7 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
             break;
 
         const IdentifierInfo* II = MD->getName();
-        assert(II && "Expected valid identifier info");
+        assertm(II, "Expected valid identifier info!\n");
 
         MacroInfo* MI = P.getMacroInfo((IdentifierInfo*)II);
 
@@ -3901,9 +3961,6 @@ void Parser::HandlePreprocessedEntities(Declaration* Decl,
 
     if (isBefore) return;
 
-    assert(!SourceMgr.isBeforeInTranslationUnit(sourceRange.getEnd(),
-        sourceRange.getBegin()));
-
     using namespace clang;
     auto PPRecord = c->getPreprocessor().getPreprocessingRecord();
 
@@ -4103,7 +4160,7 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D)
     {
         auto ED = cast<EnumConstantDecl>(D);
         auto E = static_cast<Enumeration*>(GetNamespace(ED));
-        assert(E && "Expected a valid enumeration");
+        assertm(E, "Expected a valid enumeration!\n");
         Decl = E->FindItemByName(ED->getNameAsString());
         break;
     }
@@ -4372,7 +4429,7 @@ void Parser::HandleDiagnostics(ParserResult* res)
             PDiag.level = ParserDiagnosticLevel::Fatal;
             break;
         default:
-            assert(0);
+            assertm(0, "Unhandled diagnostics level!\n");
         }
 
         res->Diagnostics.push_back(PDiag);
@@ -4457,7 +4514,7 @@ void SemaConsumer::HandleTranslationUnit(clang::ASTContext& Ctx)
 
 ParserResult* Parser::Parse(const std::vector<std::string>& SourceFiles)
 {
-    assert(opts->ASTContext && "Expected a valid ASTContext");
+    assertm(opts->ASTContext, "Expected a valid ASTContext!\n");
 
     auto res = new ParserResult();
 
