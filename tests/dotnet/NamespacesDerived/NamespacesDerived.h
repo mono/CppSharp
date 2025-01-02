@@ -103,6 +103,10 @@ class CustomAllocator
 public:
     typedef T value_type;
 
+    // Suppress some windows Debug errors with constructors.
+    CustomAllocator() noexcept {};
+    template <class U> CustomAllocator(const CustomAllocator<U>&) noexcept {};
+
     T* allocate(size_t cnt, const void* = 0) { return 0; }
     void deallocate(T* p, size_t cnt) {}
     bool operator==(const CustomAllocator&) { return true; }
