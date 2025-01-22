@@ -1142,6 +1142,9 @@ public unsafe class CSharpTests
     }
 
     [Test]
+#if !RELEASE
+    [Ignore("Crashes in debug builds")]
+#endif
     public void TestStackOverflowOnVirtualCall()
     {
         using (var hasMissingObjectOnVirtualCall = new HasMissingObjectOnVirtualCall())
