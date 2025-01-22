@@ -107,7 +107,7 @@ function SetupNativeProject()
     defines { "DEBUG" }
   
   filter { "configurations:DebugOpt" }
-    defines { "DEBUG", "_ITERATOR_DEBUG_LEVEL=0" }
+    defines { "DEBUG" }
     optimize "Debug"
     runtime "Release"
 
@@ -116,6 +116,9 @@ function SetupNativeProject()
     optimize "Full"
 
   -- Compiler-specific options
+
+  filter { "toolset:msc*", "configurations:DebugOpt" }
+    defines { "_ITERATOR_DEBUG_LEVEL=0" }
 
   filter { "toolset:msc*" }
     buildoptions { msvc_buildflags }
