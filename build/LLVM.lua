@@ -38,6 +38,18 @@ function SetupLLVMIncludes()
   local c = filter()
 
   if LLVMDirPerConfiguration then
+    filter { "configurations:DebugOpt" }
+      includedirs
+      {
+        path.join(LLVMRootDirRelease, "include"),
+        path.join(LLVMRootDirRelease, "llvm/include"),
+        path.join(LLVMRootDirRelease, "lld/include"),
+        path.join(LLVMRootDirRelease, "clang/include"),
+        path.join(LLVMRootDirRelease, "clang/lib"),
+        path.join(LLVMRootDirRelease, "build/include"),
+        path.join(LLVMRootDirRelease, "build/clang/include"),
+      }
+
     filter { "configurations:Debug" }
       includedirs
       {
@@ -121,6 +133,9 @@ function SetupLLVMLibs()
   filter {}
 
   if LLVMDirPerConfiguration then
+    filter { "configurations:DebugOpt" }
+      libdirs { path.join(LLVMRootDirRelease, "build/lib") }
+
     filter { "configurations:Debug" }
       libdirs { path.join(LLVMRootDirDebug, "build/lib") }
 
@@ -129,6 +144,9 @@ function SetupLLVMLibs()
   else
     local LLVMBuildDir = get_llvm_build_dir()
     libdirs { path.join(LLVMBuildDir, "lib") }
+      
+    filter { "configurations:DebugOpt", "toolset:msc*" }
+      libdirs { path.join(LLVMBuildDir, "RelWithDebInfo/lib") }
 
     filter { "configurations:Debug", "toolset:msc*" }
       libdirs { path.join(LLVMBuildDir, "Debug/lib") }

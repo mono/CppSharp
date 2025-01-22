@@ -4,6 +4,7 @@
   <PropertyGroup>
     <RootDir>$(MSBuildThisFileDirectory)</RootDir>
     <Platforms>x86;x64</Platforms>
+    <Configurations>Debug;DebugOpt;Release</Configurations>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>    
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

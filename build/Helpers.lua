@@ -36,6 +36,7 @@ newoption {
   allowed = {
     { "Release",  "Release" },
     { "Debug",  "Debug" },
+    { "DebugOpt",  "DebugOpt" },
  }
 }
 
@@ -104,10 +105,15 @@ function SetupNativeProject()
 
   filter { "configurations:Debug" }
     defines { "DEBUG" }
+  
+  filter { "configurations:DebugOpt" }
+    defines { "DEBUG", "_ITERATOR_DEBUG_LEVEL=0" }
+    optimize "Debug"
+    runtime "Release"
 
   filter { "configurations:Release" }
     defines { "NDEBUG" }
-    optimize "On"
+    optimize "Full"
 
   -- Compiler-specific options
 
