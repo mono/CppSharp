@@ -13,6 +13,14 @@ for arg in "$@"; do
         jsinterp="${arg#*=}"
         shift
         ;;
+        -configuration)
+        configuration=$2
+        shift
+        ;;
+        -dotnet_configuration)
+        dotnet_configuration=$2
+        shift
+        ;;
     esac
 done
 
