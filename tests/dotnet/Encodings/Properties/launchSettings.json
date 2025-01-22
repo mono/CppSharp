@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Encodings.Gen": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

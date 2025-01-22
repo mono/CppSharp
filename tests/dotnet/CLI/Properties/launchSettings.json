@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CLI.Gen": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

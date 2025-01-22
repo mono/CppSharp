@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "NamespacesDerived.Gen": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

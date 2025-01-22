@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "StandardLib.Gen": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

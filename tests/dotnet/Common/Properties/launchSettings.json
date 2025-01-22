@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Common.Gen": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
