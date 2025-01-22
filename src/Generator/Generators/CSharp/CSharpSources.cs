@@ -172,6 +172,7 @@ namespace CppSharp.Generators.CSharp
             foreach (var @namespace in requiredNameSpaces.Union(Options.DependentNameSpaces).OrderBy(x => x))
                 WriteLine($"using {@namespace};");
 
+            WriteLine("using __NativeMemory = global::System.Runtime.InteropServices.NativeMemory;");
             WriteLine("using __CallingConvention = global::System.Runtime.InteropServices.CallingConvention;");
             WriteLine("using __IntPtr = global::System.IntPtr;");
 
@@ -2394,7 +2395,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             {
                 string name = prop.Field.OriginalName;
                 WriteLine($"if (__{name}_OwnsNativeMemory)");
-                WriteLineIndent($"Marshal.FreeHGlobal({ptr}->{name});");
+                WriteLineIndent($"__NativeMemory.AlignedFree((void*){ptr}->{name});");
             }
 
             if (@class.IsValueType)
@@ -2404,7 +2405,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             else
             {
                 WriteLine("if ({0})", Helpers.OwnsNativeInstanceIdentifier);
-                WriteLineIndent("Marshal.FreeHGlobal({0});", Helpers.InstanceIdentifier);
+                WriteLineIndent("__NativeMemory.AlignedFree((void*){0});", Helpers.InstanceIdentifier);
 
                 WriteLine("{0} = IntPtr.Zero;", Helpers.InstanceIdentifier);
             }
@@ -2606,14 +2607,14 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                     string defaultValue = string.Empty;
                     if (copyCtorMethod.Parameters.Count > 1)
                         defaultValue = $", {ExpressionPrinter.VisitParameter(copyCtorMethod.Parameters.Last())}";
-                    WriteLine($@"var ret = Marshal.AllocHGlobal(sizeof({@internal}));");
+                    WriteLine($@"var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof({@internal}), 16);");
                     WriteLine($@"{printed}.{GetFunctionNativeIdentifier(copyCtorMethod)}(ret, new {TypePrinter.IntPtrType}(&native){defaultValue});",
                         printed, GetFunctionNativeIdentifier(copyCtorMethod));
                     WriteLine("return ret.ToPointer();");
                 }
                 else
                 {
-                    WriteLine($"var ret = Marshal.AllocHGlobal(sizeof({@internal}));");
+                    WriteLine($"var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof({@internal}), 16);");
                     WriteLine($"*({@internal}*) ret = native;");
                     WriteLine("return ret.ToPointer();");
                 }
@@ -3041,7 +3042,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
 
             var @internal = TypePrinter.PrintNative(
                 @class.IsAbstractImpl ? @class.BaseClass : @class);
-            WriteLine($"{Helpers.InstanceIdentifier} = Marshal.AllocHGlobal(sizeof({@internal}));");
+            WriteLine($"{Helpers.InstanceIdentifier} = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof({@internal}), 16);");
             WriteLine($"{Helpers.OwnsNativeInstanceIdentifier} = true;");
 
             if (generateNativeToManaged)
@@ -3223,7 +3224,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
             if (method != null && !method.IsConstructor && method.OriginalFunction != null &&
                 ((Method)method.OriginalFunction).IsConstructor)
             {
-                WriteLine($@"Marshal.AllocHGlobal({((Class)method.OriginalNamespace).Layout.Size});");
+                WriteLine($@"(nint)__NativeMemory.AlignedAlloc((nuint){((Class)method.OriginalNamespace).Layout.Size}, 16);");
                 names.Insert(0, Helpers.ReturnIdentifier);
             }
             WriteLine("{0}({1});", functionName, string.Join(", ", names));

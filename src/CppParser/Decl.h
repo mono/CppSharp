@@ -84,9 +84,9 @@ namespace CppSharp
                 SourceLocation location;
                 int lineNumberStart;
                 int lineNumberEnd;
-                std::string name;
-                std::string USR;
-                std::string debugText;
+                STRING(Name);
+                STRING(USR);
+                STRING(DebugText);
                 bool isIncomplete;
                 bool isDependent;
                 bool isImplicit;
@@ -207,16 +207,16 @@ namespace CppSharp
             class CS_API StatementObsolete
             {
             public:
-                StatementObsolete(const std::string &str, StatementClassObsolete Class = StatementClassObsolete::Any, Declaration *decl = 0);
+                CS_IGNORE StatementObsolete(const std::string &str, StatementClassObsolete Class = StatementClassObsolete::Any, Declaration *decl = 0);
                 StatementClassObsolete _class;
                 Declaration *decl;
-                std::string string;
+                STRING(String);
             };
 
             class CS_API ExpressionObsolete : public StatementObsolete
             {
             public:
-                ExpressionObsolete(const std::string &str, StatementClassObsolete Class = StatementClassObsolete::Any, Declaration *decl = 0);
+                CS_IGNORE ExpressionObsolete(const std::string &str, StatementClassObsolete Class = StatementClassObsolete::Any, Declaration *decl = 0);
             };
 
             class Expr;
@@ -224,17 +224,17 @@ namespace CppSharp
             class CS_API BinaryOperatorObsolete : public ExpressionObsolete
             {
             public:
-                BinaryOperatorObsolete(const std::string &str, ExpressionObsolete *lhs, ExpressionObsolete *rhs, const std::string &opcodeStr);
+                CS_IGNORE BinaryOperatorObsolete(const std::string &str, ExpressionObsolete *lhs, ExpressionObsolete *rhs, const std::string &opcodeStr);
                 ~BinaryOperatorObsolete();
                 ExpressionObsolete *LHS;
                 ExpressionObsolete *RHS;
-                std::string opcodeStr;
+                STRING(OpcodeStr);
             };
 
             class CS_API CallExprObsolete : public ExpressionObsolete
             {
             public:
-                CallExprObsolete(const std::string &str, Declaration *decl);
+                CS_IGNORE CallExprObsolete(const std::string &str, Declaration *decl);
                 ~CallExprObsolete();
                 VECTOR(ExpressionObsolete *, Arguments)
             };
@@ -242,7 +242,7 @@ namespace CppSharp
             class CS_API CXXConstructExprObsolete : public ExpressionObsolete
             {
             public:
-                CXXConstructExprObsolete(const std::string &str, Declaration *decl = 0);
+                CS_IGNORE CXXConstructExprObsolete(const std::string &str, Declaration *decl = 0);
                 ~CXXConstructExprObsolete();
                 VECTOR(ExpressionObsolete *, Arguments)
             };
@@ -350,9 +350,9 @@ namespace CppSharp
                 bool isDefaulted;
                 FriendKind friendKind;
                 CXXOperatorKind operatorKind;
-                std::string mangled;
-                std::string signature;
-                std::string body;
+                STRING(Mangled);
+                STRING(Signature);
+                STRING(Body);
                 Stmt *bodyStmt;
                 CallingConvention callingConvention;
                 VECTOR(Parameter *, Parameters)
@@ -405,7 +405,7 @@ namespace CppSharp
                     DECLARE_DECL_KIND(Item, EnumerationItem)
                     Item(const Item &);
                     ~Item();
-                    std::string expression;
+                    STRING(Expression);
                     uint64_t value;
                 };
 
@@ -421,7 +421,7 @@ namespace CppSharp
                 BuiltinType *builtinType;
                 VECTOR(Item *, Items)
 
-                Item *FindItemByName(const std::string &Name);
+                CS_IGNORE Item *FindItemByName(const std::string &Name);
             };
 
             class CS_API Variable : public Declaration
@@ -430,7 +430,7 @@ namespace CppSharp
                 DECLARE_DECL_KIND(Variable, Variable)
                 ~Variable();
                 bool isConstExpr;
-                std::string mangled;
+                STRING(Mangled);
                 QualifiedType qualifiedType;
                 ExpressionObsolete *initializer;
             };
@@ -522,7 +522,7 @@ namespace CppSharp
                 LayoutField(const LayoutField &other);
                 ~LayoutField();
                 unsigned offset;
-                std::string name;
+                STRING(Name);
                 QualifiedType qualifiedType;
                 void *fieldPtr;
             };
@@ -537,6 +537,9 @@ namespace CppSharp
                 ~LayoutBase();
                 unsigned offset;
                 Class *_class;
+#ifdef __aarch64__
+                unsigned padding;
+#endif
             };
 
             enum class RecordArgABI
@@ -688,8 +691,8 @@ namespace CppSharp
                 ClassTemplate();
                 ~ClassTemplate();
                 VECTOR(ClassTemplateSpecialization *, Specializations)
-                ClassTemplateSpecialization *FindSpecialization(const std::string &usr);
-                ClassTemplatePartialSpecialization *FindPartialSpecialization(const std::string &usr);
+                CS_IGNORE ClassTemplateSpecialization *FindSpecialization(const std::string &usr);
+                CS_IGNORE ClassTemplatePartialSpecialization *FindPartialSpecialization(const std::string &usr);
             };
 
             enum class TemplateSpecializationKind
@@ -725,7 +728,7 @@ namespace CppSharp
                 FunctionTemplate();
                 ~FunctionTemplate();
                 VECTOR(FunctionTemplateSpecialization *, Specializations)
-                FunctionTemplateSpecialization *FindSpecialization(const std::string &usr);
+                CS_IGNORE FunctionTemplateSpecialization *FindSpecialization(const std::string &usr);
             };
 
             class CS_API FunctionTemplateSpecialization
@@ -748,8 +751,8 @@ namespace CppSharp
                 VarTemplate();
                 ~VarTemplate();
                 VECTOR(VarTemplateSpecialization *, Specializations)
-                VarTemplateSpecialization *FindSpecialization(const std::string &usr);
-                VarTemplatePartialSpecialization *FindPartialSpecialization(const std::string &usr);
+                CS_IGNORE VarTemplateSpecialization *FindSpecialization(const std::string &usr);
+                CS_IGNORE VarTemplatePartialSpecialization *FindPartialSpecialization(const std::string &usr);
             };
 
             class CS_API VarTemplateSpecialization : public Variable
@@ -808,8 +811,8 @@ namespace CppSharp
             public:
                 MacroDefinition();
                 ~MacroDefinition();
-                std::string name;
-                std::string expression;
+                STRING(Name);
+                STRING(Expression);
                 int lineNumberStart;
                 int lineNumberEnd;
             };
@@ -819,8 +822,8 @@ namespace CppSharp
             public:
                 MacroExpansion();
                 ~MacroExpansion();
-                std::string name;
-                std::string text;
+                STRING(Name);
+                STRING(Text);
                 MacroDefinition *definition;
             };
 
@@ -829,7 +832,7 @@ namespace CppSharp
             public:
                 TranslationUnit();
                 ~TranslationUnit();
-                std::string fileName;
+                STRING(FileName);
                 bool isSystemHeader;
                 VECTOR(MacroDefinition *, Macros)
             };

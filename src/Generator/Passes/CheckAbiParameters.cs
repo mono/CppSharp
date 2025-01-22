@@ -31,15 +31,19 @@ namespace CppSharp.Passes
             if (!VisitDeclaration(function))
                 return false;
 
+            function.ReturnType.Type.Desugar().TryGetDeclaration(out Class returnTypeDecl);
+
             var isReturnIndirect = function.IsReturnIndirect || (
                     Context.ParserOptions.IsMicrosoftAbi &&
                     function is Method m && m.IsNativeMethod() &&
                     !function.ReturnType.Type.Desugar().IsAddress() &&
-                    function.ReturnType.Type.Desugar().TryGetDeclaration(out Class returnTypeDecl) &&
                     returnTypeDecl.IsPOD &&
                     returnTypeDecl.Layout.Size <= 8);
 
-            if (isReturnIndirect)
+            var triple = Context.ParserOptions.TargetTriple;
+            var isArm64 = triple.Contains("arm64") || triple.Contains("aarch64");
+
+            if (isReturnIndirect && !isArm64)
             {
                 var indirectParam = new Parameter()
                 {
@@ -54,6 +58,13 @@ namespace CppSharp.Passes
                     PrimitiveType.Void));
             }
 
+            // .NET cannot deal with non-POD with size <= 16 types being passed by value.
+            // https://github.com/dotnet/runtime/issues/106471
+            if (isArm64 && NeedsArm64IndirectReturn(returnTypeDecl))
+            {
+                Diagnostics.Error($"Non-POD return type {returnTypeDecl.Name} with size <= 16 is not supported in ARM64 target.");
+            }
+
             var method = function as Method;
 
             if (function.HasThisReturn)
@@ -66,7 +77,7 @@ namespace CppSharp.Passes
 
             // Deleting destructors (default in v-table) accept an i32 bitfield as a
             // second parameter in MS ABI.
-            if (method != null && method.IsDestructor && method.IsVirtual && Context.ParserOptions.IsMicrosoftAbi)
+            if (method is { IsDestructor: true } && method.IsVirtual && Context.ParserOptions.IsMicrosoftAbi)
             {
                 method.Parameters.Add(new Parameter
                 {
@@ -77,12 +88,26 @@ namespace CppSharp.Passes
                 });
             }
 
-            foreach (var param in function.Parameters.Where(p => p.IsIndirect))
+            foreach (var param in function.Parameters)
             {
-                param.QualifiedType = new QualifiedType(new PointerType(param.QualifiedType));
+                param.QualifiedType.Type.Desugar().TryGetDeclaration(out Class paramTypeDecl);
+                if (isArm64 && NeedsArm64IndirectReturn(paramTypeDecl))
+                {
+                    Diagnostics.Error($"Non-POD parameter type {paramTypeDecl.Name} with size <= 16 is not supported in ARM64 target.");
+                }
+
+                if (param.IsIndirect)
+                    param.QualifiedType = new QualifiedType(new PointerType(param.QualifiedType));
             }
 
             return true;
+        }
+
+        public static bool NeedsArm64IndirectReturn(Class @class)
+        {
+            if (@class == null)
+                return false;
+            return (@class.HasNonTrivialCopyConstructor || @class.HasNonTrivialDestructor || @class.IsDynamic) && @class.Layout.Size <= 16;
         }
     }
 }

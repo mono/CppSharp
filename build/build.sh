@@ -18,10 +18,6 @@ oshost=""
 os=""
 test=
 
-if [[ $(uname -m) != *"64"* ]]; then
-  platform=x86
-fi
-
 build()
 {
   if [ $ci = true ]; then
@@ -180,6 +176,33 @@ detect_os()
   os=$oshost
 }
 
+detect_arch()
+{
+  if [ "$oshost" = "linux" ] || [ "$oshost" = "macosx" ]; then
+    arch=$(uname -m)
+    if [ "$arch" = "x86_64" ]; then
+      platform="x64"
+    elif [ "$arch" = "arm64" ] || [ "$arch" = "aarch64" ]; then
+      platform="arm64"
+    elif [ "$arch" = "i686" ] || [ "$arch" = "i386" ]; then
+      platform="x86"
+    else
+      echo "Unknown architecture: $arch"
+    fi
+  elif [ "$oshost" = "windows" ]; then
+    arch=$(echo $PROCESSOR_ARCHITECTURE)
+    if [ "$arch" = "AMD64" ]; then
+      platform="x64"
+    elif [ "$arch" = "ARM64" ]; then
+      platform="arm64"
+    elif [ "$arch" = "x86" ]; then
+      platform="x86"
+    else
+      echo "Unknown architecture: $arch"
+    fi
+  fi
+}
+
 find_msbuild()
 {
   if [ -x "$(command -v MSBuild.exe)" ]; then
@@ -191,6 +214,7 @@ find_msbuild()
 
 cmd=$(tr '[:upper:]' '[:lower:]' <<< $1)
 detect_os
+detect_arch
 download_premake
 
 while [[ $# > 0 ]]; do

@@ -23,16 +23,19 @@ CppParserOptions::CppParserOptions()
     , skipPrivateDeclarations(true)
     , skipLayoutInfo(false)
     , skipFunctionBodies(true)
-    , clangVersion(CLANG_VERSION_STRING)
 {
 }
 
 CppParserOptions::~CppParserOptions() {}
 
-std::string CppParserOptions::getClangVersion() { return clangVersion; }
+const char * CppParserOptions::getClangVersion()
+{
+    return CLANG_VERSION_STRING;
+}
 
 DEF_VECTOR_STRING(CppParserOptions, Arguments)
 DEF_VECTOR_STRING(CppParserOptions, CompilationOptions)
+DEF_STRING(CppParserOptions, LibraryFile)
 DEF_VECTOR_STRING(CppParserOptions, SourceFiles)
 DEF_VECTOR_STRING(CppParserOptions, IncludeDirs)
 DEF_VECTOR_STRING(CppParserOptions, SystemIncludeDirs)
@@ -40,6 +43,8 @@ DEF_VECTOR_STRING(CppParserOptions, Defines)
 DEF_VECTOR_STRING(CppParserOptions, Undefines)
 DEF_VECTOR_STRING(CppParserOptions, SupportedStdTypes)
 DEF_VECTOR_STRING(CppParserOptions, SupportedFunctionTemplates)
+DEF_STRING(CppParserOptions, TargetTriple)
+DEF_STRING(ParserTargetInfo, ABI)
 
 ParserResult::ParserResult()
     : targetInfo(0)
@@ -77,13 +82,16 @@ DEF_VECTOR_STRING(CppLinkerOptions, Libraries)
 ParserDiagnostic::ParserDiagnostic() {}
 
 ParserDiagnostic::ParserDiagnostic(const ParserDiagnostic& rhs)
-    : fileName(rhs.fileName)
-    , message(rhs.message)
+    : FileName(rhs.FileName)
+    , Message(rhs.Message)
     , level(rhs.level)
     , lineNumber(rhs.lineNumber)
     , columnNumber(rhs.columnNumber)
 {}
 
 ParserDiagnostic::~ParserDiagnostic() {}
+
+DEF_STRING(ParserDiagnostic, FileName)
+DEF_STRING(ParserDiagnostic, Message)
 
 } }

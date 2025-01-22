@@ -45,6 +45,9 @@ public:
 
     TypeKind kind;
     bool isDependent;
+#ifdef __aarch64__
+    unsigned padding;
+#endif
 };
 
 struct CS_API TypeQualifiers
@@ -259,7 +262,7 @@ public:
     DECLARE_TYPE_KIND(DependentName)
     ~DependentNameType();
     QualifiedType qualifier;
-    std::string identifier;
+    STRING(Identifier);
 };
 
 class CS_API PackExpansionType : public Type

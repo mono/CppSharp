@@ -228,6 +228,8 @@ DEF_VECTOR(AsmStmt, Expr*, inputs)
 
 DEF_VECTOR(AsmStmt, Expr*, outputs)
 
+DEF_STRING(GCCAsmStmt::AsmStringPiece, String)
+
 GCCAsmStmt::AsmStringPiece::AsmStringPiece()
 {
 }
@@ -237,6 +239,8 @@ GCCAsmStmt::GCCAsmStmt()
     , rParenLoc(SourceLocation())
 {
 }
+
+DEF_STRING(MSAsmStmt, AsmString)
 
 MSAsmStmt::MSAsmStmt()
     : AsmStmt(StmtClass::MSAsmStmt)

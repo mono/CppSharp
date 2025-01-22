@@ -131,6 +131,9 @@ ImaginaryLiteral::ImaginaryLiteral()
 {
 }
 
+DEF_STRING(StringLiteral, String)
+DEF_STRING(StringLiteral, Bytes)
+
 StringLiteral::StringLiteral()
     : Expr(StmtClass::StringLiteral)
     , byteLength(0)
@@ -313,6 +316,8 @@ CStyleCastExpr::CStyleCastExpr()
     , rParenLoc(SourceLocation())
 {
 }
+
+DEF_STRING(BinaryOperator, OpcodeStr)
 
 BinaryOperator::BinaryOperator()
     : Expr(StmtClass::BinaryOperator)
@@ -721,6 +726,8 @@ MSPropertySubscriptExpr::MSPropertySubscriptExpr()
     , idx(nullptr)
 {
 }
+
+DEF_STRING(CXXUuidofExpr, UuidStr)
 
 CXXUuidofExpr::CXXUuidofExpr()
     : Expr(StmtClass::CXXUuidofExpr)

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.Generators;
+using CppSharp.Generators.C;
 using CppSharp.Parser;
 using CppSharp.Passes;
 using CppAbi = CppSharp.Parser.AST.CppAbi;
@@ -120,6 +121,7 @@ namespace CppSharp
 
         public void SetupPasses(Driver driver)
         {
+            driver.AddTranslationUnitPass(new IgnoreStdFieldsPass());
         }
 
         public void Preprocess(Driver driver, ASTContext ctx)
@@ -166,24 +168,32 @@ namespace CppSharp
                 ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-pc-win32-msvc"));
                 Console.WriteLine();
             }
-
-            var osxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\osx");
-            if (Directory.Exists(osxHeadersPath) || Platform.IsMacOS)
+            else
             {
-                Console.WriteLine("Generating the C# parser bindings for OSX x86...");
-                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-apple-darwin12.4.0"));
-                Console.WriteLine();
-
-                Console.WriteLine("Generating the C# parser bindings for OSX x64...");
-                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-apple-darwin12.4.0"));
-                Console.WriteLine();
-
-                Console.WriteLine("Generating the C# parser bindings for OSX ARM64...");
-                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "arm64-apple-darwin12.4.0"));
-                Console.WriteLine();
+                Console.WriteLine("Skipping generation for Windows due to missing headers, only supported on Windows platform.");
             }
 
-            var linuxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\x86_64-linux-gnu");
+            var osxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers", "osx");
+            if (Directory.Exists(osxHeadersPath) || Platform.IsMacOS)
+            {
+                Console.WriteLine("Generating the C# parser bindings for macOS x86...");
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-apple-darwin"));
+                Console.WriteLine();
+
+                Console.WriteLine("Generating the C# parser bindings for macOS x64...");
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-apple-darwin"));
+                Console.WriteLine();
+
+                Console.WriteLine("Generating the C# parser bindings for macOS ARM64...");
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "arm64-apple-darwin"));
+                Console.WriteLine();
+            }
+            else
+            {
+                Console.WriteLine("Skipping generation for macOS due to missing headers.");
+            }
+
+            var linuxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers", "x86_64-linux-gnu");
             if (Directory.Exists(linuxHeadersPath) || Platform.IsLinux)
             {
                 Console.WriteLine("Generating the C# parser bindings for Linux...");
@@ -204,6 +214,46 @@ namespace CppSharp
                     isGnuCpp11Abi: true));
                 Console.WriteLine();
             }
+            else
+            {
+                Console.WriteLine("Skipping generation for Linux due to missing headers.");
+            }
+        }
+    }
+
+    public class IgnoreStdFieldsPass : TranslationUnitPass
+    {
+        public override bool VisitFieldDecl(Field field)
+        {
+            if (!field.IsGenerated)
+                return false;
+
+            if (!IsStdType(field.QualifiedType)) return false;
+
+            field.ExplicitlyIgnore();
+            return true;
+        }
+
+        public override bool VisitFunctionDecl(Function function)
+        {
+            if (function.GenerationKind == GenerationKind.None)
+                return false;
+
+            if (function.Parameters.Any(param => IsStdType(param.QualifiedType)))
+            {
+                function.ExplicitlyIgnore();
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool IsStdType(QualifiedType type)
+        {
+            var typePrinter = new CppTypePrinter(Context);
+            var typeName = type.Visit(typePrinter);
+
+            return typeName.Type.Contains("std::");
         }
     }
 }

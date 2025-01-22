@@ -8,6 +8,7 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
+using __NativeMemory = global::System.Runtime.InteropServices.NativeMemory;
 using __CallingConvention = global::System.Runtime.InteropServices.CallingConvention;
 using __IntPtr = global::System.IntPtr;
 
@@ -22,7 +23,7 @@ namespace Std
 {
     namespace Allocator
     {
-        [StructLayout(LayoutKind.Sequential, Size = 1)]
+        [StructLayout(LayoutKind.Explicit, Size = 1)]
         public unsafe partial struct __Internal
         {
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSaIcEC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -79,7 +80,7 @@ namespace Std
 
         private static void* __CopyValue(global::Std.Allocator.__Internal native)
         {
-            var ret = Marshal.AllocHGlobal(sizeof(global::Std.Allocator.__Internal));
+            var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::Std.Allocator.__Internal), 16);
             *(global::Std.Allocator.__Internal*) ret = native;
             return ret.ToPointer();
         }
@@ -103,7 +104,7 @@ namespace Std
             var ___Tp = typeof(_Tp);
             if (___Tp.IsAssignableFrom(typeof(sbyte)))
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::Std.Allocator.__Internal));
+                __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::Std.Allocator.__Internal), 16);
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
                 global::Std.Allocator.__Internal.ctorc__N_std_S_allocator__C(__Instance);
@@ -136,7 +137,7 @@ namespace Std
                 throw new ArgumentOutOfRangeException("_Tp", string.Join(", ", new[] { typeof(_Tp).FullName }), "global::Std.Allocator<_Tp> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte>.");
             }
             if (__ownsNativeInstance)
-                Marshal.FreeHGlobal(__Instance);
+                __NativeMemory.AlignedFree((void*)__Instance);
             __Instance = IntPtr.Zero;
         }
     }
@@ -146,28 +147,35 @@ namespace Std
 {
     namespace Vector
     {
-        [StructLayout(LayoutKind.Sequential, Size = 24)]
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
         public unsafe partial struct __Internal
         {
+            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
     }
 
     namespace VectorBase
     {
-        [StructLayout(LayoutKind.Sequential, Size = 24)]
+        [StructLayout(LayoutKind.Explicit, Size = 24)]
         public unsafe partial struct __Internal
         {
+            [FieldOffset(0)]
             internal global::Std.VectorBase.VectorImpl.__Internal _M_impl;
         }
 
         namespace VectorImpl
         {
-            [StructLayout(LayoutKind.Sequential, Size = 24)]
+            [StructLayout(LayoutKind.Explicit, Size = 24)]
             public unsafe partial struct __Internal
             {
+                [FieldOffset(0)]
                 internal __IntPtr _M_start;
+
+                [FieldOffset(8)]
                 internal __IntPtr _M_finish;
+
+                [FieldOffset(16)]
                 internal __IntPtr _M_end_of_storage;
             }
 
@@ -175,11 +183,16 @@ namespace Std
 
         namespace VectorImplData
         {
-            [StructLayout(LayoutKind.Sequential, Size = 24)]
+            [StructLayout(LayoutKind.Explicit, Size = 24)]
             public unsafe partial struct __Internal
             {
+                [FieldOffset(0)]
                 internal __IntPtr _M_start;
+
+                [FieldOffset(8)]
                 internal __IntPtr _M_finish;
+
+                [FieldOffset(16)]
                 internal __IntPtr _M_end_of_storage;
             }
         }
@@ -191,7 +204,7 @@ namespace Std
 {
     namespace Less
     {
-        [StructLayout(LayoutKind.Sequential, Size = 1)]
+        [StructLayout(LayoutKind.Explicit, Size = 1)]
         public unsafe partial struct __Internal
         {
         }
@@ -206,12 +219,19 @@ namespace Std
 
     public unsafe partial class RbTreeNodeBase
     {
-        [StructLayout(LayoutKind.Sequential, Size = 32)]
+        [StructLayout(LayoutKind.Explicit, Size = 32)]
         public partial struct __Internal
         {
+            [FieldOffset(0)]
             internal global::Std.RbTreeColor _M_color;
+
+            [FieldOffset(8)]
             internal __IntPtr _M_parent;
+
+            [FieldOffset(16)]
             internal __IntPtr _M_left;
+
+            [FieldOffset(24)]
             internal __IntPtr _M_right;
         }
     }
@@ -233,7 +253,7 @@ namespace Std
 {
     namespace CharTraits
     {
-        [StructLayout(LayoutKind.Sequential, Size = 1)]
+        [StructLayout(LayoutKind.Explicit, Size = 1)]
         public unsafe partial struct __Internal
         {
         }
@@ -285,7 +305,7 @@ namespace Std
 
         private static void* __CopyValue(global::Std.CharTraits.__Internal native)
         {
-            var ret = Marshal.AllocHGlobal(sizeof(global::Std.CharTraits.__Internal));
+            var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::Std.CharTraits.__Internal), 16);
             *(global::Std.CharTraits.__Internal*) ret = native;
             return ret.ToPointer();
         }
@@ -318,7 +338,7 @@ namespace Std
             NativeToManagedMap.TryRemove(__Instance, out _);
             DisposePartial(disposing);
             if (__ownsNativeInstance)
-                Marshal.FreeHGlobal(__Instance);
+                __NativeMemory.AlignedFree((void*)__Instance);
             __Instance = IntPtr.Zero;
         }
     }
@@ -328,9 +348,10 @@ namespace Std
 {
     namespace BasicString
     {
-        [StructLayout(LayoutKind.Sequential, Size = 8)]
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
         public unsafe partial struct __Internal
         {
+            [FieldOffset(0)]
             internal global::Std.BasicString.AllocHider.__Internal _M_dataplus;
 
             [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSsC2Ev", CallingConvention = __CallingConvention.Cdecl)]
@@ -342,9 +363,10 @@ namespace Std
 
         namespace AllocHider
         {
-            [StructLayout(LayoutKind.Sequential, Size = 8)]
+            [StructLayout(LayoutKind.Explicit, Size = 8)]
             public unsafe partial struct __Internal
             {
+                [FieldOffset(0)]
                 internal __IntPtr _M_p;
             }
         }
@@ -397,7 +419,7 @@ namespace Std
 
         private static void* __CopyValue(global::Std.BasicString.__Internal native)
         {
-            var ret = Marshal.AllocHGlobal(sizeof(global::Std.BasicString.__Internal));
+            var ret = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::Std.BasicString.__Internal), 16);
             *(global::Std.BasicString.__Internal*) ret = native;
             return ret.ToPointer();
         }
@@ -423,7 +445,7 @@ namespace Std
             var ___Alloc = typeof(_Alloc);
             if (___CharT.IsAssignableFrom(typeof(sbyte)) && ___Traits.IsAssignableFrom(typeof(global::Std.CharTraits<sbyte>)) && ___Alloc.IsAssignableFrom(typeof(global::Std.Allocator<sbyte>)))
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::Std.BasicString.__Internal));
+                __Instance = (nint)__NativeMemory.AlignedAlloc((nuint)sizeof(global::Std.BasicString.__Internal), 16);
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
                 global::Std.BasicString.__Internal.ctorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C(__Instance);
@@ -458,7 +480,7 @@ namespace Std
                 throw new ArgumentOutOfRangeException("_CharT, _Traits, _Alloc", string.Join(", ", new[] { typeof(_CharT).FullName, typeof(_Traits).FullName, typeof(_Alloc).FullName }), "global::Std.BasicString<_CharT, _Traits, _Alloc> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.");
             }
             if (__ownsNativeInstance)
-                Marshal.FreeHGlobal(__Instance);
+                __NativeMemory.AlignedFree((void*)__Instance);
             __Instance = IntPtr.Zero;
         }
     }
