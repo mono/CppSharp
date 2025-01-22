@@ -101,7 +101,14 @@ template<typename T>
 class CustomAllocator
 {
 public:
-    typedef T value_type;
+    using value_type = T;
+    using pointer_type = void*;
+
+    CustomAllocator() = default;
+
+    template <typename U>
+    CustomAllocator(const CustomAllocator<U>&) noexcept {
+    }
 
     T* allocate(size_t cnt, const void* = 0) { return 0; }
     void deallocate(T* p, size_t cnt) {}

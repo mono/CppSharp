@@ -207,11 +207,12 @@ namespace clix {
     typename detail::StringTypeSelector<encoding>::Type,
     System::String ^
   >::Type marshalString(SourceType string) {
+      constexpr detail::MarshalingDirection direction =
+          detail::IfManaged<SourceType>::Result ? detail::CxxFromNet : detail::NetFromCxx;
+      using StringMarshaler = detail::StringMarshaler<direction>;
 
-    // Pass on the call to our nifty template routines
-    return detail::StringMarshaler<
-      detail::IfManaged<SourceType>::Result ? detail::CxxFromNet : detail::NetFromCxx
-    >::marshal<encoding, SourceType>(string);
+      // Pass on the call to our nifty template routines
+      return StringMarshaler::template marshal<encoding, SourceType>(string);
 
   }
 

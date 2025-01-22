@@ -218,7 +218,8 @@ void Base<T>::Nested::f(const T& t)
 template <typename T>
 void Base<T>::invokeFriend()
 {
-    f(Nested());
+    Nested n;
+    f(n);
 }
 
 template <typename T>
