@@ -71,13 +71,13 @@
 #define _assertm(condition, message, call) \
     do{                                    \
          if (!(condition)) {               \
-             std::cerr << "Assert at "     \
+             std::cerr << "Assert at `"    \
                        << __FILE__         \
                        << ":"              \
                        << __LINE__         \
-                       << " in "           \
+                       << "` in `"         \
                        << __FUNCTION__     \
-                       << "failed. "       \
+                       << "` failed. "     \
                        << message;         \
              call;                         \
          }                                 \
@@ -89,37 +89,56 @@
          if (!(condition)) {                              \
              const clang::SourceManager& _sm = sm;        \
              clang::SourceLocation _loc = loc;            \
-             std::cerr << "Assert at "                    \
+             std::cerr << "Assert at `"                   \
                        << __FILE__                        \
                        << ":"                             \
                        << __LINE__                        \
-                       << " in "                          \
+                       << "` in `"                        \
                        << __FUNCTION__                    \
-                       << "failed. "                      \
+                       << "` failed. "                    \
                        << message                         \
-                       << " Filename "                    \
+                       << " Filename `"                   \
                        << _sm.getFilename(_loc).str()     \
                        << ":"                             \
                        << _sm.getSpellingLineNumber(_loc) \
-                       << "\n";                           \
+                       << "`\n";                          \
             call;                                         \
          }                                                \
     }while(0)
 
 // Macros which output messages to console if parsing encounters oddity.
-// If _DEBUG is defined but DEBUG_NO_ABORT is not macros abort.
+// In debug builds, macros abort unless DEBUG_NO_ABORT is defined.
 //
 // Macro assertm outputs a message if condition is false.
 // Macro assertml outputs a message and parsing file and line on given source manager and source line.
 //
 // assertml adds newline ending.
-#if defined(_DEBUG) && !defined(DEBUG_NO_ABORT)
-#define assertm(condition, message) _assertm(condition, message, abort())
-#define assertml(condition, message, sm, source) _assertml(condition, message, sm, source, abort())
+#ifdef NDEBUG
+#define debug_break() ((void)0)
+#define debug_fail() ((void)0)
 #else
-#define assertm(condition, message) _assertm(condition, message, )
-#define assertml(condition, message, sm, source) _assertml(condition, message, sm, source, )
+
+#if __GNUC__
+#define debug_break() \
+    __builtin_trap()
+#elif _MSC_VER
+#define debug_break() \
+    __debugbreak()
+#else
+#define debug_break(c) \
+    *reinterpret_cast<volatile int*>(0) = 47283;
 #endif
+
+#ifdef DEBUG_NO_ABORT
+#define debug_fail() debug_break()
+#else
+#define debug_fail() debug_break(); abort()
+#endif
+
+#endif
+
+#define assertm(condition, message) _assertm(condition, message, debug_fail())
+#define assertml(condition, message, sm, source) _assertml(condition, message, sm, source, debug_fail())
 
 using namespace CppSharp::CppParser;
 
