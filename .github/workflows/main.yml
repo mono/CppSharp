@@ -100,9 +100,14 @@ jobs:
         shell: bash
         run: build/build.sh prepack -platform $PLATFORM -configuration $BUILD_CONFIGURATION
 
-      - uses: actions/upload-artifact@v3
+      - name: Upload Artifacts
+        # We only need a release version of this in the create_package job
+        if: matrix.build-cfg == 'Release'
+        uses: actions/upload-artifact@v4
         with:
-          name: intermediate
+          name: intermediate-${{ matrix.build-cfg }}-${{ matrix.platform }}
+          retention-days: 7
+          overwrite: true
           path: |
             artifacts
             include/**/*.h
@@ -127,9 +132,9 @@ jobs:
       - name: Set version
         run: nbgv cloud --all-vars
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
-          name: intermediate
+          name: intermediate-Release-x64
 
       - name: Setup
         shell: bash
@@ -140,7 +145,7 @@ jobs:
         run: build/build.sh pack -configuration $BUILD_CONFIGURATION
 
       - name: Upload package
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: CppSharp.nupkg
           path: |
