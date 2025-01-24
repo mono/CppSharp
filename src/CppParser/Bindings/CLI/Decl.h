@@ -255,7 +255,7 @@ namespace CppSharp
                 Itanium = 0,
                 Microsoft = 1,
                 ARM = 2,
-		AArch64 = 3,
+                AArch64 = 3,
                 iOS = 4,
                 AppleARM64 = 5,
                 WebAssembly = 6

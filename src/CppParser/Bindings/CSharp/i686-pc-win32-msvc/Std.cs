@@ -366,6 +366,36 @@ namespace Std
 
     }
 
+    public unsafe static partial class BasicStringExtensions
+    {
+        public partial struct __Internal
+        {
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "?assign@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAEAAV12@QBD@Z", CallingConvention = __CallingConvention.ThisCall)]
+            internal static extern __IntPtr Assign(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string _Ptr);
+
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "?data@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QBEPBDXZ", CallingConvention = __CallingConvention.ThisCall)]
+            internal static extern __IntPtr Data(__IntPtr __instance);
+        }
+
+        public static global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> Assign(this global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> @this, string _Ptr)
+        {
+            var __arg0 = @this is null ? __IntPtr.Zero : @this.__Instance;
+            var ___ret = __Internal.Assign(__arg0, _Ptr);
+            var __result0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__GetOrCreateInstance(___ret, false);
+            return __result0;
+        }
+
+        public static string Data(this global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> @this)
+        {
+            var __arg0 = @this is null ? __IntPtr.Zero : @this.__Instance;
+            var ___ret = __Internal.Data(__arg0);
+            return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
+        }
+    }
+}
+
+namespace Std
+{
     namespace CharTraits
     {
         [StructLayout(LayoutKind.Sequential, Size = 1, Pack = 8)]
@@ -455,33 +485,6 @@ namespace Std
             if (__ownsNativeInstance)
                 Marshal.FreeHGlobal(__Instance);
             __Instance = IntPtr.Zero;
-        }
-    }
-
-    public unsafe static partial class BasicStringExtensions
-    {
-        public partial struct __Internal
-        {
-            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "?assign@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAEAAV12@QBD@Z", CallingConvention = __CallingConvention.ThisCall)]
-            internal static extern __IntPtr Assign(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string _Ptr);
-
-            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "?data@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QBEPBDXZ", CallingConvention = __CallingConvention.ThisCall)]
-            internal static extern __IntPtr Data(__IntPtr __instance);
-        }
-
-        public static global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> Assign(this global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> @this, string _Ptr)
-        {
-            var __arg0 = @this is null ? __IntPtr.Zero : @this.__Instance;
-            var ___ret = __Internal.Assign(__arg0, _Ptr);
-            var __result0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__GetOrCreateInstance(___ret, false);
-            return __result0;
-        }
-
-        public static string Data(this global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> @this)
-        {
-            var __arg0 = @this is null ? __IntPtr.Zero : @this.__Instance;
-            var ___ret = __Internal.Data(__arg0);
-            return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
         }
     }
 }
