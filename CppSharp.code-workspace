@@ -5,7 +5,6 @@
         }
     ],
     "settings": {
-        "omnisharp.defaultLaunchSolution": "build/vs2019/CppSharp.sln",
         "vssolution.altSolutionFolders": [
             "build/vs2019"
         ],
@@ -105,5 +104,6 @@
             "filesystem": "cpp",
             "__memory": "cpp"
         },
+        "dotnet.defaultSolution": "build/vs2019/CppSharp.sln",
     },
 }

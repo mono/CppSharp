@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Security.Permissions;
 using System.Text;
 using System.Text.RegularExpressions;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Extensions;
-using CppSharp.Parser;
 using CppSharp.Types;
 using CppSharp.Utils;
 using Attribute = CppSharp.AST.Attribute;
+using ConstCharPointer = CppSharp.Types.Std.CSharp.ConstCharPointer;
 using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.CSharp
@@ -2003,7 +2002,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
 
             if (hasReturn && isPrimitive && !isSetter)
             {
-                WriteLine($"return { Helpers.ReturnIdentifier};");
+                WriteLine($"return {Helpers.ReturnIdentifier};");
                 return;
             }
 
@@ -2322,8 +2321,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                 @class.HasNonTrivialDestructor && !@class.IsAbstract)
             {
                 NativeLibrary library;
-                if (!Options.CheckSymbols ||
-                    Context.Symbols.FindLibraryBySymbol(dtor.Mangled, out library))
+                if (!Options.CheckSymbols || Context.Symbols.FindLibraryBySymbol(dtor.Mangled, out library))
                 {
                     // Normally, calling the native dtor should be controlled by whether or not we
                     // we own the underlying instance. (i.e. Helpers.OwnsNativeInstanceIdentifier).
@@ -3158,6 +3156,8 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                             Type = indirectRetType.Type.Desugar()
                         };
 
+
+
                         WriteLine("{0} {1};", typeMap.SignatureType(typePrinterContext),
                             Helpers.ReturnIdentifier);
                     }
@@ -3559,12 +3559,19 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                 return;
 
             PushBlock(BlockKind.InternalsClassMethod);
-            var callConv = function.CallingConvention.ToInteropCallConv();
 
-            WriteLine("[SuppressUnmanagedCodeSecurity, DllImport(\"{0}\", EntryPoint = \"{1}\", CallingConvention = __CallingConvention.{2})]",
-                GetLibraryOf(function),
-                function.Mangled,
-                callConv);
+            string callConv = string.Empty;
+            string libImportType = "LibraryImport";
+            string functionKeyword = "partial";
+
+            if (Options.UseDllImport)
+            {
+                callConv = $", CallingConvention = __CallingConvention.{function.CallingConvention.ToInteropCallConv()}";
+                libImportType = "DllImport";
+                functionKeyword = "extern";
+            }
+
+            WriteLine("[SuppressUnmanagedCodeSecurity, {0}]", GetImportAttributeString(libImportType, callConv, function));
 
             if (function.ReturnType.Type.IsPrimitiveType(PrimitiveType.Bool))
                 WriteLine("[return: MarshalAs(UnmanagedType.I1)]");
@@ -3572,7 +3579,9 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
             TypePrinterResult retType;
             var @params = GatherInternalParams(function, out retType);
 
-            WriteLine("internal static extern {0} {1}({2});", retType,
+            WriteLine("internal static {0} {1} {2}({3});",
+                      functionKeyword,
+                      retType,
                       GetFunctionNativeIdentifier(function),
                       string.Join(", ", @params));
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -3616,6 +3625,51 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
             }
 
             return libName;
+        }
+
+        private string GetImportAttributeString(string libImportType, string callConv, Function function)
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendFormat("{0}(\"{1}\", EntryPoint = \"{2}\"{3}", libImportType, GetLibraryOf(function), function.Mangled, callConv);
+
+            if (!Options.UseDllImport)
+            {
+                HashSet<string> addedMarshallers = new(3);
+
+
+                foreach (var param in function.Parameters)
+                {
+                    try
+                    {
+                        if (param.Type.IsConstCharString())
+                        {
+                            var encoding = new ConstCharPointer() { Type = param.Type, Context = Context }
+                                .GetEncoding().Encoding;
+
+                            if (encoding == Encoding.UTF8 && addedMarshallers.Add("UTF8"))
+                                sb.Append(", StringMarshalling = StringMarshalling.Utf8");
+                            else if (encoding == Encoding.UTF32 && addedMarshallers.Add("UTF32"))
+                                sb.Append(", StringMarshallingCustomType = typeof(CppSharp.Runtime.UTF32StringMarshaller)");
+                            else if (encoding == Encoding.Unicode && addedMarshallers.Add("UTF16"))
+                                sb.Append(", StringMarshalling = StringMarshalling.Utf16");
+                        }
+                        else if ((param.Type.IsPrimitiveType(PrimitiveType.String) ||
+                                 param.Type.IsPrimitiveType(PrimitiveType.Char16) ||
+                                 param.Type.IsPrimitiveType(PrimitiveType.WideChar)) && 
+                                 addedMarshallers.Add("UTF16"))
+                            sb.Append(", StringMarshalling = StringMarshalling.Utf16");
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Error processing parameter '{param.Name}': {e.Message}");
+                        Console.WriteLine($"Param Type: {param.Type ?? null}, Param Name: {param.Name ?? "null"}");
+                    }
+                }
+            }
+            sb.Append(')');
+
+            return sb.ToString();
         }
 
         private class MarshallingParamComparer : IEqualityComparer<Parameter>

@@ -115,7 +115,7 @@ namespace CppSharp.Generators.CSharp
             if (arrayType.IsPointerToPrimitiveType(PrimitiveType.Char))
             {
                 var prefix = ContextKind == TypePrinterContextKind.Managed ? string.Empty :
-                    "[MarshalAs(UnmanagedType.LPArray)] ";
+                    "[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] ";
                 return $"{prefix}string[]";
             }
 
@@ -502,8 +502,7 @@ $"[{Context.TargetInfo.LongDoubleWidth}]");
         public override TypePrinterResult VisitClassDecl(Class @class)
         {
             if (ContextKind == TypePrinterContextKind.Native)
-                return $@"{VisitDeclaration(@class.OriginalClass ?? @class)}.{
-                    Helpers.InternalStruct}{Helpers.GetSuffixForInternal(@class)}";
+                return $@"{VisitDeclaration(@class.OriginalClass ?? @class)}.{Helpers.InternalStruct}{Helpers.GetSuffixForInternal(@class)}";
 
             TypePrinterResult printed = VisitDeclaration(@class);
             if (@class.IsTemplate)
@@ -539,16 +538,27 @@ $"[{Context.TargetInfo.LongDoubleWidth}]");
 
         public override TypePrinterResult VisitParameterDecl(Parameter parameter)
         {
-            var paramType = parameter.Type;
-
             if (parameter.Kind == ParameterKind.IndirectReturnType)
                 return IntPtrType;
 
+            var typeBuilder = new StringBuilder();
+            var paramType = parameter.Type;
+            if (!Options.UseDllImport)
+            {
+                if (paramType.IsPrimitiveType(PrimitiveType.Bool))
+                    typeBuilder.Append("[MarshalAs(UnmanagedType.I1)] ");
+                else if ((ContextKind != TypePrinterContextKind.Native || Context.Options.MarshalCharAsManagedChar) && (paramType.IsPrimitiveType(PrimitiveType.Char) || paramType.IsPrimitiveType(PrimitiveType.Char32)))
+                    typeBuilder.AppendFormat("[MarshalUsing(typeof(CppSharp.Runtime.{0}))]", paramType.IsPrimitiveType(PrimitiveType.Char) ? "UTF8CharMarshaller" : "UTF32CharMarshaller");
+            }
+
             Parameter = parameter;
+
             var ret = paramType.Visit(this);
+            typeBuilder.Append(ret);
+
             Parameter = null;
 
-            return ret;
+            return typeBuilder.ToString();
         }
 
         private string GetName(Declaration decl)
@@ -605,9 +615,9 @@ $"[{Context.TargetInfo.LongDoubleWidth}]");
         public override TypePrinterResult VisitParameter(Parameter param, bool hasName)
         {
             var typeBuilder = new StringBuilder();
-            if (param.Type.Desugar().IsPrimitiveType(PrimitiveType.Bool)
-                && MarshalKind == MarshalKind.GenericDelegate)
+            if (param.Type.Desugar().IsPrimitiveType(PrimitiveType.Bool) && MarshalKind == MarshalKind.GenericDelegate)
                 typeBuilder.Append("[MarshalAs(UnmanagedType.I1)] ");
+
             var printedType = param.Type.Visit(this, param.QualifiedType.Qualifiers);
             typeBuilder.Append(printedType);
             var type = typeBuilder.ToString();
@@ -758,7 +768,7 @@ $"[{Context.TargetInfo.LongDoubleWidth}]");
                 case 64:
                     return new CILType(typeof(ulong));
                 default:
-                    throw new System.NotSupportedException();
+                    throw new NotSupportedException();
             }
         }
 
