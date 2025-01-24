@@ -41,10 +41,7 @@ DEF_VECTOR_STRING(CppParserOptions, Undefines)
 DEF_VECTOR_STRING(CppParserOptions, SupportedStdTypes)
 DEF_VECTOR_STRING(CppParserOptions, SupportedFunctionTemplates)
 
-ParserResult::ParserResult()
-    : targetInfo(0)
-{
-}
+ParserResult::ParserResult() {}
 
 ParserResult::ParserResult(const ParserResult& rhs)
     : kind(rhs.kind)

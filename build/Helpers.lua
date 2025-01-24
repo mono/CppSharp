@@ -256,9 +256,13 @@ end
 function AddPlatformSpecificFiles(folder, filename)
 
   if os.istarget("windows") then
-    filter { "toolset:msc*", "architecture:x86_64" }
+    filter { "toolset:msc*", "architecture:x86_64", "configurations:Debug" }
+      files { path.join(folder, "x86_64-pc-win32-msvc-d", filename) }
+    filter { "toolset:msc*", "architecture:x86", "configurations:Debug" }
+      files { path.join(folder, "i686-pc-win32-msvc-d", filename) }
+    filter { "toolset:msc*", "architecture:x86_64", "configurations:not Debug" }
       files { path.join(folder, "x86_64-pc-win32-msvc", filename) }
-    filter { "toolset:msc*", "architecture:x86" }
+    filter { "toolset:msc*", "architecture:x86", "configurations:not Debug" }
       files { path.join(folder, "i686-pc-win32-msvc", filename) }
   elseif os.istarget("macosx") then
     filter { "architecture:arm64" }

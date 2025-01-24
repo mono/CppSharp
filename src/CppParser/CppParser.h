@@ -102,10 +102,10 @@ struct CS_API ParserResult
     ParserResult(const ParserResult&);
     ~ParserResult();
 
-    ParserResultKind kind;
+    ParserResultKind kind = ParserResultKind::Error;
     VECTOR(ParserDiagnostic, Diagnostics)
     VECTOR(NativeLibrary*, Libraries)
-    ParserTargetInfo* targetInfo;
+    ParserTargetInfo* targetInfo = nullptr;
 };
 
 enum class SourceLocationKind

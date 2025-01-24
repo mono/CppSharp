@@ -62,7 +62,19 @@ namespace CppSharp
             parserModule.OutputNamespace = string.Empty;
 
             if (parserOptions.IsMicrosoftAbi)
+            {
+                if (Triple.Contains("msvc-d"))
+                {
+                    parserOptions.ClearCompilationOptions();
+                    parserOptions.AddCompilationOptions("-flto");
+                    parserOptions.AddCompilationOptions("-O0");
+                    parserOptions.AddCompilationOptions("-fno-use-cxa-atexit");
+
+                    parserOptions.AddDefines("_DEBUG");
+                }
+
                 parserOptions.MicrosoftMode = true;
+            }
 
             if (Triple.Contains("apple"))
                 SetupMacOptions(parserOptions);
@@ -164,6 +176,18 @@ namespace CppSharp
 
                 Console.WriteLine("Generating the C# 64-bit parser bindings for Windows...");
                 ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-pc-win32-msvc"));
+                Console.WriteLine();
+
+                Console.WriteLine("Generating the C# 64-bit parser debug bindings for Windows...");
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-pc-win32-msvc-d"));
+                Console.WriteLine();
+
+                Console.WriteLine("Generating the C++/CLI parser debug bindings for Windows...");
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CLI, "i686-pc-win32-msvc-d"));
+                Console.WriteLine();
+
+                Console.WriteLine("Generating the C# parser debug bindings for Windows...");
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-pc-win32-msvc-d"));
                 Console.WriteLine();
             }
 
