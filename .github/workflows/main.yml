@@ -78,6 +78,8 @@ jobs:
         run: build/build.sh -platform $PLATFORM -build_only -configuration $BUILD_CONFIGURATION
 
       - name: Test (.NET)
+        # Disable test for debug configs, since they take over 6 hours to complete
+        if: matrix.build-cfg != 'Debug'
         shell: bash
         run: build/test.sh -platform $PLATFORM -configuration $BUILD_CONFIGURATION
 
