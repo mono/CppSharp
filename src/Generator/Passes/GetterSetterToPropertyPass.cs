@@ -92,7 +92,7 @@ namespace CppSharp.Passes
                         m.OriginalFunction != null) &&
                     m.SynthKind != FunctionSynthKind.DefaultValueOverload &&
                     m.SynthKind != FunctionSynthKind.ComplementOperator &&
-                    m.SynthKind != FunctionSynthKind.FieldAcessor &&
+                    m.SynthKind != FunctionSynthKind.FieldAccessor &&
                     !m.ExcludeFromPasses.Contains(typeof(GetterSetterToPropertyPass))))
             {
                 if (IsGetter(method))

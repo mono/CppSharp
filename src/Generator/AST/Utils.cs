@@ -42,7 +42,7 @@ namespace CppSharp.AST
             if (method.Access == AccessSpecifier.Private && !method.IsOverride && !method.IsExplicitlyGenerated)
                 return true;
 
-            // Ignore copy constructor if a base class don't has or has a private copy constructor
+            // Ignore copy constructor if a base class don't have a copy constructor (or it's private)
             if (method.IsCopyConstructor)
             {
                 var baseClass = @class;
@@ -329,7 +329,7 @@ namespace CppSharp.AST
                 case CXXOperatorKind.Array_New:
                 case CXXOperatorKind.Array_Delete:
                     isBuiltin = false;
-                    return "Operator" + kind.ToString();
+                    return "Operator" + kind;
 
                 case CXXOperatorKind.Conversion:
                     return "implicit operator";

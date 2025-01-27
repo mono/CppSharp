@@ -56,7 +56,7 @@ namespace CppSharp.Passes
 
             if (Options.GeneratorKind == GeneratorKind.C ||
                 Options.GeneratorKind == GeneratorKind.CPlusPlus)
-                GenerateAcessorMethods(field, prop);
+                GenerateAccessorMethods(field, prop);
 
             // do not rename value-class fields because they would be
             // generated as fields later on even though they are wrapped by properties;
@@ -72,7 +72,7 @@ namespace CppSharp.Passes
             return false;
         }
 
-        private void GenerateAcessorMethods(Field field, Property property)
+        private void GenerateAccessorMethods(Field field, Property property)
         {
             var @class = field.Namespace as Class;
 
@@ -84,7 +84,7 @@ namespace CppSharp.Passes
                 Access = field.Access,
                 AssociatedDeclaration = property,
                 IsStatic = field.IsStatic,
-                SynthKind = FunctionSynthKind.FieldAcessor
+                SynthKind = FunctionSynthKind.FieldAccessor
             };
 
             property.GetMethod = getter;
@@ -101,7 +101,7 @@ namespace CppSharp.Passes
                     Access = field.Access,
                     AssociatedDeclaration = property,
                     IsStatic = field.IsStatic,
-                    SynthKind = FunctionSynthKind.FieldAcessor
+                    SynthKind = FunctionSynthKind.FieldAccessor
                 };
 
                 var param = new Parameter

@@ -76,8 +76,8 @@ namespace CppSharp.AST
             GetMethod is {OperatorKind: CXXOperatorKind.Subscript};
 
         public bool IsSynthetized =>
-            (GetMethod != null && GetMethod.IsSynthetized) ||
-            (SetMethod != null && SetMethod.IsSynthetized);
+            (GetMethod != null && GetMethod.IsSynthesized) ||
+            (SetMethod != null && SetMethod.IsSynthesized);
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {

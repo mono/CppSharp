@@ -50,6 +50,6 @@
 
 #define DEF_VECTOR_STRING(klass, name) \
     const char* klass::get##name (unsigned i) { return name[i].c_str(); } \
-    void klass::add##name (const char* s) { return name.push_back(std::string(s)); } \
+    void klass::add##name (const char* s) { name.push_back(std::string(s)); } \
     unsigned klass::get##name##Count () { return name.size(); } \
     void klass::clear##name() { name.clear(); }
