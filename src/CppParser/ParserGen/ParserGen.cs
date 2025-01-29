@@ -15,6 +15,9 @@ namespace CppSharp
     /// </summary>
     class ParserGen : ILibrary
     {
+        private static readonly string BootstrapPatchDir = "BootstrapPatch";
+        private static readonly string BootstrapPatchPath = Path.Join(GetSourceDirectory("src"), BootstrapPatchDir);
+
         internal readonly GeneratorKind Kind;
         internal readonly string Triple;
         internal readonly bool IsGnuCpp11Abi;
@@ -44,10 +47,34 @@ namespace CppSharp
             throw new Exception("Could not find build directory: " + dir);
         }
 
+        public void ApplyBootstrapPatch()
+        {
+            if (!Directory.Exists(BootstrapPatchPath))
+                return;
+
+            Console.WriteLine("Applying bootstrap patch...");
+
+            foreach (var filePath in Directory.EnumerateFiles(BootstrapPatchPath,
+                         "*", 
+                         new EnumerationOptions
+                     {
+                        RecurseSubdirectories = true,
+                     }))
+            {
+                var srcPath = filePath.Replace(BootstrapPatchDir, "");
+                File.Copy(filePath, srcPath, true);
+            }
+
+            Directory.Delete(BootstrapPatchPath, true);
+        }
+
         public void Setup(Driver driver)
         {
+            ApplyBootstrapPatch();
+
             var parserOptions = driver.ParserOptions;
             parserOptions.TargetTriple = Triple;
+            parserOptions.LanguageVersion = LanguageVersion.CPP17_GNU;
 
             var options = driver.Options;
             options.GeneratorKind = Kind;

@@ -8,6 +8,7 @@ using CppSharp.AST.Extensions;
 using CppSharp.Generators;
 using CppSharp.Generators.C;
 using CppSharp.Generators.CSharp;
+using CppSharp.Parser;
 using CppSharp.Passes;
 using static CppSharp.CodeGeneratorHelpers;
 
@@ -18,6 +19,9 @@ namespace CppSharp
     /// </summary>
     class Bootstrap : ILibrary
     {
+        private static bool CreatePatch = true;
+        private static string OutputPath = CreatePatch ? "BootstrapPatch" : "";
+
         private static string GetSourceDirectory(string dir)
         {
             var directory = Directory.GetParent(Directory.GetCurrentDirectory());
@@ -43,7 +47,8 @@ namespace CppSharp
             var llvmDir = Path.Combine(GetSourceDirectory("build"), "llvm");
             var llvmRevision = GetLLVMRevision(llvmDir).Substring(0, 6);
 
-            return Directory.EnumerateDirectories(llvmDir, $"*{llvmRevision}*").FirstOrDefault();
+            return Directory.EnumerateDirectories(llvmDir, $"*{llvmRevision}*-Rel*").FirstOrDefault() ??
+                Directory.EnumerateDirectories(llvmDir, $"*{llvmRevision}*").FirstOrDefault();
         }
 
         public void Setup(Driver driver)
@@ -51,6 +56,7 @@ namespace CppSharp
             driver.Options.GeneratorKind = GeneratorKind.CSharp;
             driver.Options.DryRun = true;
             driver.ParserOptions.EnableRTTI = true;
+            driver.ParserOptions.LanguageVersion = LanguageVersion.CPP17_GNU;
             driver.ParserOptions.SkipLayoutInfo = true;
             driver.ParserOptions.UnityBuild = true;
 
@@ -66,7 +72,7 @@ namespace CppSharp
 
             module.IncludeDirs.AddRange(new[]
             {
-                Path.Combine(llvmPath, "include"),
+                Path.Combine(llvmPath, "llvm", "include"),
                 Path.Combine(llvmPath, "build", "include"),
                 Path.Combine(llvmPath, "build", "clang", "include"),
                 Path.Combine(llvmPath, "clang", "include")
@@ -92,6 +98,8 @@ namespace CppSharp
             new IgnoreMethodsWithParametersPass { Context = driver.Context }
                 .VisitASTContext(ctx);
             new GetterSetterToPropertyPass { Context = driver.Context }
+                .VisitASTContext(ctx);
+            new CheckEnumsPass { Context = driver.Context }
                 .VisitASTContext(ctx);
 
             var preprocessDecls = new PreprocessDeclarations();
@@ -128,36 +136,63 @@ namespace CppSharp
                 unit.FileName.Contains("OperationKinds.h"));
             var operatorKindsUnit = ctx.ASTContext.TranslationUnits.Find(unit =>
                 unit.FileName.Contains("OperatorKinds.h"));
+            var dependenceFlagsUnit = ctx.ASTContext.TranslationUnits.Find(unit =>
+                unit.FileName.Contains("DependenceFlags.h"));
+            var exprDependence = dependenceFlagsUnit
+                .FindNamespace("clang")
+                .FindClass("ExprDependenceScope")
+                .FindEnum("ExprDependence");
+
+            // Move to outer namespace
+            exprDependence.Namespace = exprDependence.Namespace.Namespace.Namespace;
+
             var typeTraitsUnit = ctx.ASTContext.TranslationUnits.Find(unit =>
                 unit.FileName == "TypeTraits.h");
-            var unaryExprOrTypeTrait = typeTraitsUnit.FindNamespace("clang")
-                .FindEnum("UnaryExprOrTypeTrait");
+            var unaryExprOrTypeTrait = typeTraitsUnit
+                .FindEnum("clang::UnaryExprOrTypeTrait");
 
-            var decls = new Declaration[] { operationKindsUnit, operatorKindsUnit,
-                unaryExprOrTypeTrait }.Union(ExprClasses);
+            var specifiersUnit = ctx.ASTContext.TranslationUnits.Find(unit =>
+                unit.FileName == "Specifiers.h");
+            var nonOdrUseReason = specifiersUnit.FindEnum("clang::NonOdrUseReason");
+            
+            var apFloatUnit = ctx.ASTContext.TranslationUnits.Find(unit =>
+                unit.FileName == "APFloat.h");
+            var floatSemantics = apFloatUnit
+                .FindNamespace("llvm")
+                .FindClass("APFloatBase")
+                .FindEnum("Semantics");
+            floatSemantics.Name = "FloatSemantics";
+            // Move to outer namespace
+            floatSemantics.Namespace = floatSemantics.Namespace.Namespace.Namespace;
+
+            var decls = new Declaration[] { 
+                    operationKindsUnit, operatorKindsUnit,
+                    unaryExprOrTypeTrait, nonOdrUseReason,
+                    exprDependence, floatSemantics
+                }.Union(ExprClasses);
 
             // Write the native declarations headers
             var declsCodeGen = new ExprDeclarationsCodeGenerator(ctx, decls);
             declsCodeGen.GenerateDeclarations();
-            WriteFile(declsCodeGen, Path.Combine("CppParser", "Expr.h"));
+            WriteFile(declsCodeGen, Path.Combine(OutputPath, "CppParser", "Expr.h"));
 
             var defsCodeGen = new ExprDefinitionsCodeGenerator(ctx, decls);
             defsCodeGen.GenerateDefinitions();
-            WriteFile(defsCodeGen, Path.Combine("CppParser", "Expr.cpp"));
+            WriteFile(defsCodeGen, Path.Combine(OutputPath, "CppParser", "Expr.cpp"));
 
             // Write the native parsing routines
             var parserCodeGen = new ExprParserCodeGenerator(ctx, decls);
             parserCodeGen.GenerateParser();
-            WriteFile(parserCodeGen, Path.Combine("CppParser", "ParseExpr.cpp"));
+            WriteFile(parserCodeGen, Path.Combine(OutputPath, "CppParser", "ParseExpr.cpp"));
 
             // Write the managed declarations
             var managedCodeGen = new ManagedParserCodeGenerator(ctx, decls);
             managedCodeGen.GenerateDeclarations();
-            WriteFile(managedCodeGen, Path.Combine("AST", "Expr.cs"));
+            WriteFile(managedCodeGen, Path.Combine(OutputPath, "AST", "Expr.cs"));
 
             managedCodeGen = new ExprASTConverterCodeGenerator(ctx, decls);
             managedCodeGen.Process();
-            WriteFile(managedCodeGen, Path.Combine("Parser", "ASTConverter.Expr.cs"));
+            WriteFile(managedCodeGen, Path.Combine(OutputPath, "Parser", "ASTConverter.Expr.cs"));
         }
 
         private void GenerateStmt(BindingContext ctx)
@@ -177,36 +212,43 @@ namespace CppSharp
             stmtUnit.Visit(stmtSubclassVisitor);
             stmtCxxUnit.Visit(stmtSubclassVisitor);
 
-            var decls = new Declaration[] { stmtClassEnum }
+            var specifiersUnit = ctx.ASTContext.TranslationUnits.Find(unit =>
+                unit.FileName == "Specifiers.h");
+            var ifStatementKind = specifiersUnit.FindNamespace("clang").FindEnum("IfStatementKind");
+
+            var decls = new Declaration[]
+                {
+                    stmtClassEnum, ifStatementKind
+                }
                 .Union(stmtSubclassVisitor.Classes);
 
             // Write the native declarations headers
             var declsCodeGen = new StmtDeclarationsCodeGenerator(ctx, decls);
             declsCodeGen.GenerateDeclarations();
-            WriteFile(declsCodeGen, Path.Combine("CppParser", "Stmt.h"));
+            WriteFile(declsCodeGen, Path.Combine(OutputPath, "CppParser", "Stmt.h"));
 
             var stmtClasses = stmtSubclassVisitor.Classes;
             var defsCodeGen = new StmtDefinitionsCodeGenerator(ctx, stmtClasses);
             defsCodeGen.GenerateDefinitions();
-            WriteFile(defsCodeGen, Path.Combine("CppParser", "Stmt.cpp"));
+            WriteFile(defsCodeGen, Path.Combine(OutputPath, "CppParser", "Stmt.cpp"));
 
             // Write the native parsing routines
             var parserCodeGen = new StmtParserCodeGenerator(ctx, stmtClasses, ExprClasses);
             parserCodeGen.GenerateParser();
-            WriteFile(parserCodeGen, Path.Combine("CppParser", "ParseStmt.cpp"));
+            WriteFile(parserCodeGen, Path.Combine(OutputPath, "CppParser", "ParseStmt.cpp"));
 
             // Write the managed declarations
             var managedCodeGen = new ManagedParserCodeGenerator(ctx, decls);
             managedCodeGen.GenerateDeclarations();
-            WriteFile(managedCodeGen, Path.Combine("AST", "Stmt.cs"));
+            WriteFile(managedCodeGen, Path.Combine(OutputPath, "AST", "Stmt.cs"));
 
             managedCodeGen = new ManagedVisitorCodeGenerator(ctx, decls.Union(ExprClasses));
             managedCodeGen.Process();
-            WriteFile(managedCodeGen, Path.Combine("AST", "StmtVisitor.cs"));
+            WriteFile(managedCodeGen, Path.Combine(OutputPath, "AST", "StmtVisitor.cs"));
 
             managedCodeGen = new StmtASTConverterCodeGenerator(ctx, decls, stmtClassEnum);
             managedCodeGen.Process();
-            WriteFile(managedCodeGen, Path.Combine("Parser", "ASTConverter.Stmt.cs"));
+            WriteFile(managedCodeGen, Path.Combine(OutputPath, "Parser", "ASTConverter.Stmt.cs"));
         }
 
         static void CleanupEnumItems(Enumeration exprClassEnum)
@@ -262,6 +304,7 @@ namespace CppSharp
             if (oldHash == newHash)
                 return false;
 
+            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
             File.WriteAllText(path, sourceCode);
             Console.WriteLine($"Writing '{Path.GetFileName(path)}'.");
             return true;
@@ -280,7 +323,10 @@ namespace CppSharp
         private static void Check(Declaration decl)
         {
             if (string.IsNullOrWhiteSpace(decl.Name))
+            {
                 decl.ExplicitlyIgnore();
+                return;
+            }
 
             if (decl.Name.EndsWith("Bitfields", StringComparison.Ordinal))
                 decl.ExplicitlyIgnore();
@@ -293,6 +339,9 @@ namespace CppSharp
                 decl.ExplicitlyIgnore();
 
             if (decl.Name == "EmptyShell")
+                decl.ExplicitlyIgnore();
+            
+            if (decl.Name == "DecomposedForm")
                 decl.ExplicitlyIgnore();
 
             if (decl.Name == "APIntStorage" || decl.Name == "APFloatStorage")
@@ -804,7 +853,7 @@ namespace CppSharp
                 UnindentAndWriteCloseBrace();
             }
 
-            WriteLine($"default:");
+            WriteLine("default:");
             WriteLineIndent($"throw new System.NotImplementedException(" +
                 $"{ParamName}.StmtClass.ToString());");
         }
@@ -959,16 +1008,12 @@ namespace CppSharp
         public void GenerateDeclarations()
         {
             Process();
-            WriteInclude("Sources.h", CInclude.IncludeKind.Quoted);
-            WriteInclude("Types.h", CInclude.IncludeKind.Quoted);
             GenerateIncludes();
             NewLine();
 
-            WriteLine("namespace CppSharp { namespace CppParser { namespace AST {");
+            WriteLine("namespace CppSharp::CppParser::AST {");
             NewLine();
 
-            WriteLine("class Expr;");
-            WriteLine("class Declaration;");
             GenerateForwardDecls();
             NewLine();
 
@@ -977,6 +1022,7 @@ namespace CppSharp
                 if (decl.Name == "GCCAsmStmt")
                 {
                     WriteLine("class StringLiteral;");
+                    WriteLine("class AddrLabelExpr;");
                     NewLine();
                 }
 
@@ -984,17 +1030,19 @@ namespace CppSharp
             }
 
             NewLine();
-            WriteLine("} } }");
+            WriteLine("}");
         }
 
         public virtual void GenerateIncludes()
         {
-
+            WriteInclude("Sources.h", CInclude.IncludeKind.Quoted);
+            WriteInclude("Types.h", CInclude.IncludeKind.Quoted);
         }
 
         public virtual void GenerateForwardDecls()
         {
-
+            WriteLine("class Expr;");
+            WriteLine("class Declaration;");
         }
 
         public override bool GenerateClassBody(Class @class)
@@ -1058,13 +1106,13 @@ namespace CppSharp
             GenerateIncludes();
             NewLine();
 
-            WriteLine("namespace CppSharp { namespace CppParser { namespace AST {");
+            WriteLine("namespace CppSharp::CppParser::AST {");
             NewLine();
 
             foreach (var decl in Declarations.OfType<Class>())
                 decl.Visit(this);
 
-            WriteLine("} } }");
+            WriteLine("}");
         }
 
         public virtual void GenerateIncludes()
@@ -1144,14 +1192,17 @@ namespace CppSharp
         {
             if (property.Type.IsPointer())
                 return "nullptr";
+            
+            if (property.Type.IsPrimitiveType(PrimitiveType.Bool))
+                return "false";
 
             var typeName = GetDeclTypeName(property);
             if (property.Type.TryGetClass(out Class @class))
                 return $"{typeName}()";
 
             if (property.Type.TryGetEnum(out Enumeration @enum))
-                return $"({GetQualifiedName(@enum)}::{@enum.Items.First().Name})";
-
+                return $"{GetQualifiedName(@enum)}::{@enum.Items.First().Name}";
+            
             return "0";
         }
 
@@ -1182,14 +1233,14 @@ namespace CppSharp
             WriteInclude("Parser.h", CInclude.IncludeKind.Quoted);
             GenerateIncludes();
             NewLine();
-
-            WriteLine("namespace CppSharp { namespace CppParser {");
+            
+            WriteLine("namespace CppSharp::CppParser {");
             NewLine();
 
             GenerateWalkStatement();
 
             NewLine();
-            WriteLine("} }");
+            WriteLine("}");
         }
 
         public virtual void GenerateIncludes()
@@ -1208,11 +1259,11 @@ namespace CppSharp
             WriteLine(MethodSig);
             WriteOpenBraceAndIndent();
 
-            WriteLine($"if ({BaseTypeName } == nullptr)");
+            WriteLine($"if (!{BaseTypeName })");
             WriteLineIndent("return nullptr;");
             NewLine();
 
-            WriteLine($"AST::{BaseTypeName}* _{BaseTypeName}= 0;");
+            WriteLine($"AST::{BaseTypeName}* _{BaseTypeName}= nullptr;");
             NewLine();
 
             WriteLine($"switch ({BaseTypeName}->getStmtClass())");
@@ -1291,18 +1342,33 @@ namespace CppSharp
             WriteLine($"for (auto _E : S->{method.Name}())");
             WriteOpenBraceAndIndent();
 
-            string walkMethod = string.Empty;
-            if (iteratorTypeName.Contains("Decl"))
-                walkMethod = "WalkDeclaration";
-            else if (iteratorTypeName.Contains("Expr"))
-                walkMethod = "WalkExpression";
-            else if (iteratorTypeName.Contains("Stmt"))
-                walkMethod = "WalkStatement";
-            else
-                throw new NotImplementedException();
+            bool isBaseType = iteratorTypeName switch
+            {
+                "Declaration*" or "Expr*" or "Stmt*" => true,
+                _ => false
+            };
 
-            WriteLine($"auto _ES = {walkMethod}(_E);");
+            string walkMethod;
+            if (iteratorTypeName.Contains("Decl"))
+            {
+                walkMethod = "WalkDeclaration";
+            }
+            else if (iteratorTypeName.Contains("Expr"))
+            {
+                walkMethod = "WalkExpression";
+            }
+            else if (iteratorTypeName.Contains("Stmt"))
+            {
+                walkMethod = "WalkStatement";
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+
+            WriteLine("auto _ES = {0}{1}(_E);", isBaseType ? string.Empty : $"(AST::{iteratorTypeName})", walkMethod);
             WriteLine($"_S->add{method.Name}(_ES);");
+
             UnindentAndWriteCloseBrace();
 
             return true;
@@ -1326,7 +1392,7 @@ namespace CppSharp
             }
 
             if (property.Type.TryGetEnum(out Enumeration @enum))
-                WriteLine($"_S->{fieldName} = ({GetQualifiedName(@enum)}) S->{methodName}();");
+                WriteLine($"_S->{fieldName} = (AST::{GetQualifiedName(@enum)})S->{methodName}();");
             else if (typeName.Contains("SourceLocation"))
                 return false;
             else if (typeName.Contains("SourceRange"))
@@ -1337,6 +1403,8 @@ namespace CppSharp
             else if (typeName.Contains("Expr"))
                 WriteLine($"_S->{fieldName} = static_cast<AST::{typeName}>(" +
                     $"WalkExpression(S->{methodName}()));");
+            else if (fieldName == "guidDecl")
+                WriteLine($"_S->{fieldName} = S->getGuidDecl()->getNameAsString();");
             else if (typeName.Contains("Decl") || typeName.Contains("Method") ||
                      typeName.Contains("Function") || typeName.Contains("Field"))
                 WriteLine($"_S->{fieldName} = static_cast<AST::{typeName}>(" +
@@ -1373,6 +1441,7 @@ namespace CppSharp
         public override void GenerateIncludes()
         {
             WriteInclude("Stmt.h", CInclude.IncludeKind.Quoted);
+            WriteInclude("optional", CInclude.IncludeKind.Angled);
         }
 
         public override void GenerateForwardDecls()
@@ -1380,6 +1449,7 @@ namespace CppSharp
             WriteLine("class Field;");
             WriteLine("class Method;");
             WriteLine("class Function;");
+            WriteLine("class FunctionTemplate;");
         }
     }
 
@@ -1495,18 +1565,19 @@ namespace CppSharp
         public static bool IsAbstractStmt(Class @class) => IsAbstractStmt(@class.Name);
 
         public static bool IsAbstractStmt(string className) =>
-            className == "Stmt" ||
-            className == "NoStmt" ||
-            className == "SwitchCase" ||
-            className == "AsmStmt" ||
-            className == "Expr" ||
-            className == "FullExpr" ||
-            className == "CastExpr" ||
-            className == "ExplicitCastExpr" ||
-            className == "AbstractConditionalOperator" ||
-            className == "CXXNamedCastExpr" ||
-            className == "OverloadExpr" ||
-            className == "CoroutineSuspendExpr";
+            className is "Stmt" 
+                or "ValueStmt" 
+                or "NoStmt" 
+                or "SwitchCase" 
+                or "AsmStmt" 
+                or "Expr" 
+                or "FullExpr" 
+                or "CastExpr" 
+                or "ExplicitCastExpr" 
+                or "AbstractConditionalOperator" 
+                or "CXXNamedCastExpr" 
+                or "OverloadExpr" 
+                or "CoroutineSuspendExpr";
 
         public static bool SkipProperty(Property property, bool skipBaseCheck = false)
         {
@@ -1677,11 +1748,7 @@ namespace CppSharp
             // UnresolvedMemberExpr
             if (typeName.Contains("DeclarationName"))
                 return true;
-
-            // PackExpansionExpr
-            if (typeName.Contains("Optional<"))
-                return true;
-
+            
             // SubstNonTypeTemplateParmExpr
             // SubstNonTypeTemplateParmPackExpr
             if (typeName.Contains("NonTypeTemplateParmDecl"))
@@ -1704,6 +1771,20 @@ namespace CppSharp
                 return true;
 
             if (typeName.Contains("Expr**"))
+                return true;
+
+            // GenericSelectionExpr
+            if (typeName.Contains("AssociationIteratorTy"))
+                return true;
+
+            // CXXRewrittenBinaryOperator
+            if (typeName.Contains("DecomposedForm"))
+                return true;
+            
+            // ConstantExpr (TODO: Fix this properly)
+            if (property.Name.Contains("resultAsAP") ||
+                property.Name.Contains("aPValueResult") ||
+                property.Name.Contains("resultAPValueKind"))
                 return true;
 
             return false;
@@ -1749,6 +1830,10 @@ namespace CppSharp
             if (iteratorTypeName.Contains("LambdaCapture"))
                 return true;
 
+            // GenericSelectionExpr
+            if (iteratorTypeName.Contains("AssociationIteratorTy"))
+                return true;
+
             return false;
         }
 
@@ -1760,6 +1845,16 @@ namespace CppSharp
             typePrinter.PopScope();
 
             qualifiedName = CleanClangNamespaceFromName(qualifiedName);
+
+            if (qualifiedName.Contains("ExprDependenceScope"))
+                qualifiedName = qualifiedName
+                    .Replace("ExprDependenceScope" + (typePrinter is CppTypePrinter ? "::" : ".")
+                        , "");
+
+            else if (qualifiedName.Contains("Semantics"))
+                qualifiedName = qualifiedName.Replace(
+                    typePrinter is CppTypePrinter ? "llvm::APFloatBase::Semantics" : "llvm.APFloatBase.Semantics"
+                , "FloatSemantics");
 
             return qualifiedName;
         }
@@ -1794,6 +1889,8 @@ namespace CppSharp
                 {
                     case "identKind":
                     case "literalOperatorKind":
+                    case "resultStorageKind":
+                    case "aDLCallKind":
                     case "initializationStyle":
                     case "capturedStmt":
                         hasConflict = true;
@@ -1836,17 +1933,38 @@ namespace CppSharp
             TypePrinter typePrinter)
         {
             var declType = GetDeclType(type, typePrinter);
-            var typeName = declType.Visit(typePrinter).Type;
+            var typeResult = declType.Visit(typePrinter);
+
+            if (typeResult.Type.Contains("MSGuidDecl"))
+                return typePrinter is CppTypePrinter 
+                    ? "std::string" : "string";
+           
+            var typeName = typeResult.ToString();
             typeName = CleanClangNamespaceFromName(typeName);
 
             if (typeName.Contains("QualType"))
                 typeName = "QualifiedType";
-
-            if (typeName.Contains("UnaryOperator::Opcode"))
+            else if (typeName.Contains("UnaryOperator::Opcode"))
                 typeName = "UnaryOperatorKind";
-
-            if (typeName.Contains("BinaryOperator::Opcode"))
+            else if (typeName.Contains("BinaryOperator::Opcode"))
                 typeName = "BinaryOperatorKind";
+            
+            else if (typeName.Contains("Semantics"))
+                typeName = "FloatSemantics";
+
+            else if (typeName.Contains("optional"))
+            {
+                if (typePrinter is CppTypePrinter)
+                {
+                    typeName = "std::" + typeName;
+                }
+                else
+                {
+                    var optType = (declType as TemplateSpecializationType)!.Arguments[0].Type;
+                    typeResult = optType.Visit(typePrinter);
+                    typeName = $"{typeResult}?";
+                }
+            }
 
             string className = null;
             if (typeName.Contains("FieldDecl"))
@@ -1857,6 +1975,8 @@ namespace CppSharp
                 className = "Method";
             else if (typeName.Contains("FunctionDecl"))
                 className = "Function";
+            else if (typeName.Contains("FunctionTemplateDecl"))
+                className = "FunctionTemplate";
             else if (typeName == "Decl" || typeName == "Decl*")
                 className = "Declaration";
 
@@ -1914,6 +2034,24 @@ namespace CppSharp
 
             if (iteratorTypeName.Contains("ExprIterator"))
                 iteratorTypeName = "Expr";
+            
+            else if (iteratorTypeName.Contains("StmtIterator"))
+                iteratorTypeName = "Stmt";
+
+            else if (iteratorTypeName.Contains("CastIterator"))
+            {
+                if (iteratorType is TypedefType typedefType)
+                    iteratorType = typedefType.Declaration.Type;
+                
+                var templateArg = ((TemplateSpecializationType)iteratorType).Arguments[0];
+                iteratorType = templateArg.Type.Type;
+
+                typePrinter.PushScope(TypePrintScopeKind.Qualified);
+                iteratorTypeName = iteratorType.Visit(typePrinter).Type;
+                typePrinter.PopScope();
+
+                iteratorTypeName = CleanClangNamespaceFromName(iteratorTypeName);
+            }
 
             if (iteratorTypeName == "Decl")
                 iteratorTypeName = "Declaration";
