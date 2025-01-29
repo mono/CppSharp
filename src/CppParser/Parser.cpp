@@ -2868,9 +2868,13 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL,
             }
 
             assertm(TL->getTypeLocClass() == TypeLoc::TemplateTypeParm, "Token should be template type parameter!\n");
-            auto TTTL = TL->getAs<TemplateTypeParmTypeLoc>();
+            auto TTPTL = TL->getAs<TemplateTypeParmTypeLoc>();
+            auto TTPD = TTPTL.getDecl();
 
-            TPT->parameter = WalkTypeTemplateParameter(TTTL.getDecl());
+            if (!TTPD)
+                return nullptr; // Can happen when a template param is used in a nested template argument
+
+            TPT->parameter = WalkTypeTemplateParameter(TTPD);
         }
         else if (TP->getDecl())
             TPT->parameter = WalkTypeTemplateParameter(TP->getDecl());
