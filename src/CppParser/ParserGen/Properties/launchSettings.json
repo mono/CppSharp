@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CppSharp.Parser.Gen": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
