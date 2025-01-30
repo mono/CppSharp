@@ -173,7 +173,6 @@ namespace CppSharp
                 using var res = ClangParser.ParseLibrary(linkerOptions);
                 if (res.Kind != ParserResultKind.Success)
                 {
-                    res.Dispose();
                     continue;
                 }
 
@@ -454,7 +453,7 @@ namespace CppSharp
 
             driver.SaveCode(outputs);
             if (driver.Options.IsCSharpGenerator && driver.Options.CompileCode)
-                driver.Options.Modules.Any(m => !driver.CompileCode(m));
+                return driver.Options.Modules.Any(m => !driver.CompileCode(m));
 
             return true;
         }

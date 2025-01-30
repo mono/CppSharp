@@ -3,7 +3,7 @@ set -e
 builddir=$(cd "$(dirname "$0")"; pwd)
 platform=x64
 vs=vs2022
-configuration=Release
+configuration=DebugOpt
 build_only=false
 ci=false
 target_framework=

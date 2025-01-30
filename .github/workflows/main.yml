@@ -2,24 +2,34 @@ name: CI
 
 on: [push, pull_request]
 
+# Cancel any previous workflows if the pull request was updated
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   build:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     strategy:
       fail-fast: false
       matrix:
-        config:
-          - { os: ubuntu-22.04, platform: x64, cxx: g++-11, cc: gcc-11 }
-          - { os: macos-12, platform: x64, cxx: clang++, cc: clang }
-          - { os: windows-2022, platform: x64, vs: "Program Files/Microsoft Visual Studio/2022" }
+        os: [ubuntu-22.04, macos-12, windows-2022]
+        platform: [x64]
+        build-cfg: [DebugOpt, Release]
+        #build-cfg: [Debug, DebugOpt, Release] # our local copy of clang isn't build for debug on linux/macos currently
+        include:
+          - os: windows-2022
+            platform: x64
+            build-cfg: Debug
 
-    runs-on: ${{ matrix.config.os }}
+    runs-on: ${{ matrix.os }}
 
     env:
-      CC: ${{ matrix.config.cc }}
-      CXX: ${{ matrix.config.cxx }}
-      VS_VERSION: ${{ matrix.config.vs }}
-      PLATFORM: ${{ matrix.config.platform }}
+      CC: ${{ startsWith(matrix.os, 'ubuntu') && 'gcc-11' || 'clang' }}
+      CXX: ${{ startsWith(matrix.os, 'ubuntu') && 'g++-11' || 'clang++' }}
+      VS_VERSION: "Program Files/Microsoft Visual Studio/2022"
+      PLATFORM: ${{ matrix.platform }}
+      BUILD_CONFIGURATION: ${{ matrix.build-cfg }}
       DOTNET_NOLOGO: true
       DOTNET_CLI_TELEMETRY_OPTOUT: true
       EMSCRIPTEN_VERSION: 3.1.65
@@ -41,7 +51,7 @@ jobs:
           cmake-version: '3.30.x'
 
       - name: Install nbgv
-        if: startsWith(matrix.config.os, 'macos')
+        if: startsWith(matrix.os, 'macos')
         run: |
           dotnet tool install -g nbgv
 
@@ -49,51 +59,55 @@ jobs:
         run: nbgv cloud --all-vars
 
       - name: Environment
-        if: matrix.config.vs
+        if: startsWith(matrix.os, 'windows')
         shell: bash
         run: echo "/c/$VS_VERSION/Enterprise/MSBuild/Current/Bin" >> $GITHUB_PATH
 
       - name: Setup
         shell: bash
         run: |
-          build/build.sh generate -platform $PLATFORM
-          build/build.sh download_llvm -platform $PLATFORM
+          build/build.sh generate -platform $PLATFORM -configuration $BUILD_CONFIGURATION
+          build/build.sh download_llvm -platform $PLATFORM -configuration $BUILD_CONFIGURATION
 
       - name: Restore
         shell: bash
-        run: build/build.sh restore -platform $PLATFORM
+        run: build/build.sh restore -platform $PLATFORM -configuration $BUILD_CONFIGURATION
 
       - name: Build
         shell: bash
-        run: build/build.sh -platform $PLATFORM -build_only
+        run: build/build.sh -platform $PLATFORM -build_only -configuration $BUILD_CONFIGURATION
 
       - name: Test (.NET)
+        # Disable test for debug configs, since they take over 6 hours to complete
+        if: matrix.build-cfg != 'Debug'
         shell: bash
-        run: build/test.sh -platform $PLATFORM
+        run: build/test.sh -platform $PLATFORM -configuration $BUILD_CONFIGURATION
 
       - name: Build (QuickJS runtime)
+        if: runner.os != 'Windows'
         shell: bash
         run: tests/quickjs/bootstrap.sh
-        if: runner.os != 'Windows'
 
       - name: Test (QuickJS)
-        shell: bash
-        run: tests/quickjs/test.sh
         if: runner.os != 'Windows'
+        shell: bash
+        run: tests/quickjs/test.sh -dotnet_configuration $BUILD_CONFIGURATION
 
       - name: Test (Emscripten)
-        shell: bash
-        run: tests/emscripten/test.sh
         if: runner.os != 'Windows'
+        shell: bash
+        run: tests/emscripten/test.sh -dotnet_configuration $BUILD_CONFIGURATION
 
       - name: Pack
         shell: bash
-        run: build/build.sh prepack -platform $PLATFORM
+        run: build/build.sh prepack -platform $PLATFORM -configuration $BUILD_CONFIGURATION
 
       - name: Upload Artifacts
+        # We only need a release version of this in the create_package job
+        if: matrix.build-cfg == 'Release'
         uses: actions/upload-artifact@v4
         with:
-          name: intermediate
+          name: intermediate-${{ matrix.build-cfg }}-${{ matrix.platform }}
           retention-days: 7
           overwrite: true
           path: |
@@ -110,6 +124,7 @@ jobs:
     env:
       DOTNET_NOLOGO: true
       DOTNET_CLI_TELEMETRY_OPTOUT: true
+      BUILD_CONFIGURATION: Release
 
     steps:
       - uses: actions/checkout@v4
@@ -121,15 +136,15 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: intermediate
+          name: intermediate-Release-x64
 
       - name: Setup
         shell: bash
-        run: build/build.sh generate_config
+        run: build/build.sh generate_config -configuration $BUILD_CONFIGURATION
 
       - name: Create package
         shell: bash
-        run: build/build.sh pack
+        run: build/build.sh pack -configuration $BUILD_CONFIGURATION
 
       - name: Upload package
         uses: actions/upload-artifact@v4

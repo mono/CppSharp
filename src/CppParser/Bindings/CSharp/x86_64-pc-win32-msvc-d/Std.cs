@@ -22,13 +22,13 @@ namespace Std
 {
     namespace Vector
     {
-        [StructLayout(LayoutKind.Sequential, Size = 12, Pack = 8)]
+        [StructLayout(LayoutKind.Sequential, Size = 32, Pack = 8)]
         public unsafe partial struct __Internalc__N_std_S_vector____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S_allocator__S0_
         {
             internal global::Std.CompressedPair.__Internalc__N_std_S__Compressed_pair____N_std_S_allocator____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S__Vector_val____N_std_S__Simple_types__S1__Vb1 _Mypair;
         }
 
-        [StructLayout(LayoutKind.Sequential, Size = 12, Pack = 8)]
+        [StructLayout(LayoutKind.Sequential, Size = 32, Pack = 8)]
         public unsafe partial struct __Internalc__N_std_S_vector__i___N_std_S_allocator__i
         {
             internal global::Std.CompressedPair.__Internalc__N_std_S__Compressed_pair____N_std_S_allocator__i___N_std_S__Vector_val____N_std_S__Simple_types__i_Vb1 _Mypair;
@@ -37,9 +37,10 @@ namespace Std
 
     namespace VectorVal
     {
-        [StructLayout(LayoutKind.Sequential, Size = 12, Pack = 8)]
+        [StructLayout(LayoutKind.Sequential, Size = 32, Pack = 8)]
         public unsafe partial struct __Internal
         {
+            internal __IntPtr _Myproxy;
             internal __IntPtr _Myfirst;
             internal __IntPtr _Mylast;
             internal __IntPtr _Myend;
@@ -51,19 +52,19 @@ namespace Std
 {
     namespace CompressedPair
     {
-        [StructLayout(LayoutKind.Sequential, Size = 24, Pack = 8)]
+        [StructLayout(LayoutKind.Sequential, Size = 40, Pack = 8)]
         public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S_allocator__C___N_std_S__String_val____N_std_S__Simple_types__C_Vb1
         {
             internal global::Std.StringVal.__Internal _Myval2;
         }
 
-        [StructLayout(LayoutKind.Sequential, Size = 12, Pack = 8)]
+        [StructLayout(LayoutKind.Sequential, Size = 32, Pack = 8)]
         public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S_allocator____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S__Vector_val____N_std_S__Simple_types__S1__Vb1
         {
             internal global::Std.VectorVal.__Internal _Myval2;
         }
 
-        [StructLayout(LayoutKind.Sequential, Size = 12, Pack = 8)]
+        [StructLayout(LayoutKind.Sequential, Size = 32, Pack = 8)]
         public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S_allocator__i___N_std_S__Vector_val____N_std_S__Simple_types__i_Vb1
         {
             internal global::Std.VectorVal.__Internal _Myval2;
@@ -75,7 +76,7 @@ namespace Std
         [StructLayout(LayoutKind.Sequential, Size = 1, Pack = 8)]
         public unsafe partial struct __Internal
         {
-            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "??0?$allocator@D@std@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "??0?$allocator@D@std@@QEAA@XZ", CallingConvention = __CallingConvention.Cdecl)]
             internal static extern __IntPtr ctorc__N_std_S_allocator__C(__IntPtr __instance);
         }
     }
@@ -200,11 +201,12 @@ namespace Std
 {
     namespace TreeVal
     {
-        [StructLayout(LayoutKind.Sequential, Size = 8, Pack = 8)]
+        [StructLayout(LayoutKind.Sequential, Size = 24, Pack = 8)]
         public unsafe partial struct __Internal
         {
+            internal __IntPtr _Myproxy;
             internal __IntPtr _Myhead;
-            internal uint _Mysize;
+            internal ulong _Mysize;
         }
     }
 }
@@ -213,15 +215,15 @@ namespace Std
 {
     namespace BasicString
     {
-        [StructLayout(LayoutKind.Sequential, Size = 24, Pack = 8)]
+        [StructLayout(LayoutKind.Sequential, Size = 40, Pack = 8)]
         public unsafe partial struct __Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C
         {
             internal global::Std.CompressedPair.__Internalc__N_std_S__Compressed_pair____N_std_S_allocator__C___N_std_S__String_val____N_std_S__Simple_types__C_Vb1 _Mypair;
 
-            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAA@XZ", CallingConvention = __CallingConvention.Cdecl)]
             internal static extern __IntPtr ctorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C(__IntPtr __instance);
 
-            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "??1?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "??1?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAA@XZ", CallingConvention = __CallingConvention.Cdecl)]
             internal static extern void dtorc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C(__IntPtr __instance);
         }
     }
@@ -340,12 +342,13 @@ namespace Std
 
     namespace StringVal
     {
-        [StructLayout(LayoutKind.Sequential, Size = 24, Pack = 8)]
+        [StructLayout(LayoutKind.Sequential, Size = 40, Pack = 8)]
         public unsafe partial struct __Internal
         {
+            internal __IntPtr _Myproxy;
             internal global::Std.StringVal.Bxty.__Internal _Bx;
-            internal uint _Mysize;
-            internal uint _Myres;
+            internal ulong _Mysize;
+            internal ulong _Myres;
         }
 
         namespace Bxty
@@ -370,10 +373,10 @@ namespace Std
     {
         public partial struct __Internal
         {
-            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "?assign@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAEAAV12@QBD@Z", CallingConvention = __CallingConvention.ThisCall)]
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "?assign@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAAAEAV12@QEBD@Z", CallingConvention = __CallingConvention.Cdecl)]
             internal static extern __IntPtr Assign(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string _Ptr);
 
-            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "?data@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QBEPBDXZ", CallingConvention = __CallingConvention.ThisCall)]
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "?data@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEBAPEBDXZ", CallingConvention = __CallingConvention.Cdecl)]
             internal static extern __IntPtr Data(__IntPtr __instance);
         }
 

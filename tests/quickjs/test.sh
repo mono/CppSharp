@@ -6,6 +6,19 @@ dotnet_configuration=Release
 configuration=debug
 jsinterp="$dir/runtime/build/qjs"
 
+for arg in "$@"; do
+    case $arg in
+        -configuration)
+        configuration=$2
+        shift
+        ;;
+        -dotnet_configuration)
+        dotnet_configuration=$2
+        shift
+        ;;
+    esac
+done
+
 cd $dir
 
 if [ "$CI" = "true" ]; then

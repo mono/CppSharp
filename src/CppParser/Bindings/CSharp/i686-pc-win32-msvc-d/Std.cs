@@ -22,13 +22,13 @@ namespace Std
 {
     namespace Vector
     {
-        [StructLayout(LayoutKind.Sequential, Size = 12, Pack = 8)]
+        [StructLayout(LayoutKind.Sequential, Size = 16, Pack = 8)]
         public unsafe partial struct __Internalc__N_std_S_vector____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S_allocator__S0_
         {
             internal global::Std.CompressedPair.__Internalc__N_std_S__Compressed_pair____N_std_S_allocator____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S__Vector_val____N_std_S__Simple_types__S1__Vb1 _Mypair;
         }
 
-        [StructLayout(LayoutKind.Sequential, Size = 12, Pack = 8)]
+        [StructLayout(LayoutKind.Sequential, Size = 16, Pack = 8)]
         public unsafe partial struct __Internalc__N_std_S_vector__i___N_std_S_allocator__i
         {
             internal global::Std.CompressedPair.__Internalc__N_std_S__Compressed_pair____N_std_S_allocator__i___N_std_S__Vector_val____N_std_S__Simple_types__i_Vb1 _Mypair;
@@ -37,9 +37,10 @@ namespace Std
 
     namespace VectorVal
     {
-        [StructLayout(LayoutKind.Sequential, Size = 12, Pack = 8)]
+        [StructLayout(LayoutKind.Sequential, Size = 16, Pack = 8)]
         public unsafe partial struct __Internal
         {
+            internal __IntPtr _Myproxy;
             internal __IntPtr _Myfirst;
             internal __IntPtr _Mylast;
             internal __IntPtr _Myend;
@@ -51,19 +52,19 @@ namespace Std
 {
     namespace CompressedPair
     {
-        [StructLayout(LayoutKind.Sequential, Size = 24, Pack = 8)]
+        [StructLayout(LayoutKind.Sequential, Size = 28, Pack = 8)]
         public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S_allocator__C___N_std_S__String_val____N_std_S__Simple_types__C_Vb1
         {
             internal global::Std.StringVal.__Internal _Myval2;
         }
 
-        [StructLayout(LayoutKind.Sequential, Size = 12, Pack = 8)]
+        [StructLayout(LayoutKind.Sequential, Size = 16, Pack = 8)]
         public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S_allocator____N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C___N_std_S__Vector_val____N_std_S__Simple_types__S1__Vb1
         {
             internal global::Std.VectorVal.__Internal _Myval2;
         }
 
-        [StructLayout(LayoutKind.Sequential, Size = 12, Pack = 8)]
+        [StructLayout(LayoutKind.Sequential, Size = 16, Pack = 8)]
         public unsafe partial struct __Internalc__N_std_S__Compressed_pair____N_std_S_allocator__i___N_std_S__Vector_val____N_std_S__Simple_types__i_Vb1
         {
             internal global::Std.VectorVal.__Internal _Myval2;
@@ -200,9 +201,10 @@ namespace Std
 {
     namespace TreeVal
     {
-        [StructLayout(LayoutKind.Sequential, Size = 8, Pack = 8)]
+        [StructLayout(LayoutKind.Sequential, Size = 12, Pack = 8)]
         public unsafe partial struct __Internal
         {
+            internal __IntPtr _Myproxy;
             internal __IntPtr _Myhead;
             internal uint _Mysize;
         }
@@ -213,7 +215,7 @@ namespace Std
 {
     namespace BasicString
     {
-        [StructLayout(LayoutKind.Sequential, Size = 24, Pack = 8)]
+        [StructLayout(LayoutKind.Sequential, Size = 28, Pack = 8)]
         public unsafe partial struct __Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C
         {
             internal global::Std.CompressedPair.__Internalc__N_std_S__Compressed_pair____N_std_S_allocator__C___N_std_S__String_val____N_std_S__Simple_types__C_Vb1 _Mypair;
@@ -340,9 +342,10 @@ namespace Std
 
     namespace StringVal
     {
-        [StructLayout(LayoutKind.Sequential, Size = 24, Pack = 8)]
+        [StructLayout(LayoutKind.Sequential, Size = 28, Pack = 8)]
         public unsafe partial struct __Internal
         {
+            internal __IntPtr _Myproxy;
             internal global::Std.StringVal.Bxty.__Internal _Bx;
             internal uint _Mysize;
             internal uint _Myres;

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "VTables.Gen": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
