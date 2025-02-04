@@ -29,6 +29,18 @@ jobs:
         if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.platform, 'arm64')
         run: sudo apt install -y g++-aarch64-linux-gnu gcc-aarch64-linux-gnu
 
+      - name: Free Disk Space (Ubuntu)
+        if: startsWith(matrix.os, 'ubuntu')
+        uses: insightsengineering/disk-space-reclaimer@v1
+        with:
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          swap-storage: true
+          docker-images: true
+          tools-cache: true
+
       - name: Clone LLVM
         shell: bash
         run: build/build.sh clone_llvm
