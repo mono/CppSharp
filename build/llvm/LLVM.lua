@@ -219,6 +219,10 @@ function download_llvm()
   else
     extract_tar_xz(archive, pkg_name)
   end
+
+  -- delete the extracted archive
+  print("Cleaning up downloaded artifacts...")
+  os.remove(archive)
 end
 
 function cmake(gen, conf, builddir, options)
@@ -510,6 +514,10 @@ function package_llvm(conf, llvm_base, llvm_build)
 	else
 		os.copydir(llvm_build_libdir, out .. "/build/lib", "*.a")
 	end
+
+    -- Copy natvis visualizers for a better debugging experience
+	os.copyfile(llvm_base .. "/clang/utils/ClangVisualizers/clang.natvis", out .. "/utils/clang.natvis")
+	os.copyfile(llvm_base .. "/llvm/utils/LLVMVisualizers/llvm.natvis", out .. "/utils/llvm.natvis")
 
 	os.copydir(llvm_base .. "/clang/include", out .. "/clang/include")
 	os.copydir(llvm_build .. "/tools/clang/include", out .. "/build/clang/include")
