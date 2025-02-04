@@ -432,7 +432,10 @@ namespace CppSharp.AST
                 return false;
 
             if (VisitOptions.VisitFunctionReturnType)
-                property.Type.Visit(this);
+            {
+                if(property.Type != null) // Auto types return null types currently
+                    property.Type.Visit(this);
+            }
 
             if (VisitOptions.VisitPropertyAccessors)
             {
