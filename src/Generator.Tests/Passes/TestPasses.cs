@@ -39,19 +39,31 @@ namespace CppSharp.Generator.Tests.Passes
         }
 
         [Test]
-        public void TestCheckFlagEnumsPass()
+        public void TestCheckEnumsPass()
         {
             var @enum = AstContext.Enum("FlagEnum");
-            Assert.IsFalse(@enum.IsFlags);
+            var enum2 = AstContext.Enum("FlagEnum2");
+            var boolClassEnum = AstContext.Enum("BoolEnum");
+            var ucharClassEnum = AstContext.Enum("UCharEnum");
 
-            var @enum2 = AstContext.Enum("FlagEnum2");
-            Assert.IsFalse(@enum2.IsFlags);
+            Assert.IsFalse(@enum.IsFlags);
+            Assert.IsFalse(enum2.IsFlags);
+            Assert.IsFalse(boolClassEnum.IsFlags);
+            Assert.IsFalse(ucharClassEnum.IsFlags);
+
+            Assert.IsTrue(boolClassEnum.BuiltinType.Type == PrimitiveType.Bool);
+            Assert.IsTrue(ucharClassEnum.BuiltinType.Type == PrimitiveType.UChar);
 
             passBuilder.AddPass(new CheckEnumsPass());
             passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
 
             Assert.IsTrue(@enum.IsFlags);
-            Assert.IsFalse(@enum2.IsFlags);
+            Assert.IsFalse(enum2.IsFlags);
+            Assert.IsFalse(boolClassEnum.IsFlags);
+            Assert.IsTrue(ucharClassEnum.IsFlags);
+
+            Assert.IsTrue(boolClassEnum.BuiltinType.Type != PrimitiveType.Bool, "C# does not support Bool enums");
+            Assert.IsTrue(ucharClassEnum.BuiltinType.Type == PrimitiveType.UChar);
         }
 
         [Test]

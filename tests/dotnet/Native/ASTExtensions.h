@@ -1,7 +1,7 @@
 #include "AST.h"
 #include <vector>
 
-// Tests class templates accross translation units
+// Tests class templates across translation units
 // Explicit instantiation
 template class TestTemplateClass<Math::Complex>;
 // Implicit instantiations

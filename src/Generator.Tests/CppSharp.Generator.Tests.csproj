@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <None Include="..\..\tests\Native\AST.h" LinkBase="tests\Native" />
-    <None Include="..\..\tests\Native\ASTExtensions.h" LinkBase="tests\Native" />
-    <None Include="..\..\tests\Native\Passes.h" LinkBase="tests\Native" />
+    <None Include="..\..\tests\dotnet\Native\AST.h" LinkBase="tests\Native" />
+    <None Include="..\..\tests\dotnet\Native\ASTExtensions.h" LinkBase="tests\Native" />
+    <None Include="..\..\tests\dotnet\Native\Passes.h" LinkBase="tests\Native" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Generator\CppSharp.Generator.csproj" />

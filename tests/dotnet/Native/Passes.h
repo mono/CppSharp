@@ -14,6 +14,20 @@ enum FlagEnum2
   D1 = 1 << 4,
 };
 
+enum class BoolEnum : bool
+{
+    True = true,
+    False = false,
+};
+
+enum class UCharEnum : unsigned char
+{
+    A = 1 << 0,
+    B = 1 << 1,
+    C = 1 << 2,
+    D = 1 << 3,
+};
+
 class Foo
 {
     void toIgnore() { }
