@@ -47,7 +47,7 @@ namespace CppSharp.Generator.Tests.Passes
             var @enum2 = AstContext.Enum("FlagEnum2");
             Assert.IsFalse(@enum2.IsFlags);
 
-            passBuilder.AddPass(new CheckFlagEnumsPass());
+            passBuilder.AddPass(new CheckEnumsPass());
             passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
 
             Assert.IsTrue(@enum.IsFlags);
