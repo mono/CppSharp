@@ -1,10 +1,11 @@
 ﻿using CppSharp.AST;
+using CppSharp.Extensions;
 
 namespace CppSharp.Passes
 {
     /// <summary>
-    /// Checks for enumerations that should be treated as a collection
-    /// of flags (and annotated with the .NET [Flags] when generated).
+    /// Validates enumerations and checks if any should be treated as a collection
+    /// of flags (and annotate them with the .NET [Flags] when generated).
     /// </summary>
     public class CheckEnumsPass : TranslationUnitPass
     {
@@ -38,15 +39,38 @@ namespace CppSharp.Passes
             return isFlags && hasBigRange;
         }
 
+        private bool IsValidEnumBaseType(Enumeration @enum)
+        {
+            if (Options.IsCSharpGenerator)
+                return @enum.BuiltinType.Type.IsIntegerType();
+
+            return @enum.BuiltinType.Type.IsIntegerType() || @enum.BuiltinType.Type == PrimitiveType.Bool;
+        }
+
         public override bool VisitEnumDecl(Enumeration @enum)
         {
-            if (IsFlagEnum(@enum))
+            if (!base.VisitEnumDecl(@enum))
+                return false;
+
+            if (!IsValidEnumBaseType(@enum))
             {
-                @enum.Modifiers |= Enumeration.EnumModifiers.Flags;
-                return true;
+                if (@enum.BuiltinType.Type == PrimitiveType.Bool)
+                {
+                    @enum.BuiltinType = new BuiltinType(PrimitiveType.UChar);
+                }
+                else
+                {
+                    Diagnostics.Warning(
+                        "The enum `{0}` has a base type of `{1}`, which is currently not supported. The base type will be ignored.",
+                        @enum, @enum.BuiltinType);
+                    @enum.BuiltinType = new BuiltinType(PrimitiveType.Int);
+                }
             }
 
-            return base.VisitEnumDecl(@enum);
+            if (IsFlagEnum(@enum))
+                @enum.Modifiers |= Enumeration.EnumModifiers.Flags;
+            
+            return true;
         }
     }
 }
