@@ -5,18 +5,21 @@ LLVMRootDir = builddir .. "/llvm/llvm-project"
 local LLVMDirPerConfiguration = false
 
 local LLVMRootDirDebug = ""
+local LLVMRootDirRelWithDebInfo = ""
 local LLVMRootDirRelease = ""
 
 require "llvm/LLVM"
 
 function SearchLLVM()
   LLVMRootDirDebug = builddir .. "/llvm/" .. get_llvm_package_name(nil, "Debug")
+  LLVMRootDirRelWithDebInfo = builddir .. "/llvm/" .. get_llvm_package_name(nil, "RelWithDebInfo")
   LLVMRootDirRelease = builddir .. "/llvm/" .. get_llvm_package_name()
 
-  if os.isdir(LLVMRootDirDebug) or os.isdir(LLVMRootDirRelease) then
+  if os.isdir(LLVMRootDirDebug) or os.isdir(LLVMRootDirRelWithDebInfo) or os.isdir(LLVMRootDirRelease) then
     LLVMDirPerConfiguration = true
-    print("Using debug LLVM build: " .. LLVMRootDirDebug)
-    print("Using release LLVM build: " .. LLVMRootDirRelease)
+    print("Using cached LLVM 'Debug' build: " .. LLVMRootDirDebug)
+    print("Using cached LLVM 'RelWithDebInfo' build: " .. LLVMRootDirRelWithDebInfo)
+    print("Using cached LLVM 'Release' build: " .. LLVMRootDirRelease)
   elseif os.isdir(LLVMRootDir) then
     print("Using LLVM build: " .. LLVMRootDir)
   else
@@ -41,13 +44,13 @@ function SetupLLVMIncludes()
     filter { "configurations:DebugOpt" }
       includedirs
       {
-        path.join(LLVMRootDirRelease, "include"),
-        path.join(LLVMRootDirRelease, "llvm/include"),
-        path.join(LLVMRootDirRelease, "lld/include"),
-        path.join(LLVMRootDirRelease, "clang/include"),
-        path.join(LLVMRootDirRelease, "clang/lib"),
-        path.join(LLVMRootDirRelease, "build/include"),
-        path.join(LLVMRootDirRelease, "build/clang/include"),
+        path.join(LLVMRootDirRelWithDebInfo, "include"),
+        path.join(LLVMRootDirRelWithDebInfo, "llvm/include"),
+        path.join(LLVMRootDirRelWithDebInfo, "lld/include"),
+        path.join(LLVMRootDirRelWithDebInfo, "clang/include"),
+        path.join(LLVMRootDirRelWithDebInfo, "clang/lib"),
+        path.join(LLVMRootDirRelWithDebInfo, "build/include"),
+        path.join(LLVMRootDirRelWithDebInfo, "build/clang/include"),
       }
 
     filter { "configurations:Debug" }
@@ -95,10 +98,15 @@ function CopyClangIncludes()
 
   if LLVMDirPerConfiguration then
     local clangBuiltinDebug = path.join(LLVMRootDirDebug, "lib")
+    local clangBuiltinRelWithDebInfo = path.join(LLVMRootDirRelWithDebInfo, "lib")
     local clangBuiltinRelease = path.join(LLVMRootDirRelease, "lib")
 
     if os.isdir(path.join(clangBuiltinDebug, "clang")) then
       clangBuiltinIncludeDir = clangBuiltinDebug
+    end
+
+    if os.isdir(path.join(clangBuiltinRelWithDebInfo, "clang")) then
+      clangBuiltinIncludeDir = clangBuiltinRelWithDebInfo
     end
 
     if os.isdir(path.join(clangBuiltinRelease, "clang")) then
@@ -134,7 +142,7 @@ function SetupLLVMLibs()
 
   if LLVMDirPerConfiguration then
     filter { "configurations:DebugOpt" }
-      libdirs { path.join(LLVMRootDirRelease, "build/lib") }
+      libdirs { path.join(LLVMRootDirRelWithDebInfo, "build/lib") }
 
     filter { "configurations:Debug" }
       libdirs { path.join(LLVMRootDirDebug, "build/lib") }
@@ -150,9 +158,6 @@ function SetupLLVMLibs()
 
     filter { "configurations:Debug", "toolset:msc*" }
       libdirs { path.join(LLVMBuildDir, "Debug/lib") }
-
-    filter { "configurations:Release", "toolset:msc*" }
-      libdirs { path.join(LLVMBuildDir, "RelWithDebInfo/lib") }
   end
 
   filter {}

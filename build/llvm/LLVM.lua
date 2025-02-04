@@ -143,7 +143,7 @@ function get_llvm_configuration_name(debug)
 	if string.find(_OPTIONS["configuration"], "Debug") then
 		return "Debug"
 	end
-	return os.istarget("windows") and "RelWithDebInfo" or "Release"
+	return "Release"
 end
 
 function get_7z_path()
