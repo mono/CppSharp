@@ -49,6 +49,10 @@ function clone_llvm()
 
   extract(archive, '.')
   os.rename('llvm-project-'..llvm_release, llvm)
+
+  -- delete the extracted archive
+  print("Cleaning up downloaded artifacts...")
+  os.remove(archive)
 end
 
 function get_vs_version()
