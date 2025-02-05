@@ -58,6 +58,8 @@
 #include <Driver/ToolChains/Linux.h>
 #include <Driver/ToolChains/MSVC.h>
 
+#include "ASTNameMangler.h"
+
 #if defined(__APPLE__) || defined(__linux__)
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
@@ -468,69 +470,55 @@ void Parser::Setup(bool Compile)
         PP.getLangOpts());
 
     c->createASTContext();
+    NameMangler.reset(new ASTNameMangler(c->getASTContext()));
 }
 
 //-----------------------------------//
 
-std::string Parser::GetDeclMangledName(const clang::Decl* D)
+std::string Parser::GetDeclMangledName(const clang::Decl* D) const
 {
+    // Source adapted from https://clang.llvm.org/doxygen/JSONNodeDumper_8cpp_source.html#l00845
+
     using namespace clang;
 
-    if(!D || !isa<NamedDecl>(D))
-        return "";
+    auto ND = dyn_cast_or_null<NamedDecl>(D);
+    if (!ND || !ND->getDeclName())
+        return {};
 
-    bool CanMangle = isa<FunctionDecl>(D) || isa<VarDecl>(D)
+    // If the declaration is dependent or is in a dependent context, then the
+    // mangling is unlikely to be meaningful (and in some cases may cause
+    // "don't know how to mangle this" assertion failures.)
+    if (ND->isTemplated())
+        return {};
+
+    /*bool CanMangle = isa<FunctionDecl>(D) || isa<VarDecl>(D)
         || isa<CXXConstructorDecl>(D) || isa<CXXDestructorDecl>(D);
 
-    if (!CanMangle) return "";
+    if (!CanMangle)
+        return {};*/
 
-    auto ND = cast<NamedDecl>(D);
-    std::unique_ptr<MangleContext> MC;
-    
-    auto& AST = c->getASTContext();
-    auto targetABI = c->getTarget().getCXXABI().getKind();
-    switch(targetABI)
-    {
-    default:
-       MC.reset(ItaniumMangleContext::create(AST, AST.getDiagnostics()));
-       break;
-    case TargetCXXABI::Microsoft:
-       MC.reset(MicrosoftMangleContext::create(AST, AST.getDiagnostics()));
-       break;
-    }
+    // FIXME: There are likely other contexts in which it makes no sense to ask
+    // for a mangled name.
+    if (isa<RequiresExprBodyDecl>(ND->getDeclContext()))
+        return {};
 
-    if (!MC)
-        llvm_unreachable("Unknown mangling ABI");
+    // Do not mangle template deduction guides.
+    if (isa<CXXDeductionGuideDecl>(ND))
+        return {};
 
-    std::string Mangled;
-    llvm::raw_string_ostream Out(Mangled);
+    // Mangled names are not meaningful for locals, and may not be well-defined
+        // in the case of VLAs.
+    auto* VD = dyn_cast<VarDecl>(ND);
+    if (VD && VD->hasLocalStorage())
+        return {};
 
-    bool IsDependent = false;
-    if (const ValueDecl *VD = dyn_cast<ValueDecl>(ND))
-        IsDependent |= VD->getType()->isDependentType();
-
-    if (!IsDependent)
-        IsDependent |= ND->getDeclContext()->isDependentContext();
-
-    if (!MC->shouldMangleDeclName(ND) || IsDependent)
-        return ND->getDeclName().getAsString();
-
-    GlobalDecl GD;
-    if (const CXXConstructorDecl *CD = dyn_cast<CXXConstructorDecl>(ND))
-        GD = GlobalDecl(CD, Ctor_Base);
-    else if (const CXXDestructorDecl *DD = dyn_cast<CXXDestructorDecl>(ND))
-        GD = GlobalDecl(DD, Dtor_Base);
-    else
-        GD = GlobalDecl(ND);
-    MC->mangleName(GD, Out);
-
-    Out.flush();
+    std::string MangledName = NameMangler->GetName(ND);
 
     // Strip away LLVM name marker.
-    if(!Mangled.empty() && Mangled[0] == '\01')
-        Mangled = Mangled.substr(1);
+    if (!MangledName.empty() && MangledName[0] == '\01')
+        MangledName = MangledName.substr(1);
 
-    return Mangled;
+    return MangledName;
 }
 
 //-----------------------------------//
@@ -632,7 +620,7 @@ static clang::SourceLocation GetDeclStartLocation(clang::CompilerInstance* C,
     return GetDeclStartLocation(C, prevDecl);
 }
 
-std::string Parser::GetTypeName(const clang::Type* Type)
+std::string Parser::GetTypeName(const clang::Type* Type) const
 {
     using namespace clang;
 

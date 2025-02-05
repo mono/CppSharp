@@ -47,6 +47,7 @@ namespace clang {
 #define Debug printf
 
 namespace CppSharp { namespace CppParser {
+    class ASTNameMangler;
 
 class Parser
 {
@@ -133,8 +134,8 @@ private:
     // Clang helpers
     SourceLocationKind GetLocationKind(const clang::SourceLocation& Loc);
     bool IsValidDeclaration(const clang::SourceLocation& Loc);
-    std::string GetDeclMangledName(const clang::Decl* D);
-    std::string GetTypeName(const clang::Type* Type);
+    std::string GetDeclMangledName(const clang::Decl* D) const;
+    std::string GetTypeName(const clang::Type* Type) const;
     bool CanCheckCodeGenInfo(const clang::Type* Ty);
     void CompleteIfSpecializationType(const clang::QualType& QualType);
     Parameter* WalkParameter(const clang::ParmVarDecl* PVD,
@@ -181,6 +182,7 @@ private:
     int index;
     std::unique_ptr<clang::CompilerInstance> c;
     llvm::LLVMContext LLVMCtx;
+    std::unique_ptr<ASTNameMangler> NameMangler;
     std::unique_ptr<llvm::Module> LLVMModule;
     std::unique_ptr<clang::CodeGen::CodeGenModule> CGM;
     std::unique_ptr<clang::CodeGen::CodeGenTypes> codeGenTypes;
