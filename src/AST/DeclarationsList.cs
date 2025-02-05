@@ -59,7 +59,10 @@ namespace CppSharp.AST
             base.RemoveItem(index);
             for (var i = Kind.Namespace; i <= Kind.Event; i++)
             {
-                if (offsets.ContainsKey(i) && index < offsets[i])
+                if (!offsets.TryGetValue(i, out int start))
+                    continue;
+                
+                if (index < start)
                 {
                     offsets[i]--;
                 }
@@ -74,12 +77,11 @@ namespace CppSharp.AST
 
         private IEnumerable<T> OfType<T>(Kind kind) where T : Declaration
         {
-            if (!offsets.ContainsKey(kind))
+            if (!offsets.TryGetValue(kind, out var offset))
             {
                 yield break;
             }
 
-            var offset = offsets[kind];
             for (var i = GetStart(kind); i < offset; i++)
             {
                 yield return (T)this[i];
@@ -105,28 +107,30 @@ namespace CppSharp.AST
 
         private int GetOffset(Kind kind)
         {
-            if (offsets.ContainsKey(kind))
-                return offsets[kind];
+            if (offsets.TryGetValue(kind, out int o))
+                return o;
 
+            // First time we see this kind of declaration. Insert it between the previous and next kinds.
             for (var i = kind - 1; i >= Kind.Namespace; i--)
             {
-                if (offsets.ContainsKey(i))
-                {
-                    return offsets[kind] = offsets[i];
-                }
+                if (!offsets.TryGetValue(i, out var start)) 
+                    continue;
+
+                offsets[kind] = start;
+                return start;
             }
 
             offsets[kind] = 0;
-            return offsets[kind];
+            return 0;
         }
 
         private int GetStart(Kind kind)
         {
             for (var i = kind - 1; i >= Kind.Namespace; i--)
             {
-                if (offsets.ContainsKey(i))
+                if (offsets.TryGetValue(i, out var start))
                 {
-                    return offsets[i];
+                    return start;
                 }
             }
             return 0;
@@ -154,7 +158,7 @@ namespace CppSharp.AST
             return middle;
         }
 
-        private Dictionary<Kind, int> offsets = new Dictionary<Kind, int>();
+        private readonly Dictionary<Kind, int> offsets = new();
 
         private enum Kind
         {

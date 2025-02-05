@@ -74,31 +74,31 @@ namespace CppSharp.AST
     // Represents a C++ record decl.
     public class Class : DeclarationContext
     {
-        public List<BaseClassSpecifier> Bases;
-        public List<Field> Fields;
-        public List<Property> Properties;
-        public List<Method> Methods;
-        public List<AccessSpecifierDecl> Specifiers;
+        public List<BaseClassSpecifier> Bases = new();
+        public List<Field> Fields = new();
+        public List<Property> Properties = new();
+        public List<Method> Methods = new();
+        public List<AccessSpecifierDecl> Specifiers = new();
 
         // True if the record is a POD (Plain Old Data) type.
-        public bool IsPOD;
+        public bool IsPOD = false;
 
         // Semantic type of the class.
-        public ClassType Type;
+        public ClassType Type = ClassType.RefType;
 
         // ABI-specific class layout.
-        public ClassLayout Layout;
+        public ClassLayout Layout = new();
 
         // True if class provides pure virtual methods.
-        public bool IsAbstract;
+        public bool IsAbstract = false;
 
         // True if the type is to be treated as a union.
-        public bool IsUnion;
+        public bool IsUnion = false;
 
         public TagKind TagKind { get; set; }
 
         // True if the class is final / sealed.
-        public bool IsFinal { get; set; }
+        public bool IsFinal { get; set; } = false;
 
         private bool? isOpaque;
 
@@ -128,23 +128,6 @@ namespace CppSharp.AST
 
         // True if the class represents a static class.
         public bool IsStatic;
-
-        public Class()
-        {
-            Bases = new List<BaseClassSpecifier>();
-            Fields = new List<Field>();
-            Properties = new List<Property>();
-            Methods = new List<Method>();
-            Specifiers = new List<AccessSpecifierDecl>();
-            IsAbstract = false;
-            IsUnion = false;
-            IsFinal = false;
-            IsPOD = false;
-            Type = ClassType.RefType;
-            Layout = new ClassLayout();
-            templateParameters = new List<Declaration>();
-            specializations = new List<ClassTemplateSpecialization>();
-        }
 
         public bool HasBase => Bases.Count > 0;
 
@@ -296,7 +279,7 @@ namespace CppSharp.AST
             return visitor.VisitClassDecl(this);
         }
 
-        private List<Declaration> templateParameters;
-        private List<ClassTemplateSpecialization> specializations;
+        private readonly List<Declaration> templateParameters = new();
+        private readonly List<ClassTemplateSpecialization> specializations = new();
     }
 }

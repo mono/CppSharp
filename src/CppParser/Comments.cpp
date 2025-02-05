@@ -11,6 +11,7 @@
 #include <clang/AST/ASTContext.h>
 
 using namespace CppSharp::CppParser;
+using namespace CppSharp::CppParser::AST;
 
 //-----------------------------------//
 
@@ -39,7 +40,7 @@ RawComment* Parser::WalkRawComment(const clang::RawComment* RC)
     using namespace clang;
 
     auto& SM = c->getSourceManager();
-    auto Comment = new RawComment();
+    auto Comment = new AST::RawComment();
     Comment->kind = ConvertRawCommentKind(RC->getKind());
     Comment->text = RC->getRawText(SM).str();
     Comment->briefText = RC->getBriefText(c->getASTContext());

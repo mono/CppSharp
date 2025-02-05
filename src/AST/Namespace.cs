@@ -36,15 +36,9 @@ namespace CppSharp.AST
         // True if the context is inside an extern "C" context.
         public bool IsExternCContext;
 
-        public override string LogicalName
-        {
-            get { return IsAnonymous ? "<anonymous>" : base.Name; }
-        }
+        public override string LogicalName => IsAnonymous ? "<anonymous>" : base.Name;
 
-        public override string LogicalOriginalName
-        {
-            get { return IsAnonymous ? "<anonymous>" : base.OriginalName; }
-        }
+        public override string LogicalOriginalName => IsAnonymous ? "<anonymous>" : base.OriginalName;
 
         protected DeclarationContext()
         {
@@ -80,7 +74,7 @@ namespace CppSharp.AST
 
         public Declaration FindAnonymous(ulong key)
         {
-            return Anonymous.ContainsKey(key) ? Anonymous[key] : null;
+            return Anonymous.GetValueOrDefault(key);
         }
 
         public Namespace FindNamespace(string name)
@@ -172,7 +166,7 @@ namespace CppSharp.AST
             {
                 var functions = Functions.Where(e => e.Name.Equals(name));
 
-                if (!functions.Any() && createDecl)
+                if (createDecl && !functions.Any())
                 {
                     var function = new Function() { Name = name, Namespace = this };
                     Declarations.Add(function);

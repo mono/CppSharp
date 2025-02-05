@@ -12,6 +12,7 @@
 #include <clang/AST/ExprCXX.h>
 
 namespace CppSharp { namespace CppParser {
+    using namespace AST;
 
 AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
 {

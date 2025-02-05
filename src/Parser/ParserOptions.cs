@@ -84,10 +84,9 @@ namespace CppSharp.Parser
                 TargetTriple.Contains("windows") || TargetTriple.Contains("msvc");
 
         public bool EnableRTTI { get; set; }
-        public LanguageVersion? LanguageVersion { get; set; }
+        public LanguageVersion LanguageVersion { get; set; } = CppSharp.Parser.LanguageVersion.CPP14_GNU;
 
-        public void BuildForSourceFile(
-                IEnumerable<CppSharp.AST.Module> modules, string file = null)
+        public void BuildForSourceFile(IEnumerable<CppSharp.AST.Module> modules, string file = null)
         {
             // This eventually gets passed to Clang's MSCompatibilityVersion, which
             // is in turn used to derive the value of the built-in define _MSC_VER.
@@ -157,11 +156,7 @@ namespace CppSharp.Parser
 
             var clVersion = MSVCToolchain.GetCLVersion(vsVersion);
             ToolSetToUse = clVersion.Major * 10000000 + clVersion.Minor * 100000;
-
-            // do not remove the CppSharp prefix becase the Mono C# compiler breaks
-            if (!LanguageVersion.HasValue)
-                LanguageVersion = CppSharp.Parser.LanguageVersion.CPP14_GNU;
-
+            
             AddArguments("-fms-extensions");
             AddArguments("-fms-compatibility");
             AddArguments("-fdelayed-template-parsing");
@@ -297,8 +292,6 @@ namespace CppSharp.Parser
 
         private void SetupArguments(TargetPlatform targetPlatform)
         {
-            LanguageVersion ??= CppSharp.Parser.LanguageVersion.CPP14_GNU;
-
             // As of Clang revision 5e866e411caa we are required to pass "-fgnuc-version="
             // to get the __GNUC__ symbol defined. macOS and Linux system headers require
             // this define, so we need explicitly pass it to Clang.

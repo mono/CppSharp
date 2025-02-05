@@ -40,7 +40,7 @@ ASTNameMangler::ASTNameMangler(ASTContext& Ctx)
 {
 }
 
-std::string ASTNameMangler::GetName(const Decl* D) {
+std::string ASTNameMangler::GetName(const Decl* D) const {
     std::string Name;
     {
         llvm::raw_string_ostream OS(Name);
@@ -49,8 +49,7 @@ std::string ASTNameMangler::GetName(const Decl* D) {
     return Name;
 }
 
-bool ASTNameMangler::WriteName(const Decl* D, raw_ostream& OS) {
-    // First apply frontend mangling.
+bool ASTNameMangler::WriteName(const Decl* D, raw_ostream& OS) const {
     if (auto* FD = dyn_cast<FunctionDecl>(D)) {
         if (FD->isDependentContext())
             return true;
@@ -62,8 +61,7 @@ bool ASTNameMangler::WriteName(const Decl* D, raw_ostream& OS) {
             return true;
     }
     else if (auto* MD = dyn_cast<ObjCMethodDecl>(D)) {
-        MC->mangleObjCMethodName(MD, OS, /*includePrefixByte=*/false,
-            /*includeCategoryNamespace=*/true);
+        MC->mangleObjCMethodName(MD, OS, /*includePrefixByte=*/false, /*includeCategoryNamespace=*/true);
         return false;
     }
     else if (auto* ID = dyn_cast<ObjCInterfaceDecl>(D)) {
@@ -76,7 +74,7 @@ bool ASTNameMangler::WriteName(const Decl* D, raw_ostream& OS) {
     return false;
 }
 
-std::string ASTNameMangler::GetMangledStructor(const NamedDecl* ND, unsigned StructorType) {
+std::string ASTNameMangler::GetMangledStructor(const NamedDecl* ND, unsigned StructorType) const {
     std::string FrontendBuf;
     llvm::raw_string_ostream FOS(FrontendBuf);
 
@@ -90,7 +88,7 @@ std::string ASTNameMangler::GetMangledStructor(const NamedDecl* ND, unsigned Str
     return FrontendBuf;
 }
 
-std::string ASTNameMangler::GetMangledThunk(const CXXMethodDecl* MD, const ThunkInfo& T, bool /*ElideOverrideInfo*/) {
+std::string ASTNameMangler::GetMangledThunk(const CXXMethodDecl* MD, const ThunkInfo& T, bool /*ElideOverrideInfo*/) const {
     std::string FrontendBuf;
     llvm::raw_string_ostream FOS(FrontendBuf);
 

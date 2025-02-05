@@ -839,7 +839,7 @@ namespace CppSharp
             public:
                 ASTContext();
                 ~ASTContext();
-                TranslationUnit *FindOrCreateModule(std::string File);
+                TranslationUnit *FindOrCreateModule(const std::string& File);
                 VECTOR(TranslationUnit *, TranslationUnits)
             };
 

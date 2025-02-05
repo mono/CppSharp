@@ -16,8 +16,6 @@
 
 namespace CppSharp { namespace CppParser {
 
-using namespace CppSharp::CppParser::AST;
-
 struct CS_API CppParserOptions
 {
     CppParserOptions();
@@ -38,19 +36,19 @@ struct CS_API CppParserOptions
     VECTOR_STRING(SupportedStdTypes)
     VECTOR_STRING(SupportedFunctionTemplates)
 
-    CppSharp::CppParser::AST::ASTContext* ASTContext;
+    AST::ASTContext* ASTContext = nullptr;
 
-    int toolSetToUse;
+    int toolSetToUse = 0;
     std::string targetTriple;
 
-    bool noStandardIncludes;
-    bool noBuiltinIncludes;
-    bool microsoftMode;
-    bool verbose;
-    bool unityBuild;
-    bool skipPrivateDeclarations;
-    bool skipLayoutInfo;
-    bool skipFunctionBodies;
+    bool noStandardIncludes = false;
+    bool noBuiltinIncludes = false;
+    bool microsoftMode = false;
+    bool verbose = false;
+    bool unityBuild = false;
+    bool skipPrivateDeclarations = true;
+    bool skipLayoutInfo = false;
+    bool skipFunctionBodies = true;
 
 private:
     std::string clangVersion;
@@ -104,7 +102,7 @@ struct CS_API ParserResult
 
     ParserResultKind kind = ParserResultKind::Error;
     VECTOR(ParserDiagnostic, Diagnostics)
-    VECTOR(NativeLibrary*, Libraries)
+    VECTOR(AST::NativeLibrary*, Libraries)
     ParserTargetInfo* targetInfo = nullptr;
 };
 

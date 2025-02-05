@@ -935,7 +935,7 @@ ASTContext::ASTContext() {}
 
 ASTContext::~ASTContext() {}
 
-TranslationUnit* ASTContext::FindOrCreateModule(std::string File)
+TranslationUnit* ASTContext::FindOrCreateModule(const std::string& File)
 {
     auto normalizedFile = normalizePath(File);
 

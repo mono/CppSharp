@@ -15,9 +15,15 @@ namespace CppSharp.Passes
         {
             // we need this one for marshalling std::string
             foreach (var name in new[] { "allocator", "char_traits" })
-                foreach (var usedStdType in context.FindClass(name, false, true).Where(
-                    a => a.TranslationUnit.IsSystemHeader))
+            {
+                var forceIncludedClasses = context.FindClass(name, false, true)
+                    .Where(a => a.TranslationUnit.IsSystemHeader);
+
+                foreach (var usedStdType in forceIncludedClasses)
+                {
                     usedStdTypes.Add(usedStdType);
+                }
+            }
 
             var result = base.VisitASTContext(context);
 
@@ -44,8 +50,7 @@ namespace CppSharp.Passes
             var tagType = desugared as TagType ?? templateType?.Desugared.Type as TagType;
             if (tagType != null)
             {
-                var specialization = tagType.Declaration as ClassTemplateSpecialization;
-                if (specialization != null)
+                if (tagType.Declaration is ClassTemplateSpecialization specialization)
                 {
                     MarkAsUsed(specialization.TemplatedDecl);
                     MarkAsUsed(specialization.TemplatedDecl.TemplatedDecl);
@@ -57,27 +62,26 @@ namespace CppSharp.Passes
                 return true;
             }
 
-            if (templateType != null)
+            if (templateType == null)
+                return false;
+
+            var template = templateType.Template;
+            if (template.TemplatedDecl is TypeAlias typeAlias &&
+                typeAlias.Type.Desugar() is TemplateSpecializationType specializationType)
             {
-                var template = templateType.Template;
-                if (template.TemplatedDecl is TypeAlias typeAlias &&
-                    typeAlias.Type.Desugar() is TemplateSpecializationType specializationType)
-                {
-                    MarkAsUsed(template);
-                    MarkAsUsed(template.TemplatedDecl);
-                    template = specializationType.Template;
-                }
                 MarkAsUsed(template);
                 MarkAsUsed(template.TemplatedDecl);
-                return true;
+                template = specializationType.Template;
             }
+            MarkAsUsed(template);
+            MarkAsUsed(template.TemplatedDecl);
+            return true;
 
-            return false;
         }
 
         private void MarkAsUsed(Declaration declaration)
         {
-            while (declaration != null && !(declaration is Namespace))
+            while (declaration != null && declaration is not Namespace)
             {
                 usedStdTypes.Add(declaration);
                 declaration = declaration.Namespace;
@@ -89,15 +93,18 @@ namespace CppSharp.Passes
             for (int i = context.Declarations.Count - 1; i >= 0; i--)
             {
                 var declaration = context.Declarations[i];
-                var nestedContext = declaration as Namespace;
-                if (nestedContext != null)
+
+                if (declaration is Namespace nestedContext)
+                {
                     RemoveUnusedStdTypes(nestedContext);
-                else if (!this.usedStdTypes.Contains(declaration) &&
-                    !declaration.IsExplicitlyGenerated)
+                    continue;
+                }
+
+                if (!usedStdTypes.Contains(declaration) && !declaration.IsExplicitlyGenerated)
                     context.Declarations.RemoveAt(i);
             }
         }
 
-        private readonly HashSet<Declaration> usedStdTypes = new HashSet<Declaration>();
+        private readonly HashSet<Declaration> usedStdTypes = new();
     }
 }
