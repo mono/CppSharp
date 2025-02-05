@@ -142,7 +142,7 @@ end
 
 function get_llvm_configuration_name(debug)
 	if string.find(_OPTIONS["configuration"], "DebugOpt") then
-		return os.istarget("windows") and "RelWithDebInfo" or "Release"
+		return "RelWithDebInfo"
 	end
 	if string.find(_OPTIONS["configuration"], "Debug") then
 		return "Debug"
