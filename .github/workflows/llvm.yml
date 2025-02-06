@@ -51,7 +51,9 @@ jobs:
 
       - name: Package LLVM
         shell: bash
-        run: build/build.sh package_llvm -platform $PLATFORM -configuration $BUILD_CONFIGURATION
+        run: |
+          rm -rf build/llvm/llvm-project/llvm/test && rm -rf build/llvm/llvm-project/clang/test
+          build/build.sh package_llvm -platform $PLATFORM -configuration $BUILD_CONFIGURATION
 
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v4
