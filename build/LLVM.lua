@@ -12,7 +12,7 @@ require "llvm/LLVM"
 
 function SearchLLVM()
   LLVMRootDirDebug = builddir .. "/llvm/" .. get_llvm_package_name(nil, "Debug")
-  LLVMRootDirRelWithDebInfo = builddir .. "/llvm/" .. get_llvm_package_name(nil, "RelWithDebInfo")
+  LLVMRootDirRelWithDebInfo = builddir .. "/llvm/" .. get_llvm_package_name(nil, "DebugOpt")
   LLVMRootDirRelease = builddir .. "/llvm/" .. get_llvm_package_name()
 
   if os.isdir(LLVMRootDirDebug) or os.isdir(LLVMRootDirRelWithDebInfo) or os.isdir(LLVMRootDirRelease) then

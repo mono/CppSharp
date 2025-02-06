@@ -10,7 +10,7 @@ jobs:
       matrix:
         os: [ubuntu-22.04, macos-13]
         platform: [x64, arm64]
-        build-cfg: [Debug, RelWithDebInfo, Release]
+        build-cfg: [Debug, DebugOpt, Release]
 
     runs-on: ${{ matrix.os }}
 
