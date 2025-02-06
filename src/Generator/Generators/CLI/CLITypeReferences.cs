@@ -71,14 +71,15 @@ namespace CppSharp.Generators.CLI
 
         static Namespace GetEffectiveNamespace(Declaration decl)
         {
-            if (decl == null || decl.Namespace == null)
+            if (decl == null)
                 return null;
 
-            var @namespace = decl.Namespace as Namespace;
-            if (@namespace != null)
-                return @namespace;
+            var declContext = decl.Namespace;
 
-            return GetEffectiveNamespace(@namespace);
+            while (declContext != null && declContext is not Namespace)
+                declContext = declContext.Namespace;
+            
+            return declContext as Namespace;
         }
 
         public void Process(Namespace @namespace, bool filterNamespaces = false)
