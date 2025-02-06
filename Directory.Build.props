@@ -41,10 +41,15 @@
     <RID>$(RID)-$(PlatformTarget)</RID>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(CPPSHARP_RELEASE)' != 'true'">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+      <DebugSymbols>true</DebugSymbols>
+      <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'DebugOpt'">
+      <DebugSymbols>true</DebugSymbols>
+      <DebugType>full</DebugType>
+      <Optimize>false</Optimize>
+      <DefineConstants>DEBUG</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(DotNetCmd)' == 'dotnet' AND $(IsWindows)">
@@ -55,5 +60,10 @@
   <Target Name="prepack" DependsOnTargets="Build" Condition="'$(IsPackable)' == 'true' AND '$(Platform)' == 'x64'">
     <Copy SourceFiles="$(TargetDir)$(TargetFileName)" DestinationFolder="$(PackageDir)ref\$(GlobalTargetFramework)" Condition="'$(ProduceReferenceAssembly)' == 'true' AND '$(RID)' == 'win-x64'" />
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(PackageDir)runtimes\$(RID)\lib\$(GlobalTargetFramework)" />
+  </Target>
+
+  <Target Name="ValidateCPPSHARPRelease" BeforeTargets="Build">
+      <Error Condition="'$(CPPSHARP_RELEASE)' == 'true' AND '$(Configuration)' != 'Release'"
+             Text="Configuration must be 'Release' when CPPSHARP_RELEASE is 'true'." />
   </Target>
 </Project>
