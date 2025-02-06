@@ -21,13 +21,8 @@ jobs:
       ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
     steps:
-      - name: Inject slug/short variables
-        uses: rlespinasse/github-slug-action@v4
-    
       - name: Check out
-        shell: cmd
-        run: |
-          git clone -b ${{ env.GITHUB_REF_SLUG }} https://github.com/mono/CppSharp.git C:\CppSharp
+        uses: actions/checkout@v4
         
       - uses: lukka/get-cmake@latest
 
