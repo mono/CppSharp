@@ -43,8 +43,8 @@ private:
     std::string GetMangledThunk(const clang::CXXMethodDecl* MD, const clang::ThunkInfo& T, bool ElideOverrideInfo);
     bool WriteFuncOrVarName(const clang::NamedDecl* D, llvm::raw_ostream& OS) const;
     
-    std::unique_ptr<clang::MangleContext> MC;
     llvm::DataLayout DL;
+    std::unique_ptr<clang::MangleContext> MC;
 };
 
 }

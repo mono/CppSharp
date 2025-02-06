@@ -9,6 +9,7 @@
 
 #include <clang/AST/GlobalDecl.h>
 #include <clang/AST/Mangle.h>
+#include <clang/AST/VTableBuilder.h>
 #include <clang/Basic/TargetInfo.h>
 #include <llvm/IR/Mangler.h>
 
@@ -34,8 +35,8 @@ namespace {
 }
 
 ASTNameMangler::ASTNameMangler(ASTContext& Ctx)
-    : MC(Ctx.createMangleContext())
-    , DL(Ctx.getTargetInfo().getDataLayoutString())
+    : DL(Ctx.getTargetInfo().getDataLayoutString())
+    , MC(Ctx.createMangleContext())
 {
 }
 
@@ -50,16 +51,14 @@ std::string ASTNameMangler::GetName(const Decl* D) {
 
 bool ASTNameMangler::WriteName(const Decl* D, raw_ostream& OS) {
     // First apply frontend mangling.
-    SmallString<128> FrontendBuf;
-    llvm::raw_svector_ostream FrontendBufOS(FrontendBuf);
     if (auto* FD = dyn_cast<FunctionDecl>(D)) {
         if (FD->isDependentContext())
             return true;
-        if (WriteFuncOrVarName(FD, FrontendBufOS))
+        if (WriteFuncOrVarName(FD, OS))
             return true;
     }
     else if (auto* VD = dyn_cast<VarDecl>(D)) {
-        if (WriteFuncOrVarName(VD, FrontendBufOS))
+        if (WriteFuncOrVarName(VD, OS))
             return true;
     }
     else if (auto* MD = dyn_cast<ObjCMethodDecl>(D)) {
@@ -68,14 +67,12 @@ bool ASTNameMangler::WriteName(const Decl* D, raw_ostream& OS) {
         return false;
     }
     else if (auto* ID = dyn_cast<ObjCInterfaceDecl>(D)) {
-        WriteObjCClassName(ID, FrontendBufOS);
+        WriteObjCClassName(ID, OS);
     }
     else {
         return true;
     }
 
-    // Now apply backend mangling.
-    llvm::Mangler::getNameWithPrefix(OS, FrontendBufOS.str(), DL);
     return false;
 }
 
@@ -90,12 +87,7 @@ std::string ASTNameMangler::GetMangledStructor(const NamedDecl* ND, unsigned Str
         GD = GlobalDecl(DD, static_cast<CXXDtorType>(StructorType));
     MC->mangleName(GD, FOS);
 
-    std::string BackendBuf;
-    llvm::raw_string_ostream BOS(BackendBuf);
-
-    llvm::Mangler::getNameWithPrefix(BOS, FrontendBuf, DL);
-
-    return BackendBuf;
+    return FrontendBuf;
 }
 
 std::string ASTNameMangler::GetMangledThunk(const CXXMethodDecl* MD, const ThunkInfo& T, bool /*ElideOverrideInfo*/) {
@@ -105,12 +97,7 @@ std::string ASTNameMangler::GetMangledThunk(const CXXMethodDecl* MD, const Thunk
     // TODO: Enable `ElideOverrideInfo` param if clang is updated to 19
     MC->mangleThunk(MD, T, /*ElideOverrideInfo,*/ FOS);
 
-    std::string BackendBuf;
-    llvm::raw_string_ostream BOS(BackendBuf);
-
-    llvm::Mangler::getNameWithPrefix(BOS, FrontendBuf, DL);
-
-    return BackendBuf;
+    return FrontendBuf;
 }
 
 bool ASTNameMangler::WriteFuncOrVarName(const NamedDecl* D, raw_ostream& OS) const
@@ -125,9 +112,9 @@ bool ASTNameMangler::WriteFuncOrVarName(const NamedDecl* D, raw_ostream& OS) con
 
     GlobalDecl GD;
     if (const auto* CtorD = dyn_cast<CXXConstructorDecl>(D))
-        GD = GlobalDecl(CtorD, Ctor_Complete);
+        GD = GlobalDecl(CtorD, Ctor_Base);
     else if (const auto* DtorD = dyn_cast<CXXDestructorDecl>(D))
-        GD = GlobalDecl(DtorD, Dtor_Complete);
+        GD = GlobalDecl(DtorD, Dtor_Base);
     else if (D->hasAttr<CUDAGlobalAttr>())
         GD = GlobalDecl(cast<FunctionDecl>(D));
     else
