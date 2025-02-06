@@ -244,7 +244,7 @@ namespace CppSharp
             passes.AddPass(new FastDelegateToDelegatesPass());
             passes.AddPass(new FieldToPropertyPass());
             passes.AddPass(new CheckIgnoredDeclsPass());
-            passes.AddPass(new CheckFlagEnumsPass());
+            passes.AddPass(new CheckEnumsPass());
             passes.AddPass(new MakeProtectedNestedTypesPublicPass());
 
             if (Options.IsCSharpGenerator)

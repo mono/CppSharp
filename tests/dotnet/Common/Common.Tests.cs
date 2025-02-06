@@ -172,6 +172,7 @@ public class CommonTests
         }
     }
 
+    [Test]
     public void TestPrimitiveInOutParameters()
     {
         using (var hello = new Hello())
