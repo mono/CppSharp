@@ -41,20 +41,20 @@ jobs:
       - name: Clone LLVM
         shell: bash
         run: build/build.sh clone_llvm
-        working-directory: C:\CppSharp
+        working-directory: $GITHUB_WORKSPACE
           
       - name: Build LLVM
         shell: bash
         run: build/build.sh build_llvm -platform $PLATFORM -configuration $BUILD_CONFIGURATION
-        working-directory: C:\CppSharp
+        working-directory: $GITHUB_WORKSPACE
 
       - name: Package LLVM
         shell: bash
         run: build/build.sh package_llvm -platform $PLATFORM -configuration $BUILD_CONFIGURATION
-        working-directory: C:\CppSharp
+        working-directory: $GITHUB_WORKSPACE
 
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v4
         with:
           name: llvm-${{ matrix.os }}-${{ matrix.platform }}-${{ matrix.build-cfg }}
-          path: C:\CppSharp\build\llvm\llvm-*-*.*
+          path: $GITHUB_WORKSPACE\build\llvm\llvm-*-*.*
