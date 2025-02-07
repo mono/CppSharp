@@ -362,11 +362,13 @@ namespace CppSharp.Passes
                 return;
             }
 
+            var results = parserResult.Libraries.AsParallel()
+                .Select(ClangParser.ConvertLibrary);
+
             lock (symbolsLock)
             {
-                for (uint i = 0; i < parserResult.LibrariesCount; i++)
+                foreach (var nativeLibrary in results)
                 {
-                    var nativeLibrary = ClangParser.ConvertLibrary(parserResult.GetLibraries(i));
                     Context.Symbols.Libraries.Add(nativeLibrary);
                     Context.Symbols.IndexSymbols();
                 }
