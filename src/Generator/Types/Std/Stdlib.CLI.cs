@@ -201,10 +201,10 @@ namespace CppSharp.Types.Std.CLI
                 ? new CILType(typeof(nint))
                 : type.Type;
 
-            ctx.Before.WriteLineIndent("if (!{0}.has_value())", ctx.ArgName);
+            ctx.Before.WriteLine("if (!{0}.has_value())", ctx.ReturnVarName);
             {
-                ctx.Before.WriteLine("return {};");
-                ctx.Before.Unindent();
+                ctx.Before.WriteLineIndent("return {};");
+                ctx.Before.NewLine();
             }
 
             var elementCtx = new MarshalContext(ctx.Context, ctx.Indentation)
