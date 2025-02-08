@@ -362,7 +362,7 @@ namespace CppSharp.Passes
                 return;
             }
 
-            var results = parserResult.Libraries.AsParallel()
+            var results = GetLibraries(parserResult).AsParallel()
                 .Select(ClangParser.ConvertLibrary);
 
             lock (symbolsLock)
@@ -372,6 +372,14 @@ namespace CppSharp.Passes
                     Context.Symbols.Libraries.Add(nativeLibrary);
                     Context.Symbols.IndexSymbols();
                 }
+            }
+
+            return;
+
+            IEnumerable<Parser.AST.NativeLibrary> GetLibraries(ParserResult p)
+            {
+                for (uint i = 0; i < p.LibrariesCount; i++)
+                    yield return p.GetLibraries(i);
             }
         }
 
