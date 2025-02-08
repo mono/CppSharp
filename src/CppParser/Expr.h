@@ -7,79 +7,102 @@
 
 #pragma once
 
-#include "Sources.h"
-#include "Types.h"
 #include "Stmt.h"
+#include <optional>
 
-namespace CppSharp { namespace CppParser { namespace AST {
+namespace CppSharp::CppParser::AST {
 
-class Expr;
-class Declaration;
 class Field;
 class Method;
 class Function;
+class FunctionTemplate;
 
+/// <summary>CastKind - The kind of operation required for a conversion.</summary>
 enum class CastKind
 {
     Dependent = 0,
     BitCast = 1,
     LValueBitCast = 2,
-    LValueToRValue = 3,
-    NoOp = 4,
-    BaseToDerived = 5,
-    DerivedToBase = 6,
-    UncheckedDerivedToBase = 7,
-    Dynamic = 8,
-    ToUnion = 9,
-    ArrayToPointerDecay = 10,
-    FunctionToPointerDecay = 11,
-    NullToPointer = 12,
-    NullToMemberPointer = 13,
-    BaseToDerivedMemberPointer = 14,
-    DerivedToBaseMemberPointer = 15,
-    MemberPointerToBoolean = 16,
-    ReinterpretMemberPointer = 17,
-    UserDefinedConversion = 18,
-    ConstructorConversion = 19,
-    IntegralToPointer = 20,
-    PointerToIntegral = 21,
-    PointerToBoolean = 22,
-    ToVoid = 23,
-    VectorSplat = 24,
-    IntegralCast = 25,
-    IntegralToBoolean = 26,
-    IntegralToFloating = 27,
-    FixedPointCast = 28,
-    FixedPointToBoolean = 29,
-    FloatingToIntegral = 30,
-    FloatingToBoolean = 31,
-    BooleanToSignedIntegral = 32,
-    FloatingCast = 33,
-    CPointerToObjCPointerCast = 34,
-    BlockPointerToObjCPointerCast = 35,
-    AnyPointerToBlockPointerCast = 36,
-    ObjCObjectLValueCast = 37,
-    FloatingRealToComplex = 38,
-    FloatingComplexToReal = 39,
-    FloatingComplexToBoolean = 40,
-    FloatingComplexCast = 41,
-    FloatingComplexToIntegralComplex = 42,
-    IntegralRealToComplex = 43,
-    IntegralComplexToReal = 44,
-    IntegralComplexToBoolean = 45,
-    IntegralComplexCast = 46,
-    IntegralComplexToFloatingComplex = 47,
-    ARCProduceObject = 48,
-    ARCConsumeObject = 49,
-    ARCReclaimReturnedObject = 50,
-    ARCExtendBlockObject = 51,
-    AtomicToNonAtomic = 52,
-    NonAtomicToAtomic = 53,
-    CopyAndAutoreleaseBlockObject = 54,
-    BuiltinFnToFnPtr = 55,
-    ZeroToOCLOpaqueType = 56,
-    AddressSpaceConversion = 57,
-    IntToOCLSampler = 58
+    LValueToRValueBitCast = 3,
+    LValueToRValue = 4,
+    NoOp = 5,
+    BaseToDerived = 6,
+    DerivedToBase = 7,
+    UncheckedDerivedToBase = 8,
+    Dynamic = 9,
+    ToUnion = 10,
+    ArrayToPointerDecay = 11,
+    FunctionToPointerDecay = 12,
+    NullToPointer = 13,
+    NullToMemberPointer = 14,
+    BaseToDerivedMemberPointer = 15,
+    DerivedToBaseMemberPointer = 16,
+    MemberPointerToBoolean = 17,
+    ReinterpretMemberPointer = 18,
+    UserDefinedConversion = 19,
+    ConstructorConversion = 20,
+    IntegralToPointer = 21,
+    PointerToIntegral = 22,
+    PointerToBoolean = 23,
+    ToVoid = 24,
+    MatrixCast = 25,
+    VectorSplat = 26,
+    IntegralCast = 27,
+    IntegralToBoolean = 28,
+    IntegralToFloating = 29,
+    FloatingToFixedPoint = 30,
+    FixedPointToFloating = 31,
+    FixedPointCast = 32,
+    FixedPointToIntegral = 33,
+    IntegralToFixedPoint = 34,
+    FixedPointToBoolean = 35,
+    FloatingToIntegral = 36,
+    FloatingToBoolean = 37,
+    BooleanToSignedIntegral = 38,
+    FloatingCast = 39,
+    CPointerToObjCPointerCast = 40,
+    BlockPointerToObjCPointerCast = 41,
+    AnyPointerToBlockPointerCast = 42,
+    ObjCObjectLValueCast = 43,
+    FloatingRealToComplex = 44,
+    FloatingComplexToReal = 45,
+    FloatingComplexToBoolean = 46,
+    FloatingComplexCast = 47,
+    FloatingComplexToIntegralComplex = 48,
+    IntegralRealToComplex = 49,
+    IntegralComplexToReal = 50,
+    IntegralComplexToBoolean = 51,
+    IntegralComplexCast = 52,
+    IntegralComplexToFloatingComplex = 53,
+    ARCProduceObject = 54,
+    ARCConsumeObject = 55,
+    ARCReclaimReturnedObject = 56,
+    ARCExtendBlockObject = 57,
+    AtomicToNonAtomic = 58,
+    NonAtomicToAtomic = 59,
+    CopyAndAutoreleaseBlockObject = 60,
+    BuiltinFnToFnPtr = 61,
+    ZeroToOCLOpaqueType = 62,
+    AddressSpaceConversion = 63,
+    IntToOCLSampler = 64
+};
+
+enum class UnaryOperatorKind
+{
+    PostInc = 0,
+    PostDec = 1,
+    PreInc = 2,
+    PreDec = 3,
+    AddrOf = 4,
+    Deref = 5,
+    Plus = 6,
+    Minus = 7,
+    Not = 8,
+    LNot = 9,
+    Real = 10,
+    Imag = 11,
+    Extension = 12,
+    Coawait = 13
 };
 
 enum class BinaryOperatorKind
@@ -119,33 +142,33 @@ enum class BinaryOperatorKind
     Comma = 32
 };
 
-enum class UnaryOperatorKind
-{
-    PostInc = 0,
-    PostDec = 1,
-    PreInc = 2,
-    PreDec = 3,
-    AddrOf = 4,
-    Deref = 5,
-    Plus = 6,
-    Minus = 7,
-    Not = 8,
-    LNot = 9,
-    Real = 10,
-    Imag = 11,
-    Extension = 12,
-    Coawait = 13
-};
-
+/// <summary>The kind of bridging performed by the Objective-C bridge cast.</summary>
 enum class ObjCBridgeCastKind
 {
+    /// <summary>
+    /// <para>Bridging via __bridge, which does nothing but reinterpret</para>
+    /// <para>the bits.</para>
+    /// </summary>
     Bridge = 0,
+    /// <summary>
+    /// <para>Bridging via __bridge_transfer, which transfers ownership of an</para>
+    /// <para>Objective-C pointer into ARC.</para>
+    /// </summary>
     BridgeTransfer = 1,
+    /// <summary>
+    /// <para>Bridging via __bridge_retain, which makes an ARC object available</para>
+    /// <para>as a +1 C pointer.</para>
+    /// </summary>
     BridgeRetained = 2
 };
 
+/// <summary>
+/// <para>Enumeration specifying the different kinds of C++ overloaded</para>
+/// <para>operators.</para>
+/// </summary>
 enum class OverloadedOperatorKind
 {
+    /// <summary>Not an overloaded operator</summary>
     None = 0,
     New = 1,
     Delete = 2,
@@ -192,19 +215,75 @@ enum class OverloadedOperatorKind
     Subscript = 43,
     Conditional = 44,
     Coawait = 45,
-
 };
 
+/// <summary>Names for the &quot;expression or type&quot; traits.</summary>
 enum class UnaryExprOrTypeTrait
 {
     SizeOf = 0,
     AlignOf = 1,
-    VecStep = 2,
-    OpenMPRequiredSimdAlign = 3,
-    PreferredAlignOf = 4
+    PreferredAlignOf = 2,
+    VecStep = 3,
+    OpenMPRequiredSimdAlign = 4,
+    Last = 4
 };
 
-class CS_API Expr : public Stmt
+/// <summary>The reason why a DeclRefExpr does not constitute an odr-use.</summary>
+enum class NonOdrUseReason
+{
+    /// <summary>This is an odr-use.</summary>
+    None = 0,
+    /// <summary>This name appears in an unevaluated operand.</summary>
+    Unevaluated = 1,
+    /// <summary>
+    /// <para>This name appears as a potential result of an lvalue-to-rvalue</para>
+    /// <para>conversion that is a constant expression.</para>
+    /// </summary>
+    Constant = 2,
+    /// <summary>
+    /// <para>This name appears as a potential result of a discarded value</para>
+    /// <para>expression.</para>
+    /// </summary>
+    Discarded = 3
+};
+
+enum class ExprDependence : unsigned char
+{
+    UnexpandedPack = 1,
+    Instantiation = 2,
+    Type = 4,
+    Value = 8,
+    Error = 16,
+    None = 0,
+    All = 31,
+    TypeValue = 12,
+    TypeInstantiation = 6,
+    ValueInstantiation = 10,
+    TypeValueInstantiation = 14,
+    ErrorDependent = 26,
+    LLVM_BITMASK_LARGEST_ENUMERATOR = 16
+};
+
+/// <summary>@{</summary>
+enum class FloatSemantics
+{
+    IEEEhalf = 0,
+    BFloat = 1,
+    IEEEsingle = 2,
+    IEEEdouble = 3,
+    IEEEquad = 4,
+    PPCDoubleDouble = 5,
+    Float8E5M2 = 6,
+    Float8E5M2FNUZ = 7,
+    Float8E4M3FN = 8,
+    Float8E4M3FNUZ = 9,
+    Float8E4M3B11FNUZ = 10,
+    FloatTF32 = 11,
+    X87DoubleExtended = 12,
+    MaxSemantics = 12
+};
+
+class CS_API Expr : public ValueStmt
 {
 public:
     enum class LValueClassification
@@ -244,36 +323,84 @@ public:
 
     enum class SideEffectsKind
     {
+        /// <summary>Strictly evaluate the expression.</summary>
         NoSideEffects = 0,
+        /// <summary>
+        /// <para>Allow UB that we can give a value, but not</para>
+        /// <para>arbitrary unmodeled side effects.</para>
+        /// </summary>
         AllowUndefinedBehavior = 1,
+        /// <summary>Allow any unmodeled side effect.</summary>
         AllowSideEffects = 2
     };
 
-    enum class ConstExprUsage
+    enum class ConstantExprKind
     {
-        EvaluateForCodeGen = 0,
-        EvaluateForMangling = 1
+        /// <summary>
+        /// <para>An integer constant expression (an array bound, enumerator, case value,</para>
+        /// <para>bit-field width, or similar) or similar.</para>
+        /// </summary>
+        Normal = 0,
+        /// <summary>
+        /// <para>A non-class template argument. Such a value is only used for mangling,</para>
+        /// <para>not for code generation, so can refer to dllimported functions.</para>
+        /// </summary>
+        NonClassTemplateArgument = 1,
+        /// <summary>A class template argument. Such a value is used for code generation.</summary>
+        ClassTemplateArgument = 2,
+        /// <summary>
+        /// <para>An immediate invocation. The destruction of the end result of this</para>
+        /// <para>evaluation is not part of the evaluation, but all other temporaries</para>
+        /// <para>are destroyed.</para>
+        /// </summary>
+        ImmediateInvocation = 3
     };
 
+    /// <summary>
+    /// <para>Enumeration used to describe the kind of Null pointer constant</para>
+    /// <para>returned from</para>
+    /// </summary>
     enum class NullPointerConstantKind
     {
+        /// <summary>Expression is not a Null pointer constant.</summary>
         NotNull = 0,
+        /// <summary>
+        /// <para>Expression is a Null pointer constant built from a zero integer</para>
+        /// <para>expression that is not a simple, possibly parenthesized, zero literal.</para>
+        /// <para>C++ Core Issue 903 will classify these expressions as &quot;not pointers&quot;</para>
+        /// <para>once it is adopted.</para>
+        /// <para>http://www.open-std.org/jtc1/sc22/wg21/docs/cwg_active.html#903</para>
+        /// </summary>
         ZeroExpression = 1,
+        /// <summary>Expression is a Null pointer constant built from a literal zero.</summary>
         ZeroLiteral = 2,
+        /// <summary>Expression is a C++11 nullptr.</summary>
         CXX11_nullptr = 3,
+        /// <summary>Expression is a GNU-style __null constant.</summary>
         GNUNull = 4
     };
 
+    /// <summary>Enumeration used to describe howshould cope with value-dependent expressions.</summary>
     enum class NullPointerConstantValueDependence
     {
+        /// <summary>Specifies that the expression should never be value-dependent.</summary>
         NeverValueDependent = 0,
+        /// <summary>
+        /// <para>Specifies that a value-dependent expression of integral or</para>
+        /// <para>dependent type should be considered a null pointer constant.</para>
+        /// </summary>
         ValueDependentIsNull = 1,
+        /// <summary>
+        /// <para>Specifies that a value-dependent expression should be considered</para>
+        /// <para>to never be a null pointer constant.</para>
+        /// </summary>
         ValueDependentIsNotNull = 2
     };
 
     class CS_API Classification
     {
     public:
+        /// <summary>The various classification results. Most of these mean prvalue.</summary>
         enum class Kinds
         {
             LValue = 0,
@@ -290,6 +417,7 @@ public:
             PRValue = 11
         };
 
+        /// <summary>The results of modification testing.</summary>
         enum class ModifiableType
         {
             Untested = 0,
@@ -318,19 +446,21 @@ public:
 
     Expr();
     Expr(StmtClass klass);
+    ExprDependence dependence;
     QualifiedType type;
-    bool valueDependent;
-    bool typeDependent;
-    bool instantiationDependent;
+    bool isValueDependent;
+    bool isTypeDependent;
+    bool isInstantiationDependent;
     bool containsUnexpandedParameterPack;
+    bool containsErrors;
     SourceLocation exprLoc;
+    bool isReadIfDiscardedInCPlusPlus11;
     bool isLValue;
-    bool isRValue;
+    bool isPRValue;
     bool isXValue;
     bool isGLValue;
     bool isOrdinaryOrBitFieldObject;
-    Field* sourceBitField;
-    Declaration* referencedDeclOfCallee;
+    bool refersToMatrixElement;
     bool hasPlaceholderType;
 };
 
@@ -345,16 +475,28 @@ public:
 class CS_API ConstantExpr : public FullExpr
 {
 public:
+    /// <summary>Describes the kind of result that can be tail-allocated.</summary>
+    enum class ResultStorageKind
+    {
+        None = 0,
+        Int64 = 1,
+        APValue = 2
+    };
+
     ConstantExpr();
+    ResultStorageKind resultStorageKind;
+    bool isImmediateInvocation;
+    bool hasAPValueResult;
 };
 
 class CS_API OpaqueValueExpr : public Expr
 {
 public:
     OpaqueValueExpr();
-    bool isUnique;
     SourceLocation location;
+    SourceLocation exprLoc;
     Expr* sourceExpr;
+    bool isUnique;
 };
 
 class CS_API DeclRefExpr : public Expr
@@ -362,9 +504,7 @@ class CS_API DeclRefExpr : public Expr
 public:
     DeclRefExpr();
     SourceLocation location;
-    bool hadMultipleCandidates;
     bool hasQualifier;
-    Declaration* foundDecl;
     bool hasTemplateKWAndArgsInfo;
     SourceLocation templateKeywordLoc;
     SourceLocation lAngleLoc;
@@ -372,7 +512,10 @@ public:
     bool hasTemplateKeyword;
     bool hasExplicitTemplateArgs;
     unsigned int numTemplateArgs;
+    bool hadMultipleCandidates;
+    NonOdrUseReason isNonOdrUse;
     bool refersToEnclosingVariableOrCapture;
+    bool isImmediateEscalating;
 };
 
 class CS_API IntegerLiteral : public Expr
@@ -388,6 +531,7 @@ class CS_API FixedPointLiteral : public Expr
 public:
     FixedPointLiteral();
     SourceLocation location;
+    unsigned int scale;
     unsigned long long value;
 };
 
@@ -413,9 +557,10 @@ class CS_API FloatingLiteral : public Expr
 {
 public:
     FloatingLiteral();
+    FloatSemantics rawSemantics;
     bool exact;
-    SourceLocation location;
     double valueAsApproximateDouble;
+    SourceLocation location;
 };
 
 class CS_API ImaginaryLiteral : public Expr
@@ -428,13 +573,26 @@ public:
 class CS_API StringLiteral : public Expr
 {
 public:
+    /// <summary>StringLiteral is followed by several trailing objects. They are in order:</summary>
+    /// <remarks>
+    /// <para>* A single unsigned storing the length in characters of this string. The</para>
+    /// <para>length in bytes is this length times the width of a single character.</para>
+    /// <para>Always present and stored as a trailing objects because storing it in</para>
+    /// <para>StringLiteral would increase the size of StringLiteral by sizeof(void *)</para>
+    /// <para>due to alignment requirements. If you add some data to StringLiteral,</para>
+    /// <para>consider moving it inside StringLiteral.</para>
+    /// <para>* An array of getNumConcatenated() SourceLocation, one for each of the</para>
+    /// <para>token this string is made of.</para>
+    /// <para>* An array of getByteLength() char used to store the string data.</para>
+    /// </remarks>
     enum class StringKind
     {
-        Ascii = 0,
+        Ordinary = 0,
         Wide = 1,
         UTF8 = 2,
         UTF16 = 3,
-        UTF32 = 4
+        UTF32 = 4,
+        Unevaluated = 5
     };
 
     StringLiteral();
@@ -444,11 +602,12 @@ public:
     unsigned int length;
     unsigned int charByteWidth;
     StringKind kind;
-    bool isAscii;
+    bool isOrdinary;
     bool isWide;
     bool isUTF8;
     bool isUTF16;
     bool isUTF32;
+    bool isUnevaluated;
     bool isPascal;
     bool containsNonAscii;
     bool containsNonAsciiOrNull;
@@ -467,12 +626,27 @@ public:
         FuncSig = 4,
         LFuncSig = 5,
         PrettyFunction = 6,
+        /// <summary>
+        /// <para>The same as PrettyFunction, except that the</para>
+        /// <para>'virtual' keyword is omitted for virtual member functions.</para>
+        /// </summary>
         PrettyFunctionNoVirtual = 7
     };
 
     PredefinedExpr();
-    SourceLocation location;
     IdentKind identKind;
+    bool isTransparent;
+    SourceLocation location;
+    std::string identKindName;
+};
+
+class CS_API SYCLUniqueStableNameExpr : public Expr
+{
+public:
+    SYCLUniqueStableNameExpr();
+    SourceLocation location;
+    SourceLocation lParenLocation;
+    SourceLocation rParenLocation;
 };
 
 class CS_API ParenExpr : public Expr
@@ -498,7 +672,8 @@ public:
     bool isDecrementOp;
     bool isIncrementDecrementOp;
     bool isArithmeticOp;
-    bool isFPContractableWithinStatement;
+    SourceLocation exprLoc;
+    bool hasStoredFPFeatures;
 };
 
 class CS_API OffsetOfExpr : public Expr
@@ -516,12 +691,11 @@ class CS_API UnaryExprOrTypeTraitExpr : public Expr
 public:
     UnaryExprOrTypeTraitExpr();
     UnaryExprOrTypeTrait kind;
-    SourceLocation operatorLoc;
-    SourceLocation rParenLoc;
     bool isArgumentType;
     QualifiedType argumentType;
-    Expr* argumentExpr;
     QualifiedType typeOfArgument;
+    SourceLocation operatorLoc;
+    SourceLocation rParenLoc;
 };
 
 class CS_API ArraySubscriptExpr : public Expr
@@ -531,23 +705,40 @@ public:
     Expr* lHS;
     Expr* rHS;
     SourceLocation rBracketLoc;
+    SourceLocation exprLoc;
+};
+
+class CS_API MatrixSubscriptExpr : public Expr
+{
+public:
+    MatrixSubscriptExpr();
+    bool isIncomplete;
     Expr* base;
-    Expr* idx;
+    Expr* rowIdx;
+    Expr* columnIdx;
+    SourceLocation exprLoc;
+    SourceLocation rBracketLoc;
 };
 
 class CS_API CallExpr : public Expr
 {
 public:
+    enum class ADLCallKind : unsigned char
+    {
+        NotADL = 0,
+        UsesADL = 1
+    };
+
     CallExpr();
     CallExpr(StmtClass klass);
     VECTOR(Expr*, arguments)
     Expr* callee;
-    SourceLocation rParenLoc;
-    Declaration* calleeDecl;
-    Function* directCallee;
+    ADLCallKind aDLCallKind;
+    bool usesADL;
+    bool hasStoredFPFeatures;
     unsigned int numArgs;
-    unsigned int numCommas;
     unsigned int builtinCallee;
+    SourceLocation rParenLoc;
     bool isCallToStdMove;
 };
 
@@ -556,9 +747,6 @@ class CS_API MemberExpr : public Expr
 public:
     MemberExpr();
     Expr* base;
-    bool arrow;
-    SourceLocation memberLoc;
-    bool hadMultipleCandidates;
     bool hasQualifier;
     SourceLocation templateKeywordLoc;
     SourceLocation lAngleLoc;
@@ -567,7 +755,12 @@ public:
     bool hasExplicitTemplateArgs;
     unsigned int numTemplateArgs;
     SourceLocation operatorLoc;
+    bool arrow;
+    SourceLocation memberLoc;
+    SourceLocation exprLoc;
     bool isImplicitAccess;
+    bool hadMultipleCandidates;
+    NonOdrUseReason isNonOdrUse;
 };
 
 class CS_API CompoundLiteralExpr : public Expr
@@ -585,12 +778,12 @@ public:
     CastExpr();
     CastExpr(StmtClass klass);
     CastKind castKind;
-    Expr* subExpr;
     const char* castKindName;
-    Expr* subExprAsWritten;
+    Expr* subExpr;
     Declaration* conversionFunction;
     bool path_empty;
     unsigned int path_size;
+    bool hasStoredFPFeatures;
 };
 
 class CS_API ImplicitCastExpr : public CastExpr
@@ -626,6 +819,7 @@ class CS_API BinaryOperator : public Expr
 public:
     BinaryOperator();
     BinaryOperator(StmtClass klass);
+    SourceLocation exprLoc;
     SourceLocation operatorLoc;
     BinaryOperatorKind opcode;
     Expr* lHS;
@@ -639,12 +833,12 @@ public:
     bool isRelationalOp;
     bool isEqualityOp;
     bool isComparisonOp;
+    bool isCommaOp;
     bool isLogicalOp;
     bool isAssignmentOp;
     bool isCompoundAssignmentOp;
     bool isShiftAssignOp;
-    bool isFPContractableWithinStatement;
-    bool isFEnvAccessOn;
+    bool hasStoredFPFeatures;
 };
 
 class CS_API CompoundAssignOperator : public BinaryOperator
@@ -671,6 +865,9 @@ class CS_API ConditionalOperator : public AbstractConditionalOperator
 {
 public:
     ConditionalOperator();
+    Expr* cond;
+    Expr* trueExpr;
+    Expr* falseExpr;
     Expr* lHS;
     Expr* rHS;
 };
@@ -681,6 +878,9 @@ public:
     BinaryConditionalOperator();
     Expr* common;
     OpaqueValueExpr* opaqueValue;
+    Expr* cond;
+    Expr* trueExpr;
+    Expr* falseExpr;
 };
 
 class CS_API AddrLabelExpr : public Expr
@@ -698,6 +898,7 @@ public:
     CompoundStmt* subStmt;
     SourceLocation lParenLoc;
     SourceLocation rParenLoc;
+    unsigned int templateDepth;
 };
 
 class CS_API ShuffleVectorExpr : public Expr
@@ -723,13 +924,13 @@ class CS_API ChooseExpr : public Expr
 public:
     ChooseExpr();
     bool isConditionTrue;
+    bool isConditionDependent;
+    Expr* chosenSubExpr;
     Expr* cond;
     Expr* lHS;
     Expr* rHS;
     SourceLocation builtinLoc;
     SourceLocation rParenLoc;
-    bool isConditionDependent;
-    Expr* chosenSubExpr;
 };
 
 class CS_API GNUNullExpr : public Expr
@@ -749,22 +950,44 @@ public:
     SourceLocation rParenLoc;
 };
 
+class CS_API SourceLocExpr : public Expr
+{
+public:
+    enum class IdentKind
+    {
+        Function = 0,
+        FuncSig = 1,
+        File = 2,
+        FileName = 3,
+        Line = 4,
+        Column = 5,
+        SourceLocStruct = 6
+    };
+
+    SourceLocExpr();
+    std::string builtinStr;
+    IdentKind identKind;
+    bool isIntType;
+    SourceLocation location;
+};
+
 class CS_API InitListExpr : public Expr
 {
 public:
     InitListExpr();
-    Expr* arrayFiller;
-    SourceLocation lBraceLoc;
-    SourceLocation rBraceLoc;
-    InitListExpr* syntacticForm;
     unsigned int numInits;
+    Expr* arrayFiller;
     bool hasArrayFiller;
+    bool hasDesignatedInit;
     bool isExplicit;
     bool isStringLiteralInit;
     bool isTransparent;
+    SourceLocation lBraceLoc;
+    SourceLocation rBraceLoc;
     bool isSemanticForm;
     InitListExpr* semanticForm;
     bool isSyntacticForm;
+    InitListExpr* syntacticForm;
 };
 
 class CS_API DesignatedInitExpr : public Expr
@@ -773,37 +996,46 @@ public:
     class CS_API Designator
     {
     public:
+        /// <summary>The kind of designator this describes.</summary>
+        enum class DesignatorKind
+        {
+            FieldDesignator = 0,
+            ArrayDesignator = 1,
+            ArrayRangeDesignator = 2
+        };
+
+        class CS_API FieldDesignatorInfo
+        {
+        public:
+            FieldDesignatorInfo();
+        };
+
+        class CS_API ArrayOrRangeDesignatorInfo
+        {
+        public:
+            ArrayOrRangeDesignatorInfo();
+        };
+
         Designator();
-        Field* field;
         bool isFieldDesignator;
         bool isArrayDesignator;
         bool isArrayRangeDesignator;
+        Field* fieldDecl;
         SourceLocation dotLoc;
         SourceLocation fieldLoc;
+        unsigned int arrayIndex;
         SourceLocation lBracketLoc;
-        SourceLocation rBracketLoc;
         SourceLocation ellipsisLoc;
-        unsigned int firstExprIndex;
+        SourceLocation rBracketLoc;
         SourceRange sourceRange;
     };
 
-    class CS_API FieldDesignator
-    {
-    public:
-        FieldDesignator();
-    };
-
-    class CS_API ArrayOrRangeDesignator
-    {
-    public:
-        ArrayOrRangeDesignator();
-    };
-
     DesignatedInitExpr();
-    SourceLocation equalOrColonLoc;
-    Expr* init;
     unsigned int size;
+    SourceLocation equalOrColonLoc;
+    bool isDirectInit;
     bool usesGNUSyntax;
+    Expr* init;
     unsigned int numSubExprs;
     SourceRange designatorsSourceRange;
 };
@@ -856,13 +1088,13 @@ class CS_API GenericSelectionExpr : public Expr
 public:
     GenericSelectionExpr();
     unsigned int numAssocs;
+    unsigned int resultIndex;
+    bool isResultDependent;
+    bool isExprPredicate;
+    bool isTypePredicate;
     SourceLocation genericLoc;
     SourceLocation defaultLoc;
     SourceLocation rParenLoc;
-    Expr* controllingExpr;
-    bool isResultDependent;
-    unsigned int resultIndex;
-    Expr* resultExpr;
 };
 
 class CS_API ExtVectorElementExpr : public Expr
@@ -881,7 +1113,6 @@ class CS_API BlockExpr : public Expr
 public:
     BlockExpr();
     SourceLocation caretLocation;
-    Stmt* body;
 };
 
 class CS_API AsTypeExpr : public Expr
@@ -897,10 +1128,9 @@ class CS_API PseudoObjectExpr : public Expr
 {
 public:
     PseudoObjectExpr();
-    Expr* syntacticForm;
     unsigned int resultExprIndex;
-    Expr* resultExpr;
     unsigned int numSemanticExprs;
+    SourceLocation exprLoc;
 };
 
 class CS_API AtomicExpr : public Expr
@@ -919,42 +1149,58 @@ public:
         C11AtomicFetchAnd = 8,
         C11AtomicFetchOr = 9,
         C11AtomicFetchXor = 10,
-        AtomicLoad = 11,
-        AtomicLoadN = 12,
-        AtomicStore = 13,
-        AtomicStoreN = 14,
-        AtomicExchange = 15,
-        AtomicExchangeN = 16,
-        AtomicCompareExchange = 17,
-        AtomicCompareExchangeN = 18,
-        AtomicFetchAdd = 19,
-        AtomicFetchSub = 20,
-        AtomicFetchAnd = 21,
-        AtomicFetchOr = 22,
-        AtomicFetchXor = 23,
-        AtomicFetchNand = 24,
-        AtomicAddFetch = 25,
-        AtomicSubFetch = 26,
-        AtomicAndFetch = 27,
-        AtomicOrFetch = 28,
-        AtomicXorFetch = 29,
-        AtomicNandFetch = 30,
-        OpenclAtomicInit = 31,
-        OpenclAtomicLoad = 32,
-        OpenclAtomicStore = 33,
-        OpenclAtomicExchange = 34,
-        OpenclAtomicCompareExchangeStrong = 35,
-        OpenclAtomicCompareExchangeWeak = 36,
-        OpenclAtomicFetchAdd = 37,
-        OpenclAtomicFetchSub = 38,
-        OpenclAtomicFetchAnd = 39,
-        OpenclAtomicFetchOr = 40,
-        OpenclAtomicFetchXor = 41,
-        OpenclAtomicFetchMin = 42,
-        OpenclAtomicFetchMax = 43,
-        AtomicFetchMin = 44,
-        AtomicFetchMax = 45,
-
+        C11AtomicFetchNand = 11,
+        C11AtomicFetchMax = 12,
+        C11AtomicFetchMin = 13,
+        AtomicLoad = 14,
+        AtomicLoadN = 15,
+        AtomicStore = 16,
+        AtomicStoreN = 17,
+        AtomicExchange = 18,
+        AtomicExchangeN = 19,
+        AtomicCompareExchange = 20,
+        AtomicCompareExchangeN = 21,
+        AtomicFetchAdd = 22,
+        AtomicFetchSub = 23,
+        AtomicFetchAnd = 24,
+        AtomicFetchOr = 25,
+        AtomicFetchXor = 26,
+        AtomicFetchNand = 27,
+        AtomicAddFetch = 28,
+        AtomicSubFetch = 29,
+        AtomicAndFetch = 30,
+        AtomicOrFetch = 31,
+        AtomicXorFetch = 32,
+        AtomicMaxFetch = 33,
+        AtomicMinFetch = 34,
+        AtomicNandFetch = 35,
+        OpenclAtomicInit = 36,
+        OpenclAtomicLoad = 37,
+        OpenclAtomicStore = 38,
+        OpenclAtomicExchange = 39,
+        OpenclAtomicCompareExchangeStrong = 40,
+        OpenclAtomicCompareExchangeWeak = 41,
+        OpenclAtomicFetchAdd = 42,
+        OpenclAtomicFetchSub = 43,
+        OpenclAtomicFetchAnd = 44,
+        OpenclAtomicFetchOr = 45,
+        OpenclAtomicFetchXor = 46,
+        OpenclAtomicFetchMin = 47,
+        OpenclAtomicFetchMax = 48,
+        AtomicFetchMin = 49,
+        AtomicFetchMax = 50,
+        HipAtomicLoad = 51,
+        HipAtomicStore = 52,
+        HipAtomicCompareExchangeWeak = 53,
+        HipAtomicCompareExchangeStrong = 54,
+        HipAtomicExchange = 55,
+        HipAtomicFetchAdd = 56,
+        HipAtomicFetchSub = 57,
+        HipAtomicFetchAnd = 58,
+        HipAtomicFetchOr = 59,
+        HipAtomicFetchXor = 60,
+        HipAtomicFetchMin = 61,
+        HipAtomicFetchMax = 62,
     };
 
     AtomicExpr();
@@ -981,14 +1227,23 @@ public:
     TypoExpr();
 };
 
+class CS_API RecoveryExpr : public Expr
+{
+public:
+    RecoveryExpr();
+};
+
 class CS_API CXXOperatorCallExpr : public CallExpr
 {
 public:
     CXXOperatorCallExpr();
     OverloadedOperatorKind _operator;
     bool isAssignmentOp;
+    bool isComparisonOp;
     bool isInfixBinaryOp;
     SourceLocation operatorLoc;
+    SourceLocation exprLoc;
+    SourceRange sourceRange;
 };
 
 class CS_API CXXMemberCallExpr : public CallExpr
@@ -996,14 +1251,32 @@ class CS_API CXXMemberCallExpr : public CallExpr
 public:
     CXXMemberCallExpr();
     Expr* implicitObjectArgument;
+    QualifiedType objectType;
     Method* methodDecl;
+    SourceLocation exprLoc;
 };
 
 class CS_API CUDAKernelCallExpr : public CallExpr
 {
 public:
     CUDAKernelCallExpr();
-    CallExpr* config;
+};
+
+class CS_API CXXRewrittenBinaryOperator : public Expr
+{
+public:
+    CXXRewrittenBinaryOperator();
+    bool isReversed;
+    BinaryOperatorKind _operator;
+    BinaryOperatorKind opcode;
+    std::string opcodeStr;
+    bool isComparisonOp;
+    bool isAssignmentOp;
+    Expr* lHS;
+    Expr* rHS;
+    SourceLocation operatorLoc;
+    SourceLocation exprLoc;
+    SourceRange sourceRange;
 };
 
 class CS_API CXXNamedCastExpr : public ExplicitCastExpr
@@ -1042,22 +1315,34 @@ public:
     CXXConstCastExpr();
 };
 
+class CS_API CXXAddrspaceCastExpr : public CXXNamedCastExpr
+{
+public:
+    CXXAddrspaceCastExpr();
+};
+
 class CS_API UserDefinedLiteral : public CallExpr
 {
 public:
+    /// <summary>The kind of literal operator which is invoked.</summary>
     enum class LiteralOperatorKind
     {
+        /// <summary>Raw form: operator &quot;&quot; X (const char *)</summary>
         Raw = 0,
+        /// <summary>Raw form: operator &quot;&quot; X...&gt; ()</summary>
         Template = 1,
+        /// <summary>operator &quot;&quot; X (unsigned long long)</summary>
         Integer = 2,
+        /// <summary>operator &quot;&quot; X (long double)</summary>
         Floating = 3,
+        /// <summary>operator &quot;&quot; X (const CharT *, size_t)</summary>
         String = 4,
+        /// <summary>operator &quot;&quot; X (CharT)</summary>
         Character = 5
     };
 
     UserDefinedLiteral();
     LiteralOperatorKind literalOperatorKind;
-    Expr* cookedLiteral;
     SourceLocation uDSuffixLoc;
 };
 
@@ -1080,22 +1365,24 @@ class CS_API CXXStdInitializerListExpr : public Expr
 {
 public:
     CXXStdInitializerListExpr();
-    Expr* subExpr;
+    SourceRange sourceRange;
 };
 
 class CS_API CXXTypeidExpr : public Expr
 {
 public:
     CXXTypeidExpr();
-    Expr* exprOperand;
     bool isPotentiallyEvaluated;
     bool isTypeOperand;
+    Expr* exprOperand;
+    SourceRange sourceRange;
 };
 
 class CS_API MSPropertyRefExpr : public Expr
 {
 public:
     MSPropertyRefExpr();
+    SourceRange sourceRange;
     bool isImplicitAccess;
     Expr* baseExpr;
     bool isArrow;
@@ -1107,17 +1394,17 @@ class CS_API MSPropertySubscriptExpr : public Expr
 public:
     MSPropertySubscriptExpr();
     SourceLocation rBracketLoc;
-    Expr* base;
-    Expr* idx;
+    SourceLocation exprLoc;
 };
 
 class CS_API CXXUuidofExpr : public Expr
 {
 public:
     CXXUuidofExpr();
-    Expr* exprOperand;
-    std::string uuidStr;
     bool isTypeOperand;
+    Expr* exprOperand;
+    std::string guidDecl;
+    SourceRange sourceRange;
 };
 
 class CS_API CXXThisExpr : public Expr
@@ -1132,7 +1419,6 @@ class CS_API CXXThrowExpr : public Expr
 {
 public:
     CXXThrowExpr();
-    Expr* subExpr;
     SourceLocation throwLoc;
     bool isThrownVariableInScope;
 };
@@ -1141,16 +1427,17 @@ class CS_API CXXDefaultArgExpr : public Expr
 {
 public:
     CXXDefaultArgExpr();
-    Expr* expr;
+    bool hasRewrittenInit;
     SourceLocation usedLocation;
+    SourceLocation exprLoc;
 };
 
 class CS_API CXXDefaultInitExpr : public Expr
 {
 public:
     CXXDefaultInitExpr();
-    Field* field;
-    Expr* expr;
+    bool hasRewrittenInit;
+    SourceLocation usedLocation;
 };
 
 class CS_API CXXBindTemporaryExpr : public Expr
@@ -1180,8 +1467,9 @@ public:
     bool listInitialization;
     bool stdInitListInitialization;
     bool requiresZeroInitialization;
-    SourceRange parenOrBraceRange;
     unsigned int numArgs;
+    bool isImmediateEscalating;
+    SourceRange parenOrBraceRange;
 };
 
 class CS_API CXXInheritedCtorInitExpr : public Expr
@@ -1217,8 +1505,10 @@ public:
     unsigned int capture_size;
     SourceRange introducerRange;
     Method* callOperator;
+    FunctionTemplate* dependentCallOperator;
+    Expr* trailingRequiresClause;
     bool isGenericLambda;
-    CompoundStmt* body;
+    Stmt* body;
     bool isMutable;
     bool hasExplicitParameters;
     bool hasExplicitResultType;
@@ -1236,27 +1526,29 @@ class CS_API CXXNewExpr : public Expr
 public:
     enum class InitializationStyle
     {
+        /// <summary>New-expression has no initializer as written.</summary>
         NoInit = 0,
+        /// <summary>New-expression has a C++98 paren-delimited initializer.</summary>
         CallInit = 1,
+        /// <summary>New-expression has a C++11 list-initializer.</summary>
         ListInit = 2
     };
 
     CXXNewExpr();
     VECTOR(Expr*, placement_arguments)
+    QualifiedType allocatedType;
     Function* operatorNew;
     Function* operatorDelete;
-    QualifiedType allocatedType;
     bool isArray;
-    Expr* arraySize;
     unsigned int numPlacementArgs;
     bool isParenTypeId;
     SourceRange typeIdParens;
     bool isGlobalNew;
     bool hasInitializer;
     InitializationStyle initializationStyle;
-    Expr* initializer;
     CXXConstructExpr* constructExpr;
     SourceRange directInitRange;
+    SourceRange sourceRange;
 };
 
 class CS_API CXXDeleteExpr : public Expr
@@ -1267,7 +1559,6 @@ public:
     bool isArrayForm;
     bool isArrayFormAsWritten;
     Function* operatorDelete;
-    Expr* argument;
     QualifiedType destroyedType;
 };
 
@@ -1365,11 +1656,11 @@ class CS_API CXXUnresolvedConstructExpr : public Expr
 public:
     CXXUnresolvedConstructExpr();
     VECTOR(Expr*, arguments)
+    QualifiedType typeAsWritten;
     SourceLocation lParenLoc;
     SourceLocation rParenLoc;
-    QualifiedType typeAsWritten;
     bool isListInitialization;
-    unsigned int arg_size;
+    unsigned int numArgs;
 };
 
 class CS_API CXXDependentScopeMemberExpr : public Expr
@@ -1396,12 +1687,12 @@ class CS_API UnresolvedMemberExpr : public OverloadExpr
 public:
     UnresolvedMemberExpr();
     bool isImplicitAccess;
-    Expr* base;
     QualifiedType baseType;
     bool hasUnresolvedUsing;
     bool isArrow;
     SourceLocation operatorLoc;
     SourceLocation memberLoc;
+    SourceLocation exprLoc;
 };
 
 class CS_API CXXNoexceptExpr : public Expr
@@ -1409,6 +1700,7 @@ class CS_API CXXNoexceptExpr : public Expr
 public:
     CXXNoexceptExpr();
     Expr* operand;
+    SourceRange sourceRange;
     bool value;
 };
 
@@ -1416,8 +1708,8 @@ class CS_API PackExpansionExpr : public Expr
 {
 public:
     PackExpansionExpr();
-    Expr* pattern;
     SourceLocation ellipsisLoc;
+    std::optional<unsigned int> numExpansions;
 };
 
 class CS_API SizeOfPackExpr : public Expr
@@ -1438,12 +1730,18 @@ public:
     SubstNonTypeTemplateParmExpr();
     SourceLocation nameLoc;
     Expr* replacement;
+    Declaration* associatedDecl;
+    unsigned int index;
+    std::optional<unsigned int> packIndex;
+    bool isReferenceParameter;
 };
 
 class CS_API SubstNonTypeTemplateParmPackExpr : public Expr
 {
 public:
     SubstNonTypeTemplateParmPackExpr();
+    Declaration* associatedDecl;
+    unsigned int index;
     SourceLocation parameterPackLocation;
     TemplateArgument argumentPack;
 };
@@ -1459,15 +1757,8 @@ public:
 class CS_API MaterializeTemporaryExpr : public Expr
 {
 public:
-    class CS_API ExtraState
-    {
-    public:
-        ExtraState();
-    };
-
     MaterializeTemporaryExpr();
-    Stmt* temporary;
-    Expr* TemporaryExpr;
+    Expr* subExpr;
     unsigned int manglingNumber;
     bool isBoundToLvalueReference;
 };
@@ -1475,15 +1766,36 @@ public:
 class CS_API CXXFoldExpr : public Expr
 {
 public:
+    enum class SubExpr
+    {
+        Callee = 0,
+        LHS = 1,
+        RHS = 2,
+        Count = 3
+    };
+
     CXXFoldExpr();
+    UnresolvedLookupExpr* callee;
     Expr* lHS;
     Expr* rHS;
     bool isRightFold;
     bool isLeftFold;
     Expr* pattern;
     Expr* init;
+    SourceLocation lParenLoc;
+    SourceLocation rParenLoc;
     SourceLocation ellipsisLoc;
     BinaryOperatorKind _operator;
+    std::optional<unsigned int> numExpansions;
+};
+
+class CS_API CXXParenListInitExpr : public Expr
+{
+public:
+    CXXParenListInitExpr();
+    SourceLocation initLoc;
+    SourceRange sourceRange;
+    Expr* arrayFiller;
 };
 
 class CS_API CoroutineSuspendExpr : public Expr
@@ -1491,21 +1803,23 @@ class CS_API CoroutineSuspendExpr : public Expr
 public:
     enum class SubExpr
     {
-        Common = 0,
-        Ready = 1,
-        Suspend = 2,
-        Resume = 3,
-        Count = 4
+        Operand = 0,
+        Common = 1,
+        Ready = 2,
+        Suspend = 3,
+        Resume = 4,
+        Count = 5
     };
 
     CoroutineSuspendExpr();
     CoroutineSuspendExpr(StmtClass klass);
-    SourceLocation keywordLoc;
     Expr* commonExpr;
     OpaqueValueExpr* opaqueValue;
     Expr* readyExpr;
     Expr* suspendExpr;
     Expr* resumeExpr;
+    Expr* operand;
+    SourceLocation keywordLoc;
 };
 
 class CS_API CoawaitExpr : public CoroutineSuspendExpr
@@ -1513,7 +1827,6 @@ class CS_API CoawaitExpr : public CoroutineSuspendExpr
 public:
     CoawaitExpr();
     bool isImplicit;
-    Expr* operand;
 };
 
 class CS_API DependentCoawaitExpr : public Expr
@@ -1529,7 +1842,12 @@ class CS_API CoyieldExpr : public CoroutineSuspendExpr
 {
 public:
     CoyieldExpr();
-    Expr* operand;
 };
 
-} } }
+class CS_API BuiltinBitCastExpr : public ExplicitCastExpr
+{
+public:
+    BuiltinBitCastExpr();
+};
+
+}

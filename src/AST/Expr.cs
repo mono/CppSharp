@@ -15,62 +15,86 @@ namespace CppSharp.AST
         Dependent = 0,
         BitCast = 1,
         LValueBitCast = 2,
-        LValueToRValue = 3,
-        NoOp = 4,
-        BaseToDerived = 5,
-        DerivedToBase = 6,
-        UncheckedDerivedToBase = 7,
-        Dynamic = 8,
-        ToUnion = 9,
-        ArrayToPointerDecay = 10,
-        FunctionToPointerDecay = 11,
-        NullToPointer = 12,
-        NullToMemberPointer = 13,
-        BaseToDerivedMemberPointer = 14,
-        DerivedToBaseMemberPointer = 15,
-        MemberPointerToBoolean = 16,
-        ReinterpretMemberPointer = 17,
-        UserDefinedConversion = 18,
-        ConstructorConversion = 19,
-        IntegralToPointer = 20,
-        PointerToIntegral = 21,
-        PointerToBoolean = 22,
-        ToVoid = 23,
-        VectorSplat = 24,
-        IntegralCast = 25,
-        IntegralToBoolean = 26,
-        IntegralToFloating = 27,
-        FixedPointCast = 28,
-        FixedPointToBoolean = 29,
-        FloatingToIntegral = 30,
-        FloatingToBoolean = 31,
-        BooleanToSignedIntegral = 32,
-        FloatingCast = 33,
-        CPointerToObjCPointerCast = 34,
-        BlockPointerToObjCPointerCast = 35,
-        AnyPointerToBlockPointerCast = 36,
-        ObjCObjectLValueCast = 37,
-        FloatingRealToComplex = 38,
-        FloatingComplexToReal = 39,
-        FloatingComplexToBoolean = 40,
-        FloatingComplexCast = 41,
-        FloatingComplexToIntegralComplex = 42,
-        IntegralRealToComplex = 43,
-        IntegralComplexToReal = 44,
-        IntegralComplexToBoolean = 45,
-        IntegralComplexCast = 46,
-        IntegralComplexToFloatingComplex = 47,
-        ARCProduceObject = 48,
-        ARCConsumeObject = 49,
-        ARCReclaimReturnedObject = 50,
-        ARCExtendBlockObject = 51,
-        AtomicToNonAtomic = 52,
-        NonAtomicToAtomic = 53,
-        CopyAndAutoreleaseBlockObject = 54,
-        BuiltinFnToFnPtr = 55,
-        ZeroToOCLOpaqueType = 56,
-        AddressSpaceConversion = 57,
-        IntToOCLSampler = 58
+        LValueToRValueBitCast = 3,
+        LValueToRValue = 4,
+        NoOp = 5,
+        BaseToDerived = 6,
+        DerivedToBase = 7,
+        UncheckedDerivedToBase = 8,
+        Dynamic = 9,
+        ToUnion = 10,
+        ArrayToPointerDecay = 11,
+        FunctionToPointerDecay = 12,
+        NullToPointer = 13,
+        NullToMemberPointer = 14,
+        BaseToDerivedMemberPointer = 15,
+        DerivedToBaseMemberPointer = 16,
+        MemberPointerToBoolean = 17,
+        ReinterpretMemberPointer = 18,
+        UserDefinedConversion = 19,
+        ConstructorConversion = 20,
+        IntegralToPointer = 21,
+        PointerToIntegral = 22,
+        PointerToBoolean = 23,
+        ToVoid = 24,
+        MatrixCast = 25,
+        VectorSplat = 26,
+        IntegralCast = 27,
+        IntegralToBoolean = 28,
+        IntegralToFloating = 29,
+        FloatingToFixedPoint = 30,
+        FixedPointToFloating = 31,
+        FixedPointCast = 32,
+        FixedPointToIntegral = 33,
+        IntegralToFixedPoint = 34,
+        FixedPointToBoolean = 35,
+        FloatingToIntegral = 36,
+        FloatingToBoolean = 37,
+        BooleanToSignedIntegral = 38,
+        FloatingCast = 39,
+        CPointerToObjCPointerCast = 40,
+        BlockPointerToObjCPointerCast = 41,
+        AnyPointerToBlockPointerCast = 42,
+        ObjCObjectLValueCast = 43,
+        FloatingRealToComplex = 44,
+        FloatingComplexToReal = 45,
+        FloatingComplexToBoolean = 46,
+        FloatingComplexCast = 47,
+        FloatingComplexToIntegralComplex = 48,
+        IntegralRealToComplex = 49,
+        IntegralComplexToReal = 50,
+        IntegralComplexToBoolean = 51,
+        IntegralComplexCast = 52,
+        IntegralComplexToFloatingComplex = 53,
+        ARCProduceObject = 54,
+        ARCConsumeObject = 55,
+        ARCReclaimReturnedObject = 56,
+        ARCExtendBlockObject = 57,
+        AtomicToNonAtomic = 58,
+        NonAtomicToAtomic = 59,
+        CopyAndAutoreleaseBlockObject = 60,
+        BuiltinFnToFnPtr = 61,
+        ZeroToOCLOpaqueType = 62,
+        AddressSpaceConversion = 63,
+        IntToOCLSampler = 64
+    }
+
+    public enum UnaryOperatorKind
+    {
+        PostInc = 0,
+        PostDec = 1,
+        PreInc = 2,
+        PreDec = 3,
+        AddrOf = 4,
+        Deref = 5,
+        Plus = 6,
+        Minus = 7,
+        Not = 8,
+        LNot = 9,
+        Real = 10,
+        Imag = 11,
+        Extension = 12,
+        Coawait = 13
     }
 
     public enum BinaryOperatorKind
@@ -110,40 +134,22 @@ namespace CppSharp.AST
         Comma = 32
     }
 
-    public enum UnaryOperatorKind
-    {
-        PostInc = 0,
-        PostDec = 1,
-        PreInc = 2,
-        PreDec = 3,
-        AddrOf = 4,
-        Deref = 5,
-        Plus = 6,
-        Minus = 7,
-        Not = 8,
-        LNot = 9,
-        Real = 10,
-        Imag = 11,
-        Extension = 12,
-        Coawait = 13
-    }
-
     public enum ObjCBridgeCastKind
     {
         /// <summary>
-/// <para>Bridging via __bridge, which does nothing but reinterpret</para>
-/// <para>the bits.</para>
-/// </summary>
+        /// <para>Bridging via __bridge, which does nothing but reinterpret</para>
+        /// <para>the bits.</para>
+        /// </summary>
         Bridge = 0,
         /// <summary>
-/// <para>Bridging via __bridge_transfer, which transfers ownership of an</para>
-/// <para>Objective-C pointer into ARC.</para>
-/// </summary>
+        /// <para>Bridging via __bridge_transfer, which transfers ownership of an</para>
+        /// <para>Objective-C pointer into ARC.</para>
+        /// </summary>
         BridgeTransfer = 1,
         /// <summary>
-/// <para>Bridging via __bridge_retain, which makes an ARC object available</para>
-/// <para>as a +1 C pointer.</para>
-/// </summary>
+        /// <para>Bridging via __bridge_retain, which makes an ARC object available</para>
+        /// <para>as a +1 C pointer.</para>
+        /// </summary>
         BridgeRetained = 2
     }
 
@@ -201,30 +207,67 @@ namespace CppSharp.AST
     public enum UnaryExprOrTypeTrait
     {
         SizeOf = 0,
-        /// <summary>
-/// <para>Used for C's _Alignof and C++'s alignof.</para>
-/// <para>_Alignof and alignof return the required ABI alignment.</para>
-/// </summary>
         AlignOf = 1,
-        /// <summary>
-/// <para>Used for C's _Alignof and C++'s alignof.</para>
-/// <para>_Alignof and alignof return the required ABI alignment.</para>
-/// </summary>
-        VecStep = 2,
-        /// <summary>
-/// <para>Used for C's _Alignof and C++'s alignof.</para>
-/// <para>_Alignof and alignof return the required ABI alignment.</para>
-/// </summary>
-        OpenMPRequiredSimdAlign = 3,
-        /// <summary>
-/// <para>Used for GCC's __alignof.</para>
-/// <para>__alignof returns the preferred alignment of a type, the alignment</para>
-/// <para>clang will attempt to give an object of the type if allowed by ABI.</para>
-/// </summary>
-        PreferredAlignOf = 4
+        PreferredAlignOf = 2,
+        VecStep = 3,
+        OpenMPRequiredSimdAlign = 4,
+        Last = 4
     }
 
-    public abstract partial class Expr : Stmt
+    public enum NonOdrUseReason
+    {
+        /// <summary>This is an odr-use.</summary>
+        None = 0,
+        /// <summary>This name appears in an unevaluated operand.</summary>
+        Unevaluated = 1,
+        /// <summary>
+        /// <para>This name appears as a potential result of an lvalue-to-rvalue</para>
+        /// <para>conversion that is a constant expression.</para>
+        /// </summary>
+        Constant = 2,
+        /// <summary>
+        /// <para>This name appears as a potential result of a discarded value</para>
+        /// <para>expression.</para>
+        /// </summary>
+        Discarded = 3
+    }
+
+    public enum ExprDependence : byte
+    {
+        UnexpandedPack = 1,
+        Instantiation = 2,
+        Type = 4,
+        Value = 8,
+        Error = 16,
+        None = 0,
+        All = 31,
+        TypeValue = 12,
+        TypeInstantiation = 6,
+        ValueInstantiation = 10,
+        TypeValueInstantiation = 14,
+        ErrorDependent = 26,
+        LLVM_BITMASK_LARGEST_ENUMERATOR = 16
+    }
+
+    public enum FloatSemantics
+    {
+        IEEEhalf = 0,
+        BFloat = 1,
+        IEEEsingle = 2,
+        IEEEdouble = 3,
+        IEEEquad = 4,
+        PPCDoubleDouble = 5,
+        Float8E5M2 = 6,
+        Float8E5M2FNUZ = 7,
+        Float8E4M3FN = 8,
+        Float8E4M3FNUZ = 9,
+        Float8E4M3B11FNUZ = 10,
+        FloatTF32 = 11,
+        X87DoubleExtended = 12,
+        MaxSemantics = 12
+    }
+
+    public abstract partial class Expr : ValueStmt
     {
         public enum LValueClassification
         {
@@ -266,18 +309,34 @@ namespace CppSharp.AST
             /// <summary>Strictly evaluate the expression.</summary>
             NoSideEffects = 0,
             /// <summary>
-/// <para>Allow UB that we can give a value, but not</para>
-/// <para>arbitrary unmodeled side effects.</para>
-/// </summary>
+            /// <para>Allow UB that we can give a value, but not</para>
+            /// <para>arbitrary unmodeled side effects.</para>
+            /// </summary>
             AllowUndefinedBehavior = 1,
             /// <summary>Allow any unmodeled side effect.</summary>
             AllowSideEffects = 2
         }
 
-        public enum ConstExprUsage
+        public enum ConstantExprKind
         {
-            EvaluateForCodeGen = 0,
-            EvaluateForMangling = 1
+            /// <summary>
+            /// <para>An integer constant expression (an array bound, enumerator, case value,</para>
+            /// <para>bit-field width, or similar) or similar.</para>
+            /// </summary>
+            Normal = 0,
+            /// <summary>
+            /// <para>A non-class template argument. Such a value is only used for mangling,</para>
+            /// <para>not for code generation, so can refer to dllimported functions.</para>
+            /// </summary>
+            NonClassTemplateArgument = 1,
+            /// <summary>A class template argument. Such a value is used for code generation.</summary>
+            ClassTemplateArgument = 2,
+            /// <summary>
+            /// <para>An immediate invocation. The destruction of the end result of this</para>
+            /// <para>evaluation is not part of the evaluation, but all other temporaries</para>
+            /// <para>are destroyed.</para>
+            /// </summary>
+            ImmediateInvocation = 3
         }
 
         public enum NullPointerConstantKind
@@ -285,12 +344,12 @@ namespace CppSharp.AST
             /// <summary>Expression is not a Null pointer constant.</summary>
             NotNull = 0,
             /// <summary>
-/// <para>Expression is a Null pointer constant built from a zero integer</para>
-/// <para>expression that is not a simple, possibly parenthesized, zero literal.</para>
-/// <para>C++ Core Issue 903 will classify these expressions as &quot;not pointers&quot;</para>
-/// <para>once it is adopted.</para>
-/// <para>http://www.open-std.org/jtc1/sc22/wg21/docs/cwg_active.html#903</para>
-/// </summary>
+            /// <para>Expression is a Null pointer constant built from a zero integer</para>
+            /// <para>expression that is not a simple, possibly parenthesized, zero literal.</para>
+            /// <para>C++ Core Issue 903 will classify these expressions as &quot;not pointers&quot;</para>
+            /// <para>once it is adopted.</para>
+            /// <para>http://www.open-std.org/jtc1/sc22/wg21/docs/cwg_active.html#903</para>
+            /// </summary>
             ZeroExpression = 1,
             /// <summary>Expression is a Null pointer constant built from a literal zero.</summary>
             ZeroLiteral = 2,
@@ -305,14 +364,14 @@ namespace CppSharp.AST
             /// <summary>Specifies that the expression should never be value-dependent.</summary>
             NeverValueDependent = 0,
             /// <summary>
-/// <para>Specifies that a value-dependent expression of integral or</para>
-/// <para>dependent type should be considered a null pointer constant.</para>
-/// </summary>
+            /// <para>Specifies that a value-dependent expression of integral or</para>
+            /// <para>dependent type should be considered a null pointer constant.</para>
+            /// </summary>
             ValueDependentIsNull = 1,
             /// <summary>
-/// <para>Specifies that a value-dependent expression should be considered</para>
-/// <para>to never be a null pointer constant.</para>
-/// </summary>
+            /// <para>Specifies that a value-dependent expression should be considered</para>
+            /// <para>to never be a null pointer constant.</para>
+            /// </summary>
             ValueDependentIsNotNull = 2
         }
 
@@ -367,19 +426,21 @@ namespace CppSharp.AST
         {
         }
 
+        public ExprDependence Dependence { get; set; }
         public QualifiedType Type { get; set; }
-        public bool ValueDependent { get; set; }
-        public bool TypeDependent { get; set; }
-        public bool InstantiationDependent { get; set; }
+        public bool IsValueDependent { get; set; }
+        public bool IsTypeDependent { get; set; }
+        public bool IsInstantiationDependent { get; set; }
         public bool ContainsUnexpandedParameterPack { get; set; }
+        public bool ContainsErrors { get; set; }
         public SourceLocation ExprLoc { get; set; }
+        public bool IsReadIfDiscardedInCPlusPlus11 { get; set; }
         public bool IsLValue { get; set; }
-        public bool IsRValue { get; set; }
+        public bool IsPRValue { get; set; }
         public bool IsXValue { get; set; }
         public bool IsGLValue { get; set; }
         public bool IsOrdinaryOrBitFieldObject { get; set; }
-        public Field SourceBitField { get; set; }
-        public Declaration ReferencedDeclOfCallee { get; set; }
+        public bool RefersToMatrixElement { get; set; }
         public bool HasPlaceholderType { get; set; }
     }
 
@@ -394,10 +455,20 @@ namespace CppSharp.AST
 
     public partial class ConstantExpr : FullExpr
     {
+        public enum ResultStorageKind
+        {
+            None = 0,
+            Int64 = 1,
+            APValue = 2
+        }
+
         public ConstantExpr()
         {
         }
 
+        public ConstantExpr.ResultStorageKind resultStorageKind { get; set; }
+        public bool IsImmediateInvocation { get; set; }
+        public bool HasAPValueResult { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitConstantExpr(this);
@@ -409,9 +480,10 @@ namespace CppSharp.AST
         {
         }
 
-        public bool IsUnique { get; set; }
         public SourceLocation Location { get; set; }
+        public SourceLocation ExprLoc { get; set; }
         public Expr SourceExpr { get; set; }
+        public bool IsUnique { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitOpaqueValueExpr(this);
@@ -424,9 +496,7 @@ namespace CppSharp.AST
         }
 
         public SourceLocation Location { get; set; }
-        public bool HadMultipleCandidates { get; set; }
         public bool HasQualifier { get; set; }
-        public Declaration FoundDecl { get; set; }
         public bool HasTemplateKWAndArgsInfo { get; set; }
         public SourceLocation TemplateKeywordLoc { get; set; }
         public SourceLocation LAngleLoc { get; set; }
@@ -434,7 +504,10 @@ namespace CppSharp.AST
         public bool HasTemplateKeyword { get; set; }
         public bool HasExplicitTemplateArgs { get; set; }
         public uint NumTemplateArgs { get; set; }
+        public bool HadMultipleCandidates { get; set; }
+        public NonOdrUseReason IsNonOdrUse { get; set; }
         public bool RefersToEnclosingVariableOrCapture { get; set; }
+        public bool IsImmediateEscalating { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitDeclRefExpr(this);
@@ -460,6 +533,7 @@ namespace CppSharp.AST
         }
 
         public SourceLocation Location { get; set; }
+        public uint Scale { get; set; }
         public ulong Value { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
@@ -495,9 +569,10 @@ namespace CppSharp.AST
         {
         }
 
+        public FloatSemantics RawSemantics { get; set; }
         public bool Exact { get; set; }
-        public SourceLocation Location { get; set; }
         public double ValueAsApproximateDouble { get; set; }
+        public SourceLocation Location { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitFloatingLiteral(this);
@@ -519,11 +594,12 @@ namespace CppSharp.AST
     {
         public enum StringKind
         {
-            Ascii = 0,
+            Ordinary = 0,
             Wide = 1,
             UTF8 = 2,
             UTF16 = 3,
-            UTF32 = 4
+            UTF32 = 4,
+            Unevaluated = 5
         }
 
         public StringLiteral()
@@ -536,11 +612,12 @@ namespace CppSharp.AST
         public uint Length { get; set; }
         public uint CharByteWidth { get; set; }
         public StringLiteral.StringKind Kind { get; set; }
-        public bool IsAscii { get; set; }
+        public bool IsOrdinary { get; set; }
         public bool IsWide { get; set; }
         public bool IsUTF8 { get; set; }
         public bool IsUTF16 { get; set; }
         public bool IsUTF32 { get; set; }
+        public bool IsUnevaluated { get; set; }
         public bool IsPascal { get; set; }
         public bool ContainsNonAscii { get; set; }
         public bool ContainsNonAsciiOrNull { get; set; }
@@ -562,9 +639,9 @@ namespace CppSharp.AST
             LFuncSig = 5,
             PrettyFunction = 6,
             /// <summary>
-/// <para>The same as PrettyFunction, except that the</para>
-/// <para>'virtual' keyword is omitted for virtual member functions.</para>
-/// </summary>
+            /// <para>The same as PrettyFunction, except that the</para>
+            /// <para>'virtual' keyword is omitted for virtual member functions.</para>
+            /// </summary>
             PrettyFunctionNoVirtual = 7
         }
 
@@ -572,11 +649,27 @@ namespace CppSharp.AST
         {
         }
 
-        public SourceLocation Location { get; set; }
         public PredefinedExpr.IdentKind identKind { get; set; }
+        public bool IsTransparent { get; set; }
+        public SourceLocation Location { get; set; }
+        public string IdentKindName { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitPredefinedExpr(this);
+    }
+
+    public partial class SYCLUniqueStableNameExpr : Expr
+    {
+        public SYCLUniqueStableNameExpr()
+        {
+        }
+
+        public SourceLocation Location { get; set; }
+        public SourceLocation LParenLocation { get; set; }
+        public SourceLocation RParenLocation { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitSYCLUniqueStableNameExpr(this);
     }
 
     public partial class ParenExpr : Expr
@@ -609,7 +702,8 @@ namespace CppSharp.AST
         public bool IsDecrementOp { get; set; }
         public bool IsIncrementDecrementOp { get; set; }
         public bool IsArithmeticOp { get; set; }
-        public bool IsFPContractableWithinStatement { get; set; }
+        public SourceLocation ExprLoc { get; set; }
+        public bool HasStoredFPFeatures { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitUnaryOperator(this);
@@ -637,12 +731,11 @@ namespace CppSharp.AST
         }
 
         public UnaryExprOrTypeTrait Kind { get; set; }
-        public SourceLocation OperatorLoc { get; set; }
-        public SourceLocation RParenLoc { get; set; }
         public bool IsArgumentType { get; set; }
         public QualifiedType ArgumentType { get; set; }
-        public Expr ArgumentExpr { get; set; }
         public QualifiedType TypeOfArgument { get; set; }
+        public SourceLocation OperatorLoc { get; set; }
+        public SourceLocation RParenLoc { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitUnaryExprOrTypeTraitExpr(this);
@@ -657,27 +750,49 @@ namespace CppSharp.AST
         public Expr LHS { get; set; }
         public Expr RHS { get; set; }
         public SourceLocation RBracketLoc { get; set; }
-        public Expr Base { get; set; }
-        public Expr Idx { get; set; }
+        public SourceLocation ExprLoc { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitArraySubscriptExpr(this);
     }
 
+    public partial class MatrixSubscriptExpr : Expr
+    {
+        public MatrixSubscriptExpr()
+        {
+        }
+
+        public bool IsIncomplete { get; set; }
+        public Expr Base { get; set; }
+        public Expr RowIdx { get; set; }
+        public Expr ColumnIdx { get; set; }
+        public SourceLocation ExprLoc { get; set; }
+        public SourceLocation RBracketLoc { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitMatrixSubscriptExpr(this);
+    }
+
     public partial class CallExpr : Expr
     {
+        public enum ADLCallKind : byte
+        {
+            NotADL = 0,
+            UsesADL = 1
+        }
+
         public CallExpr()
         {
         }
 
         public List<Expr> Arguments { get; private set; } = new List<Expr>();
         public Expr Callee { get; set; }
-        public SourceLocation RParenLoc { get; set; }
-        public Declaration CalleeDecl { get; set; }
-        public Function DirectCallee { get; set; }
+        public CallExpr.ADLCallKind aDLCallKind { get; set; }
+        public bool UsesADL { get; set; }
+        public bool HasStoredFPFeatures { get; set; }
         public uint NumArgs { get; set; }
-        public uint NumCommas { get; set; }
         public uint BuiltinCallee { get; set; }
+        public SourceLocation RParenLoc { get; set; }
         public bool IsCallToStdMove { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
@@ -691,9 +806,6 @@ namespace CppSharp.AST
         }
 
         public Expr Base { get; set; }
-        public bool Arrow { get; set; }
-        public SourceLocation MemberLoc { get; set; }
-        public bool HadMultipleCandidates { get; set; }
         public bool HasQualifier { get; set; }
         public SourceLocation TemplateKeywordLoc { get; set; }
         public SourceLocation LAngleLoc { get; set; }
@@ -702,7 +814,12 @@ namespace CppSharp.AST
         public bool HasExplicitTemplateArgs { get; set; }
         public uint NumTemplateArgs { get; set; }
         public SourceLocation OperatorLoc { get; set; }
+        public bool Arrow { get; set; }
+        public SourceLocation MemberLoc { get; set; }
+        public SourceLocation ExprLoc { get; set; }
         public bool IsImplicitAccess { get; set; }
+        public bool HadMultipleCandidates { get; set; }
+        public NonOdrUseReason IsNonOdrUse { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitMemberExpr(this);
@@ -729,12 +846,12 @@ namespace CppSharp.AST
         }
 
         public CastKind CastKind { get; set; }
-        public Expr SubExpr { get; set; }
         public string CastKindName { get; set; }
-        public Expr SubExprAsWritten { get; set; }
+        public Expr SubExpr { get; set; }
         public Declaration ConversionFunction { get; set; }
         public bool PathEmpty { get; set; }
         public uint PathSize { get; set; }
+        public bool HasStoredFPFeatures { get; set; }
     }
 
     public partial class ImplicitCastExpr : CastExpr
@@ -782,6 +899,7 @@ namespace CppSharp.AST
         {
         }
 
+        public SourceLocation ExprLoc { get; set; }
         public SourceLocation OperatorLoc { get; set; }
         public BinaryOperatorKind Opcode { get; set; }
         public Expr LHS { get; set; }
@@ -795,12 +913,12 @@ namespace CppSharp.AST
         public bool IsRelationalOp { get; set; }
         public bool IsEqualityOp { get; set; }
         public bool IsComparisonOp { get; set; }
+        public bool IsCommaOp { get; set; }
         public bool IsLogicalOp { get; set; }
         public bool IsAssignmentOp { get; set; }
         public bool IsCompoundAssignmentOp { get; set; }
         public bool IsShiftAssignOp { get; set; }
-        public bool IsFPContractableWithinStatement { get; set; }
-        public bool IsFEnvAccessOn { get; set; }
+        public bool HasStoredFPFeatures { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitBinaryOperator(this);
@@ -838,6 +956,9 @@ namespace CppSharp.AST
         {
         }
 
+        public Expr Cond { get; set; }
+        public Expr TrueExpr { get; set; }
+        public Expr FalseExpr { get; set; }
         public Expr LHS { get; set; }
         public Expr RHS { get; set; }
 
@@ -853,6 +974,9 @@ namespace CppSharp.AST
 
         public Expr Common { get; set; }
         public OpaqueValueExpr OpaqueValue { get; set; }
+        public Expr Cond { get; set; }
+        public Expr TrueExpr { get; set; }
+        public Expr FalseExpr { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitBinaryConditionalOperator(this);
@@ -880,6 +1004,7 @@ namespace CppSharp.AST
         public CompoundStmt SubStmt { get; set; }
         public SourceLocation LParenLoc { get; set; }
         public SourceLocation RParenLoc { get; set; }
+        public uint TemplateDepth { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitStmtExpr(this);
@@ -920,13 +1045,13 @@ namespace CppSharp.AST
         }
 
         public bool IsConditionTrue { get; set; }
+        public bool IsConditionDependent { get; set; }
+        public Expr ChosenSubExpr { get; set; }
         public Expr Cond { get; set; }
         public Expr LHS { get; set; }
         public Expr RHS { get; set; }
         public SourceLocation BuiltinLoc { get; set; }
         public SourceLocation RParenLoc { get; set; }
-        public bool IsConditionDependent { get; set; }
-        public Expr ChosenSubExpr { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitChooseExpr(this);
@@ -959,24 +1084,51 @@ namespace CppSharp.AST
             visitor.VisitVAArgExpr(this);
     }
 
+    public partial class SourceLocExpr : Expr
+    {
+        public enum IdentKind
+        {
+            Function = 0,
+            FuncSig = 1,
+            File = 2,
+            FileName = 3,
+            Line = 4,
+            Column = 5,
+            SourceLocStruct = 6
+        }
+
+        public SourceLocExpr()
+        {
+        }
+
+        public string BuiltinStr { get; set; }
+        public SourceLocExpr.IdentKind identKind { get; set; }
+        public bool IsIntType { get; set; }
+        public SourceLocation Location { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitSourceLocExpr(this);
+    }
+
     public partial class InitListExpr : Expr
     {
         public InitListExpr()
         {
         }
 
-        public Expr ArrayFiller { get; set; }
-        public SourceLocation LBraceLoc { get; set; }
-        public SourceLocation RBraceLoc { get; set; }
-        public InitListExpr SyntacticForm { get; set; }
         public uint NumInits { get; set; }
+        public Expr ArrayFiller { get; set; }
         public bool HasArrayFiller { get; set; }
+        public bool HasDesignatedInit { get; set; }
         public bool IsExplicit { get; set; }
         public bool IsStringLiteralInit { get; set; }
         public bool IsTransparent { get; set; }
+        public SourceLocation LBraceLoc { get; set; }
+        public SourceLocation RBraceLoc { get; set; }
         public bool IsSemanticForm { get; set; }
         public InitListExpr SemanticForm { get; set; }
         public bool IsSyntacticForm { get; set; }
+        public InitListExpr SyntacticForm { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitInitListExpr(this);
@@ -986,45 +1138,54 @@ namespace CppSharp.AST
     {
         public partial class Designator
         {
+            internal enum DesignatorKind
+            {
+                FieldDesignator = 0,
+                ArrayDesignator = 1,
+                ArrayRangeDesignator = 2
+            }
+
+            public partial class FieldDesignatorInfo
+            {
+                public FieldDesignatorInfo()
+                {
+                }
+
+            }
+            public partial class ArrayOrRangeDesignatorInfo
+            {
+                public ArrayOrRangeDesignatorInfo()
+                {
+                }
+
+            }
+
             public Designator()
             {
             }
 
-            public Field Field { get; set; }
             public bool IsFieldDesignator { get; set; }
             public bool IsArrayDesignator { get; set; }
             public bool IsArrayRangeDesignator { get; set; }
+            public Field FieldDecl { get; set; }
             public SourceLocation DotLoc { get; set; }
             public SourceLocation FieldLoc { get; set; }
+            public uint ArrayIndex { get; set; }
             public SourceLocation LBracketLoc { get; set; }
-            public SourceLocation RBracketLoc { get; set; }
             public SourceLocation EllipsisLoc { get; set; }
-            public uint FirstExprIndex { get; set; }
+            public SourceLocation RBracketLoc { get; set; }
             public SourceRange SourceRange { get; set; }
-        }
-        public partial class FieldDesignator
-        {
-            public FieldDesignator()
-            {
-            }
-
-        }
-        public partial class ArrayOrRangeDesignator
-        {
-            public ArrayOrRangeDesignator()
-            {
-            }
-
         }
 
         public DesignatedInitExpr()
         {
         }
 
-        public SourceLocation EqualOrColonLoc { get; set; }
-        public Expr Init { get; set; }
         public uint Size { get; set; }
+        public SourceLocation EqualOrColonLoc { get; set; }
+        public bool IsDirectInit { get; set; }
         public bool UsesGNUSyntax { get; set; }
+        public Expr Init { get; set; }
         public uint NumSubExprs { get; set; }
         public SourceRange DesignatorsSourceRange { get; set; }
 
@@ -1112,13 +1273,13 @@ namespace CppSharp.AST
         }
 
         public uint NumAssocs { get; set; }
+        public uint ResultIndex { get; set; }
+        public bool IsResultDependent { get; set; }
+        public bool IsExprPredicate { get; set; }
+        public bool IsTypePredicate { get; set; }
         public SourceLocation GenericLoc { get; set; }
         public SourceLocation DefaultLoc { get; set; }
         public SourceLocation RParenLoc { get; set; }
-        public Expr ControllingExpr { get; set; }
-        public bool IsResultDependent { get; set; }
-        public uint ResultIndex { get; set; }
-        public Expr ResultExpr { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitGenericSelectionExpr(this);
@@ -1147,7 +1308,6 @@ namespace CppSharp.AST
         }
 
         public SourceLocation CaretLocation { get; set; }
-        public Stmt Body { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitBlockExpr(this);
@@ -1173,10 +1333,9 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr SyntacticForm { get; set; }
         public uint ResultExprIndex { get; set; }
-        public Expr ResultExpr { get; set; }
         public uint NumSemanticExprs { get; set; }
+        public SourceLocation ExprLoc { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitPseudoObjectExpr(this);
@@ -1197,41 +1356,58 @@ namespace CppSharp.AST
             C11AtomicFetchAnd = 8,
             C11AtomicFetchOr = 9,
             C11AtomicFetchXor = 10,
-            AtomicLoad = 11,
-            AtomicLoadN = 12,
-            AtomicStore = 13,
-            AtomicStoreN = 14,
-            AtomicExchange = 15,
-            AtomicExchangeN = 16,
-            AtomicCompareExchange = 17,
-            AtomicCompareExchangeN = 18,
-            AtomicFetchAdd = 19,
-            AtomicFetchSub = 20,
-            AtomicFetchAnd = 21,
-            AtomicFetchOr = 22,
-            AtomicFetchXor = 23,
-            AtomicFetchNand = 24,
-            AtomicAddFetch = 25,
-            AtomicSubFetch = 26,
-            AtomicAndFetch = 27,
-            AtomicOrFetch = 28,
-            AtomicXorFetch = 29,
-            AtomicNandFetch = 30,
-            OpenclAtomicInit = 31,
-            OpenclAtomicLoad = 32,
-            OpenclAtomicStore = 33,
-            OpenclAtomicExchange = 34,
-            OpenclAtomicCompareExchangeStrong = 35,
-            OpenclAtomicCompareExchangeWeak = 36,
-            OpenclAtomicFetchAdd = 37,
-            OpenclAtomicFetchSub = 38,
-            OpenclAtomicFetchAnd = 39,
-            OpenclAtomicFetchOr = 40,
-            OpenclAtomicFetchXor = 41,
-            OpenclAtomicFetchMin = 42,
-            OpenclAtomicFetchMax = 43,
-            AtomicFetchMin = 44,
-            AtomicFetchMax = 45,
+            C11AtomicFetchNand = 11,
+            C11AtomicFetchMax = 12,
+            C11AtomicFetchMin = 13,
+            AtomicLoad = 14,
+            AtomicLoadN = 15,
+            AtomicStore = 16,
+            AtomicStoreN = 17,
+            AtomicExchange = 18,
+            AtomicExchangeN = 19,
+            AtomicCompareExchange = 20,
+            AtomicCompareExchangeN = 21,
+            AtomicFetchAdd = 22,
+            AtomicFetchSub = 23,
+            AtomicFetchAnd = 24,
+            AtomicFetchOr = 25,
+            AtomicFetchXor = 26,
+            AtomicFetchNand = 27,
+            AtomicAddFetch = 28,
+            AtomicSubFetch = 29,
+            AtomicAndFetch = 30,
+            AtomicOrFetch = 31,
+            AtomicXorFetch = 32,
+            AtomicMaxFetch = 33,
+            AtomicMinFetch = 34,
+            AtomicNandFetch = 35,
+            OpenclAtomicInit = 36,
+            OpenclAtomicLoad = 37,
+            OpenclAtomicStore = 38,
+            OpenclAtomicExchange = 39,
+            OpenclAtomicCompareExchangeStrong = 40,
+            OpenclAtomicCompareExchangeWeak = 41,
+            OpenclAtomicFetchAdd = 42,
+            OpenclAtomicFetchSub = 43,
+            OpenclAtomicFetchAnd = 44,
+            OpenclAtomicFetchOr = 45,
+            OpenclAtomicFetchXor = 46,
+            OpenclAtomicFetchMin = 47,
+            OpenclAtomicFetchMax = 48,
+            AtomicFetchMin = 49,
+            AtomicFetchMax = 50,
+            HipAtomicLoad = 51,
+            HipAtomicStore = 52,
+            HipAtomicCompareExchangeWeak = 53,
+            HipAtomicCompareExchangeStrong = 54,
+            HipAtomicExchange = 55,
+            HipAtomicFetchAdd = 56,
+            HipAtomicFetchSub = 57,
+            HipAtomicFetchAnd = 58,
+            HipAtomicFetchOr = 59,
+            HipAtomicFetchXor = 60,
+            HipAtomicFetchMin = 61,
+            HipAtomicFetchMax = 62,
         }
 
         public AtomicExpr()
@@ -1269,6 +1445,17 @@ namespace CppSharp.AST
             visitor.VisitTypoExpr(this);
     }
 
+    public partial class RecoveryExpr : Expr
+    {
+        public RecoveryExpr()
+        {
+        }
+
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitRecoveryExpr(this);
+    }
+
     public partial class CXXOperatorCallExpr : CallExpr
     {
         public CXXOperatorCallExpr()
@@ -1277,9 +1464,11 @@ namespace CppSharp.AST
 
         public OverloadedOperatorKind Operator { get; set; }
         public bool IsAssignmentOp { get; set; }
+        public bool IsComparisonOp { get; set; }
         public bool IsInfixBinaryOp { get; set; }
         public SourceLocation OperatorLoc { get; set; }
-        public bool IsFPContractableWithinStatement { get; set; }
+        public SourceLocation ExprLoc { get; set; }
+        public SourceRange SourceRange { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitCXXOperatorCallExpr(this);
@@ -1292,7 +1481,9 @@ namespace CppSharp.AST
         }
 
         public Expr ImplicitObjectArgument { get; set; }
+        public QualifiedType ObjectType { get; set; }
         public Method MethodDecl { get; set; }
+        public SourceLocation ExprLoc { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitCXXMemberCallExpr(this);
@@ -1304,10 +1495,31 @@ namespace CppSharp.AST
         {
         }
 
-        public CallExpr Config { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitCUDAKernelCallExpr(this);
+    }
+
+    public partial class CXXRewrittenBinaryOperator : Expr
+    {
+        public CXXRewrittenBinaryOperator()
+        {
+        }
+
+        public bool IsReversed { get; set; }
+        public BinaryOperatorKind Operator { get; set; }
+        public BinaryOperatorKind Opcode { get; set; }
+        public string OpcodeStr { get; set; }
+        public bool IsComparisonOp { get; set; }
+        public bool IsAssignmentOp { get; set; }
+        public Expr LHS { get; set; }
+        public Expr RHS { get; set; }
+        public SourceLocation OperatorLoc { get; set; }
+        public SourceLocation ExprLoc { get; set; }
+        public SourceRange SourceRange { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitCXXRewrittenBinaryOperator(this);
     }
 
     public abstract partial class CXXNamedCastExpr : ExplicitCastExpr
@@ -1367,6 +1579,17 @@ namespace CppSharp.AST
             visitor.VisitCXXConstCastExpr(this);
     }
 
+    public partial class CXXAddrspaceCastExpr : CXXNamedCastExpr
+    {
+        public CXXAddrspaceCastExpr()
+        {
+        }
+
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitCXXAddrspaceCastExpr(this);
+    }
+
     public partial class UserDefinedLiteral : CallExpr
     {
         public enum LiteralOperatorKind
@@ -1390,7 +1613,6 @@ namespace CppSharp.AST
         }
 
         public UserDefinedLiteral.LiteralOperatorKind literalOperatorKind { get; set; }
-        public Expr CookedLiteral { get; set; }
         public SourceLocation UDSuffixLoc { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
@@ -1428,7 +1650,7 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr SubExpr { get; set; }
+        public SourceRange SourceRange { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitCXXStdInitializerListExpr(this);
@@ -1440,9 +1662,10 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr ExprOperand { get; set; }
         public bool IsPotentiallyEvaluated { get; set; }
         public bool IsTypeOperand { get; set; }
+        public Expr ExprOperand { get; set; }
+        public SourceRange SourceRange { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitCXXTypeidExpr(this);
@@ -1454,6 +1677,7 @@ namespace CppSharp.AST
         {
         }
 
+        public SourceRange SourceRange { get; set; }
         public bool IsImplicitAccess { get; set; }
         public Expr BaseExpr { get; set; }
         public bool IsArrow { get; set; }
@@ -1470,8 +1694,7 @@ namespace CppSharp.AST
         }
 
         public SourceLocation RBracketLoc { get; set; }
-        public Expr Base { get; set; }
-        public Expr Idx { get; set; }
+        public SourceLocation ExprLoc { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitMSPropertySubscriptExpr(this);
@@ -1483,9 +1706,10 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr ExprOperand { get; set; }
-        public string UuidStr { get; set; }
         public bool IsTypeOperand { get; set; }
+        public Expr ExprOperand { get; set; }
+        public string GuidDecl { get; set; }
+        public SourceRange SourceRange { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitCXXUuidofExpr(this);
@@ -1510,7 +1734,6 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr SubExpr { get; set; }
         public SourceLocation ThrowLoc { get; set; }
         public bool IsThrownVariableInScope { get; set; }
 
@@ -1524,8 +1747,9 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr Expr { get; set; }
+        public bool HasRewrittenInit { get; set; }
         public SourceLocation UsedLocation { get; set; }
+        public SourceLocation ExprLoc { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitCXXDefaultArgExpr(this);
@@ -1537,8 +1761,8 @@ namespace CppSharp.AST
         {
         }
 
-        public Field Field { get; set; }
-        public Expr Expr { get; set; }
+        public bool HasRewrittenInit { get; set; }
+        public SourceLocation UsedLocation { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitCXXDefaultInitExpr(this);
@@ -1577,8 +1801,9 @@ namespace CppSharp.AST
         public bool ListInitialization { get; set; }
         public bool StdInitListInitialization { get; set; }
         public bool RequiresZeroInitialization { get; set; }
-        public SourceRange ParenOrBraceRange { get; set; }
         public uint NumArgs { get; set; }
+        public bool IsImmediateEscalating { get; set; }
+        public SourceRange ParenOrBraceRange { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitCXXConstructExpr(this);
@@ -1634,8 +1859,10 @@ namespace CppSharp.AST
         public uint CaptureSize { get; set; }
         public SourceRange IntroducerRange { get; set; }
         public Method CallOperator { get; set; }
+        public FunctionTemplate DependentCallOperator { get; set; }
+        public Expr TrailingRequiresClause { get; set; }
         public bool IsGenericLambda { get; set; }
-        public CompoundStmt Body { get; set; }
+        public Stmt Body { get; set; }
         public bool IsMutable { get; set; }
         public bool HasExplicitParameters { get; set; }
         public bool HasExplicitResultType { get; set; }
@@ -1673,20 +1900,19 @@ namespace CppSharp.AST
         }
 
         public List<Expr> PlacementArguments { get; private set; } = new List<Expr>();
+        public QualifiedType AllocatedType { get; set; }
         public Function OperatorNew { get; set; }
         public Function OperatorDelete { get; set; }
-        public QualifiedType AllocatedType { get; set; }
         public bool IsArray { get; set; }
-        public Expr ArraySize { get; set; }
         public uint NumPlacementArgs { get; set; }
         public bool IsParenTypeId { get; set; }
         public SourceRange TypeIdParens { get; set; }
         public bool IsGlobalNew { get; set; }
         public bool HasInitializer { get; set; }
         public CXXNewExpr.InitializationStyle initializationStyle { get; set; }
-        public Expr Initializer { get; set; }
         public CXXConstructExpr ConstructExpr { get; set; }
         public SourceRange DirectInitRange { get; set; }
+        public SourceRange SourceRange { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitCXXNewExpr(this);
@@ -1702,7 +1928,6 @@ namespace CppSharp.AST
         public bool IsArrayForm { get; set; }
         public bool IsArrayFormAsWritten { get; set; }
         public Function OperatorDelete { get; set; }
-        public Expr Argument { get; set; }
         public QualifiedType DestroyedType { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
@@ -1843,11 +2068,11 @@ namespace CppSharp.AST
         }
 
         public List<Expr> Arguments { get; private set; } = new List<Expr>();
+        public QualifiedType TypeAsWritten { get; set; }
         public SourceLocation LParenLoc { get; set; }
         public SourceLocation RParenLoc { get; set; }
-        public QualifiedType TypeAsWritten { get; set; }
         public bool IsListInitialization { get; set; }
-        public uint ArgSize { get; set; }
+        public uint NumArgs { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitCXXUnresolvedConstructExpr(this);
@@ -1884,12 +2109,12 @@ namespace CppSharp.AST
         }
 
         public bool IsImplicitAccess { get; set; }
-        public Expr Base { get; set; }
         public QualifiedType BaseType { get; set; }
         public bool HasUnresolvedUsing { get; set; }
         public bool IsArrow { get; set; }
         public SourceLocation OperatorLoc { get; set; }
         public SourceLocation MemberLoc { get; set; }
+        public SourceLocation ExprLoc { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitUnresolvedMemberExpr(this);
@@ -1902,6 +2127,7 @@ namespace CppSharp.AST
         }
 
         public Expr Operand { get; set; }
+        public SourceRange SourceRange { get; set; }
         public bool Value { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
@@ -1914,8 +2140,8 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr Pattern { get; set; }
         public SourceLocation EllipsisLoc { get; set; }
+        public uint? NumExpansions { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitPackExpansionExpr(this);
@@ -1946,6 +2172,10 @@ namespace CppSharp.AST
 
         public SourceLocation NameLoc { get; set; }
         public Expr Replacement { get; set; }
+        public Declaration AssociatedDecl { get; set; }
+        public uint Index { get; set; }
+        public uint? PackIndex { get; set; }
+        public bool IsReferenceParameter { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitSubstNonTypeTemplateParmExpr(this);
@@ -1957,6 +2187,8 @@ namespace CppSharp.AST
         {
         }
 
+        public Declaration AssociatedDecl { get; set; }
+        public uint Index { get; set; }
         public SourceLocation ParameterPackLocation { get; set; }
         public TemplateArgument ArgumentPack { get; set; }
 
@@ -1979,20 +2211,11 @@ namespace CppSharp.AST
 
     public partial class MaterializeTemporaryExpr : Expr
     {
-        public partial class ExtraState
-        {
-            public ExtraState()
-            {
-            }
-
-        }
-
         public MaterializeTemporaryExpr()
         {
         }
 
-        public Stmt Temporary { get; set; }
-        public Expr TemporaryExpr { get; set; }
+        public Expr SubExpr { get; set; }
         public uint ManglingNumber { get; set; }
         public bool IsBoundToLvalueReference { get; set; }
 
@@ -2002,44 +2225,72 @@ namespace CppSharp.AST
 
     public partial class CXXFoldExpr : Expr
     {
+        internal enum SubExpr
+        {
+            Callee = 0,
+            LHS = 1,
+            RHS = 2,
+            Count = 3
+        }
+
         public CXXFoldExpr()
         {
         }
 
+        public UnresolvedLookupExpr Callee { get; set; }
         public Expr LHS { get; set; }
         public Expr RHS { get; set; }
         public bool IsRightFold { get; set; }
         public bool IsLeftFold { get; set; }
         public Expr Pattern { get; set; }
         public Expr Init { get; set; }
+        public SourceLocation LParenLoc { get; set; }
+        public SourceLocation RParenLoc { get; set; }
         public SourceLocation EllipsisLoc { get; set; }
         public BinaryOperatorKind Operator { get; set; }
+        public uint? NumExpansions { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitCXXFoldExpr(this);
+    }
+
+    public partial class CXXParenListInitExpr : Expr
+    {
+        public CXXParenListInitExpr()
+        {
+        }
+
+        public SourceLocation InitLoc { get; set; }
+        public SourceRange SourceRange { get; set; }
+        public Expr ArrayFiller { get; set; }
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitCXXParenListInitExpr(this);
     }
 
     public abstract partial class CoroutineSuspendExpr : Expr
     {
         internal enum SubExpr
         {
-            Common = 0,
-            Ready = 1,
-            Suspend = 2,
-            Resume = 3,
-            Count = 4
+            Operand = 0,
+            Common = 1,
+            Ready = 2,
+            Suspend = 3,
+            Resume = 4,
+            Count = 5
         }
 
         public CoroutineSuspendExpr()
         {
         }
 
-        public SourceLocation KeywordLoc { get; set; }
         public Expr CommonExpr { get; set; }
         public OpaqueValueExpr OpaqueValue { get; set; }
         public Expr ReadyExpr { get; set; }
         public Expr SuspendExpr { get; set; }
         public Expr ResumeExpr { get; set; }
+        public Expr Operand { get; set; }
+        public SourceLocation KeywordLoc { get; set; }
     }
 
     public partial class CoawaitExpr : CoroutineSuspendExpr
@@ -2049,7 +2300,6 @@ namespace CppSharp.AST
         }
 
         public bool IsImplicit { get; set; }
-        public Expr Operand { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitCoawaitExpr(this);
@@ -2075,9 +2325,19 @@ namespace CppSharp.AST
         {
         }
 
-        public Expr Operand { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitCoyieldExpr(this);
+    }
+
+    public partial class BuiltinBitCastExpr : ExplicitCastExpr
+    {
+        public BuiltinBitCastExpr()
+        {
+        }
+
+
+        public override T Visit<T>(IStmtVisitor<T> visitor) =>
+            visitor.VisitBuiltinBitCastExpr(this);
     }
 }

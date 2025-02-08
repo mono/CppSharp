@@ -223,6 +223,159 @@ namespace GnuCxx
 
 namespace Std
 {
+    namespace Optional
+    {
+        [StructLayout(LayoutKind.Sequential, Size = 8)]
+        public unsafe partial struct __Internalc__N_std_S_optional__i
+        {
+            internal global::Std.OptionalPayload.__Internalc__N_std_S__Optional_payload__i_Vb1_Vb1_Vb1 _M_payload;
+
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSt8optionalIjEC2Ev", CallingConvention = __CallingConvention.Cdecl)]
+            internal static extern void ctorc__N_std_S_optional__i(__IntPtr __instance);
+
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNKSt8optionalIjE9has_valueEv", CallingConvention = __CallingConvention.Cdecl)]
+            [return: MarshalAs(UnmanagedType.I1)]
+            internal static extern bool HasValuec__N_std_S_optional__i(__IntPtr __instance);
+        }
+    }
+
+    public unsafe partial class Optional<_Tp> : IDisposable
+    {
+        public __IntPtr __Instance { get; protected set; }
+
+        internal static readonly new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.Optional<_Tp>> NativeToManagedMap =
+            new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.Optional<_Tp>>();
+
+        internal static void __RecordNativeToManagedMapping(IntPtr native, global::Std.Optional<_Tp> managed)
+        {
+            NativeToManagedMap[native] = managed;
+        }
+
+        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::Std.Optional<_Tp> managed)
+        {
+    
+            return NativeToManagedMap.TryGetValue(native, out managed);
+        }
+
+        protected bool __ownsNativeInstance;
+
+        internal static Optional<_Tp> __CreateInstance(__IntPtr native, bool skipVTables = false)
+        {
+            if (native == __IntPtr.Zero)
+                return null;
+            return new Optional<_Tp>(native.ToPointer(), skipVTables);
+        }
+
+        internal static Optional<_Tp> __GetOrCreateInstance(__IntPtr native, bool saveInstance = false, bool skipVTables = false)
+        {
+            if (native == __IntPtr.Zero)
+                return null;
+            if (__TryGetNativeToManagedMapping(native, out var managed))
+                return (Optional<_Tp>)managed;
+            var result = __CreateInstance(native, skipVTables);
+            if (saveInstance)
+                __RecordNativeToManagedMapping(native, result);
+            return result;
+        }
+
+        internal static Optional<_Tp> __CreateInstance(global::Std.Optional.__Internalc__N_std_S_optional__i native, bool skipVTables = false)
+        {
+            return new Optional<_Tp>(native, skipVTables);
+        }
+
+        private static void* __CopyValue(global::Std.Optional.__Internalc__N_std_S_optional__i native)
+        {
+            var ret = Marshal.AllocHGlobal(sizeof(global::Std.Optional.__Internalc__N_std_S_optional__i));
+            *(global::Std.Optional.__Internalc__N_std_S_optional__i*) ret = native;
+            return ret.ToPointer();
+        }
+
+        private Optional(global::Std.Optional.__Internalc__N_std_S_optional__i native, bool skipVTables = false)
+            : this(__CopyValue(native), skipVTables)
+        {
+            __ownsNativeInstance = true;
+            __RecordNativeToManagedMapping(__Instance, this);
+        }
+
+        protected Optional(void* native, bool skipVTables = false)
+        {
+            if (native == null)
+                return;
+            __Instance = new __IntPtr(native);
+        }
+
+        public Optional()
+        {
+            var ___Tp = typeof(_Tp);
+            if (___Tp.IsAssignableFrom(typeof(uint)))
+            {
+                __Instance = Marshal.AllocHGlobal(sizeof(global::Std.Optional.__Internalc__N_std_S_optional__i));
+                __ownsNativeInstance = true;
+                __RecordNativeToManagedMapping(__Instance, this);
+                global::Std.Optional.__Internalc__N_std_S_optional__i.ctorc__N_std_S_optional__i(__Instance);
+                return;
+            }
+            throw new ArgumentOutOfRangeException("_Tp", string.Join(", ", new[] { typeof(_Tp).FullName }), "global::Std.Optional<_Tp> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <uint>.");
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true, callNativeDtor: __ownsNativeInstance);
+        }
+
+        partial void DisposePartial(bool disposing);
+
+        internal protected virtual void Dispose(bool disposing, bool callNativeDtor)
+        {
+            if (__Instance == IntPtr.Zero)
+                return;
+            NativeToManagedMap.TryRemove(__Instance, out _);
+            DisposePartial(disposing);
+            if (__ownsNativeInstance)
+                Marshal.FreeHGlobal(__Instance);
+            __Instance = IntPtr.Zero;
+        }
+
+        public bool HasValue
+        {
+            get
+            {
+                var ___Tp = typeof(_Tp);
+                if (___Tp.IsAssignableFrom(typeof(uint)))
+                {
+                    var ___ret = global::Std.Optional.__Internalc__N_std_S_optional__i.HasValuec__N_std_S_optional__i(__Instance);
+                    return ___ret;
+                }
+                throw new ArgumentOutOfRangeException("_Tp", string.Join(", ", new[] { typeof(_Tp).FullName }), "global::Std.Optional<_Tp> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <uint>.");
+            }
+        }
+    }
+
+    namespace OptionalPayload
+    {
+        [StructLayout(LayoutKind.Sequential, Size = 8)]
+        public unsafe partial struct __Internalc__N_std_S__Optional_payload__i_Vb1_Vb1_Vb1
+        {
+            internal global::Std.OptionalPayloadBase.Storage.__Internalc__N_std_S__Optional_payload_base__i_U__Storage__i_Vb1 _M_payload;
+            internal byte _M_engaged;
+        }
+    }
+
+    public unsafe static partial class OptionalExtensions
+    {
+        public partial struct __Internal
+        {
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNKOSt8optionalIjE5valueEv", CallingConvention = __CallingConvention.Cdecl)]
+            internal static extern uint* Value(__IntPtr __instance);
+        }
+
+        public static uint Value(this global::Std.Optional<uint> @this)
+        {
+            var __arg0 = @this is null ? __IntPtr.Zero : @this.__Instance;
+            var ___ret = __Internal.Value(__arg0);
+            return *___ret;
+        }
+    }
 }
 
 namespace Std
@@ -489,6 +642,10 @@ namespace Std
             return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
         }
     }
+}
+
+namespace Std
+{
 }
 
 namespace Std

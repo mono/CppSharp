@@ -81,7 +81,10 @@ namespace CppSharp
             {
                 UnknownArch = 0,
                 X86 = 1,
-                X86_64 = 2
+                X86_64 = 2,
+                Aarch64 = 3,
+                Aarch64Be = 4,
+                Aarch64_32 = 5
             };
 
             public ref class NativeLibrary : ICppInstance

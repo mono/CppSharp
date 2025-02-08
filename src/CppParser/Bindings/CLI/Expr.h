@@ -20,6 +20,9 @@ namespace CppSharp
         {
             enum class BinaryOperatorKind;
             enum class CastKind;
+            enum class ExprDependence : unsigned char;
+            enum class FloatSemantics;
+            enum class NonOdrUseReason;
             enum class ObjCBridgeCastKind;
             enum class OverloadedOperatorKind;
             enum class UnaryExprOrTypeTrait;
@@ -35,8 +38,10 @@ namespace CppSharp
             ref class BinaryConditionalOperator;
             ref class BinaryOperator;
             ref class BlockExpr;
+            ref class BuiltinBitCastExpr;
             ref class CStyleCastExpr;
             ref class CUDAKernelCallExpr;
+            ref class CXXAddrspaceCastExpr;
             ref class CXXBindTemporaryExpr;
             ref class CXXBoolLiteralExpr;
             ref class CXXConstCastExpr;
@@ -55,8 +60,10 @@ namespace CppSharp
             ref class CXXNoexceptExpr;
             ref class CXXNullPtrLiteralExpr;
             ref class CXXOperatorCallExpr;
+            ref class CXXParenListInitExpr;
             ref class CXXPseudoDestructorExpr;
             ref class CXXReinterpretCastExpr;
+            ref class CXXRewrittenBinaryOperator;
             ref class CXXScalarValueInitExpr;
             ref class CXXStaticCastExpr;
             ref class CXXStdInitializerListExpr;
@@ -96,6 +103,7 @@ namespace CppSharp
             ref class FullExpr;
             ref class Function;
             ref class FunctionParmPackExpr;
+            ref class FunctionTemplate;
             ref class GNUNullExpr;
             ref class GenericSelectionExpr;
             ref class ImaginaryLiteral;
@@ -107,6 +115,7 @@ namespace CppSharp
             ref class MSPropertyRefExpr;
             ref class MSPropertySubscriptExpr;
             ref class MaterializeTemporaryExpr;
+            ref class MatrixSubscriptExpr;
             ref class MemberExpr;
             ref class Method;
             ref class NoInitExpr;
@@ -119,8 +128,12 @@ namespace CppSharp
             ref class PredefinedExpr;
             ref class PseudoObjectExpr;
             ref class QualifiedType;
+            ref class RecoveryExpr;
+            ref class SYCLUniqueStableNameExpr;
             ref class ShuffleVectorExpr;
             ref class SizeOfPackExpr;
+            ref class SourceLocExpr;
+            ref class Stmt;
             ref class StmtExpr;
             ref class StringLiteral;
             ref class SubstNonTypeTemplateParmExpr;
@@ -144,67 +157,109 @@ namespace CppSharp
     {
         namespace AST
         {
+            public enum class ExprDependence : unsigned char
+            {
+                UnexpandedPack = 1,
+                Instantiation = 2,
+                Type = 4,
+                Value = 8,
+                Error = 16,
+                None = 0,
+                All = 31,
+                TypeValue = 12,
+                TypeInstantiation = 6,
+                ValueInstantiation = 10,
+                TypeValueInstantiation = 14,
+                ErrorDependent = 26,
+                LLVM_BITMASK_LARGEST_ENUMERATOR = 16
+            };
+
+            /// <summary>&gt;CastKind - The kind of operation required for a conversion.&gt;</summary>
             public enum class CastKind
             {
                 Dependent = 0,
                 BitCast = 1,
                 LValueBitCast = 2,
-                LValueToRValue = 3,
-                NoOp = 4,
-                BaseToDerived = 5,
-                DerivedToBase = 6,
-                UncheckedDerivedToBase = 7,
-                Dynamic = 8,
-                ToUnion = 9,
-                ArrayToPointerDecay = 10,
-                FunctionToPointerDecay = 11,
-                NullToPointer = 12,
-                NullToMemberPointer = 13,
-                BaseToDerivedMemberPointer = 14,
-                DerivedToBaseMemberPointer = 15,
-                MemberPointerToBoolean = 16,
-                ReinterpretMemberPointer = 17,
-                UserDefinedConversion = 18,
-                ConstructorConversion = 19,
-                IntegralToPointer = 20,
-                PointerToIntegral = 21,
-                PointerToBoolean = 22,
-                ToVoid = 23,
-                VectorSplat = 24,
-                IntegralCast = 25,
-                IntegralToBoolean = 26,
-                IntegralToFloating = 27,
-                FixedPointCast = 28,
-                FixedPointToBoolean = 29,
-                FloatingToIntegral = 30,
-                FloatingToBoolean = 31,
-                BooleanToSignedIntegral = 32,
-                FloatingCast = 33,
-                CPointerToObjCPointerCast = 34,
-                BlockPointerToObjCPointerCast = 35,
-                AnyPointerToBlockPointerCast = 36,
-                ObjCObjectLValueCast = 37,
-                FloatingRealToComplex = 38,
-                FloatingComplexToReal = 39,
-                FloatingComplexToBoolean = 40,
-                FloatingComplexCast = 41,
-                FloatingComplexToIntegralComplex = 42,
-                IntegralRealToComplex = 43,
-                IntegralComplexToReal = 44,
-                IntegralComplexToBoolean = 45,
-                IntegralComplexCast = 46,
-                IntegralComplexToFloatingComplex = 47,
-                ARCProduceObject = 48,
-                ARCConsumeObject = 49,
-                ARCReclaimReturnedObject = 50,
-                ARCExtendBlockObject = 51,
-                AtomicToNonAtomic = 52,
-                NonAtomicToAtomic = 53,
-                CopyAndAutoreleaseBlockObject = 54,
-                BuiltinFnToFnPtr = 55,
-                ZeroToOCLOpaqueType = 56,
-                AddressSpaceConversion = 57,
-                IntToOCLSampler = 58
+                LValueToRValueBitCast = 3,
+                LValueToRValue = 4,
+                NoOp = 5,
+                BaseToDerived = 6,
+                DerivedToBase = 7,
+                UncheckedDerivedToBase = 8,
+                Dynamic = 9,
+                ToUnion = 10,
+                ArrayToPointerDecay = 11,
+                FunctionToPointerDecay = 12,
+                NullToPointer = 13,
+                NullToMemberPointer = 14,
+                BaseToDerivedMemberPointer = 15,
+                DerivedToBaseMemberPointer = 16,
+                MemberPointerToBoolean = 17,
+                ReinterpretMemberPointer = 18,
+                UserDefinedConversion = 19,
+                ConstructorConversion = 20,
+                IntegralToPointer = 21,
+                PointerToIntegral = 22,
+                PointerToBoolean = 23,
+                ToVoid = 24,
+                MatrixCast = 25,
+                VectorSplat = 26,
+                IntegralCast = 27,
+                IntegralToBoolean = 28,
+                IntegralToFloating = 29,
+                FloatingToFixedPoint = 30,
+                FixedPointToFloating = 31,
+                FixedPointCast = 32,
+                FixedPointToIntegral = 33,
+                IntegralToFixedPoint = 34,
+                FixedPointToBoolean = 35,
+                FloatingToIntegral = 36,
+                FloatingToBoolean = 37,
+                BooleanToSignedIntegral = 38,
+                FloatingCast = 39,
+                CPointerToObjCPointerCast = 40,
+                BlockPointerToObjCPointerCast = 41,
+                AnyPointerToBlockPointerCast = 42,
+                ObjCObjectLValueCast = 43,
+                FloatingRealToComplex = 44,
+                FloatingComplexToReal = 45,
+                FloatingComplexToBoolean = 46,
+                FloatingComplexCast = 47,
+                FloatingComplexToIntegralComplex = 48,
+                IntegralRealToComplex = 49,
+                IntegralComplexToReal = 50,
+                IntegralComplexToBoolean = 51,
+                IntegralComplexCast = 52,
+                IntegralComplexToFloatingComplex = 53,
+                ARCProduceObject = 54,
+                ARCConsumeObject = 55,
+                ARCReclaimReturnedObject = 56,
+                ARCExtendBlockObject = 57,
+                AtomicToNonAtomic = 58,
+                NonAtomicToAtomic = 59,
+                CopyAndAutoreleaseBlockObject = 60,
+                BuiltinFnToFnPtr = 61,
+                ZeroToOCLOpaqueType = 62,
+                AddressSpaceConversion = 63,
+                IntToOCLSampler = 64
+            };
+
+            public enum class UnaryOperatorKind
+            {
+                PostInc = 0,
+                PostDec = 1,
+                PreInc = 2,
+                PreDec = 3,
+                AddrOf = 4,
+                Deref = 5,
+                Plus = 6,
+                Minus = 7,
+                Not = 8,
+                LNot = 9,
+                Real = 10,
+                Imag = 11,
+                Extension = 12,
+                Coawait = 13
             };
 
             public enum class BinaryOperatorKind
@@ -244,91 +299,188 @@ namespace CppSharp
                 Comma = 32
             };
 
-            public enum class UnaryOperatorKind
-            {
-                PostInc = 0,
-                PostDec = 1,
-                PreInc = 2,
-                PreDec = 3,
-                AddrOf = 4,
-                Deref = 5,
-                Plus = 6,
-                Minus = 7,
-                Not = 8,
-                LNot = 9,
-                Real = 10,
-                Imag = 11,
-                Extension = 12,
-                Coawait = 13
-            };
-
+            /// <summary>&gt;The kind of bridging performed by the Objective-C bridge cast.&gt;</summary>
             public enum class ObjCBridgeCastKind
             {
+                /// <summary>
+                /// <para>&gt;</para>
+                /// <para>&gt;Bridging via __bridge, which does nothing but reinterpret&gt;</para>
+                /// <para>&gt;the bits.&gt;</para>
+                /// <para>&gt;</para>
+                /// </summary>
                 Bridge = 0,
+                /// <summary>
+                /// <para>&gt;</para>
+                /// <para>&gt;Bridging via __bridge_transfer, which transfers ownership of an&gt;</para>
+                /// <para>&gt;Objective-C pointer into ARC.&gt;</para>
+                /// <para>&gt;</para>
+                /// </summary>
                 BridgeTransfer = 1,
+                /// <summary>
+                /// <para>&gt;</para>
+                /// <para>&gt;Bridging via __bridge_retain, which makes an ARC object available&gt;</para>
+                /// <para>&gt;as a +1 C pointer.&gt;</para>
+                /// <para>&gt;</para>
+                /// </summary>
                 BridgeRetained = 2
             };
 
+            /// <summary>
+            /// <para>&gt;</para>
+            /// <para>&gt;Enumeration specifying the different kinds of C++ overloaded&gt;</para>
+            /// <para>&gt;operators.&gt;</para>
+            /// <para>&gt;</para>
+            /// </summary>
             public enum class OverloadedOperatorKind
             {
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 None = 0,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 New = 1,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 Delete = 2,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 ArrayNew = 3,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 ArrayDelete = 4,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 Plus = 5,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 Minus = 6,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 Star = 7,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 Slash = 8,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 Percent = 9,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 Caret = 10,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 Amp = 11,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 Pipe = 12,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 Tilde = 13,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 Exclaim = 14,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 Equal = 15,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 Less = 16,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 Greater = 17,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 PlusEqual = 18,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 MinusEqual = 19,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 StarEqual = 20,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 SlashEqual = 21,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 PercentEqual = 22,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 CaretEqual = 23,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 AmpEqual = 24,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 PipeEqual = 25,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 LessLess = 26,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 GreaterGreater = 27,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 LessLessEqual = 28,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 GreaterGreaterEqual = 29,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 EqualEqual = 30,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 ExclaimEqual = 31,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 LessEqual = 32,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 GreaterEqual = 33,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 Spaceship = 34,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 AmpAmp = 35,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 PipePipe = 36,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 PlusPlus = 37,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 MinusMinus = 38,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 Comma = 39,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 ArrowStar = 40,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 Arrow = 41,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 Call = 42,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 Subscript = 43,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 Conditional = 44,
+                /// <summary>&gt;Not an overloaded operator&gt;</summary>
                 Coawait = 45
             };
 
+            /// <summary>&gt;Names for the&quot;expression or type&quot;traits.&gt;</summary>
             public enum class UnaryExprOrTypeTrait
             {
                 SizeOf = 0,
                 AlignOf = 1,
-                VecStep = 2,
-                OpenMPRequiredSimdAlign = 3,
-                PreferredAlignOf = 4
+                PreferredAlignOf = 2,
+                VecStep = 3,
+                OpenMPRequiredSimdAlign = 4,
+                Last = 4
             };
 
-            public ref class Expr : CppSharp::Parser::AST::Stmt
+            /// <summary>&gt;The reason why a DeclRefExpr does not constitute an odr-use.&gt;</summary>
+            public enum class NonOdrUseReason
+            {
+                /// <summary>&gt;This is an odr-use.&gt;</summary>
+                None = 0,
+                /// <summary>&gt;This name appears in an unevaluated operand.&gt;</summary>
+                Unevaluated = 1,
+                /// <summary>
+                /// <para>&gt;</para>
+                /// <para>&gt;This name appears as a potential result of an lvalue-to-rvalue&gt;</para>
+                /// <para>&gt;conversion that is a constant expression.&gt;</para>
+                /// <para>&gt;</para>
+                /// </summary>
+                Constant = 2,
+                /// <summary>
+                /// <para>&gt;</para>
+                /// <para>&gt;This name appears as a potential result of a discarded value&gt;</para>
+                /// <para>&gt;expression.&gt;</para>
+                /// <para>&gt;</para>
+                /// </summary>
+                Discarded = 3
+            };
+
+            /// <summary>&gt;@{&gt;</summary>
+            public enum class FloatSemantics
+            {
+                IEEEhalf = 0,
+                BFloat = 1,
+                IEEEsingle = 2,
+                IEEEdouble = 3,
+                IEEEquad = 4,
+                PPCDoubleDouble = 5,
+                Float8E5M2 = 6,
+                Float8E5M2FNUZ = 7,
+                Float8E4M3FN = 8,
+                Float8E4M3FNUZ = 9,
+                Float8E4M3B11FNUZ = 10,
+                FloatTF32 = 11,
+                X87DoubleExtended = 12,
+                MaxSemantics = 12
+            };
+
+            public ref class Expr : CppSharp::Parser::AST::ValueStmt
             {
             public:
 
@@ -369,30 +521,93 @@ namespace CppSharp
 
                 enum class SideEffectsKind
                 {
+                    /// <summary>&gt;Strictly evaluate the expression.&gt;</summary>
                     NoSideEffects = 0,
+                    /// <summary>
+                    /// <para>&gt;</para>
+                    /// <para>&gt;Allow UB that we can give a value, but not&gt;</para>
+                    /// <para>&gt;arbitrary unmodeled side effects.&gt;</para>
+                    /// <para>&gt;</para>
+                    /// </summary>
                     AllowUndefinedBehavior = 1,
+                    /// <summary>&gt;Allow any unmodeled side effect.&gt;</summary>
                     AllowSideEffects = 2
                 };
 
-                enum class ConstExprUsage
+                enum class ConstantExprKind
                 {
-                    EvaluateForCodeGen = 0,
-                    EvaluateForMangling = 1
+                    /// <summary>
+                    /// <para>&gt;</para>
+                    /// <para>&gt;An integer constant expression (an array bound, enumerator, case value,&gt;</para>
+                    /// <para>&gt;bit-field width, or similar) or similar.&gt;</para>
+                    /// <para>&gt;</para>
+                    /// </summary>
+                    Normal = 0,
+                    /// <summary>
+                    /// <para>&gt;</para>
+                    /// <para>&gt;A non-class template argument. Such a value is only used for mangling,&gt;</para>
+                    /// <para>&gt;not for code generation, so can refer to dllimported functions.&gt;</para>
+                    /// <para>&gt;</para>
+                    /// </summary>
+                    NonClassTemplateArgument = 1,
+                    /// <summary>&gt;A class template argument. Such a value is used for code generation.&gt;</summary>
+                    ClassTemplateArgument = 2,
+                    /// <summary>
+                    /// <para>&gt;</para>
+                    /// <para>&gt;An immediate invocation. The destruction of the end result of this&gt;</para>
+                    /// <para>&gt;evaluation is not part of the evaluation, but all other temporaries&gt;</para>
+                    /// <para>&gt;are destroyed.&gt;</para>
+                    /// <para>&gt;</para>
+                    /// </summary>
+                    ImmediateInvocation = 3
                 };
 
+                /// <summary>
+                /// <para>&gt;</para>
+                /// <para>&gt;Enumeration used to describe the kind of Null pointer constant&gt;</para>
+                /// <para>&gt;returned from&gt;</para>
+                /// <para>&gt;</para>
+                /// </summary>
                 enum class NullPointerConstantKind
                 {
+                    /// <summary>&gt;Expression is not a Null pointer constant.&gt;</summary>
                     NotNull = 0,
+                    /// <summary>
+                    /// <para>&gt;</para>
+                    /// <para>&gt;Expression is a Null pointer constant built from a zero integer&gt;</para>
+                    /// <para>&gt;expression that is not a simple, possibly parenthesized, zero literal.&gt;</para>
+                    /// <para>&gt;C++ Core Issue 903 will classify these expressions as&quot;not pointers&quot;&gt;</para>
+                    /// <para>&gt;once it is adopted.&gt;</para>
+                    /// <para>&gt;http://www.open-std.org/jtc1/sc22/wg21/docs/cwg_active.html#903&gt;</para>
+                    /// <para>&gt;</para>
+                    /// </summary>
                     ZeroExpression = 1,
+                    /// <summary>&gt;Expression is a Null pointer constant built from a literal zero.&gt;</summary>
                     ZeroLiteral = 2,
+                    /// <summary>&gt;Expression is a C++11 nullptr.&gt;</summary>
                     CXX11_nullptr = 3,
+                    /// <summary>&gt;Expression is a GNU-style __null constant.&gt;</summary>
                     GNUNull = 4
                 };
 
+                /// <summary>&gt;Enumeration used to describe howshould cope with value-dependent expressions.&gt;</summary>
                 enum class NullPointerConstantValueDependence
                 {
+                    /// <summary>&gt;Specifies that the expression should never be value-dependent.&gt;</summary>
                     NeverValueDependent = 0,
+                    /// <summary>
+                    /// <para>&gt;</para>
+                    /// <para>&gt;Specifies that a value-dependent expression of integral or&gt;</para>
+                    /// <para>&gt;dependent type should be considered a null pointer constant.&gt;</para>
+                    /// <para>&gt;</para>
+                    /// </summary>
                     ValueDependentIsNull = 1,
+                    /// <summary>
+                    /// <para>&gt;</para>
+                    /// <para>&gt;Specifies that a value-dependent expression should be considered&gt;</para>
+                    /// <para>&gt;to never be a null pointer constant.&gt;</para>
+                    /// <para>&gt;</para>
+                    /// </summary>
                     ValueDependentIsNotNull = 2
                 };
 
@@ -400,6 +615,7 @@ namespace CppSharp
                 {
                 public:
 
+                    /// <summary>&gt;The various classification results. Most of these mean prvalue.&gt;</summary>
                     enum class Kinds
                     {
                         LValue = 0,
@@ -416,6 +632,7 @@ namespace CppSharp
                         PRValue = 11
                     };
 
+                    /// <summary>&gt;The results of modification testing.&gt;</summary>
                     enum class ModifiableType
                     {
                         Untested = 0,
@@ -513,25 +730,31 @@ namespace CppSharp
 
                 ~Expr();
 
+                property CppSharp::Parser::AST::ExprDependence Dependence
+                {
+                    CppSharp::Parser::AST::ExprDependence get();
+                    void set(CppSharp::Parser::AST::ExprDependence);
+                }
+
                 property CppSharp::Parser::AST::QualifiedType^ Type
                 {
                     CppSharp::Parser::AST::QualifiedType^ get();
                     void set(CppSharp::Parser::AST::QualifiedType^);
                 }
 
-                property bool ValueDependent
+                property bool IsValueDependent
                 {
                     bool get();
                     void set(bool);
                 }
 
-                property bool TypeDependent
+                property bool IsTypeDependent
                 {
                     bool get();
                     void set(bool);
                 }
 
-                property bool InstantiationDependent
+                property bool IsInstantiationDependent
                 {
                     bool get();
                     void set(bool);
@@ -543,10 +766,22 @@ namespace CppSharp
                     void set(bool);
                 }
 
+                property bool ContainsErrors
+                {
+                    bool get();
+                    void set(bool);
+                }
+
                 property CppSharp::Parser::SourceLocation ExprLoc
                 {
                     CppSharp::Parser::SourceLocation get();
                     void set(CppSharp::Parser::SourceLocation);
+                }
+
+                property bool IsReadIfDiscardedInCPlusPlus11
+                {
+                    bool get();
+                    void set(bool);
                 }
 
                 property bool IsLValue
@@ -555,7 +790,7 @@ namespace CppSharp
                     void set(bool);
                 }
 
-                property bool IsRValue
+                property bool IsPRValue
                 {
                     bool get();
                     void set(bool);
@@ -579,16 +814,10 @@ namespace CppSharp
                     void set(bool);
                 }
 
-                property CppSharp::Parser::AST::Field^ SourceBitField
+                property bool RefersToMatrixElement
                 {
-                    CppSharp::Parser::AST::Field^ get();
-                    void set(CppSharp::Parser::AST::Field^);
-                }
-
-                property CppSharp::Parser::AST::Declaration^ ReferencedDeclOfCallee
-                {
-                    CppSharp::Parser::AST::Declaration^ get();
-                    void set(CppSharp::Parser::AST::Declaration^);
+                    bool get();
+                    void set(bool);
                 }
 
                 property bool HasPlaceholderType
@@ -629,6 +858,14 @@ namespace CppSharp
             {
             public:
 
+                /// <summary>&gt;Describes the kind of result that can be tail-allocated.&gt;</summary>
+                enum class ResultStorageKind
+                {
+                    None = 0,
+                    Int64 = 1,
+                    APValue = 2
+                };
+
                 ConstantExpr(class ::CppSharp::CppParser::AST::ConstantExpr* native);
                 ConstantExpr(class ::CppSharp::CppParser::AST::ConstantExpr* native, bool ownNativeInstance);
                 static ConstantExpr^ __CreateInstance(::System::IntPtr native);
@@ -638,6 +875,24 @@ namespace CppSharp
                 ConstantExpr(CppSharp::Parser::AST::ConstantExpr^ _0);
 
                 ~ConstantExpr();
+
+                property CppSharp::Parser::AST::ConstantExpr::ResultStorageKind resultStorageKind
+                {
+                    CppSharp::Parser::AST::ConstantExpr::ResultStorageKind get();
+                    void set(CppSharp::Parser::AST::ConstantExpr::ResultStorageKind);
+                }
+
+                property bool IsImmediateInvocation
+                {
+                    bool get();
+                    void set(bool);
+                }
+
+                property bool HasAPValueResult
+                {
+                    bool get();
+                    void set(bool);
+                }
             };
 
             public ref class OpaqueValueExpr : CppSharp::Parser::AST::Expr
@@ -654,13 +909,13 @@ namespace CppSharp
 
                 ~OpaqueValueExpr();
 
-                property bool IsUnique
+                property CppSharp::Parser::SourceLocation Location
                 {
-                    bool get();
-                    void set(bool);
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
                 }
 
-                property CppSharp::Parser::SourceLocation Location
+                property CppSharp::Parser::SourceLocation ExprLoc
                 {
                     CppSharp::Parser::SourceLocation get();
                     void set(CppSharp::Parser::SourceLocation);
@@ -670,6 +925,12 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::Expr^ get();
                     void set(CppSharp::Parser::AST::Expr^);
+                }
+
+                property bool IsUnique
+                {
+                    bool get();
+                    void set(bool);
                 }
             };
 
@@ -693,22 +954,10 @@ namespace CppSharp
                     void set(CppSharp::Parser::SourceLocation);
                 }
 
-                property bool HadMultipleCandidates
-                {
-                    bool get();
-                    void set(bool);
-                }
-
                 property bool HasQualifier
                 {
                     bool get();
                     void set(bool);
-                }
-
-                property CppSharp::Parser::AST::Declaration^ FoundDecl
-                {
-                    CppSharp::Parser::AST::Declaration^ get();
-                    void set(CppSharp::Parser::AST::Declaration^);
                 }
 
                 property bool HasTemplateKWAndArgsInfo
@@ -753,7 +1002,25 @@ namespace CppSharp
                     void set(unsigned int);
                 }
 
+                property bool HadMultipleCandidates
+                {
+                    bool get();
+                    void set(bool);
+                }
+
+                property CppSharp::Parser::AST::NonOdrUseReason IsNonOdrUse
+                {
+                    CppSharp::Parser::AST::NonOdrUseReason get();
+                    void set(CppSharp::Parser::AST::NonOdrUseReason);
+                }
+
                 property bool RefersToEnclosingVariableOrCapture
+                {
+                    bool get();
+                    void set(bool);
+                }
+
+                property bool IsImmediateEscalating
                 {
                     bool get();
                     void set(bool);
@@ -805,6 +1072,12 @@ namespace CppSharp
                 {
                     CppSharp::Parser::SourceLocation get();
                     void set(CppSharp::Parser::SourceLocation);
+                }
+
+                property unsigned int Scale
+                {
+                    unsigned int get();
+                    void set(unsigned int);
                 }
 
                 property unsigned long long Value
@@ -870,22 +1143,28 @@ namespace CppSharp
 
                 ~FloatingLiteral();
 
+                property CppSharp::Parser::AST::FloatSemantics RawSemantics
+                {
+                    CppSharp::Parser::AST::FloatSemantics get();
+                    void set(CppSharp::Parser::AST::FloatSemantics);
+                }
+
                 property bool Exact
                 {
                     bool get();
                     void set(bool);
                 }
 
-                property CppSharp::Parser::SourceLocation Location
-                {
-                    CppSharp::Parser::SourceLocation get();
-                    void set(CppSharp::Parser::SourceLocation);
-                }
-
                 property double ValueAsApproximateDouble
                 {
                     double get();
                     void set(double);
+                }
+
+                property CppSharp::Parser::SourceLocation Location
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
                 }
             };
 
@@ -914,13 +1193,28 @@ namespace CppSharp
             {
             public:
 
+                /// <summary>
+                /// <para>&gt;StringLiteral is followed by several trailing objects. They are in order:&gt;</para>
+                /// <para>&gt;</para>
+                /// <para>&gt;* A single unsigned storing the length in characters of this string. The&gt;</para>
+                /// <para>&gt;length in bytes is this length times the width of a single character.&gt;</para>
+                /// <para>&gt;Always present and stored as a trailing objects because storing it in&gt;</para>
+                /// <para>&gt;StringLiteral would increase the size of StringLiteral by sizeof(void *)&gt;</para>
+                /// <para>&gt;due to alignment requirements. If you add some data to StringLiteral,&gt;</para>
+                /// <para>&gt;consider moving it inside StringLiteral.&gt;</para>
+                /// <para>&gt;* An array of getNumConcatenated() SourceLocation, one for each of the&gt;</para>
+                /// <para>&gt;token this string is made of.&gt;</para>
+                /// <para>&gt;* An array of getByteLength() char used to store the string data.&gt;</para>
+                /// <para>&gt;</para>
+                /// </summary>
                 enum class StringKind
                 {
-                    Ascii = 0,
+                    Ordinary = 0,
                     Wide = 1,
                     UTF8 = 2,
                     UTF16 = 3,
-                    UTF32 = 4
+                    UTF32 = 4,
+                    Unevaluated = 5
                 };
 
                 StringLiteral(class ::CppSharp::CppParser::AST::StringLiteral* native);
@@ -969,7 +1263,7 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::StringLiteral::StringKind);
                 }
 
-                property bool IsAscii
+                property bool IsOrdinary
                 {
                     bool get();
                     void set(bool);
@@ -994,6 +1288,12 @@ namespace CppSharp
                 }
 
                 property bool IsUTF32
+                {
+                    bool get();
+                    void set(bool);
+                }
+
+                property bool IsUnevaluated
                 {
                     bool get();
                     void set(bool);
@@ -1037,6 +1337,12 @@ namespace CppSharp
                     FuncSig = 4,
                     LFuncSig = 5,
                     PrettyFunction = 6,
+                    /// <summary>
+                    /// <para>&gt;</para>
+                    /// <para>&gt;The same as PrettyFunction, except that the&gt;</para>
+                    /// <para>&gt;'virtual' keyword is omitted for virtual member functions.&gt;</para>
+                    /// <para>&gt;</para>
+                    /// </summary>
                     PrettyFunctionNoVirtual = 7
                 };
 
@@ -1050,16 +1356,61 @@ namespace CppSharp
 
                 ~PredefinedExpr();
 
+                property CppSharp::Parser::AST::PredefinedExpr::IdentKind identKind
+                {
+                    CppSharp::Parser::AST::PredefinedExpr::IdentKind get();
+                    void set(CppSharp::Parser::AST::PredefinedExpr::IdentKind);
+                }
+
+                property bool IsTransparent
+                {
+                    bool get();
+                    void set(bool);
+                }
+
                 property CppSharp::Parser::SourceLocation Location
                 {
                     CppSharp::Parser::SourceLocation get();
                     void set(CppSharp::Parser::SourceLocation);
                 }
 
-                property CppSharp::Parser::AST::PredefinedExpr::IdentKind identKind
+                property ::System::String^ IdentKindName
                 {
-                    CppSharp::Parser::AST::PredefinedExpr::IdentKind get();
-                    void set(CppSharp::Parser::AST::PredefinedExpr::IdentKind);
+                    ::System::String^ get();
+                    void set(::System::String^);
+                }
+            };
+
+            public ref class SYCLUniqueStableNameExpr : CppSharp::Parser::AST::Expr
+            {
+            public:
+
+                SYCLUniqueStableNameExpr(class ::CppSharp::CppParser::AST::SYCLUniqueStableNameExpr* native);
+                SYCLUniqueStableNameExpr(class ::CppSharp::CppParser::AST::SYCLUniqueStableNameExpr* native, bool ownNativeInstance);
+                static SYCLUniqueStableNameExpr^ __CreateInstance(::System::IntPtr native);
+                static SYCLUniqueStableNameExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
+                SYCLUniqueStableNameExpr();
+
+                SYCLUniqueStableNameExpr(CppSharp::Parser::AST::SYCLUniqueStableNameExpr^ _0);
+
+                ~SYCLUniqueStableNameExpr();
+
+                property CppSharp::Parser::SourceLocation Location
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
+
+                property CppSharp::Parser::SourceLocation LParenLocation
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
+
+                property CppSharp::Parser::SourceLocation RParenLocation
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
                 }
             };
 
@@ -1170,7 +1521,13 @@ namespace CppSharp
                     void set(bool);
                 }
 
-                property bool IsFPContractableWithinStatement
+                property CppSharp::Parser::SourceLocation ExprLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
+
+                property bool HasStoredFPFeatures
                 {
                     bool get();
                     void set(bool);
@@ -1236,18 +1593,6 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::UnaryExprOrTypeTrait);
                 }
 
-                property CppSharp::Parser::SourceLocation OperatorLoc
-                {
-                    CppSharp::Parser::SourceLocation get();
-                    void set(CppSharp::Parser::SourceLocation);
-                }
-
-                property CppSharp::Parser::SourceLocation RParenLoc
-                {
-                    CppSharp::Parser::SourceLocation get();
-                    void set(CppSharp::Parser::SourceLocation);
-                }
-
                 property bool IsArgumentType
                 {
                     bool get();
@@ -1260,16 +1605,22 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::QualifiedType^);
                 }
 
-                property CppSharp::Parser::AST::Expr^ ArgumentExpr
-                {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
-                }
-
                 property CppSharp::Parser::AST::QualifiedType^ TypeOfArgument
                 {
                     CppSharp::Parser::AST::QualifiedType^ get();
                     void set(CppSharp::Parser::AST::QualifiedType^);
+                }
+
+                property CppSharp::Parser::SourceLocation OperatorLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
+
+                property CppSharp::Parser::SourceLocation RParenLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
                 }
             };
 
@@ -1305,22 +1656,73 @@ namespace CppSharp
                     void set(CppSharp::Parser::SourceLocation);
                 }
 
+                property CppSharp::Parser::SourceLocation ExprLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
+            };
+
+            public ref class MatrixSubscriptExpr : CppSharp::Parser::AST::Expr
+            {
+            public:
+
+                MatrixSubscriptExpr(class ::CppSharp::CppParser::AST::MatrixSubscriptExpr* native);
+                MatrixSubscriptExpr(class ::CppSharp::CppParser::AST::MatrixSubscriptExpr* native, bool ownNativeInstance);
+                static MatrixSubscriptExpr^ __CreateInstance(::System::IntPtr native);
+                static MatrixSubscriptExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
+                MatrixSubscriptExpr();
+
+                MatrixSubscriptExpr(CppSharp::Parser::AST::MatrixSubscriptExpr^ _0);
+
+                ~MatrixSubscriptExpr();
+
+                property bool IsIncomplete
+                {
+                    bool get();
+                    void set(bool);
+                }
+
                 property CppSharp::Parser::AST::Expr^ Base
                 {
                     CppSharp::Parser::AST::Expr^ get();
                     void set(CppSharp::Parser::AST::Expr^);
                 }
 
-                property CppSharp::Parser::AST::Expr^ Idx
+                property CppSharp::Parser::AST::Expr^ RowIdx
                 {
                     CppSharp::Parser::AST::Expr^ get();
                     void set(CppSharp::Parser::AST::Expr^);
+                }
+
+                property CppSharp::Parser::AST::Expr^ ColumnIdx
+                {
+                    CppSharp::Parser::AST::Expr^ get();
+                    void set(CppSharp::Parser::AST::Expr^);
+                }
+
+                property CppSharp::Parser::SourceLocation ExprLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
+
+                property CppSharp::Parser::SourceLocation RBracketLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
                 }
             };
 
             public ref class CallExpr : CppSharp::Parser::AST::Expr
             {
             public:
+
+                enum class ADLCallKind : unsigned char
+                {
+                    NotADL = 0,
+                    UsesADL = 1
+                };
 
                 CallExpr(class ::CppSharp::CppParser::AST::CallExpr* native);
                 CallExpr(class ::CppSharp::CppParser::AST::CallExpr* native, bool ownNativeInstance);
@@ -1346,31 +1748,25 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::Expr^);
                 }
 
-                property CppSharp::Parser::SourceLocation RParenLoc
+                property CppSharp::Parser::AST::CallExpr::ADLCallKind aDLCallKind
                 {
-                    CppSharp::Parser::SourceLocation get();
-                    void set(CppSharp::Parser::SourceLocation);
+                    CppSharp::Parser::AST::CallExpr::ADLCallKind get();
+                    void set(CppSharp::Parser::AST::CallExpr::ADLCallKind);
                 }
 
-                property CppSharp::Parser::AST::Declaration^ CalleeDecl
+                property bool UsesADL
                 {
-                    CppSharp::Parser::AST::Declaration^ get();
-                    void set(CppSharp::Parser::AST::Declaration^);
+                    bool get();
+                    void set(bool);
                 }
 
-                property CppSharp::Parser::AST::Function^ DirectCallee
+                property bool HasStoredFPFeatures
                 {
-                    CppSharp::Parser::AST::Function^ get();
-                    void set(CppSharp::Parser::AST::Function^);
+                    bool get();
+                    void set(bool);
                 }
 
                 property unsigned int NumArgs
-                {
-                    unsigned int get();
-                    void set(unsigned int);
-                }
-
-                property unsigned int NumCommas
                 {
                     unsigned int get();
                     void set(unsigned int);
@@ -1380,6 +1776,12 @@ namespace CppSharp
                 {
                     unsigned int get();
                     void set(unsigned int);
+                }
+
+                property CppSharp::Parser::SourceLocation RParenLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
                 }
 
                 property bool IsCallToStdMove
@@ -1420,24 +1822,6 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::Expr^ get();
                     void set(CppSharp::Parser::AST::Expr^);
-                }
-
-                property bool Arrow
-                {
-                    bool get();
-                    void set(bool);
-                }
-
-                property CppSharp::Parser::SourceLocation MemberLoc
-                {
-                    CppSharp::Parser::SourceLocation get();
-                    void set(CppSharp::Parser::SourceLocation);
-                }
-
-                property bool HadMultipleCandidates
-                {
-                    bool get();
-                    void set(bool);
                 }
 
                 property bool HasQualifier
@@ -1488,10 +1872,40 @@ namespace CppSharp
                     void set(CppSharp::Parser::SourceLocation);
                 }
 
+                property bool Arrow
+                {
+                    bool get();
+                    void set(bool);
+                }
+
+                property CppSharp::Parser::SourceLocation MemberLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
+
+                property CppSharp::Parser::SourceLocation ExprLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
+
                 property bool IsImplicitAccess
                 {
                     bool get();
                     void set(bool);
+                }
+
+                property bool HadMultipleCandidates
+                {
+                    bool get();
+                    void set(bool);
+                }
+
+                property CppSharp::Parser::AST::NonOdrUseReason IsNonOdrUse
+                {
+                    CppSharp::Parser::AST::NonOdrUseReason get();
+                    void set(CppSharp::Parser::AST::NonOdrUseReason);
                 }
             };
 
@@ -1550,19 +1964,13 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::CastKind);
                 }
 
-                property CppSharp::Parser::AST::Expr^ SubExpr
-                {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
-                }
-
                 property ::System::String^ CastKindName
                 {
                     ::System::String^ get();
                     void set(::System::String^);
                 }
 
-                property CppSharp::Parser::AST::Expr^ SubExprAsWritten
+                property CppSharp::Parser::AST::Expr^ SubExpr
                 {
                     CppSharp::Parser::AST::Expr^ get();
                     void set(CppSharp::Parser::AST::Expr^);
@@ -1584,6 +1992,12 @@ namespace CppSharp
                 {
                     unsigned int get();
                     void set(unsigned int);
+                }
+
+                property bool HasStoredFPFeatures
+                {
+                    bool get();
+                    void set(bool);
                 }
 
                 static operator CppSharp::Parser::AST::CastExpr^(CppSharp::Parser::AST::StmtClass klass);
@@ -1683,6 +2097,12 @@ namespace CppSharp
 
                 ~BinaryOperator();
 
+                property CppSharp::Parser::SourceLocation ExprLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
+
                 property CppSharp::Parser::SourceLocation OperatorLoc
                 {
                     CppSharp::Parser::SourceLocation get();
@@ -1761,6 +2181,12 @@ namespace CppSharp
                     void set(bool);
                 }
 
+                property bool IsCommaOp
+                {
+                    bool get();
+                    void set(bool);
+                }
+
                 property bool IsLogicalOp
                 {
                     bool get();
@@ -1785,13 +2211,7 @@ namespace CppSharp
                     void set(bool);
                 }
 
-                property bool IsFPContractableWithinStatement
-                {
-                    bool get();
-                    void set(bool);
-                }
-
-                property bool IsFEnvAccessOn
+                property bool HasStoredFPFeatures
                 {
                     bool get();
                     void set(bool);
@@ -1890,6 +2310,24 @@ namespace CppSharp
 
                 ~ConditionalOperator();
 
+                property CppSharp::Parser::AST::Expr^ Cond
+                {
+                    CppSharp::Parser::AST::Expr^ get();
+                    void set(CppSharp::Parser::AST::Expr^);
+                }
+
+                property CppSharp::Parser::AST::Expr^ TrueExpr
+                {
+                    CppSharp::Parser::AST::Expr^ get();
+                    void set(CppSharp::Parser::AST::Expr^);
+                }
+
+                property CppSharp::Parser::AST::Expr^ FalseExpr
+                {
+                    CppSharp::Parser::AST::Expr^ get();
+                    void set(CppSharp::Parser::AST::Expr^);
+                }
+
                 property CppSharp::Parser::AST::Expr^ LHS
                 {
                     CppSharp::Parser::AST::Expr^ get();
@@ -1927,6 +2365,24 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::OpaqueValueExpr^ get();
                     void set(CppSharp::Parser::AST::OpaqueValueExpr^);
+                }
+
+                property CppSharp::Parser::AST::Expr^ Cond
+                {
+                    CppSharp::Parser::AST::Expr^ get();
+                    void set(CppSharp::Parser::AST::Expr^);
+                }
+
+                property CppSharp::Parser::AST::Expr^ TrueExpr
+                {
+                    CppSharp::Parser::AST::Expr^ get();
+                    void set(CppSharp::Parser::AST::Expr^);
+                }
+
+                property CppSharp::Parser::AST::Expr^ FalseExpr
+                {
+                    CppSharp::Parser::AST::Expr^ get();
+                    void set(CppSharp::Parser::AST::Expr^);
                 }
             };
 
@@ -1987,6 +2443,12 @@ namespace CppSharp
                 {
                     CppSharp::Parser::SourceLocation get();
                     void set(CppSharp::Parser::SourceLocation);
+                }
+
+                property unsigned int TemplateDepth
+                {
+                    unsigned int get();
+                    void set(unsigned int);
                 }
             };
 
@@ -2076,6 +2538,18 @@ namespace CppSharp
                     void set(bool);
                 }
 
+                property bool IsConditionDependent
+                {
+                    bool get();
+                    void set(bool);
+                }
+
+                property CppSharp::Parser::AST::Expr^ ChosenSubExpr
+                {
+                    CppSharp::Parser::AST::Expr^ get();
+                    void set(CppSharp::Parser::AST::Expr^);
+                }
+
                 property CppSharp::Parser::AST::Expr^ Cond
                 {
                     CppSharp::Parser::AST::Expr^ get();
@@ -2104,18 +2578,6 @@ namespace CppSharp
                 {
                     CppSharp::Parser::SourceLocation get();
                     void set(CppSharp::Parser::SourceLocation);
-                }
-
-                property bool IsConditionDependent
-                {
-                    bool get();
-                    void set(bool);
-                }
-
-                property CppSharp::Parser::AST::Expr^ ChosenSubExpr
-                {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
                 }
             };
 
@@ -2179,6 +2641,56 @@ namespace CppSharp
                 }
             };
 
+            public ref class SourceLocExpr : CppSharp::Parser::AST::Expr
+            {
+            public:
+
+                enum class IdentKind
+                {
+                    Function = 0,
+                    FuncSig = 1,
+                    File = 2,
+                    FileName = 3,
+                    Line = 4,
+                    Column = 5,
+                    SourceLocStruct = 6
+                };
+
+                SourceLocExpr(class ::CppSharp::CppParser::AST::SourceLocExpr* native);
+                SourceLocExpr(class ::CppSharp::CppParser::AST::SourceLocExpr* native, bool ownNativeInstance);
+                static SourceLocExpr^ __CreateInstance(::System::IntPtr native);
+                static SourceLocExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
+                SourceLocExpr();
+
+                SourceLocExpr(CppSharp::Parser::AST::SourceLocExpr^ _0);
+
+                ~SourceLocExpr();
+
+                property ::System::String^ BuiltinStr
+                {
+                    ::System::String^ get();
+                    void set(::System::String^);
+                }
+
+                property CppSharp::Parser::AST::SourceLocExpr::IdentKind identKind
+                {
+                    CppSharp::Parser::AST::SourceLocExpr::IdentKind get();
+                    void set(CppSharp::Parser::AST::SourceLocExpr::IdentKind);
+                }
+
+                property bool IsIntType
+                {
+                    bool get();
+                    void set(bool);
+                }
+
+                property CppSharp::Parser::SourceLocation Location
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
+            };
+
             public ref class InitListExpr : CppSharp::Parser::AST::Expr
             {
             public:
@@ -2193,37 +2705,25 @@ namespace CppSharp
 
                 ~InitListExpr();
 
-                property CppSharp::Parser::AST::Expr^ ArrayFiller
-                {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
-                }
-
-                property CppSharp::Parser::SourceLocation LBraceLoc
-                {
-                    CppSharp::Parser::SourceLocation get();
-                    void set(CppSharp::Parser::SourceLocation);
-                }
-
-                property CppSharp::Parser::SourceLocation RBraceLoc
-                {
-                    CppSharp::Parser::SourceLocation get();
-                    void set(CppSharp::Parser::SourceLocation);
-                }
-
-                property CppSharp::Parser::AST::InitListExpr^ SyntacticForm
-                {
-                    CppSharp::Parser::AST::InitListExpr^ get();
-                    void set(CppSharp::Parser::AST::InitListExpr^);
-                }
-
                 property unsigned int NumInits
                 {
                     unsigned int get();
                     void set(unsigned int);
                 }
 
+                property CppSharp::Parser::AST::Expr^ ArrayFiller
+                {
+                    CppSharp::Parser::AST::Expr^ get();
+                    void set(CppSharp::Parser::AST::Expr^);
+                }
+
                 property bool HasArrayFiller
+                {
+                    bool get();
+                    void set(bool);
+                }
+
+                property bool HasDesignatedInit
                 {
                     bool get();
                     void set(bool);
@@ -2247,6 +2747,18 @@ namespace CppSharp
                     void set(bool);
                 }
 
+                property CppSharp::Parser::SourceLocation LBraceLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
+
+                property CppSharp::Parser::SourceLocation RBraceLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
+
                 property bool IsSemanticForm
                 {
                     bool get();
@@ -2264,6 +2776,12 @@ namespace CppSharp
                     bool get();
                     void set(bool);
                 }
+
+                property CppSharp::Parser::AST::InitListExpr^ SyntacticForm
+                {
+                    CppSharp::Parser::AST::InitListExpr^ get();
+                    void set(CppSharp::Parser::AST::InitListExpr^);
+                }
             };
 
             public ref class DesignatedInitExpr : CppSharp::Parser::AST::Expr
@@ -2273,6 +2791,66 @@ namespace CppSharp
                 ref class Designator : ICppInstance
                 {
                 public:
+
+                    /// <summary>&gt;The kind of designator this describes.&gt;</summary>
+                    enum class DesignatorKind
+                    {
+                        FieldDesignator = 0,
+                        ArrayDesignator = 1,
+                        ArrayRangeDesignator = 2
+                    };
+
+                    ref class FieldDesignatorInfo : ICppInstance
+                    {
+                    public:
+
+                        property class ::CppSharp::CppParser::AST::DesignatedInitExpr::Designator::FieldDesignatorInfo* NativePtr;
+                        property ::System::IntPtr __Instance
+                        {
+                            virtual ::System::IntPtr get();
+                            virtual void set(::System::IntPtr instance);
+                        }
+
+                        FieldDesignatorInfo(class ::CppSharp::CppParser::AST::DesignatedInitExpr::Designator::FieldDesignatorInfo* native);
+                        FieldDesignatorInfo(class ::CppSharp::CppParser::AST::DesignatedInitExpr::Designator::FieldDesignatorInfo* native, bool ownNativeInstance);
+                        static FieldDesignatorInfo^ __CreateInstance(::System::IntPtr native);
+                        static FieldDesignatorInfo^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
+                        FieldDesignatorInfo();
+
+                        FieldDesignatorInfo(CppSharp::Parser::AST::DesignatedInitExpr::Designator::FieldDesignatorInfo^ _0);
+
+                        ~FieldDesignatorInfo();
+
+                    protected:
+
+                        bool __ownsNativeInstance;
+                    };
+
+                    ref class ArrayOrRangeDesignatorInfo : ICppInstance
+                    {
+                    public:
+
+                        property class ::CppSharp::CppParser::AST::DesignatedInitExpr::Designator::ArrayOrRangeDesignatorInfo* NativePtr;
+                        property ::System::IntPtr __Instance
+                        {
+                            virtual ::System::IntPtr get();
+                            virtual void set(::System::IntPtr instance);
+                        }
+
+                        ArrayOrRangeDesignatorInfo(class ::CppSharp::CppParser::AST::DesignatedInitExpr::Designator::ArrayOrRangeDesignatorInfo* native);
+                        ArrayOrRangeDesignatorInfo(class ::CppSharp::CppParser::AST::DesignatedInitExpr::Designator::ArrayOrRangeDesignatorInfo* native, bool ownNativeInstance);
+                        static ArrayOrRangeDesignatorInfo^ __CreateInstance(::System::IntPtr native);
+                        static ArrayOrRangeDesignatorInfo^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
+                        ArrayOrRangeDesignatorInfo();
+
+                        ArrayOrRangeDesignatorInfo(CppSharp::Parser::AST::DesignatedInitExpr::Designator::ArrayOrRangeDesignatorInfo^ _0);
+
+                        ~ArrayOrRangeDesignatorInfo();
+
+                    protected:
+
+                        bool __ownsNativeInstance;
+                    };
 
                     property class ::CppSharp::CppParser::AST::DesignatedInitExpr::Designator* NativePtr;
                     property ::System::IntPtr __Instance
@@ -2290,12 +2868,6 @@ namespace CppSharp
                     Designator(CppSharp::Parser::AST::DesignatedInitExpr::Designator^ _0);
 
                     ~Designator();
-
-                    property CppSharp::Parser::AST::Field^ Field
-                    {
-                        CppSharp::Parser::AST::Field^ get();
-                        void set(CppSharp::Parser::AST::Field^);
-                    }
 
                     property bool IsFieldDesignator
                     {
@@ -2315,6 +2887,12 @@ namespace CppSharp
                         void set(bool);
                     }
 
+                    property CppSharp::Parser::AST::Field^ FieldDecl
+                    {
+                        CppSharp::Parser::AST::Field^ get();
+                        void set(CppSharp::Parser::AST::Field^);
+                    }
+
                     property CppSharp::Parser::SourceLocation DotLoc
                     {
                         CppSharp::Parser::SourceLocation get();
@@ -2327,13 +2905,13 @@ namespace CppSharp
                         void set(CppSharp::Parser::SourceLocation);
                     }
 
-                    property CppSharp::Parser::SourceLocation LBracketLoc
+                    property unsigned int ArrayIndex
                     {
-                        CppSharp::Parser::SourceLocation get();
-                        void set(CppSharp::Parser::SourceLocation);
+                        unsigned int get();
+                        void set(unsigned int);
                     }
 
-                    property CppSharp::Parser::SourceLocation RBracketLoc
+                    property CppSharp::Parser::SourceLocation LBracketLoc
                     {
                         CppSharp::Parser::SourceLocation get();
                         void set(CppSharp::Parser::SourceLocation);
@@ -2345,10 +2923,10 @@ namespace CppSharp
                         void set(CppSharp::Parser::SourceLocation);
                     }
 
-                    property unsigned int FirstExprIndex
+                    property CppSharp::Parser::SourceLocation RBracketLoc
                     {
-                        unsigned int get();
-                        void set(unsigned int);
+                        CppSharp::Parser::SourceLocation get();
+                        void set(CppSharp::Parser::SourceLocation);
                     }
 
                     property CppSharp::Parser::SourceRange^ SourceRange
@@ -2356,58 +2934,6 @@ namespace CppSharp
                         CppSharp::Parser::SourceRange^ get();
                         void set(CppSharp::Parser::SourceRange^);
                     }
-
-                protected:
-
-                    bool __ownsNativeInstance;
-                };
-
-                ref class FieldDesignator : ICppInstance
-                {
-                public:
-
-                    property class ::CppSharp::CppParser::AST::DesignatedInitExpr::FieldDesignator* NativePtr;
-                    property ::System::IntPtr __Instance
-                    {
-                        virtual ::System::IntPtr get();
-                        virtual void set(::System::IntPtr instance);
-                    }
-
-                    FieldDesignator(class ::CppSharp::CppParser::AST::DesignatedInitExpr::FieldDesignator* native);
-                    FieldDesignator(class ::CppSharp::CppParser::AST::DesignatedInitExpr::FieldDesignator* native, bool ownNativeInstance);
-                    static FieldDesignator^ __CreateInstance(::System::IntPtr native);
-                    static FieldDesignator^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
-                    FieldDesignator();
-
-                    FieldDesignator(CppSharp::Parser::AST::DesignatedInitExpr::FieldDesignator^ _0);
-
-                    ~FieldDesignator();
-
-                protected:
-
-                    bool __ownsNativeInstance;
-                };
-
-                ref class ArrayOrRangeDesignator : ICppInstance
-                {
-                public:
-
-                    property class ::CppSharp::CppParser::AST::DesignatedInitExpr::ArrayOrRangeDesignator* NativePtr;
-                    property ::System::IntPtr __Instance
-                    {
-                        virtual ::System::IntPtr get();
-                        virtual void set(::System::IntPtr instance);
-                    }
-
-                    ArrayOrRangeDesignator(class ::CppSharp::CppParser::AST::DesignatedInitExpr::ArrayOrRangeDesignator* native);
-                    ArrayOrRangeDesignator(class ::CppSharp::CppParser::AST::DesignatedInitExpr::ArrayOrRangeDesignator* native, bool ownNativeInstance);
-                    static ArrayOrRangeDesignator^ __CreateInstance(::System::IntPtr native);
-                    static ArrayOrRangeDesignator^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
-                    ArrayOrRangeDesignator();
-
-                    ArrayOrRangeDesignator(CppSharp::Parser::AST::DesignatedInitExpr::ArrayOrRangeDesignator^ _0);
-
-                    ~ArrayOrRangeDesignator();
 
                 protected:
 
@@ -2424,28 +2950,34 @@ namespace CppSharp
 
                 ~DesignatedInitExpr();
 
-                property CppSharp::Parser::SourceLocation EqualOrColonLoc
-                {
-                    CppSharp::Parser::SourceLocation get();
-                    void set(CppSharp::Parser::SourceLocation);
-                }
-
-                property CppSharp::Parser::AST::Expr^ Init
-                {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
-                }
-
                 property unsigned int Size
                 {
                     unsigned int get();
                     void set(unsigned int);
                 }
 
+                property CppSharp::Parser::SourceLocation EqualOrColonLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
+
+                property bool IsDirectInit
+                {
+                    bool get();
+                    void set(bool);
+                }
+
                 property bool UsesGNUSyntax
                 {
                     bool get();
                     void set(bool);
+                }
+
+                property CppSharp::Parser::AST::Expr^ Init
+                {
+                    CppSharp::Parser::AST::Expr^ get();
+                    void set(CppSharp::Parser::AST::Expr^);
                 }
 
                 property unsigned int NumSubExprs
@@ -2613,6 +3145,30 @@ namespace CppSharp
                     void set(unsigned int);
                 }
 
+                property unsigned int ResultIndex
+                {
+                    unsigned int get();
+                    void set(unsigned int);
+                }
+
+                property bool IsResultDependent
+                {
+                    bool get();
+                    void set(bool);
+                }
+
+                property bool IsExprPredicate
+                {
+                    bool get();
+                    void set(bool);
+                }
+
+                property bool IsTypePredicate
+                {
+                    bool get();
+                    void set(bool);
+                }
+
                 property CppSharp::Parser::SourceLocation GenericLoc
                 {
                     CppSharp::Parser::SourceLocation get();
@@ -2629,30 +3185,6 @@ namespace CppSharp
                 {
                     CppSharp::Parser::SourceLocation get();
                     void set(CppSharp::Parser::SourceLocation);
-                }
-
-                property CppSharp::Parser::AST::Expr^ ControllingExpr
-                {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
-                }
-
-                property bool IsResultDependent
-                {
-                    bool get();
-                    void set(bool);
-                }
-
-                property unsigned int ResultIndex
-                {
-                    unsigned int get();
-                    void set(unsigned int);
-                }
-
-                property CppSharp::Parser::AST::Expr^ ResultExpr
-                {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
                 }
             };
 
@@ -2720,12 +3252,6 @@ namespace CppSharp
                     CppSharp::Parser::SourceLocation get();
                     void set(CppSharp::Parser::SourceLocation);
                 }
-
-                property CppSharp::Parser::AST::Stmt^ Body
-                {
-                    CppSharp::Parser::AST::Stmt^ get();
-                    void set(CppSharp::Parser::AST::Stmt^);
-                }
             };
 
             public ref class AsTypeExpr : CppSharp::Parser::AST::Expr
@@ -2775,28 +3301,22 @@ namespace CppSharp
 
                 ~PseudoObjectExpr();
 
-                property CppSharp::Parser::AST::Expr^ SyntacticForm
-                {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
-                }
-
                 property unsigned int ResultExprIndex
                 {
                     unsigned int get();
                     void set(unsigned int);
                 }
 
-                property CppSharp::Parser::AST::Expr^ ResultExpr
-                {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
-                }
-
                 property unsigned int NumSemanticExprs
                 {
                     unsigned int get();
                     void set(unsigned int);
+                }
+
+                property CppSharp::Parser::SourceLocation ExprLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
                 }
             };
 
@@ -2817,41 +3337,58 @@ namespace CppSharp
                     C11AtomicFetchAnd = 8,
                     C11AtomicFetchOr = 9,
                     C11AtomicFetchXor = 10,
-                    AtomicLoad = 11,
-                    AtomicLoadN = 12,
-                    AtomicStore = 13,
-                    AtomicStoreN = 14,
-                    AtomicExchange = 15,
-                    AtomicExchangeN = 16,
-                    AtomicCompareExchange = 17,
-                    AtomicCompareExchangeN = 18,
-                    AtomicFetchAdd = 19,
-                    AtomicFetchSub = 20,
-                    AtomicFetchAnd = 21,
-                    AtomicFetchOr = 22,
-                    AtomicFetchXor = 23,
-                    AtomicFetchNand = 24,
-                    AtomicAddFetch = 25,
-                    AtomicSubFetch = 26,
-                    AtomicAndFetch = 27,
-                    AtomicOrFetch = 28,
-                    AtomicXorFetch = 29,
-                    AtomicNandFetch = 30,
-                    OpenclAtomicInit = 31,
-                    OpenclAtomicLoad = 32,
-                    OpenclAtomicStore = 33,
-                    OpenclAtomicExchange = 34,
-                    OpenclAtomicCompareExchangeStrong = 35,
-                    OpenclAtomicCompareExchangeWeak = 36,
-                    OpenclAtomicFetchAdd = 37,
-                    OpenclAtomicFetchSub = 38,
-                    OpenclAtomicFetchAnd = 39,
-                    OpenclAtomicFetchOr = 40,
-                    OpenclAtomicFetchXor = 41,
-                    OpenclAtomicFetchMin = 42,
-                    OpenclAtomicFetchMax = 43,
-                    AtomicFetchMin = 44,
-                    AtomicFetchMax = 45
+                    C11AtomicFetchNand = 11,
+                    C11AtomicFetchMax = 12,
+                    C11AtomicFetchMin = 13,
+                    AtomicLoad = 14,
+                    AtomicLoadN = 15,
+                    AtomicStore = 16,
+                    AtomicStoreN = 17,
+                    AtomicExchange = 18,
+                    AtomicExchangeN = 19,
+                    AtomicCompareExchange = 20,
+                    AtomicCompareExchangeN = 21,
+                    AtomicFetchAdd = 22,
+                    AtomicFetchSub = 23,
+                    AtomicFetchAnd = 24,
+                    AtomicFetchOr = 25,
+                    AtomicFetchXor = 26,
+                    AtomicFetchNand = 27,
+                    AtomicAddFetch = 28,
+                    AtomicSubFetch = 29,
+                    AtomicAndFetch = 30,
+                    AtomicOrFetch = 31,
+                    AtomicXorFetch = 32,
+                    AtomicMaxFetch = 33,
+                    AtomicMinFetch = 34,
+                    AtomicNandFetch = 35,
+                    OpenclAtomicInit = 36,
+                    OpenclAtomicLoad = 37,
+                    OpenclAtomicStore = 38,
+                    OpenclAtomicExchange = 39,
+                    OpenclAtomicCompareExchangeStrong = 40,
+                    OpenclAtomicCompareExchangeWeak = 41,
+                    OpenclAtomicFetchAdd = 42,
+                    OpenclAtomicFetchSub = 43,
+                    OpenclAtomicFetchAnd = 44,
+                    OpenclAtomicFetchOr = 45,
+                    OpenclAtomicFetchXor = 46,
+                    OpenclAtomicFetchMin = 47,
+                    OpenclAtomicFetchMax = 48,
+                    AtomicFetchMin = 49,
+                    AtomicFetchMax = 50,
+                    HipAtomicLoad = 51,
+                    HipAtomicStore = 52,
+                    HipAtomicCompareExchangeWeak = 53,
+                    HipAtomicCompareExchangeStrong = 54,
+                    HipAtomicExchange = 55,
+                    HipAtomicFetchAdd = 56,
+                    HipAtomicFetchSub = 57,
+                    HipAtomicFetchAnd = 58,
+                    HipAtomicFetchOr = 59,
+                    HipAtomicFetchXor = 60,
+                    HipAtomicFetchMin = 61,
+                    HipAtomicFetchMax = 62
                 };
 
                 AtomicExpr(class ::CppSharp::CppParser::AST::AtomicExpr* native);
@@ -2970,6 +3507,21 @@ namespace CppSharp
                 ~TypoExpr();
             };
 
+            public ref class RecoveryExpr : CppSharp::Parser::AST::Expr
+            {
+            public:
+
+                RecoveryExpr(class ::CppSharp::CppParser::AST::RecoveryExpr* native);
+                RecoveryExpr(class ::CppSharp::CppParser::AST::RecoveryExpr* native, bool ownNativeInstance);
+                static RecoveryExpr^ __CreateInstance(::System::IntPtr native);
+                static RecoveryExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
+                RecoveryExpr();
+
+                RecoveryExpr(CppSharp::Parser::AST::RecoveryExpr^ _0);
+
+                ~RecoveryExpr();
+            };
+
             public ref class CXXOperatorCallExpr : CppSharp::Parser::AST::CallExpr
             {
             public:
@@ -2996,6 +3548,12 @@ namespace CppSharp
                     void set(bool);
                 }
 
+                property bool IsComparisonOp
+                {
+                    bool get();
+                    void set(bool);
+                }
+
                 property bool IsInfixBinaryOp
                 {
                     bool get();
@@ -3006,6 +3564,18 @@ namespace CppSharp
                 {
                     CppSharp::Parser::SourceLocation get();
                     void set(CppSharp::Parser::SourceLocation);
+                }
+
+                property CppSharp::Parser::SourceLocation ExprLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
+
+                property CppSharp::Parser::SourceRange^ SourceRange
+                {
+                    CppSharp::Parser::SourceRange^ get();
+                    void set(CppSharp::Parser::SourceRange^);
                 }
             };
 
@@ -3029,10 +3599,22 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::Expr^);
                 }
 
+                property CppSharp::Parser::AST::QualifiedType^ ObjectType
+                {
+                    CppSharp::Parser::AST::QualifiedType^ get();
+                    void set(CppSharp::Parser::AST::QualifiedType^);
+                }
+
                 property CppSharp::Parser::AST::Method^ MethodDecl
                 {
                     CppSharp::Parser::AST::Method^ get();
                     void set(CppSharp::Parser::AST::Method^);
+                }
+
+                property CppSharp::Parser::SourceLocation ExprLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
                 }
             };
 
@@ -3049,11 +3631,86 @@ namespace CppSharp
                 CUDAKernelCallExpr(CppSharp::Parser::AST::CUDAKernelCallExpr^ _0);
 
                 ~CUDAKernelCallExpr();
+            };
 
-                property CppSharp::Parser::AST::CallExpr^ Config
+            public ref class CXXRewrittenBinaryOperator : CppSharp::Parser::AST::Expr
+            {
+            public:
+
+                CXXRewrittenBinaryOperator(class ::CppSharp::CppParser::AST::CXXRewrittenBinaryOperator* native);
+                CXXRewrittenBinaryOperator(class ::CppSharp::CppParser::AST::CXXRewrittenBinaryOperator* native, bool ownNativeInstance);
+                static CXXRewrittenBinaryOperator^ __CreateInstance(::System::IntPtr native);
+                static CXXRewrittenBinaryOperator^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
+                CXXRewrittenBinaryOperator();
+
+                CXXRewrittenBinaryOperator(CppSharp::Parser::AST::CXXRewrittenBinaryOperator^ _0);
+
+                ~CXXRewrittenBinaryOperator();
+
+                property bool IsReversed
                 {
-                    CppSharp::Parser::AST::CallExpr^ get();
-                    void set(CppSharp::Parser::AST::CallExpr^);
+                    bool get();
+                    void set(bool);
+                }
+
+                property CppSharp::Parser::AST::BinaryOperatorKind Operator
+                {
+                    CppSharp::Parser::AST::BinaryOperatorKind get();
+                    void set(CppSharp::Parser::AST::BinaryOperatorKind);
+                }
+
+                property CppSharp::Parser::AST::BinaryOperatorKind Opcode
+                {
+                    CppSharp::Parser::AST::BinaryOperatorKind get();
+                    void set(CppSharp::Parser::AST::BinaryOperatorKind);
+                }
+
+                property ::System::String^ OpcodeStr
+                {
+                    ::System::String^ get();
+                    void set(::System::String^);
+                }
+
+                property bool IsComparisonOp
+                {
+                    bool get();
+                    void set(bool);
+                }
+
+                property bool IsAssignmentOp
+                {
+                    bool get();
+                    void set(bool);
+                }
+
+                property CppSharp::Parser::AST::Expr^ LHS
+                {
+                    CppSharp::Parser::AST::Expr^ get();
+                    void set(CppSharp::Parser::AST::Expr^);
+                }
+
+                property CppSharp::Parser::AST::Expr^ RHS
+                {
+                    CppSharp::Parser::AST::Expr^ get();
+                    void set(CppSharp::Parser::AST::Expr^);
+                }
+
+                property CppSharp::Parser::SourceLocation OperatorLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
+
+                property CppSharp::Parser::SourceLocation ExprLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
+
+                property CppSharp::Parser::SourceRange^ SourceRange
+                {
+                    CppSharp::Parser::SourceRange^ get();
+                    void set(CppSharp::Parser::SourceRange^);
                 }
             };
 
@@ -3166,17 +3823,39 @@ namespace CppSharp
                 ~CXXConstCastExpr();
             };
 
+            public ref class CXXAddrspaceCastExpr : CppSharp::Parser::AST::CXXNamedCastExpr
+            {
+            public:
+
+                CXXAddrspaceCastExpr(class ::CppSharp::CppParser::AST::CXXAddrspaceCastExpr* native);
+                CXXAddrspaceCastExpr(class ::CppSharp::CppParser::AST::CXXAddrspaceCastExpr* native, bool ownNativeInstance);
+                static CXXAddrspaceCastExpr^ __CreateInstance(::System::IntPtr native);
+                static CXXAddrspaceCastExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
+                CXXAddrspaceCastExpr();
+
+                CXXAddrspaceCastExpr(CppSharp::Parser::AST::CXXAddrspaceCastExpr^ _0);
+
+                ~CXXAddrspaceCastExpr();
+            };
+
             public ref class UserDefinedLiteral : CppSharp::Parser::AST::CallExpr
             {
             public:
 
+                /// <summary>&gt;The kind of literal operator which is invoked.&gt;</summary>
                 enum class LiteralOperatorKind
                 {
+                    /// <summary>&gt;Raw form: operator&quot;&quot;X (const char *)&gt;</summary>
                     Raw = 0,
+                    /// <summary>&gt;Raw form: operator&quot;&quot;X...&gt;()&gt;</summary>
                     Template = 1,
+                    /// <summary>&gt;operator&quot;&quot;X (unsigned long long)&gt;</summary>
                     Integer = 2,
+                    /// <summary>&gt;operator&quot;&quot;X (long double)&gt;</summary>
                     Floating = 3,
+                    /// <summary>&gt;operator&quot;&quot;X (const CharT *, size_t)&gt;</summary>
                     String = 4,
+                    /// <summary>&gt;operator&quot;&quot;X (CharT)&gt;</summary>
                     Character = 5
                 };
 
@@ -3194,12 +3873,6 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::UserDefinedLiteral::LiteralOperatorKind get();
                     void set(CppSharp::Parser::AST::UserDefinedLiteral::LiteralOperatorKind);
-                }
-
-                property CppSharp::Parser::AST::Expr^ CookedLiteral
-                {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
                 }
 
                 property CppSharp::Parser::SourceLocation UDSuffixLoc
@@ -3271,10 +3944,10 @@ namespace CppSharp
 
                 ~CXXStdInitializerListExpr();
 
-                property CppSharp::Parser::AST::Expr^ SubExpr
+                property CppSharp::Parser::SourceRange^ SourceRange
                 {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
+                    CppSharp::Parser::SourceRange^ get();
+                    void set(CppSharp::Parser::SourceRange^);
                 }
             };
 
@@ -3292,12 +3965,6 @@ namespace CppSharp
 
                 ~CXXTypeidExpr();
 
-                property CppSharp::Parser::AST::Expr^ ExprOperand
-                {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
-                }
-
                 property bool IsPotentiallyEvaluated
                 {
                     bool get();
@@ -3308,6 +3975,18 @@ namespace CppSharp
                 {
                     bool get();
                     void set(bool);
+                }
+
+                property CppSharp::Parser::AST::Expr^ ExprOperand
+                {
+                    CppSharp::Parser::AST::Expr^ get();
+                    void set(CppSharp::Parser::AST::Expr^);
+                }
+
+                property CppSharp::Parser::SourceRange^ SourceRange
+                {
+                    CppSharp::Parser::SourceRange^ get();
+                    void set(CppSharp::Parser::SourceRange^);
                 }
             };
 
@@ -3324,6 +4003,12 @@ namespace CppSharp
                 MSPropertyRefExpr(CppSharp::Parser::AST::MSPropertyRefExpr^ _0);
 
                 ~MSPropertyRefExpr();
+
+                property CppSharp::Parser::SourceRange^ SourceRange
+                {
+                    CppSharp::Parser::SourceRange^ get();
+                    void set(CppSharp::Parser::SourceRange^);
+                }
 
                 property bool IsImplicitAccess
                 {
@@ -3370,16 +4055,10 @@ namespace CppSharp
                     void set(CppSharp::Parser::SourceLocation);
                 }
 
-                property CppSharp::Parser::AST::Expr^ Base
+                property CppSharp::Parser::SourceLocation ExprLoc
                 {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
-                }
-
-                property CppSharp::Parser::AST::Expr^ Idx
-                {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
                 }
             };
 
@@ -3397,22 +4076,28 @@ namespace CppSharp
 
                 ~CXXUuidofExpr();
 
+                property bool IsTypeOperand
+                {
+                    bool get();
+                    void set(bool);
+                }
+
                 property CppSharp::Parser::AST::Expr^ ExprOperand
                 {
                     CppSharp::Parser::AST::Expr^ get();
                     void set(CppSharp::Parser::AST::Expr^);
                 }
 
-                property ::System::String^ UuidStr
+                property ::System::String^ GuidDecl
                 {
                     ::System::String^ get();
                     void set(::System::String^);
                 }
 
-                property bool IsTypeOperand
+                property CppSharp::Parser::SourceRange^ SourceRange
                 {
-                    bool get();
-                    void set(bool);
+                    CppSharp::Parser::SourceRange^ get();
+                    void set(CppSharp::Parser::SourceRange^);
                 }
             };
 
@@ -3457,12 +4142,6 @@ namespace CppSharp
 
                 ~CXXThrowExpr();
 
-                property CppSharp::Parser::AST::Expr^ SubExpr
-                {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
-                }
-
                 property CppSharp::Parser::SourceLocation ThrowLoc
                 {
                     CppSharp::Parser::SourceLocation get();
@@ -3490,13 +4169,19 @@ namespace CppSharp
 
                 ~CXXDefaultArgExpr();
 
-                property CppSharp::Parser::AST::Expr^ Expr
+                property bool HasRewrittenInit
                 {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
+                    bool get();
+                    void set(bool);
                 }
 
                 property CppSharp::Parser::SourceLocation UsedLocation
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
+
+                property CppSharp::Parser::SourceLocation ExprLoc
                 {
                     CppSharp::Parser::SourceLocation get();
                     void set(CppSharp::Parser::SourceLocation);
@@ -3517,16 +4202,16 @@ namespace CppSharp
 
                 ~CXXDefaultInitExpr();
 
-                property CppSharp::Parser::AST::Field^ Field
+                property bool HasRewrittenInit
                 {
-                    CppSharp::Parser::AST::Field^ get();
-                    void set(CppSharp::Parser::AST::Field^);
+                    bool get();
+                    void set(bool);
                 }
 
-                property CppSharp::Parser::AST::Expr^ Expr
+                property CppSharp::Parser::SourceLocation UsedLocation
                 {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
                 }
             };
 
@@ -3617,16 +4302,22 @@ namespace CppSharp
                     void set(bool);
                 }
 
-                property CppSharp::Parser::SourceRange^ ParenOrBraceRange
-                {
-                    CppSharp::Parser::SourceRange^ get();
-                    void set(CppSharp::Parser::SourceRange^);
-                }
-
                 property unsigned int NumArgs
                 {
                     unsigned int get();
                     void set(unsigned int);
+                }
+
+                property bool IsImmediateEscalating
+                {
+                    bool get();
+                    void set(bool);
+                }
+
+                property CppSharp::Parser::SourceRange^ ParenOrBraceRange
+                {
+                    CppSharp::Parser::SourceRange^ get();
+                    void set(CppSharp::Parser::SourceRange^);
                 }
 
                 property unsigned int GetargumentsCount
@@ -3768,16 +4459,28 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::Method^);
                 }
 
+                property CppSharp::Parser::AST::FunctionTemplate^ DependentCallOperator
+                {
+                    CppSharp::Parser::AST::FunctionTemplate^ get();
+                    void set(CppSharp::Parser::AST::FunctionTemplate^);
+                }
+
+                property CppSharp::Parser::AST::Expr^ TrailingRequiresClause
+                {
+                    CppSharp::Parser::AST::Expr^ get();
+                    void set(CppSharp::Parser::AST::Expr^);
+                }
+
                 property bool IsGenericLambda
                 {
                     bool get();
                     void set(bool);
                 }
 
-                property CppSharp::Parser::AST::CompoundStmt^ Body
+                property CppSharp::Parser::AST::Stmt^ Body
                 {
-                    CppSharp::Parser::AST::CompoundStmt^ get();
-                    void set(CppSharp::Parser::AST::CompoundStmt^);
+                    CppSharp::Parser::AST::Stmt^ get();
+                    void set(CppSharp::Parser::AST::Stmt^);
                 }
 
                 property bool IsMutable
@@ -3837,8 +4540,11 @@ namespace CppSharp
 
                 enum class InitializationStyle
                 {
+                    /// <summary>&gt;New-expression has no initializer as written.&gt;</summary>
                     NoInit = 0,
+                    /// <summary>&gt;New-expression has a C++98 paren-delimited initializer.&gt;</summary>
                     CallInit = 1,
+                    /// <summary>&gt;New-expression has a C++11 list-initializer.&gt;</summary>
                     ListInit = 2
                 };
 
@@ -3858,6 +4564,12 @@ namespace CppSharp
                     void set(::System::Collections::Generic::List<CppSharp::Parser::AST::Expr^>^);
                 }
 
+                property CppSharp::Parser::AST::QualifiedType^ AllocatedType
+                {
+                    CppSharp::Parser::AST::QualifiedType^ get();
+                    void set(CppSharp::Parser::AST::QualifiedType^);
+                }
+
                 property CppSharp::Parser::AST::Function^ OperatorNew
                 {
                     CppSharp::Parser::AST::Function^ get();
@@ -3870,22 +4582,10 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::Function^);
                 }
 
-                property CppSharp::Parser::AST::QualifiedType^ AllocatedType
-                {
-                    CppSharp::Parser::AST::QualifiedType^ get();
-                    void set(CppSharp::Parser::AST::QualifiedType^);
-                }
-
                 property bool IsArray
                 {
                     bool get();
                     void set(bool);
-                }
-
-                property CppSharp::Parser::AST::Expr^ ArraySize
-                {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
                 }
 
                 property unsigned int NumPlacementArgs
@@ -3924,12 +4624,6 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::CXXNewExpr::InitializationStyle);
                 }
 
-                property CppSharp::Parser::AST::Expr^ Initializer
-                {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
-                }
-
                 property CppSharp::Parser::AST::CXXConstructExpr^ ConstructExpr
                 {
                     CppSharp::Parser::AST::CXXConstructExpr^ get();
@@ -3937,6 +4631,12 @@ namespace CppSharp
                 }
 
                 property CppSharp::Parser::SourceRange^ DirectInitRange
+                {
+                    CppSharp::Parser::SourceRange^ get();
+                    void set(CppSharp::Parser::SourceRange^);
+                }
+
+                property CppSharp::Parser::SourceRange^ SourceRange
                 {
                     CppSharp::Parser::SourceRange^ get();
                     void set(CppSharp::Parser::SourceRange^);
@@ -3990,12 +4690,6 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::Function^ get();
                     void set(CppSharp::Parser::AST::Function^);
-                }
-
-                property CppSharp::Parser::AST::Expr^ Argument
-                {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
                 }
 
                 property CppSharp::Parser::AST::QualifiedType^ DestroyedType
@@ -4379,6 +5073,12 @@ namespace CppSharp
                     void set(::System::Collections::Generic::List<CppSharp::Parser::AST::Expr^>^);
                 }
 
+                property CppSharp::Parser::AST::QualifiedType^ TypeAsWritten
+                {
+                    CppSharp::Parser::AST::QualifiedType^ get();
+                    void set(CppSharp::Parser::AST::QualifiedType^);
+                }
+
                 property CppSharp::Parser::SourceLocation LParenLoc
                 {
                     CppSharp::Parser::SourceLocation get();
@@ -4391,19 +5091,13 @@ namespace CppSharp
                     void set(CppSharp::Parser::SourceLocation);
                 }
 
-                property CppSharp::Parser::AST::QualifiedType^ TypeAsWritten
-                {
-                    CppSharp::Parser::AST::QualifiedType^ get();
-                    void set(CppSharp::Parser::AST::QualifiedType^);
-                }
-
                 property bool IsListInitialization
                 {
                     bool get();
                     void set(bool);
                 }
 
-                property unsigned int ArgSize
+                property unsigned int NumArgs
                 {
                     unsigned int get();
                     void set(unsigned int);
@@ -4534,12 +5228,6 @@ namespace CppSharp
                     void set(bool);
                 }
 
-                property CppSharp::Parser::AST::Expr^ Base
-                {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
-                }
-
                 property CppSharp::Parser::AST::QualifiedType^ BaseType
                 {
                     CppSharp::Parser::AST::QualifiedType^ get();
@@ -4569,6 +5257,12 @@ namespace CppSharp
                     CppSharp::Parser::SourceLocation get();
                     void set(CppSharp::Parser::SourceLocation);
                 }
+
+                property CppSharp::Parser::SourceLocation ExprLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
             };
 
             public ref class CXXNoexceptExpr : CppSharp::Parser::AST::Expr
@@ -4589,6 +5283,12 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::Expr^ get();
                     void set(CppSharp::Parser::AST::Expr^);
+                }
+
+                property CppSharp::Parser::SourceRange^ SourceRange
+                {
+                    CppSharp::Parser::SourceRange^ get();
+                    void set(CppSharp::Parser::SourceRange^);
                 }
 
                 property bool Value
@@ -4612,16 +5312,16 @@ namespace CppSharp
 
                 ~PackExpansionExpr();
 
-                property CppSharp::Parser::AST::Expr^ Pattern
-                {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
-                }
-
                 property CppSharp::Parser::SourceLocation EllipsisLoc
                 {
                     CppSharp::Parser::SourceLocation get();
                     void set(CppSharp::Parser::SourceLocation);
+                }
+
+                property System::Nullable<unsigned int> NumExpansions
+                {
+                    System::Nullable<unsigned int> get();
+                    void set(System::Nullable<unsigned int>);
                 }
             };
 
@@ -4701,6 +5401,30 @@ namespace CppSharp
                     CppSharp::Parser::AST::Expr^ get();
                     void set(CppSharp::Parser::AST::Expr^);
                 }
+
+                property CppSharp::Parser::AST::Declaration^ AssociatedDecl
+                {
+                    CppSharp::Parser::AST::Declaration^ get();
+                    void set(CppSharp::Parser::AST::Declaration^);
+                }
+
+                property unsigned int Index
+                {
+                    unsigned int get();
+                    void set(unsigned int);
+                }
+
+                property System::Nullable<unsigned int> PackIndex
+                {
+                    System::Nullable<unsigned int> get();
+                    void set(System::Nullable<unsigned int>);
+                }
+
+                property bool IsReferenceParameter
+                {
+                    bool get();
+                    void set(bool);
+                }
             };
 
             public ref class SubstNonTypeTemplateParmPackExpr : CppSharp::Parser::AST::Expr
@@ -4716,6 +5440,18 @@ namespace CppSharp
                 SubstNonTypeTemplateParmPackExpr(CppSharp::Parser::AST::SubstNonTypeTemplateParmPackExpr^ _0);
 
                 ~SubstNonTypeTemplateParmPackExpr();
+
+                property CppSharp::Parser::AST::Declaration^ AssociatedDecl
+                {
+                    CppSharp::Parser::AST::Declaration^ get();
+                    void set(CppSharp::Parser::AST::Declaration^);
+                }
+
+                property unsigned int Index
+                {
+                    unsigned int get();
+                    void set(unsigned int);
+                }
 
                 property CppSharp::Parser::SourceLocation ParameterPackLocation
                 {
@@ -4761,32 +5497,6 @@ namespace CppSharp
             {
             public:
 
-                ref class ExtraState : ICppInstance
-                {
-                public:
-
-                    property class ::CppSharp::CppParser::AST::MaterializeTemporaryExpr::ExtraState* NativePtr;
-                    property ::System::IntPtr __Instance
-                    {
-                        virtual ::System::IntPtr get();
-                        virtual void set(::System::IntPtr instance);
-                    }
-
-                    ExtraState(class ::CppSharp::CppParser::AST::MaterializeTemporaryExpr::ExtraState* native);
-                    ExtraState(class ::CppSharp::CppParser::AST::MaterializeTemporaryExpr::ExtraState* native, bool ownNativeInstance);
-                    static ExtraState^ __CreateInstance(::System::IntPtr native);
-                    static ExtraState^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
-                    ExtraState();
-
-                    ExtraState(CppSharp::Parser::AST::MaterializeTemporaryExpr::ExtraState^ _0);
-
-                    ~ExtraState();
-
-                protected:
-
-                    bool __ownsNativeInstance;
-                };
-
                 MaterializeTemporaryExpr(class ::CppSharp::CppParser::AST::MaterializeTemporaryExpr* native);
                 MaterializeTemporaryExpr(class ::CppSharp::CppParser::AST::MaterializeTemporaryExpr* native, bool ownNativeInstance);
                 static MaterializeTemporaryExpr^ __CreateInstance(::System::IntPtr native);
@@ -4797,13 +5507,7 @@ namespace CppSharp
 
                 ~MaterializeTemporaryExpr();
 
-                property CppSharp::Parser::AST::Stmt^ Temporary
-                {
-                    CppSharp::Parser::AST::Stmt^ get();
-                    void set(CppSharp::Parser::AST::Stmt^);
-                }
-
-                property CppSharp::Parser::AST::Expr^ TemporaryExpr
+                property CppSharp::Parser::AST::Expr^ SubExpr
                 {
                     CppSharp::Parser::AST::Expr^ get();
                     void set(CppSharp::Parser::AST::Expr^);
@@ -4826,6 +5530,14 @@ namespace CppSharp
             {
             public:
 
+                enum class SubExpr
+                {
+                    Callee = 0,
+                    LHS = 1,
+                    RHS = 2,
+                    Count = 3
+                };
+
                 CXXFoldExpr(class ::CppSharp::CppParser::AST::CXXFoldExpr* native);
                 CXXFoldExpr(class ::CppSharp::CppParser::AST::CXXFoldExpr* native, bool ownNativeInstance);
                 static CXXFoldExpr^ __CreateInstance(::System::IntPtr native);
@@ -4835,6 +5547,12 @@ namespace CppSharp
                 CXXFoldExpr(CppSharp::Parser::AST::CXXFoldExpr^ _0);
 
                 ~CXXFoldExpr();
+
+                property CppSharp::Parser::AST::UnresolvedLookupExpr^ Callee
+                {
+                    CppSharp::Parser::AST::UnresolvedLookupExpr^ get();
+                    void set(CppSharp::Parser::AST::UnresolvedLookupExpr^);
+                }
 
                 property CppSharp::Parser::AST::Expr^ LHS
                 {
@@ -4872,6 +5590,18 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::Expr^);
                 }
 
+                property CppSharp::Parser::SourceLocation LParenLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
+
+                property CppSharp::Parser::SourceLocation RParenLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
+
                 property CppSharp::Parser::SourceLocation EllipsisLoc
                 {
                     CppSharp::Parser::SourceLocation get();
@@ -4883,6 +5613,45 @@ namespace CppSharp
                     CppSharp::Parser::AST::BinaryOperatorKind get();
                     void set(CppSharp::Parser::AST::BinaryOperatorKind);
                 }
+
+                property System::Nullable<unsigned int> NumExpansions
+                {
+                    System::Nullable<unsigned int> get();
+                    void set(System::Nullable<unsigned int>);
+                }
+            };
+
+            public ref class CXXParenListInitExpr : CppSharp::Parser::AST::Expr
+            {
+            public:
+
+                CXXParenListInitExpr(class ::CppSharp::CppParser::AST::CXXParenListInitExpr* native);
+                CXXParenListInitExpr(class ::CppSharp::CppParser::AST::CXXParenListInitExpr* native, bool ownNativeInstance);
+                static CXXParenListInitExpr^ __CreateInstance(::System::IntPtr native);
+                static CXXParenListInitExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
+                CXXParenListInitExpr();
+
+                CXXParenListInitExpr(CppSharp::Parser::AST::CXXParenListInitExpr^ _0);
+
+                ~CXXParenListInitExpr();
+
+                property CppSharp::Parser::SourceLocation InitLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
+
+                property CppSharp::Parser::SourceRange^ SourceRange
+                {
+                    CppSharp::Parser::SourceRange^ get();
+                    void set(CppSharp::Parser::SourceRange^);
+                }
+
+                property CppSharp::Parser::AST::Expr^ ArrayFiller
+                {
+                    CppSharp::Parser::AST::Expr^ get();
+                    void set(CppSharp::Parser::AST::Expr^);
+                }
             };
 
             public ref class CoroutineSuspendExpr : CppSharp::Parser::AST::Expr
@@ -4891,11 +5660,12 @@ namespace CppSharp
 
                 enum class SubExpr
                 {
-                    Common = 0,
-                    Ready = 1,
-                    Suspend = 2,
-                    Resume = 3,
-                    Count = 4
+                    Operand = 0,
+                    Common = 1,
+                    Ready = 2,
+                    Suspend = 3,
+                    Resume = 4,
+                    Count = 5
                 };
 
                 CoroutineSuspendExpr(class ::CppSharp::CppParser::AST::CoroutineSuspendExpr* native);
@@ -4909,12 +5679,6 @@ namespace CppSharp
                 CoroutineSuspendExpr(CppSharp::Parser::AST::CoroutineSuspendExpr^ _0);
 
                 ~CoroutineSuspendExpr();
-
-                property CppSharp::Parser::SourceLocation KeywordLoc
-                {
-                    CppSharp::Parser::SourceLocation get();
-                    void set(CppSharp::Parser::SourceLocation);
-                }
 
                 property CppSharp::Parser::AST::Expr^ CommonExpr
                 {
@@ -4946,6 +5710,18 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::Expr^);
                 }
 
+                property CppSharp::Parser::AST::Expr^ Operand
+                {
+                    CppSharp::Parser::AST::Expr^ get();
+                    void set(CppSharp::Parser::AST::Expr^);
+                }
+
+                property CppSharp::Parser::SourceLocation KeywordLoc
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
+                }
+
                 static operator CppSharp::Parser::AST::CoroutineSuspendExpr^(CppSharp::Parser::AST::StmtClass klass);
             };
 
@@ -4967,12 +5743,6 @@ namespace CppSharp
                 {
                     bool get();
                     void set(bool);
-                }
-
-                property CppSharp::Parser::AST::Expr^ Operand
-                {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
                 }
             };
 
@@ -5022,12 +5792,21 @@ namespace CppSharp
                 CoyieldExpr(CppSharp::Parser::AST::CoyieldExpr^ _0);
 
                 ~CoyieldExpr();
+            };
 
-                property CppSharp::Parser::AST::Expr^ Operand
-                {
-                    CppSharp::Parser::AST::Expr^ get();
-                    void set(CppSharp::Parser::AST::Expr^);
-                }
+            public ref class BuiltinBitCastExpr : CppSharp::Parser::AST::ExplicitCastExpr
+            {
+            public:
+
+                BuiltinBitCastExpr(class ::CppSharp::CppParser::AST::BuiltinBitCastExpr* native);
+                BuiltinBitCastExpr(class ::CppSharp::CppParser::AST::BuiltinBitCastExpr* native, bool ownNativeInstance);
+                static BuiltinBitCastExpr^ __CreateInstance(::System::IntPtr native);
+                static BuiltinBitCastExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
+                BuiltinBitCastExpr();
+
+                BuiltinBitCastExpr(CppSharp::Parser::AST::BuiltinBitCastExpr^ _0);
+
+                ~BuiltinBitCastExpr();
             };
         }
     }

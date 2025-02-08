@@ -226,16 +226,6 @@ void CppSharp::Parser::AST::DeclStmt::IsSingleDecl::set(bool value)
     ((class ::CppSharp::CppParser::AST::DeclStmt*)NativePtr)->isSingleDecl = value;
 }
 
-CppSharp::Parser::AST::Declaration^ CppSharp::Parser::AST::DeclStmt::SingleDecl::get()
-{
-    return (((class ::CppSharp::CppParser::AST::DeclStmt*)NativePtr)->singleDecl == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Declaration((class ::CppSharp::CppParser::AST::Declaration*)((class ::CppSharp::CppParser::AST::DeclStmt*)NativePtr)->singleDecl);
-}
-
-void CppSharp::Parser::AST::DeclStmt::SingleDecl::set(CppSharp::Parser::AST::Declaration^ value)
-{
-    ((class ::CppSharp::CppParser::AST::DeclStmt*)NativePtr)->singleDecl = (class ::CppSharp::CppParser::AST::Declaration*)value->NativePtr;
-}
-
 unsigned int CppSharp::Parser::AST::DeclStmt::GetdeclsCount::get()
 {
     auto ___ret = ((class ::CppSharp::CppParser::AST::DeclStmt*)NativePtr)->getdeclsCount();
@@ -415,24 +405,14 @@ void CppSharp::Parser::AST::CompoundStmt::Size::set(unsigned int value)
     ((class ::CppSharp::CppParser::AST::CompoundStmt*)NativePtr)->size = value;
 }
 
-CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::CompoundStmt::BodyFront::get()
+bool CppSharp::Parser::AST::CompoundStmt::HasStoredFPFeatures::get()
 {
-    return (((class ::CppSharp::CppParser::AST::CompoundStmt*)NativePtr)->body_front == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Stmt((class ::CppSharp::CppParser::AST::Stmt*)((class ::CppSharp::CppParser::AST::CompoundStmt*)NativePtr)->body_front);
+    return ((class ::CppSharp::CppParser::AST::CompoundStmt*)NativePtr)->hasStoredFPFeatures;
 }
 
-void CppSharp::Parser::AST::CompoundStmt::BodyFront::set(CppSharp::Parser::AST::Stmt^ value)
+void CppSharp::Parser::AST::CompoundStmt::HasStoredFPFeatures::set(bool value)
 {
-    ((class ::CppSharp::CppParser::AST::CompoundStmt*)NativePtr)->body_front = (class ::CppSharp::CppParser::AST::Stmt*)value->NativePtr;
-}
-
-CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::CompoundStmt::BodyBack::get()
-{
-    return (((class ::CppSharp::CppParser::AST::CompoundStmt*)NativePtr)->body_back == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Stmt((class ::CppSharp::CppParser::AST::Stmt*)((class ::CppSharp::CppParser::AST::CompoundStmt*)NativePtr)->body_back);
-}
-
-void CppSharp::Parser::AST::CompoundStmt::BodyBack::set(CppSharp::Parser::AST::Stmt^ value)
-{
-    ((class ::CppSharp::CppParser::AST::CompoundStmt*)NativePtr)->body_back = (class ::CppSharp::CppParser::AST::Stmt*)value->NativePtr;
+    ((class ::CppSharp::CppParser::AST::CompoundStmt*)NativePtr)->hasStoredFPFeatures = value;
 }
 
 CppSharp::Parser::SourceLocation CppSharp::Parser::AST::CompoundStmt::LBracLoc::get()
@@ -546,16 +526,6 @@ void CppSharp::Parser::AST::SwitchCase::ColonLoc::set(CppSharp::Parser::SourceLo
     ((class ::CppSharp::CppParser::AST::SwitchCase*)NativePtr)->colonLoc = _marshal0;
 }
 
-CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::SwitchCase::SubStmt::get()
-{
-    return (((class ::CppSharp::CppParser::AST::SwitchCase*)NativePtr)->subStmt == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Stmt((class ::CppSharp::CppParser::AST::Stmt*)((class ::CppSharp::CppParser::AST::SwitchCase*)NativePtr)->subStmt);
-}
-
-void CppSharp::Parser::AST::SwitchCase::SubStmt::set(CppSharp::Parser::AST::Stmt^ value)
-{
-    ((class ::CppSharp::CppParser::AST::SwitchCase*)NativePtr)->subStmt = (class ::CppSharp::CppParser::AST::Stmt*)value->NativePtr;
-}
-
 CppSharp::Parser::AST::CaseStmt::CaseStmt(class ::CppSharp::CppParser::AST::CaseStmt* native)
     : CppSharp::Parser::AST::SwitchCase((::CppSharp::CppParser::AST::SwitchCase*)native)
 {
@@ -595,6 +565,16 @@ CppSharp::Parser::AST::CaseStmt::CaseStmt(CppSharp::Parser::AST::CaseStmt^ _0)
         throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
     auto &__arg0 = *(class ::CppSharp::CppParser::AST::CaseStmt*)_0->NativePtr;
     NativePtr = new class ::CppSharp::CppParser::AST::CaseStmt(__arg0);
+}
+
+bool CppSharp::Parser::AST::CaseStmt::CaseStmtIsGNURange::get()
+{
+    return ((class ::CppSharp::CppParser::AST::CaseStmt*)NativePtr)->caseStmtIsGNURange;
+}
+
+void CppSharp::Parser::AST::CaseStmt::CaseStmtIsGNURange::set(bool value)
+{
+    ((class ::CppSharp::CppParser::AST::CaseStmt*)NativePtr)->caseStmtIsGNURange = value;
 }
 
 CppSharp::Parser::SourceLocation CppSharp::Parser::AST::CaseStmt::CaseLoc::get()
@@ -641,14 +621,14 @@ void CppSharp::Parser::AST::CaseStmt::RHS::set(CppSharp::Parser::AST::Expr^ valu
     ((class ::CppSharp::CppParser::AST::CaseStmt*)NativePtr)->rHS = (class ::CppSharp::CppParser::AST::Expr*)value->NativePtr;
 }
 
-bool CppSharp::Parser::AST::CaseStmt::CaseStmtIsGNURange::get()
+CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::CaseStmt::SubStmt::get()
 {
-    return ((class ::CppSharp::CppParser::AST::CaseStmt*)NativePtr)->caseStmtIsGNURange;
+    return (((class ::CppSharp::CppParser::AST::CaseStmt*)NativePtr)->subStmt == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Stmt((class ::CppSharp::CppParser::AST::Stmt*)((class ::CppSharp::CppParser::AST::CaseStmt*)NativePtr)->subStmt);
 }
 
-void CppSharp::Parser::AST::CaseStmt::CaseStmtIsGNURange::set(bool value)
+void CppSharp::Parser::AST::CaseStmt::SubStmt::set(CppSharp::Parser::AST::Stmt^ value)
 {
-    ((class ::CppSharp::CppParser::AST::CaseStmt*)NativePtr)->caseStmtIsGNURange = value;
+    ((class ::CppSharp::CppParser::AST::CaseStmt*)NativePtr)->subStmt = (class ::CppSharp::CppParser::AST::Stmt*)value->NativePtr;
 }
 
 CppSharp::Parser::AST::DefaultStmt::DefaultStmt(class ::CppSharp::CppParser::AST::DefaultStmt* native)
@@ -692,6 +672,16 @@ CppSharp::Parser::AST::DefaultStmt::DefaultStmt(CppSharp::Parser::AST::DefaultSt
     NativePtr = new class ::CppSharp::CppParser::AST::DefaultStmt(__arg0);
 }
 
+CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::DefaultStmt::SubStmt::get()
+{
+    return (((class ::CppSharp::CppParser::AST::DefaultStmt*)NativePtr)->subStmt == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Stmt((class ::CppSharp::CppParser::AST::Stmt*)((class ::CppSharp::CppParser::AST::DefaultStmt*)NativePtr)->subStmt);
+}
+
+void CppSharp::Parser::AST::DefaultStmt::SubStmt::set(CppSharp::Parser::AST::Stmt^ value)
+{
+    ((class ::CppSharp::CppParser::AST::DefaultStmt*)NativePtr)->subStmt = (class ::CppSharp::CppParser::AST::Stmt*)value->NativePtr;
+}
+
 CppSharp::Parser::SourceLocation CppSharp::Parser::AST::DefaultStmt::DefaultLoc::get()
 {
     return ::CppSharp::Parser::SourceLocation((struct ::CppSharp::CppParser::SourceLocation*)&((class ::CppSharp::CppParser::AST::DefaultStmt*)NativePtr)->defaultLoc);
@@ -704,8 +694,65 @@ void CppSharp::Parser::AST::DefaultStmt::DefaultLoc::set(CppSharp::Parser::Sourc
     ((class ::CppSharp::CppParser::AST::DefaultStmt*)NativePtr)->defaultLoc = _marshal0;
 }
 
-CppSharp::Parser::AST::LabelStmt::LabelStmt(class ::CppSharp::CppParser::AST::LabelStmt* native)
+CppSharp::Parser::AST::ValueStmt::ValueStmt(class ::CppSharp::CppParser::AST::ValueStmt* native)
     : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native)
+{
+}
+
+CppSharp::Parser::AST::ValueStmt^ CppSharp::Parser::AST::ValueStmt::__CreateInstance(::System::IntPtr native)
+{
+    return gcnew ::CppSharp::Parser::AST::ValueStmt((class ::CppSharp::CppParser::AST::ValueStmt*) native.ToPointer());
+}
+
+CppSharp::Parser::AST::ValueStmt::ValueStmt(class ::CppSharp::CppParser::AST::ValueStmt* native, bool ownNativeInstance)
+    : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
+{
+}
+
+CppSharp::Parser::AST::ValueStmt^ CppSharp::Parser::AST::ValueStmt::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    return gcnew ::CppSharp::Parser::AST::ValueStmt((class ::CppSharp::CppParser::AST::ValueStmt*) native.ToPointer(), __ownsNativeInstance);
+}
+
+CppSharp::Parser::AST::ValueStmt::~ValueStmt()
+{
+}
+
+CppSharp::Parser::AST::ValueStmt::ValueStmt()
+    : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)nullptr)
+{
+    __ownsNativeInstance = true;
+    NativePtr = new class ::CppSharp::CppParser::AST::ValueStmt();
+}
+
+CppSharp::Parser::AST::ValueStmt::ValueStmt(CppSharp::Parser::AST::StmtClass klass)
+    : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)nullptr)
+{
+    __ownsNativeInstance = true;
+    auto __arg0 = (enum ::CppSharp::CppParser::AST::StmtClass)klass;
+    NativePtr = new class ::CppSharp::CppParser::AST::ValueStmt(__arg0);
+}
+
+CppSharp::Parser::AST::ValueStmt::ValueStmt(CppSharp::Parser::AST::ValueStmt^ _0)
+    : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)nullptr)
+{
+    __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
+    auto &__arg0 = *(class ::CppSharp::CppParser::AST::ValueStmt*)_0->NativePtr;
+    NativePtr = new class ::CppSharp::CppParser::AST::ValueStmt(__arg0);
+}
+
+CppSharp::Parser::AST::ValueStmt::operator CppSharp::Parser::AST::ValueStmt^(CppSharp::Parser::AST::StmtClass klass)
+{
+    auto __arg0 = (enum ::CppSharp::CppParser::AST::StmtClass)klass;
+    auto ___ret = (::CppSharp::CppParser::AST::ValueStmt) __arg0;
+    auto _____ret = new class ::CppSharp::CppParser::AST::ValueStmt(___ret);
+    return (_____ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::ValueStmt((class ::CppSharp::CppParser::AST::ValueStmt*)_____ret, true);
+}
+
+CppSharp::Parser::AST::LabelStmt::LabelStmt(class ::CppSharp::CppParser::AST::LabelStmt* native)
+    : CppSharp::Parser::AST::ValueStmt((::CppSharp::CppParser::AST::ValueStmt*)native)
 {
 }
 
@@ -715,7 +762,7 @@ CppSharp::Parser::AST::LabelStmt^ CppSharp::Parser::AST::LabelStmt::__CreateInst
 }
 
 CppSharp::Parser::AST::LabelStmt::LabelStmt(class ::CppSharp::CppParser::AST::LabelStmt* native, bool ownNativeInstance)
-    : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
+    : CppSharp::Parser::AST::ValueStmt((::CppSharp::CppParser::AST::ValueStmt*)native, ownNativeInstance)
 {
 }
 
@@ -729,14 +776,14 @@ CppSharp::Parser::AST::LabelStmt::~LabelStmt()
 }
 
 CppSharp::Parser::AST::LabelStmt::LabelStmt()
-    : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)nullptr)
+    : CppSharp::Parser::AST::ValueStmt((::CppSharp::CppParser::AST::ValueStmt*)nullptr)
 {
     __ownsNativeInstance = true;
     NativePtr = new class ::CppSharp::CppParser::AST::LabelStmt();
 }
 
 CppSharp::Parser::AST::LabelStmt::LabelStmt(CppSharp::Parser::AST::LabelStmt^ _0)
-    : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)nullptr)
+    : CppSharp::Parser::AST::ValueStmt((::CppSharp::CppParser::AST::ValueStmt*)nullptr)
 {
     __ownsNativeInstance = true;
     if (ReferenceEquals(_0, nullptr))
@@ -757,16 +804,6 @@ void CppSharp::Parser::AST::LabelStmt::IdentLoc::set(CppSharp::Parser::SourceLoc
     ((class ::CppSharp::CppParser::AST::LabelStmt*)NativePtr)->identLoc = _marshal0;
 }
 
-CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::LabelStmt::SubStmt::get()
-{
-    return (((class ::CppSharp::CppParser::AST::LabelStmt*)NativePtr)->subStmt == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Stmt((class ::CppSharp::CppParser::AST::Stmt*)((class ::CppSharp::CppParser::AST::LabelStmt*)NativePtr)->subStmt);
-}
-
-void CppSharp::Parser::AST::LabelStmt::SubStmt::set(CppSharp::Parser::AST::Stmt^ value)
-{
-    ((class ::CppSharp::CppParser::AST::LabelStmt*)NativePtr)->subStmt = (class ::CppSharp::CppParser::AST::Stmt*)value->NativePtr;
-}
-
 ::System::String^ CppSharp::Parser::AST::LabelStmt::Name::get()
 {
     return (((class ::CppSharp::CppParser::AST::LabelStmt*)NativePtr)->name == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(((class ::CppSharp::CppParser::AST::LabelStmt*)NativePtr)->name));
@@ -778,8 +815,28 @@ void CppSharp::Parser::AST::LabelStmt::Name::set(::System::String^ value)
     ((class ::CppSharp::CppParser::AST::LabelStmt*)NativePtr)->name = _value.c_str();
 }
 
+CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::LabelStmt::SubStmt::get()
+{
+    return (((class ::CppSharp::CppParser::AST::LabelStmt*)NativePtr)->subStmt == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Stmt((class ::CppSharp::CppParser::AST::Stmt*)((class ::CppSharp::CppParser::AST::LabelStmt*)NativePtr)->subStmt);
+}
+
+void CppSharp::Parser::AST::LabelStmt::SubStmt::set(CppSharp::Parser::AST::Stmt^ value)
+{
+    ((class ::CppSharp::CppParser::AST::LabelStmt*)NativePtr)->subStmt = (class ::CppSharp::CppParser::AST::Stmt*)value->NativePtr;
+}
+
+bool CppSharp::Parser::AST::LabelStmt::SideEntry::get()
+{
+    return ((class ::CppSharp::CppParser::AST::LabelStmt*)NativePtr)->sideEntry;
+}
+
+void CppSharp::Parser::AST::LabelStmt::SideEntry::set(bool value)
+{
+    ((class ::CppSharp::CppParser::AST::LabelStmt*)NativePtr)->sideEntry = value;
+}
+
 CppSharp::Parser::AST::AttributedStmt::AttributedStmt(class ::CppSharp::CppParser::AST::AttributedStmt* native)
-    : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native)
+    : CppSharp::Parser::AST::ValueStmt((::CppSharp::CppParser::AST::ValueStmt*)native)
 {
 }
 
@@ -789,7 +846,7 @@ CppSharp::Parser::AST::AttributedStmt^ CppSharp::Parser::AST::AttributedStmt::__
 }
 
 CppSharp::Parser::AST::AttributedStmt::AttributedStmt(class ::CppSharp::CppParser::AST::AttributedStmt* native, bool ownNativeInstance)
-    : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)native, ownNativeInstance)
+    : CppSharp::Parser::AST::ValueStmt((::CppSharp::CppParser::AST::ValueStmt*)native, ownNativeInstance)
 {
 }
 
@@ -803,14 +860,14 @@ CppSharp::Parser::AST::AttributedStmt::~AttributedStmt()
 }
 
 CppSharp::Parser::AST::AttributedStmt::AttributedStmt()
-    : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)nullptr)
+    : CppSharp::Parser::AST::ValueStmt((::CppSharp::CppParser::AST::ValueStmt*)nullptr)
 {
     __ownsNativeInstance = true;
     NativePtr = new class ::CppSharp::CppParser::AST::AttributedStmt();
 }
 
 CppSharp::Parser::AST::AttributedStmt::AttributedStmt(CppSharp::Parser::AST::AttributedStmt^ _0)
-    : CppSharp::Parser::AST::Stmt((::CppSharp::CppParser::AST::Stmt*)nullptr)
+    : CppSharp::Parser::AST::ValueStmt((::CppSharp::CppParser::AST::ValueStmt*)nullptr)
 {
     __ownsNativeInstance = true;
     if (ReferenceEquals(_0, nullptr))
@@ -829,16 +886,6 @@ void CppSharp::Parser::AST::AttributedStmt::AttrLoc::set(CppSharp::Parser::Sourc
     auto _marshal0 = ::CppSharp::CppParser::SourceLocation();
     _marshal0.ID = value.ID;
     ((class ::CppSharp::CppParser::AST::AttributedStmt*)NativePtr)->attrLoc = _marshal0;
-}
-
-CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::AttributedStmt::SubStmt::get()
-{
-    return (((class ::CppSharp::CppParser::AST::AttributedStmt*)NativePtr)->subStmt == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Stmt((class ::CppSharp::CppParser::AST::Stmt*)((class ::CppSharp::CppParser::AST::AttributedStmt*)NativePtr)->subStmt);
-}
-
-void CppSharp::Parser::AST::AttributedStmt::SubStmt::set(CppSharp::Parser::AST::Stmt^ value)
-{
-    ((class ::CppSharp::CppParser::AST::AttributedStmt*)NativePtr)->subStmt = (class ::CppSharp::CppParser::AST::Stmt*)value->NativePtr;
 }
 
 CppSharp::Parser::AST::IfStmt::IfStmt(class ::CppSharp::CppParser::AST::IfStmt* native)
@@ -882,6 +929,36 @@ CppSharp::Parser::AST::IfStmt::IfStmt(CppSharp::Parser::AST::IfStmt^ _0)
     NativePtr = new class ::CppSharp::CppParser::AST::IfStmt(__arg0);
 }
 
+bool CppSharp::Parser::AST::IfStmt::HasInitStorage::get()
+{
+    return ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->hasInitStorage;
+}
+
+void CppSharp::Parser::AST::IfStmt::HasInitStorage::set(bool value)
+{
+    ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->hasInitStorage = value;
+}
+
+bool CppSharp::Parser::AST::IfStmt::HasVarStorage::get()
+{
+    return ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->hasVarStorage;
+}
+
+void CppSharp::Parser::AST::IfStmt::HasVarStorage::set(bool value)
+{
+    ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->hasVarStorage = value;
+}
+
+bool CppSharp::Parser::AST::IfStmt::HasElseStorage::get()
+{
+    return ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->hasElseStorage;
+}
+
+void CppSharp::Parser::AST::IfStmt::HasElseStorage::set(bool value)
+{
+    ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->hasElseStorage = value;
+}
+
 CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::IfStmt::Cond::get()
 {
     return (((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->cond == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->cond);
@@ -910,6 +987,16 @@ CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::IfStmt::Else::get()
 void CppSharp::Parser::AST::IfStmt::Else::set(CppSharp::Parser::AST::Stmt^ value)
 {
     ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->_else = (class ::CppSharp::CppParser::AST::Stmt*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::DeclStmt^ CppSharp::Parser::AST::IfStmt::ConditionVariableDeclStmt::get()
+{
+    return (((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->conditionVariableDeclStmt == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::DeclStmt((class ::CppSharp::CppParser::AST::DeclStmt*)((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->conditionVariableDeclStmt);
+}
+
+void CppSharp::Parser::AST::IfStmt::ConditionVariableDeclStmt::set(CppSharp::Parser::AST::DeclStmt^ value)
+{
+    ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->conditionVariableDeclStmt = (class ::CppSharp::CppParser::AST::DeclStmt*)value->NativePtr;
 }
 
 CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::IfStmt::Init::get()
@@ -946,54 +1033,54 @@ void CppSharp::Parser::AST::IfStmt::ElseLoc::set(CppSharp::Parser::SourceLocatio
     ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->elseLoc = _marshal0;
 }
 
-bool CppSharp::Parser::AST::IfStmt::Constexpr::get()
+bool CppSharp::Parser::AST::IfStmt::IsConsteval::get()
 {
-    return ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->_constexpr;
+    return ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->isConsteval;
 }
 
-void CppSharp::Parser::AST::IfStmt::Constexpr::set(bool value)
+void CppSharp::Parser::AST::IfStmt::IsConsteval::set(bool value)
 {
-    ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->_constexpr = value;
+    ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->isConsteval = value;
 }
 
-bool CppSharp::Parser::AST::IfStmt::HasInitStorage::get()
+bool CppSharp::Parser::AST::IfStmt::IsNonNegatedConsteval::get()
 {
-    return ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->hasInitStorage;
+    return ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->isNonNegatedConsteval;
 }
 
-void CppSharp::Parser::AST::IfStmt::HasInitStorage::set(bool value)
+void CppSharp::Parser::AST::IfStmt::IsNonNegatedConsteval::set(bool value)
 {
-    ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->hasInitStorage = value;
+    ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->isNonNegatedConsteval = value;
 }
 
-bool CppSharp::Parser::AST::IfStmt::HasVarStorage::get()
+bool CppSharp::Parser::AST::IfStmt::IsNegatedConsteval::get()
 {
-    return ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->hasVarStorage;
+    return ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->isNegatedConsteval;
 }
 
-void CppSharp::Parser::AST::IfStmt::HasVarStorage::set(bool value)
+void CppSharp::Parser::AST::IfStmt::IsNegatedConsteval::set(bool value)
 {
-    ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->hasVarStorage = value;
+    ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->isNegatedConsteval = value;
 }
 
-bool CppSharp::Parser::AST::IfStmt::HasElseStorage::get()
+bool CppSharp::Parser::AST::IfStmt::IsConstexpr::get()
 {
-    return ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->hasElseStorage;
+    return ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->isConstexpr;
 }
 
-void CppSharp::Parser::AST::IfStmt::HasElseStorage::set(bool value)
+void CppSharp::Parser::AST::IfStmt::IsConstexpr::set(bool value)
 {
-    ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->hasElseStorage = value;
+    ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->isConstexpr = value;
 }
 
-CppSharp::Parser::AST::DeclStmt^ CppSharp::Parser::AST::IfStmt::ConditionVariableDeclStmt::get()
+CppSharp::Parser::AST::IfStatementKind CppSharp::Parser::AST::IfStmt::StatementKind::get()
 {
-    return (((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->conditionVariableDeclStmt == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::DeclStmt((class ::CppSharp::CppParser::AST::DeclStmt*)((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->conditionVariableDeclStmt);
+    return (CppSharp::Parser::AST::IfStatementKind)((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->statementKind;
 }
 
-void CppSharp::Parser::AST::IfStmt::ConditionVariableDeclStmt::set(CppSharp::Parser::AST::DeclStmt^ value)
+void CppSharp::Parser::AST::IfStmt::StatementKind::set(CppSharp::Parser::AST::IfStatementKind value)
 {
-    ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->conditionVariableDeclStmt = (class ::CppSharp::CppParser::AST::DeclStmt*)value->NativePtr;
+    ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->statementKind = (enum ::CppSharp::CppParser::AST::IfStatementKind)value;
 }
 
 bool CppSharp::Parser::AST::IfStmt::IsObjCAvailabilityCheck::get()
@@ -1004,6 +1091,30 @@ bool CppSharp::Parser::AST::IfStmt::IsObjCAvailabilityCheck::get()
 void CppSharp::Parser::AST::IfStmt::IsObjCAvailabilityCheck::set(bool value)
 {
     ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->isObjCAvailabilityCheck = value;
+}
+
+CppSharp::Parser::SourceLocation CppSharp::Parser::AST::IfStmt::LParenLoc::get()
+{
+    return ::CppSharp::Parser::SourceLocation((struct ::CppSharp::CppParser::SourceLocation*)&((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->lParenLoc);
+}
+
+void CppSharp::Parser::AST::IfStmt::LParenLoc::set(CppSharp::Parser::SourceLocation value)
+{
+    auto _marshal0 = ::CppSharp::CppParser::SourceLocation();
+    _marshal0.ID = value.ID;
+    ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->lParenLoc = _marshal0;
+}
+
+CppSharp::Parser::SourceLocation CppSharp::Parser::AST::IfStmt::RParenLoc::get()
+{
+    return ::CppSharp::Parser::SourceLocation((struct ::CppSharp::CppParser::SourceLocation*)&((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->rParenLoc);
+}
+
+void CppSharp::Parser::AST::IfStmt::RParenLoc::set(CppSharp::Parser::SourceLocation value)
+{
+    auto _marshal0 = ::CppSharp::CppParser::SourceLocation();
+    _marshal0.ID = value.ID;
+    ((class ::CppSharp::CppParser::AST::IfStmt*)NativePtr)->rParenLoc = _marshal0;
 }
 
 CppSharp::Parser::AST::SwitchStmt::SwitchStmt(class ::CppSharp::CppParser::AST::SwitchStmt* native)
@@ -1047,6 +1158,26 @@ CppSharp::Parser::AST::SwitchStmt::SwitchStmt(CppSharp::Parser::AST::SwitchStmt^
     NativePtr = new class ::CppSharp::CppParser::AST::SwitchStmt(__arg0);
 }
 
+bool CppSharp::Parser::AST::SwitchStmt::HasInitStorage::get()
+{
+    return ((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->hasInitStorage;
+}
+
+void CppSharp::Parser::AST::SwitchStmt::HasInitStorage::set(bool value)
+{
+    ((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->hasInitStorage = value;
+}
+
+bool CppSharp::Parser::AST::SwitchStmt::HasVarStorage::get()
+{
+    return ((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->hasVarStorage;
+}
+
+void CppSharp::Parser::AST::SwitchStmt::HasVarStorage::set(bool value)
+{
+    ((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->hasVarStorage = value;
+}
+
 CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::SwitchStmt::Cond::get()
 {
     return (((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->cond == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->cond);
@@ -1077,6 +1208,16 @@ void CppSharp::Parser::AST::SwitchStmt::Init::set(CppSharp::Parser::AST::Stmt^ v
     ((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->init = (class ::CppSharp::CppParser::AST::Stmt*)value->NativePtr;
 }
 
+CppSharp::Parser::AST::DeclStmt^ CppSharp::Parser::AST::SwitchStmt::ConditionVariableDeclStmt::get()
+{
+    return (((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->conditionVariableDeclStmt == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::DeclStmt((class ::CppSharp::CppParser::AST::DeclStmt*)((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->conditionVariableDeclStmt);
+}
+
+void CppSharp::Parser::AST::SwitchStmt::ConditionVariableDeclStmt::set(CppSharp::Parser::AST::DeclStmt^ value)
+{
+    ((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->conditionVariableDeclStmt = (class ::CppSharp::CppParser::AST::DeclStmt*)value->NativePtr;
+}
+
 CppSharp::Parser::SourceLocation CppSharp::Parser::AST::SwitchStmt::SwitchLoc::get()
 {
     return ::CppSharp::Parser::SourceLocation((struct ::CppSharp::CppParser::SourceLocation*)&((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->switchLoc);
@@ -1089,34 +1230,28 @@ void CppSharp::Parser::AST::SwitchStmt::SwitchLoc::set(CppSharp::Parser::SourceL
     ((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->switchLoc = _marshal0;
 }
 
-bool CppSharp::Parser::AST::SwitchStmt::HasInitStorage::get()
+CppSharp::Parser::SourceLocation CppSharp::Parser::AST::SwitchStmt::LParenLoc::get()
 {
-    return ((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->hasInitStorage;
+    return ::CppSharp::Parser::SourceLocation((struct ::CppSharp::CppParser::SourceLocation*)&((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->lParenLoc);
 }
 
-void CppSharp::Parser::AST::SwitchStmt::HasInitStorage::set(bool value)
+void CppSharp::Parser::AST::SwitchStmt::LParenLoc::set(CppSharp::Parser::SourceLocation value)
 {
-    ((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->hasInitStorage = value;
+    auto _marshal0 = ::CppSharp::CppParser::SourceLocation();
+    _marshal0.ID = value.ID;
+    ((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->lParenLoc = _marshal0;
 }
 
-bool CppSharp::Parser::AST::SwitchStmt::HasVarStorage::get()
+CppSharp::Parser::SourceLocation CppSharp::Parser::AST::SwitchStmt::RParenLoc::get()
 {
-    return ((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->hasVarStorage;
+    return ::CppSharp::Parser::SourceLocation((struct ::CppSharp::CppParser::SourceLocation*)&((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->rParenLoc);
 }
 
-void CppSharp::Parser::AST::SwitchStmt::HasVarStorage::set(bool value)
+void CppSharp::Parser::AST::SwitchStmt::RParenLoc::set(CppSharp::Parser::SourceLocation value)
 {
-    ((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->hasVarStorage = value;
-}
-
-CppSharp::Parser::AST::DeclStmt^ CppSharp::Parser::AST::SwitchStmt::ConditionVariableDeclStmt::get()
-{
-    return (((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->conditionVariableDeclStmt == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::DeclStmt((class ::CppSharp::CppParser::AST::DeclStmt*)((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->conditionVariableDeclStmt);
-}
-
-void CppSharp::Parser::AST::SwitchStmt::ConditionVariableDeclStmt::set(CppSharp::Parser::AST::DeclStmt^ value)
-{
-    ((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->conditionVariableDeclStmt = (class ::CppSharp::CppParser::AST::DeclStmt*)value->NativePtr;
+    auto _marshal0 = ::CppSharp::CppParser::SourceLocation();
+    _marshal0.ID = value.ID;
+    ((class ::CppSharp::CppParser::AST::SwitchStmt*)NativePtr)->rParenLoc = _marshal0;
 }
 
 bool CppSharp::Parser::AST::SwitchStmt::IsAllEnumCasesCovered::get()
@@ -1170,6 +1305,16 @@ CppSharp::Parser::AST::WhileStmt::WhileStmt(CppSharp::Parser::AST::WhileStmt^ _0
     NativePtr = new class ::CppSharp::CppParser::AST::WhileStmt(__arg0);
 }
 
+bool CppSharp::Parser::AST::WhileStmt::HasVarStorage::get()
+{
+    return ((class ::CppSharp::CppParser::AST::WhileStmt*)NativePtr)->hasVarStorage;
+}
+
+void CppSharp::Parser::AST::WhileStmt::HasVarStorage::set(bool value)
+{
+    ((class ::CppSharp::CppParser::AST::WhileStmt*)NativePtr)->hasVarStorage = value;
+}
+
 CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::WhileStmt::Cond::get()
 {
     return (((class ::CppSharp::CppParser::AST::WhileStmt*)NativePtr)->cond == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)((class ::CppSharp::CppParser::AST::WhileStmt*)NativePtr)->cond);
@@ -1190,6 +1335,16 @@ void CppSharp::Parser::AST::WhileStmt::Body::set(CppSharp::Parser::AST::Stmt^ va
     ((class ::CppSharp::CppParser::AST::WhileStmt*)NativePtr)->body = (class ::CppSharp::CppParser::AST::Stmt*)value->NativePtr;
 }
 
+CppSharp::Parser::AST::DeclStmt^ CppSharp::Parser::AST::WhileStmt::ConditionVariableDeclStmt::get()
+{
+    return (((class ::CppSharp::CppParser::AST::WhileStmt*)NativePtr)->conditionVariableDeclStmt == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::DeclStmt((class ::CppSharp::CppParser::AST::DeclStmt*)((class ::CppSharp::CppParser::AST::WhileStmt*)NativePtr)->conditionVariableDeclStmt);
+}
+
+void CppSharp::Parser::AST::WhileStmt::ConditionVariableDeclStmt::set(CppSharp::Parser::AST::DeclStmt^ value)
+{
+    ((class ::CppSharp::CppParser::AST::WhileStmt*)NativePtr)->conditionVariableDeclStmt = (class ::CppSharp::CppParser::AST::DeclStmt*)value->NativePtr;
+}
+
 CppSharp::Parser::SourceLocation CppSharp::Parser::AST::WhileStmt::WhileLoc::get()
 {
     return ::CppSharp::Parser::SourceLocation((struct ::CppSharp::CppParser::SourceLocation*)&((class ::CppSharp::CppParser::AST::WhileStmt*)NativePtr)->whileLoc);
@@ -1202,24 +1357,28 @@ void CppSharp::Parser::AST::WhileStmt::WhileLoc::set(CppSharp::Parser::SourceLoc
     ((class ::CppSharp::CppParser::AST::WhileStmt*)NativePtr)->whileLoc = _marshal0;
 }
 
-bool CppSharp::Parser::AST::WhileStmt::HasVarStorage::get()
+CppSharp::Parser::SourceLocation CppSharp::Parser::AST::WhileStmt::LParenLoc::get()
 {
-    return ((class ::CppSharp::CppParser::AST::WhileStmt*)NativePtr)->hasVarStorage;
+    return ::CppSharp::Parser::SourceLocation((struct ::CppSharp::CppParser::SourceLocation*)&((class ::CppSharp::CppParser::AST::WhileStmt*)NativePtr)->lParenLoc);
 }
 
-void CppSharp::Parser::AST::WhileStmt::HasVarStorage::set(bool value)
+void CppSharp::Parser::AST::WhileStmt::LParenLoc::set(CppSharp::Parser::SourceLocation value)
 {
-    ((class ::CppSharp::CppParser::AST::WhileStmt*)NativePtr)->hasVarStorage = value;
+    auto _marshal0 = ::CppSharp::CppParser::SourceLocation();
+    _marshal0.ID = value.ID;
+    ((class ::CppSharp::CppParser::AST::WhileStmt*)NativePtr)->lParenLoc = _marshal0;
 }
 
-CppSharp::Parser::AST::DeclStmt^ CppSharp::Parser::AST::WhileStmt::ConditionVariableDeclStmt::get()
+CppSharp::Parser::SourceLocation CppSharp::Parser::AST::WhileStmt::RParenLoc::get()
 {
-    return (((class ::CppSharp::CppParser::AST::WhileStmt*)NativePtr)->conditionVariableDeclStmt == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::DeclStmt((class ::CppSharp::CppParser::AST::DeclStmt*)((class ::CppSharp::CppParser::AST::WhileStmt*)NativePtr)->conditionVariableDeclStmt);
+    return ::CppSharp::Parser::SourceLocation((struct ::CppSharp::CppParser::SourceLocation*)&((class ::CppSharp::CppParser::AST::WhileStmt*)NativePtr)->rParenLoc);
 }
 
-void CppSharp::Parser::AST::WhileStmt::ConditionVariableDeclStmt::set(CppSharp::Parser::AST::DeclStmt^ value)
+void CppSharp::Parser::AST::WhileStmt::RParenLoc::set(CppSharp::Parser::SourceLocation value)
 {
-    ((class ::CppSharp::CppParser::AST::WhileStmt*)NativePtr)->conditionVariableDeclStmt = (class ::CppSharp::CppParser::AST::DeclStmt*)value->NativePtr;
+    auto _marshal0 = ::CppSharp::CppParser::SourceLocation();
+    _marshal0.ID = value.ID;
+    ((class ::CppSharp::CppParser::AST::WhileStmt*)NativePtr)->rParenLoc = _marshal0;
 }
 
 CppSharp::Parser::AST::DoStmt::DoStmt(class ::CppSharp::CppParser::AST::DoStmt* native)
@@ -1370,6 +1529,16 @@ void CppSharp::Parser::AST::ForStmt::Init::set(CppSharp::Parser::AST::Stmt^ valu
     ((class ::CppSharp::CppParser::AST::ForStmt*)NativePtr)->init = (class ::CppSharp::CppParser::AST::Stmt*)value->NativePtr;
 }
 
+CppSharp::Parser::AST::DeclStmt^ CppSharp::Parser::AST::ForStmt::ConditionVariableDeclStmt::get()
+{
+    return (((class ::CppSharp::CppParser::AST::ForStmt*)NativePtr)->conditionVariableDeclStmt == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::DeclStmt((class ::CppSharp::CppParser::AST::DeclStmt*)((class ::CppSharp::CppParser::AST::ForStmt*)NativePtr)->conditionVariableDeclStmt);
+}
+
+void CppSharp::Parser::AST::ForStmt::ConditionVariableDeclStmt::set(CppSharp::Parser::AST::DeclStmt^ value)
+{
+    ((class ::CppSharp::CppParser::AST::ForStmt*)NativePtr)->conditionVariableDeclStmt = (class ::CppSharp::CppParser::AST::DeclStmt*)value->NativePtr;
+}
+
 CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::ForStmt::Cond::get()
 {
     return (((class ::CppSharp::CppParser::AST::ForStmt*)NativePtr)->cond == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)((class ::CppSharp::CppParser::AST::ForStmt*)NativePtr)->cond);
@@ -1434,16 +1603,6 @@ void CppSharp::Parser::AST::ForStmt::RParenLoc::set(CppSharp::Parser::SourceLoca
     auto _marshal0 = ::CppSharp::CppParser::SourceLocation();
     _marshal0.ID = value.ID;
     ((class ::CppSharp::CppParser::AST::ForStmt*)NativePtr)->rParenLoc = _marshal0;
-}
-
-CppSharp::Parser::AST::DeclStmt^ CppSharp::Parser::AST::ForStmt::ConditionVariableDeclStmt::get()
-{
-    return (((class ::CppSharp::CppParser::AST::ForStmt*)NativePtr)->conditionVariableDeclStmt == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::DeclStmt((class ::CppSharp::CppParser::AST::DeclStmt*)((class ::CppSharp::CppParser::AST::ForStmt*)NativePtr)->conditionVariableDeclStmt);
-}
-
-void CppSharp::Parser::AST::ForStmt::ConditionVariableDeclStmt::set(CppSharp::Parser::AST::DeclStmt^ value)
-{
-    ((class ::CppSharp::CppParser::AST::ForStmt*)NativePtr)->conditionVariableDeclStmt = (class ::CppSharp::CppParser::AST::DeclStmt*)value->NativePtr;
 }
 
 CppSharp::Parser::AST::GotoStmt::GotoStmt(class ::CppSharp::CppParser::AST::GotoStmt* native)
@@ -2127,6 +2286,26 @@ CppSharp::Parser::AST::GCCAsmStmt::GCCAsmStmt()
     NativePtr = new class ::CppSharp::CppParser::AST::GCCAsmStmt();
 }
 
+CppSharp::Parser::AST::AddrLabelExpr^ CppSharp::Parser::AST::GCCAsmStmt::Getlabels(unsigned int i)
+{
+    auto ___ret = ((class ::CppSharp::CppParser::AST::GCCAsmStmt*)NativePtr)->getlabels(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::AddrLabelExpr((class ::CppSharp::CppParser::AST::AddrLabelExpr*)___ret);
+}
+
+void CppSharp::Parser::AST::GCCAsmStmt::Addlabels(CppSharp::Parser::AST::AddrLabelExpr^ s)
+{
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
+    auto __arg0 = (class ::CppSharp::CppParser::AST::AddrLabelExpr*)s->NativePtr;
+    ((class ::CppSharp::CppParser::AST::GCCAsmStmt*)NativePtr)->addlabels(__arg0);
+}
+
+void CppSharp::Parser::AST::GCCAsmStmt::Clearlabels()
+{
+    ((class ::CppSharp::CppParser::AST::GCCAsmStmt*)NativePtr)->clearlabels();
+}
+
 CppSharp::Parser::AST::GCCAsmStmt::GCCAsmStmt(CppSharp::Parser::AST::GCCAsmStmt^ _0)
     : CppSharp::Parser::AST::AsmStmt((::CppSharp::CppParser::AST::AsmStmt*)nullptr)
 {
@@ -2135,6 +2314,29 @@ CppSharp::Parser::AST::GCCAsmStmt::GCCAsmStmt(CppSharp::Parser::AST::GCCAsmStmt^
         throw gcnew ::System::ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
     auto &__arg0 = *(class ::CppSharp::CppParser::AST::GCCAsmStmt*)_0->NativePtr;
     NativePtr = new class ::CppSharp::CppParser::AST::GCCAsmStmt(__arg0);
+}
+
+::System::Collections::Generic::List<CppSharp::Parser::AST::AddrLabelExpr^>^ CppSharp::Parser::AST::GCCAsmStmt::Labels::get()
+{
+    auto _tmp__labels = gcnew ::System::Collections::Generic::List<CppSharp::Parser::AST::AddrLabelExpr^>();
+    auto __list0 = ((class ::CppSharp::CppParser::AST::GCCAsmStmt*)NativePtr)->labels;
+    for(auto _element : __list0)
+    {
+        auto _marshalElement = (_element == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::AddrLabelExpr((class ::CppSharp::CppParser::AST::AddrLabelExpr*)_element);
+        _tmp__labels->Add(_marshalElement);
+    }
+    return _tmp__labels;
+}
+
+void CppSharp::Parser::AST::GCCAsmStmt::Labels::set(::System::Collections::Generic::List<CppSharp::Parser::AST::AddrLabelExpr^>^ value)
+{
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::AddrLabelExpr*>();
+    for each(CppSharp::Parser::AST::AddrLabelExpr^ _element in value)
+    {
+        auto _marshalElement = (class ::CppSharp::CppParser::AST::AddrLabelExpr*)_element->NativePtr;
+        _tmpvalue.push_back(_marshalElement);
+    }
+    ((class ::CppSharp::CppParser::AST::GCCAsmStmt*)NativePtr)->labels = _tmpvalue;
 }
 
 CppSharp::Parser::SourceLocation CppSharp::Parser::AST::GCCAsmStmt::RParenLoc::get()
@@ -2147,6 +2349,32 @@ void CppSharp::Parser::AST::GCCAsmStmt::RParenLoc::set(CppSharp::Parser::SourceL
     auto _marshal0 = ::CppSharp::CppParser::SourceLocation();
     _marshal0.ID = value.ID;
     ((class ::CppSharp::CppParser::AST::GCCAsmStmt*)NativePtr)->rParenLoc = _marshal0;
+}
+
+bool CppSharp::Parser::AST::GCCAsmStmt::IsAsmGoto::get()
+{
+    return ((class ::CppSharp::CppParser::AST::GCCAsmStmt*)NativePtr)->isAsmGoto;
+}
+
+void CppSharp::Parser::AST::GCCAsmStmt::IsAsmGoto::set(bool value)
+{
+    ((class ::CppSharp::CppParser::AST::GCCAsmStmt*)NativePtr)->isAsmGoto = value;
+}
+
+unsigned int CppSharp::Parser::AST::GCCAsmStmt::NumLabels::get()
+{
+    return ((class ::CppSharp::CppParser::AST::GCCAsmStmt*)NativePtr)->numLabels;
+}
+
+void CppSharp::Parser::AST::GCCAsmStmt::NumLabels::set(unsigned int value)
+{
+    ((class ::CppSharp::CppParser::AST::GCCAsmStmt*)NativePtr)->numLabels = value;
+}
+
+unsigned int CppSharp::Parser::AST::GCCAsmStmt::GetlabelsCount::get()
+{
+    auto ___ret = ((class ::CppSharp::CppParser::AST::GCCAsmStmt*)NativePtr)->getlabelsCount();
+    return ___ret;
 }
 
 CppSharp::Parser::AST::MSAsmStmt::MSAsmStmt(class ::CppSharp::CppParser::AST::MSAsmStmt* native)
@@ -2734,16 +2962,6 @@ void CppSharp::Parser::AST::CapturedStmt::CaptureInits::set(::System::Collection
     ((class ::CppSharp::CppParser::AST::CapturedStmt*)NativePtr)->capture_inits = _tmpvalue;
 }
 
-CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::CapturedStmt::capturedStmt::get()
-{
-    return (((class ::CppSharp::CppParser::AST::CapturedStmt*)NativePtr)->capturedStmt == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Stmt((class ::CppSharp::CppParser::AST::Stmt*)((class ::CppSharp::CppParser::AST::CapturedStmt*)NativePtr)->capturedStmt);
-}
-
-void CppSharp::Parser::AST::CapturedStmt::capturedStmt::set(CppSharp::Parser::AST::Stmt^ value)
-{
-    ((class ::CppSharp::CppParser::AST::CapturedStmt*)NativePtr)->capturedStmt = (class ::CppSharp::CppParser::AST::Stmt*)value->NativePtr;
-}
-
 unsigned int CppSharp::Parser::AST::CapturedStmt::CaptureSize::get()
 {
     return ((class ::CppSharp::CppParser::AST::CapturedStmt*)NativePtr)->capture_size;
@@ -2752,6 +2970,18 @@ unsigned int CppSharp::Parser::AST::CapturedStmt::CaptureSize::get()
 void CppSharp::Parser::AST::CapturedStmt::CaptureSize::set(unsigned int value)
 {
     ((class ::CppSharp::CppParser::AST::CapturedStmt*)NativePtr)->capture_size = value;
+}
+
+CppSharp::Parser::SourceRange^ CppSharp::Parser::AST::CapturedStmt::SourceRange::get()
+{
+    return (&((class ::CppSharp::CppParser::AST::CapturedStmt*)NativePtr)->sourceRange == nullptr) ? nullptr : gcnew ::CppSharp::Parser::SourceRange((struct ::CppSharp::CppParser::SourceRange*)&((class ::CppSharp::CppParser::AST::CapturedStmt*)NativePtr)->sourceRange);
+}
+
+void CppSharp::Parser::AST::CapturedStmt::SourceRange::set(CppSharp::Parser::SourceRange^ value)
+{
+    if (ReferenceEquals(value, nullptr))
+        throw gcnew ::System::ArgumentNullException("value", "Cannot be null because it is passed by value.");
+    ((class ::CppSharp::CppParser::AST::CapturedStmt*)NativePtr)->sourceRange = *(struct ::CppSharp::CppParser::SourceRange*)value->NativePtr;
 }
 
 unsigned int CppSharp::Parser::AST::CapturedStmt::GetcaptureInitsCount::get()
@@ -2888,16 +3118,6 @@ void CppSharp::Parser::AST::CXXTryStmt::TryLoc::set(CppSharp::Parser::SourceLoca
     ((class ::CppSharp::CppParser::AST::CXXTryStmt*)NativePtr)->tryLoc = _marshal0;
 }
 
-CppSharp::Parser::AST::CompoundStmt^ CppSharp::Parser::AST::CXXTryStmt::TryBlock::get()
-{
-    return (((class ::CppSharp::CppParser::AST::CXXTryStmt*)NativePtr)->tryBlock == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::CompoundStmt((class ::CppSharp::CppParser::AST::CompoundStmt*)((class ::CppSharp::CppParser::AST::CXXTryStmt*)NativePtr)->tryBlock);
-}
-
-void CppSharp::Parser::AST::CXXTryStmt::TryBlock::set(CppSharp::Parser::AST::CompoundStmt^ value)
-{
-    ((class ::CppSharp::CppParser::AST::CXXTryStmt*)NativePtr)->tryBlock = (class ::CppSharp::CppParser::AST::CompoundStmt*)value->NativePtr;
-}
-
 unsigned int CppSharp::Parser::AST::CXXTryStmt::NumHandlers::get()
 {
     return ((class ::CppSharp::CppParser::AST::CXXTryStmt*)NativePtr)->numHandlers;
@@ -2997,46 +3217,6 @@ CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::CXXForRangeStmt::Body::get()
 void CppSharp::Parser::AST::CXXForRangeStmt::Body::set(CppSharp::Parser::AST::Stmt^ value)
 {
     ((class ::CppSharp::CppParser::AST::CXXForRangeStmt*)NativePtr)->body = (class ::CppSharp::CppParser::AST::Stmt*)value->NativePtr;
-}
-
-CppSharp::Parser::AST::DeclStmt^ CppSharp::Parser::AST::CXXForRangeStmt::RangeStmt::get()
-{
-    return (((class ::CppSharp::CppParser::AST::CXXForRangeStmt*)NativePtr)->rangeStmt == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::DeclStmt((class ::CppSharp::CppParser::AST::DeclStmt*)((class ::CppSharp::CppParser::AST::CXXForRangeStmt*)NativePtr)->rangeStmt);
-}
-
-void CppSharp::Parser::AST::CXXForRangeStmt::RangeStmt::set(CppSharp::Parser::AST::DeclStmt^ value)
-{
-    ((class ::CppSharp::CppParser::AST::CXXForRangeStmt*)NativePtr)->rangeStmt = (class ::CppSharp::CppParser::AST::DeclStmt*)value->NativePtr;
-}
-
-CppSharp::Parser::AST::DeclStmt^ CppSharp::Parser::AST::CXXForRangeStmt::BeginStmt::get()
-{
-    return (((class ::CppSharp::CppParser::AST::CXXForRangeStmt*)NativePtr)->beginStmt == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::DeclStmt((class ::CppSharp::CppParser::AST::DeclStmt*)((class ::CppSharp::CppParser::AST::CXXForRangeStmt*)NativePtr)->beginStmt);
-}
-
-void CppSharp::Parser::AST::CXXForRangeStmt::BeginStmt::set(CppSharp::Parser::AST::DeclStmt^ value)
-{
-    ((class ::CppSharp::CppParser::AST::CXXForRangeStmt*)NativePtr)->beginStmt = (class ::CppSharp::CppParser::AST::DeclStmt*)value->NativePtr;
-}
-
-CppSharp::Parser::AST::DeclStmt^ CppSharp::Parser::AST::CXXForRangeStmt::EndStmt::get()
-{
-    return (((class ::CppSharp::CppParser::AST::CXXForRangeStmt*)NativePtr)->endStmt == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::DeclStmt((class ::CppSharp::CppParser::AST::DeclStmt*)((class ::CppSharp::CppParser::AST::CXXForRangeStmt*)NativePtr)->endStmt);
-}
-
-void CppSharp::Parser::AST::CXXForRangeStmt::EndStmt::set(CppSharp::Parser::AST::DeclStmt^ value)
-{
-    ((class ::CppSharp::CppParser::AST::CXXForRangeStmt*)NativePtr)->endStmt = (class ::CppSharp::CppParser::AST::DeclStmt*)value->NativePtr;
-}
-
-CppSharp::Parser::AST::DeclStmt^ CppSharp::Parser::AST::CXXForRangeStmt::LoopVarStmt::get()
-{
-    return (((class ::CppSharp::CppParser::AST::CXXForRangeStmt*)NativePtr)->loopVarStmt == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::DeclStmt((class ::CppSharp::CppParser::AST::DeclStmt*)((class ::CppSharp::CppParser::AST::CXXForRangeStmt*)NativePtr)->loopVarStmt);
-}
-
-void CppSharp::Parser::AST::CXXForRangeStmt::LoopVarStmt::set(CppSharp::Parser::AST::DeclStmt^ value)
-{
-    ((class ::CppSharp::CppParser::AST::CXXForRangeStmt*)NativePtr)->loopVarStmt = (class ::CppSharp::CppParser::AST::DeclStmt*)value->NativePtr;
 }
 
 CppSharp::Parser::SourceLocation CppSharp::Parser::AST::CXXForRangeStmt::ForLoc::get()
@@ -3243,6 +3423,12 @@ CppSharp::Parser::AST::CoroutineBodyStmt^ CppSharp::Parser::AST::CoroutineBodySt
 
 CppSharp::Parser::AST::CoroutineBodyStmt::~CoroutineBodyStmt()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (class ::CppSharp::CppParser::AST::CoroutineBodyStmt*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::CoroutineBodyStmt::CoroutineBodyStmt()
@@ -3250,6 +3436,26 @@ CppSharp::Parser::AST::CoroutineBodyStmt::CoroutineBodyStmt()
 {
     __ownsNativeInstance = true;
     NativePtr = new class ::CppSharp::CppParser::AST::CoroutineBodyStmt();
+}
+
+CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::CoroutineBodyStmt::GetchildrenExclBody(unsigned int i)
+{
+    auto ___ret = ((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->getchildrenExclBody(i);
+    if (___ret == nullptr) return nullptr;
+    return (___ret == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Stmt((class ::CppSharp::CppParser::AST::Stmt*)___ret);
+}
+
+void CppSharp::Parser::AST::CoroutineBodyStmt::AddchildrenExclBody(CppSharp::Parser::AST::Stmt^ s)
+{
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
+    auto __arg0 = (class ::CppSharp::CppParser::AST::Stmt*)s->NativePtr;
+    ((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->addchildrenExclBody(__arg0);
+}
+
+void CppSharp::Parser::AST::CoroutineBodyStmt::ClearchildrenExclBody()
+{
+    ((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->clearchildrenExclBody();
 }
 
 CppSharp::Parser::AST::CoroutineBodyStmt::CoroutineBodyStmt(CppSharp::Parser::AST::CoroutineBodyStmt^ _0)
@@ -3262,6 +3468,29 @@ CppSharp::Parser::AST::CoroutineBodyStmt::CoroutineBodyStmt(CppSharp::Parser::AS
     NativePtr = new class ::CppSharp::CppParser::AST::CoroutineBodyStmt(__arg0);
 }
 
+::System::Collections::Generic::List<CppSharp::Parser::AST::Stmt^>^ CppSharp::Parser::AST::CoroutineBodyStmt::ChildrenExclBody::get()
+{
+    auto _tmp__childrenExclBody = gcnew ::System::Collections::Generic::List<CppSharp::Parser::AST::Stmt^>();
+    auto __list0 = ((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->childrenExclBody;
+    for(auto _element : __list0)
+    {
+        auto _marshalElement = (_element == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Stmt((class ::CppSharp::CppParser::AST::Stmt*)_element);
+        _tmp__childrenExclBody->Add(_marshalElement);
+    }
+    return _tmp__childrenExclBody;
+}
+
+void CppSharp::Parser::AST::CoroutineBodyStmt::ChildrenExclBody::set(::System::Collections::Generic::List<CppSharp::Parser::AST::Stmt^>^ value)
+{
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Stmt*>();
+    for each(CppSharp::Parser::AST::Stmt^ _element in value)
+    {
+        auto _marshalElement = (class ::CppSharp::CppParser::AST::Stmt*)_element->NativePtr;
+        _tmpvalue.push_back(_marshalElement);
+    }
+    ((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->childrenExclBody = _tmpvalue;
+}
+
 bool CppSharp::Parser::AST::CoroutineBodyStmt::HasDependentPromiseType::get()
 {
     return ((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->hasDependentPromiseType;
@@ -3272,14 +3501,14 @@ void CppSharp::Parser::AST::CoroutineBodyStmt::HasDependentPromiseType::set(bool
     ((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->hasDependentPromiseType = value;
 }
 
-CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::CoroutineBodyStmt::Body::get()
+CppSharp::Parser::AST::CompoundStmt^ CppSharp::Parser::AST::CoroutineBodyStmt::Body::get()
 {
-    return (((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->body == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Stmt((class ::CppSharp::CppParser::AST::Stmt*)((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->body);
+    return (((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->body == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::CompoundStmt((class ::CppSharp::CppParser::AST::CompoundStmt*)((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->body);
 }
 
-void CppSharp::Parser::AST::CoroutineBodyStmt::Body::set(CppSharp::Parser::AST::Stmt^ value)
+void CppSharp::Parser::AST::CoroutineBodyStmt::Body::set(CppSharp::Parser::AST::CompoundStmt^ value)
 {
-    ((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->body = (class ::CppSharp::CppParser::AST::Stmt*)value->NativePtr;
+    ((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->body = (class ::CppSharp::CppParser::AST::CompoundStmt*)value->NativePtr;
 }
 
 CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::CoroutineBodyStmt::PromiseDeclStmt::get()
@@ -3352,6 +3581,16 @@ void CppSharp::Parser::AST::CoroutineBodyStmt::Deallocate::set(CppSharp::Parser:
     ((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->deallocate = (class ::CppSharp::CppParser::AST::Expr*)value->NativePtr;
 }
 
+CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::CoroutineBodyStmt::ResultDecl::get()
+{
+    return (((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->resultDecl == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Stmt((class ::CppSharp::CppParser::AST::Stmt*)((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->resultDecl);
+}
+
+void CppSharp::Parser::AST::CoroutineBodyStmt::ResultDecl::set(CppSharp::Parser::AST::Stmt^ value)
+{
+    ((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->resultDecl = (class ::CppSharp::CppParser::AST::Stmt*)value->NativePtr;
+}
+
 CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::CoroutineBodyStmt::ReturnValueInit::get()
 {
     return (((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->returnValueInit == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->returnValueInit);
@@ -3362,14 +3601,14 @@ void CppSharp::Parser::AST::CoroutineBodyStmt::ReturnValueInit::set(CppSharp::Pa
     ((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->returnValueInit = (class ::CppSharp::CppParser::AST::Expr*)value->NativePtr;
 }
 
-CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::CoroutineBodyStmt::ResultDecl::get()
+CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::CoroutineBodyStmt::ReturnValue::get()
 {
-    return (((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->resultDecl == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Stmt((class ::CppSharp::CppParser::AST::Stmt*)((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->resultDecl);
+    return (((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->returnValue == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Expr((class ::CppSharp::CppParser::AST::Expr*)((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->returnValue);
 }
 
-void CppSharp::Parser::AST::CoroutineBodyStmt::ResultDecl::set(CppSharp::Parser::AST::Stmt^ value)
+void CppSharp::Parser::AST::CoroutineBodyStmt::ReturnValue::set(CppSharp::Parser::AST::Expr^ value)
 {
-    ((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->resultDecl = (class ::CppSharp::CppParser::AST::Stmt*)value->NativePtr;
+    ((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->returnValue = (class ::CppSharp::CppParser::AST::Expr*)value->NativePtr;
 }
 
 CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::CoroutineBodyStmt::ReturnStmt::get()
@@ -3390,6 +3629,12 @@ CppSharp::Parser::AST::Stmt^ CppSharp::Parser::AST::CoroutineBodyStmt::ReturnStm
 void CppSharp::Parser::AST::CoroutineBodyStmt::ReturnStmtOnAllocFailure::set(CppSharp::Parser::AST::Stmt^ value)
 {
     ((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->returnStmtOnAllocFailure = (class ::CppSharp::CppParser::AST::Stmt*)value->NativePtr;
+}
+
+unsigned int CppSharp::Parser::AST::CoroutineBodyStmt::GetchildrenExclBodyCount::get()
+{
+    auto ___ret = ((class ::CppSharp::CppParser::AST::CoroutineBodyStmt*)NativePtr)->getchildrenExclBodyCount();
+    return ___ret;
 }
 
 CppSharp::Parser::AST::CoreturnStmt::CoreturnStmt(class ::CppSharp::CppParser::AST::CoreturnStmt* native)
@@ -3433,16 +3678,6 @@ CppSharp::Parser::AST::CoreturnStmt::CoreturnStmt(CppSharp::Parser::AST::Coretur
     NativePtr = new class ::CppSharp::CppParser::AST::CoreturnStmt(__arg0);
 }
 
-bool CppSharp::Parser::AST::CoreturnStmt::IsImplicit::get()
-{
-    return ((class ::CppSharp::CppParser::AST::CoreturnStmt*)NativePtr)->isImplicit;
-}
-
-void CppSharp::Parser::AST::CoreturnStmt::IsImplicit::set(bool value)
-{
-    ((class ::CppSharp::CppParser::AST::CoreturnStmt*)NativePtr)->isImplicit = value;
-}
-
 CppSharp::Parser::SourceLocation CppSharp::Parser::AST::CoreturnStmt::KeywordLoc::get()
 {
     return ::CppSharp::Parser::SourceLocation((struct ::CppSharp::CppParser::SourceLocation*)&((class ::CppSharp::CppParser::AST::CoreturnStmt*)NativePtr)->keywordLoc);
@@ -3473,5 +3708,15 @@ CppSharp::Parser::AST::Expr^ CppSharp::Parser::AST::CoreturnStmt::PromiseCall::g
 void CppSharp::Parser::AST::CoreturnStmt::PromiseCall::set(CppSharp::Parser::AST::Expr^ value)
 {
     ((class ::CppSharp::CppParser::AST::CoreturnStmt*)NativePtr)->promiseCall = (class ::CppSharp::CppParser::AST::Expr*)value->NativePtr;
+}
+
+bool CppSharp::Parser::AST::CoreturnStmt::IsImplicit::get()
+{
+    return ((class ::CppSharp::CppParser::AST::CoreturnStmt*)NativePtr)->isImplicit;
+}
+
+void CppSharp::Parser::AST::CoreturnStmt::IsImplicit::set(bool value)
+{
+    ((class ::CppSharp::CppParser::AST::CoreturnStmt*)NativePtr)->isImplicit = value;
 }
 
