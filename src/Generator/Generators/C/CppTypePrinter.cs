@@ -790,6 +790,7 @@ namespace CppSharp.Generators.C
             {
                 return string.Empty;
             }
+
             switch (@class.TagKind)
             {
                 case TagKind.Struct:
@@ -801,7 +802,7 @@ namespace CppSharp.Generators.C
                 case TagKind.Class:
                     return "class ";
                 case TagKind.Enum:
-                    return "enum ";
+                    return @class.Enums.First().IsScoped ? "enum class" : "enum ";
                 default:
                     throw new ArgumentOutOfRangeException(nameof(@class.TagKind));
             }
