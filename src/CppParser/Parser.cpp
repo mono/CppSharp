@@ -4543,8 +4543,6 @@ public:
 
     void HandleTranslationUnit(clang::ASTContext& Ctx) override;
 
-    bool shouldWalkTypesOfTypeLocs() const { return false; }
-
 private:
     Parser& Parser;
     std::vector<const clang::FileEntry*>& FileEntries;
