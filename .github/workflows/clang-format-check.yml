@@ -1,0 +1,29 @@
+name: clang-format Check
+
+
+on: [push, pull_request, workflow_dispatch]
+
+# Cancel any previous workflows if the pull request was updated
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  formatting-check:
+    name: Formatting Check
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        path:
+          - 'src'
+          - 'tests'
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Run clang-format style check for C/C++/Protobuf programs.
+      uses: jidicula/clang-format-action@v4.14.0
+      with:
+        clang-format-version: 19
+        check-path: ${{ matrix.path }}
+        exclude-regex: '(?:(?:Bindings|CLI)\/)|(?:CppParser\/(?:Parse)?(?:Expr|Stmt))'
