@@ -49,6 +49,10 @@ function clone_llvm()
 
   extract(archive, '.')
   os.rename('llvm-project-'..llvm_release, llvm)
+
+  -- delete the extracted archive
+  print("Cleaning up downloaded artifacts...")
+  os.remove(archive)
 end
 
 function get_vs_version()
@@ -138,12 +142,12 @@ end
 
 function get_llvm_configuration_name(debug)
 	if string.find(_OPTIONS["configuration"], "DebugOpt") then
-		return os.istarget("windows") and "RelWithDebInfo" or "Release"
+		return "RelWithDebInfo"
 	end
 	if string.find(_OPTIONS["configuration"], "Debug") then
 		return "Debug"
 	end
-	return os.istarget("windows") and "RelWithDebInfo" or "Release"
+	return "Release"
 end
 
 function get_7z_path()
@@ -219,6 +223,10 @@ function download_llvm()
   else
     extract_tar_xz(archive, pkg_name)
   end
+
+  -- delete the extracted archive
+  print("Cleaning up downloaded artifacts...")
+  os.remove(archive)
 end
 
 function cmake(gen, conf, builddir, options)
@@ -510,6 +518,10 @@ function package_llvm(conf, llvm_base, llvm_build)
 	else
 		os.copydir(llvm_build_libdir, out .. "/build/lib", "*.a")
 	end
+
+    -- Copy natvis visualizers for a better debugging experience
+	os.copyfile(llvm_base .. "/clang/utils/ClangVisualizers/clang.natvis", out .. "/utils/clang.natvis")
+	os.copyfile(llvm_base .. "/llvm/utils/LLVMVisualizers/llvm.natvis", out .. "/utils/llvm.natvis")
 
 	os.copydir(llvm_base .. "/clang/include", out .. "/clang/include")
 	os.copydir(llvm_build .. "/tools/clang/include", out .. "/build/clang/include")

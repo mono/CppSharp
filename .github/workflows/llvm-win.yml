@@ -8,28 +8,21 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        config:
-          - { os: windows-2022, platform: x64, configuration : Debug, vs: "Program Files/Microsoft Visual Studio/2022" }
-          - { os: windows-2022, platform: x64, configuration : RelWithDebInfo, vs: "Program Files/Microsoft Visual Studio/2022" }
+        os: [windows-2022]
+        platform: [x64]
+        build-cfg: [Debug, DebugOpt, Release]
 
-    runs-on: ${{ matrix.config.os }}
+    runs-on: ${{ matrix.os }}
 
     env:
-      CC: ${{ matrix.config.cc }}
-      CXX: ${{ matrix.config.cxx }}
-      VS_VERSION: ${{ matrix.config.vs }}
-      PLATFORM: ${{ matrix.config.platform }}
-      CONFIGURATION: ${{ matrix.config.configuration }}
+      VS_VERSION: "Program Files/Microsoft Visual Studio/2022"
+      PLATFORM: ${{ matrix.platform }}
+      BUILD_CONFIGURATION: ${{ matrix.build-cfg }}
       ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
     steps:
-      - name: Inject slug/short variables
-        uses: rlespinasse/github-slug-action@v4
-    
       - name: Check out
-        shell: cmd
-        run: |
-          git clone -b ${{ env.GITHUB_REF_SLUG }} https://github.com/mono/CppSharp.git C:\CppSharp
+        uses: actions/checkout@v4
         
       - uses: lukka/get-cmake@latest
 
@@ -48,20 +41,17 @@ jobs:
       - name: Clone LLVM
         shell: bash
         run: build/build.sh clone_llvm
-        working-directory: C:\CppSharp
           
       - name: Build LLVM
         shell: bash
-        run: build/build.sh build_llvm -platform $PLATFORM -configuration $CONFIGURATION
-        working-directory: C:\CppSharp
+        run: build/build.sh build_llvm -platform $PLATFORM -configuration $BUILD_CONFIGURATION
 
       - name: Package LLVM
         shell: bash
-        run: build/build.sh package_llvm -platform $PLATFORM -configuration $CONFIGURATION
-        working-directory: C:\CppSharp
+        run: build/build.sh package_llvm -platform $PLATFORM -configuration $BUILD_CONFIGURATION
 
       - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: llvm
-          path: C:\CppSharp\build\llvm\llvm-*-*.*
+          name: llvm-${{ matrix.os }}-${{ matrix.platform }}-${{ matrix.build-cfg }}
+          path: build/llvm/llvm-*-*.*

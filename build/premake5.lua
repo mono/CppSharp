@@ -44,7 +44,7 @@ workspace "CppSharp"
   workspacefiles(path.join(builddir, "premake5.lua"))
   workspacefiles(path.join(builddir, "*.sh"))
   workspacefiles(path.join(rootdir, ".github/workflows/*.yml"))
-  workspacefiles(path.join(rootdir, "*.natvis"))
+  workspacefiles(path.join(path.join(get_llvm_build_dir(), "/utils/"), "*.natvis"))
   workspacefiles(path.join(testsdir, "Test*.props"))
 
   group "Libraries"
