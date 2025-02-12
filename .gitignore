@@ -17,7 +17,6 @@ src/generator/generator
 .DS_Store
 *.user
 *.suo
-*.DotSettings
 *.sdf
 *.opensdf
 *.pdb
