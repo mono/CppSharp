@@ -80,14 +80,12 @@ namespace CppSharp.AST
             {
                 foreach (var symbol in library.Symbols)
                 {
-                    if (!Symbols.ContainsKey(symbol))
-                        Symbols[symbol] = library;
-                    if (symbol.StartsWith("__", StringComparison.Ordinal))
-                    {
-                        string stripped = symbol.Substring(1);
-                        if (!Symbols.ContainsKey(stripped))
-                            Symbols[stripped] = library;
-                    }
+                    Symbols.TryAdd(symbol, library);
+
+                    if (!symbol.StartsWith("__", StringComparison.Ordinal))
+                        continue;
+
+                    Symbols.TryAdd(symbol[1..], library);
                 }
             }
         }

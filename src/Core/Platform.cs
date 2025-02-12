@@ -17,83 +17,68 @@ namespace CppSharp
 
     public static class Platform
     {
-        public static bool IsWindows
-        {
-            get
+        public static bool IsWindows =>
+            Environment.OSVersion.Platform switch
             {
-                switch (Environment.OSVersion.Platform)
+                PlatformID.Win32NT => true,
+                PlatformID.Win32S => true,
+                PlatformID.Win32Windows => true,
+                PlatformID.WinCE => true,
+                _ => false
+            };
+
+        public static bool IsMacOS { get; } = GetIsMacOS();
+
+        private static bool GetIsMacOS()
+        {
+            if (Environment.OSVersion.Platform != PlatformID.Unix)
+                return false;
+
+            IntPtr buf = Marshal.AllocHGlobal(8192);
+            if (uname(buf) == 0)
+            {
+                string os = Marshal.PtrToStringAnsi(buf);
+                switch (os)
                 {
-                    case PlatformID.Win32NT:
-                    case PlatformID.Win32S:
-                    case PlatformID.Win32Windows:
-                    case PlatformID.WinCE:
+                    case "Darwin":
                         return true;
                 }
-
-                return false;
             }
+            Marshal.FreeHGlobal(buf);
+
+            return false;
+
+            [DllImport("libc")]
+            static extern int uname(IntPtr buf);
         }
 
-        [DllImport("libc")]
-        static extern int uname(IntPtr buf);
+        public static bool IsLinux => Environment.OSVersion.Platform == PlatformID.Unix && !IsMacOS;
 
-        public static bool IsMacOS
-        {
-            get
-            {
-                if (Environment.OSVersion.Platform != PlatformID.Unix)
-                    return false;
-
-                IntPtr buf = Marshal.AllocHGlobal(8192);
-                if (uname(buf) == 0)
-                {
-                    string os = Marshal.PtrToStringAnsi(buf);
-                    switch (os)
-                    {
-                        case "Darwin":
-                            return true;
-                    }
-                }
-                Marshal.FreeHGlobal(buf);
-
-                return false;
-            }
-        }
-
-        public static bool IsLinux
-        {
-            get { return Environment.OSVersion.Platform == PlatformID.Unix && !IsMacOS; }
-        }
-
-        public static bool IsMono
-        {
-            get { return Type.GetType("Mono.Runtime") != null; }
-        }
+        public static bool IsMono => Type.GetType("Mono.Runtime") != null;
 
         public static bool IsUnixPlatform
         {
             get
             {
                 var platform = Environment.OSVersion.Platform;
-                return platform == PlatformID.Unix || platform == PlatformID.MacOSX;
+                return platform is PlatformID.Unix or PlatformID.MacOSX;
             }
         }
 
-        public static TargetPlatform Host
+        public static TargetPlatform Host { get; } = GetHostPlatform();
+
+        private static TargetPlatform GetHostPlatform()
         {
-            get
-            {
-                if (IsWindows)
-                    return TargetPlatform.Windows;
+            if (IsWindows)
+                return TargetPlatform.Windows;
 
-                if (IsMacOS)
-                    return TargetPlatform.MacOS;
+            if (IsMacOS)
+                return TargetPlatform.MacOS;
 
-                if (IsLinux)
-                    return TargetPlatform.Linux;
+            if (IsLinux)
+                return TargetPlatform.Linux;
 
-                throw new NotImplementedException();
-            }
+            throw new NotImplementedException();
         }
     }
 }

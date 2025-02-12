@@ -35,12 +35,12 @@ class ASTNameMangler
 public:
     explicit ASTNameMangler(clang::ASTContext& Ctx);
 
-    std::string GetName(const clang::Decl* D);
-    bool WriteName(const clang::Decl* D, llvm::raw_ostream& OS);
+    std::string GetName(const clang::Decl* D) const;
+    bool WriteName(const clang::Decl* D, llvm::raw_ostream& OS) const;
 
 private:
-    std::string GetMangledStructor(const clang::NamedDecl* ND, unsigned StructorType);
-    std::string GetMangledThunk(const clang::CXXMethodDecl* MD, const clang::ThunkInfo& T, bool ElideOverrideInfo);
+    std::string GetMangledStructor(const clang::NamedDecl* ND, unsigned StructorType) const;
+    std::string GetMangledThunk(const clang::CXXMethodDecl* MD, const clang::ThunkInfo& T, bool ElideOverrideInfo) const;
     bool WriteFuncOrVarName(const clang::NamedDecl* D, llvm::raw_ostream& OS) const;
     
     llvm::DataLayout DL;

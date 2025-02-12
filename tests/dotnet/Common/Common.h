@@ -121,9 +121,9 @@ struct DLL_API Bar
     explicit Bar(const Foo* foo);
     Bar(Foo foo);
     Item RetItem1() const;
-    int A;
-    float B;
-    Item fixedEnumArray[3];
+    int A = -1;
+    float B = -1.0f;
+    Item fixedEnumArray[3]{};
 
     Bar* returnPointerToValueType();
 

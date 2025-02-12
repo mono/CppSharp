@@ -19,9 +19,12 @@ namespace CppSharp.Passes
         {
             var result = base.VisitASTContext(context);
             var findSymbolsPass = Context.TranslationUnitPasses.FindPass<FindSymbolsPass>();
+            
             GenerateSymbols();
-            if (remainingCompilationTasks > 0)
+
+            if (RemainingCompilationTasks > 0)
                 findSymbolsPass.Wait = true;
+
             return result;
         }
 
@@ -30,7 +33,8 @@ namespace CppSharp.Passes
         private void GenerateSymbols()
         {
             var modules = Options.Modules.Where(symbolsCodeGenerators.ContainsKey).ToList();
-            remainingCompilationTasks = modules.Count;
+            RemainingCompilationTasks = modules.Count;
+
             foreach (var module in modules)
             {
                 var symbolsCodeGenerator = symbolsCodeGenerators[module];
@@ -53,21 +57,26 @@ namespace CppSharp.Passes
                     // if the user's provided no libraries, he only wants to generate code
                     (module.LibraryDirs.Count > 0 && module.Libraries.Count > 0)))
                 {
-                    using (var linkerOptions = new LinkerOptions(Context.LinkerOptions))
+                    using var linkerOptions = new LinkerOptions(Context.LinkerOptions);
+
+                    foreach (var libraryDir in module.Dependencies
+                                 .Union(new[] { module })
+                                 .SelectMany(d => d.LibraryDirs))
                     {
-                        foreach (var libraryDir in module.Dependencies.Union(
-                            new[] { module }).SelectMany(d => d.LibraryDirs))
-                            linkerOptions.AddLibraryDirs(libraryDir);
-
-                        foreach (var library in module.Dependencies.Union(
-                            new[] { module }).SelectMany(d => d.Libraries))
-                            linkerOptions.AddLibraries(library);
-
-                        compiledLibraries[module] = Build(linkerOptions, path, module);
+                        linkerOptions.AddLibraryDirs(libraryDir);
                     }
+
+                    foreach (var library in module.Dependencies
+                                 .Union(new[] { module })
+                                 .SelectMany(d => d.Libraries))
+                    {
+                        linkerOptions.AddLibraries(library);
+                    }
+
+                    compiledLibraries[module] = Build(linkerOptions, path, module);
                 }
 
-                RemainingCompilationTasks--;
+                --RemainingCompilationTasks;
             }
         }
 
@@ -79,7 +88,7 @@ namespace CppSharp.Passes
                 linkerOptions.Setup(Context.ParserOptions.TargetTriple, Context.ParserOptions.LanguageVersion);
                 using var result = Parser.ClangParser.Build(
                     Context.ParserOptions, linkerOptions, path,
-                    Last: remainingCompilationTasks == 1);
+                    Last: RemainingCompilationTasks == 1);
 
                 if (!PrintDiagnostics(result))
                     return null;
@@ -120,7 +129,7 @@ namespace CppSharp.Passes
                 }
                 else
                 {
-                    Diagnostics.Message($"Linking success.");
+                    Diagnostics.Message("Linking success.");
                 }
             }
 
@@ -180,7 +189,7 @@ namespace CppSharp.Passes
         public override bool VisitVariableDecl(Variable variable)
         {
             if (!base.VisitVariableDecl(variable) ||
-                !(variable.Namespace is ClassTemplateSpecialization specialization) ||
+                variable.Namespace is not ClassTemplateSpecialization specialization ||
                 specialization.SpecializationKind == TemplateSpecializationKind.ExplicitSpecialization)
                 return false;
 
@@ -227,8 +236,8 @@ namespace CppSharp.Passes
 
         private SymbolsCodeGenerator GetSymbolsCodeGenerator(Module module)
         {
-            if (symbolsCodeGenerators.ContainsKey(module))
-                return symbolsCodeGenerators[module];
+            if (symbolsCodeGenerators.TryGetValue(module, out SymbolsCodeGenerator generator))
+                return generator;
 
             var symbolsCodeGenerator = new SymbolsCodeGenerator(Context, module.Units);
             symbolsCodeGenerators[module] = symbolsCodeGenerator;
@@ -277,9 +286,7 @@ namespace CppSharp.Passes
         {
             new Thread(() =>
                 {
-                    int error;
-                    string errorMessage;
-                    ProcessHelper.Run(compiler, arguments, out error, out errorMessage);
+                    ProcessHelper.Run(compiler, arguments, out _, out var errorMessage);
                     var output = GetOutputFile(module.SymbolsLibraryName);
                     if (!File.Exists(Path.Combine(outputDir, output)))
                         Diagnostics.Error(errorMessage);
@@ -294,8 +301,7 @@ namespace CppSharp.Passes
         {
             foreach (var @base in @class.Bases.Where(b => b.IsClass))
             {
-                var specialization = @base.Class as ClassTemplateSpecialization;
-                if (specialization != null && !specialization.IsExplicitlyGenerated &&
+                if (@base.Class is ClassTemplateSpecialization { IsExplicitlyGenerated: false } specialization &&
                     specialization.SpecializationKind != TemplateSpecializationKind.ExplicitSpecialization)
                     ASTUtils.CheckTypeForSpecialization(@base.Type, @class, Add, Context.TypeMaps);
                 CheckBasesForSpecialization(@base.Class);
@@ -304,89 +310,102 @@ namespace CppSharp.Passes
 
         private void Add(ClassTemplateSpecialization specialization)
         {
-            ICollection<ClassTemplateSpecialization> specs;
-            if (specializations.ContainsKey(specialization.TranslationUnit.Module))
-                specs = specializations[specialization.TranslationUnit.Module];
-            else specs = specializations[specialization.TranslationUnit.Module] =
-                new HashSet<ClassTemplateSpecialization>();
-            if (!specs.Contains(specialization))
+            if (!specializations.TryGetValue(specialization.TranslationUnit.Module, out var specs))
             {
-                specs.Add(specialization);
+                specs = new HashSet<ClassTemplateSpecialization>();
+                specializations[specialization.TranslationUnit.Module] = specs;
+            }
+
+            if (specs.Add(specialization))
+            {
                 foreach (Method method in specialization.Methods)
                     method.Visit(this);
             }
+
             GetSymbolsCodeGenerator(specialization.TranslationUnit.Module);
         }
 
+        private int _remainingCompilationTasks;
         private int RemainingCompilationTasks
         {
-            get { return remainingCompilationTasks; }
+            get => _remainingCompilationTasks;
             set
             {
-                if (remainingCompilationTasks != value)
+                if (_remainingCompilationTasks == value) 
+                    return;
+
+                _remainingCompilationTasks = value;
+                if (_remainingCompilationTasks != 0) 
+                    return;
+
+                foreach (var module in Context.Options.Modules.Where(compiledLibraries.ContainsKey))
                 {
-                    remainingCompilationTasks = value;
-                    if (remainingCompilationTasks == 0)
-                    {
-                        foreach (var module in Context.Options.Modules.Where(compiledLibraries.ContainsKey))
-                        {
-                            CompiledLibrary compiledLibrary = compiledLibraries[module];
-                            CollectSymbols(compiledLibrary.OutputDir, compiledLibrary.Library);
-                        }
-                        var findSymbolsPass = Context.TranslationUnitPasses.FindPass<FindSymbolsPass>();
-                        findSymbolsPass.Wait = false;
-                    }
+                    CompiledLibrary compiledLibrary = compiledLibraries[module];
+                    CollectSymbols(compiledLibrary.OutputDir, compiledLibrary.Library);
                 }
+                var findSymbolsPass = Context.TranslationUnitPasses.FindPass<FindSymbolsPass>();
+                findSymbolsPass.Wait = false;
             }
         }
 
         private void CollectSymbols(string outputDir, string library)
         {
-            using (var linkerOptions = new LinkerOptions(Context.LinkerOptions))
+            using var linkerOptions = new LinkerOptions(Context.LinkerOptions);
+            linkerOptions.AddLibraryDirs(outputDir);
+            var output = GetOutputFile(library);
+            linkerOptions.AddLibraries(output);
+
+            using var parserResult = Parser.ClangParser.ParseLibrary(linkerOptions);
+            if (parserResult.Kind != ParserResultKind.Success)
             {
-                linkerOptions.AddLibraryDirs(outputDir);
-                var output = GetOutputFile(library);
-                linkerOptions.AddLibraries(output);
-                using (var parserResult = Parser.ClangParser.ParseLibrary(linkerOptions))
+                Diagnostics.Error($"Parsing of {Path.Combine(outputDir, output)} failed.");
+                return;
+            }
+
+            var results = GetLibraries(parserResult).AsParallel()
+                .Select(ClangParser.ConvertLibrary);
+
+            lock (symbolsLock)
+            {
+                foreach (var nativeLibrary in results)
                 {
-                    if (parserResult.Kind == ParserResultKind.Success)
-                    {
-                        lock (@lock)
-                        {
-                            for (uint i = 0; i < parserResult.LibrariesCount; i++)
-                            {
-                                var nativeLibrary = ClangParser.ConvertLibrary(parserResult.GetLibraries(i));
-                                Context.Symbols.Libraries.Add(nativeLibrary);
-                                Context.Symbols.IndexSymbols();
-                            }
-                        }
-                    }
-                    else
-                        Diagnostics.Error($"Parsing of {Path.Combine(outputDir, output)} failed.");
+                    Context.Symbols.Libraries.Add(nativeLibrary);
+                    Context.Symbols.IndexSymbols();
                 }
+            }
+
+            return;
+
+            IEnumerable<Parser.AST.NativeLibrary> GetLibraries(ParserResult p)
+            {
+                for (uint i = 0; i < p.LibrariesCount; i++)
+                    yield return p.GetLibraries(i);
             }
         }
 
         private static string GetOutputFile(string library)
         {
-            return Path.GetFileName($@"{(Platform.IsWindows ?
-                string.Empty : "lib")}{library}.{
-                (Platform.IsMacOS ? "dylib" : Platform.IsWindows ? "dll" : "so")}");
+            var extension = Platform.Host switch
+            {
+                TargetPlatform.Windows => "lib",
+                TargetPlatform.Linux => "so",
+                TargetPlatform.MacOS => "dylib",
+                _ => throw new NotImplementedException()
+            };
+
+            return Path.GetFileName($"{(Platform.IsWindows ? string.Empty : "lib")}{library}.{extension}");
         }
 
-        private int remainingCompilationTasks;
-        private static readonly object @lock = new object();
+        private static readonly object symbolsLock = new();
 
-        private Dictionary<Module, SymbolsCodeGenerator> symbolsCodeGenerators =
-            new Dictionary<Module, SymbolsCodeGenerator>();
-        private Dictionary<Module, HashSet<ClassTemplateSpecialization>> specializations =
-            new Dictionary<Module, HashSet<ClassTemplateSpecialization>>();
-        private Dictionary<Module, CompiledLibrary> compiledLibraries = new Dictionary<Module, CompiledLibrary>();
+        private readonly Dictionary<Module, SymbolsCodeGenerator> symbolsCodeGenerators = new();
+        private readonly Dictionary<Module, HashSet<ClassTemplateSpecialization>> specializations = new();
+        private readonly Dictionary<Module, CompiledLibrary> compiledLibraries = new();
 
         private class CompiledLibrary
         {
-            public string OutputDir { get; set; }
-            public string Library { get; set; }
+            public string OutputDir { get; init; }
+            public string Library { get; init; }
         }
     }
 }

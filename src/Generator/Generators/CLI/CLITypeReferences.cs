@@ -30,7 +30,7 @@ namespace CppSharp.Generators.CLI
         private readonly DriverOptions DriverOptions;
         private TranslationUnit TranslationUnit;
 
-        private Dictionary<Declaration, CLITypeReference> typeReferences;
+        private readonly Dictionary<Declaration, CLITypeReference> typeReferences;
         public IEnumerable<CLITypeReference> TypeReferences => typeReferences.Values;
 
         public HashSet<Declaration> GeneratedDeclarations;
@@ -45,28 +45,29 @@ namespace CppSharp.Generators.CLI
 
         public CLITypeReference GetTypeReference(Declaration decl)
         {
-            if (typeReferences.ContainsKey(decl))
-                return typeReferences[decl];
+            if (typeReferences.TryGetValue(decl, out CLITypeReference reference))
+                return reference;
 
             var translationUnit = decl.Namespace.TranslationUnit;
 
-            if (ShouldIncludeTranslationUnit(translationUnit) && decl.IsGenerated && !IsBuiltinTypedef(decl))
-            {
-                var @ref = new CLITypeReference { Declaration = decl };
+            if (!ShouldIncludeTranslationUnit(translationUnit) || !decl.IsGenerated || IsBuiltinTypedef(decl))
+                return null;
 
-                @ref.Include = new CInclude
+            var @ref = new CLITypeReference
+            {
+                Declaration = decl,
+                Include = new CInclude
                 {
                     File = DriverOptions.GetIncludePath(translationUnit),
                     TranslationUnit = translationUnit,
                     Kind = translationUnit.IsGenerated ? CInclude.IncludeKind.Quoted : CInclude.IncludeKind.Angled
-                };
+                }
+            };
 
-                typeReferences.Add(decl, @ref);
+            typeReferences.Add(decl, @ref);
 
-                return @ref;
-            }
+            return @ref;
 
-            return null;
         }
 
         static Namespace GetEffectiveNamespace(Declaration decl)
@@ -145,15 +146,16 @@ namespace CppSharp.Generators.CLI
 
         private bool IsBuiltinTypedef(Declaration decl)
         {
-            var typedefDecl = decl as TypedefDecl;
-            if (typedefDecl == null) return false;
-            if (typedefDecl.Type is BuiltinType) return true;
+            if (decl is not TypedefDecl typedefDecl)
+                return false;
 
-            var typedefType = typedefDecl.Type as TypedefType;
-            if (typedefType == null) return false;
-            if (typedefType.Declaration == null) return false;
+            if (typedefDecl.Type is BuiltinType)
+                return true;
 
-            return typedefType.Declaration.Type is BuiltinType;
+            if (typedefDecl.Type is not TypedefType typedefType)
+                return false;
+
+            return typedefType.Declaration?.Type is BuiltinType;
         }
 
         public bool IsIncludeInHeader(ASTRecord<Declaration> record)

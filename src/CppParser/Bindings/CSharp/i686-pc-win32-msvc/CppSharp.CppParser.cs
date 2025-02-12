@@ -15795,8 +15795,8 @@ namespace CppSharp
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "??1ASTContext@AST@CppParser@CppSharp@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
                     internal static extern void dtor(__IntPtr __instance);
 
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?FindOrCreateModule@ASTContext@AST@CppParser@CppSharp@@QAEPAVTranslationUnit@234@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z", CallingConvention = __CallingConvention.ThisCall)]
-                    internal static extern __IntPtr FindOrCreateModule(__IntPtr __instance, global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C File);
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?FindOrCreateModule@ASTContext@AST@CppParser@CppSharp@@QAEPAVTranslationUnit@234@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z", CallingConvention = __CallingConvention.ThisCall)]
+                    internal static extern __IntPtr FindOrCreateModule(__IntPtr __instance, __IntPtr File);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "?getTranslationUnits@ASTContext@AST@CppParser@CppSharp@@QAEPAVTranslationUnit@234@I@Z", CallingConvention = __CallingConvention.ThisCall)]
                     internal static extern __IntPtr GetTranslationUnits(__IntPtr __instance, uint i);
@@ -15917,9 +15917,9 @@ namespace CppSharp
                 {
                     var __basicString0 = new global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>();
                     global::Std.BasicStringExtensions.Assign(__basicString0, File);
-                    var __arg0 = *(global::Std.BasicString.__Internalc__N_std_S_basic_string__C___N_std_S_char_traits__C___N_std_S_allocator__C*) __basicString0.__Instance;
+                    var __arg0 = __basicString0.__Instance;
                     var ___ret = __Internal.FindOrCreateModule(__Instance, __arg0);
-                    __basicString0.Dispose(disposing: true, callNativeDtor:false);
+                    __basicString0.Dispose();
                     var __result0 = global::CppSharp.Parser.AST.TranslationUnit.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }

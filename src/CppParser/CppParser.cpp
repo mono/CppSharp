@@ -13,17 +13,7 @@
 namespace CppSharp { namespace CppParser {
 
 CppParserOptions::CppParserOptions()
-    : ASTContext(0)
-    , toolSetToUse(0)
-    , noStandardIncludes(false)
-    , noBuiltinIncludes(false)
-    , microsoftMode(false)
-    , verbose(false)
-    , unityBuild(false)
-    , skipPrivateDeclarations(true)
-    , skipLayoutInfo(false)
-    , skipFunctionBodies(true)
-    , clangVersion(CLANG_VERSION_STRING)
+    : clangVersion(CLANG_VERSION_STRING)
 {
 }
 
@@ -59,7 +49,7 @@ ParserResult::~ParserResult()
 }
 
 DEF_VECTOR(ParserResult, ParserDiagnostic, Diagnostics)
-DEF_VECTOR(ParserResult, NativeLibrary*, Libraries)
+DEF_VECTOR(ParserResult, AST::NativeLibrary*, Libraries)
 
 CppLinkerOptions::CppLinkerOptions()
 {
