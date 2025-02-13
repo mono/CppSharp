@@ -26,4 +26,4 @@ jobs:
       with:
         clang-format-version: 19
         check-path: ${{ matrix.path }}
-        exclude-regex: '(?:(?:Bindings|CLI)\\)|(?:CppParser\\(?:Parse)?(?:Expr|Stmt))'
+        exclude-regex: '(?:(?:Bindings|CLI)\/)|(?:CppParser\/(?:Parse)?(?:Expr|Stmt))'
