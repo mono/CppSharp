@@ -50,7 +50,8 @@ CompactNamespaces                         : true
 IndentWidth                               : 4
 IndentCaseLabels                          : true
 IndentRequiresClause                      : true
-IncludeBlocks                             : Regroup
+SortIncludes                              : Never
+IncludeBlocks                             : Preserve
 KeepEmptyLinesAtTheStartOfBlocks          : true
 MaxEmptyLinesToKeep                       : 2
 EmptyLineAfterAccessModifier              : Leave
@@ -70,16 +71,6 @@ SpacesInLineCommentPrefix                 :
 TabWidth                                  : 4
 UseTab                                    : Never
 
-IncludeCategories                         :
-  - Regex                                 : '^"'
-    Priority                              : 97
-  - Regex                                 : '<[[:alnum:].]+>'
-    Priority                              : 99
-  - Regex                                 : '^<.*'
-    Priority                              : 98
-  - Regex                                 : '.*'
-    Priority                              : 1
-    SortPriority                          : 0
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
 
