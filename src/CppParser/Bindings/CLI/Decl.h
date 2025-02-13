@@ -1971,6 +1971,12 @@ namespace CppSharp
                 TypeAliasTemplate(CppSharp::Parser::AST::TypeAliasTemplate^ _0);
 
                 ~TypeAliasTemplate();
+
+                property CppSharp::Parser::AST::Declaration^ CanonicalDecl
+                {
+                    CppSharp::Parser::AST::Declaration^ get();
+                    void set(CppSharp::Parser::AST::Declaration^);
+                }
             };
 
             public ref class TemplateParameter : CppSharp::Parser::AST::Declaration

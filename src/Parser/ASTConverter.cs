@@ -1818,6 +1818,7 @@ namespace CppSharp
         {
             var _decl = new AST.TypeAliasTemplate();
             VisitTemplate(decl, _decl);
+            _decl.CanonicalDecl = Visit(decl.CanonicalDecl);
 
             return _decl;
         }

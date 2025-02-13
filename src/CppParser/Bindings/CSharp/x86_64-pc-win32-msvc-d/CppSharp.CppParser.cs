@@ -12581,7 +12581,7 @@ namespace CppSharp
 
             public unsafe partial class TypeAliasTemplate : global::CppSharp.Parser.AST.Template, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 304)]
+                [StructLayout(LayoutKind.Sequential, Size = 312)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -12608,6 +12608,7 @@ namespace CppSharp
                     internal __IntPtr comment;
                     internal __IntPtr TemplatedDecl;
                     internal global::Std.Vector.__Internalc__N_std_S_vector_____N_CppSharp_N_CppParser_N_AST_S_Declaration___N_std_S_allocator__S0_ Parameters;
+                    internal __IntPtr CanonicalDecl;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "??0TypeAliasTemplate@AST@CppParser@CppSharp@@QEAA@XZ", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern __IntPtr ctor(__IntPtr __instance);
@@ -12696,6 +12697,20 @@ namespace CppSharp
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
                     __Instance = IntPtr.Zero;
+                }
+
+                public global::CppSharp.Parser.AST.Declaration CanonicalDecl
+                {
+                    get
+                    {
+                        var __result0 = global::CppSharp.Parser.AST.Declaration.__GetOrCreateInstance(((__Internal*)__Instance)->CanonicalDecl, false);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((__Internal*)__Instance)->CanonicalDecl = value is null ? __IntPtr.Zero : value.__Instance;
+                    }
                 }
             }
 

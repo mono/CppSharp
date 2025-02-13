@@ -187,6 +187,7 @@ private:
     std::unique_ptr<llvm::Module> LLVMModule;
     std::unique_ptr<clang::CodeGen::CodeGenModule> CGM;
     std::unique_ptr<clang::CodeGen::CodeGenTypes> codeGenTypes;
+    std::unordered_map<const clang::DeclContext*, AST::DeclarationContext*> walkedNamespaces;
     std::unordered_map<const clang::TemplateTypeParmDecl*, AST::TypeTemplateParameter*> walkedTypeTemplateParameters;
     std::unordered_map<const clang::TemplateTemplateParmDecl*, AST::TemplateTemplateParameter*> walkedTemplateTemplateParameters;
     std::unordered_map<const clang::NonTypeTemplateParmDecl*, AST::NonTypeTemplateParameter*> walkedNonTypeTemplateParameters;

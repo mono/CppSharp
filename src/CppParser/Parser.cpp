@@ -1474,12 +1474,17 @@ TemplateTemplateParameter* Parser::WalkTemplateTemplateParameter(const clang::Te
     if (TP)
         return TP;
 
+    auto NS = GetNamespace(TTP);
+    assertm(NS, "Expected a valid namespace!\n");
+
     TP = new TemplateTemplateParameter();
     HandleDeclaration(TTP, TP);
+    TP->_namespace = NS;
     TP->Parameters = WalkTemplateParameterList(TTP->getTemplateParameters());
     TP->isParameterPack = TTP->isParameterPack();
     TP->isPackExpansion = TTP->isPackExpansion();
     TP->isExpandedParameterPack = TTP->isExpandedParameterPack();
+    
     if (TTP->getTemplatedDecl())
     {
         auto TD = WalkDeclaration(TTP->getTemplatedDecl());
@@ -1499,6 +1504,10 @@ TypeTemplateParameter* Parser::WalkTypeTemplateParameter(const clang::TemplateTy
 
     TP = new TypeTemplateParameter();
     TP->name = GetDeclName(TTPD);
+    auto NS = GetNamespace(TTPD);
+    assertm(NS, "Expected a valid namespace!\n");
+    TP->_namespace = NS;
+
     HandleDeclaration(TTPD, TP);
     if (TTPD->hasDefaultArgument())
         TP->defaultArgument = GetQualifiedType(TTPD->getDefaultArgument());
@@ -1519,6 +1528,10 @@ NonTypeTemplateParameter* Parser::WalkNonTypeTemplateParameter(const clang::NonT
 
     NTP = new NonTypeTemplateParameter();
     NTP->name = GetDeclName(NTTPD);
+    auto NS = GetNamespace(NTTPD);
+    assertm(NS, "Expected a valid namespace!\n");
+    NTP->_namespace = NS;
+
     HandleDeclaration(NTTPD, NTP);
     if (NTTPD->hasDefaultArgument())
         NTP->defaultArgument = WalkExpressionObsolete(NTTPD->getDefaultArgument());
@@ -1677,8 +1690,9 @@ TypeAliasTemplate* Parser::WalkTypeAliasTemplate(
     HandleDeclaration(TD, TA);
 
     TA->name = GetDeclName(TD);
+    TA->_namespace = NS;
     NS->Templates.push_back(TA);
-
+    TA->CanonicalDecl = WalkDeclaration(TD->getCanonicalDecl());
     TA->TemplatedDecl = WalkDeclaration(TD->getTemplatedDecl());
     TA->Parameters = WalkTemplateParameterList(TD->getTemplateParameters());
 
@@ -2119,6 +2133,10 @@ DeclarationContext* Parser::GetNamespace(const clang::Decl* D,
     if (Context->isTranslationUnit())
         return GetTranslationUnit(D);
 
+    auto NS = walkedNamespaces[Context];
+    if (NS)
+        return NS;
+
     TranslationUnit* Unit = GetTranslationUnit(cast<Decl>(Context));
 
     // Else we need to do a more expensive check to get all the namespaces,
@@ -2138,19 +2156,27 @@ DeclarationContext* Parser::GetNamespace(const clang::Decl* D,
     {
         const auto* Ctx = *I;
 
+        auto CtxNS = walkedNamespaces[Ctx];
+        if (CtxNS)
+        {
+            DC = CtxNS;
+            continue;
+        }
+
         switch(Ctx->getDeclKind())
         {
         case Decl::Namespace:
         {
             auto ND = cast<NamespaceDecl>(Ctx);
             if (ND->isAnonymousNamespace())
-                continue;
+                break;
+
             auto Name = ND->getName();
             DC = DC->FindCreateNamespace(Name.str());
             ((Namespace*)DC)->isAnonymous = ND->isAnonymousNamespace();
             ((Namespace*)DC)->isInline = ND->isInline();
             HandleDeclaration(ND, DC);
-            continue;
+            break;
         }
         case Decl::LinkageSpec:
         {
@@ -2161,7 +2187,7 @@ DeclarationContext* Parser::GetNamespace(const clang::Decl* D,
         {
             auto RD = cast<CXXRecordDecl>(Ctx);
             DC = WalkRecordCXX(RD);
-            continue;
+            break;
         }
         case Decl::CXXDeductionGuide:
         {
@@ -2172,9 +2198,13 @@ DeclarationContext* Parser::GetNamespace(const clang::Decl* D,
             auto D = cast<Decl>(Ctx);
             auto Decl = WalkDeclaration(D);
             DC = static_cast<DeclarationContext*>(Decl);
+            break;
         } }
+
+        walkedNamespaces[Ctx] = DC;
     }
 
+    walkedNamespaces[Context] = DC;
     return DC;
 }
 

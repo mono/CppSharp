@@ -3915,6 +3915,16 @@ CppSharp::Parser::AST::TypeAliasTemplate::TypeAliasTemplate(CppSharp::Parser::AS
     NativePtr = new class ::CppSharp::CppParser::AST::TypeAliasTemplate(__arg0);
 }
 
+CppSharp::Parser::AST::Declaration^ CppSharp::Parser::AST::TypeAliasTemplate::CanonicalDecl::get()
+{
+    return (((class ::CppSharp::CppParser::AST::TypeAliasTemplate*)NativePtr)->CanonicalDecl == nullptr) ? nullptr : gcnew ::CppSharp::Parser::AST::Declaration((class ::CppSharp::CppParser::AST::Declaration*)((class ::CppSharp::CppParser::AST::TypeAliasTemplate*)NativePtr)->CanonicalDecl);
+}
+
+void CppSharp::Parser::AST::TypeAliasTemplate::CanonicalDecl::set(CppSharp::Parser::AST::Declaration^ value)
+{
+    ((class ::CppSharp::CppParser::AST::TypeAliasTemplate*)NativePtr)->CanonicalDecl = (class ::CppSharp::CppParser::AST::Declaration*)value->NativePtr;
+}
+
 CppSharp::Parser::AST::TemplateParameter::TemplateParameter(class ::CppSharp::CppParser::AST::TemplateParameter* native)
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {
