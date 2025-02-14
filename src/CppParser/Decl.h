@@ -632,6 +632,8 @@ namespace CppSharp
             public:
                 TypeAliasTemplate();
                 ~TypeAliasTemplate();
+
+                Declaration* CanonicalDecl = nullptr;
             };
 
             class CS_API TemplateParameter : public Declaration

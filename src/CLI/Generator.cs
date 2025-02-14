@@ -40,6 +40,8 @@ namespace CppSharp
                 case TargetArchitecture.WASM64:
                     tripleBuilder.Append("wasm64-");
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(options.Architecture), "Unsupported target architecture.");
             }
 
             switch (options.Platform)
@@ -71,6 +73,8 @@ namespace CppSharp
                     abi = CppAbi.Itanium;
                     break;
                 }
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(options.Platform), "Unsupported target platform.");
             }
 
             triple = tripleBuilder.ToString();

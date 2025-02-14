@@ -180,6 +180,8 @@ namespace CppSharp.AST
         {
             return visitor.VisitTypeAliasTemplateDecl(this);
         }
+
+        public Declaration CanonicalDecl;
     }
 
     /// <summary>

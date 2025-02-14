@@ -28,16 +28,14 @@ namespace CppSharp
 
         void ValidateOptions()
         {
-            if (!Options.Compilation.Platform.HasValue)
-                Options.Compilation.Platform = Platform.Host;
+            Options.Compilation.Platform ??= Platform.Host;
 
             foreach (var module in Options.Modules)
             {
                 if (string.IsNullOrWhiteSpace(module.LibraryName))
                     throw new InvalidOptionException("One of your modules has no library name.");
 
-                if (module.OutputNamespace == null)
-                    module.OutputNamespace = module.LibraryName;
+                module.OutputNamespace ??= module.LibraryName;
 
                 for (int i = 0; i < module.IncludeDirs.Count; i++)
                 {
