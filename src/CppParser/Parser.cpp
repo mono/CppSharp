@@ -4667,8 +4667,16 @@ static ArchType ConvertArchType(unsigned int archType)
         return ArchType::x86;
     case llvm::Triple::ArchType::x86_64:
         return ArchType::x86_64;
+    case llvm::Triple::ArchType::aarch64:
+        return ArchType::aarch64;
+    case llvm::Triple::ArchType::aarch64_be:
+        return ArchType::aarch64_be;
+    case llvm::Triple::ArchType::aarch64_32:
+        return ArchType::aarch64_32;
+    default:
+        assertm(0, "Unsupported architecture type!\n");
+        return ArchType::UnknownArch;
     }
-    return ArchType::UnknownArch;
 }
 
 template<class ELFT>
