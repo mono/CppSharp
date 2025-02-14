@@ -57,7 +57,10 @@ namespace CppSharp
             {
                 UnknownArch = 0,
                 X86 = 1,
-                X86_64 = 2
+                X86_64 = 2,
+                Aarch64 = 3,
+                Aarch64Be = 4,
+                Aarch64_32 = 5
             }
 
             public unsafe partial class NativeLibrary : IDisposable
@@ -12579,7 +12582,7 @@ namespace CppSharp
 
             public unsafe partial class TypeAliasTemplate : global::CppSharp.Parser.AST.Template, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 256)]
+                [StructLayout(LayoutKind.Sequential, Size = 264)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.DeclarationKind kind;
@@ -12606,6 +12609,7 @@ namespace CppSharp
                     internal __IntPtr comment;
                     internal __IntPtr TemplatedDecl;
                     internal global::Std.Vector.__Internal Parameters;
+                    internal __IntPtr CanonicalDecl;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST17TypeAliasTemplateC2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void ctor(__IntPtr __instance);
@@ -12694,6 +12698,20 @@ namespace CppSharp
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
                     __Instance = IntPtr.Zero;
+                }
+
+                public global::CppSharp.Parser.AST.Declaration CanonicalDecl
+                {
+                    get
+                    {
+                        var __result0 = global::CppSharp.Parser.AST.Declaration.__GetOrCreateInstance(((__Internal*)__Instance)->CanonicalDecl, false);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((__Internal*)__Instance)->CanonicalDecl = value is null ? __IntPtr.Zero : value.__Instance;
+                    }
                 }
             }
 
@@ -15792,7 +15810,7 @@ namespace CppSharp
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST10ASTContextD2Ev", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern void dtor(__IntPtr __instance);
 
-                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST10ASTContext18FindOrCreateModuleENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE", CallingConvention = __CallingConvention.Cdecl)]
+                    [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST10ASTContext18FindOrCreateModuleERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE", CallingConvention = __CallingConvention.Cdecl)]
                     internal static extern __IntPtr FindOrCreateModule(__IntPtr __instance, __IntPtr File);
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser", EntryPoint = "_ZN8CppSharp9CppParser3AST10ASTContext19getTranslationUnitsEj", CallingConvention = __CallingConvention.Cdecl)]
@@ -15916,7 +15934,7 @@ namespace CppSharp
                     global::Std.BasicStringExtensions.Assign(__basicString0, File);
                     var __arg0 = __basicString0.__Instance;
                     var ___ret = __Internal.FindOrCreateModule(__Instance, __arg0);
-                    __basicString0.Dispose(disposing: true, callNativeDtor:false);
+                    __basicString0.Dispose();
                     var __result0 = global::CppSharp.Parser.AST.TranslationUnit.__GetOrCreateInstance(___ret, false);
                     return __result0;
                 }
