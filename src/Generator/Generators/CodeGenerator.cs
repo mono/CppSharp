@@ -1317,7 +1317,7 @@ namespace CppSharp.Generators
             if (@class != specialization)
                 template = template.Classes.FirstOrDefault(c => c.Name == @class.Name);
 
-            if (template.HasDependentValueFieldInLayout())
+            if (template?.HasDependentValueFieldInLayout() ?? false)
             {
                 if (specialization.Arguments.All(
                     a => a.Type.Type?.IsAddress() == true))
