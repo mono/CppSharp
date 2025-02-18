@@ -131,8 +131,11 @@ namespace CppSharp
             options.MicrosoftMode = false;
             options.NoBuiltinIncludes = true;
 
+            bool isArm = Triple.Contains("arm");
+
             var headersPath = Platform.IsLinux ? string.Empty :
-                Path.Combine(GetSourceDirectory("build"), "headers", "x86_64-linux-gnu");
+                Path.Combine(GetSourceDirectory("build"), "headers", 
+                    isArm ? "arm64-linux-gnu" : "x86_64-linux-gnu");
             options.SetupLinux(headersPath);
             options.AddDefines("_GLIBCXX_USE_CXX11_ABI=" + (IsGnuCpp11Abi ? "1" : "0"));
         }
