@@ -411,6 +411,147 @@ namespace CppSharp.Types.Std.CSharp
         }
     }
 
+    [TypeMap("std::optional", GeneratorKindID = GeneratorKind.CSharp_ID)]
+    public class Optional : TypeMap
+    {
+        public override bool IsIgnored
+        {
+            get
+            {
+                var finalType = Type.GetFinalPointee() ?? Type;
+
+                if (finalType is TagType)
+                    return false;
+
+                if (finalType is not TemplateSpecializationType type)
+                {
+                    var injectedClassNameType = (InjectedClassNameType)finalType;
+                    type = (TemplateSpecializationType)injectedClassNameType.InjectedSpecializationType.Type;
+                }
+                var checker = new TypeIgnoreChecker(TypeMapDatabase);
+                type.Arguments[0].Type.Visit(checker);
+
+                return checker.IsIgnored;
+            }
+        }
+
+        public override Type SignatureType(TypePrinterContext ctx)
+        {
+            if (ctx.Kind == TypePrinterContextKind.Managed)
+                return new CustomType($"System.Nullable<{ctx.GetTemplateParameterList()}>");
+
+            var typePrinter = new CSharpTypePrinter(null);
+            typePrinter.PushContext(TypePrinterContextKind.Native);
+
+            if (ctx.Type.Desugar().IsAddress())
+                return new CustomType(typePrinter.IntPtrType);
+
+            ClassTemplateSpecialization optionalClass = GetOptionalClass(ctx.Type);
+            return new CustomType(optionalClass.Visit(typePrinter).Type);
+        }
+
+        public override void MarshalToNative(MarshalContext ctx)
+        {
+            Type type = ctx.Parameter.Type.Desugar();
+            ClassTemplateSpecialization optional = GetOptionalClass(type);
+            var typePrinter = new CSharpTypePrinter(ctx.Context);
+
+            if (!ctx.Parameter.Type.Desugar().IsAddress() &&
+                ctx.MarshalKind != MarshalKind.NativeField)
+                ctx.Return.Write($"*({typePrinter.PrintNative(optional)}*) ");
+
+            string qualifiedOptional = GetQualifiedOptionalClass(optional);
+            var assign = optional.Methods.First(m => m.OriginalName == "operator=");
+            if (ctx.MarshalKind == MarshalKind.NativeField)
+            {
+                string var;
+                if (ctx.ReturnVarName.LastIndexOf('.') > ctx.ReturnVarName.LastIndexOf("->"))
+                {
+                    var = Generator.GeneratedIdentifier(ctx.ArgName);
+                    ctx.Before.WriteLine($"fixed (void* {var} = &{ctx.ReturnVarName})");
+                    ctx.Before.WriteOpenBraceAndIndent();
+                    (ctx as CSharpMarshalContext)!.HasCodeBlock = true;
+                }
+                else
+                {
+                    var = $"&{ctx.ReturnVarName}";
+                }
+                ctx.Return.Write($"{qualifiedOptional}Extensions.{Helpers.InternalStruct}.{assign.Name}(new {typePrinter.IntPtrType}({var}), ");
+                
+                ctx.Return.Write($"{ctx.Parameter.Name})");
+                ctx.ReturnVarName = string.Empty;
+            }
+            else
+            {
+                var varOptional = $"__optional{ctx.ParameterIndex}";
+                ctx.Before.WriteLine($"var {varOptional} = new {optional.Visit(typePrinter)}();");
+
+                ctx.Before.Write($"{qualifiedOptional}Extensions.{assign.Name}({varOptional}, ");
+                
+                ctx.Before.WriteLine($"{ctx.Parameter.Name});");
+
+                ctx.Return.Write($"{varOptional}.{Helpers.InstanceIdentifier}");
+                ctx.Cleanup.WriteLine($"{varOptional}.Dispose({(!Type.IsAddress() || ctx.Parameter?.IsIndirect == true ? "disposing: true, callNativeDtor:false" : string.Empty)});");
+            }
+        }
+
+        public override void MarshalToManaged(MarshalContext ctx)
+        {
+            var type = Type.Desugar(resolveTemplateSubstitution: false);
+            ClassTemplateSpecialization optional = GetOptionalClass(type);
+            var value = optional.Methods.First(m => m.OriginalName == "value");
+            var typePrinter = new CSharpTypePrinter(ctx.Context);
+            string qualifiedOptional = GetQualifiedOptionalClass(optional);
+            string varOptional = $"__optionalRet{ctx.ParameterIndex}";
+
+            bool usePointer = type.IsAddress() || ctx.MarshalKind == MarshalKind.NativeField ||
+                ctx.MarshalKind == MarshalKind.ReturnVariableArray;
+            ctx.Before.WriteLine($"var {varOptional} = {optional.Visit(typePrinter)}.{Helpers.CreateInstanceIdentifier}({(usePointer ? string.Empty : $"new {typePrinter.IntPtrType}(&")}{ctx.ReturnVarName}{(usePointer ? string.Empty : ")")});");
+            ctx.Before.WriteLine($"if (!{varOptional}.HasValue)");
+            ctx.Before.WriteLineIndent("return null;");
+
+            string retValue = $"{qualifiedOptional}Extensions.{value.Name}({varOptional})";
+            if (usePointer)
+            {
+                ctx.Return.Write(retValue);
+            }
+            else
+            {
+                string retString = $"{Generator.GeneratedIdentifier("retValue")}{ctx.ParameterIndex}";
+                ctx.Before.WriteLine($"var {retString} = {retValue};");
+                ctx.Before.WriteLine($"{varOptional}.Dispose();");
+                ctx.Return.Write(retString);
+            }
+        }
+
+        private static string GetQualifiedOptionalClass(ClassTemplateSpecialization optional)
+        {
+            var declContext = optional.TemplatedDecl.TemplatedDecl;
+            var names = new Stack<string>();
+            while (declContext is not TranslationUnit)
+            {
+                var isInlineNamespace = declContext is Namespace { IsInline: true };
+                if (!isInlineNamespace)
+                    names.Push(declContext.Name);
+                declContext = declContext.Namespace;
+            }
+
+            return $"global::{string.Join(".", names)}";
+        }
+
+        private static ClassTemplateSpecialization GetOptionalClass(Type type)
+        {
+            var desugared = type.Desugar();
+            var template = (desugared.GetFinalPointee() ?? desugared).Desugar();
+            
+            if (template is TemplateSpecializationType templateSpecializationType)
+                return templateSpecializationType.GetClassTemplateSpecialization();
+
+            return (ClassTemplateSpecialization)((TagType)template).Declaration;
+        }
+    }
+
+
     [TypeMap("FILE", GeneratorKindID = GeneratorKind.CSharp_ID)]
     public class FILE : TypeMap
     {
