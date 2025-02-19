@@ -40249,18 +40249,19 @@ namespace CppSharp
                     }
                 }
 
-                public global::Std.Optional<uint> NumExpansions
+                public System.Nullable<uint> NumExpansions
                 {
                     get
                     {
-                        return global::Std.Optional<uint>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->numExpansions));
+                        var __optionalRet0 = global::Std.Optional<uint>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->numExpansions));
+                        if (!__optionalRet0.HasValue)
+                            return null;
+                        return global::Std.OptionalExtensions.Value(__optionalRet0);
                     }
 
                     set
                     {
-                        if (ReferenceEquals(value, null))
-                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-                        ((__Internal*)__Instance)->numExpansions = *(global::Std.Optional.__Internal*) value.__Instance;
+                        throw new System.NotImplementedException("Setting std::optional is currently not supported");
                     }
                 }
             }
@@ -40599,18 +40600,19 @@ namespace CppSharp
                     }
                 }
 
-                public global::Std.Optional<uint> PackIndex
+                public System.Nullable<uint> PackIndex
                 {
                     get
                     {
-                        return global::Std.Optional<uint>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->packIndex));
+                        var __optionalRet0 = global::Std.Optional<uint>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->packIndex));
+                        if (!__optionalRet0.HasValue)
+                            return null;
+                        return global::Std.OptionalExtensions.Value(__optionalRet0);
                     }
 
                     set
                     {
-                        if (ReferenceEquals(value, null))
-                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-                        ((__Internal*)__Instance)->packIndex = *(global::Std.Optional.__Internal*) value.__Instance;
+                        throw new System.NotImplementedException("Setting std::optional is currently not supported");
                     }
                 }
 
@@ -41305,18 +41307,19 @@ namespace CppSharp
                     }
                 }
 
-                public global::Std.Optional<uint> NumExpansions
+                public System.Nullable<uint> NumExpansions
                 {
                     get
                     {
-                        return global::Std.Optional<uint>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->numExpansions));
+                        var __optionalRet0 = global::Std.Optional<uint>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->numExpansions));
+                        if (!__optionalRet0.HasValue)
+                            return null;
+                        return global::Std.OptionalExtensions.Value(__optionalRet0);
                     }
 
                     set
                     {
-                        if (ReferenceEquals(value, null))
-                            throw new global::System.ArgumentNullException("value", "Cannot be null because it is passed by value.");
-                        ((__Internal*)__Instance)->numExpansions = *(global::Std.Optional.__Internal*) value.__Instance;
+                        throw new System.NotImplementedException("Setting std::optional is currently not supported");
                     }
                 }
             }

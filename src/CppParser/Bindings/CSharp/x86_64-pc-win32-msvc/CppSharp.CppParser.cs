@@ -40327,8 +40327,7 @@ namespace CppSharp
 
                     set
                     {
-                        throw new NotImplementedException();
-                        ((__Internal*)__Instance)->numExpansions = null;
+                        throw new System.NotImplementedException("Setting std::optional is currently not supported");
                     }
                 }
             }
@@ -40681,8 +40680,7 @@ namespace CppSharp
 
                     set
                     {
-                        throw new NotImplementedException();
-                        ((__Internal*)__Instance)->packIndex = null;
+                        throw new System.NotImplementedException("Setting std::optional is currently not supported");
                     }
                 }
 
@@ -41390,8 +41388,7 @@ namespace CppSharp
 
                     set
                     {
-                        throw new NotImplementedException();
-                        ((__Internal*)__Instance)->numExpansions = null;
+                        throw new System.NotImplementedException("Setting std::optional is currently not supported");
                     }
                 }
             }
