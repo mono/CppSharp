@@ -7,8 +7,7 @@
 
 // Namespace clashes with NamespacesBase.OverlappingNamespace
 // Test whether qualified names turn out right.
-namespace OverlappingNamespace
-{
+namespace OverlappingNamespace {
     class DLL_API InDerivedLib
     {
     public:
@@ -16,7 +15,7 @@ namespace OverlappingNamespace
         Base parentNSComponent;
         ColorsEnum color;
     };
-}
+} // namespace OverlappingNamespace
 
 
 // Using a type imported from a different library.
@@ -46,7 +45,8 @@ class Base3
 {
 };
 
-template <typename T> class TemplateClass;
+template <typename T>
+class TemplateClass;
 
 class DLL_API Derived2 : public Base3
 {
@@ -66,6 +66,7 @@ public:
     typedef DependentFields<int> LocalTypedefSpecialization;
     LocalTypedefSpecialization getLocalTypedefSpecialization();
     Abstract* getAbstract();
+
 private:
     TemplateClass<int> t;
     TemplateClass<Derived> d;
@@ -97,7 +98,7 @@ class DLL_API DerivedFromSecondaryBaseInDependency : public Derived, public Seco
 {
 };
 
-template<typename T>
+template <typename T>
 class CustomAllocator
 {
 public:
@@ -107,7 +108,8 @@ public:
     CustomAllocator() = default;
 
     template <typename U>
-    CustomAllocator(const CustomAllocator<U>&) noexcept {
+    CustomAllocator(const CustomAllocator<U>&) noexcept
+    {
     }
 
     T* allocate(size_t cnt, const void* = 0) { return 0; }
@@ -121,25 +123,24 @@ private:
     std::basic_string<char, std::char_traits<char>, CustomAllocator<char>> customAllocatedString;
 };
 
-template<class T, class Alloc = CustomAllocator<T>>
+template <class T, class Alloc = CustomAllocator<T>>
 using vector = ::std::vector<T, Alloc>;
 
 class DLL_API StdFields
 {
 private:
-   vector<unsigned int, CustomAllocator<unsigned int>> customAllocatedVector;
+    vector<unsigned int, CustomAllocator<unsigned int>> customAllocatedVector;
 };
 
 DLL_API bool operator<<(const Base& b, const char* str);
 
-namespace NamespacesBase
-{
+namespace NamespacesBase {
     class DLL_API ClassInNamespaceNamedAfterDependency
     {
     private:
         Base base;
     };
-}
+} // namespace NamespacesBase
 
 /// Hash set/map base class.
 /** Note that to prevent extra memory use due to vtable pointer, %HashBase intentionally does not declare a virtual destructor
@@ -183,30 +184,31 @@ public:
     int SBAttachInfo(const char* path, bool wait_for);
 
     /*! @brief Destroys the specified window and its context.
-    *
-    *  This function destroys the specified window and its context.  On calling
-    *  this function, no further callbacks will be called for that window.
-    *
-    *  If the context of the specified window is current on the main thread, it is
-    *  detached before being destroyed.
-    *
-    *  @param[in] window The window to destroy.
-    *
-    *  @note The context of the specified window must not be current on any other
-    *  thread when this function is called.
-    *
-    *  @reentrancy This function must not be called from a callback.
-    *
-    *  @thread_safety This function must only be called from the main thread.
-    *
-    *  @since Added in version 3.0.  Replaces `glfwCloseWindow`.
-    */
+     *
+     *  This function destroys the specified window and its context.  On calling
+     *  this function, no further callbacks will be called for that window.
+     *
+     *  If the context of the specified window is current on the main thread, it is
+     *  detached before being destroyed.
+     *
+     *  @param[in] window The window to destroy.
+     *
+     *  @note The context of the specified window must not be current on any other
+     *  thread when this function is called.
+     *
+     *  @reentrancy This function must not be called from a callback.
+     *
+     *  @thread_safety This function must only be called from the main thread.
+     *
+     *  @since Added in version 3.0.  Replaces `glfwCloseWindow`.
+     */
     void glfwDestroyWindow(int* window);
 
     /**
      * <sip:alice@example.net>
      */
-    class LinphoneAddress {};
+    class LinphoneAddress
+    {};
 };
 
 DLL_API void forceUseSpecializations(ForwardedInIndependentHeader value);

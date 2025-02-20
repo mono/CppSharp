@@ -13,7 +13,10 @@ public:
 class ClassWithField
 {
 public:
-    ClassWithField() : Field(10) {}
+    ClassWithField()
+        : Field(10)
+    {
+    }
     int Field;
     int ReturnsField() { return Field; }
 };
@@ -35,8 +38,7 @@ public:
 
 class ClassWithExternalInheritance : public ClassFromAnotherUnit
 {
-
 };
 
-//void FunctionPassClassByRef(Class* klass) { }
-//Class* FunctionReturnsClassByRef() { return new Class(); }
+// void FunctionPassClassByRef(Class* klass) { }
+// Class* FunctionReturnsClassByRef() { return new Class(); }

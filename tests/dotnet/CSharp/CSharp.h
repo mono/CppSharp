@@ -32,7 +32,7 @@ public:
     int& operator[](int i);
     int A;
     int* (*functionPtrReturnsPtrParam)();
-    int (STDCALL *attributedFunctionPtr)();
+    int(STDCALL* attributedFunctionPtr)();
     bool isNoParams();
     void setNoParams();
     void foo(int i);
@@ -51,8 +51,8 @@ public:
     SmallPOD STDCALL getSmallPod_stdcall();
     SmallPOD THISCALL getSmallPod_thiscall();
 
-    int operator ++();
-    int operator --();
+    int operator++();
+    int operator--();
     operator const char*() const;
 
     bool btest[5];
@@ -150,13 +150,16 @@ class DLL_API ForceCreationOfInterface : public Foo, public Bar
 class DLL_API Baz : public Foo, public Bar
 {
 public:
-    class NestedBase1 {
+    class NestedBase1
+    {
         int f1;
         double f2;
         void* f3;
     };
-    class NestedBase2 {};
-    class NestedDerived : public NestedBase1, public NestedBase2 {};
+    class NestedBase2
+    {};
+    class NestedDerived : public NestedBase1, public NestedBase2
+    {};
 
     Baz();
     Baz(Bar::Items item);
@@ -168,7 +171,7 @@ public:
     void setMethod(ProtectedNestedEnum value);
     int type() const override;
 
-    typedef bool (*FunctionTypedef)(const void *);
+    typedef bool (*FunctionTypedef)(const void*);
     FunctionTypedef functionTypedef;
 };
 
@@ -222,6 +225,7 @@ public:
 
     Bar::Items itemsByValue() const;
     void setItemsByValue(Bar::Items value);
+
 private:
     Bar::Items _items;
     Bar::Items _itemsByValue;
@@ -238,6 +242,7 @@ public:
     int check();
     QFlags<TestFlag> returnsQFlags();
     void takesQFlags(const QFlags<int> f);
+
 private:
     QFlags<TestFlag> qFlags;
 };
@@ -293,6 +298,7 @@ public:
     void name();
     void Name();
     int property();
+
 protected:
     int _property;
 };
@@ -317,7 +323,8 @@ public:
     virtual ~UsesPointerToEnumInParamOfVirtual();
     virtual QFlags<Flags> hasPointerToEnumInParam(const QFlags<Flags>& pointerToEnum) const;
     static QFlags<Flags> callOverrideOfHasPointerToEnumInParam(
-        const UsesPointerToEnumInParamOfVirtual* object, const QFlags<Flags>& pointerToEnum);
+        const UsesPointerToEnumInParamOfVirtual* object,
+        const QFlags<Flags>& pointerToEnum);
 };
 
 DLL_API Flags operator|(Flags lhs, Flags rhs);
@@ -334,8 +341,9 @@ UntypedFlags operator|(UntypedFlags lhs, UntypedFlags rhs);
 struct DLL_API QGenericArgument
 {
 public:
-    QGenericArgument(const char* name = 0, const void *data = 0);
+    QGenericArgument(const char* name = 0, const void* data = 0);
     void* fixedArrayInValueType[1];
+
 private:
     const char* _name;
 };
@@ -346,13 +354,13 @@ class TestObjectMapWithClassDerivedFromStruct : public QGenericArgument
 
 #define DEFAULT_INT (2 * 1000UL + 500UL)
 
-namespace Qt
-{
-    enum GlobalColor {
+namespace Qt {
+    enum GlobalColor
+    {
         black,
         white,
     };
-}
+} // namespace Qt
 
 class DLL_API QColor
 {
@@ -383,14 +391,13 @@ public:
     QRect(QPoint p, QSize s);
 };
 
-namespace lowerCaseNameSpace
-{
+namespace lowerCaseNameSpace {
     enum class Enum
     {
         Item1,
         Item2
     };
-}
+} // namespace lowerCaseNameSpace
 
 class DLL_API DefaultZeroMappedToEnum
 {
@@ -402,7 +409,8 @@ enum class Empty : unsigned long long int
 {
 };
 
-class _ClassWithLeadingUnderscore {
+class _ClassWithLeadingUnderscore
+{
 };
 
 const int ConstFlag1 = 1;
@@ -432,7 +440,7 @@ public:
     ~MethodsWithDefaultValues();
     void defaultPointer(Foo* ptr1 = 0, Foo* ptr2 = nullptr);
     void defaultVoidStar(void* ptr = 0);
-    void defaultFunctionPointer(void(*functionPtr)(int p) = nullptr);
+    void defaultFunctionPointer(void (*functionPtr)(int p) = nullptr);
     void defaultValueType(QGenericArgument valueType = QGenericArgument());
     void defaultChar(char c = 'a', char uc = u'u', char Uc = U'U', char Lc = L'L', unsigned char b = 'z');
     void defaultString(const wchar_t* wideString = L"Str");
@@ -464,7 +472,7 @@ public:
     void defaultImplicitCtorEnum(Baz arg = Bar::Item1);
     void defaultImplicitCtorEnumTwo(Bar arg = Bar::Items::Item1);
     void defaultIntWithLongExpression(unsigned int i = DEFAULT_INT);
-    void defaultRefTypeEnumImplicitCtor(const QColor &fillColor = Qt::white);
+    void defaultRefTypeEnumImplicitCtor(const QColor& fillColor = Qt::white);
     void rotate4x4Matrix(float angle, float x, float y, float z = 0.0f);
     void defaultPointerToValueType(QGenericArgument* pointer = 0);
     void defaultDoubleWithoutF(double d1 = 1.0, double d2 = 1.);
@@ -492,6 +500,7 @@ public:
     SmallPOD* defaultWithNonPrimitiveType(SmallPOD& pod = DefaultSmallPODInstance);
     int DefaultWithParamNamedSameAsMethod(int DefaultWithParamNamedSameAsMethod, const Foo& defaultArg = Foo());
     int getA();
+
 private:
     Foo m_foo;
 };
@@ -502,6 +511,7 @@ class HasPureVirtualWithDefaultArg
 public:
     virtual ~HasPureVirtualWithDefaultArg() {}
     virtual void pureVirtualWithDefaultArg(Foo* foo = nullptr) = 0;
+
 protected:
     HasPureVirtualWithDefaultArg() {}
 };
@@ -510,8 +520,10 @@ class DLL_API HasOverridesWithChangedAccessBase
 {
 public:
     virtual void privateOverride(int i = 5);
+
 protected:
     virtual void publicOverride();
+
 private:
     virtual void differentIncreasedAccessOverride();
 };
@@ -520,6 +532,7 @@ class DLL_API HasOverridesWithChangedAccess : public HasOverridesWithChangedAcce
 {
 public:
     void publicOverride();
+
 private:
     virtual void privateOverride(int i);
 };
@@ -544,9 +557,7 @@ public:
     virtual int property() = 0;
 };
 
-class DLL_API IgnoredType
-{
-};
+class DLL_API IgnoredType{};
 
 class DLL_API IgnoredTypeInheritingNonIgnoredWithNoEmptyCtor : public P
 {
@@ -555,8 +566,9 @@ class DLL_API IgnoredTypeInheritingNonIgnoredWithNoEmptyCtor : public P
 class DLL_API HasOverriddenInManaged
 {
 public:
-    void setOverriddenInManaged(Baz *value);
+    void setOverriddenInManaged(Baz* value);
     int callOverriddenInManaged();
+
 private:
     Baz* overriddenInManaged = 0;
 };
@@ -566,6 +578,7 @@ class DLL_API PropertyWithIgnoredType
 public:
     IgnoredType ignoredType();
     void setIgnoredType(const IgnoredType& value);
+
 private:
     IgnoredType _ignoredType;
 };
@@ -611,8 +624,10 @@ public:
     StructWithPrivateFields(int simplePrivateField, Foo complexPrivateField);
     int getSimplePrivateField();
     Foo getComplexPrivateField();
+
 protected:
     int protectedField;
+
 private:
     int simplePrivateField;
     Foo complexPrivateField;
@@ -629,14 +644,15 @@ class QMap
     };
 
 public:
-    QMap(const QMap<Key, T> &other);
+    QMap(const QMap<Key, T>& other);
 
     class const_iterator;
 
     class iterator
     {
     public:
-        int test() {
+        int test()
+        {
             return 1;
         }
         friend class const_iterator;
@@ -653,11 +669,32 @@ public:
 };
 
 #define Q_PROCESSOR_WORDSIZE 8
-template <int> struct QIntegerForSize;
-template <> struct QIntegerForSize<1> { typedef uint8_t  Unsigned; typedef int8_t  Signed; };
-template <> struct QIntegerForSize<2> { typedef uint16_t Unsigned; typedef int16_t Signed; };
-template <> struct QIntegerForSize<4> { typedef uint32_t Unsigned; typedef int32_t Signed; };
-template <> struct QIntegerForSize<8> { typedef uint64_t Unsigned; typedef int64_t Signed; };
+template <int>
+struct QIntegerForSize;
+template <>
+struct QIntegerForSize<1>
+{
+    typedef uint8_t Unsigned;
+    typedef int8_t Signed;
+};
+template <>
+struct QIntegerForSize<2>
+{
+    typedef uint16_t Unsigned;
+    typedef int16_t Signed;
+};
+template <>
+struct QIntegerForSize<4>
+{
+    typedef uint32_t Unsigned;
+    typedef int32_t Signed;
+};
+template <>
+struct QIntegerForSize<8>
+{
+    typedef uint64_t Unsigned;
+    typedef int64_t Signed;
+};
 typedef QIntegerForSize<Q_PROCESSOR_WORDSIZE>::Signed qregisterint;
 typedef QIntegerForSize<Q_PROCESSOR_WORDSIZE>::Unsigned qregisteruint;
 
@@ -684,6 +721,7 @@ public:
     virtual ~HasVirtualDtor2();
     HasVirtualDtor1* getHasVirtualDtor1();
     virtual void virtualFunction(const HasVirtualDtor1& param1, const HasVirtualDtor1& param2);
+
 private:
     HasVirtualDtor1* hasVirtualDtor1;
 };
@@ -696,6 +734,7 @@ public:
     HasVirtualDtor2* getHasVirtualDtor2();
     Bar* propertyWithNoVirtualDtor() const;
     void setPropertyWithNoVirtualDtor(Bar* bar);
+
 private:
     HasVirtualDtor2* hasVirtualDtor2;
     Bar* bar;
@@ -727,13 +766,12 @@ public:
     void setProperty(int value);
 };
 
-class DLL_API TestParamToInterfacePassBaseOne
-{
-};
+class DLL_API TestParamToInterfacePassBaseOne{};
 
 class DLL_API TestParamToInterfacePassBaseTwo
 {
     int m;
+
 public:
     int getM();
     void setM(int n);
@@ -772,7 +810,7 @@ void DLL_API freeFunctionWithUnsupportedDefaultArg(Foo foo = Foo());
 class DLL_API TypeMappedWithOperator
 {
 public:
-    int operator |(int i);
+    int operator|(int i);
 };
 
 class HasOverrideOfHasPropertyWithDerivedType;
@@ -792,10 +830,11 @@ public:
 
 class DLL_API MultiOverloadPtrToRef
 {
-    int * arr;
+    int* arr;
+
 public:
     MultiOverloadPtrToRef(int* param);
-    void funcPrimitivePtrToRef(int *pOne, char* pTwo, float* pThree, bool* pFour = 0);
+    void funcPrimitivePtrToRef(int* pOne, char* pTwo, float* pThree, bool* pFour = 0);
     void funcPrimitivePtrToRefWithDefVal(int* pOne, char* pTwo, Foo* pThree, int* pFour = 0);
     virtual void funcPrimitivePtrToRefWithMultiOverload(int* pOne, char* pTwo, Foo* pThree, int* pFour = 0, long* pFive = 0);
 
@@ -849,14 +888,14 @@ class DLL_API DerivesFromTemplateInstantiation : public TemplateWithDependentFie
 {
 };
 
-DLL_API int PassConstantArrayRef(int(&arr)[2]);
+DLL_API int PassConstantArrayRef(int (&arr)[2]);
 
 class DLL_API TestComparison
 {
 public:
     int A;
     float B;
-    bool operator ==(const TestComparison& other) const;
+    bool operator==(const TestComparison& other) const;
 };
 
 class DLL_API OverridePropertyFromIndirectPrimaryBaseBase
@@ -906,6 +945,7 @@ class DLL_API QWidget : public QObject, QPaintDevice
 public:
     QWidget();
     virtual void event();
+
 private:
     QObject child;
 };
@@ -971,26 +1011,23 @@ class DLL_API ClassWithVirtualBase : public virtual Foo
 {
 };
 
-namespace NamespaceA
-{
-    CS_VALUE_TYPE class DLL_API A
-    {
-    };
+namespace NamespaceA {
+    CS_VALUE_TYPE class DLL_API A{};
 }
 
-namespace NamespaceB
-{
+namespace NamespaceB {
     class DLL_API B
     {
     public:
-        void Function(CS_OUT NamespaceA::A &a);
+        void Function(CS_OUT NamespaceA::A& a);
     };
-}
+} // namespace NamespaceB
 
 class DLL_API HasPrivateVirtualProperty
 {
 public:
     virtual ~HasPrivateVirtualProperty();
+
 private:
     virtual int property();
     virtual void protectedAbstractMethod() = 0;
@@ -1004,6 +1041,7 @@ protected:
     virtual void protectedAbstractMethod();
     virtual void protectedMethod();
     virtual int protectedProperty();
+
 private:
     virtual int property();
 };
@@ -1031,13 +1069,15 @@ public:
 
 // https://github.com/mono/CppSharp/issues/1283
 namespace NamespaceWithVirtualPropertyClass {
-    class DLL_API HasOverriddenPropertyInNamespacedClass {
+    class DLL_API HasOverriddenPropertyInNamespacedClass
+    {
     public:
         virtual int property() = 0;
     };
-}
+} // namespace NamespaceWithVirtualPropertyClass
 
-class DLL_API TestOverrideOfPropertyInNamespacedClass : public NamespaceWithVirtualPropertyClass::HasOverriddenPropertyInNamespacedClass {
+class DLL_API TestOverrideOfPropertyInNamespacedClass : public NamespaceWithVirtualPropertyClass::HasOverriddenPropertyInNamespacedClass
+{
 public:
     virtual int property() override;
 };
@@ -1068,7 +1108,8 @@ public:
 DLL_API extern const unsigned char variableWithFixedPrimitiveArray[2];
 DLL_API extern const unsigned int variableWithVariablePrimitiveArray[];
 
-class DLL_API StaticVariables {
+class DLL_API StaticVariables
+{
 public:
     static const bool Boolean;
     static const char Chr;
@@ -1083,40 +1124,72 @@ public:
     static const void* VoidPtrArray[2];
 };
 
-DLL_API constexpr double ConstexprCreateDoubleValue(double value) {
+DLL_API constexpr double ConstexprCreateDoubleValue(double value)
+{
     return value;
 }
 
-class DLL_API VariablesWithInitializer {
+class DLL_API VariablesWithInitializer
+{
 public:
-   static constexpr const char* String = "Str";
-   static constexpr const wchar_t* WideString = L"Str";
-   static constexpr bool Boolean = true;
-   static constexpr char Chr = 'G';
-   static constexpr unsigned char UChr = (unsigned char)'G';
-   static constexpr int Int = 1020304050;
-   static constexpr int IntSum = Int + 500;
-   static constexpr float Float = 0.5020f;
-   static constexpr double Double = 0.700020235;
-   static constexpr double DoubleSum = 0.700020235 + 23.17376;
-   static constexpr double DoubleFromConstexprFunction = ConstexprCreateDoubleValue(0.700020235 + 23.17376);
-   static constexpr int64_t Int64 = 602030405045;
-   static constexpr uint64_t UInt64 = 9602030405045;
-   static constexpr const char* StringArray1[1] { "Str" "F,\"or" };
-   static constexpr const char* StringArray3[3] { "Str" "F,\"or", "C#", String };
-   static constexpr const char* StringArray30[30] {
-       "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str",
-       "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str",
-       "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str", "Str",
-   };
-   static constexpr const char* StringArray3EmptyInitList[3] { };
-   static constexpr const wchar_t* WideStringArray[2] { L"Str", L"C#" };
-   static constexpr char ChrArray[2] { 'A', 'B' };
-   static constexpr unsigned char ByteArray[2] { 'A', 10 };
-   static constexpr int IntArray[2] = { 1020304050, 1526374850 };
-   static constexpr int IntArray3[3] = { 1020304050, 1526374850 };
-   static constexpr bool BoolArray[2] { false, true };
-   static constexpr float FloatArray[2] { 0.5020f, 0.6020f };
+    static constexpr const char* String = "Str";
+    static constexpr const wchar_t* WideString = L"Str";
+    static constexpr bool Boolean = true;
+    static constexpr char Chr = 'G';
+    static constexpr unsigned char UChr = (unsigned char)'G';
+    static constexpr int Int = 1020304050;
+    static constexpr int IntSum = Int + 500;
+    static constexpr float Float = 0.5020f;
+    static constexpr double Double = 0.700020235;
+    static constexpr double DoubleSum = 0.700020235 + 23.17376;
+    static constexpr double DoubleFromConstexprFunction = ConstexprCreateDoubleValue(0.700020235 + 23.17376);
+    static constexpr int64_t Int64 = 602030405045;
+    static constexpr uint64_t UInt64 = 9602030405045;
+    static constexpr const char* StringArray1[1]{ "Str"
+                                                  "F,\"or" };
+    static constexpr const char* StringArray3[3]{ "Str"
+                                                  "F,\"or",
+                                                  "C#", String };
+    static constexpr const char* StringArray30[30]{
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+        "Str",
+    };
+    static constexpr const char* StringArray3EmptyInitList[3]{};
+    static constexpr const wchar_t* WideStringArray[2]{ L"Str", L"C#" };
+    static constexpr char ChrArray[2]{ 'A', 'B' };
+    static constexpr unsigned char ByteArray[2]{ 'A', 10 };
+    static constexpr int IntArray[2] = { 1020304050, 1526374850 };
+    static constexpr int IntArray3[3] = { 1020304050, 1526374850 };
+    static constexpr bool BoolArray[2]{ false, true };
+    static constexpr float FloatArray[2]{ 0.5020f, 0.6020f };
 };
 
 // Try to precipitate an ArgumentOutOfRangeException in ExpressionHelper.CheckForString.
@@ -1151,7 +1224,7 @@ public:
 
     void UpdateString(const char32_t* s);
     const char32_t* RetrieveString();
-    void functionPointerUTF32(void(*ptr)(const char32_t*));
+    void functionPointerUTF32(void (*ptr)(const char32_t*));
 };
 
 class DLL_API TestChar16String
@@ -1213,6 +1286,7 @@ class DLL_API HasMissingObjectOnVirtualCall
 public:
     int makeMissingObjectOnVirtualCall();
     void setMissingObjectOnVirtualCall(MissingObjectOnVirtualCall* value);
+
 private:
     MissingObjectOnVirtualCall* stackOverflowOnVirtualCall;
 };
@@ -1242,6 +1316,7 @@ public:
     virtual int abstractInSecondaryBase();
     virtual int abstractReturnsFieldInPrimaryBase();
     virtual int abstractReturnsFieldInSecondaryBase();
+
 private:
     int field;
 };
@@ -1257,6 +1332,7 @@ class DLL_API HasGetterAndOverriddenSetter : public HasBaseSetter
 public:
     void setBaseSetter(int value);
     int baseSetter();
+
 protected:
     int field;
 };
@@ -1275,7 +1351,8 @@ struct DLL_API DuplicateDeclaredStruct;
 DLL_API DuplicateDeclaredStruct* createDuplicateDeclaredStruct(int i);
 DLL_API int useDuplicateDeclaredStruct(DuplicateDeclaredStruct* s);
 
-struct DLL_API ForwardDeclaredStruct {
+struct DLL_API ForwardDeclaredStruct
+{
     int i = 0;
 };
 
@@ -1291,22 +1368,26 @@ struct StructTestArrayTypeFromTypedef
 #define MY_MACRO_TEST_1 '1'
 #define MY_MACRO_TEST_2 '2'
 
-#define MY_MACRO_TEST2_0     0_invalid
-#define MY_MACRO_TEST2_1     1
-#define MY_MACRO_TEST2_2     0x2
-#define MY_MACRO_TEST2_3     (1 << 2)
-#define MY_MACRO_TEST2_1_2   (MY_MACRO_TEST2_1 | MY_MACRO_TEST2_2)
+#define MY_MACRO_TEST2_0 0_invalid
+#define MY_MACRO_TEST2_1 1
+#define MY_MACRO_TEST2_2 0x2
+#define MY_MACRO_TEST2_3 (1 << 2)
+#define MY_MACRO_TEST2_1_2 (MY_MACRO_TEST2_1 | MY_MACRO_TEST2_2)
 #define MY_MACRO_TEST2_1_2_3 (MY_MACRO_TEST2_1 | MY_MACRO_TEST2_2 | \
-                                MY_MACRO_TEST2_3)
-#define MY_MACRO_TEST2_4     (1 << 3)
-#define MY_MACRO_TEST2_ALL   (1 << 4) - 1
+                              MY_MACRO_TEST2_3)
+#define MY_MACRO_TEST2_4 (1 << 3)
+#define MY_MACRO_TEST2_ALL (1 << 4) - 1
 
 #define SIGNED_MACRO_VALUES_TO_ENUM_TEST_1 1 << 5
 #define SIGNED_MACRO_VALUES_TO_ENUM_TEST_2 1 << 22
 #define SIGNED_MACRO_VALUES_TO_ENUM_TEST_3 1L << 32
 #define SIGNED_MACRO_VALUES_TO_ENUM_TEST_4 -1
 
-enum TEST_BOOL_VALUED_ENUMS { TEST_BOOL_VALUED_ENUMS_V1 = true, TEST_BOOL_VALUED_ENUMS_V2 = false};
+enum TEST_BOOL_VALUED_ENUMS
+{
+    TEST_BOOL_VALUED_ENUMS_V1 = true,
+    TEST_BOOL_VALUED_ENUMS_V2 = false
+};
 #define TEST_BOOL_VALUED_ENUMS_V3 42
 
 struct DLL_API ComplexArrayElement
@@ -1337,7 +1418,7 @@ extern const ComplexArrayElement ArrayOfVariableSize[];
 
 DLL_API void useStdStringJustAsParameter(std::string s);
 
-typedef int (typedefedFuncPtr)(Foo* a, Bar b);
+typedef int(typedefedFuncPtr)(Foo* a, Bar b);
 int DLL_API funcWithTypedefedFuncPtrAsParam(typedefedFuncPtr* func);
 
 class DLL_API TestDuplicateDelegate
@@ -1347,8 +1428,7 @@ public:
 };
 
 
-inline namespace InlineNamespace
-{
+inline namespace InlineNamespace {
     DLL_API void FunctionInsideInlineNamespace();
 }
 
@@ -1356,13 +1436,11 @@ class DLL_API TestArrays
 {
 public:
     int takeArrays(Foo* arrayOfPointersToObjects[], int arrayOfPrimitives[], Foo arrayOfObjects[]) const;
-    int takeArrays(Foo* fixedArrayOfPointersToObjects[3], int fixedArrayOfPrimitives[4],
-                   int* fixedArrayOfPointersToPrimitives[5]) const;
+    int takeArrays(Foo* fixedArrayOfPointersToObjects[3], int fixedArrayOfPrimitives[4], int* fixedArrayOfPointersToPrimitives[5]) const;
     std::string takeStringArray(const char* arrayOfStrings[]);
     std::string takeConstStringArray(const char* const arrayOfStrings[]);
     virtual int virtualTakeArrays(Foo* arrayOfPointersToObjects[], int arrayOfPrimitives[], Foo arrayOfObjects[]) const;
-    virtual int virtualTakeArrays(Foo* fixedArrayOfPointersToObjects[3], int fixedArrayOfPrimitives[4],
-                                  int* fixedArrayOfPointersToPrimitives[5]) const;
+    virtual int virtualTakeArrays(Foo* fixedArrayOfPointersToObjects[3], int fixedArrayOfPrimitives[4], int* fixedArrayOfPointersToPrimitives[5]) const;
 };
 
 
@@ -1376,12 +1454,9 @@ public:
     Foo* fixedArrayOfPointers[3];
 };
 
-struct DLL_API CSharp
-{
-};
+struct DLL_API CSharp{};
 
 static int FOOBAR_CONSTANT = 42;
-
 
 
 class DLL_API SimpleInterface
@@ -1401,6 +1476,7 @@ public:
     int size();
     void* get(int n);
     void setInterface(SimpleInterface* i);
+
 private:
     SimpleInterface* interface;
 };
@@ -1409,7 +1485,7 @@ class DLL_API HasFunctionPtrField
 {
 public:
     int (*functionPtrField)(const char*);
-    int (*functionPtrTakeFunctionPtrField)(int(*TakenInFuncPtrField)());
+    int (*functionPtrTakeFunctionPtrField)(int (*TakenInFuncPtrField)());
 };
 
 DLL_API void va_listFunction(va_list v);
@@ -1423,14 +1499,19 @@ typedef QFlags<TestFlag> TestFlags;
 DLL_API void takeMappedEnum(TestFlag value);
 DLL_API void takeMappedEnum(TestFlags value);
 
-struct {
-    struct {
-        struct {
-            int(*forIntegers)(int b, short s, unsigned int i);
-            struct {
+struct
+{
+    struct
+    {
+        struct
+        {
+            int (*forIntegers)(int b, short s, unsigned int i);
+            struct
+            {
                 int i;
             } APIHost;
-            struct {
+            struct
+            {
                 int i;
             } Method;
         } example;
@@ -1440,26 +1521,29 @@ struct {
 typedef int boolean_t;
 DLL_API boolean_t takeTypemapTypedefParam(boolean_t b);
 
-class DLL_API TestAnonymousMemberNameCollision : public ClassUsingUnion {
-
+class DLL_API TestAnonymousMemberNameCollision : public ClassUsingUnion
+{
 };
 
-namespace CXXRecordDeclWithoutDefinition
-{
-    template<typename... T>
+namespace CXXRecordDeclWithoutDefinition {
+    template <typename... T>
     struct list;
 
-    template<typename T>
+    template <typename T>
     struct it;
 
-    template <> struct it<list<>> { };
-    template <> struct it<list<> const> { };
-}
+    template <>
+    struct it<list<>>
+    {};
+    template <>
+    struct it<list<> const>
+    {};
+} // namespace CXXRecordDeclWithoutDefinition
 
-template<int... n>
+template <int... n>
 struct TestVariableWithoutType
 {
-    template<typename... Args>
+    template <typename... Args>
     static constexpr int create(Args... args)
     {
         return {};
@@ -1471,15 +1555,19 @@ struct TestVariableWithoutType
 struct DLL_API ClassZeroAllocatedMemoryTest
 {
     int p1;
-    struct { int p2p1; int p2p2; } p2;
+    struct
+    {
+        int p2p1;
+        int p2p2;
+    } p2;
     bool p3;
     char p4;
 };
 
 struct DLL_API ConversionFunctions
 {
-    operator short* ();
-    operator short& ();
+    operator short*();
+    operator short&();
     operator short();
     operator const short*() const;
     operator const short&() const;
@@ -1490,9 +1578,12 @@ struct DLL_API ConversionFunctions
 
 struct DLL_API ClassCustomTypeAlignment
 {
-    struct alignas(1) Align1 { };
-    struct alignas(8) Align8 { };
-    struct alignas(16) Align16 {
+    struct alignas(1) Align1
+    {};
+    struct alignas(8) Align8
+    {};
+    struct alignas(16) Align16
+    {
         double a;
         double b;
     };
@@ -1515,7 +1606,7 @@ struct DLL_API ClassMicrosoftObjectAlignmentBase
     uint8_t u8;
     double dbl;
     int16_t i16;
-    virtual void Method() { }
+    virtual void Method() {}
 };
 
 struct DLL_API ClassMicrosoftObjectAlignment : ClassMicrosoftObjectAlignmentBase
@@ -1533,11 +1624,9 @@ struct DLL_API StructWithEmbeddedArrayOfStructObjectAlignment
     EmbeddedStruct embedded_struct[2];
 };
 
-class DLL_API ProtectedConstructorDestructor
-{
-protected:
-    ProtectedConstructorDestructor() {}
-    ~ProtectedConstructorDestructor() {}
+class DLL_API ProtectedConstructorDestructor{
+    protected :
+        ProtectedConstructorDestructor(){} ~ProtectedConstructorDestructor(){}
 };
 
 DLL_API extern const unsigned ClassCustomTypeAlignmentOffsets[5];
@@ -1550,7 +1639,10 @@ DLL_API const wchar_t* TestCSharpStringWide(const wchar_t* in, CS_OUT const wcha
 DLL_API const char16_t* TestCSharpString16(const char16_t* in, CS_OUT const char16_t** out);
 DLL_API const char32_t* TestCSharpString32(const char32_t* in, CS_OUT const char32_t** out);
 
-struct DLL_API FTIStruct { int a; };
+struct DLL_API FTIStruct
+{
+    int a;
+};
 
 DLL_API FTIStruct TestFunctionToStaticMethod(FTIStruct* bb);
 DLL_API int TestFunctionToStaticMethodStruct(FTIStruct* bb, FTIStruct defaultValue);
@@ -1558,30 +1650,38 @@ DLL_API int TestFunctionToStaticMethodRefStruct(FTIStruct* bb, FTIStruct& defaul
 DLL_API int TestFunctionToStaticMethodConstStruct(FTIStruct* bb, const FTIStruct defaultValue);
 DLL_API int TestFunctionToStaticMethodConstRefStruct(FTIStruct* bb, const FTIStruct& defaultValue);
 
-class DLL_API TestClass { int a; };
+class DLL_API TestClass
+{
+    int a;
+};
 
 DLL_API int TestClassFunctionToInstanceMethod(TestClass* bb, int value);
 DLL_API int TestClassFunctionToInstanceMethod(TestClass* bb, FTIStruct& cc);
 
-class ClassWithoutNativeToManaged { };
+class ClassWithoutNativeToManaged
+{};
 
-struct DLL_API ClassWithIntValue {
+struct DLL_API ClassWithIntValue
+{
     int value;
 };
 
-DLL_API inline ClassWithIntValue* ModifyCore(CS_IN_OUT ClassWithIntValue*& pClass) {
+DLL_API inline ClassWithIntValue* ModifyCore(CS_IN_OUT ClassWithIntValue*& pClass)
+{
     pClass->value = 10;
     return nullptr;
 }
 
-DLL_API inline ClassWithIntValue* CreateCore(CS_IN_OUT ClassWithIntValue*& pClass) {
+DLL_API inline ClassWithIntValue* CreateCore(CS_IN_OUT ClassWithIntValue*& pClass)
+{
     pClass = new ClassWithIntValue();
     pClass->value = 20;
     return nullptr;
 }
 
 
-struct DLL_API RuleOfThreeTester {
+struct DLL_API RuleOfThreeTester
+{
     int a;
     static int constructorCalls;
     static int destructorCalls;
@@ -1596,7 +1696,8 @@ struct DLL_API RuleOfThreeTester {
     RuleOfThreeTester& operator=(const RuleOfThreeTester& other);
 };
 
-struct DLL_API CallByValueInterface {
+struct DLL_API CallByValueInterface
+{
     virtual void CallByValue(RuleOfThreeTester value) = 0;
     virtual void CallByReference(RuleOfThreeTester& value) = 0;
     virtual void CallByPointer(RuleOfThreeTester* value) = 0;
@@ -1609,6 +1710,7 @@ void DLL_API CallCallByValueInterfacePointer(CallByValueInterface*);
 class DLL_API PointerTester
 {
     int a;
+
 public:
     PointerTester();
     bool IsDefaultInstance();
@@ -1617,10 +1719,12 @@ public:
 
 DLL_API extern PointerTester* PointerToClass;
 
-union DLL_API UnionTester {
+union DLL_API UnionTester
+{
     float a;
     int b;
-    inline bool operator ==(const UnionTester& other) const {
+    inline bool operator==(const UnionTester& other) const
+    {
         return b == other.b;
     }
 };
@@ -1628,42 +1732,48 @@ union DLL_API UnionTester {
 int DLL_API ValueTypeOutParameter(CS_OUT UnionTester* testerA, CS_OUT UnionTester* testerB);
 
 template <class T>
-class Optional {
+class Optional
+{
 public:
     T m_value;
     bool m_hasValue;
 
-    Optional() {
+    Optional()
+    {
         m_hasValue = false;
     }
 
-    Optional(T value) {
+    Optional(T value)
+    {
         m_value = std::move(value);
         m_hasValue = true;
     }
 
-    inline bool operator ==(const Optional<T>& rhs) const {
+    inline bool operator==(const Optional<T>& rhs) const
+    {
         return (m_hasValue == rhs.m_hasValue && (!m_hasValue || m_value == rhs.m_value));
     }
 
-    inline bool operator ==(const T& rhs) const {
+    inline bool operator==(const T& rhs) const
+    {
         return (m_hasValue && m_value == rhs);
     }
 };
 
 // We just need a method that uses various instantiations of Optional.
-inline void DLL_API InstantiateOptionalTemplate(Optional<unsigned int>, Optional<std::string>,
-    Optional<TestComparison>, Optional<char*>, Optional<UnionTester>) { }
+inline void DLL_API InstantiateOptionalTemplate(Optional<unsigned int>, Optional<std::string>, Optional<TestComparison>, Optional<char*>, Optional<UnionTester>) {}
 
-CS_VALUE_TYPE class DLL_API ValueType {
+CS_VALUE_TYPE class DLL_API ValueType
+{
 public:
-    ValueType() { }
+    ValueType() {}
 
     std::string string_member;
     const char* char_ptr_member;
 };
 
-CS_VALUE_TYPE class DLL_API ValueTypeNoCtor {
+CS_VALUE_TYPE class DLL_API ValueTypeNoCtor
+{
 public:
     std::string string_member;
     const char* char_ptr_member;

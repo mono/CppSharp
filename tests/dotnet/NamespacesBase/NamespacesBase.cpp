@@ -16,11 +16,13 @@ int Base::parent()
     return 0;
 }
 
-Base2::Base2() : Base()
+Base2::Base2()
+    : Base()
 {
 }
 
-Base2::Base2(int i) : Base(i)
+Base2::Base2(int i)
+    : Base(i)
 {
 }
 

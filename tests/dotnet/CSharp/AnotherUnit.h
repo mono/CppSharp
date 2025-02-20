@@ -23,6 +23,7 @@ public:
     void function(bool* ok = 0);
     typedef void HasPointerToEnum(Property* pointerToEnum);
     HasPointerToEnum* hasPointerToEnum;
+
 protected:
     void protectedFunction();
     int protectedProperty();
@@ -52,8 +53,7 @@ public:
     ~MultipleInheritance();
 };
 
-namespace HasFreeConstant
-{
+namespace HasFreeConstant {
     extern const int DLL_API FREE_CONSTANT_IN_NAMESPACE;
     extern const std::string DLL_API STD_STRING_CONSTANT;
-}
+} // namespace HasFreeConstant

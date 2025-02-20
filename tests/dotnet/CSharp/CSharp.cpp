@@ -4,7 +4,8 @@ Foo::Foo(const QString& name)
 {
 }
 
-Foo::Foo(const char* name) : publicFieldMappedToEnum(TestFlag::Flag2)
+Foo::Foo(const char* name)
+    : publicFieldMappedToEnum(TestFlag::Flag2)
 {
     A = 10;
     P = 50;
@@ -14,7 +15,8 @@ Foo::Foo(const char* name) : publicFieldMappedToEnum(TestFlag::Flag2)
     }
 }
 
-Foo::Foo(int a, int p) : publicFieldMappedToEnum(TestFlag::Flag2)
+Foo::Foo(int a, int p)
+    : publicFieldMappedToEnum(TestFlag::Flag2)
 {
     A = a;
     P = p;
@@ -28,8 +30,11 @@ Foo::Foo(wchar_t ch)
 {
 }
 
-Foo::Foo(const Foo& other) : A(other.A), P(other.P),
-    templateInAnotherUnit(other.templateInAnotherUnit), _name(other._name)
+Foo::Foo(const Foo& other)
+    : A(other.A)
+    , P(other.P)
+    , templateInAnotherUnit(other.templateInAnotherUnit)
+    , _name(other._name)
 {
 }
 
@@ -106,16 +111,25 @@ int Foo::getGetPropertyCall()
     return 1;
 }
 
-SmallPOD Foo::getSmallPod_cdecl() { return { 10000, 40000 }; }
-SmallPOD Foo::getSmallPod_stdcall() { return { 10000, 40000 }; }
-SmallPOD Foo::getSmallPod_thiscall() { return { 10000, 40000 }; }
+SmallPOD Foo::getSmallPod_cdecl()
+{
+    return { 10000, 40000 };
+}
+SmallPOD Foo::getSmallPod_stdcall()
+{
+    return { 10000, 40000 };
+}
+SmallPOD Foo::getSmallPod_thiscall()
+{
+    return { 10000, 40000 };
+}
 
-int Foo::operator ++()
+int Foo::operator++()
 {
     return 5;
 }
 
-int Foo::operator --()
+int Foo::operator--()
 {
     return 4;
 }
@@ -130,24 +144,25 @@ const Foo& Bar::operator[](int i) const
     return m_foo;
 }
 
-Quux::Quux() : _setterWithDefaultOverload(0)
+Quux::Quux()
+    : _setterWithDefaultOverload(0)
 {
-
 }
 
-Quux::Quux(int i) : Quux()
+Quux::Quux(int i)
+    : Quux()
 {
     priv = i;
 }
 
-Quux::Quux(char c) : Quux()
+Quux::Quux(char c)
+    : Quux()
 {
-
 }
 
-Quux::Quux(Foo f) : Quux()
+Quux::Quux(Foo f)
+    : Quux()
 {
-
 }
 
 Quux::~Quux()
@@ -176,7 +191,6 @@ void Quux::setSetterWithDefaultOverload(Foo* value)
 
 QColor::QColor(Qt::GlobalColor color)
 {
-
 }
 
 Qux::Qux()
@@ -206,7 +220,6 @@ int Qux::farAwayFunc() const
 
 void Qux::obsolete()
 {
-
 }
 
 Qux* Qux::getInterface()
@@ -214,7 +227,7 @@ Qux* Qux::getInterface()
     return this;
 }
 
-void Qux::setInterface(Qux *qux)
+void Qux::setInterface(Qux* qux)
 {
 }
 
@@ -232,7 +245,8 @@ int Qux::type() const
     return 0;
 }
 
-Bar::Bar() : index(0)
+Bar::Bar()
+    : index(0)
 {
 }
 
@@ -254,24 +268,24 @@ Foo& Bar::operator[](int i)
     return m_foo;
 }
 
-Bar Bar::operator *()
+Bar Bar::operator*()
 {
     return *this;
 }
 
-const Bar& Bar::operator *(int m)
+const Bar& Bar::operator*(int m)
 {
     index *= m;
     return *this;
 }
 
-const Bar& Bar::operator ++()
+const Bar& Bar::operator++()
 {
     ++index;
     return *this;
 }
 
-Bar Bar::operator ++(int i)
+Bar Bar::operator++(int i)
 {
     Bar bar = *this;
     bar.index++;
@@ -293,9 +307,14 @@ int Bar::type() const
     return 1;
 }
 
-Baz::Baz() : P(5), functionTypedef(0) {}
+Baz::Baz()
+    : P(5)
+    , functionTypedef(0)
+{
+}
 
-Baz::Baz(Bar::Items item) : Baz()
+Baz::Baz(Bar::Items item)
+    : Baz()
 {
 }
 
@@ -342,18 +361,27 @@ int AbstractProprietor::parent() const
     return 0;
 }
 
-AbstractProprietor::AbstractProprietor() : m_value(0), m_property(0)
+AbstractProprietor::AbstractProprietor()
+    : m_value(0)
+    , m_property(0)
 {
 }
 
-AbstractProprietor::AbstractProprietor(int i) : AbstractProprietor()
+AbstractProprietor::AbstractProprietor(int i)
+    : AbstractProprietor()
 {
 }
 
-Proprietor::Proprietor() : _items(Bar::Items::Item1), _itemsByValue(Bar::Items::Item1) {}
+Proprietor::Proprietor()
+    : _items(Bar::Items::Item1)
+    , _itemsByValue(Bar::Items::Item1)
+{
+}
 
-Proprietor::Proprietor(int i) : AbstractProprietor(i),
-    _items(Bar::Items::Item1), _itemsByValue(Bar::Items::Item1)
+Proprietor::Proprietor(int i)
+    : AbstractProprietor(i)
+    , _items(Bar::Items::Item1)
+    , _itemsByValue(Bar::Items::Item1)
 {
 }
 
@@ -403,11 +431,13 @@ long P::prop()
     return m_property + 100;
 }
 
-ComplexType::ComplexType() : qFlags(QFlags<TestFlag>(TestFlag::Flag2))
+ComplexType::ComplexType()
+    : qFlags(QFlags<TestFlag>(TestFlag::Flag2))
 {
 }
 
-ComplexType::ComplexType(const QFlags<TestFlag> f) : qFlags(f)
+ComplexType::ComplexType(const QFlags<TestFlag> f)
+    : qFlags(f)
 {
 }
 
@@ -427,17 +457,14 @@ QFlags<TestFlag> ComplexType::returnsQFlags()
 
 void ComplexType::takesQFlags(const QFlags<int> f)
 {
-
 }
 
-P::P(const Qux &qux)
+P::P(const Qux& qux)
 {
-
 }
 
-P::P(Qux *qux)
+P::P(Qux* qux)
 {
-
 }
 
 ComplexType P::complexType()
@@ -452,7 +479,6 @@ void P::setComplexType(const ComplexType& value)
 
 void P::parent(int i)
 {
-
 }
 
 bool P::isTest()
@@ -462,12 +488,10 @@ bool P::isTest()
 
 void P::setTest(bool value)
 {
-
 }
 
 void P::test()
 {
-
 }
 
 bool P::isBool()
@@ -477,7 +501,6 @@ bool P::isBool()
 
 void P::setIsBool(bool value)
 {
-
 }
 
 void TestDestructors::InitMarker()
@@ -485,12 +508,20 @@ void TestDestructors::InitMarker()
     Marker = 0;
 }
 
-TestDestructors::TestDestructors() { Marker = 0xf00d; }
-TestDestructors::~TestDestructors() { Marker = 0xcafe; }
+TestDestructors::TestDestructors()
+{
+    Marker = 0xf00d;
+}
+TestDestructors::~TestDestructors()
+{
+    Marker = 0xcafe;
+}
 
 int TestDestructors::Marker = 0;
 
-TestCopyConstructorVal::TestCopyConstructorVal() : A(0), B(0)
+TestCopyConstructorVal::TestCopyConstructorVal()
+    : A(0)
+    , B(0)
 {
 }
 
@@ -527,7 +558,8 @@ QFlags<Flags> UsesPointerToEnumInParamOfVirtual::hasPointerToEnumInParam(const Q
 }
 
 QFlags<Flags> UsesPointerToEnumInParamOfVirtual::callOverrideOfHasPointerToEnumInParam(
-        const UsesPointerToEnumInParamOfVirtual* object, const QFlags<Flags>& pointerToEnum)
+    const UsesPointerToEnumInParamOfVirtual* object,
+    const QFlags<Flags>& pointerToEnum)
 {
     return object->hasPointerToEnumInParam(pointerToEnum);
 }
@@ -542,8 +574,8 @@ UntypedFlags operator|(UntypedFlags lhs, UntypedFlags rhs)
     return static_cast<UntypedFlags>(static_cast<int>(lhs) | static_cast<int>(rhs));
 }
 
-QGenericArgument::QGenericArgument(const char* name, const void* data) :
-    fixedArrayInValueType { 0 }
+QGenericArgument::QGenericArgument(const char* name, const void* data)
+    : fixedArrayInValueType{ 0 }
 {
     _name = name;
 }
@@ -599,7 +631,7 @@ MethodsWithDefaultValues::~MethodsWithDefaultValues()
 {
 }
 
-void MethodsWithDefaultValues::defaultPointer(Foo *ptr1, Foo *ptr2)
+void MethodsWithDefaultValues::defaultPointer(Foo* ptr1, Foo* ptr2)
 {
 }
 
@@ -607,7 +639,7 @@ void MethodsWithDefaultValues::defaultVoidStar(void* ptr)
 {
 }
 
-void MethodsWithDefaultValues::defaultFunctionPointer(void(*functionPtr)(int p))
+void MethodsWithDefaultValues::defaultFunctionPointer(void (*functionPtr)(int p))
 {
 }
 
@@ -647,11 +679,11 @@ void MethodsWithDefaultValues::defaultIntAssignedAnEnum(int i)
 {
 }
 
-void MethodsWithDefaultValues::defaultRefAssignedValue(const Foo &fooRef)
+void MethodsWithDefaultValues::defaultRefAssignedValue(const Foo& fooRef)
 {
 }
 
-void MethodsWithDefaultValues::DefaultRefAssignedValue(const Foo &fooRef)
+void MethodsWithDefaultValues::DefaultRefAssignedValue(const Foo& fooRef)
 {
 }
 
@@ -717,7 +749,7 @@ void MethodsWithDefaultValues::defaultIntWithLongExpression(unsigned int i)
 {
 }
 
-void MethodsWithDefaultValues::defaultRefTypeEnumImplicitCtor(const QColor &fillColor)
+void MethodsWithDefaultValues::defaultRefTypeEnumImplicitCtor(const QColor& fillColor)
 {
 }
 
@@ -891,8 +923,14 @@ void PropertyWithIgnoredType::setIgnoredType(const IgnoredType& value)
     _ignoredType = value;
 }
 
-MI_A0::MI_A0() : F(50) {}
-int MI_A0::get() { return F; };
+MI_A0::MI_A0()
+    : F(50)
+{
+}
+int MI_A0::get()
+{
+    return F;
+};
 
 MI_A::MI_A() {}
 void MI_A::v(int i) {}
@@ -1010,47 +1048,49 @@ void TestOverrideFromSecondaryBase::setProperty(int value)
 
 int TestParamToInterfacePassBaseTwo::getM()
 {
-	return m;
+    return m;
 }
 
 void TestParamToInterfacePassBaseTwo::setM(int n)
 {
-	m = n;
+    m = n;
 }
 
 const TestParamToInterfacePassBaseTwo& TestParamToInterfacePassBaseTwo::operator++()
 {
-	++m;
-	return *this;
+    ++m;
+    return *this;
 }
 
 TestParamToInterfacePassBaseTwo::TestParamToInterfacePassBaseTwo()
 {
-	m = 0;
+    m = 0;
 }
 
 TestParamToInterfacePassBaseTwo::TestParamToInterfacePassBaseTwo(int n)
 {
-	m = n;
+    m = n;
 }
 
 TestParamToInterfacePassBaseTwo TestParamToInterfacePass::addM(TestParamToInterfacePassBaseTwo b)
 {
-	this->setM(this->getM() + b.getM());
-	return *this;
+    this->setM(this->getM() + b.getM());
+    return *this;
 }
 
 TestParamToInterfacePassBaseTwo TestParamToInterfacePass::operator+(TestParamToInterfacePassBaseTwo b)
 {
-	return TestParamToInterfacePassBaseTwo(this->getM() + b.getM());
+    return TestParamToInterfacePassBaseTwo(this->getM() + b.getM());
 }
 
 TestParamToInterfacePass::TestParamToInterfacePass(TestParamToInterfacePassBaseTwo b)
 {
-	this->setM(b.getM());
+    this->setM(b.getM());
 }
 
-TestParamToInterfacePass::TestParamToInterfacePass() : TestParamToInterfacePassBaseOne(), TestParamToInterfacePassBaseTwo()
+TestParamToInterfacePass::TestParamToInterfacePass()
+    : TestParamToInterfacePassBaseOne()
+    , TestParamToInterfacePassBaseTwo()
 {
 }
 
@@ -1066,9 +1106,9 @@ void freeFunctionWithUnsupportedDefaultArg(Foo foo)
 {
 }
 
-int TypeMappedWithOperator::operator |(int i)
+int TypeMappedWithOperator::operator|(int i)
 {
-   return 0;
+    return 0;
 }
 
 void HasPropertyWithDerivedType::causeRenamingError()
@@ -1093,7 +1133,7 @@ void MultiOverloadPtrToRef::funcPrimitivePtrToRefWithMultiOverload(int* pOne, ch
 
 MultiOverloadPtrToRef::MultiOverloadPtrToRef(int* param)
 {
-    arr = new int[3]{0};
+    arr = new int[3]{ 0 };
 }
 
 int* MultiOverloadPtrToRef::ReturnPrimTypePtr()
@@ -1126,12 +1166,12 @@ void TestOutTypeInterfaces::funcTryInterfaceTypeOut(CS_OUT TestParamToInterfaceP
 {
 }
 
-int PassConstantArrayRef(int(&arr)[2])
+int PassConstantArrayRef(int (&arr)[2])
 {
     return arr[0];
 }
 
-bool TestComparison::operator ==(const TestComparison& other) const
+bool TestComparison::operator==(const TestComparison& other) const
 {
     return A == other.A && B == other.B;
 }
@@ -1161,7 +1201,8 @@ void QObject::event()
 {
 }
 
-QPaintDevice::QPaintDevice() : test(0)
+QPaintDevice::QPaintDevice()
+    : test(0)
 {
 }
 
@@ -1209,15 +1250,18 @@ InheritsFromHasSamePropertyInDerivedAbstractType::~InheritsFromHasSamePropertyIn
 {
 }
 
-MultipleInheritanceFieldOffsetsSecondaryBase::MultipleInheritanceFieldOffsetsSecondaryBase() : secondary(2)
+MultipleInheritanceFieldOffsetsSecondaryBase::MultipleInheritanceFieldOffsetsSecondaryBase()
+    : secondary(2)
 {
 }
 
-MultipleInheritanceFieldOffsetsPrimaryBase::MultipleInheritanceFieldOffsetsPrimaryBase() : primary(1)
+MultipleInheritanceFieldOffsetsPrimaryBase::MultipleInheritanceFieldOffsetsPrimaryBase()
+    : primary(1)
 {
 }
 
-MultipleInheritanceFieldOffsets::MultipleInheritanceFieldOffsets() : own(3)
+MultipleInheritanceFieldOffsets::MultipleInheritanceFieldOffsets()
+    : own(3)
 {
 }
 
@@ -1228,7 +1272,7 @@ VirtualDtorAddedInDerived::~VirtualDtorAddedInDerived()
 
 bool VirtualDtorAddedInDerived::dtorCalled = false;
 
-void NamespaceB::B::Function(CS_OUT NamespaceA::A &a)
+void NamespaceB::B::Function(CS_OUT NamespaceA::A& a)
 {
 }
 
@@ -1284,7 +1328,7 @@ int HasConflictWithAbstractProperty::conflictWithProperty()
 
 int TestOverrideOfPropertyInNamespacedClass::property()
 {
-	return 0;
+    return 0;
 }
 
 const char* HasVirtualTakesReturnsProblematicTypes::virtualTakesAndReturnsString(const char* c)
@@ -1316,18 +1360,20 @@ const unsigned char StaticVariables::UChr = (unsigned char)'G';
 const int StaticVariables::Int = 1020304050;
 const float StaticVariables::Float = 0.5020f;
 const std::string StaticVariables::String = "Str";
-const char StaticVariables::ChrArray[2] { 'A', 'B' };
-const int StaticVariables::IntArray[2] { 1020304050, 1526374850 };
-const float StaticVariables::FloatArray[2] { 0.5020f, 0.6020f };
-const bool StaticVariables::BoolArray[2] { false, true };
-const void* StaticVariables::VoidPtrArray[2] { (void*)0x10203040, (void*)0x40302010 };
+const char StaticVariables::ChrArray[2]{ 'A', 'B' };
+const int StaticVariables::IntArray[2]{ 1020304050, 1526374850 };
+const float StaticVariables::FloatArray[2]{ 0.5020f, 0.6020f };
+const bool StaticVariables::BoolArray[2]{ false, true };
+const void* StaticVariables::VoidPtrArray[2]{ (void*)0x10203040, (void*)0x40302010 };
 
-TestString::TestString() : unicodeConst(L"ქართული ენა"), unicode(0)
+TestString::TestString()
+    : unicodeConst(L"ქართული ენა")
+    , unicode(0)
 {
 }
 
-TestChar32String::TestChar32String() :
-    thirtyTwoBitConst(U"ქართული ენა")
+TestChar32String::TestChar32String()
+    : thirtyTwoBitConst(U"ქართული ენა")
 {
     static std::u32string nonConst = U"Test String";
     thirtyTwoBitNonConst = &nonConst[0];
@@ -1340,11 +1386,14 @@ void TestChar32String::UpdateString(const char32_t* s)
     thirtyTwoBitConst = nativeOwnedMemory.data();
 }
 
-const char32_t* TestChar32String::RetrieveString() { return thirtyTwoBitConst; }
-void TestChar32String::functionPointerUTF32(void(*ptr)(const char32_t*)) {}
+const char32_t* TestChar32String::RetrieveString()
+{
+    return thirtyTwoBitConst;
+}
+void TestChar32String::functionPointerUTF32(void (*ptr)(const char32_t*)) {}
 
-TestChar16String::TestChar16String() :
-    sixteenBitConst(u"ქართული ენა")
+TestChar16String::TestChar16String()
+    : sixteenBitConst(u"ქართული ენა")
 {
     static std::u16string nonConst = u"Test String";
     sixteenBitNonConst = &nonConst[0];
@@ -1357,7 +1406,10 @@ void TestChar16String::UpdateString(const char16_t* s)
     static std::u16string nativeOwnedMemory = s;
     sixteenBitConst = nativeOwnedMemory.data();
 }
-const char16_t* TestChar16String::RetrieveString() { return sixteenBitConst; }
+const char16_t* TestChar16String::RetrieveString()
+{
+    return sixteenBitConst;
+}
 
 void decltypeFunctionPointer() {}
 
@@ -1399,7 +1451,8 @@ AbstractSecondaryBase::~AbstractSecondaryBase()
 {
 }
 
-ImplementsAbstractsFromPrimaryAndSecondary::ImplementsAbstractsFromPrimaryAndSecondary() : field(200)
+ImplementsAbstractsFromPrimaryAndSecondary::ImplementsAbstractsFromPrimaryAndSecondary()
+    : field(200)
 {
 }
 
@@ -1445,19 +1498,21 @@ void hasArrayOfConstChar(const char* const arrayOfConstChar[])
 {
 }
 
-struct IncompleteStruct {};
+struct IncompleteStruct
+{};
 
 IncompleteStruct* createIncompleteStruct()
 {
     return new IncompleteStruct();
 }
 
-DLL_API void useIncompleteStruct(IncompleteStruct * a)
+DLL_API void useIncompleteStruct(IncompleteStruct* a)
 {
     return;
 }
 
-struct DuplicateDeclaredStruct {
+struct DuplicateDeclaredStruct
+{
     int i = 0;
 };
 
@@ -1485,11 +1540,15 @@ DLL_API int useDuplicateDeclaredStruct(DuplicateDeclaredStruct* s)
     return s->i;
 }
 
-ComplexArrayElement::ComplexArrayElement() : BoolField(false), IntField(0), FloatField(0)
+ComplexArrayElement::ComplexArrayElement()
+    : BoolField(false)
+    , IntField(0)
+    , FloatField(0)
 {
 }
 
-TestIndexedProperties::TestIndexedProperties() : field(0)
+TestIndexedProperties::TestIndexedProperties()
+    : field(0)
 {
 }
 
@@ -1531,8 +1590,7 @@ int TestArrays::takeArrays(Foo* arrayOfPointersToObjects[], int arrayOfPrimitive
            arrayOfObjects[0].A + arrayOfObjects[1].A;
 }
 
-int TestArrays::takeArrays(Foo* fixedArrayOfPointersToObjects[3], int fixedArrayOfPrimitives[4],
-                           int* fixedArrayOfPointersToPrimitives[5]) const
+int TestArrays::takeArrays(Foo* fixedArrayOfPointersToObjects[3], int fixedArrayOfPrimitives[4], int* fixedArrayOfPointersToPrimitives[5]) const
 {
     int sum = 0;
     for (int i = 0; i < 3; i++)
@@ -1570,12 +1628,13 @@ int TestArrays::virtualTakeArrays(Foo* arrayOfPointersToObjects[], int arrayOfPr
     return takeArrays(arrayOfPointersToObjects, arrayOfPrimitives, arrayOfObjects);
 }
 
-int TestArrays::virtualTakeArrays(Foo *fixedArrayOfPointersToObjects[3], int fixedArrayOfPrimitives[4], int *fixedArrayOfPointersToPrimitives[5]) const
+int TestArrays::virtualTakeArrays(Foo* fixedArrayOfPointersToObjects[3], int fixedArrayOfPrimitives[4], int* fixedArrayOfPointersToPrimitives[5]) const
 {
     return takeArrays(fixedArrayOfPointersToObjects, fixedArrayOfPrimitives, fixedArrayOfPointersToPrimitives);
 }
 
-InterfaceTester::InterfaceTester() : interface(0)
+InterfaceTester::InterfaceTester()
+    : interface(0)
 {
 }
 
@@ -1625,7 +1684,7 @@ const char*& takeConstCharStarRef(const char*& c)
 
 const void*& rValueReferenceToPointer(void*&& v)
 {
-    return (const void*&) v;
+    return (const void*&)v;
 }
 
 const Foo*& takeReturnReferenceToPointer(const Foo*& foo)
@@ -1678,15 +1737,32 @@ const char32_t* TestCSharpString32(const char32_t* in, const char32_t** out)
     return ret.data();
 }
 
-ConversionFunctions::operator short* () { return &field; }
-ConversionFunctions::operator short& () { return field; }
-ConversionFunctions::operator short() { return field; }
-ConversionFunctions::operator const short*() const { return &field; }
-ConversionFunctions::operator const short&() const { return field; }
-ConversionFunctions::operator const short() const { return field; }
-
-const unsigned ClassCustomTypeAlignmentOffsets[5]
+ConversionFunctions::operator short*()
 {
+    return &field;
+}
+ConversionFunctions::operator short&()
+{
+    return field;
+}
+ConversionFunctions::operator short()
+{
+    return field;
+}
+ConversionFunctions::operator const short*() const
+{
+    return &field;
+}
+ConversionFunctions::operator const short&() const
+{
+    return field;
+}
+ConversionFunctions::operator const short() const
+{
+    return field;
+}
+
+const unsigned ClassCustomTypeAlignmentOffsets[5]{
     offsetof(ClassCustomTypeAlignment, boolean),
     offsetof(ClassCustomTypeAlignment, align16),
     offsetof(ClassCustomTypeAlignment, align1),
@@ -1694,33 +1770,52 @@ const unsigned ClassCustomTypeAlignmentOffsets[5]
     offsetof(ClassCustomTypeAlignment, align8),
 };
 
-const unsigned ClassCustomObjectAlignmentOffsets[2] {
+const unsigned ClassCustomObjectAlignmentOffsets[2]{
     offsetof(ClassCustomObjectAlignment, boolean),
     offsetof(ClassCustomObjectAlignment, charAligned8),
 };
 
-const unsigned ClassMicrosoftObjectAlignmentOffsets[4]
-{
+const unsigned ClassMicrosoftObjectAlignmentOffsets[4]{
     offsetof(ClassMicrosoftObjectAlignment, u8),
     offsetof(ClassMicrosoftObjectAlignment, dbl),
     offsetof(ClassMicrosoftObjectAlignment, i16),
     offsetof(ClassMicrosoftObjectAlignment, boolean),
 };
 
-const unsigned StructWithEmbeddedArrayOfStructObjectAlignmentOffsets[2]
-{
+const unsigned StructWithEmbeddedArrayOfStructObjectAlignmentOffsets[2]{
     offsetof(StructWithEmbeddedArrayOfStructObjectAlignment, boolean),
     offsetof(StructWithEmbeddedArrayOfStructObjectAlignment, embedded_struct),
 };
 
-DLL_API FTIStruct TestFunctionToStaticMethod(FTIStruct* bb) { return { 6 }; }
-DLL_API int TestFunctionToStaticMethodStruct(FTIStruct* bb, FTIStruct defaultValue) { return defaultValue.a; }
-DLL_API int TestFunctionToStaticMethodRefStruct(FTIStruct* bb, FTIStruct& defaultValue) { return defaultValue.a; }
-DLL_API int TestFunctionToStaticMethodConstStruct(FTIStruct* bb, const FTIStruct defaultValue) { return defaultValue.a; }
-DLL_API int TestFunctionToStaticMethodConstRefStruct(FTIStruct* bb, const FTIStruct& defaultValue) { return defaultValue.a; }
+DLL_API FTIStruct TestFunctionToStaticMethod(FTIStruct* bb)
+{
+    return { 6 };
+}
+DLL_API int TestFunctionToStaticMethodStruct(FTIStruct* bb, FTIStruct defaultValue)
+{
+    return defaultValue.a;
+}
+DLL_API int TestFunctionToStaticMethodRefStruct(FTIStruct* bb, FTIStruct& defaultValue)
+{
+    return defaultValue.a;
+}
+DLL_API int TestFunctionToStaticMethodConstStruct(FTIStruct* bb, const FTIStruct defaultValue)
+{
+    return defaultValue.a;
+}
+DLL_API int TestFunctionToStaticMethodConstRefStruct(FTIStruct* bb, const FTIStruct& defaultValue)
+{
+    return defaultValue.a;
+}
 
-DLL_API int TestClassFunctionToInstanceMethod(TestClass* bb, int value) { return value * value; }
-DLL_API int TestClassFunctionToInstanceMethod(TestClass* bb, FTIStruct& value) { return value.a * value.a; }
+DLL_API int TestClassFunctionToInstanceMethod(TestClass* bb, int value)
+{
+    return value * value;
+}
+DLL_API int TestClassFunctionToInstanceMethod(TestClass* bb, FTIStruct& value)
+{
+    return value.a * value.a;
+}
 
 int RuleOfThreeTester::constructorCalls = 0;
 int RuleOfThreeTester::destructorCalls = 0;

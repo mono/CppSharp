@@ -22,10 +22,10 @@
 
 // HACK: work around https://developercommunity.visualstudio.com/content/problem/1269158/c4251-shown-for-any-not-explicitly-exported-templa.html
 // harmless and requires exporting all template specializations
-#pragma warning (disable : 4251 )
+#pragma warning(disable : 4251)
 
 #else
-#define DLL_API __attribute__ ((visibility ("default")))
+#define DLL_API __attribute__((visibility("default")))
 
 #ifndef STDCALL
 #if defined(WINDOWS)

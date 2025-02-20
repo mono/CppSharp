@@ -1,11 +1,17 @@
 #include "NamespacesDerived.h"
 
 
-OverlappingNamespace::InDerivedLib::InDerivedLib() : parentNSComponent(), color(black)
+OverlappingNamespace::InDerivedLib::InDerivedLib()
+    : parentNSComponent()
+    , color(black)
 {
 }
 
-Derived::Derived() : Base2(10), baseComponent(5), nestedNSComponent(), color(OverlappingNamespace::blue)
+Derived::Derived()
+    : Base2(10)
+    , baseComponent(5)
+    , nestedNSComponent()
+    , color(OverlappingNamespace::blue)
 {
 }
 
@@ -107,7 +113,7 @@ int TestComments::SBAttachInfo(const char* path, bool wait_for)
     return 0;
 }
 
-void TestComments::glfwDestroyWindow(int *window)
+void TestComments::glfwDestroyWindow(int* window)
 {
 }
 
