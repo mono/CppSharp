@@ -28,6 +28,7 @@ namespace CppSharp.Utils
             options.Quiet = true;
             options.GenerateDebugOutput = true;
             options.CheckSymbols = true;
+            driver.ParserOptions.SkipSystemHeaders = false;
             var testModule = options.AddModule(name);
 
             Diagnostics.Message("");

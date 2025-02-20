@@ -97,8 +97,8 @@ namespace CppSharp { namespace CppParser {
         void WalkVariable(const clang::VarDecl* VD, AST::Variable* Var);
         AST::Friend* WalkFriend(const clang::FriendDecl* FD);
         AST::RawComment* WalkRawComment(const clang::RawComment* RC);
-        AST::Type* WalkType(clang::QualType QualType, const clang::TypeLoc* TL = 0, bool DesugarType = false);
-        AST::TemplateArgument WalkTemplateArgument(const clang::TemplateArgument& TA, clang::TemplateArgumentLoc* ArgLoc = 0);
+        AST::Type* WalkType(clang::QualType QualType, const clang::TypeLoc* TL = nullptr, bool DesugarType = false);
+        AST::TemplateArgument WalkTemplateArgument(const clang::TemplateArgument& TA, clang::TemplateArgumentLoc* ArgLoc = nullptr);
         AST::TemplateTemplateParameter* WalkTemplateTemplateParameter(const clang::TemplateTemplateParmDecl* TTP);
         AST::TypeTemplateParameter* WalkTypeTemplateParameter(const clang::TemplateTypeParmDecl* TTPD);
         AST::NonTypeTemplateParameter* WalkNonTypeTemplateParameter(const clang::NonTypeTemplateParmDecl* TTPD);
@@ -116,7 +116,7 @@ namespace CppSharp { namespace CppParser {
         std::vector<AST::TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, TypeLoc* TSTL);
         std::vector<AST::TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, const clang::ASTTemplateArgumentListInfo* TSTL);
         void WalkVTable(const clang::CXXRecordDecl* RD, AST::Class* C);
-        AST::QualifiedType GetQualifiedType(clang::QualType qual, const clang::TypeLoc* TL = 0);
+        AST::QualifiedType GetQualifiedType(clang::QualType qual, const clang::TypeLoc* TL = nullptr);
         void ReadClassLayout(AST::Class* Class, const clang::RecordDecl* RD, clang::CharUnits Offset, bool IncludeVirtualBases);
         AST::LayoutField WalkVTablePointer(AST::Class* Class, const clang::CharUnits& Offset, const std::string& prefix);
         AST::VTableLayout WalkVTableLayout(const clang::VTableLayout& VTLayout);
@@ -150,9 +150,9 @@ namespace CppSharp { namespace CppParser {
         bool GetDeclText(clang::SourceRange SR, std::string& Text);
         bool HasLayout(const clang::RecordDecl* Record);
 
-        AST::TranslationUnit* GetTranslationUnit(clang::SourceLocation Loc,
-                                                 SourceLocationKind* Kind = 0);
-        AST::TranslationUnit* GetTranslationUnit(const clang::Decl* D);
+        AST::TranslationUnit* GetOrCreateTranslationUnit(clang::SourceLocation Loc,
+                                                         SourceLocationKind* Kind = nullptr);
+        AST::TranslationUnit* GetOrCreateTranslationUnit(const clang::Decl* D);
 
         AST::DeclarationContext* GetNamespace(const clang::Decl* D, const clang::DeclContext* Ctx);
         AST::DeclarationContext* GetNamespace(const clang::Decl* D);

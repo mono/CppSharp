@@ -59,6 +59,7 @@
 #include <Driver/ToolChains/MSVC.h>
 
 #include "ASTNameMangler.h"
+#include "ASTNodeVisitor.h"
 
 #if defined(__APPLE__) || defined(__linux__)
 #ifndef _GNU_SOURCE
@@ -513,12 +514,6 @@ std::string Parser::GetDeclMangledName(const clang::Decl* D) const
     // "don't know how to mangle this" assertion failures.)
     if (ND->isTemplated())
         return {};
-
-    /*bool CanMangle = isa<FunctionDecl>(D) || isa<VarDecl>(D)
-        || isa<CXXConstructorDecl>(D) || isa<CXXDestructorDecl>(D);
-
-    if (!CanMangle)
-        return {};*/
 
     // FIXME: There are likely other contexts in which it makes no sense to ask
     // for a mangled name.
@@ -2125,8 +2120,8 @@ Field* Parser::WalkFieldCXX(const clang::FieldDecl* FD, Class* Class)
 
 //-----------------------------------//
 
-TranslationUnit* Parser::GetTranslationUnit(clang::SourceLocation Loc,
-                                            SourceLocationKind* Kind)
+TranslationUnit* Parser::GetOrCreateTranslationUnit(clang::SourceLocation Loc,
+                                                    SourceLocationKind* Kind)
 {
     using namespace clang;
 
@@ -2171,12 +2166,12 @@ TranslationUnit* Parser::GetTranslationUnit(clang::SourceLocation Loc,
 
 //-----------------------------------//
 
-TranslationUnit* Parser::GetTranslationUnit(const clang::Decl* D)
+TranslationUnit* Parser::GetOrCreateTranslationUnit(const clang::Decl* D)
 {
     clang::SourceLocation Loc = D->getLocation();
 
     SourceLocationKind Kind;
-    TranslationUnit* Unit = GetTranslationUnit(Loc, &Kind);
+    TranslationUnit* Unit = GetOrCreateTranslationUnit(Loc, &Kind);
 
     return Unit;
 }
@@ -2190,13 +2185,13 @@ DeclarationContext* Parser::GetNamespace(const clang::Decl* D,
 
     // If the declaration is at global scope, just early exit.
     if (Context->isTranslationUnit())
-        return GetTranslationUnit(D);
+        return GetOrCreateTranslationUnit(D);
 
     auto NS = walkedNamespaces[Context];
     if (NS)
         return NS;
 
-    TranslationUnit* Unit = GetTranslationUnit(cast<Decl>(Context));
+    TranslationUnit* Unit = GetOrCreateTranslationUnit(cast<Decl>(Context));
 
     // Else we need to do a more expensive check to get all the namespaces,
     // and then perform a reverse iteration to get the namespaces in order.
@@ -2230,8 +2225,7 @@ DeclarationContext* Parser::GetNamespace(const clang::Decl* D,
                 if (ND->isAnonymousNamespace())
                     break;
 
-                auto Name = ND->getName();
-                DC = DC->FindCreateNamespace(Name.str());
+                DC = &DC->FindCreateNamespace(ND->getName());
                 ((Namespace*)DC)->isAnonymous = ND->isAnonymousNamespace();
                 ((Namespace*)DC)->isInline = ND->isInline();
                 HandleDeclaration(ND, DC);
@@ -3889,7 +3883,7 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
         return nullptr;
 
     Entity->originalPtr = PPEntity;
-    auto Namespace = GetTranslationUnit(PPEntity->getSourceRange().getBegin());
+    auto Namespace = GetOrCreateTranslationUnit(PPEntity->getSourceRange().getBegin());
 
     if (Decl->kind == DeclarationKind::TranslationUnit)
     {
@@ -4402,7 +4396,7 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D)
         }
         case Decl::TranslationUnit:
         {
-            Decl = GetTranslationUnit(D);
+            Decl = GetOrCreateTranslationUnit(D);
             break;
         }
         case Decl::Namespace:
@@ -4675,6 +4669,15 @@ void SemaConsumer::HandleTranslationUnit(clang::ASTContext& Ctx)
 
     if (Unit->originalPtr == nullptr)
         Unit->originalPtr = (void*)FileEntry;
+
+    std::string Text;
+    Text.reserve(200000000);
+    {
+        llvm::raw_string_ostream OS(Text);
+
+        ASTNodeDumper Dumper(OS, Ctx, Parser);
+        Dumper.Visit(TU);
+    }
 
     Parser.WalkAST(TU);
 }
