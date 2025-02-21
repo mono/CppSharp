@@ -9,6 +9,9 @@ project "CppSharp.Parser.CLI"
   dependson { "CppSharp.CppParser" }
   flags { common_flags }
   clr "NetCore"
+  
+  filter { "configurations:Debug*" }
+      assemblydebug "On"
 
   filter "toolset:msc*"
     buildoptions { clang_msvc_flags }

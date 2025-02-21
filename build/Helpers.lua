@@ -63,7 +63,7 @@ actionbuilddir = path.join(builddir, _ACTION == "gmake2" and "gmake" or (_ACTION
 bindircfg = path.join(bindir, "%{cfg.buildcfg}");
 prjobjdir = path.join(objsdir, "%{prj.name}", "%{cfg.buildcfg}")
 
-msvc_buildflags = { "/MP", "/wd4267" }
+msvc_buildflags = { "/wd4267" }
 msvc_cpp_defines = { }
 default_gcc_version = "9.0.0"
 generate_build_config = true
@@ -98,6 +98,9 @@ function SetupNativeProject()
   location (path.join(actionbuilddir, "projects"))
   files { "*.lua" }
   cppdialect "c++17"
+  flags { "MultiProcessorCompile" }
+  justmycode "On"
+  functionlevellinking "On"
 
   if os.getenv("CPPSHARP_RELEASE") == "true" then
     symbols "off"
@@ -110,6 +113,8 @@ function SetupNativeProject()
     defines { "DEBUG" }
     optimize "Debug"
     runtime "Release"
+    intrinsics "On"
+    inlining "Explicit"
 
   filter { "configurations:Release" }
     defines { "NDEBUG" }
