@@ -306,7 +306,12 @@ namespace CppSharp.Generators.CSharp
                     template.Arguments.All(IsValid))
                 {
                     List<TemplateArgument> args = template.Arguments;
-                    var @class = (Class)template.Template.TemplatedDecl;
+                    var templateDecl = template.Template.TemplatedDecl;
+
+                    if (templateDecl is TypeAlias typeAlias)
+                        return typeAlias.Visit(this);
+
+                    var @class = templateDecl as Class;
                     TemplateArgument lastArg = args.Last();
                     TypePrinterResult typePrinterResult = VisitDeclaration(decl);
                     typePrinterResult.NameSuffix.Append($@"<{string.Join(", ",
