@@ -7,7 +7,13 @@ namespace CppSharp.Passes
     public class IgnoreSystemDeclarationsPass : TranslationUnitPass
     {
         public IgnoreSystemDeclarationsPass()
-            => VisitOptions.ResetFlags(VisitFlags.NamespaceEnums);
+            => VisitOptions.ResetFlags(VisitFlags.NamespaceClasses |
+                VisitFlags.ClassTemplateSpecializations |
+                VisitFlags.NamespaceEnums | 
+                VisitFlags.NamespaceFunctions |
+                //VisitFlags.NamespaceTypedefs | // FIXME: Adding this breaks test builds
+                VisitFlags.NamespaceVariables
+                );
 
         public override bool VisitTranslationUnit(TranslationUnit unit)
         {
