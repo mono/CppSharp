@@ -1093,7 +1093,6 @@ CXXNoexceptExpr::CXXNoexceptExpr()
 PackExpansionExpr::PackExpansionExpr()
     : Expr(StmtClass::PackExpansionExpr)
     , ellipsisLoc(SourceLocation())
-    , numExpansions(std::optional<unsigned int>())
 {
 }
 
@@ -1114,7 +1113,6 @@ SubstNonTypeTemplateParmExpr::SubstNonTypeTemplateParmExpr()
     , replacement(nullptr)
     , associatedDecl(nullptr)
     , index(0)
-    , packIndex(std::optional<unsigned int>())
     , isReferenceParameter(false)
 {
 }
@@ -1156,7 +1154,6 @@ CXXFoldExpr::CXXFoldExpr()
     , rParenLoc(SourceLocation())
     , ellipsisLoc(SourceLocation())
     , _operator(BinaryOperatorKind::PtrMemD)
-    , numExpansions(std::optional<unsigned int>())
 {
 }
 

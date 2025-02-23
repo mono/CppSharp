@@ -34,7 +34,6 @@ namespace CppSharp.Passes
                 WriteLine("#define _LIBCPP_HIDE_FROM_ABI");
                 NewLine();
                 WriteLine("#include <string>");
-                WriteLine("#include <optional>");
             }
             else
                 foreach (var header in TranslationUnit.Module.Headers)

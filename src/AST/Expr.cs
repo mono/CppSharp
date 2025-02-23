@@ -2141,7 +2141,6 @@ namespace CppSharp.AST
         }
 
         public SourceLocation EllipsisLoc { get; set; }
-        public uint? NumExpansions { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitPackExpansionExpr(this);
@@ -2174,7 +2173,6 @@ namespace CppSharp.AST
         public Expr Replacement { get; set; }
         public Declaration AssociatedDecl { get; set; }
         public uint Index { get; set; }
-        public uint? PackIndex { get; set; }
         public bool IsReferenceParameter { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
@@ -2248,7 +2246,6 @@ namespace CppSharp.AST
         public SourceLocation RParenLoc { get; set; }
         public SourceLocation EllipsisLoc { get; set; }
         public BinaryOperatorKind Operator { get; set; }
-        public uint? NumExpansions { get; set; }
 
         public override T Visit<T>(IStmtVisitor<T> visitor) =>
             visitor.VisitCXXFoldExpr(this);

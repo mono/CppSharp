@@ -9722,24 +9722,6 @@ void CppSharp::Parser::AST::PackExpansionExpr::EllipsisLoc::set(CppSharp::Parser
     ((class ::CppSharp::CppParser::AST::PackExpansionExpr*)NativePtr)->ellipsisLoc = _marshal0;
 }
 
-System::Nullable<unsigned int> CppSharp::Parser::AST::PackExpansionExpr::NumExpansions::get()
-{
-    if (!((class ::CppSharp::CppParser::AST::PackExpansionExpr*)NativePtr)->numExpansions.has_value())
-        return {};
-
-    return ((class ::CppSharp::CppParser::AST::PackExpansionExpr*)NativePtr)->numExpansions.value();
-}
-
-void CppSharp::Parser::AST::PackExpansionExpr::NumExpansions::set(System::Nullable<unsigned int> value)
-{
-    if (!value.HasValue)
-    {
-        ((class ::CppSharp::CppParser::AST::PackExpansionExpr*)NativePtr)->numExpansions = std::nullopt;
-        return;
-    }
-    ((class ::CppSharp::CppParser::AST::PackExpansionExpr*)NativePtr)->numExpansions = value.Value;
-}
-
 CppSharp::Parser::AST::SizeOfPackExpr::SizeOfPackExpr(class ::CppSharp::CppParser::AST::SizeOfPackExpr* native)
     : CppSharp::Parser::AST::Expr((::CppSharp::CppParser::AST::Expr*)native)
 {
@@ -9928,24 +9910,6 @@ unsigned int CppSharp::Parser::AST::SubstNonTypeTemplateParmExpr::Index::get()
 void CppSharp::Parser::AST::SubstNonTypeTemplateParmExpr::Index::set(unsigned int value)
 {
     ((class ::CppSharp::CppParser::AST::SubstNonTypeTemplateParmExpr*)NativePtr)->index = value;
-}
-
-System::Nullable<unsigned int> CppSharp::Parser::AST::SubstNonTypeTemplateParmExpr::PackIndex::get()
-{
-    if (!((class ::CppSharp::CppParser::AST::SubstNonTypeTemplateParmExpr*)NativePtr)->packIndex.has_value())
-        return {};
-
-    return ((class ::CppSharp::CppParser::AST::SubstNonTypeTemplateParmExpr*)NativePtr)->packIndex.value();
-}
-
-void CppSharp::Parser::AST::SubstNonTypeTemplateParmExpr::PackIndex::set(System::Nullable<unsigned int> value)
-{
-    if (!value.HasValue)
-    {
-        ((class ::CppSharp::CppParser::AST::SubstNonTypeTemplateParmExpr*)NativePtr)->packIndex = std::nullopt;
-        return;
-    }
-    ((class ::CppSharp::CppParser::AST::SubstNonTypeTemplateParmExpr*)NativePtr)->packIndex = value.Value;
 }
 
 bool CppSharp::Parser::AST::SubstNonTypeTemplateParmExpr::IsReferenceParameter::get()
@@ -10332,24 +10296,6 @@ CppSharp::Parser::AST::BinaryOperatorKind CppSharp::Parser::AST::CXXFoldExpr::Op
 void CppSharp::Parser::AST::CXXFoldExpr::Operator::set(CppSharp::Parser::AST::BinaryOperatorKind value)
 {
     ((class ::CppSharp::CppParser::AST::CXXFoldExpr*)NativePtr)->_operator = (enum ::CppSharp::CppParser::AST::BinaryOperatorKind)value;
-}
-
-System::Nullable<unsigned int> CppSharp::Parser::AST::CXXFoldExpr::NumExpansions::get()
-{
-    if (!((class ::CppSharp::CppParser::AST::CXXFoldExpr*)NativePtr)->numExpansions.has_value())
-        return {};
-
-    return ((class ::CppSharp::CppParser::AST::CXXFoldExpr*)NativePtr)->numExpansions.value();
-}
-
-void CppSharp::Parser::AST::CXXFoldExpr::NumExpansions::set(System::Nullable<unsigned int> value)
-{
-    if (!value.HasValue)
-    {
-        ((class ::CppSharp::CppParser::AST::CXXFoldExpr*)NativePtr)->numExpansions = std::nullopt;
-        return;
-    }
-    ((class ::CppSharp::CppParser::AST::CXXFoldExpr*)NativePtr)->numExpansions = value.Value;
 }
 
 CppSharp::Parser::AST::CXXParenListInitExpr::CXXParenListInitExpr(class ::CppSharp::CppParser::AST::CXXParenListInitExpr* native)

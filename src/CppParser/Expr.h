@@ -8,7 +8,6 @@
 #pragma once
 
 #include "Stmt.h"
-#include <optional>
 
 namespace CppSharp::CppParser::AST {
 
@@ -1709,7 +1708,6 @@ class CS_API PackExpansionExpr : public Expr
 public:
     PackExpansionExpr();
     SourceLocation ellipsisLoc;
-    std::optional<unsigned int> numExpansions;
 };
 
 class CS_API SizeOfPackExpr : public Expr
@@ -1732,7 +1730,6 @@ public:
     Expr* replacement;
     Declaration* associatedDecl;
     unsigned int index;
-    std::optional<unsigned int> packIndex;
     bool isReferenceParameter;
 };
 
@@ -1786,7 +1783,6 @@ public:
     SourceLocation rParenLoc;
     SourceLocation ellipsisLoc;
     BinaryOperatorKind _operator;
-    std::optional<unsigned int> numExpansions;
 };
 
 class CS_API CXXParenListInitExpr : public Expr

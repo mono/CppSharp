@@ -36,10 +36,6 @@ namespace Std
 
 namespace Std
 {
-}
-
-namespace Std
-{
     namespace CompressedPair
     {
         [StructLayout(LayoutKind.Sequential, Size = 12)]
@@ -311,14 +307,27 @@ namespace Std
         public unsafe partial struct __Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C
         {
             internal global::Std.CompressedPair.__Internalc__N_std_N___1_S___compressed_pair____N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C_S___rep_S2_ __r_;
+
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEC2Ev", CallingConvention = __CallingConvention.Cdecl)]
+            internal static extern void ctorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C(__IntPtr __instance);
+
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEED2Ev", CallingConvention = __CallingConvention.Cdecl)]
+            internal static extern void dtorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C(__IntPtr __instance);
         }
 
         namespace Rep
         {
-            [StructLayout(LayoutKind.Sequential, Size = 12)]
+            [StructLayout(LayoutKind.Explicit, Size = 12)]
             public unsafe partial struct __Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C
             {
-                internal global::Std.BasicString.Rep._0.__Internal _0;
+                [FieldOffset(0)]
+                internal global::Std.BasicString.Long.__Internal __l;
+
+                [FieldOffset(0)]
+                internal global::Std.BasicString.Short.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C __s;
+
+                [FieldOffset(0)]
+                internal global::Std.BasicString.Raw.__Internal __r;
             }
 
             namespace _0
@@ -354,10 +363,16 @@ namespace Std
 
         namespace Short
         {
-            [StructLayout(LayoutKind.Sequential, Size = 12)]
+            [StructLayout(LayoutKind.Explicit, Size = 12)]
             public unsafe partial struct __Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C
             {
-                internal global::Std.BasicString.Short._0.__Internal _0;
+                [FieldOffset(0)]
+                internal byte __size_;
+
+                [FieldOffset(0)]
+                internal sbyte __lx;
+
+                [FieldOffset(1)]
                 internal fixed sbyte __data_[11];
             }
 
@@ -387,42 +402,20 @@ namespace Std
         }
 
     }
-}
 
-namespace Std
-{
-    namespace Optional
-    {
-        [StructLayout(LayoutKind.Explicit, Size = 8)]
-        public unsafe partial struct __Internal
-        {
-            [FieldOffset(0)]
-            internal sbyte __null_state_;
-
-            [FieldOffset(0)]
-            internal uint __val_;
-
-            [FieldOffset(4)]
-            internal byte __engaged_;
-
-            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSt3__18optionalIjEC2Ev", CallingConvention = __CallingConvention.Cdecl)]
-            internal static extern void ctorc__N_std_N___1_S_optional__i(__IntPtr __instance);
-        }
-    }
-
-    public unsafe partial class Optional<_Tp> : IDisposable
+    public unsafe partial class BasicString<_CharT, _Traits, _Allocator> : IDisposable
     {
         public __IntPtr __Instance { get; protected set; }
 
-        internal static readonly new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.Optional<_Tp>> NativeToManagedMap =
-            new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.Optional<_Tp>>();
+        internal static readonly new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.BasicString<_CharT, _Traits, _Allocator>> NativeToManagedMap =
+            new global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, global::Std.BasicString<_CharT, _Traits, _Allocator>>();
 
-        internal static void __RecordNativeToManagedMapping(IntPtr native, global::Std.Optional<_Tp> managed)
+        internal static void __RecordNativeToManagedMapping(IntPtr native, global::Std.BasicString<_CharT, _Traits, _Allocator> managed)
         {
             NativeToManagedMap[native] = managed;
         }
 
-        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::Std.Optional<_Tp> managed)
+        internal static bool __TryGetNativeToManagedMapping(IntPtr native, out global::Std.BasicString<_CharT, _Traits, _Allocator> managed)
         {
     
             return NativeToManagedMap.TryGetValue(native, out managed);
@@ -430,63 +423,65 @@ namespace Std
 
         protected bool __ownsNativeInstance;
 
-        internal static Optional<_Tp> __CreateInstance(__IntPtr native, bool skipVTables = false)
+        internal static BasicString<_CharT, _Traits, _Allocator> __CreateInstance(__IntPtr native, bool skipVTables = false)
         {
             if (native == __IntPtr.Zero)
                 return null;
-            return new Optional<_Tp>(native.ToPointer(), skipVTables);
+            return new BasicString<_CharT, _Traits, _Allocator>(native.ToPointer(), skipVTables);
         }
 
-        internal static Optional<_Tp> __GetOrCreateInstance(__IntPtr native, bool saveInstance = false, bool skipVTables = false)
+        internal static BasicString<_CharT, _Traits, _Allocator> __GetOrCreateInstance(__IntPtr native, bool saveInstance = false, bool skipVTables = false)
         {
             if (native == __IntPtr.Zero)
                 return null;
             if (__TryGetNativeToManagedMapping(native, out var managed))
-                return (Optional<_Tp>)managed;
+                return (BasicString<_CharT, _Traits, _Allocator>)managed;
             var result = __CreateInstance(native, skipVTables);
             if (saveInstance)
                 __RecordNativeToManagedMapping(native, result);
             return result;
         }
 
-        internal static Optional<_Tp> __CreateInstance(global::Std.Optional.__Internal native, bool skipVTables = false)
+        internal static BasicString<_CharT, _Traits, _Allocator> __CreateInstance(global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C native, bool skipVTables = false)
         {
-            return new Optional<_Tp>(native, skipVTables);
+            return new BasicString<_CharT, _Traits, _Allocator>(native, skipVTables);
         }
 
-        private static void* __CopyValue(global::Std.Optional.__Internal native)
+        private static void* __CopyValue(global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C native)
         {
-            var ret = Marshal.AllocHGlobal(sizeof(global::Std.Optional.__Internal));
-            *(global::Std.Optional.__Internal*) ret = native;
+            var ret = Marshal.AllocHGlobal(sizeof(global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C));
+            *(global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C*) ret = native;
             return ret.ToPointer();
         }
 
-        private Optional(global::Std.Optional.__Internal native, bool skipVTables = false)
+        private BasicString(global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C native, bool skipVTables = false)
             : this(__CopyValue(native), skipVTables)
         {
             __ownsNativeInstance = true;
             __RecordNativeToManagedMapping(__Instance, this);
         }
 
-        protected Optional(void* native, bool skipVTables = false)
+        protected BasicString(void* native, bool skipVTables = false)
         {
             if (native == null)
                 return;
             __Instance = new __IntPtr(native);
         }
 
-        public Optional()
+        public BasicString()
         {
-            var ___Tp = typeof(_Tp);
-            if (___Tp.IsAssignableFrom(typeof(uint)))
+            var ___CharT = typeof(_CharT);
+            var ___Traits = typeof(_Traits);
+            var ___Allocator = typeof(_Allocator);
+            if (___CharT.IsAssignableFrom(typeof(sbyte)) && ___Traits.IsAssignableFrom(typeof(global::Std.CharTraits<sbyte>)) && ___Allocator.IsAssignableFrom(typeof(global::Std.Allocator<sbyte>)))
             {
-                __Instance = Marshal.AllocHGlobal(sizeof(global::Std.Optional.__Internal));
+                __Instance = Marshal.AllocHGlobal(sizeof(global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C));
                 __ownsNativeInstance = true;
                 __RecordNativeToManagedMapping(__Instance, this);
-                global::Std.Optional.__Internal.ctorc__N_std_N___1_S_optional__i(__Instance);
+                global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C.ctorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C(__Instance);
                 return;
             }
-            throw new ArgumentOutOfRangeException("_Tp", string.Join(", ", new[] { typeof(_Tp).FullName }), "global::Std.Optional<_Tp> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <uint>.");
+            throw new ArgumentOutOfRangeException("_CharT, _Traits, _Allocator", string.Join(", ", new[] { typeof(_CharT).FullName, typeof(_Traits).FullName, typeof(_Allocator).FullName }), "global::Std.BasicString<_CharT, _Traits, _Allocator> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.");
         }
 
         public void Dispose()
@@ -502,25 +497,48 @@ namespace Std
                 return;
             NativeToManagedMap.TryRemove(__Instance, out _);
             DisposePartial(disposing);
+            if (callNativeDtor)
+            {
+                var ___CharT = typeof(_CharT);
+                var ___Traits = typeof(_Traits);
+                var ___Allocator = typeof(_Allocator);
+                if (___CharT.IsAssignableFrom(typeof(sbyte)) && ___Traits.IsAssignableFrom(typeof(global::Std.CharTraits<sbyte>)) && ___Allocator.IsAssignableFrom(typeof(global::Std.Allocator<sbyte>)))
+                {
+                    global::Std.BasicString.__Internalc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C.dtorc__N_std_N___1_S_basic_string__C___N_std_N___1_S_char_traits__C___N_std_N___1_S_allocator__C(__Instance);
+                    return;
+                }
+                throw new ArgumentOutOfRangeException("_CharT, _Traits, _Allocator", string.Join(", ", new[] { typeof(_CharT).FullName, typeof(_Traits).FullName, typeof(_Allocator).FullName }), "global::Std.BasicString<_CharT, _Traits, _Allocator> maps a C++ template class and therefore it only supports a limited set of types and their subclasses: <sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.");
+            }
             if (__ownsNativeInstance)
                 Marshal.FreeHGlobal(__Instance);
             __Instance = IntPtr.Zero;
         }
     }
 
-    public unsafe static partial class OptionalExtensions
+    public unsafe static partial class BasicStringExtensions
     {
         public partial struct __Internal
         {
-            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNKOSt3__18optionalIjE5valueEv", CallingConvention = __CallingConvention.Cdecl)]
-            internal static extern uint* Value(__IntPtr __instance);
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6assignEPKc", CallingConvention = __CallingConvention.Cdecl)]
+            internal static extern __IntPtr Assign(__IntPtr __instance, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CppSharp.Runtime.UTF8Marshaller))] string __s);
+
+            [SuppressUnmanagedCodeSecurity, DllImport("Std-symbols", EntryPoint = "_ZNKSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE4dataEv", CallingConvention = __CallingConvention.Cdecl)]
+            internal static extern __IntPtr Data(__IntPtr __instance);
         }
 
-        public static uint Value(this global::Std.Optional<uint> @this)
+        public static global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> Assign(this global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> @this, string __s)
         {
             var __arg0 = @this is null ? __IntPtr.Zero : @this.__Instance;
-            var ___ret = __Internal.Value(__arg0);
-            return *___ret;
+            var ___ret = __Internal.Assign(__arg0, __s);
+            var __result0 = global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>>.__GetOrCreateInstance(___ret, false);
+            return __result0;
+        }
+
+        public static string Data(this global::Std.BasicString<sbyte, global::Std.CharTraits<sbyte>, global::Std.Allocator<sbyte>> @this)
+        {
+            var __arg0 = @this is null ? __IntPtr.Zero : @this.__Instance;
+            var ___ret = __Internal.Data(__arg0);
+            return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
         }
     }
 }

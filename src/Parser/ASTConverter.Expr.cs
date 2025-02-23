@@ -3565,7 +3565,6 @@ namespace CppSharp
             _expr.RefersToMatrixElement = expr.RefersToMatrixElement;
             _expr.HasPlaceholderType = expr.HasPlaceholderType;
             _expr.EllipsisLoc = VisitSourceLocation(expr.EllipsisLoc);
-            _expr.NumExpansions = expr.NumExpansions;
             return _expr;
         }
 
@@ -3626,7 +3625,6 @@ namespace CppSharp
             _expr.Replacement = VisitExpression(expr.Replacement) as AST.Expr;
             _expr.AssociatedDecl = VisitDeclaration(expr.AssociatedDecl) as AST.Declaration;
             _expr.Index = expr.Index;
-            _expr.PackIndex = expr.PackIndex;
             _expr.IsReferenceParameter = expr.IsReferenceParameter;
             return _expr;
         }
@@ -3748,7 +3746,6 @@ namespace CppSharp
             _expr.RParenLoc = VisitSourceLocation(expr.RParenLoc);
             _expr.EllipsisLoc = VisitSourceLocation(expr.EllipsisLoc);
             _expr.Operator = (AST.BinaryOperatorKind) expr.Operator;
-            _expr.NumExpansions = expr.NumExpansions;
             return _expr;
         }
 

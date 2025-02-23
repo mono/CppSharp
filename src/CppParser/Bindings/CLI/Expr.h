@@ -5317,12 +5317,6 @@ namespace CppSharp
                     CppSharp::Parser::SourceLocation get();
                     void set(CppSharp::Parser::SourceLocation);
                 }
-
-                property System::Nullable<unsigned int> NumExpansions
-                {
-                    System::Nullable<unsigned int> get();
-                    void set(System::Nullable<unsigned int>);
-                }
             };
 
             public ref class SizeOfPackExpr : CppSharp::Parser::AST::Expr
@@ -5412,12 +5406,6 @@ namespace CppSharp
                 {
                     unsigned int get();
                     void set(unsigned int);
-                }
-
-                property System::Nullable<unsigned int> PackIndex
-                {
-                    System::Nullable<unsigned int> get();
-                    void set(System::Nullable<unsigned int>);
                 }
 
                 property bool IsReferenceParameter
@@ -5612,12 +5600,6 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::BinaryOperatorKind get();
                     void set(CppSharp::Parser::AST::BinaryOperatorKind);
-                }
-
-                property System::Nullable<unsigned int> NumExpansions
-                {
-                    System::Nullable<unsigned int> get();
-                    void set(System::Nullable<unsigned int>);
                 }
             };
 

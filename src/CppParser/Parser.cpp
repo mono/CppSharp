@@ -157,8 +157,6 @@ Parser::Parser(CppParserOptions* Opts)
 {
     supportedStdTypes.insert("allocator");
     supportedStdTypes.insert("basic_string");
-    supportedStdTypes.insert("optional");
-    supportedStdTypes.insert("vector");
 }
 
 LayoutField Parser::WalkVTablePointer(Class* Class,

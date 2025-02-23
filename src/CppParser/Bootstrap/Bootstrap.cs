@@ -1781,6 +1781,9 @@ namespace CppSharp
             if (typeName.Contains("DecomposedForm"))
                 return true;
             
+            if (typeName.Contains("optional"))
+                return true;
+
             // ConstantExpr (TODO: Fix this properly)
             if (property.Name.Contains("resultAsAP") ||
                 property.Name.Contains("aPValueResult") ||

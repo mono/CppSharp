@@ -2,7 +2,6 @@
 #define _LIBCPP_HIDE_FROM_ABI
 
 #include <string>
-#include <optional>
 #include <new>
 
 template __declspec(dllexport) std::allocator<char>::allocator() noexcept;
@@ -10,6 +9,3 @@ template __declspec(dllexport) std::basic_string<char, std::char_traits<char>, s
 template __declspec(dllexport) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::~basic_string() noexcept;
 template __declspec(dllexport) std::basic_string<char, std::char_traits<char>, std::allocator<char>>& std::basic_string<char, std::char_traits<char>, std::allocator<char>>::assign(const char* const);
 template __declspec(dllexport) const char* std::basic_string<char, std::char_traits<char>, std::allocator<char>>::data() const noexcept;
-template __declspec(dllexport) std::optional<unsigned int>::optional() noexcept;
-template __declspec(dllexport) bool std::optional<unsigned int>::has_value() const noexcept;
-template __declspec(dllexport) const unsigned int&& std::optional<unsigned int>::value() const&&;

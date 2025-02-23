@@ -40146,7 +40146,7 @@ namespace CppSharp
 
             public unsafe partial class PackExpansionExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 64)]
+                [StructLayout(LayoutKind.Sequential, Size = 56)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -40170,7 +40170,6 @@ namespace CppSharp
                     internal byte refersToMatrixElement;
                     internal byte hasPlaceholderType;
                     internal global::CppSharp.Parser.SourceLocation.__Internal ellipsisLoc;
-                    internal global::Std.Optional.__Internal numExpansions;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "??0PackExpansionExpr@AST@CppParser@CppSharp@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
                     internal static extern __IntPtr ctor(__IntPtr __instance);
@@ -40250,22 +40249,6 @@ namespace CppSharp
                     set
                     {
                         ((__Internal*)__Instance)->ellipsisLoc = value.__Instance;
-                    }
-                }
-
-                public System.Nullable<uint> NumExpansions
-                {
-                    get
-                    {
-                        var __optionalRet0 = global::Std.Optional<uint>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->numExpansions));
-                        if (!__optionalRet0.HasValue)
-                            return null;
-                        return global::Std.OptionalExtensions.Value(__optionalRet0);
-                    }
-
-                    set
-                    {
-                        throw new System.NotImplementedException("Setting std::optional is currently not supported");
                     }
                 }
             }
@@ -40452,7 +40435,7 @@ namespace CppSharp
 
             public unsafe partial class SubstNonTypeTemplateParmExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 80)]
+                [StructLayout(LayoutKind.Sequential, Size = 72)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -40479,7 +40462,6 @@ namespace CppSharp
                     internal __IntPtr replacement;
                     internal __IntPtr associatedDecl;
                     internal uint index;
-                    internal global::Std.Optional.__Internal packIndex;
                     internal byte isReferenceParameter;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "??0SubstNonTypeTemplateParmExpr@AST@CppParser@CppSharp@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
@@ -40601,22 +40583,6 @@ namespace CppSharp
                     set
                     {
                         ((__Internal*)__Instance)->index = value;
-                    }
-                }
-
-                public System.Nullable<uint> PackIndex
-                {
-                    get
-                    {
-                        var __optionalRet0 = global::Std.Optional<uint>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->packIndex));
-                        if (!__optionalRet0.HasValue)
-                            return null;
-                        return global::Std.OptionalExtensions.Value(__optionalRet0);
-                    }
-
-                    set
-                    {
-                        throw new System.NotImplementedException("Setting std::optional is currently not supported");
                     }
                 }
 
@@ -41051,7 +41017,7 @@ namespace CppSharp
 
             public unsafe partial class CXXFoldExpr : global::CppSharp.Parser.AST.Expr, IDisposable
             {
-                [StructLayout(LayoutKind.Sequential, Size = 100)]
+                [StructLayout(LayoutKind.Sequential, Size = 92)]
                 public new partial struct __Internal
                 {
                     internal global::CppSharp.Parser.AST.StmtClass stmtClass;
@@ -41085,7 +41051,6 @@ namespace CppSharp
                     internal global::CppSharp.Parser.SourceLocation.__Internal rParenLoc;
                     internal global::CppSharp.Parser.SourceLocation.__Internal ellipsisLoc;
                     internal global::CppSharp.Parser.AST.BinaryOperatorKind _operator;
-                    internal global::Std.Optional.__Internal numExpansions;
 
                     [SuppressUnmanagedCodeSecurity, DllImport("CppSharp.CppParser.dll", EntryPoint = "??0CXXFoldExpr@AST@CppParser@CppSharp@@QAE@XZ", CallingConvention = __CallingConvention.ThisCall)]
                     internal static extern __IntPtr ctor(__IntPtr __instance);
@@ -41308,22 +41273,6 @@ namespace CppSharp
                     set
                     {
                         ((__Internal*)__Instance)->_operator = value;
-                    }
-                }
-
-                public System.Nullable<uint> NumExpansions
-                {
-                    get
-                    {
-                        var __optionalRet0 = global::Std.Optional<uint>.__CreateInstance(new __IntPtr(&((__Internal*)__Instance)->numExpansions));
-                        if (!__optionalRet0.HasValue)
-                            return null;
-                        return global::Std.OptionalExtensions.Value(__optionalRet0);
-                    }
-
-                    set
-                    {
-                        throw new System.NotImplementedException("Setting std::optional is currently not supported");
                     }
                 }
             }

@@ -2509,7 +2509,6 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->isOrdinaryOrBitFieldObject = S->isOrdinaryOrBitFieldObject();
         _S->refersToMatrixElement = S->refersToMatrixElement();
         _S->hasPlaceholderType = S->hasPlaceholderType();
-        _S->numExpansions = S->getNumExpansions();
         _Expr = _S;
         break;
     }
@@ -2560,7 +2559,6 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->replacement = static_cast<AST::Expr*>(WalkExpression(S->getReplacement()));
         _S->associatedDecl = static_cast<AST::Declaration*>(WalkDeclaration(S->getAssociatedDecl()));
         _S->index = S->getIndex();
-        _S->packIndex = S->getPackIndex();
         _S->isReferenceParameter = S->isReferenceParameter();
         _Expr = _S;
         break;
@@ -2665,7 +2663,6 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->pattern = static_cast<AST::Expr*>(WalkExpression(S->getPattern()));
         _S->init = static_cast<AST::Expr*>(WalkExpression(S->getInit()));
         _S->_operator = (AST::BinaryOperatorKind)S->getOperator();
-        _S->numExpansions = S->getNumExpansions();
         _Expr = _S;
         break;
     }
