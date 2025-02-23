@@ -2,16 +2,16 @@
 
 
 namespace OverlappingNamespace {
-    enum ColorsEnum
-    {
-        white,
-        black,
-        red,
-        blue,
-        green,
-    };
+enum ColorsEnum
+{
+    white,
+    black,
+    red,
+    blue,
+    green,
+};
 
-    class DLL_API InBaseLib{};
+class DLL_API InBaseLib{};
 } // namespace OverlappingNamespace
 
 

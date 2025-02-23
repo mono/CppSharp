@@ -987,20 +987,20 @@ inline void FunctionTemplateInstantiation()
 
 // KEEP ORDER OTHERWISE TEST WONT WORK
 namespace IncompleteClassTemplatesTests {
-    template <size_t Size>
-    struct StructSizeT
+template <size_t Size>
+struct StructSizeT
+{};
+
+template <typename T>
+struct StructT
+{
+    template <typename U>
+    struct Inc
     {};
+};
 
-    template <typename T>
-    struct StructT
-    {
-        template <typename U>
-        struct Inc
-        {};
-    };
-
-    struct Instantiation
-    {
-        StructT<StructSizeT<4000>> st;
-    };
+struct Instantiation
+{
+    StructT<StructSizeT<4000>> st;
+};
 } // namespace IncompleteClassTemplatesTests

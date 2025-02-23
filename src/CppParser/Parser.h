@@ -29,19 +29,19 @@
 #include <unordered_set>
 
 namespace clang {
-    namespace CodeGen {
-        class CodeGenTypes;
-    }
-    struct ASTTemplateArgumentListInfo;
-    class FunctionTemplateSpecialization;
-    class FunctionTemplateSpecializationInfo;
-    class PreprocessingRecord;
-    class PreprocessedEntity;
-    class RawComment;
-    class TemplateSpecializationTypeLoc;
-    class TemplateArgumentList;
-    class VTableLayout;
-    class VTableComponent;
+namespace CodeGen {
+    class CodeGenTypes;
+}
+struct ASTTemplateArgumentListInfo;
+class FunctionTemplateSpecialization;
+class FunctionTemplateSpecializationInfo;
+class PreprocessingRecord;
+class PreprocessedEntity;
+class RawComment;
+class TemplateSpecializationTypeLoc;
+class TemplateArgumentList;
+class VTableLayout;
+class VTableComponent;
 } // namespace clang
 
 #define Debug printf

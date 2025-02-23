@@ -17,24 +17,24 @@ using namespace clang;
 using namespace CppSharp::CppParser;
 
 namespace {
-    enum ObjCKind
-    {
-        ObjCClass,
-        ObjCMetaclass,
-    };
+enum ObjCKind
+{
+    ObjCClass,
+    ObjCMetaclass,
+};
 
-    StringRef getClassSymbolPrefix(ObjCKind Kind, const ASTContext& Context)
-    {
-        if (Context.getLangOpts().ObjCRuntime.isGNUFamily())
-            return Kind == ObjCMetaclass ? "_OBJC_METACLASS_" : "_OBJC_CLASS_";
-        return Kind == ObjCMetaclass ? "OBJC_METACLASS_$_" : "OBJC_CLASS_$_";
-    }
+StringRef getClassSymbolPrefix(ObjCKind Kind, const ASTContext& Context)
+{
+    if (Context.getLangOpts().ObjCRuntime.isGNUFamily())
+        return Kind == ObjCMetaclass ? "_OBJC_METACLASS_" : "_OBJC_CLASS_";
+    return Kind == ObjCMetaclass ? "OBJC_METACLASS_$_" : "OBJC_CLASS_$_";
+}
 
-    void WriteObjCClassName(const ObjCInterfaceDecl* D, raw_ostream& OS)
-    {
-        OS << getClassSymbolPrefix(ObjCClass, D->getASTContext());
-        OS << D->getObjCRuntimeNameAsString();
-    }
+void WriteObjCClassName(const ObjCInterfaceDecl* D, raw_ostream& OS)
+{
+    OS << getClassSymbolPrefix(ObjCClass, D->getASTContext());
+    OS << D->getObjCRuntimeNameAsString();
+}
 } // namespace
 
 ASTNameMangler::ASTNameMangler(ASTContext& Ctx)

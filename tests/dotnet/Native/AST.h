@@ -5,30 +5,30 @@ void TestParameterProperties(bool a, const short& b, int* c = nullptr) {};
 
 // Tests various AST helper methods (like FindClass, FindOperator etc.)
 namespace Math {
-    // Tests FindClass("Math::Complex")
-    struct Complex
+// Tests FindClass("Math::Complex")
+struct Complex
+{
+    Complex(double r, double i)
+        : re(r)
+        , im(i)
     {
-        Complex(double r, double i)
-            : re(r)
-            , im(i)
-        {
-        }
-        Complex operator+(Complex& other);
-
-    private:
-        double re, im;
-    };
-
-    // Tests FindTypedef("Math::Single")
-    typedef float Single;
-
-    // Tests FindOperator method
-    Complex Complex::operator+(Complex& other)
-    {
-        return Complex(re + other.re, im + other.im);
     }
+    Complex operator+(Complex& other);
 
-    void function();
+private:
+    double re, im;
+};
+
+// Tests FindTypedef("Math::Single")
+typedef float Single;
+
+// Tests FindOperator method
+Complex Complex::operator+(Complex& other)
+{
+    return Complex(re + other.re, im + other.im);
+}
+
+void function();
 } // namespace Math
 
 // Tests Enum.ItemByName
@@ -90,9 +90,9 @@ public:
 };
 
 namespace HidesClass {
-    class HiddenInNamespace
-    {
-    };
+class HiddenInNamespace
+{
+};
 } // namespace HidesClass
 
 void testSignature();

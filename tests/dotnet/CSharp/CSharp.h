@@ -355,11 +355,11 @@ class TestObjectMapWithClassDerivedFromStruct : public QGenericArgument
 #define DEFAULT_INT (2 * 1000UL + 500UL)
 
 namespace Qt {
-    enum GlobalColor
-    {
-        black,
-        white,
-    };
+enum GlobalColor
+{
+    black,
+    white,
+};
 } // namespace Qt
 
 class DLL_API QColor
@@ -392,11 +392,11 @@ public:
 };
 
 namespace lowerCaseNameSpace {
-    enum class Enum
-    {
-        Item1,
-        Item2
-    };
+enum class Enum
+{
+    Item1,
+    Item2
+};
 } // namespace lowerCaseNameSpace
 
 class DLL_API DefaultZeroMappedToEnum
@@ -1012,15 +1012,15 @@ class DLL_API ClassWithVirtualBase : public virtual Foo
 };
 
 namespace NamespaceA {
-    CS_VALUE_TYPE class DLL_API A{};
+CS_VALUE_TYPE class DLL_API A{};
 }
 
 namespace NamespaceB {
-    class DLL_API B
-    {
-    public:
-        void Function(CS_OUT NamespaceA::A& a);
-    };
+class DLL_API B
+{
+public:
+    void Function(CS_OUT NamespaceA::A& a);
+};
 } // namespace NamespaceB
 
 class DLL_API HasPrivateVirtualProperty
@@ -1069,11 +1069,11 @@ public:
 
 // https://github.com/mono/CppSharp/issues/1283
 namespace NamespaceWithVirtualPropertyClass {
-    class DLL_API HasOverriddenPropertyInNamespacedClass
-    {
-    public:
-        virtual int property() = 0;
-    };
+class DLL_API HasOverriddenPropertyInNamespacedClass
+{
+public:
+    virtual int property() = 0;
+};
 } // namespace NamespaceWithVirtualPropertyClass
 
 class DLL_API TestOverrideOfPropertyInNamespacedClass : public NamespaceWithVirtualPropertyClass::HasOverriddenPropertyInNamespacedClass
@@ -1429,7 +1429,7 @@ public:
 
 
 inline namespace InlineNamespace {
-    DLL_API void FunctionInsideInlineNamespace();
+DLL_API void FunctionInsideInlineNamespace();
 }
 
 class DLL_API TestArrays
@@ -1526,18 +1526,18 @@ class DLL_API TestAnonymousMemberNameCollision : public ClassUsingUnion
 };
 
 namespace CXXRecordDeclWithoutDefinition {
-    template <typename... T>
-    struct list;
+template <typename... T>
+struct list;
 
-    template <typename T>
-    struct it;
+template <typename T>
+struct it;
 
-    template <>
-    struct it<list<>>
-    {};
-    template <>
-    struct it<list<> const>
-    {};
+template <>
+struct it<list<>>
+{};
+template <>
+struct it<list<> const>
+{};
 } // namespace CXXRecordDeclWithoutDefinition
 
 template <int... n>

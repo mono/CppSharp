@@ -56,7 +56,7 @@ KeepEmptyLinesAtTheStartOfBlocks          : true
 MaxEmptyLinesToKeep                       : 2
 EmptyLineAfterAccessModifier              : Leave
 EmptyLineBeforeAccessModifier             : LogicalBlock
-NamespaceIndentation                      : All
+NamespaceIndentation                      : Inner
 PointerAlignment                          : Left
 SpacesBeforeTrailingComments              : 1
 SpacesInAngles                            : Never

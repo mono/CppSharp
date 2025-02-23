@@ -54,6 +54,6 @@ public:
 };
 
 namespace HasFreeConstant {
-    extern const int DLL_API FREE_CONSTANT_IN_NAMESPACE;
-    extern const std::string DLL_API STD_STRING_CONSTANT;
+extern const int DLL_API FREE_CONSTANT_IN_NAMESPACE;
+extern const std::string DLL_API STD_STRING_CONSTANT;
 } // namespace HasFreeConstant

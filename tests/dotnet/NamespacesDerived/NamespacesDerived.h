@@ -8,13 +8,13 @@
 // Namespace clashes with NamespacesBase.OverlappingNamespace
 // Test whether qualified names turn out right.
 namespace OverlappingNamespace {
-    class DLL_API InDerivedLib
-    {
-    public:
-        InDerivedLib();
-        Base parentNSComponent;
-        ColorsEnum color;
-    };
+class DLL_API InDerivedLib
+{
+public:
+    InDerivedLib();
+    Base parentNSComponent;
+    ColorsEnum color;
+};
 } // namespace OverlappingNamespace
 
 
@@ -135,11 +135,11 @@ private:
 DLL_API bool operator<<(const Base& b, const char* str);
 
 namespace NamespacesBase {
-    class DLL_API ClassInNamespaceNamedAfterDependency
-    {
-    private:
-        Base base;
-    };
+class DLL_API ClassInNamespaceNamedAfterDependency
+{
+private:
+    Base base;
+};
 } // namespace NamespacesBase
 
 /// Hash set/map base class.
