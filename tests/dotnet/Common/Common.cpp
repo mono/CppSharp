@@ -14,7 +14,9 @@ Foo::Foo()
     SomePointerPointer = &SomePointer;
 }
 
-Foo::Foo(const Foo& other) : A(other.A), B(other.B)
+Foo::Foo(const Foo& other)
+    : A(other.A)
+    , B(other.B)
 {
 }
 
@@ -45,7 +47,7 @@ int Foo::TakesRef(const Foo& other)
     return other.A;
 }
 
-bool Foo::operator ==(const Foo& other) const
+bool Foo::operator==(const Foo& other) const
 {
     return A == other.A && B == other.B;
 }
@@ -64,7 +66,12 @@ Foo Foo::staticField;
 
 Foo2::Foo2() {}
 
-Foo2::Foo2(const Foo2& other) : Foo(other), C(other.C), valueTypeField(other.valueTypeField) {}
+Foo2::Foo2(const Foo2& other)
+    : Foo(other)
+    , C(other.C)
+    , valueTypeField(other.valueTypeField)
+{
+}
 
 Foo2 Foo2::operator<<(signed int i)
 {
@@ -111,12 +118,12 @@ Bar* Bar::returnPointerToValueType()
     return this;
 }
 
-bool Bar::operator ==(const Bar& arg1) const
+bool Bar::operator==(const Bar& arg1) const
 {
     return A == arg1.A && B == arg1.B;
 }
 
-bool operator ==(Bar::Item item, const Bar& bar)
+bool operator==(Bar::Item item, const Bar& bar)
 {
     return item == bar.RetItem1();
 }
@@ -153,7 +160,7 @@ Foo2 Bar2::needFixedInstance() const
 
 void Hello::PrintHello(const char* s)
 {
-    //cout << "PrintHello: " << s << "\n";
+    // cout << "PrintHello: " << s << "\n";
 }
 
 bool Hello::test1(int i, float f)
@@ -310,7 +317,10 @@ Bar indirectReturn()
     return Bar();
 }
 
-TestDelegates::TestDelegates() : A(Double), B(Double), C(&TestDelegates::Triple)
+TestDelegates::TestDelegates()
+    : A(Double)
+    , B(Double)
+    , C(&TestDelegates::Triple)
 {
 }
 
@@ -388,7 +398,7 @@ int test(common& s)
     return 5;
 }
 
-int operator *(TestMoveOperatorToClass klass, int b)
+int operator*(TestMoveOperatorToClass klass, int b)
 {
     return klass.A * b;
 }
@@ -406,7 +416,7 @@ TestMoveOperatorToClass operator-(const TestMoveOperatorToClass& b)
 }
 
 TestMoveOperatorToClass operator+(const TestMoveOperatorToClass& b1,
-    const TestMoveOperatorToClass& b2)
+                                  const TestMoveOperatorToClass& b2)
 {
     TestMoveOperatorToClass b;
     b.A = b1.A + b2.A;
@@ -450,12 +460,12 @@ int (*TestDelegates::MarshalAnonymousDelegate4())(int n)
     return f;
 }
 
-int TestDelegates::MarshalAnonymousDelegate5(int (STDCALL* del)(int))
+int TestDelegates::MarshalAnonymousDelegate5(int(STDCALL* del)(int))
 {
     return del(2);
 }
 
-int TestDelegates::MarshalAnonymousDelegate6(int (STDCALL* del)(int))
+int TestDelegates::MarshalAnonymousDelegate6(int(STDCALL* del)(int))
 {
     return del(3);
 }
@@ -541,22 +551,29 @@ int Function()
     return 5;
 }
 
-TestProperties::TestProperties() : Field(0), ArchiveName(0),
-FieldValue(0), _refToPrimitiveInSetter(0),
-_getterAndSetterWithTheSameName(0), _setterReturnsBoolean(0),
-_virtualSetterReturnsBoolean(0), _conflict(Conflict::Value1),
-ConstRefField(Field)
+TestProperties::TestProperties()
+    : Field(0)
+    , ArchiveName(0)
+    , FieldValue(0)
+    , _refToPrimitiveInSetter(0)
+    , _getterAndSetterWithTheSameName(0)
+    , _setterReturnsBoolean(0)
+    , _virtualSetterReturnsBoolean(0)
+    , _conflict(Conflict::Value1)
+    , ConstRefField(Field)
 {
 }
 
-TestProperties::TestProperties(const TestProperties& other) :
-    Field(other.Field), ArchiveName(other.ArchiveName),
-    FieldValue(other.FieldValue),
-    _refToPrimitiveInSetter(other._refToPrimitiveInSetter),
-    _getterAndSetterWithTheSameName(other._getterAndSetterWithTheSameName),
-    _setterReturnsBoolean(other._setterReturnsBoolean),
-    _virtualSetterReturnsBoolean(other._virtualSetterReturnsBoolean),
-    _conflict(other._conflict), ConstRefField(other.ConstRefField)
+TestProperties::TestProperties(const TestProperties& other)
+    : Field(other.Field)
+    , ArchiveName(other.ArchiveName)
+    , FieldValue(other.FieldValue)
+    , _refToPrimitiveInSetter(other._refToPrimitiveInSetter)
+    , _getterAndSetterWithTheSameName(other._getterAndSetterWithTheSameName)
+    , _setterReturnsBoolean(other._setterReturnsBoolean)
+    , _virtualSetterReturnsBoolean(other._virtualSetterReturnsBoolean)
+    , _conflict(other._conflict)
+    , ConstRefField(other.ConstRefField)
 {
 }
 
@@ -721,12 +738,12 @@ void TestProperties::SetConflict(Conflict conflict)
     _conflict = conflict;
 }
 
-int(*TestProperties::getCallback())(int)
+int (*TestProperties::getCallback())(int)
 {
     return _callback;
 }
 
-void TestProperties::setCallback(int(*value)(int))
+void TestProperties::setCallback(int (*value)(int))
 {
     _callback = value;
 }
@@ -758,15 +775,32 @@ void HasOverridenSetter::setVirtualGetter(int value)
 {
 }
 
-TestIndexedProperties::TestIndexedProperties() : p(1), f()
+TestIndexedProperties::TestIndexedProperties()
+    : p(1)
+    , f()
 {
 }
 
-foo_t& TestIndexedProperties::operator[](int i) { return p; }
-const TestProperties& TestIndexedProperties::operator[](short b) { return f; }
-foo_t TestIndexedProperties::operator[](const char* name) { return p; }
-foo_t* TestIndexedProperties::operator[](float f) { return &p; }
-TestProperties* TestIndexedProperties::operator[](unsigned char b) { return &f; }
+foo_t& TestIndexedProperties::operator[](int i)
+{
+    return p;
+}
+const TestProperties& TestIndexedProperties::operator[](short b)
+{
+    return f;
+}
+foo_t TestIndexedProperties::operator[](const char* name)
+{
+    return p;
+}
+foo_t* TestIndexedProperties::operator[](float f)
+{
+    return &p;
+}
+TestProperties* TestIndexedProperties::operator[](unsigned char b)
+{
+    return &f;
+}
 Bar& TestIndexedProperties::operator[](unsigned long i)
 {
     return bar;
@@ -776,8 +810,14 @@ Bar& TestIndexedProperties::operator[](const TypeMappedIndex& key)
     return bar;
 }
 
-const foo_t& TestIndexedProperties::operator[](double f) { return p; }
-foo_t TestIndexedProperties::operator[](TestProperties b) { return p; }
+const foo_t& TestIndexedProperties::operator[](double f)
+{
+    return p;
+}
+foo_t TestIndexedProperties::operator[](TestProperties b)
+{
+    return p;
+}
 
 int TestIndexedProperties::operator[](CS_OUT char key)
 {
@@ -794,11 +834,20 @@ Bar& TestIndexedProperties::operator[](const Foo& key)
 }
 
 int TestVariables::VALUE;
-void TestVariables::SetValue(int value) { VALUE = value; }
+void TestVariables::SetValue(int value)
+{
+    VALUE = value;
+}
 
-LPCWSTR TestWideStrings::GetWidePointer() { return L"Hello"; }
+LPCWSTR TestWideStrings::GetWidePointer()
+{
+    return L"Hello";
+}
 
-LPCWSTR TestWideStrings::GetWideNullPointer() { return 0; }
+LPCWSTR TestWideStrings::GetWideNullPointer()
+{
+    return 0;
+}
 
 InternalCtorAmbiguity::InternalCtorAmbiguity(void* param)
 {
@@ -806,7 +855,8 @@ InternalCtorAmbiguity::InternalCtorAmbiguity(void* param)
     throw;
 }
 
-InvokesInternalCtorAmbiguity::InvokesInternalCtorAmbiguity() : ptr(0)
+InvokesInternalCtorAmbiguity::InvokesInternalCtorAmbiguity()
+    : ptr(0)
 {
 }
 
@@ -835,7 +885,8 @@ DLL_API const HasFriend operator-(const HasFriend& f1, const HasFriend& f2)
     return HasFriend(f1.m - f2.m);
 }
 
-DifferentConstOverloads::DifferentConstOverloads() : i(5)
+DifferentConstOverloads::DifferentConstOverloads()
+    : i(5)
 {
 }
 
@@ -844,27 +895,27 @@ int DifferentConstOverloads::getI() const
     return i;
 }
 
-bool DifferentConstOverloads::operator ==(const DifferentConstOverloads& other)
+bool DifferentConstOverloads::operator==(const DifferentConstOverloads& other)
 {
     return i == other.i;
 }
 
-bool DifferentConstOverloads::operator !=(const DifferentConstOverloads& other)
+bool DifferentConstOverloads::operator!=(const DifferentConstOverloads& other)
 {
     return i != other.i;
 }
 
-bool DifferentConstOverloads::operator ==(int number) const
+bool DifferentConstOverloads::operator==(int number) const
 {
     return i == number;
 }
 
-bool DifferentConstOverloads::operator ==(std::string s) const
+bool DifferentConstOverloads::operator==(std::string s) const
 {
     return i == s.length();
 }
 
-bool operator ==(const DifferentConstOverloads& d, const char* s)
+bool operator==(const DifferentConstOverloads& d, const char* s)
 {
     return d.getI() == strlen(s);
 }
@@ -926,7 +977,9 @@ void funcTryValTypeOut(CS_OUT ValueTypeClassPassTry classTry)
 {
 }
 
-HasProblematicFields::HasProblematicFields() : b(false), c(0)
+HasProblematicFields::HasProblematicFields()
+    : b(false)
+    , c(0)
 {
 }
 
@@ -1059,17 +1112,32 @@ TestNotStaticClass TestNotStaticClass::StaticFunction()
     return TestNotStaticClass();
 }
 
-int TestStaticClass::Add(int a, int b) { return a + b; }
-int TestStaticClass::GetOneTwoThree() { return 123; }
-int TestStaticClass::_Mult(int a, int b) { return a * b; }
-int TestStaticClass::GetFourFiveSix() { return 456; }
+int TestStaticClass::Add(int a, int b)
+{
+    return a + b;
+}
+int TestStaticClass::GetOneTwoThree()
+{
+    return 123;
+}
+int TestStaticClass::_Mult(int a, int b)
+{
+    return a * b;
+}
+int TestStaticClass::GetFourFiveSix()
+{
+    return 456;
+}
 
 TestStaticClass& TestStaticClass::operator=(const TestStaticClass& oth)
 {
     return *this;
 }
 
-int TestStaticClassDerived::Foo() { return 0; }
+int TestStaticClassDerived::Foo()
+{
+    return 0;
+}
 
 HasCopyAndMoveConstructor::HasCopyAndMoveConstructor(int value)
 {
@@ -1137,7 +1205,10 @@ AmbiguousParamNames::AmbiguousParamNames(int instance, int in)
 {
 }
 
-int ReturnByValueWithReturnParam::getUseCount() { return _ptr.use_count(); }
+int ReturnByValueWithReturnParam::getUseCount()
+{
+    return _ptr.use_count();
+}
 
 ReturnByValueWithReturnParam ReturnByValueWithReturnParamFactory::generate()
 {
@@ -1193,8 +1264,14 @@ LPCSTR TakeTypedefedMappedType(LPCSTR string)
     return UTF8.data();
 }
 
-StructWithCopyCtor::StructWithCopyCtor() : mBits(0) {}
-StructWithCopyCtor::StructWithCopyCtor(const StructWithCopyCtor& other) : mBits(other.mBits) {}
+StructWithCopyCtor::StructWithCopyCtor()
+    : mBits(0)
+{
+}
+StructWithCopyCtor::StructWithCopyCtor(const StructWithCopyCtor& other)
+    : mBits(other.mBits)
+{
+}
 
 uint16_t TestStructWithCopyCtorByValue(StructWithCopyCtor s)
 {
@@ -1214,8 +1291,14 @@ int NonPrimitiveType::GetFoo()
     return foo;
 }
 
-int TestGetterSetterToProperties::getWidth() { return 640; }
-int TestGetterSetterToProperties::getHeight() { return 480; }
+int TestGetterSetterToProperties::getWidth()
+{
+    return 640;
+}
+int TestGetterSetterToProperties::getHeight()
+{
+    return 480;
+}
 
 void DLL_API PointerToTypedefPointerTestMethod(LPPointerToTypedefPointerTest* lp, int valToSet)
 {
@@ -1229,10 +1312,13 @@ void DLL_API PointerToPrimitiveTypedefPointerTestMethod(LPINT lp, int valToSet)
 
 TestArraysPointers::TestArraysPointers(MyEnum* values, int count)
 {
-    if (values && count) Value = values[0];
+    if (values && count)
+        Value = values[0];
 }
 
-TestCopyConstructorRef::TestCopyConstructorRef() : A(0), B(0)
+TestCopyConstructorRef::TestCopyConstructorRef()
+    : A(0)
+    , B(0)
 {
 }
 
@@ -1243,20 +1329,36 @@ TestCopyConstructorRef::TestCopyConstructorRef(const TestCopyConstructorRef& oth
 }
 
 
-SomeStruct::SomeStruct() : p(1) {}
+SomeStruct::SomeStruct()
+    : p(1)
+{
+}
 
 void SomeNamespace::NamespacedAbstractImpl::AbstractMethod()
 {
 }
 
-ClassWithOverloadedOperators::ClassWithOverloadedOperators::operator char() { return 1; }
-ClassWithOverloadedOperators::operator int() { return 2; }
-ClassWithOverloadedOperators::operator short() { return 3; }
-bool ClassWithOverloadedOperators::operator<(const ClassWithOverloadedOperators& other) const {
+ClassWithOverloadedOperators::ClassWithOverloadedOperators::operator char()
+{
+    return 1;
+}
+ClassWithOverloadedOperators::operator int()
+{
+    return 2;
+}
+ClassWithOverloadedOperators::operator short()
+{
+    return 3;
+}
+bool ClassWithOverloadedOperators::operator<(const ClassWithOverloadedOperators& other) const
+{
     return true;
 }
 
-int TestIndexedPropertiesInValueType::operator[](int i) { return i; }
+int TestIndexedPropertiesInValueType::operator[](int i)
+{
+    return i;
+}
 
 extern "C"
 {

@@ -12,13 +12,9 @@ protected:
     ~DeriveProtectedDtor() {}
 };
 
-class DLL_API QString
-{
-};
+class DLL_API QString{};
 
-class DLL_API T1
-{
-};
+class DLL_API T1{};
 
 class DLL_API T2
 {
@@ -28,13 +24,12 @@ public:
     virtual ~T2();
     int getField() const;
     void setField(int value);
+
 private:
     int field;
 };
 
-class DLL_API Ignored
-{
-};
+class DLL_API Ignored{};
 
 template <typename T>
 class HasAbstractReturnPointer
@@ -84,6 +79,7 @@ template <typename T>
 class IndependentFields : public T1
 {
     typedef T Type;
+
 public:
     class Nested
     {
@@ -97,7 +93,7 @@ public:
     IndependentFields(T2* t2);
     IndependentFields(float f);
     ~IndependentFields();
-    explicit IndependentFields(const std::map<T, T> &other);
+    explicit IndependentFields(const std::map<T, T>& other);
     float getIndependent();
     T getDependent(const T& t);
     Type property();
@@ -105,6 +101,7 @@ public:
     template <typename AdditionalDependentType>
     void usesAdditionalDependentType(AdditionalDependentType additionalDependentType);
     static const int independentConst;
+
 private:
     float independent;
 };
@@ -113,7 +110,8 @@ template <typename T>
 const int IndependentFields<T>::independentConst = 15;
 
 template <typename T>
-IndependentFields<T>::IndependentFields() : independent(1)
+IndependentFields<T>::IndependentFields()
+    : independent(1)
 {
 }
 
@@ -124,17 +122,20 @@ IndependentFields<T>::IndependentFields(const IndependentFields<T>& other)
 }
 
 template <typename T>
-IndependentFields<T>::IndependentFields(const T& t) : independent(1)
+IndependentFields<T>::IndependentFields(const T& t)
+    : independent(1)
 {
 }
 
 template <typename T>
-IndependentFields<T>::IndependentFields(T1* t1) : independent(1)
+IndependentFields<T>::IndependentFields(T1* t1)
+    : independent(1)
 {
 }
 
 template <typename T>
-IndependentFields<T>::IndependentFields(T2* t2) : independent(1)
+IndependentFields<T>::IndependentFields(T2* t2)
+    : independent(1)
 {
 }
 
@@ -145,7 +146,8 @@ IndependentFields<T>::IndependentFields(float f)
 }
 
 template <typename T>
-IndependentFields<T>::IndependentFields(const std::map<T, T> &v) : independent(1)
+IndependentFields<T>::IndependentFields(const std::map<T, T>& v)
+    : independent(1)
 {
 }
 
@@ -266,15 +268,19 @@ public:
     HasAbstractReturnPointer<T>* getAbstractReturnPointer();
     typedef void (*DependentFunctionPointer)(T);
     DependentFunctionPointer dependentFunctionPointerField;
+
 private:
     T field{};
-    union {
+    union
+    {
         int unionField;
     };
 };
 
 template <typename T>
-DependentValueFields<T>::DependentValueFields() : unionField(0), dependentFunctionPointerField(0)
+DependentValueFields<T>::DependentValueFields()
+    : unionField(0)
+    , dependentFunctionPointerField(0)
 {
 }
 
@@ -284,7 +290,8 @@ DependentValueFields<T>::~DependentValueFields()
 }
 
 template <typename T>
-DependentValueFields<T>::DependentValueFields(IndependentFields<T> i) : DependentValueFields()
+DependentValueFields<T>::DependentValueFields(IndependentFields<T> i)
+    : DependentValueFields()
 {
 }
 
@@ -363,7 +370,8 @@ public:
 };
 
 template <typename T>
-DependentPointerFields<T>::DependentPointerFields(T* t) : field(t)
+DependentPointerFields<T>::DependentPointerFields(T* t)
+    : field(t)
 {
 }
 
@@ -396,6 +404,7 @@ public:
     };
     void takeDependentPtrToFirstTemplateArg(iterator i, const K& k);
     void takeDependentPtrToSecondTemplateArg(const V& v);
+
 private:
     K key;
     V value;
@@ -434,6 +443,7 @@ public:
     bool operator==(const HasDefaultTemplateArgument& other);
     DependentValueFields<D> returnTemplateWithRenamedTypeArg(const DependentValueFields<D>& value);
     DependentValueFields<D> propertyReturnsTemplateWithRenamedTypeArg();
+
 private:
     T field{};
     static T staticField;
@@ -447,6 +457,7 @@ public:
     void setProperty(const bool& t);
     static bool staticProperty();
     static void setStaticProperty(const bool& t);
+
 private:
     bool field;
     static bool staticField;
@@ -551,6 +562,7 @@ public:
     T& operator[](int i);
     T& operator[](const T& key);
     T& operator[](const char* string);
+
 private:
     T t[1];
     HasDefaultTemplateArgument<char> h;
@@ -586,8 +598,7 @@ T& TemplateWithIndexer<T>::operator[](const char* string)
     return t[0];
 }
 
-template <typename T1 = void, typename T2 = void, typename T3 = void, typename T4 = void,
-          typename T5 = void, typename T6 = void, typename T7 = void, typename T8 = void>
+template <typename T1 = void, typename T2 = void, typename T3 = void, typename T4 = void, typename T5 = void, typename T6 = void, typename T7 = void, typename T8 = void>
 class OptionalTemplateArgs
 {
 };
@@ -664,6 +675,7 @@ public:
     VirtualTemplate<int> getVCopy();
     void setV(VirtualTemplate<int>* value);
     int function();
+
 private:
     VirtualTemplate<int>* v;
     HasDefaultTemplateArgument<bool, bool> explicitSpecialization;
@@ -701,6 +713,7 @@ public:
     void completeSpecializationInParameter(TwoTemplateArgs<const char*, int>::iterator p6,
                                            TwoTemplateArgs<QString, int>::iterator p7);
     VirtualTemplate<void> returnSpecializedWithVoid();
+
 private:
     IndependentFields<int> independentFields;
     DependentValueFields<bool> dependentValueFields;
@@ -732,20 +745,33 @@ class PartiallySpecialized<Key, int>
     };
 };
 
-template<class T>
-class HasResultType {
+template <class T>
+class HasResultType
+{
     typedef char Yes;
-    typedef void *No;
-    template<typename U> static Yes test(int, const typename U::result_type * = 0);
-    template<typename U> static No test(double);
+    typedef void* No;
+    template <typename U>
+    static Yes test(int, const typename U::result_type* = 0);
+    template <typename U>
+    static No test(double);
+
 public:
-    enum { Value = (sizeof(test<T>(0)) == sizeof(Yes)) };
+    enum
+    {
+        Value = (sizeof(test<T>(0)) == sizeof(Yes))
+    };
 };
 
 template <typename Functor, bool foo = HasResultType<Functor>::Value>
-struct LazyResultType { typedef typename Functor::result_type Type; };
+struct LazyResultType
+{
+    typedef typename Functor::result_type Type;
+};
 template <typename Functor>
-struct LazyResultType<Functor, false> { typedef void Type; };
+struct LazyResultType<Functor, false>
+{
+    typedef void Type;
+};
 
 template <class InputSequence, class MapFunctor>
 struct MapResultType
@@ -765,7 +791,7 @@ public:
     virtual void virtualFunction();
 };
 
-template<typename T>
+template <typename T>
 class TemplateDerivedFromRegularDynamic : public RegularDynamic
 {
 public:
@@ -773,12 +799,12 @@ public:
     ~TemplateDerivedFromRegularDynamic();
 };
 
-template<typename T>
+template <typename T>
 TemplateDerivedFromRegularDynamic<T>::TemplateDerivedFromRegularDynamic()
 {
 }
 
-template<typename T>
+template <typename T>
 TemplateDerivedFromRegularDynamic<T>::~TemplateDerivedFromRegularDynamic()
 {
 }
@@ -807,22 +833,26 @@ class QFlags
 {
     typedef int Int;
     struct Private;
-    typedef int (Private::*Zero);
+    typedef int(Private::* Zero);
+
 public:
     QFlags(T t);
     QFlags(Zero = nullptr);
     operator Int();
+
 private:
     int flag;
 };
 
 template <typename T>
-QFlags<T>::QFlags(T t) : flag(Int(t))
+QFlags<T>::QFlags(T t)
+    : flag(Int(t))
 {
 }
 
 template <typename T>
-QFlags<T>::QFlags(Zero) : flag(Int(0))
+QFlags<T>::QFlags(Zero)
+    : flag(Int(0))
 {
 }
 
@@ -872,20 +902,7 @@ enum class TestFlag
 };
 
 // we optimise specialisations so that only actually used ones are wrapped
-void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> _2,
-                             IndependentFields<T1> _3, IndependentFields<std::string> _4,
-                             DependentValueFields<int> _5,
-                             VirtualTemplate<int> _6, VirtualTemplate<bool> _7,
-                             HasDefaultTemplateArgument<int, int> _8, DerivedChangesTypeName<T1> _9,
-                             TemplateWithIndexer<int> _10, TemplateWithIndexer<T1> _11,
-                             TemplateWithIndexer<void*> _12, TemplateWithIndexer<UsedInTemplatedIndexer> _13,
-                             TemplateDerivedFromRegularDynamic<RegularDynamic> _14,
-                             IndependentFields<OnlySpecialisedInTypeArg<double>> _15,
-                             DependentPointerFields<float> _16, IndependentFields<const T1&> _17,
-                             TemplateWithIndexer<T2*> _18, IndependentFields<int(*)(int)> _19,
-                             TemplateWithIndexer<const char*> _20, VirtualDependentValueFields<int> _21,
-                             VirtualDependentValueFields<float> _22, VirtualDependentValueFields<const char*> _23,
-                             std::string s);
+void forceUseSpecializations(IndependentFields<int> _1, IndependentFields<bool> _2, IndependentFields<T1> _3, IndependentFields<std::string> _4, DependentValueFields<int> _5, VirtualTemplate<int> _6, VirtualTemplate<bool> _7, HasDefaultTemplateArgument<int, int> _8, DerivedChangesTypeName<T1> _9, TemplateWithIndexer<int> _10, TemplateWithIndexer<T1> _11, TemplateWithIndexer<void*> _12, TemplateWithIndexer<UsedInTemplatedIndexer> _13, TemplateDerivedFromRegularDynamic<RegularDynamic> _14, IndependentFields<OnlySpecialisedInTypeArg<double>> _15, DependentPointerFields<float> _16, IndependentFields<const T1&> _17, TemplateWithIndexer<T2*> _18, IndependentFields<int (*)(int)> _19, TemplateWithIndexer<const char*> _20, VirtualDependentValueFields<int> _21, VirtualDependentValueFields<float> _22, VirtualDependentValueFields<const char*> _23, std::string s);
 
 void hasIgnoredParam(DependentValueFields<IndependentFields<Ignored>> ii, Base<void> _24);
 
@@ -893,8 +910,10 @@ std::map<int, int> usesValidSpecialisationOfIgnoredTemplate();
 
 DLL_API DependentValueFields<double> specialiseReturnOnly();
 
-template <int Size> void* qbswap(const void *source, size_t count, void *dest) noexcept;
-template<> inline void* qbswap<1>(const void *source, size_t count, void *dest) noexcept
+template <int Size>
+void* qbswap(const void* source, size_t count, void* dest) noexcept;
+template <>
+inline void* qbswap<1>(const void* source, size_t count, void* dest) noexcept
 {
     return 0;
 }
@@ -902,30 +921,34 @@ template<> inline void* qbswap<1>(const void *source, size_t count, void *dest) 
 class TestForwardedClassInAnotherUnit;
 
 // Forward declaration of class as friend
-template<class T> class ForwardTemplateFriendClassContainer;
-template<class T> class ForwardTemplateFriendClass;
+template <class T>
+class ForwardTemplateFriendClassContainer;
+template <class T>
+class ForwardTemplateFriendClass;
 
-template<class T>
+template <class T>
 class ForwardTemplateFriendClassContainer
 {
-    template<class K> friend class ForwardTemplateFriendClass;
+    template <class K>
+    friend class ForwardTemplateFriendClass;
 };
 
-template<class T>
+template <class T>
 class ForwardTemplateFriendClass
 {
 protected:
-    ForwardTemplateFriendClass() { }
+    ForwardTemplateFriendClass() {}
 };
 
 class ForwardTemplateFriendClassUser : public ForwardTemplateFriendClass<ForwardTemplateFriendClassUser>
-{ };
+{};
 
-template<int I>
+template <int I>
 class ClassWithNonTypeTemplateArgument
 {
 public:
-    ClassWithNonTypeTemplateArgument() { }
+    ClassWithNonTypeTemplateArgument() {}
+
 private:
     union
     {
@@ -935,19 +958,19 @@ private:
 };
 
 class SpecializationOfClassWithNonTypeTemplateArgument : public ClassWithNonTypeTemplateArgument<0>
-{ };
-template<std::size_t N>
-class DLL_API FloatArrayF
-{
-public:
-    template<typename... V, class = typename std::enable_if_t<sizeof...(V) == N>>
-    FloatArrayF(V... x)  { }
+{};
+template <std::size_t N>
+class DLL_API FloatArrayF{
+    public :
+        template <typename... V, class = typename std::enable_if_t<sizeof...(V) == N>>
+        FloatArrayF(V... x){}
 
 };
 const FloatArrayF<6> I6{ 1., 1., 1., 0., 0., 0. };
 
 template <typename T>
-DLL_API inline T FunctionTemplate(T value) {
+DLL_API inline T FunctionTemplate(T value)
+{
     if (std::is_same<T, double>::value)
         return 4.2 + value;
     else if (std::is_same<T, float>::value)
@@ -963,20 +986,21 @@ inline void FunctionTemplateInstantiation()
 }
 
 // KEEP ORDER OTHERWISE TEST WONT WORK
-namespace IncompleteClassTemplatesTests
+namespace IncompleteClassTemplatesTests {
+template <size_t Size>
+struct StructSizeT
+{};
+
+template <typename T>
+struct StructT
 {
-    template <size_t Size>
-    struct StructSizeT {};
+    template <typename U>
+    struct Inc
+    {};
+};
 
-    template <typename T>
-    struct StructT
-    {
-        template<typename U>
-        struct Inc { };
-    };
-
-    struct Instantiation
-    {
-        StructT<StructSizeT<4000>> st;
-    };
-}
+struct Instantiation
+{
+    StructT<StructSizeT<4000>> st;
+};
+} // namespace IncompleteClassTemplatesTests

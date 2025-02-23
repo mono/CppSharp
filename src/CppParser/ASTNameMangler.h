@@ -1,9 +1,9 @@
 /************************************************************************
-*
-* CppSharp
-* Licensed under the simplified BSD license. All rights reserved.
-*
-************************************************************************/
+ *
+ * CppSharp
+ * Licensed under the simplified BSD license. All rights reserved.
+ *
+ ************************************************************************/
 
 #pragma once
 
@@ -12,16 +12,14 @@
 
 #include <string>
 
-namespace clang
-{
-    class ASTContext;
-    class MangleContext;
-    struct ThunkInfo;
-}
+namespace clang {
+class ASTContext;
+class MangleContext;
+struct ThunkInfo;
+} // namespace clang
 
-namespace llvm
-{
-    class raw_ostream;
+namespace llvm {
+class raw_ostream;
 }
 
 namespace CppSharp::CppParser {
@@ -42,9 +40,9 @@ private:
     std::string GetMangledStructor(const clang::NamedDecl* ND, unsigned StructorType) const;
     std::string GetMangledThunk(const clang::CXXMethodDecl* MD, const clang::ThunkInfo& T, bool ElideOverrideInfo) const;
     bool WriteFuncOrVarName(const clang::NamedDecl* D, llvm::raw_ostream& OS) const;
-    
+
     llvm::DataLayout DL;
     std::unique_ptr<clang::MangleContext> MC;
 };
 
-}
+} // namespace CppSharp::CppParser

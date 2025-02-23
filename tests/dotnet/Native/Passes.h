@@ -1,17 +1,17 @@
 enum FlagEnum
 {
-  A = 1 << 0,
-  B = 1 << 1,
-  C = 1 << 2,
-  D = 1 << 3,
+    A = 1 << 0,
+    B = 1 << 1,
+    C = 1 << 2,
+    D = 1 << 3,
 };
 
 enum FlagEnum2
 {
-  A1 = 1 << 0,
-  B1 = 3,
-  C1 = 1 << 2,
-  D1 = 1 << 4,
+    A1 = 1 << 0,
+    B1 = 3,
+    C1 = 1 << 2,
+    D1 = 1 << 4,
 };
 
 enum class BoolEnum : bool
@@ -30,14 +30,14 @@ enum class UCharEnum : unsigned char
 
 class Foo
 {
-    void toIgnore() { }
+    void toIgnore() {}
 };
 void FooStart(Foo*, int);
 
 struct TestRename
 {
-  int lowerCaseMethod();
-  int lowerCaseField;
+    int lowerCaseMethod();
+    int lowerCaseField;
 };
 
 /// <summary>A simple test.</summary>
@@ -49,7 +49,7 @@ struct TestReadOnlyProperties
 {
     int readOnlyProperty;
     int getReadOnlyPropertyMethod() { return 0; }
-    void setReadOnlyPropertyMethod(int value) { }
+    void setReadOnlyPropertyMethod(int value) {}
 };
 
 #define TEST_ENUM_ITEM_NAME_0 0
@@ -66,15 +66,15 @@ enum
 #define TEST_ENUM_MAX_BYTE 255
 #define TEST_ENUM_MAX_SHORT 32767
 #define TEST_ENUM_MAX_USHORT 65535
-#define TEST_ENUM_MAX_INT 2147483647                
-#define TEST_ENUM_MAX_UINT 4294967295               
-#define TEST_ENUM_MAX_LONG 9223372036854775807      
-#define TEST_ENUM_MAX_ULONG 18446744073709551615    
+#define TEST_ENUM_MAX_INT 2147483647
+#define TEST_ENUM_MAX_UINT 4294967295
+#define TEST_ENUM_MAX_LONG 9223372036854775807
+#define TEST_ENUM_MAX_ULONG 18446744073709551615
 
 #define TEST_ENUM_MIN_SBYTE -128
 #define TEST_ENUM_MIN_SHORT -32768
-#define TEST_ENUM_MIN_INT -2147483648               
-#define TEST_ENUM_MIN_LONG -9223372036854775808     
+#define TEST_ENUM_MIN_INT -2147483648
+#define TEST_ENUM_MIN_LONG -9223372036854775808
 
 // Test #defines with bit operators
 #define TEST_BITWISE_OR_1 0x7F | 0x80
@@ -92,12 +92,26 @@ enum
 #define TEST_INT_PLUS_LONG 5 + 2147483648
 
 // TestStructInheritance
-struct S1 { int F1, F2; };
-struct S2 : S1 { int F3; };
+struct S1
+{
+    int F1, F2;
+};
+struct S2 : S1
+{
+    int F3;
+};
 
 // Tests unnamed enums
-enum { Unnamed_Enum_1_A = 1, Unnamed_Enum_1_B = 2 };
-enum { Unnamed_Enum_2_A = 3, Unnamed_Enum_2_B = 4 };
+enum
+{
+    Unnamed_Enum_1_A = 1,
+    Unnamed_Enum_1_B = 2
+};
+enum
+{
+    Unnamed_Enum_2_A = 3,
+    Unnamed_Enum_2_B = 4
+};
 
 // Tests unique name for unnamed enums across translation units
 #include "Enums.h"
@@ -124,25 +138,26 @@ struct TestMethodAsInternal
 
 class ClassWithAbstractOperator
 {
-  virtual operator int() = 0;
+    virtual operator int() = 0;
 };
 
 enum ConnectionRole
 {
-    Role1, Role2
+    Role1,
+    Role2
 };
 
 bool ConnectionRoleToString(const ConnectionRole& role, const char* role_str);
 
 class TestFlattenAnonymousTypesToFields
 {
-/* TODO: Enable this code (and respective test in TestPasses).
-public:
-    union
-    {
-        int Public;
-    };
-*/
+    /* TODO: Enable this code (and respective test in TestPasses).
+    public:
+        union
+        {
+            int Public;
+        };
+    */
 protected:
     union
     {

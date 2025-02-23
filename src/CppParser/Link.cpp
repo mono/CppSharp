@@ -1,9 +1,9 @@
 /************************************************************************
-*
-* CppSharp
-* Licensed under the simplified BSD license. All rights reserved.
-*
-************************************************************************/
+ *
+ * CppSharp
+ * Licensed under the simplified BSD license. All rights reserved.
+ *
+ ************************************************************************/
 
 #include "CppParser.h"
 #include "Parser.h"
@@ -27,36 +27,38 @@ bool Parser::Link(const std::string& File, const CppLinkerOptions* LinkerOptions
     const llvm::Triple Triple = c->getTarget().getTriple();
     switch (Triple.getOS())
     {
-    case llvm::Triple::OSType::Win32:
-        args.push_back("-subsystem:windows");
-        switch (Triple.getEnvironment())
-        {
-        case llvm::Triple::EnvironmentType::MSVC:
-            return LinkWindows(LinkerOptions, args, Dir, Stem);
+        case llvm::Triple::OSType::Win32:
+            args.push_back("-subsystem:windows");
+            switch (Triple.getEnvironment())
+            {
+                case llvm::Triple::EnvironmentType::MSVC:
+                    return LinkWindows(LinkerOptions, args, Dir, Stem);
 
-        case llvm::Triple::EnvironmentType::GNU:
-            return LinkWindows(LinkerOptions, args, Dir, Stem, true);
+                case llvm::Triple::EnvironmentType::GNU:
+                    return LinkWindows(LinkerOptions, args, Dir, Stem, true);
+
+                default:
+                    throw std::invalid_argument("Target triple environment");
+            }
+            break;
+
+        case llvm::Triple::OSType::Linux:
+            return LinkELF(LinkerOptions, args, Dir, Stem);
+
+        case llvm::Triple::OSType::Darwin:
+        case llvm::Triple::OSType::MacOSX:
+            return LinkMachO(LinkerOptions, args, Dir, Stem);
 
         default:
-            throw std::invalid_argument("Target triple environment");
-        }
-        break;
-
-    case llvm::Triple::OSType::Linux:
-        return LinkELF(LinkerOptions, args, Dir, Stem);
-
-    case llvm::Triple::OSType::Darwin:
-    case llvm::Triple::OSType::MacOSX:
-        return LinkMachO(LinkerOptions, args, Dir, Stem);
-
-    default:
-        throw std::invalid_argument("Target triple operating system");
+            throw std::invalid_argument("Target triple operating system");
     }
 }
 
 bool Parser::LinkWindows(const CppLinkerOptions* LinkerOptions,
-    std::vector<const char*>& args,
-    const llvm::StringRef& Dir, llvm::StringRef& Stem, bool MinGW)
+                         std::vector<const char*>& args,
+                         const llvm::StringRef& Dir,
+                         llvm::StringRef& Stem,
+                         bool MinGW)
 {
 #ifdef _WIN32
     using namespace llvm;
@@ -74,7 +76,7 @@ bool Parser::LinkWindows(const CppLinkerOptions* LinkerOptions,
 
     std::vector<std::string> LibraryPaths;
     LibraryPaths.push_back("-libpath:" + TC.getSubDirectoryPath(
-        llvm::SubDirectoryType::Lib));
+                                             llvm::SubDirectoryType::Lib));
     std::string CRTPath;
     if (TC.getUniversalCRTLibraryPath(Args, CRTPath))
         LibraryPaths.push_back("-libpath:" + CRTPath);
@@ -112,8 +114,9 @@ bool Parser::LinkWindows(const CppLinkerOptions* LinkerOptions,
 }
 
 bool Parser::LinkELF(const CppLinkerOptions* LinkerOptions,
-    std::vector<const char*>& args,
-    llvm::StringRef& Dir, llvm::StringRef& Stem)
+                     std::vector<const char*>& args,
+                     llvm::StringRef& Dir,
+                     llvm::StringRef& Stem)
 {
 #ifdef __linux__
     using namespace llvm;
@@ -153,8 +156,9 @@ bool Parser::LinkELF(const CppLinkerOptions* LinkerOptions,
 }
 
 bool Parser::LinkMachO(const CppLinkerOptions* LinkerOptions,
-    std::vector<const char*>& args,
-    llvm::StringRef& Dir, llvm::StringRef& Stem)
+                       std::vector<const char*>& args,
+                       llvm::StringRef& Dir,
+                       llvm::StringRef& Stem)
 {
 #ifdef __APPLE__
     using namespace llvm;
@@ -187,7 +191,7 @@ bool Parser::LinkMachO(const CppLinkerOptions* LinkerOptions,
     std::string Out(Output);
     args.push_back(Out.data());
 
-    return lld::macho::link(args, outs(), errs(),  /*exitEarly=*/false, /*disableOutput=*/false);
+    return lld::macho::link(args, outs(), errs(), /*exitEarly=*/false, /*disableOutput=*/false);
 #else
     return false;
 #endif

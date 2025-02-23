@@ -332,13 +332,13 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestLineNumber()
         {
-            Assert.AreEqual(70, AstContext.FindClass("HiddenInNamespace").First().LineNumberStart);
+            Assert.AreEqual(93, AstContext.FindClass("HiddenInNamespace").First().LineNumberStart);
         }
 
         [Test]
         public void TestLineNumberOfFriend()
         {
-            Assert.AreEqual(93, AstContext.FindFunction("operator+").First().LineNumberStart);
+            Assert.AreEqual(116, AstContext.FindFunction("operator+").First().LineNumberStart);
         }
 
         static string StripWindowsNewLines(string text)
@@ -379,7 +379,7 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestMacroLineNumber()
         {
-            Assert.AreEqual(103, AstContext.FindClass("HasAmbiguousFunctions").First().Specifiers.Last().LineNumberStart);
+            Assert.AreEqual(126, AstContext.FindClass("HasAmbiguousFunctions").First().Specifiers.Last().LineNumberStart);
         }
 
         [Test]
