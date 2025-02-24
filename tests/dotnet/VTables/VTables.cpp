@@ -60,4 +60,3 @@ int DerivedClassVirtual::retInt()
 {
     return 10;
 }
-

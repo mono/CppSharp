@@ -4,32 +4,41 @@
 void TestParameterProperties(bool a, const short& b, int* c = nullptr) {};
 
 // Tests various AST helper methods (like FindClass, FindOperator etc.)
-namespace Math
+namespace Math {
+// Tests FindClass("Math::Complex")
+struct Complex
 {
-    // Tests FindClass("Math::Complex")
-    struct Complex {
-        Complex(double r, double i) : re(r), im(i) {}
-        Complex operator+(Complex &other);
-    private:
-        double re, im;
-    };
-
-    // Tests FindTypedef("Math::Single")
-    typedef float Single;
-
-    // Tests FindOperator method
-    Complex Complex::operator+(Complex &other) {
-        return Complex(re + other.re, im + other.im);
+    Complex(double r, double i)
+        : re(r)
+        , im(i)
+    {
     }
+    Complex operator+(Complex& other);
 
-    void function();
+private:
+    double re, im;
+};
+
+// Tests FindTypedef("Math::Single")
+typedef float Single;
+
+// Tests FindOperator method
+Complex Complex::operator+(Complex& other)
+{
+    return Complex(re + other.re, im + other.im);
 }
 
+void function();
+} // namespace Math
+
 // Tests Enum.ItemByName
-enum TestASTEnumItemByName { TestItemByName };
+enum TestASTEnumItemByName
+{
+    TestItemByName
+};
 
 // Tests class templates
-template<typename T>
+template <typename T>
 class TestTemplateClass
 {
 public:
@@ -45,12 +54,27 @@ public:
 class TestTemplateFunctions
 {
 public:
-    template<typename T> T Identity(T x) { return x; }
-    template<int N> void Ignore() { };
-    template<typename T, typename S> void MethodTemplateWithTwoTypeParameter(T t, S s) { };
-    template<typename T> void Ignore(TestTemplateClass<T> v) { };
-    template<typename T> T Valid(TestTemplateClass<int> v, T x) { return x; };
-    template<typename T> T& Valid(TestTemplateClass<int> v, T x) const { return x; }
+    template <typename T>
+    T Identity(T x)
+    {
+        return x;
+    }
+    template <int N>
+    void Ignore() {};
+    template <typename T, typename S>
+    void MethodTemplateWithTwoTypeParameter(T t, S s) {};
+    template <typename T>
+    void Ignore(TestTemplateClass<T> v) {};
+    template <typename T>
+    T Valid(TestTemplateClass<int> v, T x)
+    {
+        return x;
+    };
+    template <typename T>
+    T& Valid(TestTemplateClass<int> v, T x) const
+    {
+        return x;
+    }
 };
 
 // Explicit instantiation
@@ -65,12 +89,11 @@ public:
     TestTemplateClassInt* CreateIntTemplate();
 };
 
-namespace HidesClass
+namespace HidesClass {
+class HiddenInNamespace
 {
-    class HiddenInNamespace
-    {
-    };
-}
+};
+} // namespace HidesClass
 
 void testSignature();
 
@@ -105,10 +128,10 @@ Q_SIGNALS:
 
 class Atomics
 {
-#if defined( __clang__ ) && defined( __has_extension )
-# if __has_extension( __c_atomic__ )
+#if defined(__clang__) && defined(__has_extension)
+#if __has_extension(__c_atomic__)
     _Atomic(int) AtomicInt;
-# endif
+#endif
 #endif
 };
 
@@ -145,7 +168,7 @@ void noExceptFalse() noexcept(false);
 template <typename T1, typename T2>
 bool functionWithSpecInfo(const T1& t11, const T1& t12, const T2& t2);
 
-template<>
+template <>
 bool functionWithSpecInfo(const float& t11, const float& t12, const float& t2);
 
 void functionWithSpecializationArg(const TestTemplateClass<int>);
@@ -162,12 +185,15 @@ void testInlineAssembly()
 }
 
 // Tests redeclarations
-class ClassA {};
+class ClassA
+{};
 
-class ClassB {};
+class ClassB
+{};
 class ClassB;
 
-class ClassC {};
+class ClassC
+{};
 class ClassC;
 class ClassC;
 

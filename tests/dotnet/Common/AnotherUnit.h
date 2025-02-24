@@ -4,17 +4,14 @@
 typedef void (*DelegateInAnotherUnit)();
 
 // Tests automatic generation of anonymous delegates in different translation units
-namespace DelegateNamespace
-{
-    namespace Nested
-    {
-        void DLL_API f3(void (*)());
-    }
-
-    void DLL_API f4(void (*)());
+namespace DelegateNamespace {
+namespace Nested {
+    void DLL_API f3(void (*)());
 }
 
-namespace AnotherUnit
-{
-    void DLL_API f();
+void DLL_API f4(void (*)());
+} // namespace DelegateNamespace
+
+namespace AnotherUnit {
+void DLL_API f();
 }

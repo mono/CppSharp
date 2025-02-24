@@ -2,14 +2,14 @@
 
 namespace CppSharp { namespace CppParser {
 
-SourceLocation::SourceLocation()
-    : ID(0)
-{
-}
+    SourceLocation::SourceLocation()
+        : ID(0)
+    {
+    }
 
-SourceLocation::SourceLocation(unsigned ID)
-    : ID(ID)
-{
-}
+    SourceLocation::SourceLocation(unsigned ID)
+        : ID(ID)
+    {
+    }
 
-} }
+}} // namespace CppSharp::CppParser

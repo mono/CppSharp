@@ -19,7 +19,7 @@ struct DLL_API TestVectors
     TestVectors();
     std::vector<int> GetIntVector();
     int SumIntVector(std::vector<int>& vec);
-    
+
     // Should get mapped to List<int>
     std::vector<int> IntVector;
     // Should get mapped to List<IntPtr>

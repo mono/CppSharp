@@ -17,22 +17,22 @@ public:
 };
 
 #pragma pack(1)
-class DLL_API TestPacking1: public TestPacking
+class DLL_API TestPacking1 : public TestPacking
 {
 };
 
 #pragma pack(2)
-class DLL_API TestPacking2: public TestPacking
+class DLL_API TestPacking2 : public TestPacking
 {
 };
 
 #pragma pack(4)
-class DLL_API TestPacking4: public TestPacking
+class DLL_API TestPacking4 : public TestPacking
 {
 };
 
 #pragma pack(8)
-class DLL_API TestPacking8: public TestPacking
+class DLL_API TestPacking8 : public TestPacking
 {
 };
 #pragma pack()
@@ -44,6 +44,7 @@ class DLL_API IgnoredType
     private:
         int i;
     };
+
 private:
     int i;
 };
@@ -56,6 +57,7 @@ private:
         Value1,
         Value2
     };
+
 public:
     enum
     {
@@ -101,7 +103,7 @@ public:
     void TakesTypedefedPtr(FooPtr date);
     int TakesRef(const Foo& other);
 
-    bool operator ==(const Foo& other) const;
+    bool operator==(const Foo& other) const;
 
     int fooPtr();
     char16_t returnChar16();
@@ -127,14 +129,15 @@ struct DLL_API Bar
 
     Bar* returnPointerToValueType();
 
-    bool operator ==(const Bar& arg1) const;
+    bool operator==(const Bar& arg1) const;
 };
 
-DLL_API bool operator ==(Bar::Item item, const Bar& bar);
+DLL_API bool operator==(Bar::Item item, const Bar& bar);
 
 class DLL_API Foo2 : public Foo
 {
-    struct Copy {
+    struct Copy
+    {
         Foo A;
     }* copy;
 
@@ -152,7 +155,7 @@ public:
     void testKeywordParam(void* where, Bar::Item event, int ref);
 };
 
-DLL_API Bar::Item operator |(Bar::Item left, Bar::Item right);
+DLL_API Bar::Item operator|(Bar::Item left, Bar::Item right);
 
 struct DLL_API Bar2 : public Bar
 {
@@ -167,7 +170,7 @@ struct DLL_API Bar2 : public Bar
     operator Foo2();
     Foo2 needFixedInstance() const;
 
-    typedef void *Bar2::*FunctionPointerResolvedAsVoidStar;
+    typedef void* Bar2::* FunctionPointerResolvedAsVoidStar;
     operator FunctionPointerResolvedAsVoidStar() const { return 0; }
 
     int C;
@@ -179,8 +182,10 @@ struct DLL_API Bar2 : public Bar
 
 enum Enum
 {
-    A = 0, B = 2, C = 5,
-    //D = 0x80000000,
+    A = 0,
+    B = 2,
+    C = 5,
+    // D = 0x80000000,
     E = 0x1,
     F = -9,
     NAME_A = 10,
@@ -191,13 +196,15 @@ typedef char TypedefChar;
 
 class DLL_API Hello
 {
-    union NestedPrivate {
+    union NestedPrivate
+    {
         int i;
         float f;
     };
 
 public:
-    union NestedPublic {
+    union NestedPublic
+    {
         int j;
         float g;
         long l;
@@ -256,6 +263,7 @@ public:
     typedef int typedefInOverride;
     virtual int pureFunction(typedefInOverride i = 0);
     virtual int pureFunction1();
+
 private:
     virtual int pureFunction2(bool* ok = 0);
 };
@@ -302,7 +310,7 @@ struct DLL_API DefaultParameters
 };
 
 // The Curiously Recurring Template Pattern (CRTP)
-template<class Derived>
+template <class Derived>
 class Base
 {
     // methods within Base can use template to access members of Derived
@@ -314,9 +322,7 @@ class Derived : public Base<Derived>
 };
 
 // Tests the MoveFunctionToClassPass
-class DLL_API common
-{
-};
+class DLL_API common{};
 
 DLL_API int test(common& s);
 
@@ -328,26 +334,26 @@ struct DLL_API TestMoveOperatorToClass
     int B;
 };
 
-DLL_API int operator *(TestMoveOperatorToClass klass, int b);
+DLL_API int operator*(TestMoveOperatorToClass klass, int b);
 
 DLL_API TestMoveOperatorToClass operator-(const TestMoveOperatorToClass& b);
 
 DLL_API TestMoveOperatorToClass operator+(const TestMoveOperatorToClass& b1,
-    const TestMoveOperatorToClass& b2);
+                                          const TestMoveOperatorToClass& b2);
 
 // Not a valid operator overload for Foo2 in managed code - comparison operators need to return bool.
 DLL_API int operator==(const Foo2& a, const Foo2& b);
 
 // Tests delegates
 typedef int (*DelegateInGlobalNamespace)(int);
-typedef int (STDCALL *DelegateStdCall)(int);
-typedef int (CDECL *DelegateCDecl)(int n);
-typedef void(*DelegateNullCheck)(void);
+typedef int(STDCALL* DelegateStdCall)(int);
+typedef int(CDECL* DelegateCDecl)(int n);
+typedef void (*DelegateNullCheck)(void);
 
 struct DLL_API TestDelegates
 {
     typedef int (*DelegateInClass)(int);
-    typedef int(TestDelegates::*MemberDelegate)(int);
+    typedef int (TestDelegates::*MemberDelegate)(int);
 
     TestDelegates();
     static int Double(int N);
@@ -361,8 +367,8 @@ struct DLL_API TestDelegates
     void MarshalAnonymousDelegate2(int (*del)(int n));
     void MarshalAnonymousDelegate3(float (*del)(float n));
     int (*MarshalAnonymousDelegate4())(int n);
-    int MarshalAnonymousDelegate5(int (STDCALL *del)(int n));
-    int MarshalAnonymousDelegate6(int (STDCALL *del)(int n));
+    int MarshalAnonymousDelegate5(int(STDCALL* del)(int n));
+    int MarshalAnonymousDelegate6(int(STDCALL* del)(int n));
 
     void MarshalDelegateInAnotherUnit(DelegateInAnotherUnit del);
 
@@ -374,28 +380,23 @@ struct DLL_API TestDelegates
     MemberDelegate C;
 };
 
-namespace DelegateNamespace
-{
-    namespace Nested
-    {
-        void DLL_API f1(void (*)());
-    }
-
-    void DLL_API f2(void (*)());
+namespace DelegateNamespace {
+namespace Nested {
+    void DLL_API f1(void (*)());
 }
+
+void DLL_API f2(void (*)());
+} // namespace DelegateNamespace
 
 // Tests memory leaks in constructors
 //  C#:  Marshal.FreeHGlobal(arg0);
-struct DLL_API TestMemoryLeaks
-{
-    TestMemoryLeaks(const char* name) {}
+struct DLL_API TestMemoryLeaks{
+    TestMemoryLeaks(const char* name){}
 };
 
 // Tests that finalizers are generated
 /* CLI: ~TestFinalizers() */
-struct DLL_API TestFinalizers
-{
-};
+struct DLL_API TestFinalizers{};
 
 // Tests static classes
 struct DLL_API TestStaticClass
@@ -427,6 +428,7 @@ class DLL_API TestNotStaticClass
 {
 public:
     static TestNotStaticClass StaticFunction();
+
 private:
     TestNotStaticClass();
 };
@@ -460,51 +462,54 @@ public:
 template <class T>
 struct EmptyNamedNestedEnum
 {
-    enum { Value = 10 };
+    enum
+    {
+        Value = 10
+    };
 };
 
 typedef unsigned long foo_t;
 typedef struct DLL_API SomeStruct
 {
-        SomeStruct();
-        foo_t p;
+    SomeStruct();
+    foo_t p;
 } SomeStruct;
 
 class DLL_API SomeClassExtendingTheStruct : public SomeStruct
 {
 };
 
-namespace SomeNamespace
+namespace SomeNamespace {
+class DLL_API NamespacedAbstractClass
 {
-    class DLL_API NamespacedAbstractClass
-    {
-    public:
-        virtual void AbstractMethod() = 0;
-    };
+public:
+    virtual void AbstractMethod() = 0;
+};
 
-    class DLL_API NamespacedAbstractImpl
-    {
-    public:
-        virtual void AbstractMethod();
-    };
+class DLL_API NamespacedAbstractImpl
+{
+public:
+    virtual void AbstractMethod();
+};
 
-    class Inlines
-    {
-    public:
-        constexpr Inlines(float param, const char* name) {}
-        inline operator NamespacedAbstractImpl () const { return NamespacedAbstractImpl(); }
-    protected:
-        void protectedInlined() {}
-    };
+class Inlines
+{
+public:
+    constexpr Inlines(float param, const char* name) {}
+    inline operator NamespacedAbstractImpl() const { return NamespacedAbstractImpl(); }
 
-    constexpr Inlines constWithParams(5.f, "test");
+protected:
+    void protectedInlined() {}
+};
 
-    class AbstractInlines
-    {
-    public:
-        virtual void hasVariadicArgs(int regular, ...) = 0;
-    };
-}
+constexpr Inlines constWithParams(5.f, "test");
+
+class AbstractInlines
+{
+public:
+    virtual void hasVariadicArgs(int regular, ...) = 0;
+};
+} // namespace SomeNamespace
 
 // Test operator overloads
 class DLL_API ClassWithOverloadedOperators
@@ -514,7 +519,7 @@ public:
     operator int();
     operator short();
 
-    virtual bool operator<(const ClassWithOverloadedOperators &other) const;
+    virtual bool operator<(const ClassWithOverloadedOperators& other) const;
 };
 
 // Tests global static function generation
@@ -587,8 +592,8 @@ public:
     Conflict GetConflict();
     void SetConflict(Conflict _conflict);
 
-    virtual int(*getCallback())(int);
-    virtual void setCallback(int(*value)(int));
+    virtual int (*getCallback())(int);
+    virtual void setCallback(int (*value)(int));
 
     int GetArchiveName() const;
 
@@ -602,7 +607,7 @@ private:
     int _setterReturnsBoolean;
     int _virtualSetterReturnsBoolean;
     Conflict _conflict;
-    int(*_callback)(int);
+    int (*_callback)(int);
 };
 
 class DLL_API HasOverridenSetter : public TestProperties
@@ -666,16 +671,21 @@ struct DLL_API TestVariables
     void SetValue(int value = VALUE);
 };
 
-typedef const wchar_t * LPCWSTR;
+typedef const wchar_t* LPCWSTR;
 struct DLL_API TestWideStrings
 {
     LPCWSTR GetWidePointer();
     LPCWSTR GetWideNullPointer();
 };
 
-enum struct MyEnum { A, B, C };
+enum struct MyEnum
+{
+    A,
+    B,
+    C
+};
 
-typedef void (*VoidPtrRetFunctionTypedef) ();
+typedef void (*VoidPtrRetFunctionTypedef)();
 
 class DLL_API TestFixedArrays
 {
@@ -691,7 +701,7 @@ public:
 class DLL_API TestArraysPointers
 {
 public:
-    TestArraysPointers(MyEnum *values, int count);
+    TestArraysPointers(MyEnum* values, int count);
 
     MyEnum Value;
 };
@@ -731,9 +741,9 @@ public:
     ClassB(const ClassA& x);
     int Value;
     // conversion from ClassA (assignment):
-    //ClassB& operator= (const ClassA& x) { return *this; }
+    // ClassB& operator= (const ClassA& x) { return *this; }
     // conversion to ClassA (type-cast operator)
-    //operator ClassA() { return ClassA(); }
+    // operator ClassA() { return ClassA(); }
 };
 class DLL_API ClassC
 {
@@ -762,12 +772,16 @@ DLL_API void TestNullPtrType(decltype(nullptr));
 DLL_API decltype(nullptr) TestNullPtrTypeRet();
 
 // Tests dependent name types
-template<typename T> struct DependentType
+template <typename T>
+struct DependentType
 {
-    DependentType(typename T::Dependent* t) { }
+    DependentType(typename T::Dependent* t) {}
 
 private:
-    struct Bitset { int length : sizeof(T); };
+    struct Bitset
+    {
+        int length : sizeof(T);
+    };
 };
 
 class PureDtor
@@ -828,6 +842,7 @@ class DLL_API InvokesInternalCtorAmbiguity
 public:
     InvokesInternalCtorAmbiguity();
     InternalCtorAmbiguity* InvokeInternalCtor();
+
 private:
     InternalCtorAmbiguity* ptr;
 };
@@ -839,16 +854,18 @@ public:
     DLL_API friend const HasFriend operator+(const HasFriend& f1, const HasFriend& f2);
     DLL_API friend const HasFriend operator-(const HasFriend& f1, const HasFriend& f2);
     int getM();
+
 private:
     int m;
 };
 
-template<typename T> class FriendTemplate
+template <typename T>
+class FriendTemplate
 {
-    template<typename TT>
+    template <typename TT>
     friend FriendTemplate<TT> func(const FriendTemplate<TT>&);
 
-    template<typename TT>
+    template <typename TT>
     friend class FriendTemplate;
 };
 
@@ -857,32 +874,35 @@ class DLL_API DifferentConstOverloads
 public:
     DifferentConstOverloads();
     int getI() const;
-    bool operator ==(const DifferentConstOverloads& other);
-    bool operator !=(const DifferentConstOverloads& other);
-    bool operator ==(int number) const;
-    bool operator ==(std::string s) const;
+    bool operator==(const DifferentConstOverloads& other);
+    bool operator!=(const DifferentConstOverloads& other);
+    bool operator==(int number) const;
+    bool operator==(std::string s) const;
+
 private:
     int i;
 };
 
-DLL_API bool operator ==(const DifferentConstOverloads& d, const char* s);
+DLL_API bool operator==(const DifferentConstOverloads& d, const char* s);
 
 class TestNamingAnonymousTypesInUnion
 {
 public:
-    union {
-        struct {
+    union
+    {
+        struct
+        {
         } argb;
-        struct {
+        struct
+        {
         } ahsv;
-        struct {
+        struct
+        {
         } acmyk;
     } ct;
 };
 
-class DLL_API RefTypeClassPassTry
-{
-};
+class DLL_API RefTypeClassPassTry{};
 
 void DLL_API funcTryRefTypePtrOut(CS_OUT RefTypeClassPassTry* classTry);
 void DLL_API funcTryRefTypeOut(CS_OUT RefTypeClassPassTry classTry);
@@ -891,10 +911,10 @@ void DLL_API funcTryRefTypeOut(CS_OUT RefTypeClassPassTry classTry);
 #define CS_VALUE_TYPE
 struct CS_VALUE_TYPE ValueTypeArrays
 {
-        float firstValueTypeArrray[ARRAY_LENGTH];
-        int secondValueTypeArray[ARRAY_LENGTH];
-        char thirdValueTypeArray[ARRAY_LENGTH];
-        size_t size;
+    float firstValueTypeArrray[ARRAY_LENGTH];
+    int secondValueTypeArray[ARRAY_LENGTH];
+    char thirdValueTypeArray[ARRAY_LENGTH];
+    size_t size;
 };
 
 class DLL_API HasVirtualProperty
@@ -902,6 +922,7 @@ class DLL_API HasVirtualProperty
 public:
     virtual int getProperty();
     virtual void setProperty(int target);
+
 protected:
     virtual int getProtectedProperty();
     virtual void setProtectedProperty(int value);
@@ -912,14 +933,13 @@ class DLL_API ChangedAccessOfInheritedProperty : public HasVirtualProperty
 public:
     int getProtectedProperty();
     void setProtectedProperty(int value);
+
 protected:
     int getProperty();
     void setProperty(int value);
 };
 
-class DLL_API Empty
-{
-};
+class DLL_API Empty{};
 
 class DLL_API ReturnsEmpty
 {
@@ -927,7 +947,7 @@ public:
     Empty getEmpty();
 };
 
-class DLL_API CS_VALUE_TYPE ValueTypeClassPassTry { };
+class DLL_API CS_VALUE_TYPE ValueTypeClassPassTry{};
 
 void DLL_API funcTryValTypePtrOut(CS_OUT ValueTypeClassPassTry* classTry);
 void DLL_API funcTryValTypeOut(CS_OUT ValueTypeClassPassTry classTry);
@@ -983,63 +1003,70 @@ public:
     virtual int retInt(const Foo& foo);
 };
 
-namespace boost
+namespace boost {
+template <class T>
+struct is_member_pointer_cv
 {
-    template <class T>         struct is_member_pointer_cv         { static const bool value = false; };
-    template <class T, class U>struct is_member_pointer_cv<T U::*> { static const bool value = true; };
+    static const bool value = false;
+};
+template <class T, class U>
+struct is_member_pointer_cv<T U::*>
+{
+    static const bool value = true;
+};
 
-    // all of this below tests corner cases with type locations
-    template<class T>
-    struct make_tuple_traits
+// all of this below tests corner cases with type locations
+template <class T>
+struct make_tuple_traits
+{
+    typedef T type;
+
+    // commented away, see below  (JJ)
+    //  typedef typename IF<
+    //  boost::is_function<T>::value,
+    //  T&,
+    //  T>::RET type;
+};
+
+namespace detail {
+    struct swallow_assign;
+    typedef void (detail::swallow_assign::*ignore_t)();
+    struct swallow_assign
     {
-        typedef T type;
-
-        // commented away, see below  (JJ)
-        //  typedef typename IF<
-        //  boost::is_function<T>::value,
-        //  T&,
-        //  T>::RET type;
+        swallow_assign(ignore_t (*)(ignore_t));
+        template <typename T>
+        swallow_assign const& operator=(const T&) const;
     };
 
-    namespace detail
+    swallow_assign::swallow_assign(ignore_t (*)(ignore_t))
     {
-        struct swallow_assign;
-        typedef void (detail::swallow_assign::*ignore_t)();
-        struct swallow_assign
-        {
-            swallow_assign(ignore_t(*)(ignore_t));
-            template<typename T>
-            swallow_assign const& operator=(const T&) const;
-        };
+    }
 
-        swallow_assign::swallow_assign(ignore_t (*)(ignore_t))
-        {
-        }
-
-        template<typename T>
-        swallow_assign const& swallow_assign::operator=(const T&) const
-        {
-            return *this;
-        }
-
-    } // namespace detail
-
-    template<>
-    struct make_tuple_traits<detail::ignore_t(detail::ignore_t)>
+    template <typename T>
+    swallow_assign const& swallow_assign::operator=(const T&) const
     {
-        typedef detail::swallow_assign type;
-    };
+        return *this;
+    }
 
-    template<class T>
-    struct is_class_or_union
-    {
-        template <class U>
-        static char is_class_or_union_tester(void(U::*)(void));
-    };
-}
+} // namespace detail
+
+template <>
+struct make_tuple_traits<detail::ignore_t(detail::ignore_t)>
+{
+    typedef detail::swallow_assign type;
+};
+
+template <class T>
+struct is_class_or_union
+{
+    template <class U>
+    static char is_class_or_union_tester(void (U::*)(void));
+};
+} // namespace boost
 
 template <std::size_t N, std::size_t... I>
-struct build_index_impl : build_index_impl<N - 1, N - 1, I...> {};
+struct build_index_impl : build_index_impl<N - 1, N - 1, I...>
+{};
 
 template <typename T>
 class AbstractTemplate
@@ -1074,15 +1101,18 @@ public:
     ~NonTrivialDtor();
     static bool getDtorCalled();
     static void setDtorCalled(bool value);
+
 private:
     static bool dtorCalled;
 };
 
-template <class T> class ForwardedTemplate;
+template <class T>
+class ForwardedTemplate;
 
 ForwardedTemplate<int> returnsForwardedTemplate();
 
-template <class T> class ForwardedTemplate
+template <class T>
+class ForwardedTemplate
 {
     ForwardedTemplate<T> functionInForwardedTemplate() const;
 };
@@ -1112,8 +1142,9 @@ void TemplateWithVirtual<T>::v()
 }
 
 template <typename T>
-int FunctionTemplateWithDependentTypeDefaultExpr(size_t size = sizeof(T)) {
-        return size;
+int FunctionTemplateWithDependentTypeDefaultExpr(size_t size = sizeof(T))
+{
+    return size;
 }
 
 class DLL_API DerivedFromTemplateInstantiationWithVirtual : public TemplateWithVirtual<int>
@@ -1141,13 +1172,13 @@ protected:
 using custom_int_t = int;
 DLL_API void FuncWithTypeAlias(custom_int_t i);
 
-template<typename T>
+template <typename T>
 using TypeAliasTemplate = TemplateWithVirtual<T>;
 DLL_API void FuncWithTemplateTypeAlias(TypeAliasTemplate<int> i);
 
 struct TestsTypes
 {
-    int(*FunctionNoProto)();
+    int (*FunctionNoProto)();
 };
 
 template <class T>
@@ -1160,7 +1191,8 @@ private:
 template <class T>
 class SpecialisesVoidInUnion
 {
-    union {
+    union
+    {
         SpecialisesVoid<T>* e;
     }* u;
 };
@@ -1181,16 +1213,16 @@ public:
     virtual bool operator==(const HasAbstractOperator& other) = 0;
 };
 
-template<size_t _Len, class _Ty>
+template <size_t _Len, class _Ty>
 struct _Aligned;
 
-template<size_t _Len>
+template <size_t _Len>
 struct _Aligned<_Len, int>
 {
     typedef int type;
 };
 
-template<size_t _Len>
+template <size_t _Len>
 struct _Aligned<_Len, char>
 {
     typedef typename _Aligned<_Len, int>::type type;
@@ -1250,9 +1282,17 @@ public:
 DLL_API void hasPointerParam(Foo* foo, int i);
 DLL_API void hasPointerParam(const Foo& foo);
 
-enum EmptyEnum { };
+enum EmptyEnum
+{
+};
 
-enum __enum_with_underscores { lOWER_BEFORE_CAPITAL, CAPITALS_More, underscore_at_end_, usesDigits1_0 };
+enum __enum_with_underscores
+{
+    lOWER_BEFORE_CAPITAL,
+    CAPITALS_More,
+    underscore_at_end_,
+    usesDigits1_0
+};
 
 void DLL_API sMallFollowedByCapital();
 
@@ -1263,6 +1303,7 @@ public:
     HasCopyAndMoveConstructor(const HasCopyAndMoveConstructor& other);
     HasCopyAndMoveConstructor(HasCopyAndMoveConstructor&& other);
     int getField();
+
 private:
     int field;
 };
@@ -1354,18 +1395,16 @@ struct DLL_API NestedUnionWithNested
     };
 };
 
-template<typename T> void TemplatedFunction(T type)
+template <typename T>
+void TemplatedFunction(T type)
 {
-
 }
 
-inline namespace InlineNamespace
+inline namespace InlineNamespace {
+void FunctionInsideInlineNamespace()
 {
-    void FunctionInsideInlineNamespace()
-    {
-
-    }
 }
+} // namespace InlineNamespace
 
 union
 {
@@ -1383,20 +1422,19 @@ union
 } ProtocolSpecific;
 
 
-template<class _Other>
-using UsingTemplatePtr = _Other *;
+template <class _Other>
+using UsingTemplatePtr = _Other*;
 
 struct TemplateWithUsingTemplateMember
 {
     UsingTemplatePtr<TemplateWithUsingTemplateMember> _Ref;
 };
 
-namespace hasUnnamedDecl
+namespace hasUnnamedDecl {
+extern "C"
 {
-    extern "C"
-    {
-    }
 }
+} // namespace hasUnnamedDecl
 
 enum ItemsDifferByCase
 {
@@ -1404,7 +1442,8 @@ enum ItemsDifferByCase
     Case_A
 };
 
-template <typename T> struct MyListBase
+template <typename T>
+struct MyListBase
 {
 protected:
     ~MyListBase() {}
@@ -1414,27 +1453,32 @@ template <typename T>
 class MyList : public MyListBase<T>
 {
 public:
-    inline MyList() { }
+    inline MyList() {}
 };
 
-template <> struct MyListBase<int>
+template <>
+struct MyListBase<int>
 {
 };
 
 class MyIntList : public MyList<int>
 {
-    inline MyIntList(MyList<int> &&l) { }
+    inline MyIntList(MyList<int>&& l) {}
 };
 
-void MyFunc(MyList<void *> *list);
+void MyFunc(MyList<void*>* list);
 
-template<class T> using InvokeGenSeq = typename T::Type;
+template <class T>
+using InvokeGenSeq = typename T::Type;
 
-template<int N> struct DerivedTypeAlias;
-template<int N> using TypeAlias = InvokeGenSeq<DerivedTypeAlias<N>>;
+template <int N>
+struct DerivedTypeAlias;
+template <int N>
+using TypeAlias = InvokeGenSeq<DerivedTypeAlias<N>>;
 
-template<int N>
-struct DerivedTypeAlias : TypeAlias<N / 2> {};
+template <int N>
+struct DerivedTypeAlias : TypeAlias<N / 2>
+{};
 
 DLL_API ImplementsAbstractFoo freeFunctionReturnsVirtualDtor();
 DLL_API void integerOverload(int i);
@@ -1450,22 +1494,27 @@ typedef const char* LPCSTR;
 DLL_API LPCSTR TakeTypedefedMappedType(LPCSTR string);
 DLL_API std::string UTF8;
 
-typedef enum SE4IpAddr_Tag {
+typedef enum SE4IpAddr_Tag
+{
     V4,
     V6,
 } SE4IpAddr_Tag;
 
-typedef struct {
+typedef struct
+{
     uint8_t _0[4];
 } SE4V4_Body;
 
-typedef struct {
+typedef struct
+{
     uint8_t _0[16];
 } SE4V6_Body;
 
-typedef struct {
+typedef struct
+{
     SE4IpAddr_Tag tag;
-    union {
+    union
+    {
         SE4V4_Body v4;
         SE4V6_Body v6;
     };
@@ -1484,27 +1533,32 @@ uint16_t DLL_API TestStructWithCopyCtorByValue(StructWithCopyCtor s);
 struct BaseCovariant;
 typedef std::unique_ptr<BaseCovariant> PtrCovariant;
 
-struct DLL_API BaseCovariant {
+struct DLL_API BaseCovariant
+{
     virtual ~BaseCovariant();
     virtual PtrCovariant clone() const = 0;
 };
 
-struct DLL_API DerivedCovariant: public BaseCovariant {
+struct DLL_API DerivedCovariant : public BaseCovariant
+{
     virtual ~DerivedCovariant();
-  std::unique_ptr<BaseCovariant> clone() const override {
-    return PtrCovariant(new DerivedCovariant());
-  }
+    std::unique_ptr<BaseCovariant> clone() const override
+    {
+        return PtrCovariant(new DerivedCovariant());
+    }
 };
 
 // Issue: https://github.com/mono/CppSharp/issues/1268
 template <typename T>
-class AbstractClassTemplate {
-  public:
+class AbstractClassTemplate
+{
+public:
     virtual void func() = 0;
 };
 
-class DerivedClass: public AbstractClassTemplate<int> {
-  public:
+class DerivedClass : public AbstractClassTemplate<int>
+{
+public:
     void func() override {}
 };
 
@@ -1512,15 +1566,17 @@ class DerivedClass: public AbstractClassTemplate<int> {
 #include <functional>
 
 template <typename X, typename Y>
-class TemplateClassBase {
-  public:
+class TemplateClassBase
+{
+public:
     using XType = X;
 };
 
 template <typename A, typename B = A>
-class TemplateClass : TemplateClassBase<A,B> {
-  public:
-    using typename TemplateClassBase<A,B>::XType;
+class TemplateClass : TemplateClassBase<A, B>
+{
+public:
+    using typename TemplateClassBase<A, B>::XType;
     using Func = std::function<B(XType)>;
     explicit TemplateClass(Func function) {}
 };
@@ -1536,9 +1592,13 @@ public:
 };
 
 template <typename T>
-struct dependentVariable { static const size_t var = alignof(T); };
+struct dependentVariable
+{
+    static const size_t var = alignof(T);
+};
 
-class QObjectData {
+class QObjectData
+{
 };
 
 QScopedPointer<QObjectData> d_ptr;
@@ -1547,11 +1607,11 @@ struct DLL_API PointerToTypedefPointerTest
 {
     int val;
 };
-typedef PointerToTypedefPointerTest *LPPointerToTypedefPointerTest;
+typedef PointerToTypedefPointerTest* LPPointerToTypedefPointerTest;
 
 void DLL_API PointerToTypedefPointerTestMethod(LPPointerToTypedefPointerTest* lp, int valToSet);
 
-typedef int *LPINT;
+typedef int* LPINT;
 
 void DLL_API PointerToPrimitiveTypedefPointerTestMethod(LPINT lp, int valToSet);
 

@@ -6,7 +6,6 @@ class DLL_API Foo
 public:
     class Vfoo
     {
-
     };
 
     virtual int vfoo();
