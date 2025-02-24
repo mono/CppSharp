@@ -25,5 +25,6 @@ jobs:
       uses: jidicula/clang-format-action@v4.14.0
       with:
         clang-format-version: 19
+        fallback-style: none
         check-path: ${{ matrix.path }}
-        exclude-regex: '(?:(?:Bindings|CLI)\/)|(?:CppParser\/(?:Parse)?(?:Expr|Stmt))'
+        exclude-regex: '(Bindings|CLI)/|(CppParser/(Parse)?(Expr|Stmt))'
