@@ -263,7 +263,7 @@ namespace CppSharp.Generators.CSharp
                     // Generate all the internal function declarations.
                     foreach (var function in context.Functions)
                     {
-                        if ((!function.IsGenerated && !function.IsInternal) || function.IsSynthetized)
+                        if ((!function.IsGenerated && !function.IsInternal) || function.IsSynthesized)
                             continue;
 
                         GenerateInternalFunction(function);
@@ -631,7 +631,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
         {
             Action<Method> tryAddOverload = method =>
             {
-                if (method.IsSynthetized)
+                if (method.IsSynthesized)
                     return;
 
                 if (method.IsProxy ||

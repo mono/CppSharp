@@ -123,10 +123,11 @@ namespace CppSharp.AST
         public bool IsExplicit { get; set; }
         public bool IsVolatile { get; set; }
 
+        private bool? isOverride;
         public bool IsOverride
         {
-            get { return isOverride ?? OverriddenMethods.Any(); }
-            set { isOverride = value; }
+            get => isOverride ?? OverriddenMethods.Any();
+            set => isOverride = value;
         }
 
         public Method BaseMethod => OverriddenMethods.FirstOrDefault();
@@ -141,7 +142,7 @@ namespace CppSharp.AST
         private CXXMethodKind kind;
         public CXXMethodKind Kind
         {
-            get { return kind; }
+            get => kind;
             set
             {
                 if (kind != value)
@@ -153,15 +154,9 @@ namespace CppSharp.AST
             }
         }
 
-        public bool IsConstructor
-        {
-            get { return Kind == CXXMethodKind.Constructor; }
-        }
+        public bool IsConstructor => Kind == CXXMethodKind.Constructor;
 
-        public bool IsDestructor
-        {
-            get { return Kind == CXXMethodKind.Destructor; }
-        }
+        public bool IsDestructor => Kind == CXXMethodKind.Destructor;
 
         public bool IsDefaultConstructor;
         public bool IsCopyConstructor;
@@ -175,13 +170,13 @@ namespace CppSharp.AST
 
         public int AdjustedOffset { get; set; }
 
-        public List<Method> OverriddenMethods { get; } = new List<Method>();
+        public List<Method> OverriddenMethods { get; } = new();
 
         public bool ConvertToProperty { get; set; }
 
         public Method GetRootBaseMethod()
         {
-            return BaseMethod == null || BaseMethod.BaseMethod == null ?
+            return BaseMethod?.BaseMethod == null ?
                 BaseMethod : BaseMethod.GetRootBaseMethod();
         }
 
@@ -189,9 +184,7 @@ namespace CppSharp.AST
         {
             return visitor.VisitMethodDecl(this);
         }
-
-        private bool? isOverride;
-
+        
         public bool HasSameSignature(Method other)
         {
             return Parameters.SequenceEqual(other.Parameters, ParameterTypeComparer.Instance);

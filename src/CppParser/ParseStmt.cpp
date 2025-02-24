@@ -11,14 +11,14 @@
 #include <clang/AST/Stmt.h>
 #include <clang/AST/StmtCXX.h>
 
-namespace CppSharp { namespace CppParser {
+namespace CppSharp::CppParser {
 
 AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
 {
-    if (Stmt == nullptr)
+    if (!Stmt)
         return nullptr;
 
-    AST::Stmt* _Stmt= 0;
+    AST::Stmt* _Stmt= nullptr;
 
     switch (Stmt->getStmtClass())
     {
@@ -27,8 +27,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
         auto S = const_cast<clang::DeclStmt*>(llvm::cast<clang::DeclStmt>(Stmt));
         auto _S = new AST::DeclStmt();
         _S->isSingleDecl = S->isSingleDecl();
-        if (S->isSingleDecl())
-            _S->singleDecl = static_cast<AST::Declaration*>(WalkDeclaration(S->getSingleDecl()));
         for (auto _E : S->decls())
         {
             auto _ES = WalkDeclaration(_E);
@@ -51,8 +49,7 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
         auto _S = new AST::CompoundStmt();
         _S->body_empty = S->body_empty();
         _S->size = S->size();
-        _S->body_front = static_cast<AST::Stmt*>(WalkStatement(S->body_front()));
-        _S->body_back = static_cast<AST::Stmt*>(WalkStatement(S->body_back()));
+        _S->hasStoredFPFeatures = S->hasStoredFPFeatures();
         for (auto _E : S->body())
         {
             auto _ES = WalkStatement(_E);
@@ -65,11 +62,10 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::CaseStmt*>(llvm::cast<clang::CaseStmt>(Stmt));
         auto _S = new AST::CaseStmt();
-        _S->subStmt = static_cast<AST::Stmt*>(WalkStatement(S->getSubStmt()));
+        _S->caseStmtIsGNURange = S->caseStmtIsGNURange();
         _S->lHS = static_cast<AST::Expr*>(WalkExpression(S->getLHS()));
         _S->rHS = static_cast<AST::Expr*>(WalkExpression(S->getRHS()));
         _S->subStmt = static_cast<AST::Stmt*>(WalkStatement(S->getSubStmt()));
-        _S->caseStmtIsGNURange = S->caseStmtIsGNURange();
         _Stmt = _S;
         break;
     }
@@ -78,7 +74,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
         auto S = const_cast<clang::DefaultStmt*>(llvm::cast<clang::DefaultStmt>(Stmt));
         auto _S = new AST::DefaultStmt();
         _S->subStmt = static_cast<AST::Stmt*>(WalkStatement(S->getSubStmt()));
-        _S->subStmt = static_cast<AST::Stmt*>(WalkStatement(S->getSubStmt()));
         _Stmt = _S;
         break;
     }
@@ -86,8 +81,9 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::LabelStmt*>(llvm::cast<clang::LabelStmt>(Stmt));
         auto _S = new AST::LabelStmt();
-        _S->subStmt = static_cast<AST::Stmt*>(WalkStatement(S->getSubStmt()));
         _S->name = S->getName();
+        _S->subStmt = static_cast<AST::Stmt*>(WalkStatement(S->getSubStmt()));
+        _S->sideEntry = S->isSideEntry();
         _Stmt = _S;
         break;
     }
@@ -95,7 +91,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::AttributedStmt*>(llvm::cast<clang::AttributedStmt>(Stmt));
         auto _S = new AST::AttributedStmt();
-        _S->subStmt = static_cast<AST::Stmt*>(WalkStatement(S->getSubStmt()));
         _Stmt = _S;
         break;
     }
@@ -103,15 +98,19 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::IfStmt*>(llvm::cast<clang::IfStmt>(Stmt));
         auto _S = new AST::IfStmt();
-        _S->cond = static_cast<AST::Expr*>(WalkExpression(S->getCond()));
-        _S->then = static_cast<AST::Stmt*>(WalkStatement(S->getThen()));
-        _S->_else = static_cast<AST::Stmt*>(WalkStatement(S->getElse()));
-        _S->init = static_cast<AST::Stmt*>(WalkStatement(S->getInit()));
-        _S->_constexpr = S->isConstexpr();
         _S->hasInitStorage = S->hasInitStorage();
         _S->hasVarStorage = S->hasVarStorage();
         _S->hasElseStorage = S->hasElseStorage();
+        _S->cond = static_cast<AST::Expr*>(WalkExpression(S->getCond()));
+        _S->then = static_cast<AST::Stmt*>(WalkStatement(S->getThen()));
+        _S->_else = static_cast<AST::Stmt*>(WalkStatement(S->getElse()));
         _S->conditionVariableDeclStmt = static_cast<AST::DeclStmt*>(WalkStatement(S->getConditionVariableDeclStmt()));
+        _S->init = static_cast<AST::Stmt*>(WalkStatement(S->getInit()));
+        _S->isConsteval = S->isConsteval();
+        _S->isNonNegatedConsteval = S->isNonNegatedConsteval();
+        _S->isNegatedConsteval = S->isNegatedConsteval();
+        _S->isConstexpr = S->isConstexpr();
+        _S->statementKind = (AST::IfStatementKind)S->getStatementKind();
         _S->isObjCAvailabilityCheck = S->isObjCAvailabilityCheck();
         _Stmt = _S;
         break;
@@ -120,11 +119,11 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::SwitchStmt*>(llvm::cast<clang::SwitchStmt>(Stmt));
         auto _S = new AST::SwitchStmt();
+        _S->hasInitStorage = S->hasInitStorage();
+        _S->hasVarStorage = S->hasVarStorage();
         _S->cond = static_cast<AST::Expr*>(WalkExpression(S->getCond()));
         _S->body = static_cast<AST::Stmt*>(WalkStatement(S->getBody()));
         _S->init = static_cast<AST::Stmt*>(WalkStatement(S->getInit()));
-        _S->hasInitStorage = S->hasInitStorage();
-        _S->hasVarStorage = S->hasVarStorage();
         _S->conditionVariableDeclStmt = static_cast<AST::DeclStmt*>(WalkStatement(S->getConditionVariableDeclStmt()));
         _S->isAllEnumCasesCovered = S->isAllEnumCasesCovered();
         _Stmt = _S;
@@ -134,9 +133,9 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::WhileStmt*>(llvm::cast<clang::WhileStmt>(Stmt));
         auto _S = new AST::WhileStmt();
+        _S->hasVarStorage = S->hasVarStorage();
         _S->cond = static_cast<AST::Expr*>(WalkExpression(S->getCond()));
         _S->body = static_cast<AST::Stmt*>(WalkStatement(S->getBody()));
-        _S->hasVarStorage = S->hasVarStorage();
         _S->conditionVariableDeclStmt = static_cast<AST::DeclStmt*>(WalkStatement(S->getConditionVariableDeclStmt()));
         _Stmt = _S;
         break;
@@ -155,10 +154,10 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
         auto S = const_cast<clang::ForStmt*>(llvm::cast<clang::ForStmt>(Stmt));
         auto _S = new AST::ForStmt();
         _S->init = static_cast<AST::Stmt*>(WalkStatement(S->getInit()));
+        _S->conditionVariableDeclStmt = static_cast<AST::DeclStmt*>(WalkStatement(S->getConditionVariableDeclStmt()));
         _S->cond = static_cast<AST::Expr*>(WalkExpression(S->getCond()));
         _S->inc = static_cast<AST::Expr*>(WalkExpression(S->getInc()));
         _S->body = static_cast<AST::Stmt*>(WalkStatement(S->getBody()));
-        _S->conditionVariableDeclStmt = static_cast<AST::DeclStmt*>(WalkStatement(S->getConditionVariableDeclStmt()));
         _Stmt = _S;
         break;
     }
@@ -219,6 +218,13 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
             auto _ES = WalkExpression(_E);
             _S->addoutputs(_ES);
         }
+        _S->isAsmGoto = S->isAsmGoto();
+        _S->numLabels = S->getNumLabels();
+        for (auto _E : S->labels())
+        {
+            auto _ES = (AST::AddrLabelExpr*)WalkExpression(_E);
+            _S->addlabels(_ES);
+        }
         _Stmt = _S;
         break;
     }
@@ -244,7 +250,7 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
         }
         _S->hasBraces = S->hasBraces();
         _S->numAsmToks = S->getNumAsmToks();
-        _S->asmString = S->getAsmString().str();
+        _S->asmString = S->getAsmString();
         _Stmt = _S;
         break;
     }
@@ -288,7 +294,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::CapturedStmt*>(llvm::cast<clang::CapturedStmt>(Stmt));
         auto _S = new AST::CapturedStmt();
-        _S->capturedStmt = static_cast<AST::Stmt*>(WalkStatement(S->getCapturedStmt()));
         _S->capture_size = S->capture_size();
         for (auto _E : S->capture_inits())
         {
@@ -311,7 +316,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::CXXTryStmt*>(llvm::cast<clang::CXXTryStmt>(Stmt));
         auto _S = new AST::CXXTryStmt();
-        _S->tryBlock = static_cast<AST::CompoundStmt*>(WalkStatement(S->getTryBlock()));
         _S->numHandlers = S->getNumHandlers();
         _Stmt = _S;
         break;
@@ -325,10 +329,6 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
         _S->cond = static_cast<AST::Expr*>(WalkExpression(S->getCond()));
         _S->inc = static_cast<AST::Expr*>(WalkExpression(S->getInc()));
         _S->body = static_cast<AST::Stmt*>(WalkStatement(S->getBody()));
-        _S->rangeStmt = static_cast<AST::DeclStmt*>(WalkStatement(S->getRangeStmt()));
-        _S->beginStmt = static_cast<AST::DeclStmt*>(WalkStatement(S->getBeginStmt()));
-        _S->endStmt = static_cast<AST::DeclStmt*>(WalkStatement(S->getEndStmt()));
-        _S->loopVarStmt = static_cast<AST::DeclStmt*>(WalkStatement(S->getLoopVarStmt()));
         _Stmt = _S;
         break;
     }
@@ -347,7 +347,7 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
         auto S = const_cast<clang::CoroutineBodyStmt*>(llvm::cast<clang::CoroutineBodyStmt>(Stmt));
         auto _S = new AST::CoroutineBodyStmt();
         _S->hasDependentPromiseType = S->hasDependentPromiseType();
-        _S->body = static_cast<AST::Stmt*>(WalkStatement(S->getBody()));
+        _S->body = static_cast<AST::CompoundStmt*>(WalkStatement(S->getBody()));
         _S->promiseDeclStmt = static_cast<AST::Stmt*>(WalkStatement(S->getPromiseDeclStmt()));
         _S->initSuspendStmt = static_cast<AST::Stmt*>(WalkStatement(S->getInitSuspendStmt()));
         _S->finalSuspendStmt = static_cast<AST::Stmt*>(WalkStatement(S->getFinalSuspendStmt()));
@@ -355,10 +355,16 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
         _S->fallthroughHandler = static_cast<AST::Stmt*>(WalkStatement(S->getFallthroughHandler()));
         _S->allocate = static_cast<AST::Expr*>(WalkExpression(S->getAllocate()));
         _S->deallocate = static_cast<AST::Expr*>(WalkExpression(S->getDeallocate()));
+        _S->resultDecl = static_cast<AST::Stmt*>(WalkStatement(S->getResultDecl()));
         _S->returnValueInit = static_cast<AST::Expr*>(WalkExpression(S->getReturnValueInit()));
-        _S->resultDecl = static_cast<AST::Stmt*>(WalkStatement(S->getReturnValue()));
+        _S->returnValue = static_cast<AST::Expr*>(WalkExpression(S->getReturnValue()));
         _S->returnStmt = static_cast<AST::Stmt*>(WalkStatement(S->getReturnStmt()));
         _S->returnStmtOnAllocFailure = static_cast<AST::Stmt*>(WalkStatement(S->getReturnStmtOnAllocFailure()));
+        for (auto _E : S->childrenExclBody())
+        {
+            auto _ES = WalkStatement(_E);
+            _S->addchildrenExclBody(_ES);
+        }
         _Stmt = _S;
         break;
     }
@@ -366,9 +372,9 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     {
         auto S = const_cast<clang::CoreturnStmt*>(llvm::cast<clang::CoreturnStmt>(Stmt));
         auto _S = new AST::CoreturnStmt();
-        _S->isImplicit = S->isImplicit();
         _S->operand = static_cast<AST::Expr*>(WalkExpression(S->getOperand()));
         _S->promiseCall = static_cast<AST::Expr*>(WalkExpression(S->getPromiseCall()));
+        _S->isImplicit = S->isImplicit();
         _Stmt = _S;
         break;
     }
@@ -382,11 +388,13 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     case clang::Stmt::ImaginaryLiteralClass:
     case clang::Stmt::StringLiteralClass:
     case clang::Stmt::PredefinedExprClass:
+    case clang::Stmt::SYCLUniqueStableNameExprClass:
     case clang::Stmt::ParenExprClass:
     case clang::Stmt::UnaryOperatorClass:
     case clang::Stmt::OffsetOfExprClass:
     case clang::Stmt::UnaryExprOrTypeTraitExprClass:
     case clang::Stmt::ArraySubscriptExprClass:
+    case clang::Stmt::MatrixSubscriptExprClass:
     case clang::Stmt::CallExprClass:
     case clang::Stmt::MemberExprClass:
     case clang::Stmt::CompoundLiteralExprClass:
@@ -403,6 +411,7 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     case clang::Stmt::ChooseExprClass:
     case clang::Stmt::GNUNullExprClass:
     case clang::Stmt::VAArgExprClass:
+    case clang::Stmt::SourceLocExprClass:
     case clang::Stmt::InitListExprClass:
     case clang::Stmt::DesignatedInitExprClass:
     case clang::Stmt::NoInitExprClass:
@@ -418,13 +427,16 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     case clang::Stmt::PseudoObjectExprClass:
     case clang::Stmt::AtomicExprClass:
     case clang::Stmt::TypoExprClass:
+    case clang::Stmt::RecoveryExprClass:
     case clang::Stmt::CXXOperatorCallExprClass:
     case clang::Stmt::CXXMemberCallExprClass:
     case clang::Stmt::CUDAKernelCallExprClass:
+    case clang::Stmt::CXXRewrittenBinaryOperatorClass:
     case clang::Stmt::CXXStaticCastExprClass:
     case clang::Stmt::CXXDynamicCastExprClass:
     case clang::Stmt::CXXReinterpretCastExprClass:
     case clang::Stmt::CXXConstCastExprClass:
+    case clang::Stmt::CXXAddrspaceCastExprClass:
     case clang::Stmt::UserDefinedLiteralClass:
     case clang::Stmt::CXXBoolLiteralExprClass:
     case clang::Stmt::CXXNullPtrLiteralExprClass:
@@ -464,9 +476,11 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     case clang::Stmt::FunctionParmPackExprClass:
     case clang::Stmt::MaterializeTemporaryExprClass:
     case clang::Stmt::CXXFoldExprClass:
+    case clang::Stmt::CXXParenListInitExprClass:
     case clang::Stmt::CoawaitExprClass:
     case clang::Stmt::DependentCoawaitExprClass:
     case clang::Stmt::CoyieldExprClass:
+    case clang::Stmt::BuiltinBitCastExprClass:
     {
         return WalkExpression(llvm::cast<clang::Expr>(Stmt));
     }
@@ -477,4 +491,4 @@ AST::Stmt* Parser::WalkStatement(const clang::Stmt* Stmt)
     return _Stmt;
 }
 
-} }
+}

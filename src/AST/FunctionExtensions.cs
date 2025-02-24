@@ -98,7 +98,7 @@ namespace CppSharp.AST
             Class @class = (Class)(method.OriginalFunction ?? method).Namespace;
             // virtual functions cannot really be inlined and
             // we don't need their symbols anyway as we call them through the v-table
-            return (!method.IsVirtual && !method.IsSynthetized &&
+            return (!method.IsVirtual && !method.IsSynthesized &&
                 !method.IsDefaultConstructor && !method.IsCopyConstructor && !method.IsDestructor) ||
                 (method.IsDefaultConstructor && @class.HasNonTrivialDefaultConstructor) ||
                 (method.IsCopyConstructor && @class.HasNonTrivialCopyConstructor) ||

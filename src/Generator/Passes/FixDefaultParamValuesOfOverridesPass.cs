@@ -7,7 +7,7 @@ namespace CppSharp.Passes
     {
         public override bool VisitMethodDecl(Method method)
         {
-            if (!method.IsOverride || method.IsSynthetized)
+            if (!method.IsOverride || method.IsSynthesized)
                 return true;
 
             Method rootBaseMethod = method.GetRootBaseMethod();

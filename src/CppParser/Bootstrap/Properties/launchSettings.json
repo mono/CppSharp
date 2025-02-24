@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CppSharp.Parser.Bootstrap": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

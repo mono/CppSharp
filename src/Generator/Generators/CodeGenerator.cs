@@ -771,6 +771,11 @@ namespace CppSharp.Generators
             throw new NotImplementedException();
         }
 
+        public virtual bool VisitValueStmt(ValueStmt stmt)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual bool VisitFullExpr(FullExpr stmt)
         {
             throw new NotImplementedException();
@@ -847,6 +852,11 @@ namespace CppSharp.Generators
         }
 
         public virtual bool VisitArraySubscriptExpr(ArraySubscriptExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual bool VisitMatrixSubscriptExpr(MatrixSubscriptExpr variable)
         {
             throw new NotImplementedException();
         }
@@ -1042,6 +1052,35 @@ namespace CppSharp.Generators
         }
 
         public virtual bool VisitCXXStaticCastExpr(CXXStaticCastExpr stmt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual bool VisitSYCLUniqueStableNameExpr(SYCLUniqueStableNameExpr stmt){
+            throw new NotImplementedException();
+        }
+
+        public virtual bool VisitSourceLocExpr(SourceLocExpr stmt){
+            throw new NotImplementedException();
+        }
+
+        public virtual bool VisitRecoveryExpr(RecoveryExpr stmt){
+            throw new NotImplementedException();
+        }
+
+        public virtual bool VisitCXXRewrittenBinaryOperator(CXXRewrittenBinaryOperator stmt){
+            throw new NotImplementedException();
+        }
+
+        public virtual bool VisitCXXAddrspaceCastExpr(CXXAddrspaceCastExpr stmt){
+            throw new NotImplementedException();
+        }
+
+        public virtual bool VisitCXXParenListInitExpr(CXXParenListInitExpr stmt){
+            throw new NotImplementedException();
+        }
+
+        public virtual bool VisitBuiltinBitCastExpr(BuiltinBitCastExpr stmt)
         {
             throw new NotImplementedException();
         }
@@ -1317,7 +1356,7 @@ namespace CppSharp.Generators
             if (@class != specialization)
                 template = template.Classes.FirstOrDefault(c => c.Name == @class.Name);
 
-            if (template.HasDependentValueFieldInLayout())
+            if (template?.HasDependentValueFieldInLayout() ?? false)
             {
                 if (specialization.Arguments.All(
                     a => a.Type.Type?.IsAddress() == true))

@@ -1037,15 +1037,44 @@ bool Parser::IsSupported(const clang::CXXMethodDecl* MD)
 {
     using namespace clang;
 
-    return !c->getSourceManager().isInSystemHeader(MD->getBeginLoc()) ||
-           (isa<CXXConstructorDecl>(MD) && MD->getNumParams() == 0) ||
-           isa<CXXDestructorDecl>(MD) ||
-           (MD->getDeclName().isIdentifier() &&
-            ((MD->getName() == "data" && MD->getNumParams() == 0 && MD->isConst()) ||
-             (MD->getName() == "assign" && MD->getNumParams() == 1 &&
-              MD->parameters()[0]->getType()->isPointerType())) &&
-            supportedStdTypes.find(MD->getParent()->getName().str()) !=
-                supportedStdTypes.end());
+    if (!c->getSourceManager().isInSystemHeader(MD->getBeginLoc()))
+        return true;
+
+    if (isa<CXXConstructorDecl>(MD))
+        return MD->getNumParams() == 0;
+
+    if (isa<CXXDestructorDecl>(MD))
+        return true;
+
+    if (!MD->getDeclName().isIdentifier())
+        return false;
+
+    if (supportedStdTypes.find(MD->getParent()->getName().str()) == supportedStdTypes.end())
+        return false;
+
+    switch (MD->getNumParams())
+    {
+        case 0:
+        {
+            if (!MD->isConst())
+                return false;
+
+            return MD->getName() == "data" ||
+                   MD->getName() == "has_value" ||
+                   MD->getName() == "value";
+        }
+        case 1:
+        {
+            if (!MD->parameters()[0]->getType()->isPointerType())
+                return false;
+
+            return MD->getName() == "assign";
+        }
+        default:
+        {
+            return false;
+        }
+    }
 }
 
 static RecordArgABI GetRecordArgABI(

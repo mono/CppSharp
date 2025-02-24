@@ -227,10 +227,6 @@ namespace Std
 
 namespace Std
 {
-}
-
-namespace Std
-{
     namespace CharTraits
     {
         [StructLayout(LayoutKind.Sequential, Size = 1)]
@@ -513,6 +509,10 @@ namespace Std
             return CppSharp.Runtime.MarshalUtil.GetString(global::System.Text.Encoding.UTF8, ___ret);
         }
     }
+}
+
+namespace Std
+{
 }
 
 namespace Std

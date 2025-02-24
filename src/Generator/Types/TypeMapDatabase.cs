@@ -52,15 +52,14 @@ namespace CppSharp.Types
         {
             var typeMaps = TypeMapsByKind(typeMapsCache, kind);
             // Looks up the type in the cache map.
-            if (typeMaps.ContainsKey(type))
+            if (typeMaps.TryGetValue(type, out TypeMap map))
             {
-                typeMap = typeMaps[type];
+                typeMap = map;
                 typeMap.Type = type;
                 return typeMap.IsEnabled;
             }
 
-            var template = type as TemplateSpecializationType;
-            if (template != null)
+            if (type is TemplateSpecializationType template)
             {
                 var specialization = template.GetClassTemplateSpecialization();
                 if (specialization != null &&

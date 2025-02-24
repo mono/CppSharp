@@ -144,7 +144,7 @@ namespace CppSharp.AST
         DefaultValueOverload,
         InterfaceInstance,
         InterfaceDispose,
-        FieldAcessor
+        FieldAccessor
     }
 
     public enum FriendKind
@@ -260,7 +260,7 @@ namespace CppSharp.AST
         }
 
         public FunctionSynthKind SynthKind { get; set; }
-        public bool IsSynthetized => SynthKind != FunctionSynthKind.None;
+        public bool IsSynthesized => SynthKind != FunctionSynthKind.None;
         public bool IsNonMemberOperator { get; set; }
 
         public Function OriginalFunction { get; set; }

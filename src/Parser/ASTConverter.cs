@@ -1457,7 +1457,7 @@ namespace CppSharp
                 case CXXOperatorKind.Coawait:
                     return AST.CXXOperatorKind.Coawait;
                 default:
-                    throw new ArgumentOutOfRangeException("operatorKind");
+                    throw new ArgumentOutOfRangeException(nameof(operatorKind));
             }
         }
 
