@@ -36,7 +36,7 @@ function SetupManagedTestProject()
   enabledefaultcompileitems "false"
   kind "SharedLib"
   language "C#"
-  clr "Unsafe"
+  clr "NetCore"
   files { "*.lua" }
 end
 
@@ -101,6 +101,12 @@ function SetupTestProjectsCLI(name, extraFiles, suffix)
     kind "SharedLib"
     language "C++"
     clr "NetCore"
+
+    filter { "configurations:Debug*" }
+      assemblydebug "On"
+
+    filter {}
+    
     targetdir (path.join(gendir, name))
 
     dependson { name .. ".Gen" }
