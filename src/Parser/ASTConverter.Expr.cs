@@ -6,6 +6,7 @@
 // ----------------------------------------------------------------------------
 
 using CppSharp.Parser.AST;
+
 using static CppSharp.ConversionUtils;
 
 namespace CppSharp
@@ -13,7 +14,8 @@ namespace CppSharp
     // <summary>
     // <para>Implements the visitor pattern for the generated expr bindings.</para>
     // </summary>
-    public abstract class ExprVisitor<TRet> where TRet : class
+    public abstract class ExprVisitor<TRet>
+        where TRet : class
     {
         public abstract TRet VisitConstantExpr(ConstantExpr expr);
         public abstract TRet VisitOpaqueValueExpr(OpaqueValueExpr expr);

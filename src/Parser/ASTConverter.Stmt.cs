@@ -6,6 +6,7 @@
 // ----------------------------------------------------------------------------
 
 using CppSharp.Parser.AST;
+
 using static CppSharp.ConversionUtils;
 
 namespace CppSharp
@@ -13,7 +14,8 @@ namespace CppSharp
     // <summary>
     // <para>Implements the visitor pattern for the generated stmt bindings.</para>
     // </summary>
-    public abstract class StmtVisitor<TRet> where TRet : class
+    public abstract class StmtVisitor<TRet>
+        where TRet : class
     {
         public abstract TRet VisitDeclStmt(DeclStmt stmt);
         public abstract TRet VisitNullStmt(NullStmt stmt);

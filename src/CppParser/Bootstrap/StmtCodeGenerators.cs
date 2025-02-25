@@ -445,13 +445,61 @@ namespace CppSharp
 
     internal class StmtASTConverterCodeGenerator : ASTConverterCodeGenerator
     {
-        public StmtASTConverterCodeGenerator(BindingContext context,
-            IEnumerable<Declaration> declarations, Enumeration stmtClassEnum)
-            : base(context, declarations, stmtClassEnum)
+        private readonly Enumeration StmtClassEnum;
+
+        public StmtASTConverterCodeGenerator(BindingContext context, IEnumerable<Declaration> declarations, Enumeration stmtClassEnum)
+            : base(context, declarations)
         {
+            StmtClassEnum = stmtClassEnum;
         }
 
         public override string BaseTypeName => "Stmt";
+
+        public override bool IsAbstractASTNode(Class kind)
+        {
+            return CodeGeneratorHelpers.IsAbstractStmt(kind);
+        }
+
+        protected override void GenerateVisitorSwitch(IEnumerable<string> classes)
+        {
+            WriteLine($"switch({ParamName}.StmtClass)");
+            WriteOpenBraceAndIndent();
+
+            var enumItems = StmtClassEnum != null ?
+                StmtClassEnum.Items.Where(item => item.IsGenerated)
+                    .Select(item => RemoveFromEnd(item.Name, "Class"))
+                    .Where(@class => !IsAbstractStmt(@class))
+                : new List<string>();
+
+            GenerateSwitchCases(StmtClassEnum != null ? enumItems : classes);
+
+            UnindentAndWriteCloseBrace();
+        }
+
+        private void GenerateSwitchCases(IEnumerable<string> classes)
+        {
+            foreach (var className in classes)
+            {
+                WriteLine($"case StmtClass.{className}:");
+                WriteOpenBraceAndIndent();
+
+                WriteLine($"var _{ParamName} = {className}.__CreateInstance({ParamName}.__Instance);");
+
+                var isExpression = Declarations
+                    .OfType<Class>()
+                    .All(c => c.Name != className);
+
+                if (isExpression)
+                    WriteLine($"return VisitExpression(_{ParamName} as Expr) as TRet;");
+                else
+                    WriteLine($"return Visit{className}(_{ParamName});");
+
+                UnindentAndWriteCloseBrace();
+            }
+
+            WriteLine("default:");
+            WriteLineIndent($"throw new System.NotImplementedException({ParamName}.StmtClass.ToString());");
+        }
     }
 
     internal class ExprDeclarationsCodeGenerator : StmtDeclarationsCodeGenerator
@@ -513,7 +561,7 @@ namespace CppSharp
             "AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)";
     }
 
-    internal class ExprASTConverterCodeGenerator : ASTConverterCodeGenerator
+    internal class ExprASTConverterCodeGenerator : StmtASTConverterCodeGenerator
     {
         public ExprASTConverterCodeGenerator(BindingContext context,
             IEnumerable<Declaration> declarations)
@@ -522,5 +570,45 @@ namespace CppSharp
         }
 
         public override string BaseTypeName => "Expr";
+
+        public override bool IsAbstractASTNode(Class kind)
+        {
+            return CodeGeneratorHelpers.IsAbstractStmt(kind);
+        }
+
+        protected override void GenerateVisitorSwitch(IEnumerable<string> classes)
+        {
+            WriteLine($"switch({ParamName}.StmtClass)");
+            WriteOpenBraceAndIndent();
+
+            GenerateSwitchCases(classes);
+
+            UnindentAndWriteCloseBrace();
+        }
+
+        private void GenerateSwitchCases(IEnumerable<string> classes)
+        {
+            foreach (var className in classes)
+            {
+                WriteLine($"case StmtClass.{className}:");
+                WriteOpenBraceAndIndent();
+
+                WriteLine($"var _{ParamName} = {className}.__CreateInstance({ParamName}.__Instance);");
+
+                var isExpression = Declarations
+                    .OfType<Class>()
+                    .All(c => c.Name != className);
+
+                if (isExpression)
+                    WriteLine($"return VisitExpression(_{ParamName} as Expr) as TRet;");
+                else
+                    WriteLine($"return Visit{className}(_{ParamName});");
+
+                UnindentAndWriteCloseBrace();
+            }
+
+            WriteLine("default:");
+            WriteLineIndent($"throw new System.NotImplementedException({ParamName}.StmtClass.ToString());");
+        }
     }
 }

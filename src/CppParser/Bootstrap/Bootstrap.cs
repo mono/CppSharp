@@ -752,11 +752,14 @@ namespace CppSharp
 
     internal abstract class ASTConverterCodeGenerator : ManagedParserCodeGenerator
     {
-        readonly Enumeration StmtClassEnum;
-        protected ASTConverterCodeGenerator(BindingContext context, IEnumerable<Declaration> declarations, Enumeration stmtClassEnum)
+        public abstract string BaseTypeName { get; }
+        public string ParamName => BaseTypeName.ToLowerInvariant();
+
+        public abstract bool IsAbstractASTNode(Class kind);
+
+        protected ASTConverterCodeGenerator(BindingContext context, IEnumerable<Declaration> declarations)
             : base(context, declarations)
         {
-            StmtClassEnum = stmtClassEnum;
         }
 
         public override void Process()
@@ -765,6 +768,7 @@ namespace CppSharp
             NewLine();
 
             WriteLine("using CppSharp.Parser.AST;");
+            NewLine();
             WriteLine("using static CppSharp.ConversionUtils;");
             NewLine();
 
@@ -779,11 +783,9 @@ namespace CppSharp
             UnindentAndWriteCloseBrace();
         }
 
-        public virtual string BaseTypeName { get; }
+        protected abstract void GenerateVisitorSwitch(IEnumerable<string> classes);
 
-        public string ParamName => BaseTypeName.ToLowerInvariant();
-
-        private void GenerateVisitor()
+        protected virtual void GenerateVisitor()
         {
             var comment = new RawComment
             {
@@ -792,12 +794,13 @@ namespace CppSharp
 
             GenerateComment(comment);
 
-            WriteLine($"public abstract class {BaseTypeName}Visitor<TRet> where TRet : class");
+            WriteLine($"public abstract class {BaseTypeName}Visitor<TRet>");
+            WriteLineIndent("where TRet : class");
             WriteOpenBraceAndIndent();
 
             var classes = Declarations
                 .OfType<Class>()
-                .Where(@class => !IsAbstractStmt(@class))
+                .Where(@class => !IsAbstractASTNode(@class))
                 .Select(@class => @class.Name)
                 .ToArray();
 
@@ -812,62 +815,24 @@ namespace CppSharp
             WriteLineIndent("return default(TRet);");
             NewLine();
 
-            WriteLine($"switch({ParamName}.StmtClass)");
-            WriteOpenBraceAndIndent();
-
-            var enumItems = StmtClassEnum != null ?
-                StmtClassEnum.Items.Where(item => item.IsGenerated)
-                    .Select(item => RemoveFromEnd(item.Name, "Class"))
-                    .Where(@class => !IsAbstractStmt(@class))
-                    : new List<string>();
-
-            GenerateSwitchCases(StmtClassEnum != null ? enumItems : classes);
+            GenerateVisitorSwitch(classes);
 
             UnindentAndWriteCloseBrace();
             UnindentAndWriteCloseBrace();
-            UnindentAndWriteCloseBrace();
-        }
-
-        public virtual void GenerateSwitchCases(IEnumerable<string> classes)
-        {
-            foreach (var className in classes)
-            {
-                WriteLine($"case StmtClass.{className}:");
-                WriteOpenBraceAndIndent();
-
-                WriteLine($"var _{ParamName} = {className}.__CreateInstance({ParamName}.__Instance);");
-
-                var isExpression = Declarations
-                    .OfType<Class>()
-                    .All(c => c.Name != className);
-
-                if (isExpression)
-                    WriteLine($"return VisitExpression(_{ParamName} as Expr) as TRet;");
-                else
-                    WriteLine($"return Visit{className}(_{ParamName});");
-
-                UnindentAndWriteCloseBrace();
-            }
-
-            WriteLine("default:");
-            WriteLineIndent($"throw new System.NotImplementedException(" +
-                $"{ParamName}.StmtClass.ToString());");
         }
 
         private void GenerateConverter()
         {
-            WriteLine("public unsafe class {0}Converter : {0}Visitor<AST.{0}>",
-                BaseTypeName);
+            WriteLine("public unsafe class {0}Converter : {0}Visitor<AST.{0}>", BaseTypeName);
             WriteOpenBraceAndIndent();
 
             foreach (var @class in Declarations.OfType<Class>())
             {
-                if (IsAbstractStmt(@class))
+                if (IsAbstractASTNode(@class))
                     continue;
 
                 PushBlock();
-                WriteLine("public override AST.{0} Visit{1}({1} {2})",
-                    BaseTypeName, @class.Name, ParamName);
+                WriteLine("public override AST.{0} Visit{1}({1} {2})", BaseTypeName, @class.Name, ParamName);
                 WriteOpenBraceAndIndent();
 
                 var qualifiedName = $"{GetQualifiedName(@class)}";
@@ -923,8 +888,7 @@ namespace CppSharp
         public override bool VisitMethodDecl(Method method)
         {
             var managedName = GetDeclName(method, GeneratorKind.CSharp);
-            var nativeName = CaseRenamePass.ConvertCaseString(method,
-                RenameCasePattern.LowerCamelCase);
+            var nativeName = CaseRenamePass.ConvertCaseString(method, RenameCasePattern.LowerCamelCase);
 
             WriteLine($"for (uint i = 0; i < {ParamName}.Get{nativeName}Count; i++)");
             WriteOpenBraceAndIndent();
@@ -942,7 +906,7 @@ namespace CppSharp
             return true;
         }
 
-        private void MarshalDecl(AST.Type type, string declTypeName, string bindingsName)
+        protected virtual void MarshalDecl(AST.Type type, string declTypeName, string bindingsName)
         {
             var typeName = $"AST.{declTypeName}";
             if (type.TryGetEnum(out Enumeration @enum))
@@ -975,8 +939,7 @@ namespace CppSharp
     {
         internal readonly IEnumerable<Declaration> Declarations;
 
-        public NativeParserCodeGenerator(BindingContext context,
-            IEnumerable<Declaration> declarations)
+        public NativeParserCodeGenerator(BindingContext context, IEnumerable<Declaration> declarations)
             : base(context)
         {
             Declarations = declarations;
