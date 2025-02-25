@@ -21,7 +21,7 @@ namespace CppSharp
 
     public class TextGenerator : ITextGenerator
     {
-        public static string NewLineChar = "\n";
+        public static string NewLineChar;
 
         public const uint DefaultIndentation = 4;
 
@@ -45,6 +45,19 @@ namespace CppSharp
         public TextGenerator Clone()
         {
             return new TextGenerator(this);
+        }
+
+        public static void SetLineEndingType(NewLineType newLineType)
+        {
+            NewLineChar = newLineType switch
+            {
+                NewLineType.Host => Environment.NewLine,
+                NewLineType.CR => "\r",
+                NewLineType.LF => "\n",
+                NewLineType.CRLF => "\r\n",
+                NewLineType.Auto => throw new ArgumentException("Don't use Auto here.", nameof(newLineType)),
+                _ => throw new ArgumentOutOfRangeException(nameof(newLineType))
+            };
         }
 
         public void Write(string msg, params object[] args)

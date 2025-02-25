@@ -45,8 +45,20 @@ namespace CppSharp
             }
 
             if (Options.NoGenIncludeDirs != null)
+            {
                 foreach (var incDir in Options.NoGenIncludeDirs)
                     ParserOptions.AddIncludeDirs(incDir);
+            }
+
+            NewLineType newLineType = Options.OutputNewLineType;
+            if (Options.OutputNewLineType == NewLineType.Auto)
+            {
+                var sourceNewLineType = GeneratorHelpers.GetNewLineTypeFromGitConfig(Options.OutputDir);
+
+                newLineType = sourceNewLineType ?? NewLineType.Host;
+            }
+
+            TextGenerator.SetLineEndingType(newLineType);
         }
 
         public void Setup()
