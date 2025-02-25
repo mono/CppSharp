@@ -21,9 +21,11 @@ namespace CppSharp
 
     public class TextGenerator : ITextGenerator
     {
+        public static string NewLineChar = "\n";
+
         public const uint DefaultIndentation = 4;
 
-        public StringBuilder StringBuilder = new StringBuilder();
+        public StringBuilder StringBuilder = new();
         public bool IsStartOfLine { get; set; }
         public bool NeedsNewLine { get; set; }
         public uint CurrentIndentation { get; set; }
@@ -54,11 +56,9 @@ namespace CppSharp
                 msg = string.Format(msg, args);
 
             if (IsStartOfLine && !string.IsNullOrWhiteSpace(msg))
-                StringBuilder.Append(new string(' ',
-                    (int)(CurrentIndentation * DefaultIndentation)));
+                StringBuilder.Append(new string(' ', (int)(CurrentIndentation * DefaultIndentation)));
 
-            if (msg.Length > 0)
-                IsStartOfLine = msg.EndsWith(Environment.NewLine);
+            IsStartOfLine = msg.Length > 0 && msg.EndsWith(NewLineChar);
 
             StringBuilder.Append(msg);
         }
@@ -90,7 +90,7 @@ namespace CppSharp
 
         public void NewLine()
         {
-            StringBuilder.AppendLine(string.Empty);
+            StringBuilder.Append(NewLineChar);
             IsStartOfLine = true;
         }
 

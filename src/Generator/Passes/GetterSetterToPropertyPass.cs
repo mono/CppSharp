@@ -334,8 +334,8 @@ namespace CppSharp.Passes
                 Method setter = property.SetMethod;
                 if (getter != setter && setter?.Comment != null)
                 {
-                    comment.BriefText += Environment.NewLine + setter.Comment.BriefText;
-                    comment.Text += Environment.NewLine + setter.Comment.Text;
+                    comment.BriefText += TextGenerator.NewLineChar + setter.Comment.BriefText;
+                    comment.Text += TextGenerator.NewLineChar + setter.Comment.Text;
                     comment.FullComment.Blocks.AddRange(setter.Comment.FullComment.Blocks);
                 }
             }

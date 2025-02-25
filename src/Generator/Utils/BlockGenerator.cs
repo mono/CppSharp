@@ -135,12 +135,12 @@ namespace CppSharp
                 if (previousBlock != null &&
                     (previousBlock.NewLineKind == NewLineKind.BeforeNextBlock ||
                      (previousBlock.NewLineKind == NewLineKind.IfNotEmpty && !previousBlockEmpty)))
-                    builder.AppendLine();
+                    builder.Append(TextGenerator.NewLineChar);
 
                 builder.Append(childText);
 
                 if (childBlock.NewLineKind == NewLineKind.Always)
-                    builder.AppendLine();
+                    builder.Append(TextGenerator.NewLineChar);
 
                 previousBlock = childBlock;
                 previousBlockEmpty = childText.Length == 0;
@@ -318,7 +318,7 @@ namespace CppSharp
             private readonly BlockGenerator generator;
             private readonly NewLineKind next;
 
-            public PushedBlock(BlockGenerator generator, NewLineKind next) 
+            public PushedBlock(BlockGenerator generator, NewLineKind next)
             {
                 this.generator = generator;
                 this.next = next;
