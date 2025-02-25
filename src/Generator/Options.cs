@@ -15,6 +15,15 @@ namespace CppSharp
         FilePerUnit
     }
 
+    public enum NewLineType
+    {
+        Auto, // Attempt to auto-detect the new line type using git repository settings of the output directory
+        Host, // Same as Environment.NewLine on the source generator host
+        LF,
+        CR,
+        CRLF,
+    }
+
     public class DriverOptions
     {
         public DriverOptions()
@@ -83,6 +92,8 @@ namespace CppSharp
         public bool CheckSymbols;
 
         public string OutputDir;
+
+        public NewLineType OutputNewLineType = NewLineType.Auto;
 
         public bool OutputInteropIncludes;
         public bool GenerateFunctionTemplates;

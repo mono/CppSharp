@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using CppSharp.Utils;
 
 namespace CppSharp
 {
@@ -83,7 +84,7 @@ namespace CppSharp
         {
             while (stringBuilder.Length > 0 && stringBuilder[0] == '_')
                 stringBuilder.Remove(0, 1);
-            while (stringBuilder.Length > 0 && stringBuilder[stringBuilder.Length - 1] == '_')
+            while (stringBuilder.Length > 0 && stringBuilder[^1] == '_')
                 stringBuilder.Remove(stringBuilder.Length - 1, 1);
         }
     }
@@ -128,6 +129,61 @@ namespace CppSharp
             var uri2 = new Uri("c:\\" + path2 + "\\");
 
             return uri1.MakeRelativeUri(uri2).ToString();
+        }
+    }
+
+    public static class GeneratorHelpers
+    {
+        public static NewLineType? GetNewLineTypeFromGitConfig(string outputDir)
+        {
+            try
+            {
+                if (!bool.TryParse(
+                        ProcessHelper.RunFrom(outputDir,
+                            "git", "rev-parse --is-inside-work-tree",
+                            out _, out _
+                        ),
+                        out bool isInsideWorkTree))
+                {
+                    return null;
+                }
+
+                if (!isInsideWorkTree)
+                    return null;
+
+                // Check git config core.eol setting
+                var eolConfig = ProcessHelper.RunFrom(outputDir,
+                        "git", "config --get core.eol",
+                        out _, out _)
+                    .Trim().ToLowerInvariant();
+
+                switch (eolConfig)
+                {
+                    case "lf":
+                        return NewLineType.LF;
+                    case "crlf":
+                        return NewLineType.CRLF;
+                }
+
+                // Otherwise check git config core.autocrlf setting
+                var autoCrLf = ProcessHelper.RunFrom(outputDir,
+                        "git", "config --get core.autocrlf",
+                        out _, out _)
+                    .Trim().ToLowerInvariant();
+
+                return autoCrLf switch
+                {
+                    "input" => NewLineType.LF,
+                    "true" => NewLineType.CRLF,
+                    "false" => NewLineType.Host,
+
+                    _ => null
+                };
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }

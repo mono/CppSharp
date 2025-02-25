@@ -140,11 +140,13 @@ namespace CppSharp.Generators
 
             var lines = new List<string>();
 
-            if (comment.BriefText.Contains("\n"))
+            if (comment.BriefText.Contains('\n'))
             {
+                var commentLines = HtmlEncoder.HtmlEncode(comment.BriefText)
+                    .Split('\n', '\r');
+
                 lines.Add("<summary>");
-                foreach (string line in HtmlEncoder.HtmlEncode(comment.BriefText).Split(
-                                            Environment.NewLine.ToCharArray()))
+                foreach (string line in commentLines)
                 {
                     if (string.IsNullOrWhiteSpace(line))
                         continue;
