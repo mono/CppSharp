@@ -143,14 +143,14 @@ namespace CppSharp.Passes
 
             var firstWord = GetFirstWord(property.GetMethod.Name);
             var isKeyword = firstWord.Length < property.GetMethod.Name.Length &&
-                            Match(firstWord, new[] {"get", "is", "has"});
+                            Match(firstWord, new[] { "get", "is", "has" });
 
             switch (Options.PropertyDetectionMode)
             {
                 case PropertyDetectionMode.Keywords:
                     return isKeyword;
                 case PropertyDetectionMode.Dictionary:
-                    var isAction = Match(firstWord, new[] {"to", "new", "on"}) || Verbs.Contains(firstWord);
+                    var isAction = Match(firstWord, new[] { "to", "new", "on" }) || Verbs.Contains(firstWord);
                     return isKeyword || !isAction;
                 default:
                     return false;
@@ -287,8 +287,7 @@ namespace CppSharp.Passes
                 m => m.IsGenerated && m.Name == property.Name))
             {
                 var oldName = method.Name;
-                method.Name = $@"get{char.ToUpperInvariant(method.Name[0])}{
-                    method.Name.Substring(1)}";
+                method.Name = $@"get{char.ToUpperInvariant(method.Name[0])}{method.Name.Substring(1)}";
                 Diagnostics.Debug("Method {0}::{1} renamed to {2}",
                     method.Namespace.Name, oldName, method.Name);
             }
@@ -296,8 +295,7 @@ namespace CppSharp.Passes
                 e => e.Name == property.Name))
             {
                 var oldName = @event.Name;
-                @event.Name = $@"on{char.ToUpperInvariant(@event.Name[0])}{
-                    @event.Name.Substring(1)}";
+                @event.Name = $@"on{char.ToUpperInvariant(@event.Name[0])}{@event.Name.Substring(1)}";
                 Diagnostics.Debug("Event {0}::{1} renamed to {2}",
                     @event.Namespace.Name, oldName, @event.Name);
             }
@@ -345,7 +343,7 @@ namespace CppSharp.Passes
         private static string GetPropertyName(string name)
         {
             var firstWord = GetFirstWord(name);
-            if (!Match(firstWord, new[] {"get"}) ||
+            if (!Match(firstWord, new[] { "get" }) ||
                 (string.Compare(name, firstWord, StringComparison.InvariantCultureIgnoreCase) == 0) ||
                 char.IsNumber(name[3])) return name;
 
@@ -368,7 +366,7 @@ namespace CppSharp.Passes
 
         private bool IsGetter(Method method) =>
             !method.IsDestructor &&
-            !method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void) && 
+            !method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void) &&
             method.Parameters.All(p => p.Kind == ParameterKind.IndirectReturnType);
 
         private static bool IsSetter(Method method)

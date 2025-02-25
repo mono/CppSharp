@@ -5,7 +5,7 @@ namespace CppSharp.AST
     /// </summary>
     public abstract class TypedefNameDecl : Declaration, ITypedDecl
     {
-        public Type Type { get { return QualifiedType.Type; } }
+        public Type Type => QualifiedType.Type;
         public QualifiedType QualifiedType { get; set; }
         public bool IsSynthetized { get; set; }
     }

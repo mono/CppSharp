@@ -1058,27 +1058,33 @@ namespace CppSharp.Generators
             throw new NotImplementedException();
         }
 
-        public virtual bool VisitSYCLUniqueStableNameExpr(SYCLUniqueStableNameExpr stmt){
+        public virtual bool VisitSYCLUniqueStableNameExpr(SYCLUniqueStableNameExpr stmt)
+        {
             throw new NotImplementedException();
         }
 
-        public virtual bool VisitSourceLocExpr(SourceLocExpr stmt){
+        public virtual bool VisitSourceLocExpr(SourceLocExpr stmt)
+        {
             throw new NotImplementedException();
         }
 
-        public virtual bool VisitRecoveryExpr(RecoveryExpr stmt){
+        public virtual bool VisitRecoveryExpr(RecoveryExpr stmt)
+        {
             throw new NotImplementedException();
         }
 
-        public virtual bool VisitCXXRewrittenBinaryOperator(CXXRewrittenBinaryOperator stmt){
+        public virtual bool VisitCXXRewrittenBinaryOperator(CXXRewrittenBinaryOperator stmt)
+        {
             throw new NotImplementedException();
         }
 
-        public virtual bool VisitCXXAddrspaceCastExpr(CXXAddrspaceCastExpr stmt){
+        public virtual bool VisitCXXAddrspaceCastExpr(CXXAddrspaceCastExpr stmt)
+        {
             throw new NotImplementedException();
         }
 
-        public virtual bool VisitCXXParenListInitExpr(CXXParenListInitExpr stmt){
+        public virtual bool VisitCXXParenListInitExpr(CXXParenListInitExpr stmt)
+        {
             throw new NotImplementedException();
         }
 
