@@ -10,6 +10,7 @@
 #include "Helpers.h"
 
 namespace CppSharp { namespace CppParser { namespace AST {
+    class Expr;
 
     enum class TypeKind
     {
@@ -32,6 +33,15 @@ namespace CppSharp { namespace CppParser { namespace AST {
         UnaryTransform,
         UnresolvedUsing,
         Vector
+    };
+
+    enum class TagKind
+    {
+        Struct,
+        Interface,
+        Union,
+        Class,
+        Enum
     };
 
 #define DECLARE_TYPE_KIND(kind) \
@@ -86,6 +96,17 @@ namespace CppSharp { namespace CppParser { namespace AST {
         ArraySize sizeType;
         long size;
         long elementSize;
+    };
+
+    class CS_API VariableArrayType : public ArrayType
+    {
+    public:
+        VariableArrayType()
+        {
+            sizeType = ArraySize::Variable;
+        }
+
+        Expr* sizeExpr = nullptr;
     };
 
     class Parameter;

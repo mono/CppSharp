@@ -566,15 +566,6 @@ namespace AST {
         VECTOR(LayoutBase, Bases)
     };
 
-    enum class TagKind
-    {
-        Struct,
-        Interface,
-        Union,
-        Class,
-        Enum
-    };
-
     class CS_API Class : public DeclarationContext
     {
     public:

@@ -274,6 +274,16 @@ namespace CppSharp.AST
             return Variables.FirstOrDefault(m => m.Name == name);
         }
 
+        public Property FindProperty(string name)
+        {
+            return Properties.FirstOrDefault(m => m.Name == name);
+        }
+
+        public Field FindField(string name)
+        {
+            return Fields.FirstOrDefault(m => m.Name == name);
+        }
+
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitClassDecl(this);

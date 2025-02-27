@@ -1153,7 +1153,6 @@ namespace CppSharp { namespace CppParser { namespace AST {
         kind = DeclarationKind::TranslationUnit;
     }
 
-    TranslationUnit::~TranslationUnit() {}
     DEF_VECTOR(TranslationUnit, MacroDefinition*, Macros)
 
     NativeLibrary::NativeLibrary()
