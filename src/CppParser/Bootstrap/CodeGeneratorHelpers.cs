@@ -47,8 +47,7 @@ namespace CppSharp
                     return true;
             }
 
-            if (property.Name is "beginLoc" or "endLoc" &&
-                @class.Name != "Stmt")
+            if (property.Name is "beginLoc" or "endLoc" && @class.Name != "Stmt")
                 return true;
 
             switch (property.Name)
@@ -309,7 +308,7 @@ namespace CppSharp
             else if (qualifiedName.Contains("Semantics"))
                 qualifiedName = qualifiedName.Replace(
                     typePrinter is CppTypePrinter ? "llvm::APFloatBase::Semantics" : "llvm.APFloatBase.Semantics"
-                , "FloatSemantics");
+                    , "FloatSemantics");
 
             return qualifiedName;
         }
@@ -319,11 +318,13 @@ namespace CppSharp
 
         private static string CleanClangNamespaceFromName(string qualifiedName)
         {
-            qualifiedName = qualifiedName.StartsWith("clang::") ?
-                qualifiedName.Substring("clang::".Length) : qualifiedName;
+            qualifiedName = qualifiedName.StartsWith("clang::")
+                ? qualifiedName.Substring("clang::".Length)
+                : qualifiedName;
 
-            qualifiedName = qualifiedName.StartsWith("clang.") ?
-                qualifiedName.Substring("clang.".Length) : qualifiedName;
+            qualifiedName = qualifiedName.StartsWith("clang.")
+                ? qualifiedName.Substring("clang.".Length)
+                : qualifiedName;
 
             return qualifiedName;
         }
@@ -392,7 +393,8 @@ namespace CppSharp
 
             if (typeResult.Type.Contains("MSGuidDecl"))
                 return typePrinter is CppTypePrinter
-                    ? "std::string" : "string";
+                    ? "std::string"
+                    : "string";
 
             var typeName = typeResult.ToString();
             typeName = CleanClangNamespaceFromName(typeName);
@@ -436,8 +438,7 @@ namespace CppSharp
                 className = "Declaration";
 
             if (className != null)
-                return (typePrinter is CppTypePrinter) ?
-                 $"{className}*" : className;
+                return (typePrinter is CppTypePrinter) ? $"{className}*" : className;
 
             return typeName;
         }
@@ -525,8 +526,7 @@ namespace CppSharp
             while (currentClass != null)
             {
                 baseClasses.Add(currentClass);
-                currentClass = currentClass.HasBaseClass ?
-                    currentClass.BaseClass : null;
+                currentClass = currentClass.HasBaseClass ? currentClass.BaseClass : null;
             }
 
             baseClasses.Reverse();
