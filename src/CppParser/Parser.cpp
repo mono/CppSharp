@@ -165,6 +165,12 @@ Parser::Parser(CppParserOptions* Opts)
 {
     supportedStdTypes.insert("allocator");
     supportedStdTypes.insert("basic_string");
+
+    walkedNamespaces.reserve(8192);
+    walkedTypeTemplateParameters.reserve(8192);
+    walkedTemplateTemplateParameters.reserve(32);
+    walkedNonTypeTemplateParameters.reserve(1024);
+    walkedParameters.reserve(65536);
 }
 
 LayoutField Parser::WalkVTablePointer(Class* Class,
@@ -424,27 +430,23 @@ void Parser::Setup(bool Compile)
     if (opts->verbose)
         HSOpts.Verbose = true;
 
-    for (unsigned I = 0, E = opts->IncludeDirs.size(); I != E; ++I)
+    for (const auto& s : opts->IncludeDirs)
     {
-        const auto& s = opts->IncludeDirs[I];
         HSOpts.AddPath(s, frontend::Angled, false, false);
     }
 
-    for (unsigned I = 0, E = opts->SystemIncludeDirs.size(); I != E; ++I)
+    for (const auto& s : opts->SystemIncludeDirs)
     {
-        const auto& s = opts->SystemIncludeDirs[I];
         HSOpts.AddPath(s, frontend::System, false, false);
     }
 
-    for (unsigned I = 0, E = opts->Defines.size(); I != E; ++I)
+    for (const auto& define : opts->Defines)
     {
-        const auto& define = opts->Defines[I];
         PPOpts.addMacroDef(define);
     }
 
-    for (unsigned I = 0, E = opts->Undefines.size(); I != E; ++I)
+    for (const auto& undefine : opts->Undefines)
     {
-        const auto& undefine = opts->Undefines[I];
         PPOpts.addMacroUndef(undefine);
     }
 
@@ -480,8 +482,7 @@ void Parser::Setup(bool Compile)
         }
     }
 
-    if (TC)
-        delete TC;
+    delete TC;
 
     // Enable preprocessing record.
     PPOpts.DetailedRecord = true;
@@ -2537,7 +2538,7 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL, bool 
             EnumDecl* ED = ET->getDecl();
 
             auto TT = new AST::TagType();
-            TT->declaration = TT->declaration = WalkDeclaration(ED);
+            TT->declaration = WalkDeclaration(ED);
 
             Ty = TT;
             break;
@@ -4430,8 +4431,8 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D)
         {
             auto MD = cast<CXXMethodDecl>(D);
             Decl = WalkMethodCXX(MD);
-            if (Decl == nullptr)
-                return Decl;
+            if (!Decl)
+                return nullptr;
 
             auto NS = GetNamespace(MD);
             Decl->_namespace = NS;
@@ -4609,7 +4610,7 @@ void Parser::SetupLLVMCodegen()
                                                 c->getHeaderSearchOpts(), c->getPreprocessorOpts(),
                                                 c->getCodeGenOpts(), *LLVMModule, c->getDiagnostics()));
 
-    codeGenTypes.reset(new clang::CodeGen::CodeGenTypes(*CGM.get()));
+    codeGenTypes.reset(new clang::CodeGen::CodeGenTypes(*CGM));
 }
 
 bool Parser::SetupSourceFiles(const std::vector<std::string>& SourceFiles,
@@ -4710,7 +4711,7 @@ ParserResult* Parser::Parse(const std::vector<std::string>& SourceFiles)
 
     DiagClient->BeginSourceFile(c->getLangOpts(), &c->getPreprocessor());
 
-    ParseAST(c->getSema());
+    ParseAST(c->getSema(), opts->verbose, opts->skipFunctionBodies);
 
     DiagClient->EndSourceFile();
 
