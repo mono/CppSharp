@@ -381,7 +381,7 @@ namespace CppSharp
                         @class.Properties.Add(property);
                 }
 
-                if (@base.Class.Name == "APFloatStorage")
+                else if (@base.Class.Name == "APFloatStorage")
                 {
                     @base.ExplicitlyIgnore();
 
@@ -996,5 +996,114 @@ namespace CppSharp
         }
     }
 
+    internal abstract class DefinitionsCodeGenerator : NativeParserCodeGenerator
+    {
+        protected DefinitionsCodeGenerator(BindingContext context, IEnumerable<Declaration> declarations)
+            : base(context, declarations)
+        {
+        }
+
+        public abstract string BaseTypeName { get; }
+        public string ParamName => BaseTypeName.ToLowerInvariant();
+
+        public override bool GeneratePragmaOnce => false;
+
+        public virtual void GenerateDefinitions()
+        {
+            Process();
+
+            GenerateIncludes();
+            NewLine();
+
+            WriteLine("namespace CppSharp::CppParser::AST {");
+            NewLine();
+
+            foreach (var decl in Declarations.OfType<Class>())
+                decl.Visit(this);
+
+            WriteLine("}");
+        }
+
+        public virtual void GenerateIncludes()
+        {
+            GenerateCommonIncludes();
+        }
+
+        protected virtual string GenerateInit(Property property)
+        {
+            if (property.Type.IsPointer())
+                return "nullptr";
+
+            if (property.Type.IsPrimitiveType(PrimitiveType.Bool))
+                return "false";
+
+            var typeName = GetDeclTypeName(property);
+            if (property.Type.TryGetClass(out Class _))
+                return $"{typeName}()";
+
+            if (property.Type.TryGetEnum(out Enumeration @enum))
+                return $"{GetQualifiedName(@enum)}::{@enum.Items.First().Name}";
+
+            return "0";
+        }
+
+        protected virtual void GenerateMemberInits(Class @class)
+        {
+            foreach (var property in @class.Properties)
+            {
+                if (SkipProperty(property))
+                    continue;
+
+                var typeName = GetDeclTypeName(property);
+                if (typeName == "std::string")
+                    continue;
+
+                WriteLineIndent($", {GetDeclName(property)}({GenerateInit(property)})");
+            }
+        }
+
+        public override bool VisitEnumDecl(Enumeration @enum)
+        {
+            return true;
+        }
+    }
+
+    internal abstract class DeclarationsCodeGenerator : NativeParserCodeGenerator
+    {
+        protected DeclarationsCodeGenerator(BindingContext context, IEnumerable<Declaration> declarations)
+            : base(context, declarations)
+        {
+        }
+
+        public abstract string BaseTypeName { get; }
+        public string ParamName => BaseTypeName.ToLowerInvariant();
+
+        public virtual void GenerateDeclarations()
+        {
+            Process();
+            GenerateIncludes();
+            NewLine();
+
+            WriteLine("namespace CppSharp::CppParser::AST {");
+            NewLine();
+
+            GenerateForwardDecls();
+            NewLine();
+
+            foreach (var decl in Declarations)
+                decl.Visit(this);
+
+            NewLine();
+            WriteLine("}");
+        }
+
+        public virtual void GenerateIncludes()
+        {
+            WriteInclude("Sources.h", CInclude.IncludeKind.Quoted);
+            WriteInclude("Types.h", CInclude.IncludeKind.Quoted);
+        }
+
+        public virtual void GenerateForwardDecls() { }
+    }
     #endregion
 }

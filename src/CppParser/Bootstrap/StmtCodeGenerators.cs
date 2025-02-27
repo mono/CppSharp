@@ -12,49 +12,31 @@ using static CppSharp.CodeGeneratorHelpers;
 
 namespace CppSharp
 {
-    internal class StmtDeclarationsCodeGenerator : NativeParserCodeGenerator
+    internal class StmtDeclarationsCodeGenerator : DeclarationsCodeGenerator
     {
-        public StmtDeclarationsCodeGenerator(BindingContext context,
-            IEnumerable<Declaration> declarations)
+        public StmtDeclarationsCodeGenerator(BindingContext context, IEnumerable<Declaration> declarations)
             : base(context, declarations)
         {
         }
 
-        public void GenerateDeclarations()
+        public override string BaseTypeName => "Stmt";
+
+        public override bool VisitDeclaration(Declaration decl)
         {
-            Process();
-            GenerateIncludes();
-            NewLine();
+            if (!base.VisitDeclaration(decl))
+                return false;
 
-            WriteLine("namespace CppSharp::CppParser::AST {");
-            NewLine();
-
-            GenerateForwardDecls();
-            NewLine();
-
-            foreach (var decl in Declarations)
+            if (decl.Name == "GCCAsmStmt")
             {
-                if (decl.Name == "GCCAsmStmt")
-                {
-                    WriteLine("class StringLiteral;");
-                    WriteLine("class AddrLabelExpr;");
-                    NewLine();
-                }
-
-                decl.Visit(this);
+                WriteLine("class StringLiteral;");
+                WriteLine("class AddrLabelExpr;");
+                NewLine();
             }
 
-            NewLine();
-            WriteLine("}");
+            return true;
         }
 
-        public virtual void GenerateIncludes()
-        {
-            WriteInclude("Sources.h", CInclude.IncludeKind.Quoted);
-            WriteInclude("Types.h", CInclude.IncludeKind.Quoted);
-        }
-
-        public virtual void GenerateForwardDecls()
+        public override void GenerateForwardDecls()
         {
             WriteLine("class Expr;");
             WriteLine("class Declaration;");
@@ -103,33 +85,16 @@ namespace CppSharp
         }
     }
 
-    internal class StmtDefinitionsCodeGenerator : NativeParserCodeGenerator
+    internal class StmtDefinitionsCodeGenerator : DefinitionsCodeGenerator
     {
-        public StmtDefinitionsCodeGenerator(BindingContext context,
-            IEnumerable<Declaration> declarations)
+        public StmtDefinitionsCodeGenerator(BindingContext context, IEnumerable<Declaration> declarations)
             : base(context, declarations)
         {
         }
 
-        public override bool GeneratePragmaOnce => false;
+        public override string BaseTypeName => "Stmt";
 
-        public void GenerateDefinitions()
-        {
-            Process();
-
-            GenerateIncludes();
-            NewLine();
-
-            WriteLine("namespace CppSharp::CppParser::AST {");
-            NewLine();
-
-            foreach (var decl in Declarations.OfType<Class>())
-                decl.Visit(this);
-
-            WriteLine("}");
-        }
-
-        public virtual void GenerateIncludes()
+        public override void GenerateIncludes()
         {
             GenerateCommonIncludes();
             WriteInclude("Stmt.h", CInclude.IncludeKind.Quoted);
@@ -183,44 +148,6 @@ namespace CppSharp
                 NewLine();
             }
 
-            return true;
-        }
-
-        internal void GenerateMemberInits(Class @class)
-        {
-            foreach (var property in @class.Properties)
-            {
-                if (SkipProperty(property))
-                    continue;
-
-                var typeName = GetDeclTypeName(property);
-                if (typeName == "std::string")
-                    continue;
-
-                WriteLineIndent($", {GetDeclName(property)}({GenerateInit(property)})");
-            }
-        }
-
-        private string GenerateInit(Property property)
-        {
-            if (property.Type.IsPointer())
-                return "nullptr";
-
-            if (property.Type.IsPrimitiveType(PrimitiveType.Bool))
-                return "false";
-
-            var typeName = GetDeclTypeName(property);
-            if (property.Type.TryGetClass(out Class _))
-                return $"{typeName}()";
-
-            if (property.Type.TryGetEnum(out Enumeration @enum))
-                return $"{GetQualifiedName(@enum)}::{@enum.Items.First().Name}";
-
-            return "0";
-        }
-
-        public override bool VisitEnumDecl(Enumeration @enum)
-        {
             return true;
         }
     }
@@ -469,9 +396,9 @@ namespace CppSharp
                 StmtClassEnum.Items.Where(item => item.IsGenerated)
                     .Select(item => RemoveFromEnd(item.Name, "Class"))
                     .Where(@class => !IsAbstractStmt(@class))
-                : new List<string>();
+                : classes;
 
-            GenerateSwitchCases(StmtClassEnum != null ? enumItems : classes);
+            GenerateSwitchCases(enumItems);
 
             UnindentAndWriteCloseBrace();
         }
@@ -510,6 +437,8 @@ namespace CppSharp
         {
         }
 
+        public override string BaseTypeName => "Expr";
+
         public override void GenerateIncludes()
         {
             WriteInclude("Stmt.h", CInclude.IncludeKind.Quoted);
@@ -532,7 +461,7 @@ namespace CppSharp
         {
         }
 
-        public override bool GeneratePragmaOnce => false;
+        public override string BaseTypeName => "Expr";
 
         public override void GenerateIncludes()
         {
@@ -563,8 +492,7 @@ namespace CppSharp
 
     internal class ExprASTConverterCodeGenerator : StmtASTConverterCodeGenerator
     {
-        public ExprASTConverterCodeGenerator(BindingContext context,
-            IEnumerable<Declaration> declarations)
+        public ExprASTConverterCodeGenerator(BindingContext context, IEnumerable<Declaration> declarations)
             : base(context, declarations, null)
         {
         }
@@ -595,14 +523,7 @@ namespace CppSharp
 
                 WriteLine($"var _{ParamName} = {className}.__CreateInstance({ParamName}.__Instance);");
 
-                var isExpression = Declarations
-                    .OfType<Class>()
-                    .All(c => c.Name != className);
-
-                if (isExpression)
-                    WriteLine($"return VisitExpression(_{ParamName} as Expr) as TRet;");
-                else
-                    WriteLine($"return Visit{className}(_{ParamName});");
+                WriteLine($"return Visit{className}(_{ParamName});");
 
                 UnindentAndWriteCloseBrace();
             }
