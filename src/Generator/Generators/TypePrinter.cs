@@ -10,8 +10,8 @@ namespace CppSharp.Generators
     {
         public string Type { get; set; }
         public string Name { get; set; } = string.Empty;
-        public StringBuilder NamePrefix { get; set; } = new StringBuilder();
-        public StringBuilder NameSuffix { get; set; } = new StringBuilder();
+        public StringBuilder NamePrefix { get; set; } = new();
+        public StringBuilder NameSuffix { get; set; } = new();
         public TypeMap TypeMap { get; set; }
         public GeneratorKind Kind { get; set; }
 
@@ -25,11 +25,11 @@ namespace CppSharp.Generators
         {
             var index = Type.LastIndexOf('.');
             if (index != -1)
-                Type = Type.Substring(index + 1);
+                Type = Type[(index + 1)..];
         }
 
         public static implicit operator TypePrinterResult(string type) =>
-            new TypePrinterResult { Type = type };
+            new() { Type = type };
 
         public static implicit operator string(TypePrinterResult result) =>
            result.ToString();
@@ -196,20 +196,17 @@ namespace CppSharp.Generators
             throw new NotImplementedException();
         }
 
-        public virtual TypePrinterResult VisitFunctionTemplateDecl(
-            FunctionTemplate template)
+        public virtual TypePrinterResult VisitFunctionTemplateDecl(FunctionTemplate template)
         {
             throw new NotImplementedException();
         }
 
-        public virtual TypePrinterResult VisitFunctionTemplateSpecializationDecl(
-            FunctionTemplateSpecialization specialization)
+        public virtual TypePrinterResult VisitFunctionTemplateSpecializationDecl(FunctionTemplateSpecialization specialization)
         {
             throw new NotImplementedException();
         }
 
-        public virtual TypePrinterResult VisitFunctionType(FunctionType function,
-            TypeQualifiers quals)
+        public virtual TypePrinterResult VisitFunctionType(FunctionType function, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
