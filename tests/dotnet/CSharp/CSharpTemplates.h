@@ -163,9 +163,10 @@ T IndependentFields<T>::getDependent(const T& t)
 }
 
 template <typename T>
-T IndependentFields<T>::property()
+typename IndependentFields<T>::Type IndependentFields<T>::property()
 {
-    return T();
+    std::remove_reference_t<std::remove_const_t<Type>> t;
+    return t;
 }
 
 template <typename T>
