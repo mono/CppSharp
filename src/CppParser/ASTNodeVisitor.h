@@ -25,14 +25,12 @@
 #include <unordered_set>
 
 #include "Decl.h"
+#include "Expr.h"
 #include "Stmt.h"
 
 namespace CppSharp::CppParser {
 namespace AST {
     class Stmt;
-
-    // TODO: Remove this once we have proper type conversions
-    using Decl = Declaration;
 } // namespace AST
 class Parser;
 
@@ -283,6 +281,9 @@ public:
     #include "clang/AST/DeclNodes.inc"
             // The above header #undefs ABSTRACT_DECL and DECL upon exit.*/
 
+
+    void ConvertStmt(const clang::Stmt* Src, AST::Stmt& Dst);
+
 #define STMT(CLASS, BASE)                                                \
     void Convert##CLASS##Impl(const clang::CLASS* Src, AST::CLASS& Dst); \
     void Convert##CLASS(const clang::CLASS* Src, AST::CLASS& Dst)        \
@@ -294,14 +295,14 @@ public:
 
 // Declare Visit*() for all concrete Stmt classes.
 #define ABSTRACT_STMT(STMT)
-#define STMT(CLASS, BASE)                                \
-    void Visit##CLASS(const clang::CLASS* S)             \
-    {                                                    \
-        if (stmtMap.find(D) != stmtMap.end())            \
-            return;                                      \
-                                                         \
-        auto res = stmtMap.emplace(S, new AST::CLASS()); \
-        Convert##CLASS(S, res.first->second);            \
+#define STMT(CLASS, BASE)                                                \
+    void Visit##CLASS(const clang::CLASS* S)                             \
+    {                                                                    \
+        if (!S || stmtMap.find(S) != stmtMap.end())                      \
+            return;                                                      \
+                                                                         \
+        auto res = stmtMap.emplace(S, new AST::CLASS());                 \
+        Convert##CLASS(S, static_cast<AST::CLASS&>(*res.first->second)); \
     }
 #include "StmtNodes.inc"
     // The above header #undefs ABSTRACT_STMT and STMT upon exit.
@@ -393,7 +394,7 @@ private:
 
     std::unordered_map<const clang::Decl*, AST::Declaration*> declMap;
     std::unordered_set<const clang::Type*> typeMap;
-    std::unordered_set<const clang::Stmt*> stmtMap;
+    std::unordered_map<const clang::Stmt*, AST::Stmt*> stmtMap;
 
     Parser& parser;
     const clang::SourceManager& SM;
@@ -494,8 +495,9 @@ private:
 
         Visit(TD->getTemplatedDecl());
 
-        for (const auto* Child : TD->specializations())
-            writeTemplateDeclSpecialization(Child, DumpExplicitInst, !TD->isCanonicalDecl());
+        // TODO: Fixme. Crash in specializations iterator (clang bug?)
+        // for (const auto* Child : TD->specializations())
+        //    writeTemplateDeclSpecialization(Child, DumpExplicitInst, !TD->isCanonicalDecl());
     }
 
     ASTNodeVisitor NodeVisitor;

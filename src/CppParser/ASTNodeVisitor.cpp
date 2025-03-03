@@ -20,6 +20,7 @@
 #include "Types.h"
 #include "Decl.h"
 #include "Parser.h"
+#include "Sources.h"
 
 using namespace CppSharp::CppParser;
 using namespace clang;
@@ -66,6 +67,21 @@ AST::TypeQualifiers GetTypeQualifiers(const clang::Qualifiers& quals)
     ret.isVolatile = quals.hasVolatile();
     return ret;
 }
+
+CppSharp::CppParser::SourceLocation ConvertSourceLocation(const clang::SourceLocation& loc)
+{
+    // TODO: Incomplete. Should this include additional data or is it possible to lazy load that?
+    return { loc.getRawEncoding() };
+}
+
+CppSharp::CppParser::SourceRange ConvertSourceRange(const clang::SourceRange& range)
+{
+    return {
+        ConvertSourceLocation(range.getBegin()),
+        ConvertSourceLocation(range.getEnd())
+    };
+}
+
 } // namespace
 
 void ASTNodeVisitor::ConvertNamedRecord(AST::Declaration& dst, const clang::NamedDecl& src) const
@@ -159,31 +175,6 @@ void ASTNodeVisitor::Visit(const Stmt* S)
     if (!S)
         return;
 
-    if (auto it = stmtMap.find(S); it != stmtMap.end())
-        return;
-    stmtMap.emplace(S);
-
-    JOS.attribute("kind", S->getStmtClassName());
-    JOS.attributeObject("range",
-                        [S, this]
-                        {
-                            writeSourceRange(S->getSourceRange());
-                        });
-
-    if (const auto* E = dyn_cast<Expr>(S))
-    {
-        JOS.attribute("type", createQualType(E->getType()));
-        const char* Category = nullptr;
-        switch (E->getValueKind())
-        {
-            case VK_LValue: Category = "lvalue"; break;
-            case VK_XValue: Category = "xvalue"; break;
-            case VK_PRValue:
-                Category = "prvalue";
-                break;
-        }
-        JOS.attribute("valueCategory", Category);
-    }
     InnerStmtVisitor::Visit(S);
 }
 
@@ -1353,7 +1344,7 @@ AST::Declaration* ASTNodeVisitor::VisitCXXRecordDecl(const CXXRecordDecl* RD)
                                 if (!RC || !Process)
                                     return RC;
 
-                                parser.WalkRecordCXX(RD, RC);
+                                // parser.WalkRecordCXX(RD, RC);
                                 return RC;
                             });
 }
@@ -1623,120 +1614,50 @@ AST::Declaration* ASTNodeVisitor::VisitBlockDecl(const BlockDecl* D)
     return nullptr;
 }
 
-void ASTNodeVisitor::VisitAtomicExpr(const AtomicExpr* AE)
+void ASTNodeVisitor::ConvertExprImpl(const clang::Expr* E, AST::Expr& Dst)
 {
-    // JOS.attribute("name", AE->getOp());
+    // TODO: Incomplete
+    // Dst.type = parser.GetQualifiedType(E->getType());
+    // JOS.attribute("type", createQualType(E->getType()));
+
+    // TODO: Convert to functions instead of data
+    Dst.isLValue = E->isLValue();
+    Dst.isXValue = E->isXValue();
+    Dst.isPRValue = E->isPRValue();
+    Dst.isGLValue = E->isGLValue();
+
+    Dst.containsErrors = E->containsErrors();
+    Dst.containsUnexpandedParameterPack = E->containsUnexpandedParameterPack();
+    Dst.exprLoc = ConvertSourceLocation(E->getExprLoc());
+    // Dst.hasPlaceholderType = E->hasPlaceholderType();
+    Dst.isInstantiationDependent = E->isInstantiationDependent();
+    Dst.isOrdinaryOrBitFieldObject = E->isOrdinaryOrBitFieldObject();
+    // Dst.isReadIfDiscardedInCPlusPlus11 = E->isGLValue() && E->isReadIfDiscardedInCPlusPlus11();
+    Dst.isTypeDependent = E->isTypeDependent();
+    Dst.isValueDependent = E->isValueDependent();
+    Dst.refersToMatrixElement = E->refersToMatrixElement();
 }
 
-void ASTNodeVisitor::VisitObjCEncodeExpr(const ObjCEncodeExpr* OEE)
+void ASTNodeVisitor::ConvertStmt(const clang::Stmt* S, AST::Stmt& Dst)
 {
-    JOS.attribute("encodedType", createQualType(OEE->getEncodedType()));
+    // Dst.stmtClass = S->getStmtClass(); // Already set
+    Dst.sourceRange = ConvertSourceRange(S->getSourceRange());
+
+    /*JOS.attribute("kind", S->getStmtClassName());
+    JOS.attributeObject("range",
+                        [S, this]
+                        {
+                            writeSourceRange(S->getSourceRange());
+                        });*/
 }
 
-void ASTNodeVisitor::VisitObjCMessageExpr(const ObjCMessageExpr* OME)
+void ASTNodeVisitor::ConvertAtomicExprImpl(const AtomicExpr* Src, AST::AtomicExpr& Dst)
 {
-    std::string Str;
-    llvm::raw_string_ostream OS(Str);
-
-    OME->getSelector().print(OS);
-    JOS.attribute("selector", Str);
-
-    switch (OME->getReceiverKind())
-    {
-        case ObjCMessageExpr::Instance:
-            JOS.attribute("receiverKind", "instance");
-            break;
-        case ObjCMessageExpr::Class:
-            JOS.attribute("receiverKind", "class");
-            JOS.attribute("classType", createQualType(OME->getClassReceiver()));
-            break;
-        case ObjCMessageExpr::SuperInstance:
-            JOS.attribute("receiverKind", "super (instance)");
-            JOS.attribute("superType", createQualType(OME->getSuperType()));
-            break;
-        case ObjCMessageExpr::SuperClass:
-            JOS.attribute("receiverKind", "super (class)");
-            JOS.attribute("superType", createQualType(OME->getSuperType()));
-            break;
-    }
-
-    QualType CallReturnTy = OME->getCallReturnType(Ctx);
-    if (OME->getType() != CallReturnTy)
-        JOS.attribute("callReturnType", createQualType(CallReturnTy));
+    // TODO: Clang 19
+    // JOS.attribute("name", Src->getOp());
 }
 
-void ASTNodeVisitor::VisitObjCBoxedExpr(const ObjCBoxedExpr* OBE)
-{
-    if (const ObjCMethodDecl* MD = OBE->getBoxingMethod())
-    {
-        std::string Str;
-        llvm::raw_string_ostream OS(Str);
-
-        MD->getSelector().print(OS);
-        JOS.attribute("selector", Str);
-    }
-}
-
-void ASTNodeVisitor::VisitObjCSelectorExpr(const ObjCSelectorExpr* OSE)
-{
-    std::string Str;
-    llvm::raw_string_ostream OS(Str);
-
-    OSE->getSelector().print(OS);
-    JOS.attribute("selector", Str);
-}
-
-void ASTNodeVisitor::VisitObjCProtocolExpr(const ObjCProtocolExpr* OPE)
-{
-    JOS.attribute("protocol", createBareDeclRef(OPE->getProtocol()));
-}
-
-void ASTNodeVisitor::VisitObjCPropertyRefExpr(const ObjCPropertyRefExpr* OPRE)
-{
-    if (OPRE->isImplicitProperty())
-    {
-        JOS.attribute("propertyKind", "implicit");
-        if (const ObjCMethodDecl* MD = OPRE->getImplicitPropertyGetter())
-            JOS.attribute("getter", createBareDeclRef(MD));
-        if (const ObjCMethodDecl* MD = OPRE->getImplicitPropertySetter())
-            JOS.attribute("setter", createBareDeclRef(MD));
-    }
-    else
-    {
-        JOS.attribute("propertyKind", "explicit");
-        JOS.attribute("property", createBareDeclRef(OPRE->getExplicitProperty()));
-    }
-
-    attributeOnlyIfTrue("isSuperReceiver", OPRE->isSuperReceiver());
-    attributeOnlyIfTrue("isMessagingGetter", OPRE->isMessagingGetter());
-    attributeOnlyIfTrue("isMessagingSetter", OPRE->isMessagingSetter());
-}
-
-void ASTNodeVisitor::VisitObjCSubscriptRefExpr(
-    const ObjCSubscriptRefExpr* OSRE)
-{
-    JOS.attribute("subscriptKind",
-                  OSRE->isArraySubscriptRefExpr() ? "array" : "dictionary");
-
-    if (const ObjCMethodDecl* MD = OSRE->getAtIndexMethodDecl())
-        JOS.attribute("getter", createBareDeclRef(MD));
-    if (const ObjCMethodDecl* MD = OSRE->setAtIndexMethodDecl())
-        JOS.attribute("setter", createBareDeclRef(MD));
-}
-
-void ASTNodeVisitor::VisitObjCIvarRefExpr(const ObjCIvarRefExpr* OIRE)
-{
-    JOS.attribute("decl", createBareDeclRef(OIRE->getDecl()));
-    attributeOnlyIfTrue("isFreeIvar", OIRE->isFreeIvar());
-    JOS.attribute("isArrow", OIRE->isArrow());
-}
-
-void ASTNodeVisitor::VisitObjCBoolLiteralExpr(const ObjCBoolLiteralExpr* OBLE)
-{
-    JOS.attribute("value", OBLE->getValue() ? "__objc_yes" : "__objc_no");
-}
-
-void ASTNodeVisitor::VisitDeclRefExpr(const DeclRefExpr* DRE)
+void ASTNodeVisitor::ConvertDeclRefExprImpl(const DeclRefExpr* DRE, AST::DeclRefExpr& Dst)
 {
     JOS.attribute("referencedDecl", createBareDeclRef(DRE->getDecl()));
     if (DRE->getDecl() != DRE->getFoundDecl())
@@ -1752,19 +1673,18 @@ void ASTNodeVisitor::VisitDeclRefExpr(const DeclRefExpr* DRE)
     attributeOnlyIfTrue("isImmediateEscalating", DRE->isImmediateEscalating());
 }
 
-void ASTNodeVisitor::VisitSYCLUniqueStableNameExpr(
-    const SYCLUniqueStableNameExpr* E)
+void ASTNodeVisitor::ConvertSYCLUniqueStableNameExprImpl(const SYCLUniqueStableNameExpr* E, AST::SYCLUniqueStableNameExpr& Dst)
 {
     JOS.attribute("typeSourceInfo",
                   createQualType(E->getTypeSourceInfo()->getType()));
 }
 
-void ASTNodeVisitor::VisitPredefinedExpr(const PredefinedExpr* PE)
+void ASTNodeVisitor::ConvertPredefinedExprImpl(const PredefinedExpr* PE, AST::PredefinedExpr& Dst)
 {
     JOS.attribute("name", PredefinedExpr::getIdentKindName(PE->getIdentKind()));
 }
 
-void ASTNodeVisitor::VisitUnaryOperator(const UnaryOperator* UO)
+void ASTNodeVisitor::ConvertUnaryOperatorImpl(const UnaryOperator* UO, AST::UnaryOperator& Dst)
 {
     JOS.attribute("isPostfix", UO->isPostfix());
     JOS.attribute("opcode", UnaryOperator::getOpcodeStr(UO->getOpcode()));
@@ -1772,13 +1692,12 @@ void ASTNodeVisitor::VisitUnaryOperator(const UnaryOperator* UO)
         JOS.attribute("canOverflow", false);
 }
 
-void ASTNodeVisitor::VisitBinaryOperator(const BinaryOperator* BO)
+void ASTNodeVisitor::ConvertBinaryOperatorImpl(const BinaryOperator* BO, AST::BinaryOperator& Dst)
 {
     JOS.attribute("opcode", BinaryOperator::getOpcodeStr(BO->getOpcode()));
 }
 
-void ASTNodeVisitor::VisitCompoundAssignOperator(
-    const CompoundAssignOperator* CAO)
+void ASTNodeVisitor::ConvertCompoundAssignOperatorImpl(const CompoundAssignOperator* CAO, AST::CompoundAssignOperator& Dst)
 {
     VisitBinaryOperator(CAO);
     JOS.attribute("computeLHSType", createQualType(CAO->getComputationLHSType()));
@@ -1786,7 +1705,7 @@ void ASTNodeVisitor::VisitCompoundAssignOperator(
                   createQualType(CAO->getComputationResultType()));
 }
 
-void ASTNodeVisitor::VisitMemberExpr(const MemberExpr* ME)
+void ASTNodeVisitor::ConvertMemberExprImpl(const MemberExpr* ME, AST::MemberExpr& Dst)
 {
     // Note, we always write this Boolean field because the information it conveys
     // is critical to understanding the AST node.
@@ -1803,7 +1722,7 @@ void ASTNodeVisitor::VisitMemberExpr(const MemberExpr* ME)
     }
 }
 
-void ASTNodeVisitor::VisitCXXNewExpr(const CXXNewExpr* NE)
+void ASTNodeVisitor::ConvertCXXNewExprImpl(const CXXNewExpr* NE, AST::CXXNewExpr& Dst)
 {
     attributeOnlyIfTrue("isGlobal", NE->isGlobalNew());
     attributeOnlyIfTrue("isArray", NE->isArray());
@@ -1824,7 +1743,7 @@ void ASTNodeVisitor::VisitCXXNewExpr(const CXXNewExpr* NE)
     if (const FunctionDecl* FD = NE->getOperatorDelete())
         JOS.attribute("operatorDeleteDecl", createBareDeclRef(FD));
 }
-void ASTNodeVisitor::VisitCXXDeleteExpr(const CXXDeleteExpr* DE)
+void ASTNodeVisitor::ConvertCXXDeleteExprImpl(const CXXDeleteExpr* DE, AST::CXXDeleteExpr& Dst)
 {
     attributeOnlyIfTrue("isGlobal", DE->isGlobalDelete());
     attributeOnlyIfTrue("isArray", DE->isArrayForm());
@@ -1833,12 +1752,12 @@ void ASTNodeVisitor::VisitCXXDeleteExpr(const CXXDeleteExpr* DE)
         JOS.attribute("operatorDeleteDecl", createBareDeclRef(FD));
 }
 
-void ASTNodeVisitor::VisitCXXThisExpr(const CXXThisExpr* TE)
+void ASTNodeVisitor::ConvertCXXThisExprImpl(const CXXThisExpr* TE, AST::CXXThisExpr& Dst)
 {
     attributeOnlyIfTrue("implicit", TE->isImplicit());
 }
 
-void ASTNodeVisitor::VisitCastExpr(const CastExpr* CE)
+void ASTNodeVisitor::ConvertCastExprImpl(const CastExpr* CE, AST::CastExpr& Dst)
 {
     JOS.attribute("castKind", CE->getCastKindName());
     llvm::json::Array Path = createCastPath(CE);
@@ -1850,32 +1769,30 @@ void ASTNodeVisitor::VisitCastExpr(const CastExpr* CE)
         JOS.attribute("conversionFunc", createBareDeclRef(ND));
 }
 
-void ASTNodeVisitor::VisitImplicitCastExpr(const ImplicitCastExpr* ICE)
+void ASTNodeVisitor::ConvertImplicitCastExprImpl(const ImplicitCastExpr* ICE, AST::ImplicitCastExpr& Dst)
 {
     VisitCastExpr(ICE);
     attributeOnlyIfTrue("isPartOfExplicitCast", ICE->isPartOfExplicitCast());
 }
 
-void ASTNodeVisitor::VisitCallExpr(const CallExpr* CE)
+void ASTNodeVisitor::ConvertCallExprImpl(const CallExpr* CE, AST::CallExpr& Dst)
 {
     attributeOnlyIfTrue("adl", CE->usesADL());
 }
 
-void ASTNodeVisitor::VisitUnaryExprOrTypeTraitExpr(
-    const UnaryExprOrTypeTraitExpr* TTE)
+void ASTNodeVisitor::ConvertUnaryExprOrTypeTraitExprImpl(const UnaryExprOrTypeTraitExpr* TTE, AST::UnaryExprOrTypeTraitExpr& Dst)
 {
     JOS.attribute("name", getTraitSpelling(TTE->getKind()));
     if (TTE->isArgumentType())
         JOS.attribute("argType", createQualType(TTE->getArgumentType()));
 }
 
-void ASTNodeVisitor::VisitSizeOfPackExpr(const SizeOfPackExpr* SOPE)
+void ASTNodeVisitor::ConvertSizeOfPackExprImpl(const SizeOfPackExpr* SOPE, AST::SizeOfPackExpr& Dst)
 {
     VisitNamedDecl(SOPE->getPack());
 }
 
-void ASTNodeVisitor::VisitUnresolvedLookupExpr(
-    const UnresolvedLookupExpr* ULE)
+void ASTNodeVisitor::ConvertUnresolvedLookupExprImpl(const UnresolvedLookupExpr* ULE, AST::UnresolvedLookupExpr& Dst)
 {
     JOS.attribute("usesADL", ULE->requiresADL());
     JOS.attribute("name", ULE->getName().getAsString());
@@ -1887,13 +1804,13 @@ void ASTNodeVisitor::VisitUnresolvedLookupExpr(
                        });
 }
 
-void ASTNodeVisitor::VisitAddrLabelExpr(const AddrLabelExpr* ALE)
+void ASTNodeVisitor::ConvertAddrLabelExprImpl(const AddrLabelExpr* ALE, AST::AddrLabelExpr& Dst)
 {
     JOS.attribute("name", ALE->getLabel()->getName());
     JOS.attribute("labelDeclId", createPointerRepresentation(ALE->getLabel()));
 }
 
-void ASTNodeVisitor::VisitCXXTypeidExpr(const CXXTypeidExpr* CTE)
+void ASTNodeVisitor::ConvertCXXTypeidExprImpl(const CXXTypeidExpr* CTE, AST::CXXTypeidExpr& Dst)
 {
     if (CTE->isTypeOperand())
     {
@@ -1905,33 +1822,31 @@ void ASTNodeVisitor::VisitCXXTypeidExpr(const CXXTypeidExpr* CTE)
     }
 }
 
-void ASTNodeVisitor::VisitConstantExpr(const ConstantExpr* CE)
+void ASTNodeVisitor::ConvertConstantExprImpl(const ConstantExpr* CE, AST::ConstantExpr& Dst)
 {
     if (CE->getResultAPValueKind() != APValue::None)
         Visit(CE->getAPValueResult(), CE->getType());
 }
 
-void ASTNodeVisitor::VisitInitListExpr(const InitListExpr* ILE)
+void ASTNodeVisitor::ConvertInitListExprImpl(const InitListExpr* ILE, AST::InitListExpr& Dst)
 {
     if (const FieldDecl* FD = ILE->getInitializedFieldInUnion())
         JOS.attribute("field", createBareDeclRef(FD));
 }
 
-void ASTNodeVisitor::VisitGenericSelectionExpr(
-    const GenericSelectionExpr* GSE)
+void ASTNodeVisitor::ConvertGenericSelectionExprImpl(const GenericSelectionExpr* GSE, AST::GenericSelectionExpr& Dst)
 {
     attributeOnlyIfTrue("resultDependent", GSE->isResultDependent());
 }
 
-void ASTNodeVisitor::VisitCXXUnresolvedConstructExpr(
-    const CXXUnresolvedConstructExpr* UCE)
+void ASTNodeVisitor::ConvertCXXUnresolvedConstructExprImpl(const CXXUnresolvedConstructExpr* UCE, AST::CXXUnresolvedConstructExpr& Dst)
 {
     if (UCE->getType() != UCE->getTypeAsWritten())
         JOS.attribute("typeAsWritten", createQualType(UCE->getTypeAsWritten()));
     attributeOnlyIfTrue("list", UCE->isListInitialization());
 }
 
-void ASTNodeVisitor::VisitCXXConstructExpr(const CXXConstructExpr* CE)
+void ASTNodeVisitor::ConvertCXXConstructExprImpl(const CXXConstructExpr* CE, AST::CXXConstructExpr& Dst)
 {
     CXXConstructorDecl* Ctor = CE->getConstructor();
     JOS.attribute("ctorType", createQualType(Ctor->getType()));
@@ -1959,7 +1874,7 @@ void ASTNodeVisitor::VisitCXXConstructExpr(const CXXConstructExpr* CE)
     }
 }
 
-void ASTNodeVisitor::VisitExprWithCleanups(const ExprWithCleanups* EWC)
+void ASTNodeVisitor::ConvertExprWithCleanupsImpl(const ExprWithCleanups* EWC, AST::ExprWithCleanups& Dst)
 {
     attributeOnlyIfTrue("cleanupsHaveSideEffects",
                         EWC->cleanupsHaveSideEffects());
@@ -1987,8 +1902,7 @@ void ASTNodeVisitor::VisitExprWithCleanups(const ExprWithCleanups* EWC)
     }
 }
 
-void ASTNodeVisitor::VisitCXXBindTemporaryExpr(
-    const CXXBindTemporaryExpr* BTE)
+void ASTNodeVisitor::ConvertCXXBindTemporaryExprImpl(const CXXBindTemporaryExpr* BTE, AST::CXXBindTemporaryExpr& Dst)
 {
     const CXXTemporary* Temp = BTE->getTemporary();
     JOS.attribute("temp", createPointerRepresentation(Temp));
@@ -1996,8 +1910,7 @@ void ASTNodeVisitor::VisitCXXBindTemporaryExpr(
         JOS.attribute("dtor", createBareDeclRef(Dtor));
 }
 
-void ASTNodeVisitor::VisitMaterializeTemporaryExpr(
-    const MaterializeTemporaryExpr* MTE)
+void ASTNodeVisitor::ConvertMaterializeTemporaryExprImpl(const MaterializeTemporaryExpr* MTE, AST::MaterializeTemporaryExpr& Dst)
 {
     if (const ValueDecl* VD = MTE->getExtendingDecl())
         JOS.attribute("extendingDecl", createBareDeclRef(VD));
@@ -2024,18 +1937,17 @@ void ASTNodeVisitor::VisitMaterializeTemporaryExpr(
     attributeOnlyIfTrue("boundToLValueRef", MTE->isBoundToLvalueReference());
 }
 
-void ASTNodeVisitor::VisitCXXDefaultArgExpr(const CXXDefaultArgExpr* Node)
+void ASTNodeVisitor::ConvertCXXDefaultArgExprImpl(const CXXDefaultArgExpr* Node, AST::CXXDefaultArgExpr& Dst)
 {
     attributeOnlyIfTrue("hasRewrittenInit", Node->hasRewrittenInit());
 }
 
-void ASTNodeVisitor::VisitCXXDefaultInitExpr(const CXXDefaultInitExpr* Node)
+void ASTNodeVisitor::ConvertCXXDefaultInitExprImpl(const CXXDefaultInitExpr* Node, AST::CXXDefaultInitExpr& Dst)
 {
     attributeOnlyIfTrue("hasRewrittenInit", Node->hasRewrittenInit());
 }
 
-void ASTNodeVisitor::VisitCXXDependentScopeMemberExpr(
-    const CXXDependentScopeMemberExpr* DSME)
+void ASTNodeVisitor::ConvertCXXDependentScopeMemberExprImpl(const CXXDependentScopeMemberExpr* DSME, AST::CXXDependentScopeMemberExpr& Dst)
 {
     JOS.attribute("isArrow", DSME->isArrow());
     JOS.attribute("member", DSME->getMember().getAsString());
@@ -2057,20 +1969,14 @@ void ASTNodeVisitor::VisitCXXDependentScopeMemberExpr(
     }
 }
 
-void ASTNodeVisitor::VisitRequiresExpr(const RequiresExpr* RE)
-{
-    if (!RE->isValueDependent())
-        JOS.attribute("satisfied", RE->isSatisfied());
-}
-
-void ASTNodeVisitor::VisitIntegerLiteral(const IntegerLiteral* IL)
+void ASTNodeVisitor::ConvertIntegerLiteralImpl(const IntegerLiteral* IL, AST::IntegerLiteral& Dst)
 {
     llvm::SmallString<16> Buffer;
     IL->getValue().toString(Buffer,
                             /*Radix=*/10, IL->getType()->isSignedIntegerType());
     JOS.attribute("value", Buffer);
 }
-void ASTNodeVisitor::VisitCharacterLiteral(const CharacterLiteral* CL)
+void ASTNodeVisitor::ConvertCharacterLiteralImpl(const CharacterLiteral* CL, AST::CharacterLiteral& Dst)
 {
     // FIXME: This should probably print the character literal as a string,
     // rather than as a numerical value. It would be nice if the behavior matched
@@ -2078,29 +1984,29 @@ void ASTNodeVisitor::VisitCharacterLiteral(const CharacterLiteral* CL)
     // the difference between 'a' and L'a' in C from the JSON output.
     JOS.attribute("value", CL->getValue());
 }
-void ASTNodeVisitor::VisitFixedPointLiteral(const FixedPointLiteral* FPL)
+void ASTNodeVisitor::ConvertFixedPointLiteralImpl(const FixedPointLiteral* FPL, AST::FixedPointLiteral& Dst)
 {
     JOS.attribute("value", FPL->getValueAsString(/*Radix=*/10));
 }
-void ASTNodeVisitor::VisitFloatingLiteral(const FloatingLiteral* FL)
+void ASTNodeVisitor::ConvertFloatingLiteralImpl(const FloatingLiteral* FL, AST::FloatingLiteral& Dst)
 {
     llvm::SmallString<16> Buffer;
     FL->getValue().toString(Buffer);
     JOS.attribute("value", Buffer);
 }
-void ASTNodeVisitor::VisitStringLiteral(const StringLiteral* SL)
+void ASTNodeVisitor::ConvertStringLiteralImpl(const StringLiteral* SL, AST::StringLiteral& Dst)
 {
     std::string Buffer;
     llvm::raw_string_ostream SS(Buffer);
     SL->outputString(SS);
     JOS.attribute("value", Buffer);
 }
-void ASTNodeVisitor::VisitCXXBoolLiteralExpr(const CXXBoolLiteralExpr* BLE)
+void ASTNodeVisitor::ConvertCXXBoolLiteralExprImpl(const CXXBoolLiteralExpr* BLE, AST::CXXBoolLiteralExpr& Dst)
 {
     JOS.attribute("value", BLE->getValue());
 }
 
-void ASTNodeVisitor::VisitIfStmt(const IfStmt* IS)
+void ASTNodeVisitor::ConvertIfStmtImpl(const IfStmt* IS, AST::IfStmt& Dst)
 {
     attributeOnlyIfTrue("hasInit", IS->hasInitStorage());
     attributeOnlyIfTrue("hasVar", IS->hasVarStorage());
@@ -2110,40 +2016,134 @@ void ASTNodeVisitor::VisitIfStmt(const IfStmt* IS)
     attributeOnlyIfTrue("constevalIsNegated", IS->isNegatedConsteval());
 }
 
-void ASTNodeVisitor::VisitSwitchStmt(const SwitchStmt* SS)
+void ASTNodeVisitor::ConvertSwitchStmtImpl(const SwitchStmt* SS, AST::SwitchStmt& Dst)
 {
     attributeOnlyIfTrue("hasInit", SS->hasInitStorage());
     attributeOnlyIfTrue("hasVar", SS->hasVarStorage());
 }
-void ASTNodeVisitor::VisitCaseStmt(const CaseStmt* CS)
+void ASTNodeVisitor::ConvertCaseStmtImpl(const CaseStmt* CS, AST::CaseStmt& Dst)
 {
     attributeOnlyIfTrue("isGNURange", CS->caseStmtIsGNURange());
 }
 
-void ASTNodeVisitor::VisitLabelStmt(const LabelStmt* LS)
+void ASTNodeVisitor::ConvertLabelStmtImpl(const LabelStmt* LS, AST::LabelStmt& Dst)
 {
     JOS.attribute("name", LS->getName());
     JOS.attribute("declId", createPointerRepresentation(LS->getDecl()));
     attributeOnlyIfTrue("sideEntry", LS->isSideEntry());
 }
-void ASTNodeVisitor::VisitGotoStmt(const GotoStmt* GS)
+void ASTNodeVisitor::ConvertGotoStmtImpl(const GotoStmt* GS, AST::GotoStmt& Dst)
 {
     JOS.attribute("targetLabelDeclId",
                   createPointerRepresentation(GS->getLabel()));
 }
 
-void ASTNodeVisitor::VisitWhileStmt(const WhileStmt* WS)
+void ASTNodeVisitor::ConvertWhileStmtImpl(const WhileStmt* WS, AST::WhileStmt& Dst)
 {
     attributeOnlyIfTrue("hasVar", WS->hasVarStorage());
 }
 
-void ASTNodeVisitor::VisitObjCAtCatchStmt(const ObjCAtCatchStmt* OACS)
-{
-    // FIXME: it would be nice for the ASTNodeTraverser would handle the catch
-    // parameter the same way for C++ and ObjC rather. In this case, C++ gets a
-    // null child node and ObjC gets no child node.
-    attributeOnlyIfTrue("isCatchAll", OACS->getCatchParamDecl() == nullptr);
-}
+void ASTNodeVisitor::ConvertAsmStmtImpl(class clang::AsmStmt const*, class CppSharp::CppParser::AST::AsmStmt&) {}
+void ASTNodeVisitor::ConvertGCCAsmStmtImpl(class clang::GCCAsmStmt const*, class CppSharp::CppParser::AST::GCCAsmStmt&) {}
+void ASTNodeVisitor::ConvertMSAsmStmtImpl(class clang::MSAsmStmt const*, class CppSharp::CppParser::AST::MSAsmStmt&) {}
+void ASTNodeVisitor::ConvertBreakStmtImpl(class clang::BreakStmt const*, class CppSharp::CppParser::AST::BreakStmt&) {}
+void ASTNodeVisitor::ConvertCXXCatchStmtImpl(class clang::CXXCatchStmt const*, class CppSharp::CppParser::AST::CXXCatchStmt&) {}
+void ASTNodeVisitor::ConvertCXXForRangeStmtImpl(class clang::CXXForRangeStmt const*, class CppSharp::CppParser::AST::CXXForRangeStmt&) {}
+void ASTNodeVisitor::ConvertCXXTryStmtImpl(class clang::CXXTryStmt const*, class CppSharp::CppParser::AST::CXXTryStmt&) {}
+void ASTNodeVisitor::ConvertCapturedStmtImpl(class clang::CapturedStmt const*, class CppSharp::CppParser::AST::CapturedStmt&) {}
+void ASTNodeVisitor::ConvertContinueStmtImpl(class clang::ContinueStmt const*, class CppSharp::CppParser::AST::ContinueStmt&) {}
+void ASTNodeVisitor::ConvertCoreturnStmtImpl(class clang::CoreturnStmt const*, class CppSharp::CppParser::AST::CoreturnStmt&) {}
+void ASTNodeVisitor::ConvertCoroutineBodyStmtImpl(class clang::CoroutineBodyStmt const*, class CppSharp::CppParser::AST::CoroutineBodyStmt&) {}
+void ASTNodeVisitor::ConvertDeclStmtImpl(class clang::DeclStmt const*, class CppSharp::CppParser::AST::DeclStmt&) {}
+void ASTNodeVisitor::ConvertDoStmtImpl(class clang::DoStmt const*, class CppSharp::CppParser::AST::DoStmt&) {}
+void ASTNodeVisitor::ConvertForStmtImpl(class clang::ForStmt const*, class CppSharp::CppParser::AST::ForStmt&) {}
+void ASTNodeVisitor::ConvertIndirectGotoStmtImpl(class clang::IndirectGotoStmt const*, class CppSharp::CppParser::AST::IndirectGotoStmt&) {}
+void ASTNodeVisitor::ConvertMSDependentExistsStmtImpl(class clang::MSDependentExistsStmt const*, class CppSharp::CppParser::AST::MSDependentExistsStmt&) {}
+void ASTNodeVisitor::ConvertNullStmtImpl(class clang::NullStmt const*, class CppSharp::CppParser::AST::NullStmt&) {}
+void ASTNodeVisitor::ConvertReturnStmtImpl(class clang::ReturnStmt const*, class CppSharp::CppParser::AST::ReturnStmt&) {}
+void ASTNodeVisitor::ConvertSEHExceptStmtImpl(class clang::SEHExceptStmt const*, class CppSharp::CppParser::AST::SEHExceptStmt&) {}
+void ASTNodeVisitor::ConvertSEHFinallyStmtImpl(class clang::SEHFinallyStmt const*, class CppSharp::CppParser::AST::SEHFinallyStmt&) {}
+void ASTNodeVisitor::ConvertSEHLeaveStmtImpl(class clang::SEHLeaveStmt const*, class CppSharp::CppParser::AST::SEHLeaveStmt&) {}
+void ASTNodeVisitor::ConvertSEHTryStmtImpl(class clang::SEHTryStmt const*, class CppSharp::CppParser::AST::SEHTryStmt&) {}
+void ASTNodeVisitor::ConvertSwitchCaseImpl(class clang::SwitchCase const*, class CppSharp::CppParser::AST::SwitchCase&) {}
+void ASTNodeVisitor::ConvertDefaultStmtImpl(class clang::DefaultStmt const*, class CppSharp::CppParser::AST::DefaultStmt&) {}
+void ASTNodeVisitor::ConvertValueStmtImpl(class clang::ValueStmt const*, class CppSharp::CppParser::AST::ValueStmt&) {}
+void ASTNodeVisitor::ConvertAttributedStmtImpl(class clang::AttributedStmt const*, class CppSharp::CppParser::AST::AttributedStmt&) {}
+void ASTNodeVisitor::ConvertAbstractConditionalOperatorImpl(class clang::AbstractConditionalOperator const*, class CppSharp::CppParser::AST::AbstractConditionalOperator&) {}
+void ASTNodeVisitor::ConvertBinaryConditionalOperatorImpl(class clang::BinaryConditionalOperator const*, class CppSharp::CppParser::AST::BinaryConditionalOperator&) {}
+void ASTNodeVisitor::ConvertConditionalOperatorImpl(class clang::ConditionalOperator const*, class CppSharp::CppParser::AST::ConditionalOperator&) {}
+void ASTNodeVisitor::ConvertArrayInitIndexExprImpl(class clang::ArrayInitIndexExpr const*, class CppSharp::CppParser::AST::ArrayInitIndexExpr&) {}
+void ASTNodeVisitor::ConvertArrayInitLoopExprImpl(class clang::ArrayInitLoopExpr const*, class CppSharp::CppParser::AST::ArrayInitLoopExpr&) {}
+void ASTNodeVisitor::ConvertArraySubscriptExprImpl(class clang::ArraySubscriptExpr const*, class CppSharp::CppParser::AST::ArraySubscriptExpr&) {}
+void ASTNodeVisitor::ConvertArrayTypeTraitExprImpl(class clang::ArrayTypeTraitExpr const*, class CppSharp::CppParser::AST::ArrayTypeTraitExpr&) {}
+void ASTNodeVisitor::ConvertAsTypeExprImpl(class clang::AsTypeExpr const*, class CppSharp::CppParser::AST::AsTypeExpr&) {}
+void ASTNodeVisitor::ConvertBlockExprImpl(class clang::BlockExpr const*, class CppSharp::CppParser::AST::BlockExpr&) {}
+void ASTNodeVisitor::ConvertCXXTemporaryObjectExprImpl(class clang::CXXTemporaryObjectExpr const*, class CppSharp::CppParser::AST::CXXTemporaryObjectExpr&) {}
+void ASTNodeVisitor::ConvertCXXFoldExprImpl(class clang::CXXFoldExpr const*, class CppSharp::CppParser::AST::CXXFoldExpr&) {}
+void ASTNodeVisitor::ConvertCXXInheritedCtorInitExprImpl(class clang::CXXInheritedCtorInitExpr const*, class CppSharp::CppParser::AST::CXXInheritedCtorInitExpr&) {}
+void ASTNodeVisitor::ConvertCXXNoexceptExprImpl(class clang::CXXNoexceptExpr const*, class CppSharp::CppParser::AST::CXXNoexceptExpr&) {}
+void ASTNodeVisitor::ConvertCXXNullPtrLiteralExprImpl(class clang::CXXNullPtrLiteralExpr const*, class CppSharp::CppParser::AST::CXXNullPtrLiteralExpr&) {}
+void ASTNodeVisitor::ConvertCXXParenListInitExprImpl(class clang::CXXParenListInitExpr const*, class CppSharp::CppParser::AST::CXXParenListInitExpr&) {}
+void ASTNodeVisitor::ConvertCXXPseudoDestructorExprImpl(class clang::CXXPseudoDestructorExpr const*, class CppSharp::CppParser::AST::CXXPseudoDestructorExpr&) {}
+void ASTNodeVisitor::ConvertCXXRewrittenBinaryOperatorImpl(class clang::CXXRewrittenBinaryOperator const*, class CppSharp::CppParser::AST::CXXRewrittenBinaryOperator&) {}
+void ASTNodeVisitor::ConvertCXXScalarValueInitExprImpl(class clang::CXXScalarValueInitExpr const*, class CppSharp::CppParser::AST::CXXScalarValueInitExpr&) {}
+void ASTNodeVisitor::ConvertCXXStdInitializerListExprImpl(class clang::CXXStdInitializerListExpr const*, class CppSharp::CppParser::AST::CXXStdInitializerListExpr&) {}
+void ASTNodeVisitor::ConvertCXXThrowExprImpl(class clang::CXXThrowExpr const*, class CppSharp::CppParser::AST::CXXThrowExpr&) {}
+void ASTNodeVisitor::ConvertCXXUuidofExprImpl(class clang::CXXUuidofExpr const*, class CppSharp::CppParser::AST::CXXUuidofExpr&) {}
+void ASTNodeVisitor::ConvertCUDAKernelCallExprImpl(class clang::CUDAKernelCallExpr const*, class CppSharp::CppParser::AST::CUDAKernelCallExpr&) {}
+void ASTNodeVisitor::ConvertCXXMemberCallExprImpl(class clang::CXXMemberCallExpr const*, class CppSharp::CppParser::AST::CXXMemberCallExpr&) {}
+void ASTNodeVisitor::ConvertCXXOperatorCallExprImpl(class clang::CXXOperatorCallExpr const*, class CppSharp::CppParser::AST::CXXOperatorCallExpr&) {}
+void ASTNodeVisitor::ConvertUserDefinedLiteralImpl(class clang::UserDefinedLiteral const*, class CppSharp::CppParser::AST::UserDefinedLiteral&) {}
+void ASTNodeVisitor::ConvertExplicitCastExprImpl(class clang::ExplicitCastExpr const*, class CppSharp::CppParser::AST::ExplicitCastExpr&) {}
+void ASTNodeVisitor::ConvertBuiltinBitCastExprImpl(class clang::BuiltinBitCastExpr const*, class CppSharp::CppParser::AST::BuiltinBitCastExpr&) {}
+void ASTNodeVisitor::ConvertCStyleCastExprImpl(class clang::CStyleCastExpr const*, class CppSharp::CppParser::AST::CStyleCastExpr&) {}
+void ASTNodeVisitor::ConvertCXXFunctionalCastExprImpl(class clang::CXXFunctionalCastExpr const*, class CppSharp::CppParser::AST::CXXFunctionalCastExpr&) {}
+void ASTNodeVisitor::ConvertCXXNamedCastExprImpl(class clang::CXXNamedCastExpr const*, class CppSharp::CppParser::AST::CXXNamedCastExpr&) {}
+void ASTNodeVisitor::ConvertCXXAddrspaceCastExprImpl(class clang::CXXAddrspaceCastExpr const*, class CppSharp::CppParser::AST::CXXAddrspaceCastExpr&) {}
+void ASTNodeVisitor::ConvertCXXConstCastExprImpl(class clang::CXXConstCastExpr const*, class CppSharp::CppParser::AST::CXXConstCastExpr&) {}
+void ASTNodeVisitor::ConvertCXXDynamicCastExprImpl(class clang::CXXDynamicCastExpr const*, class CppSharp::CppParser::AST::CXXDynamicCastExpr&) {}
+void ASTNodeVisitor::ConvertCXXReinterpretCastExprImpl(class clang::CXXReinterpretCastExpr const*, class CppSharp::CppParser::AST::CXXReinterpretCastExpr&) {}
+void ASTNodeVisitor::ConvertCXXStaticCastExprImpl(class clang::CXXStaticCastExpr const*, class CppSharp::CppParser::AST::CXXStaticCastExpr&) {}
+void ASTNodeVisitor::ConvertChooseExprImpl(class clang::ChooseExpr const*, class CppSharp::CppParser::AST::ChooseExpr&) {}
+void ASTNodeVisitor::ConvertCompoundLiteralExprImpl(class clang::CompoundLiteralExpr const*, class CppSharp::CppParser::AST::CompoundLiteralExpr&) {}
+void ASTNodeVisitor::ConvertConvertVectorExprImpl(class clang::ConvertVectorExpr const*, class CppSharp::CppParser::AST::ConvertVectorExpr&) {}
+void ASTNodeVisitor::ConvertCoroutineSuspendExprImpl(class clang::CoroutineSuspendExpr const*, class CppSharp::CppParser::AST::CoroutineSuspendExpr&) {}
+void ASTNodeVisitor::ConvertCoawaitExprImpl(class clang::CoawaitExpr const*, class CppSharp::CppParser::AST::CoawaitExpr&) {}
+void ASTNodeVisitor::ConvertCoyieldExprImpl(class clang::CoyieldExpr const*, class CppSharp::CppParser::AST::CoyieldExpr&) {}
+void ASTNodeVisitor::ConvertDependentCoawaitExprImpl(class clang::DependentCoawaitExpr const*, class CppSharp::CppParser::AST::DependentCoawaitExpr&) {}
+void ASTNodeVisitor::ConvertDependentScopeDeclRefExprImpl(class clang::DependentScopeDeclRefExpr const*, class CppSharp::CppParser::AST::DependentScopeDeclRefExpr&) {}
+void ASTNodeVisitor::ConvertDesignatedInitExprImpl(class clang::DesignatedInitExpr const*, class CppSharp::CppParser::AST::DesignatedInitExpr&) {}
+void ASTNodeVisitor::ConvertDesignatedInitUpdateExprImpl(class clang::DesignatedInitUpdateExpr const*, class CppSharp::CppParser::AST::DesignatedInitUpdateExpr&) {}
+void ASTNodeVisitor::ConvertExpressionTraitExprImpl(class clang::ExpressionTraitExpr const*, class CppSharp::CppParser::AST::ExpressionTraitExpr&) {}
+void ASTNodeVisitor::ConvertExtVectorElementExprImpl(class clang::ExtVectorElementExpr const*, class CppSharp::CppParser::AST::ExtVectorElementExpr&) {}
+void ASTNodeVisitor::ConvertFullExprImpl(class clang::FullExpr const*, class CppSharp::CppParser::AST::FullExpr&) {}
+void ASTNodeVisitor::ConvertFunctionParmPackExprImpl(class clang::FunctionParmPackExpr const*, class CppSharp::CppParser::AST::FunctionParmPackExpr&) {}
+void ASTNodeVisitor::ConvertGNUNullExprImpl(class clang::GNUNullExpr const*, class CppSharp::CppParser::AST::GNUNullExpr&) {}
+void ASTNodeVisitor::ConvertImaginaryLiteralImpl(class clang::ImaginaryLiteral const*, class CppSharp::CppParser::AST::ImaginaryLiteral&) {}
+void ASTNodeVisitor::ConvertImplicitValueInitExprImpl(class clang::ImplicitValueInitExpr const*, class CppSharp::CppParser::AST::ImplicitValueInitExpr&) {}
+void ASTNodeVisitor::ConvertLambdaExprImpl(class clang::LambdaExpr const*, class CppSharp::CppParser::AST::LambdaExpr&) {}
+void ASTNodeVisitor::ConvertMSPropertyRefExprImpl(class clang::MSPropertyRefExpr const*, class CppSharp::CppParser::AST::MSPropertyRefExpr&) {}
+void ASTNodeVisitor::ConvertMSPropertySubscriptExprImpl(class clang::MSPropertySubscriptExpr const*, class CppSharp::CppParser::AST::MSPropertySubscriptExpr&) {}
+void ASTNodeVisitor::ConvertMatrixSubscriptExprImpl(class clang::MatrixSubscriptExpr const*, class CppSharp::CppParser::AST::MatrixSubscriptExpr&) {}
+void ASTNodeVisitor::ConvertNoInitExprImpl(class clang::NoInitExpr const*, class CppSharp::CppParser::AST::NoInitExpr&) {}
+void ASTNodeVisitor::ConvertOffsetOfExprImpl(class clang::OffsetOfExpr const*, class CppSharp::CppParser::AST::OffsetOfExpr&) {}
+void ASTNodeVisitor::ConvertOpaqueValueExprImpl(class clang::OpaqueValueExpr const*, class CppSharp::CppParser::AST::OpaqueValueExpr&) {}
+void ASTNodeVisitor::ConvertOverloadExprImpl(class clang::OverloadExpr const*, class CppSharp::CppParser::AST::OverloadExpr&) {}
+void ASTNodeVisitor::ConvertUnresolvedMemberExprImpl(class clang::UnresolvedMemberExpr const*, class CppSharp::CppParser::AST::UnresolvedMemberExpr&) {}
+void ASTNodeVisitor::ConvertPackExpansionExprImpl(class clang::PackExpansionExpr const*, class CppSharp::CppParser::AST::PackExpansionExpr&) {}
+void ASTNodeVisitor::ConvertParenExprImpl(class clang::ParenExpr const*, class CppSharp::CppParser::AST::ParenExpr&) {}
+void ASTNodeVisitor::ConvertParenListExprImpl(class clang::ParenListExpr const*, class CppSharp::CppParser::AST::ParenListExpr&) {}
+void ASTNodeVisitor::ConvertPseudoObjectExprImpl(class clang::PseudoObjectExpr const*, class CppSharp::CppParser::AST::PseudoObjectExpr&) {}
+void ASTNodeVisitor::ConvertRecoveryExprImpl(class clang::RecoveryExpr const*, class CppSharp::CppParser::AST::RecoveryExpr&) {}
+void ASTNodeVisitor::ConvertShuffleVectorExprImpl(class clang::ShuffleVectorExpr const*, class CppSharp::CppParser::AST::ShuffleVectorExpr&) {}
+void ASTNodeVisitor::ConvertSourceLocExprImpl(class clang::SourceLocExpr const*, class CppSharp::CppParser::AST::SourceLocExpr&) {}
+void ASTNodeVisitor::ConvertStmtExprImpl(class clang::StmtExpr const*, class CppSharp::CppParser::AST::StmtExpr&) {}
+void ASTNodeVisitor::ConvertSubstNonTypeTemplateParmExprImpl(class clang::SubstNonTypeTemplateParmExpr const*, class CppSharp::CppParser::AST::SubstNonTypeTemplateParmExpr&) {}
+void ASTNodeVisitor::ConvertSubstNonTypeTemplateParmPackExprImpl(class clang::SubstNonTypeTemplateParmPackExpr const*, class CppSharp::CppParser::AST::SubstNonTypeTemplateParmPackExpr&) {}
+void ASTNodeVisitor::ConvertTypeTraitExprImpl(class clang::TypeTraitExpr const*, class CppSharp::CppParser::AST::TypeTraitExpr&) {}
+void ASTNodeVisitor::ConvertTypoExprImpl(class clang::TypoExpr const*, class CppSharp::CppParser::AST::TypoExpr&) {}
+void ASTNodeVisitor::ConvertVAArgExprImpl(class clang::VAArgExpr const*, class CppSharp::CppParser::AST::VAArgExpr&) {}
+
 
 void ASTNodeVisitor::VisitNullTemplateArgument(const TemplateArgument& TA)
 {
@@ -2344,7 +2344,7 @@ llvm::json::Object ASTNodeVisitor::createFPOptions(FPOptionsOverride FPO)
     return Ret;
 }
 
-void ASTNodeVisitor::VisitCompoundStmt(const CompoundStmt* S)
+void ASTNodeVisitor::ConvertCompoundStmtImpl(const CompoundStmt* S, AST::CompoundStmt& Dst)
 {
     VisitStmt(S);
     if (S->hasStoredFPFeatures())

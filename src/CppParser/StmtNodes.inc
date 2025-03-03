@@ -562,12 +562,6 @@ CHOOSEEXPR(ChooseExpr, Expr)
 COMPOUNDLITERALEXPR(CompoundLiteralExpr, Expr)
 #undef COMPOUNDLITERALEXPR
 
-#ifndef CONCEPTSPECIALIZATIONEXPR
-#  define CONCEPTSPECIALIZATIONEXPR(Type, Base) EXPR(Type, Base)
-#endif
-CONCEPTSPECIALIZATIONEXPR(ConceptSpecializationExpr, Expr)
-#undef CONCEPTSPECIALIZATIONEXPR
-
 #ifndef CONVERTVECTOREXPR
 #  define CONVERTVECTOREXPR(Type, Base) EXPR(Type, Base)
 #endif
@@ -822,12 +816,6 @@ PSEUDOOBJECTEXPR(PseudoObjectExpr, Expr)
 #endif
 RECOVERYEXPR(RecoveryExpr, Expr)
 #undef RECOVERYEXPR
-
-#ifndef REQUIRESEXPR
-#  define REQUIRESEXPR(Type, Base) EXPR(Type, Base)
-#endif
-REQUIRESEXPR(RequiresExpr, Expr)
-#undef REQUIRESEXPR
 
 #ifndef SYCLUNIQUESTABLENAMEEXPR
 #  define SYCLUNIQUESTABLENAMEEXPR(Type, Base) EXPR(Type, Base)

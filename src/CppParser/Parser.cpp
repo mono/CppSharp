@@ -984,6 +984,8 @@ static clang::CXXRecordDecl* GetCXXRecordDeclFromBaseType(const clang::ASTContex
         return dyn_cast<CXXRecordDecl>(RT->getDecl());
     else if (auto TST = Ty->getAs<clang::TemplateSpecializationType>())
         return GetCXXRecordDeclFromTemplateName(TST->getTemplateName());
+    else if (auto DTST = Ty->getAs<clang::DependentTemplateSpecializationType>())
+        return nullptr;
     else if (auto Injected = Ty->getAs<clang::InjectedClassNameType>())
         return Injected->getDecl();
     else if (auto TTPT = Ty->getAs<TemplateTypeParmType>())
@@ -4677,6 +4679,7 @@ void SemaConsumer::HandleTranslationUnit(clang::ASTContext& Ctx)
 
         ASTNodeDumper Dumper(OS, Ctx, Parser);
         Dumper.Visit(TU);
+        debug_break();
     }
 
     Parser.WalkAST(TU);
