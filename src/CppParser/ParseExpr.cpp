@@ -2426,7 +2426,8 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->refersToMatrixElement = S->refersToMatrixElement();
         _S->hasPlaceholderType = S->hasPlaceholderType();
         _S->isImplicitAccess = S->isImplicitAccess();
-        _S->base = static_cast<AST::Expr*>(WalkExpression(S->getBase()));
+        if (!S->isImplicitAccess())
+            _S->base = static_cast<AST::Expr*>(WalkExpression(S->getBase()));
         _S->baseType = GetQualifiedType(S->getBaseType());
         _S->isArrow = S->isArrow();
         _S->firstQualifierFoundInScope = static_cast<AST::Declaration*>(WalkDeclaration(S->getFirstQualifierFoundInScope()));
