@@ -65,6 +65,26 @@ The target runtime needs to support calling native methods and this is usually
 implemented with an FFI (foreign function interface) in the target language VM
 virtual machine). In .NET this is done via the P/Invoke system.
 
+
+# For Contributors
+
+## Updating Parser Bindings
+
+CppSharp uses its own code, to parse and generate C# bindings from (clang) source.
+- You will need the following [headers package](https://github.com/mono/CppSharp/releases/download/CppSharp/headers.zip), which will allow you to generate bindings for all platforms.
+  - Simply place these in `<repo_root_dir>/build/headers/<target_triple>`.
+- To update the clang bindings, first run the project `CppSharp.Parser.Bootstrap`.
+  - This will generate a source code patch in a folder called 'BootstrapPatch'.
+- Finally, run `CppSharp.Parser.Gen` to generate the C# and C++/CLI bindings. 
+  - This project will first build and run using the old bindings and then override the files with the bootstrap patch source
+  - This means it's possible you need to run this process twice to generate all bindings (in cases where new bindings will cause new source to be parsed, eg. when new language features are added)
+
+- To add or remove code in parser source that is not yet automatically generated
+  - Make your changes
+  - Copy them to a new folder in `<repo_root_dir>/BootstrapPatch`
+  - Discard the copied changes using git
+  - Finally, run `CppSharp.Parser.Gen` to generate the C# and C++/CLI bindings
+
 # Similar Tools
 
 - SWIG
