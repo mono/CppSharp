@@ -25,6 +25,7 @@ namespace CppSharp.Tests
             base.Setup(driver);
 
             driver.ParserOptions.UnityBuild = true;
+            driver.ParserOptions.SkipFunctionBodies = false;
             driver.ParserOptions.AddSupportedFunctionTemplates("FunctionTemplate");
 
             driver.Options.GenerateFreeStandingFunctionsClassName = t => t.FileNameWithoutExtension + "Cool";
@@ -42,7 +43,7 @@ namespace CppSharp.Tests
             driver.Options.GenerateClassTemplates = true;
 
             var disableNativeToManaged = new ClassGenerationOptions { GenerateNativeToManaged = false };
-            driver.Options.GetClassGenerationOptions = e => 
+            driver.Options.GetClassGenerationOptions = e =>
             {
                 return e.Name == "ClassWithoutNativeToManaged" ? disableNativeToManaged : null;
             };
@@ -237,16 +238,12 @@ namespace CppSharp.Tests
                 var specialization = type.GetClassTemplateSpecialization();
                 var typePrinter = new CSharpTypePrinter(null);
                 typePrinter.PushContext(TypePrinterContextKind.Native);
-                return new CustomType(string.Format($@"{
-                    specialization.Visit(typePrinter)}{
-                    (Type.IsAddress() ? "*" : string.Empty)}", specialization.Visit(typePrinter),
+                return new CustomType(string.Format($@"{specialization.Visit(typePrinter)}{(Type.IsAddress() ? "*" : string.Empty)}", specialization.Visit(typePrinter),
                     Type.IsAddress() ? "*" : string.Empty));
             }
 
             return new CustomType(
-                $@"global::System.Collections.Generic.{
-                    (ctx.MarshalKind == MarshalKind.DefaultExpression ? "List" : "IList")}<{
-                    ctx.GetTemplateParameterList()}>");
+                $@"global::System.Collections.Generic.{(ctx.MarshalKind == MarshalKind.DefaultExpression ? "List" : "IList")}<{ctx.GetTemplateParameterList()}>");
         }
 
         public override void MarshalToNative(MarshalContext ctx)
@@ -292,9 +289,7 @@ namespace CppSharp.Tests
         {
             if (ctx.Kind == TypePrinterContextKind.Native)
             {
-                return new CustomType($@"global::CSharp.QString.{
-                    Helpers.InternalStruct}{
-                    (ctx.Type.IsAddress() ? "*" : string.Empty)}");
+                return new CustomType($@"global::CSharp.QString.{Helpers.InternalStruct}{(ctx.Type.IsAddress() ? "*" : string.Empty)}");
             }
             return new CILType(typeof(string));
         }

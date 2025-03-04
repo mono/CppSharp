@@ -790,13 +790,13 @@ public:
     virtual ~PureDtor() = 0;
 };
 
-class PureImplementedDtor
+class VirtualImplementedDtor
 {
 public:
-    virtual ~PureImplementedDtor() = 0;
+    virtual ~VirtualImplementedDtor();
 };
 
-PureImplementedDtor::~PureImplementedDtor()
+inline VirtualImplementedDtor::~VirtualImplementedDtor()
 {
 }
 
