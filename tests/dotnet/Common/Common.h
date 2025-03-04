@@ -1,4 +1,5 @@
-﻿#include "../Tests.h"
+﻿#pragma once
+#include "../Tests.h"
 #include "AnotherUnit.h"
 
 #ifdef _WIN32

@@ -128,7 +128,10 @@ namespace CppSharp
             {
                 Console.WriteLine(message);
             }
-            Debug.WriteLine(message);
+
+            // Don't output debug messages to VS output window. This is extremely slow.
+            if (info.Kind > DiagnosticKind.Debug)
+                Debug.WriteLine(message);
         }
 
         public void PushIndent(int level)
