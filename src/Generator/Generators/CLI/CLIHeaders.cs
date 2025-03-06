@@ -144,10 +144,12 @@ namespace CppSharp.Generators.CLI
         public void GenerateDeclContext(DeclarationContext decl)
         {
             // Generate all the type references for the module.
+            PushBlock(BlockKind.ForwardReferences);
             foreach (var typeRef in decl.TypeReferences)
             {
                 WriteLine(typeRef.FowardReference);
             }
+            PopBlock(NewLineKind.BeforeNextBlock);
 
             // Generate all the enum declarations for the module.
             foreach (var @enum in decl.Enums)
@@ -188,21 +190,29 @@ namespace CppSharp.Generators.CLI
             var generateNamespace = !isTopLevel ||
                 !string.IsNullOrEmpty(@namespace.TranslationUnit.Module.OutputNamespace);
 
-            if (generateNamespace)
+
+            var names = new List<string>
             {
-                PushBlock(BlockKind.Namespace, @namespace);
-                WriteLine("namespace {0}", isTopLevel
-                                               ? @namespace.TranslationUnit.Module.OutputNamespace
-                                               : @namespace.Name);
-                WriteOpenBraceAndIndent();
+                isTopLevel
+                    ? @namespace.TranslationUnit.Module.OutputNamespace
+                    : @namespace.Name
+            };
+
+            // Merge nested namespaces into the parent namespace.
+            while (@namespace.Declarations.Count == 1 &&
+                   @namespace.Declarations[0] is Namespace { IsInline: false } childNamespace)
+            {
+                @namespace = childNamespace;
+                names.Add(@namespace.Name);
             }
 
-            GenerateDeclContext(@namespace);
+            var namespaceName = string.Join("::", names);
 
-            if (generateNamespace)
+            using (generateNamespace
+                       ? PushWriteBlock(BlockKind.Namespace, $"namespace {namespaceName}", NewLineKind.BeforeNextBlock)
+                       : default)
             {
-                UnindentAndWriteCloseBrace();
-                PopBlock(NewLineKind.BeforeNextBlock);
+                GenerateDeclContext(@namespace);
             }
         }
 
