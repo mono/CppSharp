@@ -11,6 +11,7 @@
 #include "Sources.h"
 #include "Types.h"
 #include <algorithm>
+#include <unordered_map>
 
 namespace CppSharp {
 namespace CppParser {
@@ -82,6 +83,7 @@ namespace AST {
         int lineNumberStart;
         int lineNumberEnd;
         std::string name;
+        std::string mangledName;
         std::string USR;
         std::string debugText;
         bool isIncomplete;
@@ -89,6 +91,9 @@ namespace AST {
         bool isImplicit;
         bool isInvalid;
         bool isDeprecated;
+        bool isHidden;
+        bool isUsed;
+        bool isReferenced;
         Declaration* completeDeclaration;
         unsigned definitionOrder;
         VECTOR(PreprocessedEntity*, PreprocessedEntities)
@@ -115,32 +120,32 @@ namespace AST {
     public:
         DeclarationContext(DeclarationKind kind);
 
-        CS_IGNORE Declaration* FindAnonymous(const std::string& USR);
+        CS_IGNORE Declaration* FindAnonymous(const std::string_view& USR);
 
-        CS_IGNORE Namespace* FindNamespace(const std::string& Name);
-        CS_IGNORE Namespace* FindNamespace(const std::vector<std::string>&);
-        CS_IGNORE Namespace* FindCreateNamespace(const std::string& Name);
+        CS_IGNORE Namespace* FindNamespace(const std::string_view& name);
+        CS_IGNORE Namespace* FindNamespace(const std::vector<std::string_view>&);
+        CS_IGNORE Namespace& FindCreateNamespace(const std::string_view& Name);
 
-        CS_IGNORE Class* CreateClass(const std::string& Name, bool IsComplete);
-        CS_IGNORE Class* FindClass(const void* OriginalPtr, const std::string& Name, bool IsComplete);
-        CS_IGNORE Class* FindClass(const void* OriginalPtr, const std::string& Name, bool IsComplete, bool Create);
+        CS_IGNORE Class* CreateClass(const std::string_view& Name, bool IsComplete);
+        CS_IGNORE Class* FindClass(const void* OriginalPtr, const std::string_view& Name, bool IsComplete);
+        CS_IGNORE Class* FindClass(const void* OriginalPtr, const std::string_view& Name, bool IsComplete, bool Create);
 
         CS_IGNORE template <typename T>
-        T* FindTemplate(const std::string& USR);
+        T* FindTemplate(const std::string_view& USR);
 
         CS_IGNORE Enumeration* FindEnum(const void* OriginalPtr);
-        CS_IGNORE Enumeration* FindEnum(const std::string& Name, bool Create = false);
-        CS_IGNORE Enumeration* FindEnumWithItem(const std::string& Name);
+        CS_IGNORE Enumeration* FindEnum(const std::string_view& Name, bool Create = false);
+        CS_IGNORE Enumeration* FindEnumWithItem(const std::string_view& Name);
 
-        CS_IGNORE Function* FindFunction(const std::string& USR);
+        CS_IGNORE Function* FindFunction(const std::string_view& USR);
 
-        CS_IGNORE TypedefDecl* FindTypedef(const std::string& Name, bool Create = false);
+        CS_IGNORE TypedefDecl* FindTypedef(const std::string_view& Name, bool Create = false);
 
-        CS_IGNORE TypeAlias* FindTypeAlias(const std::string& Name, bool Create = false);
+        CS_IGNORE TypeAlias* FindTypeAlias(const std::string_view& Name, bool Create = false);
 
-        CS_IGNORE Variable* FindVariable(const std::string& USR);
+        CS_IGNORE Variable* FindVariable(const std::string_view& USR);
 
-        CS_IGNORE Friend* FindFriend(const std::string& USR);
+        CS_IGNORE Friend* FindFriend(const std::string_view& USR);
 
         VECTOR(Namespace*, Namespaces)
         VECTOR(Enumeration*, Enums)
@@ -152,7 +157,7 @@ namespace AST {
         VECTOR(Variable*, Variables)
         VECTOR(Friend*, Friends)
 
-        std::map<std::string, Declaration*> anonymous;
+        std::map<std::string, Declaration*, std::less<>> anonymous;
 
         bool isAnonymous;
     };
@@ -203,7 +208,7 @@ namespace AST {
     class CS_API StatementObsolete
     {
     public:
-        StatementObsolete(const std::string& str, StatementClassObsolete Class = StatementClassObsolete::Any, Declaration* decl = 0);
+        StatementObsolete(const std::string& str, StatementClassObsolete Class = StatementClassObsolete::Any, Declaration* decl = nullptr);
         StatementClassObsolete _class;
         Declaration* decl;
         std::string string;
@@ -212,7 +217,7 @@ namespace AST {
     class CS_API ExpressionObsolete : public StatementObsolete
     {
     public:
-        ExpressionObsolete(const std::string& str, StatementClassObsolete Class = StatementClassObsolete::Any, Declaration* decl = 0);
+        ExpressionObsolete(const std::string& str, StatementClassObsolete Class = StatementClassObsolete::Any, Declaration* decl = nullptr);
     };
 
     class Expr;
@@ -238,7 +243,7 @@ namespace AST {
     class CS_API CXXConstructExprObsolete : public ExpressionObsolete
     {
     public:
-        CXXConstructExprObsolete(const std::string& str, Declaration* decl = 0);
+        CXXConstructExprObsolete(const std::string& str, Declaration* decl = nullptr);
         ~CXXConstructExprObsolete();
         VECTOR(ExpressionObsolete*, Arguments)
     };
@@ -417,7 +422,7 @@ namespace AST {
         BuiltinType* builtinType;
         VECTOR(Item*, Items)
 
-        Item* FindItemByName(const std::string& Name);
+        Item* FindItemByName(const std::string_view& Name);
     };
 
     class CS_API Variable : public Declaration
@@ -611,10 +616,10 @@ namespace AST {
     };
 
     template <typename T>
-    T* DeclarationContext::FindTemplate(const std::string& USR)
+    T* DeclarationContext::FindTemplate(const std::string_view& USR)
     {
-        auto foundTemplate = std::find_if(Templates.begin(), Templates.end(),
-                                          [&](Template* t)
+        auto foundTemplate = std::find_if(Templates.cbegin(), Templates.cend(),
+                                          [&](const Template* t)
                                           {
                                               return t->USR == USR;
                                           });
@@ -782,6 +787,7 @@ namespace AST {
         Namespace();
         ~Namespace();
         bool isInline;
+        bool isNested;
     };
 
     enum class MacroLocation

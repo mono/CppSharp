@@ -128,7 +128,9 @@ namespace CppSharp
             {
                 Console.WriteLine(message);
             }
-            Debug.WriteLine(message);
+
+            // Super slow, don't use this for now
+            // Debug.WriteLine(message);
         }
 
         public void PushIndent(int level)
