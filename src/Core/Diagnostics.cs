@@ -112,13 +112,25 @@ namespace CppSharp
             Level = DiagnosticKind.Message;
         }
 
+        private string GetColorForDiagKind(DiagnosticKind kind) =>
+            kind switch
+            {
+                DiagnosticKind.Debug => null,
+                DiagnosticKind.Message => null,
+                DiagnosticKind.Warning => "\u001b[33m", // yellow
+                DiagnosticKind.Error => "\u001b[91m", // red
+                _ => null
+            };
+
         public void Emit(DiagnosticInfo info)
         {
             if (info.Kind < Level)
                 return;
 
             var currentIndentation = Indents.Sum();
-            var message = new string(' ', currentIndentation) + info.Message;
+            var colorString = GetColorForDiagKind(info.Kind);
+            var colorReset = colorString == null ? null : "\u001b[0m";
+            var message = $"{new string(' ', currentIndentation)}{colorString}{info.Message}{colorReset}";
 
             if (info.Kind == DiagnosticKind.Error)
             {
