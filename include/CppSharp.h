@@ -6,6 +6,7 @@
 //
 // Licensed under the MIT license
 // ------------------------------------------------------------------------------------------- //
+// clang-format off
 #pragma once
 
 #if defined(__cplusplus_cli)
@@ -293,7 +294,7 @@ namespace clix {
     /// <param name="string">String to be marshalled to the other side</param>
     /// <returns>The marshaled representation of the string</returns>
     template<Encoding encoding, typename SourceType, class ResultType =
-    typename detail::IfManaged<SourceType>::Select::Either<
+    typename detail::IfManaged<SourceType>::Select::template Either<
         typename detail::StringTypeSelector<encoding>::Type,
         System::String^>::Type
     >
