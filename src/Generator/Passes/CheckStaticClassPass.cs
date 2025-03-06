@@ -77,6 +77,25 @@ namespace CppSharp.Passes
             if (@class.IsDependent)
                 return false;
 
+            // Polymorphic classes are currently not supported.
+            // TODO: We could support this if the base class is also static, since it's composition then.
+            if (@class.IsPolymorphic)
+                return false;
+
+            // Make sure we have at least one accessible static method or field
+            if (!@class.Methods.Any(m => m.Kind == CXXMethodKind.Normal && m.Access != AccessSpecifier.Private && m.IsStatic)
+                && @class.Variables.All(v => v.Access == AccessSpecifier.Private))
+                return false;
+
+            // Check for any non-static fields or methods, in which case we
+            // assume the class is not meant to be static.
+            // Note: Static fields are represented as variables in the AST.
+            if (@class.Fields.Count != 0)
+                return false;
+
+            if (@class.Methods.Any(m => m.Kind == CXXMethodKind.Normal && !m.IsStatic))
+                return false;
+
             if (@class.Constructors.Any(m =>
                 {
                     // Implicit constructors are not user-defined, so assume this was unintentional.
@@ -97,13 +116,6 @@ namespace CppSharp.Passes
             {
                 return false;
             }
-            // Check for any non-static fields or methods, in which case we
-            // assume the class is not meant to be static.
-            // Note: Static fields are represented as variables in the AST.
-            if (@class.Fields.Any() ||
-                @class.Methods.Any(m => m.Kind == CXXMethodKind.Normal
-                && !m.IsStatic))
-                return false;
 
             // Check for any static function that return a pointer to the class.
             // If one exists, we assume it's a factory function and the class is

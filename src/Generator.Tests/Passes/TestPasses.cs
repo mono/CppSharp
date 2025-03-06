@@ -73,11 +73,13 @@ namespace CppSharp.Generator.Tests.Passes
             var staticStruct = AstContext.Class("TestCheckStaticStruct");
             var staticClassDeletedCtor = AstContext.Class("TestCheckStaticClassDeleted");
             var nonStaticClass = AstContext.Class("TestCheckNonStaticClass");
+            var nonStaticEmptyClass = AstContext.Class("TestCommentsPass");
 
             Assert.IsFalse(staticClass.IsStatic);
             Assert.IsFalse(staticStruct.IsStatic);
             Assert.IsFalse(staticClassDeletedCtor.IsStatic);
             Assert.IsFalse(nonStaticClass.IsStatic);
+            Assert.IsFalse(nonStaticEmptyClass.IsStatic);
 
             passBuilder.AddPass(new CheckStaticClassPass());
             passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
@@ -87,6 +89,7 @@ namespace CppSharp.Generator.Tests.Passes
             Assert.IsTrue(staticClassDeletedCtor.IsStatic, "`TestCheckStaticClassDeleted` should be static");
 
             Assert.IsFalse(nonStaticClass.IsStatic, "`TestCheckNonStaticClass` should NOT be static, since it has a private data field with default ctor");
+            Assert.IsFalse(nonStaticEmptyClass.IsStatic, "`TestCommentsPass` should NOT be static, since it doesn't have any static declarations");
         }
 
         [Test]
