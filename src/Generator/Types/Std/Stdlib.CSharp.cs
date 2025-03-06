@@ -307,10 +307,13 @@ namespace CppSharp.Types.Std.CSharp
         {
             if (ctx.Kind == TypePrinterContextKind.Managed)
                 return new CILType(typeof(string));
+
             var typePrinter = new CSharpTypePrinter(null);
             typePrinter.PushContext(TypePrinterContextKind.Native);
+
             if (ctx.Type.Desugar().IsAddress())
                 return new CustomType(typePrinter.IntPtrType);
+
             ClassTemplateSpecialization basicString = GetBasicString(ctx.Type);
             return new CustomType(basicString.Visit(typePrinter).Type);
         }

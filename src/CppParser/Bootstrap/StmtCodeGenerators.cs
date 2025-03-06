@@ -344,7 +344,7 @@ namespace CppSharp
             {
                 var expr = $"_S->{fieldName} = static_cast<AST::{typeName}>(WalkExpression(S->{methodName}()));";
 
-                if (fieldName == "base" && typeName is "CXXDependentScopeMemberExpr")
+                if (fieldName == "base" && @class.Name == "CXXDependentScopeMemberExpr")
                 {
                     // Clang asserts that 'getBase()' is not called when 'isImplicitAccess()' returns true
                     WriteLine("if (!S->isImplicitAccess())");
