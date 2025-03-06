@@ -7,9 +7,9 @@ namespace CppSharp.Passes
     /// <summary>
     /// Checks for classes that should be bound as static classes.
     /// </summary>
-    public class CheckStaticClass : TranslationUnitPass
+    public class CheckStaticClassPass : TranslationUnitPass
     {
-        public CheckStaticClass()
+        public CheckStaticClassPass()
             => VisitOptions.ResetFlags(VisitFlags.ClassMethods);
 
         public override bool VisitDeclaration(Declaration decl)
@@ -69,13 +69,34 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            // If the class has any non-private constructors then it cannot
-            // be bound as a static class and we bail out early.
-            if (@class.Constructors.Any(m =>
-                !(m.IsCopyConstructor || m.IsMoveConstructor)
-                && m.Access != AccessSpecifier.Private))
+            // If the class is to be used as an opaque type, then it cannot be
+            // bound as static.
+            if (@class.IsOpaque)
                 return false;
 
+            if (@class.IsDependent)
+                return false;
+
+            if (@class.Constructors.Any(m =>
+                {
+                    // Implicit constructors are not user-defined, so assume this was unintentional.
+                    if (m.IsImplicit)
+                        return false;
+
+                    // Ignore deleted constructors.
+                    if (m.IsDeleted)
+                        return false;
+
+                    // If the class has a copy or move constructor, it cannot be static.
+                    if (m.IsCopyConstructor || m.IsMoveConstructor)
+                        return true;
+
+                    // If the class has any (user defined) non-private constructors then it cannot be static
+                    return m.Access != AccessSpecifier.Private;
+                }))
+            {
+                return false;
+            }
             // Check for any non-static fields or methods, in which case we
             // assume the class is not meant to be static.
             // Note: Static fields are represented as variables in the AST.
@@ -86,18 +107,10 @@ namespace CppSharp.Passes
 
             // Check for any static function that return a pointer to the class.
             // If one exists, we assume it's a factory function and the class is
-            // not meant to be static. It's a simple heuristic but it should be
+            // not meant to be static. It's a simple heuristic, but it should be
             // good enough for the time being.
             if (@class.Functions.Any(m => !m.IsOperator && ReturnsClassInstance(m)) ||
                 @class.Methods.Any(m => !m.IsOperator && ReturnsClassInstance(m)))
-                return false;
-
-            // If the class is to be used as an opaque type, then it cannot be
-            // bound as static.
-            if (@class.IsOpaque)
-                return false;
-
-            if (@class.IsDependent)
                 return false;
 
             // TODO: We should take C++ friends into account here, they might allow

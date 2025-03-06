@@ -130,6 +130,60 @@ struct TestCheckAmbiguousFunctionsPass
     int Method(int x) const;
 };
 
+class TestCheckStaticClass
+{
+public:
+    static int Method();
+    static int Method(int x);
+
+    constexpr static float ConstExprStatic = 3.0f;
+    inline static float InlineStatic = 1.0f;
+
+private:
+    inline static float PrivateInlineStatic = 1.0f;
+};
+
+struct TestCheckStaticStruct
+{
+    static int Method();
+    static int Method(int x);
+
+    constexpr static float ConstExprStatic = 3.0f;
+    inline static float InlineStatic = 1.0f;
+};
+
+class TestCheckStaticClassDeleted
+{
+public:
+    TestCheckStaticClassDeleted() = delete;
+
+    static int Method();
+    static int Method(int x);
+
+    constexpr static float ConstExprStatic = 3.0f;
+    inline static float InlineStatic = 1.0f;
+
+private:
+    inline static float PrivateInlineStatic = 1.0f;
+};
+
+class TestCheckNonStaticClass
+{
+public:
+    TestCheckNonStaticClass() = default;
+
+    static int Method();
+    static int Method(int x);
+
+    constexpr static float ConstExprStatic = 3.0f;
+    inline static float InlineStatic = 1.0f;
+
+private:
+    inline static float PrivateInlineStatic = 1.0f;
+
+    float NonStatic = 1.0f;
+};
+
 #define CS_INTERNAL
 struct TestMethodAsInternal
 {
