@@ -181,6 +181,8 @@ namespace CppSharp.Passes
                     declarations.AddRange(@class.TemplateParameters);
             }
 
+            declarations.RemoveAll(d => !d.IsGenerated);
+
             var existing = declarations.Find(d => d != decl && d.Name == newName);
             if (existing != null)
                 return CheckExisting(decl, existing);
