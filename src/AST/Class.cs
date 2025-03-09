@@ -149,9 +149,7 @@ namespace CppSharp.AST
 
         public bool HasNonIgnoredBase =>
             HasBaseClass && !IsValueType
-                         && BaseClass != null
-                         && !BaseClass.IsValueType
-                         && BaseClass.IsGenerated;
+                         && BaseClass is { IsValueType: false, IsGenerated: true };
 
         public bool NeedsBase => HasNonIgnoredBase && IsGenerated;
 

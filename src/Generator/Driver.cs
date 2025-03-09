@@ -230,7 +230,7 @@ namespace CppSharp
 
             passes.AddPass(new FindSymbolsPass());
             passes.AddPass(new CheckMacroPass());
-            passes.AddPass(new CheckStaticClass());
+            passes.AddPass(new CheckStaticClassPass());
 
             if (Options.IsCLIGenerator || Options.IsCSharpGenerator || Options.IsCppGenerator)
             {
