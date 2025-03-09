@@ -32,8 +32,7 @@ namespace CppSharp.Passes
             if (decl.Access != AccessSpecifier.Protected)
                 return false;
 
-            var @class = decl.Namespace as Class;
-            return @class != null && @class.IsStatic;
+            return decl.Namespace is Class { IsStatic: true };
         }
 
         static void SetDeclarationAccessToPrivate(Declaration decl)
@@ -42,7 +41,7 @@ namespace CppSharp.Passes
             // as an internal in the final C# wrapper.
             decl.Access = AccessSpecifier.Private;
 
-            // We need to explicity set the generation else the
+            // We need to explicitly set the generation else the
             // now private declaration will get filtered out later.
             decl.GenerationKind = GenerationKind.Generate;
         }
@@ -51,20 +50,34 @@ namespace CppSharp.Passes
         {
             var returnType = function.ReturnType.Type.Desugar();
 
-            var tag = returnType as TagType;
-            if (tag == null)
+            if (returnType is not TagType tag)
                 returnType.IsPointerTo(out tag);
 
-            if (tag == null)
+            var decl = tag?.Declaration;
+            if (decl is not Class)
                 return false;
 
             var @class = (Class)function.Namespace;
-            var decl = tag.Declaration;
-
-            if (!(decl is Class))
-                return false;
-
             return @class.QualifiedOriginalName == decl.QualifiedOriginalName;
+        }
+
+        static bool AcceptsClassInstance(Function function)
+        {
+            return function.Parameters.Any(param =>
+                {
+                    var paramType = param.Type.Desugar();
+
+                    if (paramType is not TagType tag)
+                        paramType.IsPointerTo(out tag);
+
+                    var decl = tag?.Declaration;
+                    if (decl is not Class)
+                        return false;
+
+                    var @class = (Class)function.Namespace;
+                    return @class.QualifiedOriginalName == decl.QualifiedOriginalName;
+                }
+            );
         }
 
         public override bool VisitClassDecl(Class @class)
@@ -117,12 +130,10 @@ namespace CppSharp.Passes
                 return false;
             }
 
-            // Check for any static function that return a pointer to the class.
-            // If one exists, we assume it's a factory function and the class is
-            // not meant to be static. It's a simple heuristic, but it should be
-            // good enough for the time being.
-            if (@class.Functions.Any(m => !m.IsOperator && ReturnsClassInstance(m)) ||
-                @class.Methods.Any(m => !m.IsOperator && ReturnsClassInstance(m)))
+            // Check for any static function that accepts/returns a pointer to the class.
+            // If one exists, we assume it's not meant to be static
+            if (@class.Functions.Any(m => !m.IsOperator && (ReturnsClassInstance(m) || AcceptsClassInstance(m))) ||
+                @class.Methods.Any(m => !m.IsOperator && !m.IsConstructor && (ReturnsClassInstance(m) || AcceptsClassInstance(m))))
                 return false;
 
             // TODO: We should take C++ friends into account here, they might allow
