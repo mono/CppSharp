@@ -899,7 +899,7 @@ public class CommonTests
         using (var nonTrivialDtor = new NonTrivialDtor())
         {
         }
-        Assert.IsTrue(NonTrivialDtor.dtorCalled);
+        Assert.IsTrue(NonTrivialDtor.DtorCalled);
     }
 
     [Test]
