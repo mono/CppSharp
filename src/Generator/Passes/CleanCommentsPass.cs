@@ -21,12 +21,11 @@ namespace CppSharp.Passes
             if (!base.VisitDeclaration(decl))
                 return false;
 
-            if (decl.Comment != null)
-            {
-                var fullComment = decl.Comment.FullComment;
-                VisitFull(fullComment);
+            if (decl.Comment == null)
+                return true;
 
-            }
+            var fullComment = decl.Comment.FullComment;
+            VisitFull(fullComment);
             return true;
         }
 
@@ -37,6 +36,7 @@ namespace CppSharp.Passes
 
             return true;
         }
+
         #region Comments Visit
         public bool VisitHTMLEndTag(HTMLEndTagComment comment) => true;
 
@@ -44,7 +44,7 @@ namespace CppSharp.Passes
 
         public bool VisitInlineCommand(InlineCommandComment comment) => true;
 
-        public bool VisitParagraphCommand(ParagraphComment comment)
+        public bool VisitParagraph(ParagraphComment comment)
         {
             for (int i = 0; i < comment.Content.Count; i++)
             {

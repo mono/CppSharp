@@ -109,7 +109,7 @@ namespace CppSharp.AST
         T VisitTParamCommand(TParamCommandComment comment);
         T VisitVerbatimBlock(VerbatimBlockComment comment);
         T VisitVerbatimLine(VerbatimLineComment comment);
-        T VisitParagraphCommand(ParagraphComment comment);
+        T VisitParagraph(ParagraphComment comment);
         T VisitFull(FullComment comment);
         T VisitHTMLStartTag(HTMLStartTagComment comment);
         T VisitHTMLEndTag(HTMLEndTagComment comment);
@@ -129,20 +129,13 @@ namespace CppSharp.AST
 
         public static string GetMultiLineCommentPrologue(CommentKind kind)
         {
-            switch (kind)
+            return kind switch
             {
-                case CommentKind.BCPL:
-                case CommentKind.BCPLExcl:
-                    return "//";
-                case CommentKind.C:
-                case CommentKind.JavaDoc:
-                case CommentKind.Qt:
-                    return " *";
-                case CommentKind.BCPLSlash:
-                    return "///";
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+                CommentKind.BCPL or CommentKind.BCPLExcl => "//",
+                CommentKind.C or CommentKind.JavaDoc or CommentKind.Qt => " *",
+                CommentKind.BCPLSlash => "///",
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
 
         public static string GetLineCommentPrologue(CommentKind kind)
@@ -375,7 +368,7 @@ namespace CppSharp.AST
 
         public override void Visit<T>(ICommentVisitor<T> visitor)
         {
-            visitor.VisitParagraphCommand(this);
+            visitor.VisitParagraph(this);
         }
     }
 

@@ -263,8 +263,8 @@ void Parser::HandleComments(const clang::Decl* D, Declaration* Decl)
 {
     using namespace clang;
 
-    const clang::RawComment* RC = 0;
-    if (!(RC = c->getASTContext().getRawCommentForAnyRedecl(D)))
+    const clang::RawComment* RC = c->getASTContext().getRawCommentForAnyRedecl(D);
+    if (!RC)
         return;
 
     auto RawComment = WalkRawComment(RC);

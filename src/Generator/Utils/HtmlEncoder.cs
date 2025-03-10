@@ -53,7 +53,7 @@ namespace System.Web.Util
                 return null;
 
             if (s.Length == 0)
-                return String.Empty;
+                return string.Empty;
 
             bool needEncode = s.Any(c => c == '&' || c == '"' || c == '<' || c == '>' || c > 159);
 
@@ -93,7 +93,7 @@ namespace System.Web.Util
                         {
                             output.Append("&#");
                             output.Append(((int)ch).ToString(CultureInfo.InvariantCulture));
-                            output.Append(";");
+                            output.Append(';');
                         }
                         else
                             output.Append(ch);

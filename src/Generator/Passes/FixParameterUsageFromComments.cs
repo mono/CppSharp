@@ -71,7 +71,7 @@ namespace CppSharp.Passes
             return true;
         }
 
-        public bool VisitParagraphCommand(ParagraphComment comment)
+        public bool VisitParagraph(ParagraphComment comment)
         {
             return true;
         }
