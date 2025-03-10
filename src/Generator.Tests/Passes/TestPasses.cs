@@ -140,7 +140,7 @@ namespace CppSharp.Generator.Tests.Passes
             var textGenerator2 = new TextGenerator();
             textGenerator2.Print(c2.Methods[0].Comment.FullComment, CommentKind.BCPLSlash);
 
-            Assert.That(textGenerator2.StringBuilder.ToString().Trim(),
+            Assert.That(textGenerator2.StringBuilder.ToString().Trim().Replace("\r\n", "\n"),
                 Is.EqualTo(
                     "/// <summary>Gets a value</summary>\n" +
                             "/// <returns>One</returns>"
@@ -149,7 +149,7 @@ namespace CppSharp.Generator.Tests.Passes
             var textGenerator3 = new TextGenerator();
             textGenerator3.Print(c2.Methods[1].Comment.FullComment, CommentKind.BCPLSlash);
 
-            Assert.That(textGenerator3.StringBuilder.ToString().Trim(),
+            Assert.That(textGenerator3.StringBuilder.ToString().Trim().Replace("\r\n", "\n"),
                 Is.EqualTo(
                     "/// <summary>Sets a value. Get it with <see cref=\"GetValueWithComment\"/></summary>\n" +
                             "/// <param name=\"value\">The value to set</param>\n" +

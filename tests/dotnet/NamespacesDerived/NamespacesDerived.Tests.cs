@@ -157,7 +157,7 @@ public class NamespaceDerivedTests
                     "The context of the specified window must not be current on any other",
                     "thread when this function is called.",
                     "This function must not be called from a callback.",
-                    "_safety This function must only be called from the main thread.",
+                    "This function must only be called from the main thread.",
                     "Added in version 3.0.  Replaces `glfwCloseWindow`."
                 }));
         XElement window = method.Element("param");

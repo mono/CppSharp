@@ -39,6 +39,7 @@ namespace CppSharp.Generators.CSharp
                         case CommentCommandKind.Brief:
                             sections.Add(new Section(CommentElement.Summary));
                             blockCommandComment.ParagraphComment.GetCommentSections(sections);
+                            sections.Add(new Section(CommentElement.Remarks));
                             break;
                         case CommentCommandKind.Return:
                         case CommentCommandKind.Returns:
@@ -87,11 +88,12 @@ namespace CppSharp.Generators.CSharp
                 }
                 case DocumentationCommentKind.ParagraphComment:
                 {
-                    bool summaryParagraph = false;
+                    bool assumeSummary = false;
+
                     if (sections.Count == 0)
                     {
+                        assumeSummary = true;
                         sections.Add(new Section(CommentElement.Summary));
-                        summaryParagraph = true;
                     }
 
                     var lastParagraphSection = sections.Last();
@@ -102,18 +104,22 @@ namespace CppSharp.Generators.CSharp
                         if (inlineContentComment.HasTrailingNewline)
                             lastParagraphSection.NewLine();
 
-                        lastParagraphSection = sections.Last();
+                        var newSection = sections.Last();
+                        if (lastParagraphSection == newSection)
+                            continue;
+
+                        if (!string.IsNullOrEmpty(lastParagraphSection.CurrentLine.ToString()))
+                            lastParagraphSection.NewLine();
+
+                        lastParagraphSection = newSection;
                     }
 
                     if (!string.IsNullOrEmpty(lastParagraphSection.CurrentLine.ToString()))
                         lastParagraphSection.NewLine();
 
-                    if (sections[0].GetLines().Count > 0 && summaryParagraph)
-                    {
-                        sections[0].GetLines().AddRange(sections.Skip(1).SelectMany(s => s.GetLines()));
-                        sections.RemoveRange(1, sections.Count - 1);
+                    // The next paragraph should be a remarks section
+                    if (assumeSummary)
                         sections.Add(new Section(CommentElement.Remarks));
-                    }
 
                     break;
                 }
