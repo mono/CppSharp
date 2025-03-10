@@ -37,6 +37,7 @@ namespace CppSharp.Generators.CSharp
                     switch (blockCommandComment.CommandKind)
                     {
                         case CommentCommandKind.Brief:
+                            sections.Add(new Section(CommentElement.Summary));
                             blockCommandComment.ParagraphComment.GetCommentSections(sections);
                             break;
                         case CommentCommandKind.Return:
@@ -85,14 +86,23 @@ namespace CppSharp.Generators.CSharp
                     break;
                 }
                 case DocumentationCommentKind.ParagraphComment:
-                    var summaryParagraph = sections.Count == 1;
-                    var paragraphComment = (ParagraphComment)comment;
+                {
+                    bool summaryParagraph = false;
+                    if (sections.Count == 0)
+                    {
+                        sections.Add(new Section(CommentElement.Summary));
+                        summaryParagraph = true;
+                    }
+
                     var lastParagraphSection = sections.Last();
+                    var paragraphComment = (ParagraphComment)comment;
                     foreach (var inlineContentComment in paragraphComment.Content)
                     {
                         inlineContentComment.GetCommentSections(sections);
                         if (inlineContentComment.HasTrailingNewline)
                             lastParagraphSection.NewLine();
+
+                        lastParagraphSection = sections.Last();
                     }
 
                     if (!string.IsNullOrEmpty(lastParagraphSection.CurrentLine.ToString()))
@@ -132,10 +142,33 @@ namespace CppSharp.Generators.CSharp
                 }
                 case DocumentationCommentKind.HTMLStartTagComment:
                 {
+                    var startTag = (HTMLStartTagComment)comment;
+                    var sectionType = CommentElementFromTag(startTag.TagName);
+
+                    if (IsInlineCommentElement(sectionType))
+                    {
+                        var lastSection = sections.Last();
+                        lastSection.CurrentLine.Append(startTag);
+                        break;
+                    }
+
+                    sections.Add(new Section(sectionType)
+                    {
+                        Attributes = startTag.Attributes.Select(a => a.ToString()).ToList()
+                    });
                     break;
                 }
                 case DocumentationCommentKind.HTMLEndTagComment:
                 {
+                    var endTag = (HTMLEndTagComment)comment;
+                    var sectionType = CommentElementFromTag(endTag.TagName);
+
+                    if (IsInlineCommentElement(sectionType))
+                    {
+                        var lastSection = sections.Last();
+                        lastSection.CurrentLine.Append(endTag);
+                    }
+
                     break;
                 }
                 case DocumentationCommentKind.HTMLTagComment:
@@ -252,15 +285,71 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
+        private static CommentElement CommentElementFromTag(string tag)
+        {
+            return tag.ToLowerInvariant() switch
+            {
+                "c" => CommentElement.C,
+                "code" => CommentElement.Code,
+                "example" => CommentElement.Example,
+                "exception" => CommentElement.Exception,
+                "include" => CommentElement.Include,
+                "list" => CommentElement.List,
+                "para" => CommentElement.Para,
+                "param" => CommentElement.Param,
+                "paramref" => CommentElement.ParamRef,
+                "permission" => CommentElement.Permission,
+                "remarks" => CommentElement.Remarks,
+                "return" or "returns" => CommentElement.Returns,
+                "summary" => CommentElement.Summary,
+                "typeparam" => CommentElement.TypeParam,
+                "typeparamref" => CommentElement.TypeParamRef,
+                "value" => CommentElement.Value,
+                "seealso" => CommentElement.SeeAlso,
+                "see" => CommentElement.See,
+                "inheritdoc" => CommentElement.InheritDoc,
+                _ => CommentElement.Unknown
+            };
+        }
+
+        /// <summary>From https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/documentation-comments#d3-recommended-tags</summary>
+        /// <remarks>Enum value is equal to sorting priority</remarks>
         private enum CommentElement
         {
-            Summary,
-            Typeparam,
-            Param,
-            Returns,
-            Exception,
-            Remarks,
-            Example
+            C = 1000,               // Set text in a code-like font
+            Code = 1001,            // Set one or more lines of source code or program output
+            Example = 11,           // Indicate an example
+            Exception = 8,          // Identifies the exceptions a method can throw
+            Include = 1,            // Includes XML from an external file
+            List = 1002,            // Create a list or table
+            Para = 1003,            // Permit structure to be added to text
+            Param = 5,              // Describe a parameter for a method or constructor
+            ParamRef = 1004,        // Identify that a word is a parameter name
+            Permission = 7,         // Document the security accessibility of a member
+            Remarks = 9,            // Describe additional information about a type
+            Returns = 6,            // Describe the return value of a method
+            See = 1005,             // Specify a link
+            SeeAlso = 10,           // Generate a See Also entry
+            Summary = 2,            // Describe a type or a member of a type
+            TypeParam = 4,          // Describe a type parameter for a generic type or method
+            TypeParamRef = 1006,    // Identify that a word is a type parameter name
+            Value = 3,              // Describe a property
+            InheritDoc = 0,         // Inherit documentation from a base class
+            Unknown = 9999,         // Unknown tag
         }
+
+        private static bool IsInlineCommentElement(CommentElement element) =>
+            element switch
+            {
+                CommentElement.C => true,
+                CommentElement.Code => true,
+                CommentElement.List => true,
+                CommentElement.Para => true,
+                CommentElement.ParamRef => true,
+                CommentElement.See => true,
+                CommentElement.TypeParamRef => true,
+                CommentElement.Unknown => true, // Print unknown tags as inline
+                _ => ((int)element) >= 1000
+            };
     }
 }
