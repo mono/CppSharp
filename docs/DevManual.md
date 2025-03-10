@@ -81,7 +81,7 @@ CppSharp uses its own code, to parse and generate C# bindings from (clang) sourc
 
 - To add or remove code in parser source that is not yet automatically generated
   - Make your changes
-  - Copy them to a new folder in `<repo_root_dir>/BootstrapPatch`
+  - Copy them to a new folder in `<repo_root_dir>/src/BootstrapPatch`
   - Discard the copied changes using git
   - Finally, run `CppSharp.Parser.Gen` to generate the C# and C++/CLI bindings
 
