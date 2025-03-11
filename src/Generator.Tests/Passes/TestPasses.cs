@@ -123,10 +123,12 @@ namespace CppSharp.Generator.Tests.Passes
         [Test]
         public void TestCleanCommentsPass()
         {
-            var c = AstContext.FindClass("TestCommentsPass").FirstOrDefault();
+            var c = AstContext.Class("TestCommentsPass");
+            var c2 = AstContext.Class("TestCommentsPass2");
 
             passBuilder.AddPass(new CleanCommentsPass());
             passBuilder.RunPasses(pass => pass.VisitDeclaration(c));
+            passBuilder.RunPasses(pass => pass.VisitClassDecl(c2));
 
             var para = (ParagraphComment)c.Comment.FullComment.Blocks[0];
             var textGenerator = new TextGenerator();
@@ -134,6 +136,25 @@ namespace CppSharp.Generator.Tests.Passes
 
             Assert.That(textGenerator.StringBuilder.ToString().Trim(),
                 Is.EqualTo("/// <summary>A simple test.</summary>"));
+
+            var textGenerator2 = new TextGenerator();
+            textGenerator2.Print(c2.Methods[0].Comment.FullComment, CommentKind.BCPLSlash);
+
+            Assert.That(textGenerator2.StringBuilder.ToString().Trim().Replace("\r\n", "\n"),
+                Is.EqualTo(
+                    "/// <summary>Gets a value</summary>\n" +
+                            "/// <returns>One</returns>"
+                        ));
+
+            var textGenerator3 = new TextGenerator();
+            textGenerator3.Print(c2.Methods[1].Comment.FullComment, CommentKind.BCPLSlash);
+
+            Assert.That(textGenerator3.StringBuilder.ToString().Trim().Replace("\r\n", "\n"),
+                Is.EqualTo(
+                    "/// <summary>Sets a value. Get it with <see cref=\"GetValueWithComment\"/></summary>\n" +
+                            "/// <param name=\"value\">The value to set</param>\n" +
+                            "/// <returns>The parameter (typeof<float>)</returns>"
+                        ));
         }
 
         [Test]

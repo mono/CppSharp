@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CppSharp.AST
 {
@@ -109,7 +110,7 @@ namespace CppSharp.AST
         T VisitTParamCommand(TParamCommandComment comment);
         T VisitVerbatimBlock(VerbatimBlockComment comment);
         T VisitVerbatimLine(VerbatimLineComment comment);
-        T VisitParagraphCommand(ParagraphComment comment);
+        T VisitParagraph(ParagraphComment comment);
         T VisitFull(FullComment comment);
         T VisitHTMLStartTag(HTMLStartTagComment comment);
         T VisitHTMLEndTag(HTMLEndTagComment comment);
@@ -129,20 +130,13 @@ namespace CppSharp.AST
 
         public static string GetMultiLineCommentPrologue(CommentKind kind)
         {
-            switch (kind)
+            return kind switch
             {
-                case CommentKind.BCPL:
-                case CommentKind.BCPLExcl:
-                    return "//";
-                case CommentKind.C:
-                case CommentKind.JavaDoc:
-                case CommentKind.Qt:
-                    return " *";
-                case CommentKind.BCPLSlash:
-                    return "///";
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+                CommentKind.BCPL or CommentKind.BCPLExcl => "//",
+                CommentKind.C or CommentKind.JavaDoc or CommentKind.Qt => " *",
+                CommentKind.BCPLSlash => "///",
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
 
         public static string GetLineCommentPrologue(CommentKind kind)
@@ -375,7 +369,7 @@ namespace CppSharp.AST
 
         public override void Visit<T>(ICommentVisitor<T> visitor)
         {
-            visitor.VisitParagraphCommand(this);
+            visitor.VisitParagraph(this);
         }
     }
 
@@ -416,9 +410,16 @@ namespace CppSharp.AST
         {
             public string Name;
             public string Value;
+
+            public override string ToString()
+            {
+                return $"{Name}=\"{Value}\"";
+            }
         }
 
         public List<Attribute> Attributes;
+
+        public bool SelfClosing { get; set; }
 
         public HTMLStartTagComment()
         {
@@ -429,6 +430,15 @@ namespace CppSharp.AST
         public override void Visit<T>(ICommentVisitor<T> visitor)
         {
             visitor.VisitHTMLStartTag(this);
+        }
+
+        public override string ToString()
+        {
+            var attrStr = string.Empty;
+            if (Attributes.Count != 0)
+                attrStr = " " + string.Join(' ', Attributes.Select(x => x.ToString()));
+
+            return $"<{TagName}{attrStr}{(SelfClosing ? "/" : "")}>";
         }
     }
 
@@ -445,6 +455,11 @@ namespace CppSharp.AST
         public override void Visit<T>(ICommentVisitor<T> visitor)
         {
             visitor.VisitHTMLEndTag(this);
+        }
+
+        public override string ToString()
+        {
+            return $"</{TagName}>";
         }
     }
 
@@ -464,6 +479,13 @@ namespace CppSharp.AST
         {
             visitor.VisitText(this);
         }
+
+        public override string ToString()
+        {
+            return Text;
+        }
+
+        public bool IsEmpty => string.IsNullOrEmpty(Text) && !HasTrailingNewline;
     }
 
     /// <summary>

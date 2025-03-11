@@ -45,6 +45,43 @@ class TestCommentsPass
 {
 };
 
+/// <summary>A more complex test.</summary>
+class TestCommentsPass2
+{
+public:
+    /// <summary>Gets a value</summary>
+    /// <returns>One</returns>
+    float GetValueWithComment()
+    {
+        return 1.0f;
+    }
+
+    /// <summary>Sets a value. Get it with <see cref="GetValueWithComment"/></summary>
+    /// <param name="value">The value to set</param>
+    /// <returns>The parameter (typeof<float>)</returns>
+    float SetValueWithParamComment(float value)
+    {
+        return value;
+    }
+
+    /// <summary>
+    /// This method changes the point's location by
+    /// the given x- and y-offsets.
+    /// For example:
+    /// <code>
+    /// Point p = new Point(3, 5);
+    /// p.Translate(-1, 3);
+    /// </code>
+    /// results in <c>p</c>'s having the value (2, 8).
+    /// <see cref="Move"/>
+    /// </summary>
+    /// <param name="dx">The relative x-offset.</param>
+    /// <param name="dy">The relative y-offset.</param>
+    void Translate(int dx, int dy)
+    {
+    }
+};
+
 struct TestReadOnlyProperties
 {
     int readOnlyProperty;
