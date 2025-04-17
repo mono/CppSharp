@@ -38,9 +38,8 @@ generate=true
 
 if [ $generate = true ]; then
     echo "${green}Generating bindings${reset}"
-    dotnet $rootdir/bin/${dotnet_configuration}_${platform}/CppSharp.CLI.dll \
-        --gen=emscripten --platform=emscripten --arch=wasm32 --property=keywords \
-        -I$dir/.. -I$rootdir/include -o $dir/gen -m tests $dir/../*.h
+    dotnet $rootdir/bin/${dotnet_configuration}/CppSharp.CLI.dll --property=keywords \
+        $dir/bindings.lua
 fi
 
 echo "${green}Building generated binding files${reset}"
