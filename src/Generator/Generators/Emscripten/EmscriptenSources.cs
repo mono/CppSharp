@@ -117,11 +117,6 @@ namespace CppSharp.Generators.Emscripten
             }
         }
 
-        public override bool VisitProperty(Property property)
-        {
-            return true;
-        }
-
         public override bool VisitMethodDecl(Method method)
         {
             Indent();
@@ -130,9 +125,33 @@ namespace CppSharp.Generators.Emscripten
             return ret;
         }
 
+        public override bool VisitProperty(Property property)
+        {
+            if (property.Field != null)
+                return property.Field.Visit(this);
+
+            if (!property.GetMethod.IsConst)
+            {
+                Console.WriteLine($"Cannot bind non-const property getter method: {property.GetMethod.QualifiedOriginalName}");
+                return false;
+            }
+
+            var @class = property.Namespace as Class;
+            Indent();
+            Write($".property(\"{property.Name}\", &{@class.QualifiedOriginalName}::{property.GetMethod.OriginalName}");
+
+            if (property.HasSetter)
+                Write($", &{@class.QualifiedOriginalName}::{property.SetMethod.OriginalName}");
+
+            WriteLine(")");
+            Unindent();
+
+            return true;
+        }
+
         public override bool VisitFieldDecl(Field field)
         {
-            WriteLineIndent($".field(\"{field.Name}\", &{field.Class.QualifiedOriginalName}::{field.OriginalName})");
+            WriteLineIndent($".property(\"{field.Name}\", &{field.Class.QualifiedOriginalName}::{field.OriginalName})");
             return true;
         }
 
