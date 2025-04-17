@@ -111,7 +111,14 @@ function classes() {
 
     var classWithField = new test.ClassWithField();
     eq(classWithField.ReturnsField(), 10);
-    //eq(classWithField.Field, 10);
+    eq(classWithField.Field, 10);
+    classWithField.Field = 20;
+    eq(classWithField.ReturnsField(), 20);
+
+    var classWithProperty = new test.ClassWithProperty();
+    eq(classWithProperty.Field, 10);
+    classWithProperty.Field = 20;
+    eq(classWithProperty.Field, 20);
 }
 
 builtins();

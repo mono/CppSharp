@@ -252,7 +252,12 @@ namespace CppSharp
 
             passes.AddPass(new CleanInvalidDeclNamesPass());
             passes.AddPass(new FastDelegateToDelegatesPass());
-            passes.AddPass(new FieldToPropertyPass());
+
+            if (Options.GeneratorKind != GeneratorKind.Emscripten)
+            {
+                passes.AddPass(new FieldToPropertyPass());
+            }
+
             passes.AddPass(new CheckIgnoredDeclsPass());
             passes.AddPass(new CheckEnumsPass());
             passes.AddPass(new MakeProtectedNestedTypesPublicPass());
@@ -283,9 +288,14 @@ namespace CppSharp
 
             passes.AddPass(new CheckDuplicatedNamesPass());
 
-            if (Options.IsCLIGenerator || Options.IsCSharpGenerator)
+            if (Options.IsCLIGenerator || Options.IsCSharpGenerator
+                                       || Options.GeneratorKind.ID is GeneratorKind.Emscripten_ID)
             {
                 passes.RenameDeclsUpperCase(RenameTargets.Any & ~RenameTargets.Parameter);
+            }
+
+            if (Options.IsCLIGenerator || Options.IsCSharpGenerator)
+            {
                 passes.AddPass(new CheckKeywordNamesPass());
             }
 
