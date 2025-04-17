@@ -184,6 +184,14 @@ namespace CppSharp.Passes
                 return false;
             }
 
+            if (Options.IsJSGenerator && function is Method { Kind: CXXMethodKind.Normal } && ret.Type.GetFinalPointee().IsClass())
+            {
+                function.ExplicitlyIgnore();
+                Diagnostics.Debug("Function '{0}' was ignored due to {1} return decl not yet implemented in JS generators",
+                    function.Name, msg);
+                return false;
+            }
+
             foreach (var param in function.Parameters)
             {
                 if (HasInvalidDecl(param, out msg))
