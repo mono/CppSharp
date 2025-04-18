@@ -90,6 +90,13 @@ namespace CppSharp
 
             options.Platform ??= Platform.Host;
 
+            if (options.Architecture is TargetArchitecture.WASM32 or TargetArchitecture.WASM64 &&
+                options.Platform is not TargetPlatform.Emscripten)
+            {
+                messages.Add("Please set Emscripten platform for WASM architectures.");
+                return false;
+            }
+
             if (string.IsNullOrEmpty(options.OutputDir))
             {
                 options.OutputDir = Path.Combine(Directory.GetCurrentDirectory(), "gen");

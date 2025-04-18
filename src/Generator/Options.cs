@@ -205,6 +205,8 @@ namespace CppSharp
 
         public bool IsCLIGenerator => GeneratorKind == GeneratorKind.CLI;
 
+        public bool IsJSGenerator => GeneratorKind == GeneratorKind.Emscripten || GeneratorKind == GeneratorKind.QuickJS;
+
         public readonly List<string> DependentNameSpaces = new List<string>();
         public bool MarshalCharAsManagedChar { get; set; }
         public bool MarshalConstCharArrayAsString { get; set; } = true;

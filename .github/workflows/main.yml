@@ -37,7 +37,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Setup emsdk
-        uses: mymindstorm/setup-emsdk@v11
+        uses: mymindstorm/setup-emsdk@v14
         with:
           version: ${{ env.EMSCRIPTEN_VERSION }}
           actions-cache-folder: emsdk-cache-${{ runner.os }}
@@ -88,14 +88,15 @@ jobs:
       - name: Test (QuickJS)
         if: runner.os != 'Windows'
         shell: bash
-        run: tests/quickjs/test.sh -dotnet_configuration $BUILD_CONFIGURATION
+        run: tests/quickjs/test.sh --dotnet-config $BUILD_CONFIGURATION
 
       - name: Test (Emscripten)
         if: runner.os != 'Windows'
         shell: bash
-        run: tests/emscripten/test.sh -dotnet_configuration $BUILD_CONFIGURATION
+        run: tests/emscripten/test.sh --dotnet-config $BUILD_CONFIGURATION
 
       - name: Pack
+        if: matrix.build-cfg == 'Release'
         shell: bash
         run: build/build.sh prepack -platform $PLATFORM -configuration $BUILD_CONFIGURATION
 
