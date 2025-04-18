@@ -96,6 +96,7 @@ jobs:
         run: tests/emscripten/test.sh --dotnet-config $BUILD_CONFIGURATION
 
       - name: Pack
+        if: matrix.build-cfg == 'Release'
         shell: bash
         run: build/build.sh prepack -platform $PLATFORM -configuration $BUILD_CONFIGURATION
 
