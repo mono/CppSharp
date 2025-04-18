@@ -88,12 +88,12 @@ jobs:
       - name: Test (QuickJS)
         if: runner.os != 'Windows'
         shell: bash
-        run: tests/quickjs/test.sh -dotnet_configuration $BUILD_CONFIGURATION
+        run: tests/quickjs/test.sh --dotnet-config $BUILD_CONFIGURATION
 
       - name: Test (Emscripten)
         if: runner.os != 'Windows'
         shell: bash
-        run: tests/emscripten/test.sh -dotnet_configuration $BUILD_CONFIGURATION
+        run: tests/emscripten/test.sh --dotnet-config $BUILD_CONFIGURATION
 
       - name: Pack
         shell: bash
