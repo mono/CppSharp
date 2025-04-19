@@ -96,7 +96,8 @@ namespace CppSharp.Passes
                                         new TypePrinterContext
                                         {
                                             Parameter = parameter,
-                                            Type = type
+                                            Type = type,
+                                            Method = @operator,
                                         });
                                     var cilType = mappedTo as CILType;
                                     if (cilType?.Type == typeof(int))

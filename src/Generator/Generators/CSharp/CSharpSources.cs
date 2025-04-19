@@ -694,11 +694,12 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
         private IEnumerable<string> GatherInternalParams(Function function, out TypePrinterResult retType)
         {
             TypePrinter.PushContext(TypePrinterContextKind.Native);
-
             retType = function.ReturnType.Visit(TypePrinter);
 
+            TypePrinter.Function = function;
             var @params = function.GatherInternalParams(Context.ParserOptions.IsItaniumLikeAbi).Select(p =>
                 $"{p.Visit(TypePrinter)} {p.Name}").ToList();
+            TypePrinter.Function = null;
 
             TypePrinter.PopContext();
 
@@ -1001,7 +1002,9 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             var actualProperty = GetActualProperty(property, @class);
             if (actualProperty == null)
             {
+                TypePrinter.Property = property;
                 WriteLine($@"throw new MissingMethodException(""Method {property.Name} missing from explicit specialization {@class.Visit(TypePrinter)}."");");
+                TypePrinter.Property = null;
                 return false;
             }
             property = actualProperty;
@@ -1048,7 +1051,8 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             {
                 Parameter = param,
                 ArgName = param.Name,
-                ReturnVarName = returnVar
+                ReturnVarName = returnVar,
+                Field = field,
             };
             ctx.PushMarshalKind(MarshalKind.NativeField);
 
@@ -1147,7 +1151,8 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                 ParameterIndex = function.Parameters.Count(
                     p => p.Kind != ParameterKind.IndirectReturnType),
                 ReturnType = new QualifiedType(type),
-                ArgName = "value"
+                ArgName = "value",
+                Function = function,
             };
             var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
             type.Visit(marshal);
@@ -1287,7 +1292,7 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             var ctx = new CSharpMarshalContext(Context, CurrentIndentation)
             {
                 ArgName = var.Name,
-                ReturnType = var.QualifiedType
+                ReturnType = var.QualifiedType,
             };
             ctx.PushMarshalKind(MarshalKind.ReturnVariableArray);
 
@@ -1338,7 +1343,9 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             var actualProperty = GetActualProperty(property, @class);
             if (actualProperty == null)
             {
+                TypePrinter.Property = property;
                 WriteLine($@"throw new MissingMethodException(""Method {property.Name} missing from explicit specialization {@class.Visit(TypePrinter)}."");");
+                TypePrinter.Property = null;
                 return false;
             }
             QualifiedType type = default;
@@ -1410,7 +1417,8 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
             {
                 ArgName = field.Name,
                 ReturnVarName = returnVar,
-                ReturnType = returnType
+                ReturnType = returnType,
+                Field = field,
             };
             ctx.PushMarshalKind(MarshalKind.NativeField);
 
@@ -1555,7 +1563,9 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                 }
 
                 GenerateDeclarationCommon(prop);
+                TypePrinter.Property = prop;
                 var printedType = prop.Type.Visit(TypePrinter);
+                TypePrinter.Property = null;
                 if (prop.ExplicitInterfaceImpl == null)
                 {
                     Write(Helpers.GetAccess(prop.Access));
@@ -1931,7 +1941,8 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                     ReturnType = param.QualifiedType,
                     ReturnVarName = param.Name,
                     ParameterIndex = i,
-                    Parameter = param
+                    Parameter = param,
+                    Function = method,
                 };
 
                 ctx.PushMarshalKind(MarshalKind.GenericDelegate);
@@ -2076,7 +2087,9 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
 
             using (WriteBlock($"private static {retType} {vTableMethodDelegateName}Hook({string.Join(", ", @params)})"))
             {
+                TypePrinter.Function = method;
                 WriteLine($@"var {Helpers.TargetIdentifier} = {@class.Visit(TypePrinter)}.__GetInstance({Helpers.InstanceField});");
+                TypePrinter.Function = null;
                 GenerateVTableManagedCall(method);
             }
 
@@ -2772,12 +2785,16 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                     m => m.InstantiatedFrom == (method.OriginalFunction ?? method));
                 if (specializedMethod == null)
                 {
+                    TypePrinter.Function = method;
                     WriteLine($@"throw new MissingMethodException(""Method {method.Name} missing from explicit specialization {@class.Visit(TypePrinter)}."");");
+                    TypePrinter.Function = null;
                     return false;
                 }
                 if (specializedMethod.Ignore)
                 {
+                    TypePrinter.Function = method;
                     WriteLine($@"throw new MissingMethodException(""Method {method.Name} ignored in specialization {@class.Visit(TypePrinter)}."");");
+                    TypePrinter.Function = null;
                     return false;
                 }
 
@@ -2987,6 +3004,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                         parameter.Type.IsPrimitiveTypeConvertibleToRef() ?
                         "ref *" : string.Empty,
                         parameter.Name);
+                    TypePrinter.Function = method;
                     var printedType = method.ConversionType.Visit(TypePrinter);
                     if (@interface != null)
                     {
@@ -2995,6 +3013,7 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                     }
                     else
                         WriteLine($"return new {printedType}({paramName});");
+                    TypePrinter.Function = null;
                 }
                 else
                 {
