@@ -840,6 +840,7 @@ caponize
 capsize
 capsulize
 captivate
+capture
 caramelise
 caramelize
 carbolise
@@ -5001,6 +5002,7 @@ overresist
 overrestrain
 overrestrict
 overreward
+override
 overripen
 overroast
 overromanticize
