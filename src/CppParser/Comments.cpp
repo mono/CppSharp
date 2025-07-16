@@ -98,13 +98,6 @@ static Comment* ConvertCommentBlock(clang::comments::Comment* C, clang::Compiler
         for (auto I = CK->child_begin(), E = CK->child_end(); I != E; ++I)
             FC->Blocks.push_back(static_cast<BlockContentComment*>(ConvertCommentBlock(*I, CI)));
     }
-    else if (auto CK = dyn_cast<const comments::BlockCommandComment>(C))
-    {
-        auto BC = new BlockCommandComment();
-        _Comment = BC;
-        HandleBlockCommand(CK, BC);
-        BC->paragraphComment = static_cast<ParagraphComment*>(ConvertCommentBlock(CK->getParagraph(), CI));
-    }
     else if (auto CK = dyn_cast<const comments::ParamCommandComment>(C))
     {
         auto PC = new ParamCommandComment();
@@ -136,6 +129,13 @@ static Comment* ConvertCommentBlock(clang::comments::Comment* C, clang::Compiler
         auto VL = new VerbatimLineComment();
         _Comment = VL;
         VL->text = CK->getText().str();
+    }
+    else if (auto CK = dyn_cast<const comments::BlockCommandComment>(C))
+    {
+        auto BC = new BlockCommandComment();
+        _Comment = BC;
+        HandleBlockCommand(CK, BC);
+        BC->paragraphComment = static_cast<ParagraphComment*>(ConvertCommentBlock(CK->getParagraph(), CI));
     }
     else if (auto CK = dyn_cast<const comments::ParagraphComment>(C))
     {

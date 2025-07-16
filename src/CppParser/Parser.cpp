@@ -1396,9 +1396,15 @@ Parser::WalkClassTemplateSpecialization(const clang::ClassTemplateSpecialization
     CT->Specializations.push_back(TS);
 
     auto& TAL = CTS->getTemplateArgs();
-    TemplateSpecializationTypeLoc TSL;
-
-    TS->Arguments = WalkTemplateArgumentList(&TAL, nullptr);
+    auto TSI = CTS->getTemplateArgsAsWritten();
+    if (TSI)
+    {
+        TS->Arguments = WalkTemplateArgumentList(&TAL, TSI);
+    }
+    else
+    {
+        TS->Arguments = WalkTemplateArgumentList(&TAL, (TemplateSpecializationTypeLoc*)0);
+    }
 
     if (CTS->isCompleteDefinition())
     {
@@ -1442,8 +1448,16 @@ Parser::WalkClassTemplatePartialSpecialization(const clang::ClassTemplatePartial
     TS->specializationKind = WalkTemplateSpecializationKind(CTS->getSpecializationKind());
     CT->Specializations.push_back(TS);
 
-    const TemplateArgumentList& TAL = CTS->getTemplateArgs();
-    WalkTemplateArgumentList(&TAL, nullptr);
+    auto& TAL = CTS->getTemplateArgs();
+    auto TSI = CTS->getTemplateArgsAsWritten();
+    if (TSI)
+    {
+        TS->Arguments = WalkTemplateArgumentList(&TAL, TSI);
+    }
+    else
+    {
+        TS->Arguments = WalkTemplateArgumentList(&TAL, (TemplateSpecializationTypeLoc*)0);
+    }
 
     if (CTS->isCompleteDefinition())
     {
