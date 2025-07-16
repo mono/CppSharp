@@ -137,7 +137,8 @@ function SetupLLVMLibs()
 
   filter { "toolset:msc*" }
     links { "version" }
-
+    links { "ntdll"}
+    
   filter {}
 
   if LLVMDirPerConfiguration then
@@ -164,6 +165,7 @@ function SetupLLVMLibs()
 
     links
     {
+      "clangAPINotes",
       "clangFrontend",
       "clangDriver",
       "clangSerialization",
@@ -185,8 +187,10 @@ function SetupLLVMLibs()
       "LLVMPasses",
       "LLVMObjCARCOpts",
       "LLVMLibDriver",
+      "LLVMFrontendOffloading",
       "LLVMFrontendHLSL",
       "LLVMFrontendOpenMP",
+      "LLVMHipStdPar",
       "LLVMOption",
       "LLVMCoverage",
       "LLVMCoroutines",
@@ -201,6 +205,7 @@ function SetupLLVMLibs()
       "LLVMAArch64Disassembler",
       "LLVMAArch64Info",
       "LLVMAArch64Utils",
+      "LLVMFrontendDriver",
       "LLVMipo",
       "LLVMInstrumentation",
       "LLVMVectorize",
