@@ -4892,12 +4892,18 @@ ParserResultKind Parser::ParseSharedLib(const std::string& File,
         // see https://bugs.llvm.org/show_bug.cgi?id=44433
         for (const auto& Symbol : MachOObjectFile->symbols())
         {
-            if (Symbol.getName().takeError() || Symbol.getFlags().takeError())
+            auto NameOrErr = Symbol.getName();
+            auto FlagsOrErr = Symbol.getFlags();
+
+            if (!NameOrErr || !FlagsOrErr)
                 return ParserResultKind::Error;
 
-            if ((Symbol.getFlags().get() & llvm::object::BasicSymbolRef::Flags::SF_Exported) &&
-                !(Symbol.getFlags().get() & llvm::object::BasicSymbolRef::Flags::SF_Undefined))
-                NativeLib->Symbols.push_back(Symbol.getName().get().str());
+            auto Flags = *FlagsOrErr;
+            if ((Flags & llvm::object::BasicSymbolRef::SF_Exported) &&
+                !(Flags & llvm::object::BasicSymbolRef::SF_Undefined))
+            {
+                NativeLib->Symbols.push_back(NameOrErr->str());
+            }
         }
         return ParserResultKind::Success;
     }
