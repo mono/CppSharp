@@ -251,6 +251,9 @@ function cmake(gen, conf, builddir, options)
 
 	if os.ishost("windows") then
 		options = options .. " -Thost=x64"
+		-- add flag to fix compile error C2226 in non English locales
+		-- see: https://github.com/llvm/llvm-project/issues/60549 
+		options = options .. ' -DCMAKE_CXX_FLAGS="/utf-8"'
 	end
 
 	local cmd = cmake .. " -G " .. '"' .. gen .. '"'
