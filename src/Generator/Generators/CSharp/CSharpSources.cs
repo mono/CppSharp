@@ -1016,8 +1016,33 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
 
         private void GenerateFieldSetter(Field field, Class @class, QualifiedType fieldType)
         {
+            if (field.Type.IsClass() && !field.Type.IsPointer())
+            {
+                if (field.Type.TryGetClass(out Class fieldClass) && !(fieldClass is ClassTemplateSpecialization))
+                {
+                    var caop = fieldClass.Methods.FirstOrDefault(m => m.OperatorKind == CXXOperatorKind.Equal);
+                    if (caop != null && caop.IsGenerated)
+                    {
+                        var fieldName = ((Class)field.Namespace).Layout.Fields.First(
+                            f => f.FieldPtr == field.OriginalPtr).Name;
+                        var typeName = TypePrinter.PrintNative(@class);
+                        WriteLine($"var dest = new __IntPtr(&(({typeName}*)__Instance)->{fieldName});");
+                        WriteLine($"var src = value.{Helpers.InstanceIdentifier};");
+
+                        if (IsInternalClassNested(fieldClass))
+                            typeName.RemoveNamespace();
+
+                        WriteLine($"{fieldClass}.__Internal.OperatorEqual(dest, src);");
+
+                        return;
+                    }
+                }
+            }
+
+
             string returnVar;
             Type type = field.Type.Desugar();
+
             var arrayType = type as ArrayType;
             if (arrayType != null && @class.IsValueType)
             {
@@ -1497,6 +1522,11 @@ internal static bool {Helpers.TryGetNativeToManagedMappingIdentifier}(IntPtr nat
                     staticMethods.Add(method);
                     continue;
                 }
+
+                // We only use the copy assignment operator internally,
+                // so do not generate a public method wrapper for it
+                if (method.OperatorKind == CXXOperatorKind.Equal)
+                    continue;
 
                 GenerateMethod(method, @class);
             }

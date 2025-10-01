@@ -69,6 +69,43 @@ namespace CppSharp.Passes
 
         private bool CheckDefaultParametersForAmbiguity(Function function, Function overload)
         {
+            // detect if function and overload are copy assignment or move assignment operators
+            // if both are either one of those types, ignore move assignment operator
+            if (function.OperatorKind == CXXOperatorKind.Equal && overload.OperatorKind == CXXOperatorKind.Equal &&
+                    function.Parameters.Count == 1 && overload.Parameters.Count == 1)
+            {
+                var functionParamType = function.Parameters[0].Type;
+                var overloadParamType = overload.Parameters[0].Type;
+
+                if (functionParamType is PointerType && overloadParamType is PointerType)
+                {
+                    var functionParamPointerType = functionParamType as PointerType;
+                    var overloadParamPointerType = overloadParamType as PointerType;
+
+                    var functionPointee = functionParamPointerType.GetPointee();
+                    var overloadPointee = overloadParamPointerType.GetPointee();
+
+                    functionPointee.TryGetClass(out Class @functionPointeeClass);
+                    overloadPointee.TryGetClass(out Class @overloadPointeeClass);
+
+                    if (functionPointeeClass == function.Namespace && @overloadPointeeClass == overload.Namespace)
+                    {
+                        if (functionParamPointerType.Modifier == PointerType.TypeModifier.RVReference &&
+                            overloadParamPointerType.Modifier == PointerType.TypeModifier.LVReference)
+                        {
+                            function.ExplicitlyIgnore();
+                            return true;
+                        }
+                        else if (functionParamPointerType.Modifier == PointerType.TypeModifier.LVReference &&
+                            overloadParamPointerType.Modifier == PointerType.TypeModifier.RVReference)
+                        {
+                            overload.ExplicitlyIgnore();
+                            return true;
+                        }
+                    }
+                }
+            }
+
             List<Parameter> functionParams = RemoveOperatorParams(function);
             List<Parameter> overloadParams = RemoveOperatorParams(overload);
 
