@@ -35,9 +35,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup emsdk
-        uses: mymindstorm/setup-emsdk@v14
+        uses: pyodide/setup-emsdk@v15
         with:
           version: ${{ env.EMSCRIPTEN_VERSION }}
           actions-cache-folder: emsdk-cache-${{ runner.os }}
@@ -113,7 +115,7 @@ jobs:
             include/**/*.h
 
   create_package:
-    runs-on: windows-2019
+    runs-on: windows-2022
     needs: build
     if: |
       (github.event_name == 'push' && (github.ref == 'refs/heads/main' || contains(github.ref, 'nuget') || startsWith(github.ref, 'refs/tags/v'))) ||
