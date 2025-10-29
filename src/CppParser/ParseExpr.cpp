@@ -2322,7 +2322,7 @@ AST::Expr* Parser::WalkExpression(const clang::Expr* Expr)
         _S->hasExplicitTemplateArgs = S->hasExplicitTemplateArgs();
         _S->numTemplateArgs = S->getNumTemplateArgs();
         _S->requiresADL = S->requiresADL();
-        _S->isOverloaded = S->isOverloaded();
+        _S->isOverloaded = S->getNumDecls() > 1;
         _Expr = _S;
         break;
     }

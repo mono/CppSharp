@@ -99,14 +99,18 @@ std::string ASTNameMangler::GetMangledStructor(const NamedDecl* ND, unsigned Str
     return FrontendBuf;
 }
 
-std::string ASTNameMangler::GetMangledThunk(const CXXMethodDecl* MD, const ThunkInfo& T, bool /*ElideOverrideInfo*/) const
+std::string ASTNameMangler::GetMangledThunk(const CXXMethodDecl* MD, const ThunkInfo& T, bool ElideOverrideInfo) const
 {
     std::string FrontendBuf;
     llvm::raw_string_ostream FOS(FrontendBuf);
 
     // TODO: Enable `ElideOverrideInfo` param if clang is updated to 19
-    MC->mangleThunk(MD, T, /*ElideOverrideInfo,*/ FOS);
 
+#if LLVM_VERSION_MAJOR >= 19
+    MC->mangleThunk(MD, T, ElideOverrideInfo, FOS);
+#else
+    MC->mangleThunk(MD, T, FOS);
+#endif
     return FrontendBuf;
 }
 

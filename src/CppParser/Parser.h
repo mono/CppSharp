@@ -70,7 +70,7 @@ namespace CppSharp { namespace CppParser {
 
         void SetupLLVMCodegen();
         bool SetupSourceFiles(const std::vector<std::string>& SourceFiles,
-                              std::vector<const clang::FileEntry*>& FileEntries);
+                              std::vector<clang::OptionalFileEntryRef>& FileEntries);
 
         bool IsSupported(const clang::NamedDecl* ND);
         bool IsSupported(const clang::CXXMethodDecl* MD);
@@ -114,6 +114,8 @@ namespace CppSharp { namespace CppParser {
         WalkVarTemplatePartialSpecialization(const clang::VarTemplatePartialSpecializationDecl* VTS);
         template <typename TypeLoc>
         std::vector<AST::TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, TypeLoc* TSTL);
+        template <typename TypeLoc>
+        std::vector<AST::TemplateArgument> WalkTemplateArgumentList(llvm::ArrayRef<clang::TemplateArgument> TAL, TypeLoc* TSTL);
         std::vector<AST::TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, const clang::ASTTemplateArgumentListInfo* TSTL);
         void WalkVTable(const clang::CXXRecordDecl* RD, AST::Class* C);
         AST::QualifiedType GetQualifiedType(clang::QualType qual, const clang::TypeLoc* TL = 0);

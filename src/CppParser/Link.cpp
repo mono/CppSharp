@@ -70,9 +70,9 @@ bool Parser::LinkWindows(const CppLinkerOptions* LinkerOptions,
     }
 
     const Triple& Triple = c->getTarget().getTriple();
-    driver::Driver D("", Triple.str(), c->getDiagnostics());
+    clang::driver::Driver D("", Triple.str(), c->getDiagnostics());
     opt::InputArgList Args(0, 0);
-    driver::toolchains::MSVCToolChain TC(D, Triple, Args);
+    clang::driver::toolchains::MSVCToolChain TC(D, Triple, Args);
 
     std::vector<std::string> LibraryPaths;
     LibraryPaths.push_back("-libpath:" + TC.getSubDirectoryPath(

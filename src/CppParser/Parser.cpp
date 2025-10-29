@@ -17,6 +17,7 @@
 #include <stdlib.h>
 
 #include <llvm/TargetParser/Host.h>
+#include <llvm/Support/ManagedStatic.h>
 #include <llvm/Support/Path.h>
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Support/TargetSelect.h>
@@ -36,6 +37,7 @@
 #include <clang/AST/Comment.h>
 #include <clang/AST/DeclFriend.h>
 #include <clang/AST/ExprCXX.h>
+#include "clang/AST/TemplateBase.h"
 #include <clang/CodeGen/CodeGenAction.h>
 #include <clang/Lex/DirectoryLookup.h>
 #include <clang/Lex/HeaderSearch.h>
@@ -1097,15 +1099,15 @@ static TagKind ConvertToTagKind(clang::TagTypeKind AS)
 {
     switch (AS)
     {
-        case clang::TagTypeKind::TTK_Struct:
+        case clang::TagTypeKind::Struct:
             return TagKind::Struct;
-        case clang::TagTypeKind::TTK_Interface:
+        case clang::TagTypeKind::Interface:
             return TagKind::Interface;
-        case clang::TagTypeKind::TTK_Union:
+        case clang::TagTypeKind::Union:
             return TagKind::Union;
-        case clang::TagTypeKind::TTK_Class:
+        case clang::TagTypeKind::Class:
             return TagKind::Class;
-        case clang::TagTypeKind::TTK_Enum:
+        case clang::TagTypeKind::Enum:
             return TagKind::Enum;
     }
 
@@ -1394,12 +1396,10 @@ Parser::WalkClassTemplateSpecialization(const clang::ClassTemplateSpecialization
     CT->Specializations.push_back(TS);
 
     auto& TAL = CTS->getTemplateArgs();
-    auto TSI = CTS->getTypeAsWritten();
+    auto TSI = CTS->getTemplateArgsAsWritten();
     if (TSI)
     {
-        auto TL = TSI->getTypeLoc();
-        auto TSL = TL.getAs<TemplateSpecializationTypeLoc>();
-        TS->Arguments = WalkTemplateArgumentList(&TAL, &TSL);
+        TS->Arguments = WalkTemplateArgumentList(&TAL, TSI);
     }
     else
     {
@@ -1449,11 +1449,14 @@ Parser::WalkClassTemplatePartialSpecialization(const clang::ClassTemplatePartial
     CT->Specializations.push_back(TS);
 
     auto& TAL = CTS->getTemplateArgs();
-    if (auto TSI = CTS->getTypeAsWritten())
+    auto TSI = CTS->getTemplateArgsAsWritten();
+    if (TSI)
     {
-        auto TL = TSI->getTypeLoc();
-        auto TSL = TL.getAs<TemplateSpecializationTypeLoc>();
-        TS->Arguments = WalkTemplateArgumentList(&TAL, &TSL);
+        TS->Arguments = WalkTemplateArgumentList(&TAL, TSI);
+    }
+    else
+    {
+        TS->Arguments = WalkTemplateArgumentList(&TAL, (TemplateSpecializationTypeLoc*)0);
     }
 
     if (CTS->isCompleteDefinition())
@@ -1567,7 +1570,11 @@ TypeTemplateParameter* Parser::WalkTypeTemplateParameter(const clang::TemplateTy
 
     HandleDeclaration(TTPD, TP);
     if (TTPD->hasDefaultArgument())
-        TP->defaultArgument = GetQualifiedType(TTPD->getDefaultArgument());
+    {
+        auto TSI = TTPD->getDefaultArgument().getTypeSourceInfo();
+        if (TSI)
+            TP->defaultArgument = GetQualifiedType(TSI->getType());
+    }
     TP->depth = TTPD->getDepth();
     TP->index = TTPD->getIndex();
     TP->isParameterPack = TTPD->isParameterPack();
@@ -1591,7 +1598,7 @@ NonTypeTemplateParameter* Parser::WalkNonTypeTemplateParameter(const clang::NonT
 
     HandleDeclaration(NTTPD, NTP);
     if (NTTPD->hasDefaultArgument())
-        NTP->defaultArgument = WalkExpressionObsolete(NTTPD->getDefaultArgument());
+        NTP->defaultArgument = WalkExpressionObsolete(NTTPD->getDefaultArgument().getSourceExpression());
     NTP->type = GetQualifiedType(NTTPD->getType());
     NTP->depth = NTTPD->getDepth();
     NTP->index = NTTPD->getIndex();
@@ -1632,6 +1639,40 @@ std::vector<TemplateArgument> Parser::WalkTemplateArgumentList(const clang::Temp
             TArgLoc = TSTL->getArgLoc(i);
             ArgLoc = &TArgLoc;
         }
+        auto Arg = WalkTemplateArgument(TA, ArgLoc);
+        params.push_back(Arg);
+    }
+
+    return params;
+}
+
+//-----------------------------------//
+
+template <typename TypeLoc>
+std::vector<TemplateArgument> Parser::WalkTemplateArgumentList(
+    llvm::ArrayRef<clang::TemplateArgument> TAL,
+    TypeLoc* TSTL)
+{
+    using namespace clang;
+
+    const bool LocValid = TSTL && !TSTL->isNull() && TSTL->getTypePtr();
+
+    std::vector<AST::TemplateArgument> params;
+    const size_t typeLocNumArgs = LocValid ? TSTL->getNumArgs() : 0;
+
+    for (size_t i = 0, e = TAL.size(); i < e; ++i)
+    {
+        const clang::TemplateArgument& TA = TAL[i];
+
+        TemplateArgumentLoc TArgLoc;
+        TemplateArgumentLoc* ArgLoc = nullptr;
+
+        if (i < typeLocNumArgs && e == typeLocNumArgs)
+        {
+            TArgLoc = TSTL->getArgLoc(i);
+            ArgLoc = &TArgLoc;
+        }
+
         auto Arg = WalkTemplateArgument(TA, ArgLoc);
         params.push_back(Arg);
     }
@@ -1893,7 +1934,7 @@ Parser::WalkVarTemplateSpecialization(const clang::VarTemplateSpecializationDecl
     VT->Specializations.push_back(TS);
 
     auto& TAL = VTS->getTemplateArgs();
-    auto TSI = VTS->getTypeAsWritten();
+    auto TSI = VTS->getTypeSourceInfo();
     if (TSI)
     {
         auto TL = TSI->getTypeLoc();
@@ -1933,7 +1974,7 @@ Parser::WalkVarTemplatePartialSpecialization(const clang::VarTemplatePartialSpec
     VT->Specializations.push_back(TS);
 
     auto& TAL = VTS->getTemplateArgs();
-    if (auto TSI = VTS->getTypeAsWritten())
+    if (auto TSI = VTS->getTypeSourceInfo())
     {
         auto TL = TSI->getTypeLoc();
         auto TSL = TL.getAs<TemplateSpecializationTypeLoc>();
@@ -2812,11 +2853,9 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL, bool 
             if (TS->isSugared())
                 TST->desugared = GetQualifiedType(TS->getCanonicalTypeInternal(), TL);
 
-            TemplateArgumentList TArgs(TemplateArgumentList::OnStack, TS->template_arguments());
-
             if (!LocValid)
             {
-                TST->Arguments = WalkTemplateArgumentList(&TArgs, (TemplateSpecializationTypeLoc*)nullptr);
+                TST->Arguments = WalkTemplateArgumentList(TS->template_arguments(), (TemplateSpecializationTypeLoc*)nullptr);
                 Ty = TST;
                 break;
             }
@@ -2840,21 +2879,21 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL, bool 
                 case TypeLoc::DependentTemplateSpecialization:
                 {
                     DependentTemplateSpecializationTypeLoc TSpecTL = TL->getAs<DependentTemplateSpecializationTypeLoc>();
-                    TST->Arguments = WalkTemplateArgumentList(&TArgs, &TSpecTL);
+                    TST->Arguments = WalkTemplateArgumentList(TS->template_arguments(), &TSpecTL);
                     Ty = TST;
                     break;
                 }
                 case TypeLoc::TemplateSpecialization:
                 {
                     TemplateSpecializationTypeLoc TSpecTL = TL->getAs<TemplateSpecializationTypeLoc>();
-                    TST->Arguments = WalkTemplateArgumentList(&TArgs, &TSpecTL);
+                    TST->Arguments = WalkTemplateArgumentList(TS->template_arguments(), &TSpecTL);
                     Ty = TST;
                     break;
                 }
                 case TypeLoc::TemplateTypeParm:
                 {
                     TemplateTypeParmTypeLoc TTPTL = TL->getAs<TemplateTypeParmTypeLoc>();
-                    TST->Arguments = WalkTemplateArgumentList(&TArgs, (TemplateSpecializationTypeLoc*)nullptr);
+                    TST->Arguments = WalkTemplateArgumentList(TS->template_arguments(), (TemplateSpecializationTypeLoc*)nullptr);
                     break;
                 }
                 default:
@@ -2873,11 +2912,9 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL, bool 
             if (TS->isSugared())
                 TST->desugared = GetQualifiedType(TS->getCanonicalTypeInternal(), TL);
 
-            TemplateArgumentList TArgs(TemplateArgumentList::OnStack, TS->template_arguments());
-
             if (!LocValid)
             {
-                TST->Arguments = WalkTemplateArgumentList(&TArgs, (DependentTemplateSpecializationTypeLoc*)nullptr);
+                TST->Arguments = WalkTemplateArgumentList(TS->template_arguments(), (DependentTemplateSpecializationTypeLoc*)nullptr);
                 Ty = TST;
                 break;
             }
@@ -2901,18 +2938,18 @@ Type* Parser::WalkType(clang::QualType QualType, const clang::TypeLoc* TL, bool 
                 case TypeLoc::DependentTemplateSpecialization:
                 {
                     DependentTemplateSpecializationTypeLoc TSpecTL = TL->getAs<DependentTemplateSpecializationTypeLoc>();
-                    TST->Arguments = WalkTemplateArgumentList(&TArgs, &TSpecTL);
+                    TST->Arguments = WalkTemplateArgumentList(TS->template_arguments(), &TSpecTL);
                     break;
                 }
                 case TypeLoc::TemplateSpecialization:
                 {
                     TemplateSpecializationTypeLoc TSpecTL = TL->getAs<TemplateSpecializationTypeLoc>();
-                    TST->Arguments = WalkTemplateArgumentList(&TArgs, &TSpecTL);
+                    TST->Arguments = WalkTemplateArgumentList(TS->template_arguments(), &TSpecTL);
                     break;
                 }
                 case TypeLoc::TemplateTypeParm:
                 {
-                    TST->Arguments = WalkTemplateArgumentList(&TArgs, (DependentTemplateSpecializationTypeLoc*)nullptr);
+                    TST->Arguments = WalkTemplateArgumentList(TS->template_arguments(), (DependentTemplateSpecializationTypeLoc*)nullptr);
                     break;
                 }
                 default:
@@ -3510,7 +3547,7 @@ void Parser::WalkFunction(const clang::FunctionDecl* FD, Function* F)
     F->isConstExpr = FD->isConstexpr();
     F->isVariadic = FD->isVariadic();
     F->isDependent = FD->isDependentContext();
-    F->isPure = FD->isPure();
+    F->isPure = FD->isPureVirtual();
     F->isDeleted = FD->isDeleted();
     F->isDefaulted = FD->isDefaulted();
     SetBody(FD, F);
@@ -4476,7 +4513,6 @@ Declaration* Parser::WalkDeclaration(const clang::Decl* D)
             break;
         }
         case Decl::BuiltinTemplate:
-        case Decl::ClassScopeFunctionSpecialization:
         case Decl::PragmaComment:
         case Decl::PragmaDetectMismatch:
         case Decl::Empty:
@@ -4614,31 +4650,31 @@ void Parser::SetupLLVMCodegen()
 }
 
 bool Parser::SetupSourceFiles(const std::vector<std::string>& SourceFiles,
-                              std::vector<const clang::FileEntry*>& FileEntries)
+                              std::vector<clang::OptionalFileEntryRef>& FileEntries)
 {
-    // Check that the file is reachable.
-    clang::ConstSearchDirIterator* Dir = 0;
-    llvm::ArrayRef<std::pair<const clang::FileEntry*, clang::DirectoryEntryRef>> Includers;
+    clang::ConstSearchDirIterator* Dir = nullptr;
+    llvm::ArrayRef<std::pair<clang::OptionalFileEntryRef, clang::DirectoryEntryRef>> EmptyIncluders;
 
     for (const auto& SourceFile : SourceFiles)
     {
-        auto FileEntry = c->getPreprocessor().getHeaderSearchInfo().LookupFile(SourceFile,
-                                                                               clang::SourceLocation(), /*isAngled*/ true,
-                                                                               nullptr, Dir, Includers, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
+        auto FileEntry = c->getPreprocessor().getHeaderSearchInfo().LookupFile(
+            SourceFile,
+            clang::SourceLocation(),
+            /*isAngled*/ true,
+            nullptr, Dir,
+            EmptyIncluders,
+            nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
 
         if (!FileEntry)
             return false;
 
-        FileEntries.push_back(&FileEntry.getPointer()->getFileEntry());
+        FileEntries.push_back(FileEntry);
     }
-
-    // Create a virtual file that includes the header. This gets rid of some
-    // Clang warnings about parsing an header file as the main file.
 
     std::string source;
     for (const auto& SourceFile : SourceFiles)
     {
-        source += "#include \"" + SourceFile + "\"" + "\n";
+        source += "#include \"" + SourceFile + "\"\n";
     }
     source += "\0";
 
@@ -4652,7 +4688,7 @@ bool Parser::SetupSourceFiles(const std::vector<std::string>& SourceFiles,
 class SemaConsumer : public clang::SemaConsumer
 {
 public:
-    SemaConsumer(Parser& parser, std::vector<const clang::FileEntry*>& entries)
+    SemaConsumer(Parser& parser, std::vector<clang::OptionalFileEntryRef>& entries)
         : Parser(parser)
         , FileEntries(entries)
     {
@@ -4662,7 +4698,7 @@ public:
 
 private:
     Parser& Parser;
-    std::vector<const clang::FileEntry*>& FileEntries;
+    std::vector<clang::OptionalFileEntryRef>& FileEntries;
 };
 
 void SemaConsumer::HandleTranslationUnit(clang::ASTContext& Ctx)
@@ -4675,7 +4711,7 @@ void SemaConsumer::HandleTranslationUnit(clang::ASTContext& Ctx)
     Parser.HandleDeclaration(TU, Unit);
 
     if (Unit->originalPtr == nullptr)
-        Unit->originalPtr = (void*)FileEntry;
+        Unit->originalPtr = (void*)&FileEntry->getFileEntry();
 
     Parser.WalkAST(TU);
 }
@@ -4695,7 +4731,7 @@ ParserResult* Parser::Parse(const std::vector<std::string>& SourceFiles)
     Setup();
     SetupLLVMCodegen();
 
-    std::vector<const clang::FileEntry*> FileEntries;
+    std::vector<clang::OptionalFileEntryRef> FileEntries;
     if (!SetupSourceFiles(SourceFiles, FileEntries))
     {
         res->kind = ParserResultKind::FileNotFound;
@@ -4829,7 +4865,7 @@ ParserResultKind Parser::ParseSharedLib(const std::string& File,
         for (const auto& ImportedSymbol : COFFObjectFile->import_directories())
         {
             llvm::StringRef Name;
-            if (!ImportedSymbol.getName(Name) && (Name.endswith(".dll") || Name.endswith(".DLL")))
+            if (!ImportedSymbol.getName(Name) && (Name.ends_with(".dll") || Name.ends_with(".DLL")))
                 NativeLib->Dependencies.push_back(Name.str());
         }
 
@@ -4857,12 +4893,18 @@ ParserResultKind Parser::ParseSharedLib(const std::string& File,
         // see https://bugs.llvm.org/show_bug.cgi?id=44433
         for (const auto& Symbol : MachOObjectFile->symbols())
         {
-            if (Symbol.getName().takeError() || Symbol.getFlags().takeError())
+            auto NameOrErr = Symbol.getName();
+            auto FlagsOrErr = Symbol.getFlags();
+
+            if (!NameOrErr || !FlagsOrErr)
                 return ParserResultKind::Error;
 
-            if ((Symbol.getFlags().get() & llvm::object::BasicSymbolRef::Flags::SF_Exported) &&
-                !(Symbol.getFlags().get() & llvm::object::BasicSymbolRef::Flags::SF_Undefined))
-                NativeLib->Symbols.push_back(Symbol.getName().get().str());
+            auto Flags = *FlagsOrErr;
+            if ((Flags & llvm::object::BasicSymbolRef::SF_Exported) &&
+                !(Flags & llvm::object::BasicSymbolRef::SF_Undefined))
+            {
+                NativeLib->Symbols.push_back(NameOrErr->str());
+            }
         }
         return ParserResultKind::Success;
     }
