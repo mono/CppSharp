@@ -106,11 +106,11 @@ std::string ASTNameMangler::GetMangledThunk(const CXXMethodDecl* MD, const Thunk
 
     // TODO: Enable `ElideOverrideInfo` param if clang is updated to 19
 
-    #if LLVM_VERSION_MAJOR >= 19
-        MC->mangleThunk(MD, T, ElideOverrideInfo, FOS);
-    #else
-        MC->mangleThunk(MD, T, FOS);
-    #endif
+#if LLVM_VERSION_MAJOR >= 19
+    MC->mangleThunk(MD, T, ElideOverrideInfo, FOS);
+#else
+    MC->mangleThunk(MD, T, FOS);
+#endif
     return FrontendBuf;
 }
 

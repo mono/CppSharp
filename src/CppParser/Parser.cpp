@@ -1650,7 +1650,8 @@ std::vector<TemplateArgument> Parser::WalkTemplateArgumentList(const clang::Temp
 
 template <typename TypeLoc>
 std::vector<TemplateArgument> Parser::WalkTemplateArgumentList(
-    llvm::ArrayRef<clang::TemplateArgument> TAL, TypeLoc* TSTL)
+    llvm::ArrayRef<clang::TemplateArgument> TAL,
+    TypeLoc* TSTL)
 {
     using namespace clang;
 

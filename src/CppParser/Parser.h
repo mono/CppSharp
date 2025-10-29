@@ -115,7 +115,7 @@ namespace CppSharp { namespace CppParser {
         template <typename TypeLoc>
         std::vector<AST::TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, TypeLoc* TSTL);
         template <typename TypeLoc>
-        std::vector<AST::TemplateArgument> WalkTemplateArgumentList(llvm::ArrayRef<clang::TemplateArgument> TAL,TypeLoc* TSTL);
+        std::vector<AST::TemplateArgument> WalkTemplateArgumentList(llvm::ArrayRef<clang::TemplateArgument> TAL, TypeLoc* TSTL);
         std::vector<AST::TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, const clang::ASTTemplateArgumentListInfo* TSTL);
         void WalkVTable(const clang::CXXRecordDecl* RD, AST::Class* C);
         AST::QualifiedType GetQualifiedType(clang::QualType qual, const clang::TypeLoc* TL = 0);
