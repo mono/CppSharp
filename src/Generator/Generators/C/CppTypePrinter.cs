@@ -199,32 +199,32 @@ namespace CppSharp.Generators.C
                     return PrintFlavorKind == CppTypePrintFlavorKind.Cpp ?
                         "std::nullptr_t" : "NULL";
                 case PrimitiveType.String:
+                {
+                    switch (PrintFlavorKind)
                     {
-                        switch (PrintFlavorKind)
-                        {
-                            case CppTypePrintFlavorKind.C:
-                                return "const char*";
-                            case CppTypePrintFlavorKind.Cpp:
-                                return "std::string";
-                            case CppTypePrintFlavorKind.ObjC:
-                                return "NSString";
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
+                        case CppTypePrintFlavorKind.C:
+                            return "const char*";
+                        case CppTypePrintFlavorKind.Cpp:
+                            return "std::string";
+                        case CppTypePrintFlavorKind.ObjC:
+                            return "NSString";
+                        default:
+                            throw new ArgumentOutOfRangeException();
                     }
+                }
                 case PrimitiveType.Decimal:
+                {
+                    switch (PrintFlavorKind)
                     {
-                        switch (PrintFlavorKind)
-                        {
-                            case CppTypePrintFlavorKind.C:
-                            case CppTypePrintFlavorKind.Cpp:
-                                return "_Decimal32";
-                            case CppTypePrintFlavorKind.ObjC:
-                                return "NSDecimalNumber";
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
+                        case CppTypePrintFlavorKind.C:
+                        case CppTypePrintFlavorKind.Cpp:
+                            return "_Decimal32";
+                        case CppTypePrintFlavorKind.ObjC:
+                            return "NSDecimalNumber";
+                        default:
+                            throw new ArgumentOutOfRangeException();
                     }
+                }
             }
 
             throw new NotSupportedException();
@@ -472,58 +472,64 @@ namespace CppSharp.Generators.C
             switch (scope)
             {
                 case TypePrintScopeKind.Local:
+                {
+                    if (ContextKind is TypePrinterContextKind.Managed or TypePrinterContextKind.Normal)
                     {
-                        if (ContextKind == TypePrinterContextKind.Managed)
-                        {
-                            return PrintLogicalNames ? declaration.LogicalName : declaration.Name;
-                        }
-
-                        if (PrefixSpecialFunctions)
-                        {
-                            if (declaration is Function { IsOperator: true } function)
-                                return $"operator_{function.OperatorKind}";
-                        }
-
-                        return PrintLogicalNames ? declaration.LogicalOriginalName
-                            : declaration.OriginalName;
+                        return PrintLogicalNames ? declaration.LogicalName : declaration.Name;
                     }
+
+                    if (PrefixSpecialFunctions)
+                    {
+                        if (declaration is Function { IsOperator: true } function)
+                            return $"operator_{function.OperatorKind}";
+                    }
+
+                    return PrintLogicalNames ? declaration.LogicalOriginalName
+                        : declaration.OriginalName;
+                }
                 case TypePrintScopeKind.Qualified:
+                {
+                    if (ContextKind == TypePrinterContextKind.Managed)
                     {
-                        if (ContextKind == TypePrinterContextKind.Managed)
+                        var outputNamespace = GlobalNamespace(declaration);
+                        if (!string.IsNullOrEmpty(outputNamespace))
                         {
-                            var outputNamespace = GlobalNamespace(declaration);
-                            if (!string.IsNullOrEmpty(outputNamespace))
-                            {
-                                return $"{outputNamespace}{NamespaceSeparator}{declaration.QualifiedName}";
-                            }
-
-                            return declaration.QualifiedName;
+                            return $"{outputNamespace}{NamespaceSeparator}{declaration.QualifiedName}";
                         }
 
-                        if (declaration.Namespace is Class)
-                        {
-                            var declName = GetDeclName(declaration, TypePrintScopeKind.Local);
-                            bool printTags = PrintTags;
-                            PrintTags = false;
-                            TypePrinterResult declContext = declaration.Namespace.Visit(this);
-                            PrintTags = printTags;
-                            return $"{declContext}{NamespaceSeparator}{declName}";
-                        }
-
-                        return PrintLogicalNames ? declaration.QualifiedLogicalOriginalName
-                            : declaration.QualifiedOriginalName;
+                        return declaration.QualifiedName;
                     }
+
+                    if (declaration.Namespace is Class)
+                    {
+                        var declName = GetDeclName(declaration, TypePrintScopeKind.Local);
+                        bool printTags = PrintTags;
+                        PrintTags = false;
+                        TypePrinterResult declContext = declaration.Namespace.Visit(this);
+                        PrintTags = printTags;
+                        return $"{declContext}{NamespaceSeparator}{declName}";
+                    }
+
+                    if (ContextKind == TypePrinterContextKind.Normal)
+                    {
+                        return PrintLogicalNames ? declaration.QualifiedLogicalName
+                            : declaration.QualifiedName;
+                    }
+
+                    return PrintLogicalNames ? declaration.QualifiedLogicalOriginalName
+                        : declaration.QualifiedOriginalName;
+                }
                 case TypePrintScopeKind.GlobalQualified:
-                    {
-                        var name = (ContextKind == TypePrinterContextKind.Managed) ?
-                                    declaration.Name : declaration.OriginalName;
+                {
+                    var name = (ContextKind == TypePrinterContextKind.Managed) ?
+                                declaration.Name : declaration.OriginalName;
 
-                        if (declaration.Namespace is Class)
-                            return $"{declaration.Namespace.Visit(this)}{NamespaceSeparator}{name}";
+                    if (declaration.Namespace is Class)
+                        return $"{declaration.Namespace.Visit(this)}{NamespaceSeparator}{name}";
 
-                        var qualifier = HasGlobalNamespacePrefix ? NamespaceSeparator : string.Empty;
-                        return qualifier + GetDeclName(declaration, TypePrintScopeKind.Qualified);
-                    }
+                    var qualifier = HasGlobalNamespacePrefix ? NamespaceSeparator : string.Empty;
+                    return qualifier + GetDeclName(declaration, TypePrintScopeKind.Qualified);
+                }
             }
 
             throw new NotSupportedException();

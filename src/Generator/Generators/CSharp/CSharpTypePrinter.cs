@@ -315,7 +315,7 @@ namespace CppSharp.Generators.CSharp
                     TemplateArgument lastArg = args.Last();
                     TypePrinterResult typePrinterResult = VisitDeclaration(decl);
                     typePrinterResult.NameSuffix.Append($@"<{string.Join(", ",
-                       args.Concat(Enumerable.Range(0, @class.TemplateParameters.Count - args.Count).Select(
+                       args.Concat(Enumerable.Range(0, @class.TemplateParameters?.Count ?? 0 - args.Count).Select(
                            i => lastArg)).Select(this.VisitTemplateArgument))}>");
                     return typePrinterResult;
                 }

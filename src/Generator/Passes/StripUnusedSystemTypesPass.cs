@@ -16,7 +16,7 @@ namespace CppSharp.Passes
             // we need this one for marshalling std::string
             foreach (var name in new[] { "allocator", "char_traits" })
             {
-                var forceIncludedClasses = context.FindClass(name, false, true)
+                var forceIncludedClasses = context.FindClass(name)
                     .Where(a => a.TranslationUnit.IsSystemHeader);
 
                 foreach (var usedStdType in forceIncludedClasses)
