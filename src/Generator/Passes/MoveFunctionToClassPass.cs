@@ -61,7 +61,7 @@ namespace CppSharp.Passes
                 string name = tu != null ? Options.GenerateFreeStandingFunctionsClassName(tu) :
                     function.Namespace.Name;
                 @class = ASTContext.FindClass(
-                    name, ignoreCase: true).FirstOrDefault(
+                    name).FirstOrDefault(
                         c => c.TranslationUnit.Module == function.TranslationUnit.Module &&
                             !c.IsIncomplete);
             }
