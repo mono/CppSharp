@@ -105,11 +105,10 @@ jobs:
       - name: Upload Artifacts
         # We only need a release version of this in the create_package job
         if: matrix.build-cfg == 'Release'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
-          name: intermediate-${{ matrix.build-cfg }}-${{ matrix.platform }}
+          name: intermediate-${{ runner.os }}-${{ matrix.build-cfg }}-${{ matrix.platform }}
           retention-days: 7
-          overwrite: true
           path: |
             artifacts
             include/**/*.h
@@ -134,9 +133,10 @@ jobs:
       - name: Set version
         run: nbgv cloud --all-vars
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
-          name: intermediate-Release-x64
+          pattern: intermediate*
+          merge-multiple: true
 
       - name: Setup
         shell: bash
