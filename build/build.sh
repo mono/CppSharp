@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -e
 builddir=$(cd "$(dirname "$0")"; pwd)
-platform=x64
 vs=vs2022
 configuration=DebugOpt
 build_only=false
@@ -18,8 +17,17 @@ oshost=""
 os=""
 test=
 
-if [[ $(uname -m) != *"64"* ]]; then
+_machine=$(uname -m)
+
+if [[ $_machine == "arm64" ]]; then
+  platform="arm64"
+elif [[ $_machine == "x86_64" ]]; then
+  platform="x64"
+elif [[ $_machine == "i686" ]]; then
   platform=x86
+else
+  echo "Unsupported machine type: ${_machine}"
+  exit 1
 fi
 
 build()
@@ -103,7 +111,7 @@ test()
 }
 
 clean()
-{  
+{
   rm -rf "$objdir"
   rm -rf "$gendir"
   rm -rf "$bindir"
@@ -125,14 +133,22 @@ download_premake()
 
   if ! [ -f "$premake_path" ]; then
     echo "Downloading and unpacking Premake..."
-    premake_version=5.0.0-beta2
+    unpack_filename=$premake_filename
+    if [ $oshost = "macosx" ]; then
+      # macOS needs a newer premake version which has arm64 (Apple Silicon) support
+      premake_version=5.0.0-beta8
+    else
+      # Other systems need an older premake that still works on Ubuntu 22.04
+      premake_version=5.0.0-beta2
+      unpack_filename=./${premake_filename}
+    fi
     premake_archive=premake-$premake_version-$oshost.$premake_archive_ext
     premake_url=https://github.com/premake/premake-core/releases/download/v$premake_version/$premake_archive
     curl -L -O $premake_url
     if [ $oshost = "windows" ]; then
       unzip $premake_archive $premake_filename -d "$premake_dir"
     else
-      tar -xf $premake_archive -C "$premake_dir" ./$premake_filename
+      tar -xf $premake_archive -C "$premake_dir" $unpack_filename
     fi
     chmod +x "$premake_path"
     rm $premake_archive
@@ -161,7 +177,9 @@ package_llvm()
 
 detect_os()
 {
-  case "$(uname -s)" in
+  local _system=$(uname -s)
+
+  case "${_system}" in
     Darwin)
       oshost=macosx
       ;;
@@ -172,7 +190,7 @@ detect_os()
       oshost=windows
       ;;
     *)
-      echo "Unsupported platform"
+      echo "Unsupported platform: ${_system}"
       exit 1
       ;;
   esac
@@ -202,7 +220,7 @@ while [[ $# > 0 ]]; do
     -configuration)
       configuration=$2
       shift
-      ;;      
+      ;;
     -platform)
       platform=$2
       shift
@@ -240,7 +258,7 @@ case "$cmd" in
     ;;
   generate_config)
     generate_config
-    ;;    
+    ;;
   prepack)
     prepack
     ;;
