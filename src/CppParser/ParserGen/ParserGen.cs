@@ -55,7 +55,7 @@ namespace CppSharp
             Console.WriteLine("Applying bootstrap patch...");
 
             foreach (var filePath in Directory.EnumerateFiles(BootstrapPatchPath,
-                         "*", 
+                         "*",
                          new EnumerationOptions
                      {
                         RecurseSubdirectories = true,
@@ -134,7 +134,7 @@ namespace CppSharp
             bool isArm = Triple.Contains("arm");
 
             var headersPath = Platform.IsLinux ? string.Empty :
-                Path.Combine(GetSourceDirectory("build"), "headers", 
+                Path.Combine(GetSourceDirectory("build"), "headers",
                     isArm ? "arm64-linux-gnu" : "x86_64-linux-gnu");
             options.SetupLinux(headersPath);
             options.AddDefines("_GLIBCXX_USE_CXX11_ABI=" + (IsGnuCpp11Abi ? "1" : "0"));
@@ -221,7 +221,7 @@ namespace CppSharp
                 Console.WriteLine();
             }
 
-            var osxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\osx");
+            var osxHeadersPath = Path.Combine(GetSourceDirectory("build"), "headers", "osx");
             if (Directory.Exists(osxHeadersPath) || Platform.IsMacOS)
             {
                 Console.WriteLine("Generating the C# parser bindings for OSX x86...");
@@ -237,7 +237,7 @@ namespace CppSharp
                 Console.WriteLine();
             }
 
-            var linuxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\x86_64-linux-gnu");
+            var linuxHeadersPath = Path.Combine(GetSourceDirectory("build"), "headers", "x86_64-linux-gnu");
             if (Directory.Exists(linuxHeadersPath) || Platform.IsLinux)
             {
                 Console.WriteLine("Generating the C# parser bindings for Linux...");
