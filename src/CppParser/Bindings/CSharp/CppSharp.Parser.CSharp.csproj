@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
@@ -11,6 +11,7 @@
     <PlatformParserFolder Condition="$(IsLinux) AND $(PlatformTarget) == x64 AND $(UseCXX11ABI)">x86_64-linux-gnu-cxx11abi</PlatformParserFolder>
     <PlatformParserFolder Condition="$(IsLinux) AND $(PlatformTarget) == x64 AND !$(UseCXX11ABI)">x86_64-linux-gnu</PlatformParserFolder>
     <PlatformParserFolder Condition="$(IsMacOSX) AND $(PlatformTarget) == x64">x86_64-apple-darwin12.4.0</PlatformParserFolder>
+    <PlatformParserFolder Condition="$(IsMacOSX) AND $(PlatformTarget) == ARM64">arm64-apple-darwin12.4.0</PlatformParserFolder>
     <PlatformParserFolder Condition="$(IsWindows) AND $(PlatformTarget) == x86">i686-pc-win32-msvc</PlatformParserFolder>
     <PlatformParserFolder Condition="$(IsMacOSX) AND $(PlatformTarget) == x86">i686-apple-darwin12.4.0</PlatformParserFolder>
   </PropertyGroup>
