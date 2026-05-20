@@ -5059,9 +5059,16 @@ ParserResult* ClangParser::ParseHeader(CppParserOptions* Opts)
         Parser parser(Opts);
 
         if (i < Headers.size() - 1)
-            delete parser.Parse({ Headers[i] });
-        else
+        {
             res = parser.Parse({ Headers[i] });
+            if (res->kind != ParserResultKind::Success)
+                return res;
+            delete res;
+        }
+        else
+        {
+            res = parser.Parse({ Headers[i] });
+        }
     }
 
     return res;
