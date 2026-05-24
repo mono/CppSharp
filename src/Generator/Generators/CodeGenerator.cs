@@ -427,7 +427,7 @@ namespace CppSharp.Generators
 
         public virtual bool VisitClassTemplateDecl(ClassTemplate template)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public virtual bool VisitClassTemplateSpecializationDecl(ClassTemplateSpecialization specialization)
@@ -437,7 +437,7 @@ namespace CppSharp.Generators
 
         public virtual bool VisitFunctionTemplateDecl(FunctionTemplate template)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public virtual bool VisitFunctionTemplateSpecializationDecl(FunctionTemplateSpecialization specialization)

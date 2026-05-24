@@ -66,8 +66,7 @@ namespace CppSharp
                     continue;
 
                 var iteratorType = GetIteratorType(method);
-                string iteratorTypeName = GetIteratorTypeName(iteratorType,
-                    CodeGeneratorHelpers.CppTypePrinter);
+                string iteratorTypeName = GetIteratorTypeName(iteratorType, CodeGeneratorHelpers.CppTypePrinter);
 
                 WriteLine($"VECTOR({iteratorTypeName}, {method.Name})");
             }
@@ -113,6 +112,12 @@ namespace CppSharp
                 NewLine();
                 return true;
             }
+
+            //PushBlock(BlockKind.Class, @class);
+
+            //GenerateDeclarationCommon(@class);
+
+            //GenerateClassSpecifier(@class);
 
             WriteLine($"{@class.Name}::{@class.Name}()");
             var stmtMember = isStmt ? "stmtClass" : @class.BaseClass.Name;
@@ -301,9 +306,22 @@ namespace CppSharp
             {
                 walkMethod = "WalkStatement";
             }
+            else if (iteratorTypeName.Contains("Attr"))
+            {
+                walkMethod = "WalkDeclaration";
+            }
+            else if (iteratorTypeName.Contains("CXXBaseSpecifier"))
+            {
+                walkMethod = "WalkDeclaration";
+            }
+            else if (iteratorTypeName.Contains("CXXCtorInitializer"))
+            {
+                walkMethod = "WalkDeclaration";
+            }
             else
             {
-                throw new NotImplementedException();
+                //throw new NotImplementedException();
+                walkMethod = "WalkDeclaration";
             }
 
             WriteLine("auto _ES = {0}{1}(_E);", isBaseType ? string.Empty : $"(AST::{iteratorTypeName})", walkMethod);
