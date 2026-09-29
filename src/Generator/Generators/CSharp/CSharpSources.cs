@@ -19,6 +19,7 @@ namespace CppSharp.Generators.CSharp
 {
     public class CSharpSources : CodeGenerator
     {
+	    public static Action<CSharpSources, Function> PostCallTextHook;
         public CSharpTypePrinter TypePrinter { get; set; }
         public CSharpExpressionPrinter ExpressionPrinter { get; protected set; }
 
@@ -3226,7 +3227,18 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                 names.Insert(0, Helpers.ReturnIdentifier);
             }
             WriteLine("{0}({1});", functionName, string.Join(", ", names));
+            
+            // Check if there is cleanup text inserted.
+            // If so, we wrap the PostCallTextHook in a try-finally block
+            var needsTryFinally = @params.Any(p => !string.IsNullOrWhiteSpace(p.Context.Cleanup.ToString())) && PostCallTextHook != null;
+            if (needsTryFinally)
+            {
+	            WriteLine("try");
+	            WriteOpenBraceAndIndent();
+            }
 
+            PostCallTextHook?.Invoke(this, function);
+            
             foreach (var param in @params)
             {
                 if (param.Param.IsInOut && param.Param.Type.TryGetReferenceToPtrToClass(out var classType) && classType.TryGetClass(out var @class))
@@ -3237,10 +3249,20 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
                     WriteLine($"{param.Param.Name} = {qualifiedClass}.__{get}CreateInstance(__{param.Name}, false);");
                 }
             }
+            
+            if (needsTryFinally)
+            {
+	            UnindentAndWriteCloseBrace();
+	            WriteLine("finally");
+	            WriteOpenBraceAndIndent();
+            }
 
             foreach (TextGenerator cleanup in from p in @params
                                               select p.Context.Cleanup)
                 Write(cleanup);
+            
+            if (needsTryFinally)
+	            UnindentAndWriteCloseBrace();
 
             if (needsReturn)
             {
