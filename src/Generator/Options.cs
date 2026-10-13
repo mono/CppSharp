@@ -155,6 +155,18 @@ namespace CppSharp
         internal bool GenerateNativeToManagedFor(Class @class) => GetClassGenerationOptions?.Invoke(@class)?.GenerateNativeToManaged ?? true;
 
         /// <summary>
+        /// C# only: a callback that returns the code emitted after each native
+        /// function call in the generated bindings. Return null or an empty string
+        /// to emit no custom code for a function.
+        /// </summary>
+        /// <remarks>
+        /// The emitted code runs after the native call returns and is wrapped in
+        /// a try-finally whenever a parameter requires cleanup, so it is safe for
+        /// the emitted code to throw.
+        /// </remarks>
+        public Func<Function, string> GeneratePostNativeCallText = null;
+
+        /// <summary>
         /// An internal convenience method that combines the effect of <see
         /// cref="GenerateFinalizers"/> and <see cref="GenerateFinalizersFilter"/>.
         /// </summary>
