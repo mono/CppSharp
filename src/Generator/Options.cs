@@ -160,9 +160,10 @@ namespace CppSharp
         /// to emit no custom code for a function.
         /// </summary>
         /// <remarks>
-        /// The emitted code runs after the native call returns and is wrapped in
-        /// a try-finally whenever a parameter requires cleanup, so it is safe for
-        /// the emitted code to throw.
+        /// The emitted code runs after the native call returns and after the
+        /// return value has been marshaled, and is wrapped in a try-finally
+        /// whenever a parameter requires cleanup, so it is safe for the
+        /// emitted code to throw.
         /// </remarks>
         public Func<Function, string> GeneratePostNativeCallText = null;
 

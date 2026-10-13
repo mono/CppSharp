@@ -3229,6 +3229,27 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
 
             var postCallText = Options.GeneratePostNativeCallText?.Invoke(function);
             var needsPostCallText = !string.IsNullOrWhiteSpace(postCallText);
+
+            // Marshal the return value before the post-call code so the native
+            // return value is converted and freed even when that code throws.
+            CSharpMarshalContext ctx = null;
+            if (needsReturn)
+            {
+                ctx = new CSharpMarshalContext(Context, CurrentIndentation)
+                {
+                    ArgName = Helpers.ReturnIdentifier,
+                    ReturnVarName = Helpers.ReturnIdentifier,
+                    ReturnType = returnType,
+                    Function = function
+                };
+
+                var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
+                retType.Visit(marshal);
+
+                if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
+                    Write(marshal.Context.Before);
+            }
+
             // Wrap the post-call code in a try-finally so the parameter cleanup
             // below still runs if the emitted code throws.
             var needsTryFinally = needsPostCallText &&
@@ -3271,24 +3292,10 @@ internal static{(@new ? " new" : string.Empty)} {printedClass} __GetInstance({Ty
 
             if (needsReturn)
             {
-                var ctx = new CSharpMarshalContext(Context, CurrentIndentation)
-                {
-                    ArgName = Helpers.ReturnIdentifier,
-                    ReturnVarName = Helpers.ReturnIdentifier,
-                    ReturnType = returnType,
-                    Function = function
-                };
-
-                var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
-                retType.Visit(marshal);
-
-                if (!string.IsNullOrWhiteSpace(marshal.Context.Before))
-                    Write(marshal.Context.Before);
-
                 if (ctx.HasCodeBlock)
                     Indent();
 
-                WriteLine($"return {marshal.Context.Return};");
+                WriteLine($"return {ctx.Return};");
 
                 if (ctx.HasCodeBlock)
                     UnindentAndWriteCloseBrace();
