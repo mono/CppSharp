@@ -226,3 +226,16 @@ template <typename K>
 class TestClassTemplatePartialSpecialization<int, K>
 {
 };
+
+class TestArrayParamOverrideBase
+{
+public:
+    virtual void Method(double values[2]);
+};
+
+// Array parameters are adjusted to pointers, so this overrides the base method despite the size
+class TestArrayParamOverrideDerived : public TestArrayParamOverrideBase
+{
+public:
+    void Method(double values[3]) override;
+};

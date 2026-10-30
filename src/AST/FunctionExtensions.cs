@@ -89,8 +89,27 @@ namespace CppSharp.AST
                 method.OriginalReturnType.ResolvesTo(@override.OriginalReturnType) &&
                 method.Parameters.Where(p => p.Kind != ParameterKind.IndirectReturnType).SequenceEqual(
                     @override.Parameters.Where(p => p.Kind != ParameterKind.IndirectReturnType),
-                    ParameterTypeComparer.Instance)) ||
+                    OverrideParameterComparer.Instance)) ||
                 (@override.IsDestructor && method.IsDestructor && method.IsVirtual);
+        }
+
+        /// <summary>
+        /// Compares parameter types as C++ does for overriding: array parameters are adjusted to
+        /// pointers, so e.g. <c>double values[2]</c> and <c>double values[3]</c> are the same.
+        /// </summary>
+        private class OverrideParameterComparer : IEqualityComparer<Parameter>
+        {
+            public static readonly OverrideParameterComparer Instance = new OverrideParameterComparer();
+
+            public bool Equals(Parameter x, Parameter y) =>
+                DecayArray(x.QualifiedType).ResolvesTo(DecayArray(y.QualifiedType));
+
+            public int GetHashCode(Parameter obj) => DecayArray(obj.QualifiedType).Type.GetHashCode();
+
+            private static QualifiedType DecayArray(QualifiedType type) =>
+                type.Type.Desugar() is ArrayType array
+                    ? new QualifiedType(new PointerType(array.QualifiedType), type.Qualifiers)
+                    : type;
         }
 
         public static bool NeedsSymbol(this Method method)

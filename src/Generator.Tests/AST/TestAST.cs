@@ -594,5 +594,17 @@ namespace CppSharp.Generator.Tests.AST
             var isVolatileMethod = hasMethodsClass.FindMethod("isVolatileMethod");
             Assert.That(isVolatileMethod.IsVolatile, Is.EqualTo(true));
         }
+
+        [Test]
+        public void TestOverrideWithDifferentArraySize()
+        {
+            var baseClass = AstContext.FindClass("TestArrayParamOverrideBase").First();
+            var derivedClass = AstContext.FindClass("TestArrayParamOverrideDerived").First();
+            var baseMethod = baseClass.Methods.First(m => m.Name == "Method");
+            var method = derivedClass.Methods.First(m => m.Name == "Method");
+
+            Assert.AreSame(baseMethod, derivedClass.GetBaseMethod(method));
+            Assert.IsTrue(method.IsGeneratedOverride());
+        }
     }
 }
