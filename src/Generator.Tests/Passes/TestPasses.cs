@@ -1,5 +1,6 @@
 ﻿using CodingSeb.ExpressionEvaluator;
 using CppSharp.AST;
+using CppSharp.Generators;
 using CppSharp.Generators.CSharp;
 using CppSharp.Passes;
 using NUnit.Framework;
@@ -509,6 +510,38 @@ namespace CppSharp.Generator.Tests.Passes
             var @protected = @class.Fields.Find(f => f.Name == "Protected");
             Assert.IsNotNull(@protected);
             Assert.AreEqual(AccessSpecifier.Protected, @protected.Access);
+        }
+
+        [Test]
+        public void TestDelegatesPassCLI()
+        {
+            Driver.Options.GeneratorKind = GeneratorKind.CLI;
+            passBuilder.AddPass(new DelegatesPass());
+            passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
+
+            // Delegates for virtual methods are only used by the C# generator to hook vtables
+            var @class = AstContext.FindDecl<Class>("TestDelegatesPassVirtualMethod").First();
+            var method = @class.Methods.First(m => m.Name == "VirtualMethod");
+            Assert.That(method.FunctionType.Type, Is.Not.InstanceOf<TypedefType>());
+            Assert.That(@class.Declarations.OfType<TypedefDecl>().Where(t => t.IsSynthetized), Is.Empty);
+
+            // Function pointers still get a delegate
+            var function = AstContext.FindFunction("TestDelegatesPassFunctionPointer").First();
+            Assert.That(function.Parameters[0].Type, Is.InstanceOf<TypedefType>());
+        }
+
+        [Test]
+        public void TestDelegatesPassCSharp()
+        {
+            passBuilder.AddPass(new DelegatesPass());
+            passBuilder.RunPasses(pass => pass.VisitASTContext(AstContext));
+
+            var @class = AstContext.FindDecl<Class>("TestDelegatesPassVirtualMethod").First();
+            var method = @class.Methods.First(m => m.Name == "VirtualMethod");
+            Assert.That(method.FunctionType.Type, Is.InstanceOf<TypedefType>());
+
+            var function = AstContext.FindFunction("TestDelegatesPassFunctionPointer").First();
+            Assert.That(function.Parameters[0].Type, Is.InstanceOf<TypedefType>());
         }
 
         private PassBuilder<TranslationUnitPass> passBuilder;
