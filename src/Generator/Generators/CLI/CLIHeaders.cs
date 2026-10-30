@@ -198,8 +198,10 @@ namespace CppSharp.Generators.CLI
                     : @namespace.Name
             };
 
-            // Merge nested namespaces into the parent namespace.
+            // Merge nested namespaces into the parent namespace, unless the parent has forward
+            // references of its own, which would otherwise not be generated.
             while (@namespace.Declarations.Count == 1 &&
+                   @namespace.TypeReferences.Count == 0 &&
                    @namespace.Declarations[0] is Namespace { IsInline: false } childNamespace)
             {
                 @namespace = childNamespace;
