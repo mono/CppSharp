@@ -112,6 +112,23 @@ public class CLITests
     }
 
     [Test]
+    public void TestOverrideWithDifferentArraySize()
+    {
+        var method = typeof(TestArrayParamOverrideDerived).GetMethod(nameof(TestArrayParamOverrideDerived.SumValues));
+        Assert.AreEqual(typeof(TestArrayParamOverrideBase), method.GetBaseDefinition().DeclaringType);
+
+        using (var derived = new TestArrayParamOverrideDerived())
+        {
+            Assert.AreEqual(6, derived.SumValues(new[] { 1, 2, 3 }));
+        }
+
+        using (var @base = new TestArrayParamOverrideBase())
+        {
+            Assert.AreEqual(3, @base.SumValues(new[] { 1, 2 }));
+        }
+    }
+
+    [Test]
     public void TestVectorPointerGetter()
     {
         using (VectorPointerGetter v = new VectorPointerGetter())

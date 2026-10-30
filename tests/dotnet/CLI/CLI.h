@@ -191,3 +191,17 @@ public:
     int CountList(std::vector<TestNullPointerParamTarget> targets) { return (int)targets.size(); }
     int SumArray(int values[3]) { return values[0] + values[1] + values[2]; }
 };
+
+class DLL_API TestArrayParamOverrideBase
+{
+public:
+    virtual ~TestArrayParamOverrideBase() {}
+    virtual int SumValues(int values[2]) { return values[0] + values[1]; }
+};
+
+// Array parameters are adjusted to pointers, so this overrides the base method despite the size
+class DLL_API TestArrayParamOverrideDerived : public TestArrayParamOverrideBase
+{
+public:
+    int SumValues(int values[3]) override { return values[0] + values[1] + values[2]; }
+};
