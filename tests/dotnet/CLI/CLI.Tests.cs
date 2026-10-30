@@ -45,6 +45,15 @@ public class CLITests
     }
 
     [Test]
+    public void TestForwardRefsWithNestedNamespace()
+    {
+        using (var consumer = new ForwardRefWithNestedNamespace())
+        {
+            Assert.AreEqual(42, consumer.ForwardDeclaredClass.Value);
+        }
+    }
+
+    [Test]
     public void TestChangePassedMappedTypeNonConstRefParam()
     {
         using (var consumer = new TestMappedTypeNonConstRefParamConsumer())

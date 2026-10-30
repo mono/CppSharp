@@ -1,2 +1,2 @@
 group "Tests/CLI"
-  SetupTestCLI("CLI", { "Employee", "EmployeeOrg", "ClassWithNestedEnum", "NestedEnumConsumer" })
+  SetupTestCLI("CLI", { "Employee", "EmployeeOrg", "ClassWithNestedEnum", "NestedEnumConsumer", "ForwardDeclaredClass", "ForwardRefWithNestedNamespace" })
