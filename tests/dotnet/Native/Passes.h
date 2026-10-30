@@ -261,3 +261,11 @@ class TestExtractInterfacePass
 public:
     void DoSomething();
 };
+
+class TestDelegatesPassVirtualMethod
+{
+public:
+    virtual int VirtualMethod(int i);
+};
+
+void TestDelegatesPassFunctionPointer(void (*callback)(int));

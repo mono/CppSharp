@@ -61,6 +61,8 @@ namespace CppSharp.Passes
         {
             if (!base.VisitMethodDecl(method) || !method.IsVirtual || method.Ignore)
                 return false;
+            if (Options.IsCLIGenerator)
+                return true;
 
             var functionType = new FunctionType
             {
