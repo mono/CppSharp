@@ -49,7 +49,7 @@ namespace CppSharp.Runtime
         public unsafe static IntPtr* CloneTable(List<SafeUnmanagedMemoryHandle> cache, IntPtr instance, int offset, int size, int offsetRTTI)
         {
             var sizeInBytes = (size + offsetRTTI) * sizeof(IntPtr);
-            var src = (((*(IntPtr*)instance) + offset) - offsetRTTI * sizeof(IntPtr)).ToPointer();
+            var src = (*(IntPtr**)(instance + offset) - offsetRTTI);
             var entries = (IntPtr*)Marshal.AllocHGlobal(sizeInBytes);
 
             Buffer.MemoryCopy(src, entries, sizeInBytes, sizeInBytes);
