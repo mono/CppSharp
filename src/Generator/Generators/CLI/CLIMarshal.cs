@@ -1,10 +1,10 @@
-using System;
-using System.Linq;
-using System.Text;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators.C;
 using CppSharp.Types;
+using System;
+using System.Linq;
+using System.Text;
 using Delegate = CppSharp.AST.Delegate;
 using Type = CppSharp.AST.Type;
 
@@ -715,8 +715,7 @@ namespace CppSharp.Generators.CLI
                 {
                     Context.Before.WriteLine($"if (ReferenceEquals({Context.Parameter.Name}, nullptr))");
                     Context.Before.WriteLineIndent(
-                        $@"throw gcnew ::System::ArgumentNullException(""{
-                            Context.Parameter.Name}"", ""Cannot be null because it is passed by value."");");
+                        $@"throw gcnew ::System::ArgumentNullException(""{Context.Parameter.Name}"", ""Cannot be null because it is passed by value."");");
                 }
             }
 
@@ -729,8 +728,11 @@ namespace CppSharp.Generators.CLI
                 return;
             }
 
-            Context.Return.Write($"({typePrinter.PrintTag(@class)}::{@class.QualifiedOriginalName}*)");
-            Context.Return.Write("{0}->NativePtr", Context.Parameter.Name);
+            var nativePointer = $"({typePrinter.PrintTag(@class)}::{@class.QualifiedOriginalName}*){Context.Parameter.Name}->NativePtr";
+            if (type.SkipPointerRefs().IsPointer())
+                Context.Return.Write($"{Context.Parameter.Name} != nullptr ? {nativePointer} : nullptr");
+            else
+                Context.Return.Write(nativePointer);
         }
 
         public void MarshalValueClass(Class @class)

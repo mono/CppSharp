@@ -66,6 +66,21 @@ public class CLITests
     }
 
     [Test]
+    public void TestNullPointerParameter()
+    {
+        using (var target = new TestNullPointerParamTarget())
+        using (var consumer = new TestNullPointerParam())
+        {
+            Assert.IsTrue(consumer.IsNull(null));
+            Assert.IsFalse(consumer.IsNull(target));
+            Assert.IsTrue(TestNullPointerParam.IsNullStatic(null));
+
+            Assert.Throws<ArgumentNullException>(() => consumer.TakesReference(null));
+            Assert.IsTrue(consumer.TakesReference(target));
+        }
+    }
+
+    [Test]
     public void TestVectorPointerGetter()
     {
         using (VectorPointerGetter v = new VectorPointerGetter())
