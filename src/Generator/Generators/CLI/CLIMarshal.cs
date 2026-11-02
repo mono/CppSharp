@@ -432,6 +432,10 @@ namespace CppSharp.Generators.CLI
                 case ArrayType.ArraySize.Constant:
                     if (string.IsNullOrEmpty(Context.ReturnVarName))
                     {
+                        Context.Before.WriteLine($"if (ReferenceEquals({Context.Parameter.Name}, nullptr))");
+                        Context.Before.WriteLineIndent(
+                            $@"throw gcnew ::System::ArgumentNullException(""{Context.Parameter.Name}"", ""Cannot be null because it is a C++ array of fixed size."");");
+
                         string arrayPtrRet = $"__{Context.ParameterIndex}ArrayPtr";
                         Context.Before.WriteLine($"{array.Type} {arrayPtrRet}[{array.Size}];");
 

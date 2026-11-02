@@ -1,10 +1,10 @@
-using System.Text;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators;
 using CppSharp.Generators.AST;
 using CppSharp.Generators.C;
 using CppSharp.Generators.CLI;
+using System.Text;
 
 namespace CppSharp.Types.Std.CLI
 {
@@ -165,6 +165,13 @@ namespace CppSharp.Types.Std.CLI
 
             var cppTypePrinter = new CppTypePrinter(Context);
             var nativeType = type.Type.Visit(cppTypePrinter);
+
+            if (ctx.Parameter == null || !ctx.Parameter.Type.Desugar().IsPointer())
+            {
+                ctx.Before.WriteLine($"if (ReferenceEquals({entryString}, nullptr))");
+                ctx.Before.WriteLineIndent(
+                    $@"throw gcnew ::System::ArgumentNullException(""{entryString}"", ""Cannot be null because it is a C++ std::vector."");");
+            }
 
             ctx.Before.WriteLine("auto {0} = std::vector<{1}>();",
                 tmpVarName, nativeType);
