@@ -176,3 +176,18 @@ public:
     static bool IsNullStatic(TestNullPointerParamTarget* target) { return target == nullptr; }
     bool TakesReference(TestNullPointerParamTarget& target) { return true; }
 };
+
+// Lists and fixed-size arrays with null and with null elements
+class DLL_API TestNullCollections
+{
+public:
+    int CountNullsInList(std::vector<TestNullPointerParamTarget*> targets)
+    {
+        int count = 0;
+        for (auto target : targets)
+            count += target == nullptr ? 1 : 0;
+        return count;
+    }
+    int CountList(std::vector<TestNullPointerParamTarget> targets) { return (int)targets.size(); }
+    int SumArray(int values[3]) { return values[0] + values[1] + values[2]; }
+};

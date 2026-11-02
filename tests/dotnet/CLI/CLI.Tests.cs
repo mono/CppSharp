@@ -81,6 +81,37 @@ public class CLITests
     }
 
     [Test]
+    public void TestNullLists()
+    {
+        using (var target = new TestNullPointerParamTarget())
+        using (var collections = new TestNullCollections())
+        {
+            // Elements that are pointers can be null
+            var targets = new System.Collections.Generic.List<TestNullPointerParamTarget> { target, null, null };
+            Assert.AreEqual(2, collections.CountNullsInList(targets));
+
+            // Elements passed by value cannot
+            Assert.AreEqual(1, collections.CountList(new System.Collections.Generic.List<TestNullPointerParamTarget> { target }));
+            Assert.Throws<ArgumentNullException>(() =>
+                collections.CountList(new System.Collections.Generic.List<TestNullPointerParamTarget> { null }));
+
+            // A std::vector cannot be null
+            Assert.Throws<ArgumentNullException>(() => collections.CountNullsInList(null));
+            Assert.Throws<ArgumentNullException>(() => collections.CountList(null));
+        }
+    }
+
+    [Test]
+    public void TestNullArrays()
+    {
+        using (var collections = new TestNullCollections())
+        {
+            Assert.AreEqual(6, collections.SumArray(new[] { 1, 2, 3 }));
+            Assert.Throws<ArgumentNullException>(() => collections.SumArray(null));
+        }
+    }
+
+    [Test]
     public void TestVectorPointerGetter()
     {
         using (VectorPointerGetter v = new VectorPointerGetter())
