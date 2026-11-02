@@ -163,3 +163,16 @@ struct TestAliasOFPrimitiveType
     f64     Func(f64 x)     { return x; }
 
 };
+
+class DLL_API TestNullPointerParamTarget
+{
+};
+
+// A pointer parameter can be null, a reference parameter cannot
+class DLL_API TestNullPointerParam
+{
+public:
+    bool IsNull(TestNullPointerParamTarget* target) { return target == nullptr; }
+    static bool IsNullStatic(TestNullPointerParamTarget* target) { return target == nullptr; }
+    bool TakesReference(TestNullPointerParamTarget& target) { return true; }
+};
