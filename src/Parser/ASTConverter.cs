@@ -847,7 +847,7 @@ namespace CppSharp
         readonly CommentConverter commentConverter;
         readonly StmtConverter stmtConverter;
 
-        readonly Dictionary<(IntPtr, DeclarationKind), AST.Declaration> Declarations;
+        readonly Dictionary<IntPtr, AST.Declaration> Declarations;
         readonly Dictionary<IntPtr, AST.PreprocessedEntity> PreprocessedEntities;
         readonly Dictionary<IntPtr, AST.FunctionTemplateSpecialization> FunctionTemplateSpecializations;
 
@@ -857,7 +857,7 @@ namespace CppSharp
             typeConverter = type;
             commentConverter = comment;
             stmtConverter = stmt;
-            Declarations = new Dictionary<(IntPtr, DeclarationKind), AST.Declaration>();
+            Declarations = new Dictionary<IntPtr, AST.Declaration>();
             PreprocessedEntities = new Dictionary<IntPtr, AST.PreprocessedEntity>();
             FunctionTemplateSpecializations = new Dictionary<IntPtr, AST.FunctionTemplateSpecialization>();
         }
@@ -872,12 +872,9 @@ namespace CppSharp
             if (decl.OriginalPtr == IntPtr.Zero)
                 throw new NotSupportedException("Original pointer must not be null");
 
-            var originalPtr = decl.OriginalPtr;
-
             // Check if the declaration was already handled and return its
             // existing instance.
-            var key = (decl.OriginalPtr, decl.Kind);
-            if (CheckForDuplicates(decl) && Declarations.TryGetValue(key, out var visit))
+            if (CheckForDuplicates(decl) && Declarations.TryGetValue(decl.__Instance, out var visit))
                 return visit;
 
             return base.Visit(decl);
@@ -982,7 +979,7 @@ namespace CppSharp
 
         void VisitDeclaration(Declaration decl, AST.Declaration _decl)
         {
-            var key = (decl.OriginalPtr, decl.Kind);
+            var key = decl.__Instance;
 
             if (CheckForDuplicates(decl))
             {
