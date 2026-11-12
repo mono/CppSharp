@@ -57,14 +57,16 @@ end
 
 function get_vs_version()
   local function map_msvc_to_vs_version(major, minor)
-	if major == "19" and minor >= "30" then return "vs2022"
+	if major == "19" and minor >= "50" then return "vs2026"
+    elseif major == "19" and minor >= "30" then return "vs2022"
     elseif major == "19" and minor >= "20" then return "vs2019"
     elseif major == "19" and minor >= "10" then return "vs2017"
     end
   end
 
   local function map_msbuild_to_vs_version(major, minor)
-	if major == "17" then return "vs2022"
+	if major == "18" then return "vs2026"
+    elseif major == "17" then return "vs2022"
     elseif major == "16" then return "vs2019"
     elseif major == "15" then return "vs2017"
 	end
@@ -101,6 +103,12 @@ function get_toolset_configuration_name(arch)
 
     if not string.starts(vsver, "vs") then
       vsver = get_vs_version()
+    end
+
+    -- Visual Studio 2026 (MSVC 14.5x) is binary compatible with Visual Studio 2022
+    -- (MSVC 14.3x), so it uses the same LLVM packages.
+    if vsver == "vs2026" then
+      vsver = "vs2022"
     end
 
     return table.concat({vsver, arch}, "-")
@@ -418,7 +426,9 @@ end
 
 function get_cmake_generator()
 	local vsver = get_vs_version()
-	if vsver == "vs2022" then
+	if vsver == "vs2026" then
+		return "Visual Studio 18 2026", (target_architecture() == "x86") and "-A Win32" or nil
+	elseif vsver == "vs2022" then
 		return "Visual Studio 17 2022", (target_architecture() == "x86") and "-A Win32" or nil
 	elseif vsver == "vs2019" then
 		return "Visual Studio 16 2019", (target_architecture() == "x86") and "-A Win32" or nil
@@ -444,7 +454,11 @@ function build_llvm(llvm_build)
 	if os.ishost("windows") and use_msbuild then
 		local cmake_generator, options = get_cmake_generator()
 		cmake(cmake_generator, conf, llvm_build, options)
+		-- CMake's Visual Studio 2026 generator writes a .slnx solution.
 		local llvm_sln = path.join(llvm_build, "LLVM.sln")
+		if not os.isfile(llvm_sln) then
+			llvm_sln = path.join(llvm_build, "LLVM.slnx")
+		end
 		platform = nil
 		if target_architecture() == "x86" then
 			platform = "Win32"

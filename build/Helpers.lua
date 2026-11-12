@@ -98,7 +98,7 @@ function SetupNativeProject()
   location (path.join(actionbuilddir, "projects"))
   files { "*.lua" }
   cppdialect "c++17"
-  flags { "MultiProcessorCompile" }
+  multiprocessorcompile "On"
   justmycode "On"
   functionlevellinking "On"
 

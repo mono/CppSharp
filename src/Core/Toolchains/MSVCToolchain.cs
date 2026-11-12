@@ -17,6 +17,7 @@ namespace CppSharp
         VS2017 = 15,
         VS2019 = 16,
         VS2022 = 17,
+        VS2026 = 18,
         Latest,
     }
 
@@ -71,8 +72,11 @@ namespace CppSharp
                     clVersion = new Version { Major = 19, Minor = 20 };
                     break;
                 case VisualStudioVersion.VS2022:
-                case VisualStudioVersion.Latest:
                     clVersion = new Version { Major = 19, Minor = 30 };
+                    break;
+                case VisualStudioVersion.VS2026:
+                case VisualStudioVersion.Latest:
+                    clVersion = new Version { Major = 19, Minor = 50 };
                     break;
                 default:
                     throw new Exception("Unknown Visual Studio version");

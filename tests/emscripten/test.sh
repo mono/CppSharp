@@ -64,7 +64,7 @@ fi
 # 2) Build
 echo "${green}Building generated binding files (make config: $make_configuration)${reset}"
 premake="$rootdir/build/premake.sh"
-"$premake" --file=$dir/premake5.lua gmake2
+"$premake" --file=$dir/premake5.lua gmake
 config=$make_configuration emmake make -C "$dir/gen"
 
 # 3) Test

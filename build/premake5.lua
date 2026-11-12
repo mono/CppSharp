@@ -36,7 +36,7 @@ workspace "CppSharp"
 
   matches = os.matchfiles(path.join(rootdir, "*"))
   for _, file in ipairs(matches) do
-    if not string.endswith(file, ".sln") then
+    if not string.endswith(file, ".sln") and not string.endswith(file, ".slnx") then
       workspacefiles(file)
     end
   end
