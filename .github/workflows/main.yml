@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04, windows-2022]
+        os: [ubuntu-22.04, windows-2022, macos-13]
         platform: [x64]
         build-cfg: [Debug, DebugOpt, Release]
         include:
