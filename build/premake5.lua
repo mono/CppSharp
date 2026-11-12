@@ -22,6 +22,7 @@ workspace "CppSharp"
   characterset "Unicode"
   symbols "On"
 
+  preferredtoolarchitecture "x86_64"
   location (actionbuilddir)
   objdir (prjobjdir)
   targetdir (bindircfg)
