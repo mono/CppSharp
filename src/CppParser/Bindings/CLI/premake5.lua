@@ -7,7 +7,6 @@ project "CppSharp.Parser.CLI"
   language "C++"
 
   dependson { "CppSharp.CppParser" }
-  flags { common_flags }
   clr "NetCore"
   
   filter { "configurations:Debug*" }

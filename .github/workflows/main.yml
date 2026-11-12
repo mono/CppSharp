@@ -13,11 +13,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04, windows-2022]
+        os: [ubuntu-22.04, windows-2025-vs2026]
         platform: [x64]
         build-cfg: [Debug, DebugOpt, Release]
         include:
-          - os: windows-2022
+          - os: windows-2025-vs2026
             platform: x64
             build-cfg: Debug
 
@@ -26,7 +26,7 @@ jobs:
     env:
       CC: ${{ startsWith(matrix.os, 'ubuntu') && 'gcc-11' || 'clang' }}
       CXX: ${{ startsWith(matrix.os, 'ubuntu') && 'g++-11' || 'clang++' }}
-      VS_VERSION: "Program Files/Microsoft Visual Studio/2022"
+      VS_VERSION: "Program Files/Microsoft Visual Studio/18"
       PLATFORM: ${{ matrix.platform }}
       BUILD_CONFIGURATION: ${{ matrix.build-cfg }}
       DOTNET_NOLOGO: true
@@ -138,7 +138,7 @@ jobs:
             include/**/*.h
 
   create_package:
-    runs-on: windows-2022
+    runs-on: windows-2025-vs2026
     needs: build
     if: |
       (github.event_name == 'push' && (github.ref == 'refs/heads/main' || contains(github.ref, 'nuget') || startsWith(github.ref, 'refs/tags/v'))) ||

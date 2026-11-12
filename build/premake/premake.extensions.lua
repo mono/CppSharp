@@ -20,3 +20,20 @@ premake.override(premake.vstudio.sln2005, "projects", function(base, wks)
   end
   base(wks)
 end)
+
+-- Visual Studio 2026 writes .slnx solutions, where solution items are files in a folder.
+if premake.vstudio.sln2026 then
+  premake.override(premake.vstudio.sln2026, "projects", function(base, wks)
+    if wks.workspacefiles and #wks.workspacefiles > 0 then
+      premake.push('<Folder Name="/Solution Items/">')
+      for _, pattern in ipairs(wks.workspacefiles) do
+        local matches = os.matchfiles(pattern)
+        for _, file in ipairs(matches) do
+          premake.w('<File Path="%s" />', path.getrelative(wks.location, file))
+        end
+      end
+      premake.pop('</Folder>')
+    end
+    base(wks)
+  end)
+end

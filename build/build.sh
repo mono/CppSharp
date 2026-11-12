@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 builddir=$(cd "$(dirname "$0")"; pwd)
-vs=vs2022
+vs=vs2026
 configuration=DebugOpt
 build_only=false
 ci=false
@@ -75,7 +75,7 @@ generate()
   fi
 
   if [ "$os" = "linux" ] || [ "$os" = "macosx" ]; then
-    "$builddir/premake.sh" --file="$builddir/premake5.lua" gmake2 --os=$os --arch=$platform --configuration=$configuration --target-framework=$target_framework "$@"
+    "$builddir/premake.sh" --file="$builddir/premake5.lua" gmake --os=$os --arch=$platform --configuration=$configuration --target-framework=$target_framework "$@"
   fi
 
   "$builddir/premake.sh" --file="$builddir/premake5.lua" $vs --os=$os --arch=$platform --configuration=$configuration --target-framework=$target_framework
@@ -131,24 +131,23 @@ download_premake()
   fi
   premake_path=$premake_dir/$premake_filename
 
-  if ! [ -f "$premake_path" ]; then
+  premake_version=5.0.0
+
+  # The macOS package is built for arm64 (Apple Silicon), Intel Macs need the x64 one
+  premake_os=$oshost
+  if [ $oshost = "macosx" ] && [ "$_machine" != "arm64" ]; then
+    premake_os=macosx-x64
+  fi
+
+  if ! [ -f "$premake_path" ] || [ "$("$premake_path" --version | tr -d '[:cntrl:]' | awk '{print $NF}')" != "$premake_version" ]; then
     echo "Downloading and unpacking Premake..."
-    unpack_filename=$premake_filename
-    if [ $oshost = "macosx" ]; then
-      # macOS needs a newer premake version which has arm64 (Apple Silicon) support
-      premake_version=5.0.0-beta8
-    else
-      # Other systems need an older premake that still works on Ubuntu 22.04
-      premake_version=5.0.0-beta2
-      unpack_filename=./${premake_filename}
-    fi
-    premake_archive=premake-$premake_version-$oshost.$premake_archive_ext
+    premake_archive=premake-$premake_version-$premake_os.$premake_archive_ext
     premake_url=https://github.com/premake/premake-core/releases/download/v$premake_version/$premake_archive
     curl -L -O $premake_url
     if [ $oshost = "windows" ]; then
-      unzip $premake_archive $premake_filename -d "$premake_dir"
+      unzip -o $premake_archive $premake_filename -d "$premake_dir"
     else
-      tar -xf $premake_archive -C "$premake_dir" $unpack_filename
+      tar -xf $premake_archive -C "$premake_dir" $premake_filename
     fi
     chmod +x "$premake_path"
     rm $premake_archive
@@ -248,6 +247,11 @@ while [[ $# > 0 ]]; do
   esac
   shift
 done
+
+# Premake generates a .slnx solution for Visual Studio 2026
+if [ $vs = "vs2026" ]; then
+  slnpath="$rootdir/CppSharp.slnx"
+fi
 
 case "$cmd" in
   clean)

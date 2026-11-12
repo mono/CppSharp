@@ -8,14 +8,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2022]
+        os: [windows-2025-vs2026]
         platform: [x64]
         build-cfg: [Debug, DebugOpt, Release]
 
     runs-on: ${{ matrix.os }}
 
     env:
-      VS_VERSION: "Program Files/Microsoft Visual Studio/2022"
+      VS_VERSION: "Program Files/Microsoft Visual Studio/18"
       PLATFORM: ${{ matrix.platform }}
       BUILD_CONFIGURATION: ${{ matrix.build-cfg }}
       ACTIONS_ALLOW_UNSECURE_COMMANDS: true

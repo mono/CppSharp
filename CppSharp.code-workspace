@@ -5,9 +5,9 @@
         }
     ],
     "settings": {
-        "omnisharp.defaultLaunchSolution": "build/vs2019/CppSharp.sln",
+        "omnisharp.defaultLaunchSolution": "CppSharp.slnx",
         "vssolution.altSolutionFolders": [
-            "build/vs2019"
+            "build/vs2026"
         ],
         "files.associations": {
             "algorithm": "cpp",
