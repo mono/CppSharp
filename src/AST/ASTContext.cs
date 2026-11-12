@@ -75,20 +75,18 @@ namespace CppSharp.AST
         }
 
         /// Finds an existing struct/class in the library modules.
-        public IEnumerable<Class> FindClass(string name, bool create = false,
-            bool ignoreCase = false)
+        public IEnumerable<Class> FindClass(string name, bool create = false)
         {
             return TranslationUnits.Select(
-                module => module.FindClass(name,
-                    ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal))
+                module => module.FindClass(name))
                 .Where(type => type != null);
         }
 
         /// Finds the complete declaration of a class.
-        public Class FindCompleteClass(string name, bool ignoreCase = false)
+        public Class FindCompleteClass(string name)
         {
-            return FindClass(name, ignoreCase: ignoreCase).FirstOrDefault(
-                @class => !@class.IsIncomplete);
+            return FindClass(name)
+                .FirstOrDefault(@class => !@class.IsIncomplete);
         }
 
         /// Finds an existing function in the library modules.

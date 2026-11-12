@@ -9,6 +9,44 @@ using CppSharp.Passes;
 
 namespace CppSharp
 {
+    class TemplateArgumentHandler
+    {
+        public static string GetTemplateArgumentTypeName(TemplateArgument arg, CppTypePrinter printer)
+        {
+            switch (arg.Kind)
+            {
+                case TemplateArgument.ArgumentKind.Type:
+                    return GetTemplateTypeArgName(arg.Type, printer);
+                case TemplateArgument.ArgumentKind.Declaration:
+                    return GetTemplateDeclArgName(arg.Declaration, printer);
+                case TemplateArgument.ArgumentKind.NullPtr:
+                    return "nullptr_t";
+                case TemplateArgument.ArgumentKind.Integral:
+                    return GetTemplateIntegralArgName(arg.Integral, printer);
+                default:
+                    throw new NotImplementedException($"Unhandled template argument kind: {arg.Kind}");
+            }
+        }
+
+        private static string GetTemplateTypeArgName(QualifiedType type, CppTypePrinter printer)
+        {
+            var typeStr = type.Type.Visit(printer).Type;
+            if (type.Type.IsPointer())
+                return $"{typeStr}*";
+            return typeStr;
+        }
+
+        private static string GetTemplateDeclArgName(Declaration decl, CppTypePrinter printer)
+        {
+            return decl?.Visit(printer).Type ?? "nullptr";
+        }
+
+        private static string GetTemplateIntegralArgName(long value, CppTypePrinter printer)
+        {
+            return value.ToString();
+        }
+    }
+
     internal static class CodeGeneratorHelpers
     {
         internal static CppTypePrinter CppTypePrinter;
@@ -31,6 +69,17 @@ namespace CppSharp
                 or "OverloadExpr"
                 or "CoroutineSuspendExpr";
 
+        public static bool SkipClass(Class @class)
+        {
+            if (!@class.IsGenerated)
+                return true;
+
+            if (@class.Access != AccessSpecifier.Public)
+                return true;
+
+            return false;
+        }
+
         public static bool SkipProperty(Property property, bool skipBaseCheck = false)
         {
             if (!property.IsGenerated)
@@ -47,8 +96,7 @@ namespace CppSharp
                     return true;
             }
 
-            if (property.Name is "beginLoc" or "endLoc" &&
-                @class.Name != "Stmt")
+            if (property.Name is "beginLoc" or "endLoc" && @class.Name != "Stmt")
                 return true;
 
             switch (property.Name)
@@ -62,11 +110,22 @@ namespace CppSharp
 
             var typeName = property.Type.Visit(CppTypePrinter).Type;
 
+            // General properties.
+            if (typeName.Contains("_iterator") ||
+                typeName.Contains("_range") ||
+                property.Name.Contains("_begin") ||
+                property.Name.Contains("_end") ||
+                property.Name.Contains("_empty") ||
+                property.Name.Contains("_size"))
+                return true;
+
+
+            return false;
             //
             // Statement properties.
             //
 
-            if (typeName.Contains("LabelDecl") ||
+            /*if (typeName.Contains("LabelDecl") ||
                 typeName.Contains("VarDecl") ||
                 typeName.Contains("Token") ||
                 typeName.Contains("CapturedDecl") ||
@@ -78,7 +137,7 @@ namespace CppSharp
                 typeName.Contains("NestedNameSpecifierLoc") ||
                 typeName.Contains("DeclarationNameInfo") ||
                 typeName.Contains("DeclGroupRef"))
-                return true;
+                return true;*/
 
             //
             // Expressions
@@ -210,11 +269,6 @@ namespace CppSharp
             if (typeName.Contains("StorageDuration"))
                 return true;
 
-            // General properties.
-            if (typeName.Contains("_iterator") ||
-                typeName.Contains("_range"))
-                return true;
-
             if (typeName.Contains("ArrayRef"))
                 return true;
 
@@ -247,7 +301,7 @@ namespace CppSharp
 
         public static bool SkipMethod(Method method)
         {
-            if (method.Ignore)
+            if (method.IsGenerated)
                 return true;
 
             var @class = method.Namespace as Class;
@@ -309,7 +363,7 @@ namespace CppSharp
             else if (qualifiedName.Contains("Semantics"))
                 qualifiedName = qualifiedName.Replace(
                     typePrinter is CppTypePrinter ? "llvm::APFloatBase::Semantics" : "llvm.APFloatBase.Semantics"
-                , "FloatSemantics");
+                    , "FloatSemantics");
 
             return qualifiedName;
         }
@@ -319,11 +373,13 @@ namespace CppSharp
 
         private static string CleanClangNamespaceFromName(string qualifiedName)
         {
-            qualifiedName = qualifiedName.StartsWith("clang::") ?
-                qualifiedName.Substring("clang::".Length) : qualifiedName;
+            qualifiedName = qualifiedName.StartsWith("clang::")
+                ? qualifiedName.Substring("clang::".Length)
+                : qualifiedName;
 
-            qualifiedName = qualifiedName.StartsWith("clang.") ?
-                qualifiedName.Substring("clang.".Length) : qualifiedName;
+            qualifiedName = qualifiedName.StartsWith("clang.")
+                ? qualifiedName.Substring("clang.".Length)
+                : qualifiedName;
 
             return qualifiedName;
         }
@@ -334,8 +390,14 @@ namespace CppSharp
 
             if (kind == GeneratorKind.CPlusPlus)
             {
-                if (Generators.C.CCodeGenerator.IsReservedKeyword(name))
+                if (name == "inline")
+                {
+                    name = "isInline";
+                }
+                else if (Generators.C.CCodeGenerator.IsReservedKeyword(name))
+                {
                     name = $"_{name}";
+                }
             }
             else if (kind == GeneratorKind.CSharp)
             {
@@ -371,7 +433,7 @@ namespace CppSharp
             TypePrinter typePrinter)
         {
             var qualifiedType = new QualifiedType(type);
-            if (qualifiedType.Type.IsPointerTo(out TagType tagType))
+            if (qualifiedType.Type.IsPointerTo(out TagType _))
                 qualifiedType = qualifiedType.StripConst();
 
             var typeName = qualifiedType.Type.Visit(typePrinter).Type;
@@ -392,7 +454,8 @@ namespace CppSharp
 
             if (typeResult.Type.Contains("MSGuidDecl"))
                 return typePrinter is CppTypePrinter
-                    ? "std::string" : "string";
+                    ? "std::string"
+                    : "string";
 
             var typeName = typeResult.ToString();
             typeName = CleanClangNamespaceFromName(typeName);
@@ -421,62 +484,23 @@ namespace CppSharp
                 }
             }
 
-            string className = null;
-            if (typeName.Contains("FieldDecl"))
-                className = "Field";
-            else if (typeName.Contains("NamedDecl"))
-                className = "Declaration";
-            else if (typeName.Contains("CXXMethodDecl"))
-                className = "Method";
-            else if (typeName.Contains("FunctionDecl"))
-                className = "Function";
-            else if (typeName.Contains("FunctionTemplateDecl"))
-                className = "FunctionTemplate";
-            else if (typeName is "Decl" or "Decl*")
-                className = "Declaration";
-
-            if (className != null)
-                return (typePrinter is CppTypePrinter) ?
-                 $"{className}*" : className;
-
             return typeName;
         }
 
         public static AST.Type GetIteratorType(Method method)
         {
-            var retType = method.ReturnType.Type;
+            var retType = method.ReturnType.Type.Desugar();
 
-            TemplateSpecializationType templateSpecType;
-            TypedefType typedefType;
-            TypedefNameDecl typedefNameDecl;
+            if (retType is TemplateSpecializationType templateSpecType)
+                retType = templateSpecType.Arguments[0].Type.Type.Desugar();
 
-            if (retType is TemplateSpecializationType)
-            {
-                templateSpecType = retType as TemplateSpecializationType;
-                typedefType = templateSpecType.Arguments[0].Type.Type as TypedefType;
-                typedefNameDecl = typedefType.Declaration as TypedefNameDecl;
-            }
-            else
-            {
-                typedefType = retType as TypedefType;
-                typedefNameDecl = typedefType.Declaration as TypedefNameDecl;
-                templateSpecType = typedefNameDecl.Type as TemplateSpecializationType;
-                typedefType = templateSpecType.Arguments[0].Type.Type as TypedefType;
-                typedefNameDecl = typedefType.Declaration as TypedefNameDecl;
-                typedefType = typedefNameDecl.Type as TypedefType;
-                if (typedefType != null)
-                    typedefNameDecl = typedefType.Declaration as TypedefNameDecl;
-            }
+            if (retType.IsPointerTo(out PointerType pointee))
+                retType = pointee;
 
-            var iteratorType = typedefNameDecl.Type;
-            if (iteratorType.IsPointerTo(out PointerType pointee))
-                iteratorType = iteratorType.GetPointee();
-
-            return iteratorType;
+            return retType;
         }
 
-        public static string GetIteratorTypeName(AST.Type iteratorType,
-            TypePrinter typePrinter)
+        public static string GetIteratorTypeName(AST.Type iteratorType, TypePrinter typePrinter)
         {
             if (iteratorType.IsPointer())
                 iteratorType = iteratorType.GetFinalPointee();
@@ -493,7 +517,8 @@ namespace CppSharp
             else if (iteratorTypeName.Contains("StmtIterator"))
                 iteratorTypeName = "Stmt";
 
-            else if (iteratorTypeName.Contains("CastIterator"))
+            else if (iteratorTypeName.Contains("CastIterator") ||
+                     iteratorTypeName.Contains("DeclContext::"))
             {
                 if (iteratorType is TypedefType typedefType)
                     iteratorType = typedefType.Declaration.Type;
@@ -507,9 +532,6 @@ namespace CppSharp
 
                 iteratorTypeName = CleanClangNamespaceFromName(iteratorTypeName);
             }
-
-            if (iteratorTypeName == "Decl")
-                iteratorTypeName = "Declaration";
 
             if (typePrinter is CppTypePrinter)
                 return $"{iteratorTypeName}*";
@@ -525,8 +547,7 @@ namespace CppSharp
             while (currentClass != null)
             {
                 baseClasses.Add(currentClass);
-                currentClass = currentClass.HasBaseClass ?
-                    currentClass.BaseClass : null;
+                currentClass = currentClass.HasBaseClass ? currentClass.BaseClass : null;
             }
 
             baseClasses.Reverse();
@@ -546,6 +567,110 @@ namespace CppSharp
             char[] a = s.ToCharArray();
             a[0] = char.ToUpper(a[0]);
             return new string(a);
+        }
+
+        public static bool SkipDeclProperty(Property property)
+        {
+            if (!property.IsGenerated || property.Access != AccessSpecifier.Public)
+                return true;
+
+            var @class = property.Namespace as Class;
+
+            if (@class.GetBaseProperty(property) != null)
+                return true;
+
+            var typeName = property.Type.Visit(CppTypePrinter).Type;
+
+            // Skip properties that deal with source locations/ranges
+            if (typeName.Contains("SourceLocation") || typeName.Contains("SourceRange"))
+                return true;
+
+            // Skip Clang-specific internal properties
+            if (typeName.Contains("ASTContext") || typeName.Contains("DeclContext"))
+                return true;
+
+            // Skip template-specific properties that are handled separately
+            if (typeName.Contains("TemplateParameterList") ||
+                typeName.Contains("TemplateArgument"))
+                return true;
+
+            return false;
+        }
+
+        public static bool SkipTypeProperty(Property property)
+        {
+            if (!property.IsGenerated || property.Access != AccessSpecifier.Public)
+                return true;
+
+            var @class = property.Namespace as Class;
+
+            if (@class.GetBaseProperty(property) != null)
+                return true;
+
+            var typeName = property.Type.Visit(CppTypePrinter).Type;
+
+            // Skip source location properties
+            if (typeName.Contains("SourceLocation"))
+                return true;
+
+            // Skip internal Clang type properties
+            if (typeName.Contains("TypeLoc") || typeName.Contains("ASTContext"))
+                return true;
+
+            return false;
+        }
+
+        public static bool IsAbstractType(Class @class) =>
+            @class.Name is "Type"
+                or "ArrayType"
+                or "TagType"
+                or "FunctionType";
+
+        public static bool IsAbstractDecl(Class @class) =>
+            @class.Name is "Decl"
+                or "NamedDecl"
+                or "ValueDecl"
+                or "TypeDecl"
+                or "DeclContext";
+
+        public static string GetPropertyAccessorName(Property property, bool isGetter)
+        {
+            var baseName = FirstLetterToUpperCase(GetDeclName(property));
+            return isGetter ? $"Get{baseName}" : $"Set{baseName}";
+        }
+
+        public static string GetPropertyTypeName(Property property, bool includeNamespace = true)
+        {
+            var typeName = GetDeclTypeName(property);
+
+            // Handle special cases
+            if (typeName.Contains("QualType") ||
+                (property.Type.IsPointerTo(out TagType tagType) &&
+                 tagType.Declaration?.Name.Contains("Type") == true))
+            {
+                return includeNamespace ? $"AST::{typeName}" : typeName;
+            }
+
+            // Handle template types
+            if (property.Type is TemplateSpecializationType templateType)
+            {
+                var templateName = templateType.Template.TemplatedDecl.Name;
+                return includeNamespace ? $"AST::{templateName}" : templateName;
+            }
+
+            return typeName;
+        }
+
+        public static bool IsTypeProperty(Property property)
+        {
+            if (property.Type.IsPointerTo(out TagType tagType))
+                return tagType.Declaration?.Name.Contains("Type") == true;
+
+            var typeName = GetDeclTypeName(property);
+            return typeName.Contains("QualType") ||
+                   typeName.Contains("Type") ||
+                   (property.Type is TemplateSpecializationType templateType &&
+                    templateType.Template.TemplatedDecl.Name.Contains("Type"));
         }
     }
 }

@@ -223,6 +223,22 @@ namespace CppSharp.AST
             return namespaces;
         }
 
+        public DeclarationContext GetRootNamespace()
+        {
+            var currentNamespace = Namespace;
+            while (currentNamespace.Namespace != null)
+                currentNamespace = currentNamespace.Namespace;
+
+            return currentNamespace;
+        }
+
+        public void MoveToNamespace(DeclarationContext @namespace)
+        {
+            Namespace = @namespace;
+            OriginalNamespace?.Declarations.Remove(this);
+            Namespace?.Declarations.Add(this);
+        }
+
         public string QualifiedName
         {
             get

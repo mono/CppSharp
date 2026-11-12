@@ -203,17 +203,33 @@ namespace CppSharp.AST
             };
         }
 
-        public Class FindClass(string name,
-            StringComparison stringComparison = StringComparison.Ordinal)
+        public Class FindClass(string name)
         {
-            if (string.IsNullOrEmpty(name)) return null;
+            if (string.IsNullOrEmpty(name))
+                return null;
 
-            var @class = Classes.FirstOrDefault(c => c.Name.Equals(name, stringComparison)) ??
-                Namespaces.Select(n => n.FindClass(name, stringComparison)).FirstOrDefault(c => c != null);
-            if (@class != null)
-                return @class.CompleteDeclaration == null ?
-                    @class : (Class)@class.CompleteDeclaration;
-            return null;
+            var entries = name.Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries)
+                .ToArray();
+
+            if (entries.Length <= 1)
+            {
+                var @class = Classes.FirstOrDefault(e => e.Name.Equals(name));
+
+                if (@class == null)
+                    return null;
+
+                if (@class.CompleteDeclaration == null)
+                    return @class;
+
+                return (Class)@class.CompleteDeclaration;
+            }
+
+            var className = entries[^1];
+            var namespaces = entries.Take(entries.Length - 1);
+
+            var @namespace = FindNamespace(namespaces);
+
+            return @namespace?.FindClass(className);
         }
 
         public Class FindClass(string name, bool isComplete,

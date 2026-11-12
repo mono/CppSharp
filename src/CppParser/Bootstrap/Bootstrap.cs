@@ -19,7 +19,7 @@ namespace CppSharp
     /// </summary>
     internal class Bootstrap : ILibrary
     {
-        private static bool CreatePatch = true;
+        private static bool CreatePatch = false;
         private static string OutputPath = CreatePatch ? "BootstrapPatch" : "";
 
         private static string GetSourceDirectory(string dir)
@@ -55,6 +55,7 @@ namespace CppSharp
         {
             driver.Options.GeneratorKind = GeneratorKind.CSharp;
             driver.Options.DryRun = true;
+            driver.ParserOptions.Verbose = true;
             driver.ParserOptions.EnableRTTI = true;
             driver.ParserOptions.LanguageVersion = LanguageVersion.CPP17_GNU;
             driver.ParserOptions.SkipLayoutInfo = true;
@@ -80,10 +81,16 @@ namespace CppSharp
 
             module.Headers.AddRange(new[]
             {
-                "clang/AST/Stmt.h",
-                "clang/AST/StmtCXX.h",
-                "clang/AST/Expr.h",
-                "clang/AST/ExprCXX.h",
+                //"clang/AST/Stmt.h",
+                //"clang/AST/StmtCXX.h",
+                //"clang/AST/Expr.h",
+                //"clang/AST/ExprCXX.h",
+                "clang/AST/DeclBase.h",
+                "clang/AST/Decl.h",
+                "clang/AST/DeclCXX.h",
+                "clang/AST/DeclTemplate.h",
+                "clang/Basic/Builtins.h",
+                //"clang/AST/Type.h",
             });
 
             module.LibraryDirs.Add(Path.Combine(llvmPath, "lib"));
@@ -95,12 +102,18 @@ namespace CppSharp
 
         public void Preprocess(Driver driver, ASTContext ctx)
         {
+            CodeGeneratorHelpers.CppTypePrinter = new CppTypePrinter(driver.Context);
+            CodeGeneratorHelpers.CppTypePrinter.PushScope(TypePrintScopeKind.Local);
+
             new IgnoreMethodsWithParametersPass { Context = driver.Context }
                 .VisitASTContext(ctx);
             new GetterSetterToPropertyPass { Context = driver.Context }
                 .VisitASTContext(ctx);
             new CheckEnumsPass { Context = driver.Context }
                 .VisitASTContext(ctx);
+            new CleanCommentsPass { Context = driver.Context }
+                .VisitASTContext(ctx);
+
 
             var preprocessDecls = new PreprocessDeclarations();
             foreach (var unit in ctx.TranslationUnits)
@@ -114,14 +127,13 @@ namespace CppSharp
             var exprClass = exprUnit.FindNamespace("clang").FindClass("Expr");
             var exprSubclassVisitor = new SubclassVisitor(exprClass);
             exprUnit.Visit(exprSubclassVisitor);
-            exprCxxUnit.Visit(exprSubclassVisitor);
+            //exprCxxUnit.Visit(exprSubclassVisitor);
             ExprClasses = exprSubclassVisitor.Classes;
 
-            CodeGeneratorHelpers.CppTypePrinter = new CppTypePrinter(driver.Context);
-            CodeGeneratorHelpers.CppTypePrinter.PushScope(TypePrintScopeKind.Local);
-
-            GenerateStmt(driver.Context);
-            GenerateExpr(driver.Context);
+            GenerateDecl(driver.Context);
+            //GenerateType(driver.Context);
+            //GenerateStmt(driver.Context);
+            //GenerateExpr(driver.Context);
         }
 
         public void Postprocess(Driver driver, ASTContext ctx)
@@ -251,6 +263,262 @@ namespace CppSharp
             WriteFile(managedCodeGen, Path.Combine(OutputPath, "Parser", "ASTConverter.Stmt.cs"));
         }
 
+        private void GenerateType(BindingContext ctx)
+        {
+            var typeUnit = ctx.ASTContext.TranslationUnits.Find(unit =>
+                unit.FileName.Contains("Type.h"));
+            var typeCxxUnit = ctx.ASTContext.TranslationUnits.Find(unit =>
+                unit.FileName.Contains("CXXType.h"));
+
+            var typeBaseClass = typeUnit.FindNamespace("clang").FindClass("Type");
+            var typeSubclassVisitor = new SubclassVisitor(typeBaseClass);
+            typeUnit.Visit(typeSubclassVisitor);
+            typeCxxUnit?.Visit(typeSubclassVisitor);
+
+            var types = typeSubclassVisitor.Classes;
+
+            // Validate inheritance for types
+            var validator = new InheritanceValidator();
+            validator.ValidateInheritance(types);
+
+            // Write the native declarations headers
+            var declsCodeGen = new TypeDeclarationsCodeGenerator(ctx, types);
+            declsCodeGen.GenerateDeclarations();
+            WriteFile(declsCodeGen, Path.Combine(OutputPath, "CppParser", "Type.h"));
+
+            var defsCodeGen = new TypeDefinitionsCodeGenerator(ctx, types);
+            defsCodeGen.GenerateDefinitions();
+            WriteFile(defsCodeGen, Path.Combine(OutputPath, "CppParser", "Type.cpp"));
+
+            // Write the native parsing routines
+            var parserCodeGen = new TypeParserCodeGenerator(ctx, types);
+            parserCodeGen.GenerateParser();
+            WriteFile(parserCodeGen, Path.Combine(OutputPath, "CppParser", "ParseType.cpp"));
+
+            // Write the managed declarations
+            var managedCodeGen = new ManagedParserCodeGenerator(ctx, types);
+            managedCodeGen.GenerateDeclarations();
+            WriteFile(managedCodeGen, Path.Combine(OutputPath, "AST", "Type.cs"));
+
+            managedCodeGen = new TypeASTConverterCodeGenerator(ctx, types);
+            managedCodeGen.Process();
+            WriteFile(managedCodeGen, Path.Combine(OutputPath, "Parser", "ASTConverter.Type.cs"));
+        }
+
+
+        private void GenerateDecl(BindingContext ctx)
+        {
+            var declBaseUnit = ctx.ASTContext.TranslationUnits.Find(unit =>
+                unit.FileName.Contains("DeclBase.h"));
+            var declUnit = ctx.ASTContext.TranslationUnits.Find(unit =>
+                unit.FileName.Contains("Decl.h"));
+            var declTemplateUnit = ctx.ASTContext.TranslationUnits.Find(unit =>
+                unit.FileName.Contains("DeclTemplate.h"));
+            var declCxxUnit = ctx.ASTContext.TranslationUnits.Find(unit =>
+                unit.FileName.Contains("DeclCXX.h"));
+
+            var declClass = declBaseUnit.FindClass("clang::Decl");
+            var declSubclassVisitor = new SubclassVisitor(declClass);
+            declBaseUnit.Visit(declSubclassVisitor);
+            declUnit.Visit(declSubclassVisitor);
+            declCxxUnit.Visit(declSubclassVisitor);
+            declTemplateUnit.Visit(declSubclassVisitor);
+
+            var declKindEnum = declClass.FindEnum("Kind");
+            declKindEnum.MoveToNamespace(declKindEnum.GetRootNamespace());
+            declKindEnum.Name = "DeclarationKind";
+            CleanupEnumItems(declKindEnum);
+
+            CleanupDeclClass(declClass);
+
+            var declContextClass = declBaseUnit.FindClass("clang::DeclContext");
+            var deductionCandidate = declBaseUnit.FindEnum("clang::DeductionCandidate");
+
+            CleanupDeclContext(declContextClass);
+
+            var multiVersionKind = declUnit.FindEnum("clang::MultiVersionKind");
+            var explicitSpecifier = declCxxUnit.FindClass("clang::ExplicitSpecifier");
+            var inheritedConstructor = declCxxUnit.FindClass("clang::InheritedConstructor");
+
+            var specifiersUnit = ctx.ASTContext.TranslationUnits.Find(unit => unit.FileName == "Specifiers.h");
+            var explicitSpecKind = specifiersUnit.FindEnum("clang::ExplicitSpecKind");
+            var accessSpecifier = specifiersUnit.FindEnum("clang::AccessSpecifier");
+            var storageClass = specifiersUnit.FindEnum("clang::StorageClass");
+            var threadStorageClassSpecifier = specifiersUnit.FindEnum("clang::ThreadStorageClassSpecifier");
+            var templateSpecializationKind = specifiersUnit.FindEnum("clang::TemplateSpecializationKind");
+            var constexprSpecKind = specifiersUnit.FindEnum("clang::ConstexprSpecKind");
+            var inClassInitStyle = specifiersUnit.FindEnum("clang::InClassInitStyle");
+
+            var linkageUnit = ctx.ASTContext.TranslationUnits.Find(unit => unit.FileName == "Linkage.h");
+            var linkage = linkageUnit.FindEnum("clang::Linkage");
+            var languageLinkage = linkageUnit.FindEnum("clang::LanguageLinkage");
+
+            var visibilityUnit = ctx.ASTContext.TranslationUnits.Find(unit => unit.FileName == "Visibility.h");
+            var visibility = visibilityUnit.FindEnum("clang::Visibility");
+            var linkageInfo = visibilityUnit.FindClass("clang::LinkageInfo");
+
+            var pragmaKindsUnit = ctx.ASTContext.TranslationUnits.Find(unit => unit.FileName == "PragmaKinds.h");
+            var pragmaMSCommentKind = pragmaKindsUnit.FindEnum("clang::PragmaMSCommentKind");
+
+            var exceptionSpecificationTypeUnit = ctx.ASTContext.TranslationUnits.Find(unit => unit.FileName == "ExceptionSpecificationType.h");
+            var exceptionSpecificationType = exceptionSpecificationTypeUnit.FindEnum("clang::ExceptionSpecificationType");
+
+            var builtinsUnit = ctx.ASTContext.TranslationUnits.Find(unit => unit.FileName == "Builtins.h");
+            var builtinTemplateKind = builtinsUnit.FindEnum("clang::BuiltinTemplateKind");
+
+            var redeclarableUnit = ctx.ASTContext.TranslationUnits.Find(unit => unit.FileName.Contains("Redeclarable.h"));
+
+            var redeclarableClass = redeclarableUnit.FindClass("clang::Redeclarable");
+            redeclarableClass.TemplateParameters.First().Name = "Decl";
+
+            var itr = redeclarableClass.FindClass("redecl_iterator");
+            itr.Name = "Decl";
+            itr.MoveToNamespace(itr.GetRootNamespace());
+            itr.ExplicitlyIgnore();
+
+            var CXXRecordDeclClass = declCxxUnit.FindClass("clang::CXXRecordDecl");
+            var friend_itr = CXXRecordDeclClass.FindClass("friend_iterator");
+            friend_itr.Name = "FriendDecl";
+            friend_itr.MoveToNamespace(friend_itr.GetRootNamespace());
+            friend_itr.ExplicitlyIgnore();
+
+            var mergeableClass = redeclarableUnit.FindClass("clang::Mergeable");
+            mergeableClass.TemplateParameters.First().Name = "Decl";
+
+            var memberSpecializationInfo = declTemplateUnit.FindClass("clang::MemberSpecializationInfo");
+            var functionTemplateSpecializationInfo = declTemplateUnit.FindClass("clang::FunctionTemplateSpecializationInfo");
+            var dependentFunctionTemplateSpecializationInfo = declTemplateUnit.FindClass("clang::DependentFunctionTemplateSpecializationInfo");
+            var templateParmPosition = declTemplateUnit.FindClass("clang::TemplateParmPosition");
+
+            var templateBaseUnit = ctx.ASTContext.TranslationUnits.Find(unit => unit.FileName.Contains("TemplateBase.h"));
+            var aSTTemplateArgumentListInfo = templateBaseUnit.FindClass("clang::ASTTemplateArgumentListInfo");
+
+            // TODO: Move to type
+            var typeUnit = ctx.ASTContext.TranslationUnits.Find(unit => unit.FileName == "Type.h");
+            var refQualifierKind = typeUnit.FindEnum("clang::RefQualifierKind");
+            var qualifiers = typeUnit.FindClass("clang::Qualifiers");
+
+            var decls = new Declaration[]
+                {
+                    declKindEnum,
+                    multiVersionKind,
+                    explicitSpecKind,
+                    explicitSpecifier,
+                    inheritedConstructor,
+                    accessSpecifier,
+                    storageClass,
+                    threadStorageClassSpecifier,
+                    templateSpecializationKind,
+                    builtinTemplateKind,
+                    inClassInitStyle,
+                    constexprSpecKind,
+                    linkage,
+                    languageLinkage,
+                    visibility,
+                    linkageInfo,
+                    pragmaMSCommentKind,
+                    exceptionSpecificationType,
+                    declContextClass,
+                    redeclarableClass,
+                    mergeableClass,
+                    memberSpecializationInfo,
+                    functionTemplateSpecializationInfo,
+                    dependentFunctionTemplateSpecializationInfo,
+                    aSTTemplateArgumentListInfo,
+                    templateParmPosition,
+                    deductionCandidate,
+                    refQualifierKind, // TODO: Move to type
+                    qualifiers, // TODO: Move to type
+                }
+                .Union(declSubclassVisitor.Classes);
+
+            // Validate inheritance for declarations
+            var validator = new InheritanceValidator();
+            validator.ValidateInheritance(decls);
+
+            // Write the native declarations headers
+            CodeGeneratorHelpers.CppTypePrinter.PushContext(TypePrinterContextKind.Normal);
+            {
+                var declsCodeGen = new DeclDeclarationsCodeGenerator(ctx, decls);
+                declsCodeGen.GenerateDeclarations();
+                WriteFile(declsCodeGen, Path.Combine(OutputPath, "CppParser", "Declaration.h"));
+            }
+            CodeGeneratorHelpers.CppTypePrinter.PopContext();
+
+            /*var defsCodeGen = new DeclDefinitionsCodeGenerator(ctx, decls);
+            defsCodeGen.GenerateDefinitions();
+            WriteFile(defsCodeGen, Path.Combine(OutputPath, "CppParser", "Decl.cpp"));
+
+            // Write the native parsing routines
+            var parserCodeGen = new DeclParserCodeGenerator(ctx, decls);
+            parserCodeGen.GenerateParser();
+            WriteFile(parserCodeGen, Path.Combine(OutputPath, "CppParser", "ParseDecl.cpp"));
+
+            // Write the managed declarations
+            var managedCodeGen = new ManagedParserCodeGenerator(ctx, decls);
+            managedCodeGen.GenerateDeclarations();
+            WriteFile(managedCodeGen, Path.Combine(OutputPath, "AST", "Decl.cs"));
+
+            managedCodeGen = new DeclASTConverterCodeGenerator(ctx, decls);
+            managedCodeGen.Process();
+            WriteFile(managedCodeGen, Path.Combine(OutputPath, "Parser", "ASTConverter.Decl.cs"));*/
+        }
+
+        private void CleanupDeclClass(Class declClass)
+        {
+            var decl_itr = declClass.FindClass("redecl_iterator");
+            decl_itr.Name = "Decl";
+            decl_itr.MoveToNamespace(decl_itr.GetRootNamespace());
+            decl_itr.ExplicitlyIgnore();
+
+            declClass.Properties
+                .FindAll(x => x.Name
+                        is "langOpts"                   // Reason: Not needed
+                        or "declKindName"               // Reason: Can use Enum.ToString()
+                        or "specific_attrs"             // Reason: Handled in C#
+                        or "versionIntroduced"          // Reason: Not needed
+                    || x.Name.Contains("module", StringComparison.InvariantCultureIgnoreCase) // TODO: Modules are not supported currently
+                )
+                .ForEach(x => x.ExplicitlyIgnore());
+        }
+
+
+        private void CleanupDeclContext(Class declContextClass)
+        {
+            foreach (Class @class in declContextClass.Classes.ToArray()
+                         .Where(c => c.OriginalName.EndsWith("_iterator")))
+            {
+                // Move to root namespace to prevent qualified names
+                @class.MoveToNamespace(@class.GetRootNamespace());
+
+                if (@class.OriginalName.Contains("decl"))
+                {
+                    @class.Name = "Decl";
+                }
+                else if (@class.OriginalName.Contains("udir"))
+                {
+                    @class.Name = "UsingDirectiveDecl";
+                }
+
+                @class.ExplicitlyIgnore();
+            }
+
+            declContextClass.Methods
+                .FindAll(x => x.Name
+                    is "noload_decls"   // Reason: No longer relevant
+                    or "ddiags"         // Reason: No longer relevant
+                    or "lookups"        // TODO: Difficult to map
+                ).ForEach(x => x.ExplicitlyIgnore());
+
+            declContextClass.Properties
+                .FindAll(x => x.Name
+                    is "declKindName"               // Reason: In C# you can use Enum.ToString()
+                    or "decls_empty"                // Reason: This is a simple IsEmpty() check
+                    or "lookupPtr"                  // TODO: Difficult to map
+                )
+                .ForEach(x => x.ExplicitlyIgnore());
+        }
+
         private static void CleanupEnumItems(Enumeration exprClassEnum)
         {
             foreach (var item in exprClassEnum.Items)
@@ -320,7 +588,7 @@ namespace CppSharp
     {
         private static void Check(Declaration decl)
         {
-            if (string.IsNullOrWhiteSpace(decl.Name))
+            if (decl is not TranslationUnit && string.IsNullOrWhiteSpace(decl.Name))
             {
                 decl.ExplicitlyIgnore();
                 return;
@@ -345,16 +613,26 @@ namespace CppSharp
                 decl.ExplicitlyIgnore();
         }
 
+        public override bool VisitDeclaration(Declaration decl)
+        {
+            if (!base.VisitDeclaration(decl) || decl.Ignore)
+                return false;
+
+            Check(decl);
+            return !decl.Ignore;
+        }
+
         public override bool VisitClassDecl(Class @class)
         {
+            if (@class.Ignore)
+                return false;
+
+            if (IsAbstractType(@class) || IsAbstractDecl(@class) || IsAbstractStmt(@class))
+                @class.IsAbstract = true;
+
             //
             // Statements
             //
-
-            if (CodeGeneratorHelpers.IsAbstractStmt(@class))
-                @class.IsAbstract = true;
-
-            Check(@class);
 
             foreach (var @base in @class.Bases)
             {
@@ -426,32 +704,45 @@ namespace CppSharp
                 }
             }
 
-            return base.VisitClassDecl(@class);
+            return base.VisitClassDecl(@class) && !@class.Ignore;
         }
 
         public override bool VisitClassTemplateDecl(ClassTemplate template)
         {
-            Check(template);
             return base.VisitClassTemplateDecl(template);
         }
 
         public override bool VisitTypeAliasTemplateDecl(TypeAliasTemplate template)
         {
-            Check(template);
             return base.VisitTypeAliasTemplateDecl(template);
         }
 
         public override bool VisitProperty(Property property)
         {
-            if (property.Name == "stripLabelLikeStatements")
+            if (!base.VisitProperty(property))
+                return false;
+
+            // TODO: Remove null check once auto types are handled properly
+            if (property.Type == null || property.Name == "stripLabelLikeStatements")
+            {
+                property.ExplicitlyIgnore();
+                return false;
+            }
+
+            var typeName = property.Type.Visit(CodeGeneratorHelpers.CppTypePrinter).Type;
+
+            // Ignore properties that use internal Clang types
+            if (typeName.Contains("DeclContext") ||
+                typeName.Contains("ASTContext") ||
+                typeName.Contains("TypeLoc"))
                 property.ExplicitlyIgnore();
 
-            return base.VisitProperty(property);
+            return true;
         }
 
         public override bool VisitEnumDecl(Enumeration @enum)
         {
-            if (AlreadyVisited(@enum))
+            if (!base.VisitEnumDecl(@enum))
                 return false;
 
             if (@enum.Name == "APFloatSemantics")
@@ -464,7 +755,7 @@ namespace CppSharp
 
             RemoveEnumItemsPrefix(@enum);
 
-            return base.VisitEnumDecl(@enum);
+            return true;
         }
 
         private void RemoveEnumItemsPrefix(Enumeration @enum)
@@ -586,7 +877,7 @@ namespace CppSharp
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (!@class.IsGenerated)
+            if (SkipClass(@class))
                 return false;
 
             GenerateClassSpecifier(@class);
@@ -953,6 +1244,7 @@ namespace CppSharp
         {
             Context.Options.GeneratorKind = GeneratorKind.CPlusPlus;
             CTypePrinter.PushScope(TypePrintScopeKind.Local);
+            CTypePrinter.PushContext(TypePrinterContextKind.Normal);
 
             GenerateFilePreamble(CommentKind.BCPL);
             NewLine();
@@ -1042,7 +1334,12 @@ namespace CppSharp
                 return $"{typeName}()";
 
             if (property.Type.TryGetEnum(out Enumeration @enum))
+            {
+                if (@enum.Items.Count == 0) // Strongly typed integer?
+                    return $"({GetQualifiedName(@enum)})0";
+
                 return $"{GetQualifiedName(@enum)}::{@enum.Items.First().Name}";
+            }
 
             return "0";
         }
